@@ -16,6 +16,7 @@
 
 # Ignore test files
 /test
+/public/files
 
 # Ignore unwanted files
 *.psd
