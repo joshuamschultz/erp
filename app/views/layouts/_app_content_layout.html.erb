@@ -103,43 +103,25 @@
       </div> --><!--#sidebar-shortcuts-->
 
       <ul class="nav nav-list">
-         <li class="active"><a href="#"><i class="icon-dashboard"></i><span>Dashboard</span></a></li>
+         <% @menus.each do |key, menu| %>
+          <li class="<%= menu[:active] %>">
+                <% if menu[:type] == "single" %>
+                      <a href="<%= menu[:path] %>"><i class="icon-<%= menu[:icon] %>"></i><span><%= menu[:name] %></span></a>
 
-         <li>
-            <a class="dropdown-toggle" href="#">
-               <i class="icon-desktop"></i><span>Menu1</span><b class="arrow icon-angle-down"></b>
-            </a>
+                <% else %>
+                      <a class="dropdown-toggle" href="<%= menu[:path] %>">
+                         <i class="icon-<%= menu[:icon] %>"></i><span><%= menu[:name] %></span><b class="arrow icon-angle-down"></b>
+                      </a>
 
-            <ul class="submenu">
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button1</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button2</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button3</a></li>
-            </ul>
-         </li>         
+                      <ul class="submenu">
+                        <% menu[:sub_menu].each do |sub_menu| %>
+                           <li><a href="<%= sub_menu[:path] %>"><i class="icon-double-angle-right"></i><%= sub_menu[:name] %></a></li>
+                        <% end %>
+                      </ul>
+                <% end %>
+          </li>
+         <% end %>
 
-         <li>
-            <a class="dropdown-toggle" href="#">
-               <i class="icon-desktop"></i><span>Menu2</span><b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button1</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button2</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button3</a></li>
-            </ul>
-         </li>
-
-         <li>
-            <a class="dropdown-toggle" href="#">
-               <i class="icon-desktop"></i><span>Menu3</span><b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button1</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button2</a></li>
-               <li><a href="#"><i class="icon-double-angle-right"></i>Button3</a></li>
-            </ul>
-         </li>
       </ul><!--/.nav-list-->
 
       <div id="sidebar-collapse"><i class="icon-double-angle-left"></i></div>

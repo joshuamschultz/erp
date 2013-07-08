@@ -1,0 +1,15 @@
+<%= simple_form_for(@material, :html => {:class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :material_short_name %>
+    <%= f.input :material_description %>
+    <%= f.input :material_notes %>
+    <%= f.input :material_active %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to 'Cancel', materials_path, :class => "btn btn-small" %>
+  </div>
+<% end %>

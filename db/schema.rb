@@ -11,7 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704055832) do
+ActiveRecord::Schema.define(:version => 20130708114808) do
+
+  create_table "material_elements", :force => true do |t|
+    t.integer  "material_id"
+    t.string   "element_symbol"
+    t.string   "element_name"
+    t.string   "element_low_range"
+    t.string   "element_high_range"
+    t.boolean  "element_active"
+    t.integer  "element_created_id"
+    t.integer  "element_updated_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "material_elements", ["material_id"], :name => "index_material_elements_on_material_id"
+
+  create_table "materials", :force => true do |t|
+    t.string   "material_short_name"
+    t.string   "material_description"
+    t.text     "material_notes"
+    t.integer  "material_created_id"
+    t.integer  "material_updated_id"
+    t.boolean  "material_active"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "test_items", :force => true do |t|
     t.integer  "test_package_id"

@@ -1,0 +1,37 @@
+<h1>Listing material_elements</h1>
+
+<table>
+  <tr>
+    <th>Material</th>
+    <th>Element symbol</th>
+    <th>Element name</th>
+    <th>Element low range</th>
+    <th>Element high range</th>
+    <th>Element active</th>
+    <th>Element created</th>
+    <th>Element updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @material_elements.each do |material_element| %>
+  <tr>
+    <td><%= material_element.material %></td>
+    <td><%= material_element.element_symbol %></td>
+    <td><%= material_element.element_name %></td>
+    <td><%= material_element.element_low_range %></td>
+    <td><%= material_element.element_high_range %></td>
+    <td><%= material_element.element_active %></td>
+    <td><%= material_element.element_created_id %></td>
+    <td><%= material_element.element_updated_id %></td>
+    <td><%= link_to 'Show', material_element %></td>
+    <td><%= link_to 'Edit', edit_material_element_path(material_element) %></td>
+    <td><%= link_to 'Destroy', material_element, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Material element', new_material_element_path %>
