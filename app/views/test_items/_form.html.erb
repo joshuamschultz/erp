@@ -1,0 +1,30 @@
+<%= form_for(@test_item) do |f| %>
+  <% if @test_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@test_item.errors.count, "error") %> prohibited this test_item from being saved:</h2>
+
+      <ul>
+      <% @test_item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @test_package %>
+      <%= f.hidden_field :test_package_id, :value => @test_package.id %>
+  <% else %>
+    <div class="field">
+      <%= f.label :test_package %><br />
+      <%= f.collection_select :test_package_id, TestPackage.all, :id, :name %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :item_name %><br />
+    <%= f.text_field :item_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

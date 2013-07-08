@@ -1,0 +1,43 @@
+<div class="row-fluid">
+  <div class="row-fluid">
+    <div class="span6">
+          <label><strong class="alert-success">Test Items</strong></label>
+    </div>
+    <div class="span6">
+        <%= link_to 'New Test Item', "#", :class => "btn btn-mini btn-success", :onclick => 'show_iframe_popup("' + new_test_item_path + '?layout=false&test_package_id=' + @test_package.id.to_s + '", {"header" : "Popup"})' %>
+    </div>
+    <p id="notice" class="text-info"><%= notice %></p>
+  </div>
+
+  <table id="table_report" class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Sl No</th>
+        <th>Package Name</th>
+        <th>Item Name</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @test_items.each_with_index do |test_item, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= test_item.test_package.name %></td>
+          <td><%= test_item.item_name %></td>
+          <td><%= link_to 'Show', test_item, :class => "btn btn-mini btn-success" %>
+          <%= link_to 'Edit', edit_test_item_path(test_item), :class => "btn btn-mini btn-info" %>
+          <%= link_to 'Destroy', test_item, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-mini btn-danger" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  //     $(document).ready(function(){ 
+  //         var oTable1 = $('#table_report').dataTable({
+  //           "aoColumns": [null, { "bSortable": false }]
+  //         });
+  //     });
+</script>

@@ -19,23 +19,30 @@
 
     <!--page specific plugin styles-->
     <%= yield :page_level_plugin_styles %>
-
+    <%= csrf_meta_tags %>
+    <%= javascript_include_tag "application" %>
 </head>
 
 <body class="<%= yield :page_level_body_class %>">
-    <% if current_user %>
-        <%= render :partial => 'layouts/app_content_layout', :locals => {:content => "app_theme"} %>
+    <% if current_user && params[:layout] %>
+        <%= render :partial => 'layouts/app_content_layout', :locals => {:content => "app_theme"} %>             
     <% else %>
         <%= yield %>
     <% end %>
 
-    <%= javascript_include_tag "application" %>
+    <%= render :partial => 'layouts/app_content_layout', :locals => {:content => "iframe_popup"} %>    
 
     <!--page specific plugin scripts-->
     <%= yield :page_level_plugin_scripts %>
 
     <!--inline scripts related to this page-->
     <%= yield :page_level_inline_scripts %>
+
+    <script type="text/javascript">
+        function fn_popup_closed_events(){
+            <%= yield :page_level_popup_closed_events %>
+        }
+    </script>
    
 </body>
 

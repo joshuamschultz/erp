@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @test_package.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_package_path(@test_package) %> |
+<%= link_to 'Back', test_packages_path %>
+
+
+<div id="item_data"></div>
+
+<script type="text/javascript">
+	
+$(document).ready(function(){ 
+	initialize_api_call({"url": "/test_items", "type": "GET", "params": {"layout" : "false", "test_package_id" : "<%=  @test_package.id %>"}}, "callback_function", {});	
+});
+</script>
+
+<% content_for :page_level_popup_closed_events do %>
+    initialize_api_call({"url": "/test_items", "type": "GET", "params": {"layout" : "false", "test_package_id" : "<%=  @test_package.id %>"}}, "callback_function", {});
+<% end %>
