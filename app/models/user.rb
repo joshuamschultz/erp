@@ -9,4 +9,9 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, 
   :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active
   # attr_accessible :title, :body
+
+  has_many :created_materials, :class_name => "Material", :foreign_key => "material_created_id"
+  has_many :updated_materials, :class_name => "Material", :foreign_key => "material_updated_id"
+  has_many :created_elements, :class_name => "MaterialElement", :foreign_key => "element_created_id"
+  has_many :updated_elements, :class_name => "MaterialElement", :foreign_key => "element_updated_id"
 end

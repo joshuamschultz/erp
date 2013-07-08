@@ -10,11 +10,14 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
 //= require jquery
 //= require jquery_ujs
+//= require ./jquery.dataTables.min
 //= require ./theme_js/bootstrap.min
 //= require ./theme_js/theme-elements.min
 //= require ./theme_js/theme.min
+//= require ./jquery.dataTables.bootstrap
 
 
 $(document).ready(function(){ 
@@ -51,7 +54,7 @@ function initialize_api_call(api_params, callback, callback_params){
 }
 
 function callback_function(response, callback_params, api_params){
-		$("#item_data").html(response);
+	$("#item_data").html(response);
 }
 
 

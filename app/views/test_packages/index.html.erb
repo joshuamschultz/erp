@@ -32,10 +32,22 @@
   </table>
 </div>
 
+
 <script type="text/javascript">
-    // $(document).ready(function(){ 
-    //     var oTable1 = $('#table_report').dataTable({
-    //       "aoColumns": [null, { "bSortable": false }]
-    //     });
-    // });
+    $(document).ready(function(){ 
+        var oTable1 = $('#table_report').dataTable().makeEditable({
+          "aoColumns": [null, { "bSortable": false }],
+          sUpdateURL: "/tester",
+          sAddURL: "/tester",
+          sDeleteURL: "/tester"
+        });
+    });
 </script>
+
+
+<a href="#" class="btn" id="openBtn" onclick='show_iframe_popup("/tester?layout=false", {"header" : "Popup"})'>Open modal</a>
+
+<% content_for :page_level_popup_closed_events do %>
+    alert("Me closed!");
+<% end %>
+

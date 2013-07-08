@@ -1,0 +1,18 @@
+<%= simple_form_for(@material_element) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :material %>
+    <%= f.input :element_symbol %>
+    <%= f.input :element_name %>
+    <%= f.input :element_low_range %>
+    <%= f.input :element_high_range %>
+    <%= f.input :element_active %>
+    <%= f.input :element_created_id %>
+    <%= f.input :element_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

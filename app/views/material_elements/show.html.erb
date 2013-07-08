@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Material:</b>
+  <%= @material_element.material %>
+</p>
+
+<p>
+  <b>Element symbol:</b>
+  <%= @material_element.element_symbol %>
+</p>
+
+<p>
+  <b>Element name:</b>
+  <%= @material_element.element_name %>
+</p>
+
+<p>
+  <b>Element low range:</b>
+  <%= @material_element.element_low_range %>
+</p>
+
+<p>
+  <b>Element high range:</b>
+  <%= @material_element.element_high_range %>
+</p>
+
+<p>
+  <b>Element active:</b>
+  <%= @material_element.element_active %>
+</p>
+
+<p>
+  <b>Element created:</b>
+  <%= @material_element.element_created_id %>
+</p>
+
+<p>
+  <b>Element updated:</b>
+  <%= @material_element.element_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_material_element_path(@material_element) %> |
+<%= link_to 'Back', material_elements_path %>

@@ -19,3 +19,8 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<%= simple_form_for @test_package do |f| %>
+  <%= f.input :name, label: 'Name', placeholder: '1111', required: true %>
+  <%= f.button :submit %>
+<% end %>
