@@ -46,3 +46,6 @@ gem 'kaminari'
 group :production do
   gem 'pg', '0.14.1'
 end
+
+gem 'simple_form'
+gem 'country_select'

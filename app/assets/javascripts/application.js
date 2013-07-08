@@ -19,10 +19,17 @@
 
 $(document).ready(function(){ 
 
+	$('#iframe_popup_dialog').on('hidden', function () {	    
+	    fn_popup_closed_events();
+	});
+
 });
 
 
 // Ajax API call initialization with callback function
+// initialize_api_call({"url": "/index", "type": "POST", "params": {"title" : "nature"}}, "callback_function", {"id" : 1});
+// function callback_function(response, callback_params, api_params){}
+// Created At : 11-04-13, Modified At :
 function initialize_api_call(api_params, callback, callback_params){
 	if(!api_params["params"]) api_params["params"] = {};
 	if(!callback_params) callback_params = {};
@@ -30,17 +37,25 @@ function initialize_api_call(api_params, callback, callback_params){
 	$.ajax({
 		  url : api_params["url"], type : api_params["type"], data : api_params["params"],
 		  success : function(response)
-		  {
-		  	if(callback && callback != "")
-		  		window[callback](response, callback_params, api_params);
+		  {		  	
+		  	if(callback && callback != ""){
+			  	window[callback](response, callback_params, api_params);
+			}
 		  	
 		  },
 		  error : function()
 		  {
-
+		  	
 		  }
 	});
 }
+
+function callback_function(response, callback_params, api_params){
+		$("#item_data").html(response);
+}
+
+
+
 
 function show_box(id) {
    $('.widget-box.visible').removeClass('visible');
@@ -48,4 +63,10 @@ function show_box(id) {
 }
 
 
-
+function show_iframe_popup(iframe_url, params){
+	$('#iframe_popup_dialog').on('show', function (){ 		 
+		$('#iframe_popup_header').html(params["header"]);		
+     	$('iframe').attr("src", iframe_url);
+    });    
+    $('#iframe_popup_dialog').modal({show:true});
+}

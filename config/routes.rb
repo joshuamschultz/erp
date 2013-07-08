@@ -1,10 +1,18 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :test_items
+
+
+  resources :test_packages
+
+
   get "account/dashboard"
 
   devise_for :users, :path => '', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register" } do
       root :to => 'devise/sessions#new'
   end
+
+  match "/tester" => "account#tester", via: [:get, :post] 
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

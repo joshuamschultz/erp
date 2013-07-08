@@ -85,7 +85,7 @@
 <% when "side_bar" %>
 	<a id="menu-toggler" href="#"><span></span></a>
 
-	<div id="sidebar">
+	<div id="sidebar" class="display menu-min">
       <!-- <div id="sidebar-shortcuts">
          <div id="sidebar-shortcuts-large">
             <button class="btn btn-small btn-success"><i class="icon-signal"></i></button>
@@ -212,6 +212,19 @@
  	</div><!--/.page-header-->
 	<!-- ################## End Page Header #################### -->
 
+<% when "iframe_popup" %>
+    <div id="iframe_popup_dialog" class="modal hide fade" tabindex="-1" role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3 id="iframe_popup_header"></h3>
+        </div>
+        <div class="modal-body">
+            <iframe src="" style="zoom:0.60" width="99.9%" height="400" frameborder="0"></iframe>
+        </div>
+        <div class="modal-footer">
+            <!-- <button class="btn" data-dismiss="modal">Close</button> -->
+        </div>
+    </div>
 
 <% else %>
 	
