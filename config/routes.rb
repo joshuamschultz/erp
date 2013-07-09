@@ -1,10 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
-  resources :materials
-
-
-  resources :material_elements
-
+  resources :materials do
+    resources :material_elements
+  end
 
   resources :test_items
 

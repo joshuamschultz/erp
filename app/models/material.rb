@@ -3,7 +3,7 @@ class Material < ActiveRecord::Base
   					:material_description, :material_notes, 
   					:material_short_name, :material_updated_id
 
-  (validates_uniqueness_of :material_short_name if validates_length_of :material_short_name, :minimum => 2, :maximum => 10) if validates_presence_of :material_short_name
+  (validates_uniqueness_of :material_short_name if validates_length_of :material_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :material_short_name
 
   (validates_length_of :material_description, :minimum => 2, :maximum => 50) if validates_presence_of :material_description
 
@@ -13,4 +13,5 @@ class Material < ActiveRecord::Base
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "material_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "material_updated_id"
+
 end

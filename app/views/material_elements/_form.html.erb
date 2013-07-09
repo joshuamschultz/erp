@@ -1,18 +1,17 @@
-<%= simple_form_for(@material_element) do |f| %>
+<%= simple_form_for([@material, @material_element], :html => {:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :material %>
+    <%= f.hidden_field :material_id, :value => @material.id %>
     <%= f.input :element_symbol %>
     <%= f.input :element_name %>
     <%= f.input :element_low_range %>
     <%= f.input :element_high_range %>
     <%= f.input :element_active %>
-    <%= f.input :element_created_id %>
-    <%= f.input :element_updated_id %>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Elements of ' + @material.material_short_name, material_material_elements_path(@material), :class => "btn btn-small" %>
   </div>
 <% end %>

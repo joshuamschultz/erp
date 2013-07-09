@@ -6,7 +6,16 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @materials }
+      format.json { 
+        @materials = @materials.select{|material| 
+            material[:links] = CommonActions.object_crud_paths(material_path(material), 
+                              edit_material_path(material), material_path(material),
+                              [{:name => "Elements", :path => material_material_elements_path(material)}]
+                            )
+        }
+        materials = {:aaData => @materials}
+        render json: materials
+      }
     end
   end
 
