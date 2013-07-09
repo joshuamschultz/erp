@@ -1,0 +1,39 @@
+<% case(content) %>	
+<% when "material_info" %>
+    <div class="row-fluid span8">
+      <div class="label label-large label-info arrowed-in arrowed-right">
+            <b>Material Info</b>
+      </div>
+      <table class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+              <td class="span2">Short Name :</td>
+              <td class="span5"><%= material.material_short_name %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= material.material_description %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= material.material_notes %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= material.material_active %></td>
+            </tr>
+        </tbody>
+      </table>
+
+      <div class="form-actions">
+        <%= link_to 'Edit', edit_material_path(material), :class => "btn btn-small" %>
+        <%= link_to 'Back to Materials', materials_path, :class => "btn btn-small" %>
+      </div>
+    </div>
+
+<% else %>
+
+<% end %>

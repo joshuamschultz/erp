@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include CommonActions
   protect_from_forgery
 
   before_filter :authenticate_user!
@@ -77,7 +78,7 @@ class ApplicationController < ActionController::Base
 											{:path => materials_path, :name => "Materials"}
 										]
 		
-		@menus[:dashboard][:active] = "active"									
+		@menus[:dashboard][:active] = "active"
 	end
   
 end
