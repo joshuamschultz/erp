@@ -5,9 +5,10 @@
     </div>
     <div class="span6">
         <%= link_to 'New Material', new_material_path, :class => "btn btn-mini btn-success" %>
-    </div>
-    <p id="notice" class="text-info"><%= notice %></p>
+    </div>    
   </div>
+
+  <% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
 
   <table id="table_report" class="table table-striped table-bordered table-hover">
     <thead>
@@ -15,6 +16,7 @@
         <th>ID</th>
         <th>Short Name</th>
         <th>Description</th>
+        <th>Notes</th>
         <th>Active</th>
         <th></th>
       </tr>
@@ -23,7 +25,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>.............</td>
+        <td></td>
+        <td></td>
     <tbody>
       
     </tbody>
@@ -34,12 +37,14 @@
 <script type="text/javascript">
     $(document).ready(function(){ 
         var oTable1 = $('#table_report').dataTable({
+            "bAutoWidth": false,
             "bProcessing": true,
             "sAjaxSource": '<%= materials_path %>',
             "aoColumns": [
                 { "mData": "id" },
                 { "mData": "material_short_name" },
                 { "mData": "material_description" },
+                { "mData": "material_notes", "bVisible": false },
                 { "mData": "material_active" },
                 { "mData": "links", "bSortable": false, "bSearchable": false }
             ]
