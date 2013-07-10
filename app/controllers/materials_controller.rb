@@ -36,7 +36,7 @@ class MaterialsController < ApplicationController
   # GET /materials/new.json
   def new
     @duplicate = Material.find_by_id(params[:material_id])
-    @material = @duplicate.present? ? @duplicate.clone : Material.new
+    @material = @duplicate.present? ? @duplicate.dup : Material.new
 
     respond_to do |format|
       format.html # new.html.erb
