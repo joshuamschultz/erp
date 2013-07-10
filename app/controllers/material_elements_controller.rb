@@ -39,7 +39,7 @@ class MaterialElementsController < ApplicationController
   def new
     @material = Material.find(params[:material_id])
     @duplicate = MaterialElement.find_by_id(params[:element_id])
-    @material_element = @duplicate.present? ? @duplicate.dup : MaterialElement.new
+    @material_element = @duplicate.present? ? @duplicate.clone : MaterialElement.new
 
     respond_to do |format|
       format.html # new.html.erb
