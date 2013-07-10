@@ -19,11 +19,11 @@ ActiveRecord::Schema.define(:version => 20130708114808) do
     t.string   "element_name"
     t.string   "element_low_range"
     t.string   "element_high_range"
-    t.boolean  "element_active"
+    t.boolean  "element_active",     :default => true
     t.integer  "element_created_id"
     t.integer  "element_updated_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "material_elements", ["material_id"], :name => "index_material_elements_on_material_id"

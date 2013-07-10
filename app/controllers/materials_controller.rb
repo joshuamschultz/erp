@@ -10,7 +10,9 @@ class MaterialsController < ApplicationController
         @materials = @materials.select{|material| 
             material[:links] = CommonActions.object_crud_paths(material_path(material), 
                               edit_material_path(material), material_path(material),
-                              [{:name => "Elements", :path => material_material_elements_path(material)}]
+                              [ {:name => "Elements", :path => material_material_elements_path(material)},
+                                {:name => "Duplicate", :path => new_material_path(:material_id => material.id)}
+                              ]
                             )
         }
         materials = {:aaData => @materials}
@@ -33,7 +35,8 @@ class MaterialsController < ApplicationController
   # GET /materials/new
   # GET /materials/new.json
   def new
-    @material = Material.new
+    @duplicate = Material.find_by_id(params[:material_id])
+    @material = @duplicate.present? ? @duplicate.dup : Material.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,7 +56,7 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       if @material.save
-        format.html { redirect_to @material, notice: 'Material was successfully created.' }
+        format.html { redirect_to materials_url, notice: 'Material was successfully created.' }
         format.json { render json: @material, status: :created, location: @material }
       else
         format.html { render action: "new" }
@@ -69,7 +72,7 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       if @material.update_attributes(params[:material])
-        format.html { redirect_to @material, notice: 'Material was successfully updated.' }
+        format.html { redirect_to materials_url, notice: 'Material was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

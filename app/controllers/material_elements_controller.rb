@@ -11,7 +11,9 @@ class MaterialElementsController < ApplicationController
         @material_elements = @material_elements.select{|element| 
             element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
                               edit_material_material_element_path(@material, element), 
-                              material_material_element_path(@material, element)
+                              material_material_element_path(@material, element),
+                              [ {:name => "Duplicate", :path => new_material_material_element_path(@material, :element_id => element.id)}
+                              ]
                             )
         }
         material_elements = {:aaData => @material_elements}
@@ -36,7 +38,8 @@ class MaterialElementsController < ApplicationController
   # GET /material_elements/new.json
   def new
     @material = Material.find(params[:material_id])
-    @material_element = MaterialElement.new
+    @duplicate = MaterialElement.find_by_id(params[:element_id])
+    @material_element = @duplicate.present? ? @duplicate.dup : MaterialElement.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -58,7 +61,8 @@ class MaterialElementsController < ApplicationController
 
     respond_to do |format|
       if @material_element.save
-        format.html { redirect_to material_material_element_path(@material, @material_element), notice: 'Material element was successfully created.' }
+        format.html { redirect_to material_material_elements_path(@material), notice: 'Material element was successfully created.' }
+        # material_material_element_path(@material, @material_element)
         format.json { render json: @material_element, status: :created, location: @material_element }
       else
         format.html { render action: "new" }
@@ -75,7 +79,8 @@ class MaterialElementsController < ApplicationController
 
     respond_to do |format|
       if @material_element.update_attributes(params[:material_element])
-        format.html { redirect_to material_material_element_path(@material, @material_element), notice: 'Material element was successfully updated.' }
+        format.html { redirect_to material_material_elements_path(@material), notice: 'Material element was successfully updated.' }
+        # material_material_element_path(@material, @material_element)
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
