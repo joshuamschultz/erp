@@ -8,9 +8,9 @@ class MaterialElement < ActiveRecord::Base
     self.element_active ||= true
   end
 
-  (validates_uniqueness_of :element_symbol if validates_length_of :element_symbol, :maximum => 20) if validates_presence_of :element_symbol
+  # validates_uniqueness_of :element_symbol
+  validates_length_of :element_symbol, :maximum => 20 if validates_presence_of :element_symbol
   validates_length_of :element_name, :maximum => 50 if validates_presence_of :element_name
-
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "element_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "element_updated_id"
