@@ -3,7 +3,7 @@ class MaterialElementsController < ApplicationController
   # GET /material_elements.json
   def index
     @material = Material.find(params[:material_id])
-    @material_elements = @material.material_elements
+    @material_elements = @material.material_elements.all
 
     respond_to do |format|
       format.html # index.html.erb

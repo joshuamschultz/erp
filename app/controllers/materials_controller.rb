@@ -52,10 +52,13 @@ class MaterialsController < ApplicationController
   # POST /materials
   # POST /materials.json
   def create
-    @material = Material.new(params[:material])
+    @duplicate = Material.find_by_id(params[:material_id])
+    @material = Material.new(params[:material])   
 
     respond_to do |format|
-      if @material.save
+      if @material.valid?
+        @material.material_elements = @duplicate.material_elements.collect{|element| new_element = element.dup }
+        @material.save
         format.html { redirect_to materials_url, notice: 'Material was successfully created.' }
         format.json { render json: @material, status: :created, location: @material }
       else
