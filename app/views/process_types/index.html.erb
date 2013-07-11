@@ -1,0 +1,33 @@
+<h1>Listing process_types</h1>
+
+<table>
+  <tr>
+    <th>Process short name</th>
+    <th>Process description</th>
+    <th>Process notes</th>
+    <th>Process active</th>
+    <th>Process created</th>
+    <th>Process updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @process_types.each do |process_type| %>
+  <tr>
+    <td><%= process_type.process_short_name %></td>
+    <td><%= process_type.process_description %></td>
+    <td><%= process_type.process_notes %></td>
+    <td><%= process_type.process_active %></td>
+    <td><%= process_type.process_created_id %></td>
+    <td><%= process_type.process_updated_id %></td>
+    <td><%= link_to 'Show', process_type %></td>
+    <td><%= link_to 'Edit', edit_process_type_path(process_type) %></td>
+    <td><%= link_to 'Destroy', process_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Process type', new_process_type_path %>
