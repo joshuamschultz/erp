@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Process short name:</b>
+  <%= @process_type.process_short_name %>
+</p>
+
+<p>
+  <b>Process description:</b>
+  <%= @process_type.process_description %>
+</p>
+
+<p>
+  <b>Process notes:</b>
+  <%= @process_type.process_notes %>
+</p>
+
+<p>
+  <b>Process active:</b>
+  <%= @process_type.process_active %>
+</p>
+
+<p>
+  <b>Process created:</b>
+  <%= @process_type.process_created_id %>
+</p>
+
+<p>
+  <b>Process updated:</b>
+  <%= @process_type.process_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_process_type_path(@process_type) %> |
+<%= link_to 'Back', process_types_path %>

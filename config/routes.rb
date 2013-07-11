@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :process_types
+
+
   resources :materials do
     resources :material_elements
   end
