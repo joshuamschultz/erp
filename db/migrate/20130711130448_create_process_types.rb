@@ -4,7 +4,7 @@ class CreateProcessTypes < ActiveRecord::Migration
       t.string :process_short_name
       t.string :process_description
       t.text :process_notes
-      t.boolean :process_active
+      t.boolean :process_active, :default => true
       t.integer :process_created_id
       t.integer :process_updated_id
 

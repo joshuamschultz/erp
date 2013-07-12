@@ -1,0 +1,41 @@
+<p></p>
+<% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
+
+<div class="row-fluid span8">
+  	<div class="label label-large label-info arrowed-in arrowed-right">
+        <b>Owner Info</b>
+  	</div>
+  	<table class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @owner.owner_identifier %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @owner.owner_description %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Commission Type :</td>
+              <td class="span5"><%= @owner.commission_type.type_name %></td>
+            </tr>
+
+			<tr>
+              <td class="span3">Commission Amount:</td>
+              <td class="span5"><%= @owner.owner_commission_amount %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @owner.owner_active %></td>
+            </tr>
+        </tbody>
+  	</table>
+
+	<div class="form-actions">
+		<%= link_to 'Edit', edit_owner_path(@owner), :class => "btn btn-small" %>
+		<%= link_to 'Back to Owners', owners_path, :class => "btn btn-small" %>
+	</div>
+</div>

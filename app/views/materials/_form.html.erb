@@ -2,10 +2,10 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :material_short_name, :autofocus => true %>
-    <%= f.input :material_description %>
-    <%= f.input :material_notes %>
-    <%= f.input :material_active %>
+    <%= f.input :material_short_name, :autofocus => true, :label => "Short Name" %>
+    <%= f.input :material_description, :label => "Description" %>
+    <%= f.input :material_notes, :label => "Notes" %>
+    <%= f.input :material_active, :label => "Active" %>
     <%= (hidden_field_tag "material_id", @duplicate.id) if @duplicate.present? %>
   </div>
 

@@ -6,7 +6,7 @@ class CreateMaterials < ActiveRecord::Migration
       t.text :material_notes
       t.integer :material_created_id
       t.integer :material_updated_id
-      t.boolean :material_active, default: true
+      t.boolean :material_active, :default => true
 
       t.timestamps
     end

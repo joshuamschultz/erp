@@ -1,5 +1,14 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :vendor_qualities
+
+
+  resources :owners
+
+
+  resources :master_types
+
+
   resources :process_types
 
 

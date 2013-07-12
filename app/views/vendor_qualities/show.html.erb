@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quality name:</b>
+  <%= @vendor_quality.quality_name %>
+</p>
+
+<p>
+  <b>Quality description:</b>
+  <%= @vendor_quality.quality_description %>
+</p>
+
+<p>
+  <b>Quality notes:</b>
+  <%= @vendor_quality.quality_notes %>
+</p>
+
+<p>
+  <b>Quality created:</b>
+  <%= @vendor_quality.quality_created_id %>
+</p>
+
+<p>
+  <b>Quality updated:</b>
+  <%= @vendor_quality.quality_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_vendor_quality_path(@vendor_quality) %> |
+<%= link_to 'Back', vendor_qualities_path %>

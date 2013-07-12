@@ -1,0 +1,15 @@
+<%= simple_form_for(@vendor_quality) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :quality_name %>
+    <%= f.input :quality_description %>
+    <%= f.input :quality_notes %>
+    <%= f.input :quality_created_id %>
+    <%= f.input :quality_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

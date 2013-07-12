@@ -6,7 +6,7 @@ class CreateMaterialElements < ActiveRecord::Migration
       t.string :element_name
       t.string :element_low_range
       t.string :element_high_range
-      t.boolean :element_active, default: true
+      t.boolean :element_active, :default => true
       t.integer :element_created_id
       t.integer :element_updated_id
 
