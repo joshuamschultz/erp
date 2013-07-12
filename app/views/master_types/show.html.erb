@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Type name:</b>
+  <%= @master_type.type_name %>
+</p>
+
+<p>
+  <b>Type description:</b>
+  <%= @master_type.type_description %>
+</p>
+
+<p>
+  <b>Type category:</b>
+  <%= @master_type.type_category %>
+</p>
+
+<p>
+  <b>Type active:</b>
+  <%= @master_type.type_active %>
+</p>
+
+
+<%= link_to 'Edit', edit_master_type_path(@master_type) %> |
+<%= link_to 'Back', master_types_path %>

@@ -1,35 +1,36 @@
-<p id="notice"><%= notice %></p>
+<p></p>
+<% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
 
-<p>
-  <b>Process short name:</b>
-  <%= @process_type.process_short_name %>
-</p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <b>Process Info</b>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+              <td class="span2">Short Name :</td>
+              <td class="span5"><%= @process_type.process_short_name %></td>
+            </tr>
 
-<p>
-  <b>Process description:</b>
-  <%= @process_type.process_description %>
-</p>
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @process_type.process_description %></td>
+            </tr>
 
-<p>
-  <b>Process notes:</b>
-  <%= @process_type.process_notes %>
-</p>
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= @process_type.process_notes %></td>
+            </tr>
 
-<p>
-  <b>Process active:</b>
-  <%= @process_type.process_active %>
-</p>
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @process_type.process_active %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Process created:</b>
-  <%= @process_type.process_created_id %>
-</p>
-
-<p>
-  <b>Process updated:</b>
-  <%= @process_type.process_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_process_type_path(@process_type) %> |
-<%= link_to 'Back', process_types_path %>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_process_type_path(@process_type), :class => "btn btn-small" %>
+    <%= link_to 'Back to Processes', process_types_path, :class => "btn btn-small" %>
+  </div>
+</div>

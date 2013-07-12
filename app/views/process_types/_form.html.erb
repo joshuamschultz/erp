@@ -1,16 +1,19 @@
-<%= simple_form_for(@process_type) do |f| %>
+<%= simple_form_for(@process_type, :html => {:id => "form_for_processes",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :process_short_name %>
-    <%= f.input :process_description %>
-    <%= f.input :process_notes %>
-    <%= f.input :process_active %>
-    <%= f.input :process_created_id %>
-    <%= f.input :process_updated_id %>
+    <%= f.input :process_short_name, :label => "Short Name", :autofocus => true %>
+    <%= f.input :process_description, :label => "Description"  %>
+    <%= f.input :process_notes, :label => "Notes"  %>
+    <%= f.input :process_active, :label => "Active"  %>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Processes', process_types_path, :class => "btn btn-small" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_processes"] = ["process_type_process_short_name", "process_type_process_description", "process_type_process_notes", "process_type_process_active"];
+</script>

@@ -1,4 +1,9 @@
 class ProcessTypesController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:system][:active] = "active"
+  end
   # GET /process_types
   # GET /process_types.json
   def index
@@ -6,7 +11,15 @@ class ProcessTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @process_types }
+      format.json { 
+        @process_types = @process_types.select{|process_type| 
+          process_type[:links] = CommonActions.object_crud_paths(process_type_path(process_type), 
+                        edit_process_type_path(process_type), process_type_path(process_type), 
+                        [{:name => "Duplicate", :path => new_process_type_path(:process_type_id => process_type.id)}])
+        }
+        process_types = {:aaData => @process_types}
+        render json: process_types 
+      }
     end
   end
 
@@ -24,7 +37,8 @@ class ProcessTypesController < ApplicationController
   # GET /process_types/new
   # GET /process_types/new.json
   def new
-    @process_type = ProcessType.new
+    @duplicate = ProcessType.find_by_id(params[:process_type_id])
+    @process_type = @duplicate.present? ? @duplicate.dup : ProcessType.new
 
     respond_to do |format|
       format.html # new.html.erb

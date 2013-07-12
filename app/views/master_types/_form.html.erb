@@ -1,0 +1,14 @@
+<%= simple_form_for(@master_type) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :type_name %>
+    <%= f.input :type_description %>
+    <%= f.input :type_category %>
+    <%= f.input :type_active %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -1,0 +1,59 @@
+<div class="row-fluid">
+  <div class="row-fluid">
+    <div class="span6">
+          <h4><strong class="alert-success">Owners</strong></h4>
+    </div>
+    <div class="span6">
+        <%= link_to 'New Owner', new_owner_path, :class => "btn btn-mini btn-success" %>
+    </div>    
+  </div>
+
+  <% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
+
+  <table id="table_report" class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Commission Type</th>
+        <th>Commission Amount</th>
+        <th>Active</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%# @owners.each do |owner| %>
+        <tr>
+          <td><%#= owner.id %></td>
+          <td><%#= owner.owner_identifier %></td>
+          <td><%#= owner.owner_description %></td>
+          <td><%#= owner.commission_type.type_name %></td>
+          <td><%#= owner.owner_commission_amount %></td>
+          <td><%#= owner.owner_active %></td>
+          <td></td>
+        </tr>
+      <%# end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){ 
+        var oTable1 = $('#table_report').dataTable({
+            "bAutoWidth": false,
+            "bProcessing": true,
+            "sAjaxSource": '<%= owners_path %>',
+            "aoColumns": [
+                { "mData": "id" },
+                { "mData": "owner_identifier" },
+                { "mData": "owner_description" },
+                { "mData": "owner_commission_type" },
+                { "mData": "owner_commission_amount"},
+                { "mData": "owner_active" },
+                { "mData": "links", "bSortable": false, "bSearchable": false }
+            ]
+        });
+    });
+</script>

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
 		@menus = {}
 
-		@menus[:dashboard] = {:icon => "dashboard", :path => "#", :name => "Dashboard", :type => "single"}
+		@menus[:dashboard] = {:icon => "dashboard", :path => account_dashboard_path, :name => "Dashboard", :type => "single"}
 
 		@menus[:contacts] = {:icon => "book", :path => "#", :name => "Contacts", :type => "multiple"}
 		@menus[:contacts][:sub_menu] = 	[
@@ -70,15 +70,16 @@ class ApplicationController < ActionController::Base
 
 		@menus[:system] = {:icon => "cogs", :path => "#", :name => "System", :type => "multiple"}
 		@menus[:system][:sub_menu] = 	[
-											{:path => "#", :name => "Home Info"}, 
-											{:path => "#", :name => "Owners"},
+											{:path => "#", :name => "Home Info"},
 											{:path => "#", :name => "Territories"},
 											{:path => "#", :name => "Privileges"},
 											{:path => "#", :name => "Documents"},
-											{:path => materials_path, :name => "Materials"}
+											{:path => owners_path, :name => "Owners"},
+											{:path => materials_path, :name => "Materials"},
+											{:path => process_types_path, :name => "Process Types"}
 										]
 		
-		@menus[:dashboard][:active] = "active"
+		# @menus[:dashboard][:active] = "active"
 	end
   
 end

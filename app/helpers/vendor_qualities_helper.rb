@@ -1,0 +1,2 @@
+module VendorQualitiesHelper
+end

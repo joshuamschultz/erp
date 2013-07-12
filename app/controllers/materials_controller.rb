@@ -1,4 +1,10 @@
 class MaterialsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:system][:active] = "active"
+  end
+
   # GET /materials
   # GET /materials.json
   def index
@@ -12,8 +18,7 @@ class MaterialsController < ApplicationController
                               edit_material_path(material), material_path(material),
                               [ {:name => "Elements", :path => material_material_elements_path(material)},
                                 {:name => "Duplicate", :path => new_material_path(:material_id => material.id)}
-                              ]
-                            )
+                              ])
         }
         materials = {:aaData => @materials}
         render json: materials

@@ -1,0 +1,31 @@
+<h1>Listing vendor_qualities</h1>
+
+<table>
+  <tr>
+    <th>Quality name</th>
+    <th>Quality description</th>
+    <th>Quality notes</th>
+    <th>Quality created</th>
+    <th>Quality updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @vendor_qualities.each do |vendor_quality| %>
+  <tr>
+    <td><%= vendor_quality.quality_name %></td>
+    <td><%= vendor_quality.quality_description %></td>
+    <td><%= vendor_quality.quality_notes %></td>
+    <td><%= vendor_quality.quality_created_id %></td>
+    <td><%= vendor_quality.quality_updated_id %></td>
+    <td><%= link_to 'Show', vendor_quality %></td>
+    <td><%= link_to 'Edit', edit_vendor_quality_path(vendor_quality) %></td>
+    <td><%= link_to 'Destroy', vendor_quality, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Vendor quality', new_vendor_quality_path %>

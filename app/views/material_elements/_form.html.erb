@@ -3,11 +3,11 @@
 
   <div class="form-inputs">
     <%= f.hidden_field :material_id, :value => @material.id %>
-    <%= f.input :element_symbol, :autofocus => true %>
-    <%= f.input :element_name %>
-    <%= f.input :element_low_range %>
-    <%= f.input :element_high_range %>
-    <%= f.input :element_active %>
+    <%= f.input :element_symbol, :autofocus => true, :label => "Symbol" %>
+    <%= f.input :element_name, :label => "Name" %>
+    <%= f.input :element_low_range, :label => "Low Range" %>
+    <%= f.input :element_high_range, :label => "High Range" %>
+    <%= f.input :element_active, :label => "Active" %>
   </div>
 
   <div class="form-actions">
