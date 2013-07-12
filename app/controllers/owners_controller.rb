@@ -16,6 +16,7 @@ class OwnersController < ApplicationController
           owner[:links] = CommonActions.object_crud_paths(owner_path(owner), edit_owner_path(owner), 
                         owner_path(owner), [{:name => "Duplicate", :path => new_owner_path(:owner_id => owner.id)}])
           owner[:owner_commission_type] = owner.commission_type.type_name
+          owner[:owner_commission_percentage] = owner.owner_commission_amount.to_s + "%"
         }
         owners = {:aaData => @owners}
         render json: owners 
