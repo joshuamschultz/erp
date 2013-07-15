@@ -20,8 +20,7 @@ class MaterialsController < ApplicationController
                                 {:name => "Duplicate", :path => new_material_path(:material_id => material.id)}
                               ])
         }
-        materials = {:aaData => @materials}
-        render json: materials
+        render json: {:aaData => @materials}
       }
     end
   end
@@ -61,8 +60,8 @@ class MaterialsController < ApplicationController
     @material = Material.new(params[:material])   
 
     respond_to do |format|
-      if @material.valid?
-        @material.material_elements = @duplicate.material_elements.collect{|element| new_element = element.dup }
+      if @material.valid?        
+        @material.material_elements = @duplicate.material_elements.collect{|element| new_element = element.dup } if @duplicate
         @material.save
         format.html { redirect_to materials_url, notice: 'Material was successfully created.' }
         format.json { render json: @material, status: :created, location: @material }

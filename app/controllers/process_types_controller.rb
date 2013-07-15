@@ -17,8 +17,7 @@ class ProcessTypesController < ApplicationController
                         edit_process_type_path(process_type), process_type_path(process_type), 
                         [{:name => "Duplicate", :path => new_process_type_path(:process_type_id => process_type.id)}])
         }
-        process_types = {:aaData => @process_types}
-        render json: process_types 
+        render json: {:aaData => @process_types} 
       }
     end
   end

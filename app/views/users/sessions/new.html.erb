@@ -1,220 +1,65 @@
 <% content_for :page_level_body_class do %>
-    login-layout
+    login
 <% end %>
-  
-<div class="container-fluid" id="main-container">
-  <div id="main-content">
-    <div class="row-fluid">
-      <div class="span12">
-        <div class="login-container">
-          <div class="row-fluid">
-            <div class="center">
-              <h1>
-                <i class=""></i>
-                <span class="red">Alliance</span>
-                <span class="white">Fasteners</span>
-              </h1>
-              <h4 class="blue">POS Solution</h4>
+
+<!-- Wrapper -->
+<div id="login">
+
+  <div class="container">  
+
+    <div class="wrapper">    
+
+        <h1 class="glyphicons lock">Alliance Fasteners <br> POS Solution<i></i></h1>
+      
+        <!-- Box -->
+        <div class="widget">        
+            <div class="widget-head">
+                <h3 class="heading">Login area</h3>
+                <div class="pull-right">Don't have an account? 
+                    <a href="#" class="btn btn-inverse btn-mini">Sign up</a>
+                </div>
             </div>
-          </div>
 
-          <div class="space-6"></div>
+            <div class="widget-body">          
+              <!-- Form -->
+              <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+                <%= devise_error_messages! %>
+                
+                <label>Email</label>
+                <%= f.email_field :email, :autofocus => true, :class=> "input-block-level",:placeholder=>"Email" %>
 
-          <div class="row-fluid">
-            <div class="position-relative">
+                <label>Password <a class="password" href="">forgot your password?</a></label>
+                <%= f.password_field :password, :class => "input-block-level margin-none", :placeholder=> "Password" %>
 
+                <div class="separator bottom"></div> 
 
-              <!-- login-box -->
-              <div id="login-box" class="visible widget-box no-border">
-                <div class="widget-body">
-                  <div class="widget-main">
-                    <h4 class="header blue lighter bigger">
-                      <i class="icon-coffee green"></i>
-                      Login
-                    </h4>
-
-                    <div class="space-6"></div>
-
-                    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-                      <fieldset>
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <%= f.email_field :email, :autofocus => true, :class=> "span12",:placeholder=>"Email" %>
-                            <i class="icon-user"></i>
-                          </span>
-                        </label>
-
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <%= f.password_field :password, :class => "span12", :placeholder=> "Password" %>
-                            <i class="icon-lock"></i>
-                          </span>
-                        </label>
-
-                        <div class="space"></div>
-
-                        <div class="row-fluid">
-                          <label class="span8">
-                            <% if devise_mapping.rememberable? -%>
-                                <%= f.check_box :remember_me %>
-                            <% end -%>                            
-                            <span class="lbl">Remember Me</span>
-                          </label>
-                          <%= button_tag(type: 'submit', class: "span4 btn btn-small btn-primary") do %>
-                              <i class='icon-key'></i> Login
-                          <% end %>                          
+                <div class="row-fluid">
+                    <div class="span8">
+                        <div class="uniformjs">
+                            <label class="checkbox">
+                                <% if devise_mapping.rememberable? %>
+                                    <%= f.check_box :remember_me %>
+                                <% end %>   
+                            </label>
                         </div>
-                      </fieldset>
-                    <% end %>
-                  </div><!--/widget-main-->
-
-                  <div class="toolbar clearfix">
-                    <div>
-                      <a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
-                        <i class="icon-arrow-left"></i>
-                        Forgot password?
-                      </a>
                     </div>
 
-                    <div>
-                      <!-- <a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
-                        New user?
-                        <i class="icon-arrow-right"></i>
-                      </a> -->
+                    <div class="span4 center">
+                        <button class="btn btn-block btn-primary" type="submit">Sign in</button>
                     </div>
-                  </div>
-                </div><!--/widget-body-->
-              </div><!--/login-box-->
+                </div>            
+              <% end %>
+              <!-- // Form END -->                
+            </div>
 
-
-              <!-- forgot-box -->
-              <div id="forgot-box" class="widget-box no-border">
-                <div class="widget-body">
-                  <div class="widget-main">
-                    <h4 class="header red lighter bigger">
-                      <i class="icon-key"></i>
-                      Retrieve Password
-                    </h4>
-
-                    <div class="space-6"></div>
-                    <p>
-                      Enter your email and to receive instructions
-                    </p>
-
-                    <form>
-                      <fieldset>
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <input type="email" class="span12" placeholder="Email" />
-                            <i class="icon-envelope"></i>
-                          </span>
-                        </label>
-
-                        <div class="row-fluid">
-                          <button onclick="return false;" class="span5 offset7 btn btn-small btn-danger">
-                            <i class="icon-lightbulb"></i>
-                            Send Me!
-                          </button>
-                        </div>
-                      </fieldset>
-                    </form>
-                  </div><!--/widget-main-->
-
-                  <div class="toolbar center">
-                    <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-                      Back to login
-                      <i class="icon-arrow-right"></i>
-                    </a>
-                  </div>
-                </div><!--/widget-body-->
-              </div><!--/forgot-box-->
-
-
-              <!-- signup-box  -->
-              <div id="signup-box" class="widget-box no-border">
-                <div class="widget-body">
-                  <div class="widget-main">
-                    <h4 class="header green lighter bigger">
-                      <i class="icon-group blue"></i>
-                      New User Registration
-                    </h4>
-
-                    <div class="space-6"></div>
-                    <p>
-                      Enter your details to begin:
-                    </p>
-
-                    <form>
-                      <fieldset>
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <input type="email" class="span12" placeholder="Email" />
-                            <i class="icon-envelope"></i>
-                          </span>
-                        </label>
-
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <input type="text" class="span12" placeholder="Username" />
-                            <i class="icon-user"></i>
-                          </span>
-                        </label>
-
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <input type="password" class="span12" placeholder="Password" />
-                            <i class="icon-lock"></i>
-                          </span>
-                        </label>
-
-                        <label>
-                          <span class="block input-icon input-icon-right">
-                            <input type="password" class="span12" placeholder="Repeat password" />
-                            <i class="icon-retweet"></i>
-                          </span>
-                        </label>
-
-                        <label>
-                          <input type="checkbox" />
-                          <span class="lbl">
-                            I accept the
-                            <a href="#">User Agreement</a>
-                          </span>
-                        </label>
-
-                        <div class="space-24"></div>
-
-                        <div class="row-fluid">
-                          <button type="reset" class="span6 btn btn-small">
-                            <i class="icon-refresh"></i>
-                            Reset
-                          </button>
-
-                          <button onclick="return false;" class="span6 btn btn-small btn-success">
-                            Register
-                            <i class="icon-arrow-right icon-on-right"></i>
-                          </button>
-                        </div>
-                      </fieldset>
-                    </form>
-                  </div>
-
-                  <div class="toolbar center">
-                    <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
-                      <i class="icon-arrow-left"></i>
-                      Back to login
-                    </a>
-                  </div>
-                </div><!--/widget-body-->
-              </div><!--/signup-box-->
-
-
-
-
-            </div><!--/position-relative-->
-          </div>
+            <div class="widget-footer">
+                <p class="glyphicons restart"><i></i>Please enter your username and password ...</p>
+            </div>
         </div>
-      </div><!--/span-->
-    </div><!--/row-->
+        <!-- // Box END -->      
+    </div>
+    
   </div>
-</div><!--/.fluid-container-->
+  
+</div>
+<!-- // Wrapper END --> 

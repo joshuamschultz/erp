@@ -22,8 +22,7 @@ class MaterialElementsController < ApplicationController
                               ]
                             )
         }
-        material_elements = {:aaData => @material_elements}
-        render json: material_elements
+        render json: {:aaData => @material_elements}
       }
     end
   end

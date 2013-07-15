@@ -1,0 +1,56 @@
+<!-- Sidebar Menu -->
+<div id="menu" class="hidden-print">
+    <!-- Brand -->
+    <a href="#" class="appbrand">Alliance Fastners</a>
+
+    <!-- Scrollable menu wrapper with Maximum height -->
+    <div class="slim-scroll" data-scroll-height="800px">
+    
+        <!-- Sidebar Profile -->
+        <span class="profile">
+            <p>Welcome <a href="#"><%= current_user.name %></a></p>
+            <a class="img" href="#"><img src="/common/theme/images/avatar-style-dark.jpg" alt="Avatar" /></a>
+            <span>
+                <ul>
+                    <li><a href="<%= edit_user_registration_path %>" class="glyphicons lock"><i></i>Account</a></li>
+                    <li><a href="<%= destroy_user_session_path %>" class="glyphicons eject" data-method="delete"><i></i>Logout</a></li>
+                </ul>
+            </span>
+        </span>
+        <!-- // Sidebar Profile END -->
+    
+        <!-- Regular Size Menu -->
+        <ul class="menu-0">
+            <% @menus.each do |main_key, menu| %>
+                <li class="<%= menu[:class] %> <%= menu[:active] %>">
+                    <% if menu[:type] == "single" %>
+                            <a href="<%= menu[:path] %>"><i></i><span><%= menu[:name] %></span></a>
+                    <% else %>                    
+                            <a data-toggle="collapse" href="#menu_<%= main_key %>" class="<%= menu[:active].present? ? "" : "collapsed" %>"><i></i>
+                                <span><%= menu[:name] %></span>
+                            </a>
+                            <% if menu[:active].present? %>
+                                <ul class="collapse in" id="menu_<%= main_key %>" style="height: auto;">
+                            <% else %>
+                                <ul class="collapse" id="menu_<%= main_key %>" style="height: 0px;">
+                            <% end %>
+                                <% menu[:sub_menu].each do |sub_menu| %>
+                                    <li class=""><a href="<%= sub_menu[:path] %>"><span><%= sub_menu[:name] %></span></a></li>
+                                <% end %>
+                            </ul>
+                            <span class="count"><%= menu[:sub_menu].size %></span>
+                    <% end %>
+                </li>
+            <% end %>                                      
+        </ul>
+
+        <div class="clearfix"></div>
+        <!-- // Regular Size Menu END -->
+
+        <div class="separator bottom"></div>
+                
+    </div>
+    <!-- // Scrollable Menu wrapper with Maximum Height END -->
+    
+</div>
+<!-- // Sidebar Menu END -->

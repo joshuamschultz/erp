@@ -5,7 +5,7 @@ class AccountController < ApplicationController
   end
 
   def tester
-  	
+  	render :layout => false
   end
 
 end

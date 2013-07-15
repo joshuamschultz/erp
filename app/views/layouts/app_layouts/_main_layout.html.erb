@@ -1,0 +1,36 @@
+<!-- Main Container Fluid -->
+<div class="container-fluid fixed menu-left">
+    
+    <!-- Top Menu -->
+    <%= render :partial => 'layouts/app_layouts/top_menu' %>   
+    
+    <!-- Sidebar menu & content wrapper -->
+    <div id="wrapper">
+
+        <!-- Side Menu -->
+        <%= render :partial => 'layouts/app_layouts/side_menu' %> 
+
+        <!-- Content -->
+        <div id="content">
+            <p></p>            
+            <div class="innerLR">
+                <% if notice %><p id="notice" class="alert alert-success"><%= notice %></p><% end %>
+                <%= yield %>
+            </div>
+        </div>
+        <!-- // Content END -->
+    </div>
+    <!-- Sidebar menu & content wrapper END -->
+           
+    <div class="clearfix"></div>
+                
+    <div id="footer" class="hidden-print">            
+        <!--  Copyright Line -->
+        <div class="copy">
+            &copy; <%= Date.today.year %> - <a href="#">Alliance Fastners</a> - All Rights Reserved.
+        </div>
+        <!--  End Copyright Line -->    
+    </div>
+    <!-- // Footer END -->     
+</div>
+<!-- // Main Container Fluid END -->
