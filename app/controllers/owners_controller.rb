@@ -18,8 +18,7 @@ class OwnersController < ApplicationController
           owner[:owner_commission_type] = owner.commission_type.type_name
           owner[:owner_commission_percentage] = owner.owner_commission_amount.to_s + "%"
         }
-        owners = {:aaData => @owners}
-        render json: owners 
+        render json: {:aaData => @owners} 
       }
     end
   end

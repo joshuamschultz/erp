@@ -1,39 +1,35 @@
-<div class="row-fluid">
-  <div class="row-fluid">
-    <div class="span6">
-          <h4><strong class="alert-success">Material Elements of <%= @material.material_short_name %></strong></h4>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Elements of <%= @material.material_short_name %></h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Element', new_material_material_element_path(@material), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Back to Materials', materials_path, :class => "btn btn-mini btn-info" %>
+            </span>
+        </div> 
     </div>
-    <div class="span6">
-        <%= link_to 'New Element', new_material_material_element_path(@material), :class => "btn btn-mini btn-success" %>
-        <%= link_to 'Back to Materials', materials_path, :class => "btn btn-mini btn-info" %>
-    </div>    
-  </div>
+    <!-- // Widget heading END -->
 
-  <% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Low Range</th>
+                <th>High Range</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
 
-  <table id="table_report" class="table table-striped table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Symbol</th>
-        <th>Low Range</th>
-        <th>High Range</th>
-        <th>Active</th>
-        <th></th>
-      </tr>
-    </thead>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>.............</td>
-    <tbody>
-      
-    </tbody>
-  </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

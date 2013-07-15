@@ -14,9 +14,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require ./jquery.dataTables.min
-//= require ./theme_js/bootstrap.min
-//= require ./theme_js/theme-elements.min
-//= require ./theme_js/theme.min
 //= require ./jquery.dataTables.bootstrap
 
 var tab_field_forms = {};

@@ -12,7 +12,15 @@ class VendorQualitiesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @vendor_qualities }
+      format.json { 
+
+        @vendor_qualities = @vendor_qualities.select{|quality| 
+          quality[:links] = CommonActions.object_crud_paths(quality_path(quality), edit_quality_path(quality), 
+                        quality_path(quality), [{:name => "Duplicate", :path => new_quality_path(:quality_id => quality.id)}])
+        }
+
+        render json: {:aaData => @vendor_qualities} 
+      }
     end
   end
 
