@@ -24,7 +24,7 @@ AllianceFasteners::Application.routes.draw do
 
   get "account/dashboard"
 
-  devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register" } do
+  devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
       root :to => 'devise/sessions#new'
   end
 

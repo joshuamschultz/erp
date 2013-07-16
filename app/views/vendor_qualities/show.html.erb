@@ -1,30 +1,31 @@
-<p id="notice"><%= notice %></p>
+<p></p>
+<% if notice %><p id="notice" class="alert alert-info"><%= notice %></p><% end %>
 
-<p>
-  <b>Quality name:</b>
-  <%= @vendor_quality.quality_name %>
-</p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Quality Info</h4>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+              <td class="span2">Quality Name :</td>
+              <td class="span5"><%= @vendor_quality.quality_name %></td>
+            </tr>
 
-<p>
-  <b>Quality description:</b>
-  <%= @vendor_quality.quality_description %>
-</p>
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @vendor_quality.quality_description %></td>
+            </tr>
 
-<p>
-  <b>Quality notes:</b>
-  <%= @vendor_quality.quality_notes %>
-</p>
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= @vendor_quality.quality_notes %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Quality created:</b>
-  <%= @vendor_quality.quality_created_id %>
-</p>
-
-<p>
-  <b>Quality updated:</b>
-  <%= @vendor_quality.quality_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_vendor_quality_path(@vendor_quality) %> |
-<%= link_to 'Back', vendor_qualities_path %>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_vendor_quality_path(@vendor_quality), :class => "btn btn-small" %>
+    <%= link_to 'Back to Qualities', vendor_qualities_path, :class => "btn btn-small" %>
+  </div>
+</div>
