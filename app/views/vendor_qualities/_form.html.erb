@@ -1,15 +1,21 @@
-<%= simple_form_for(@vendor_quality) do |f| %>
+<%= simple_form_for(@vendor_quality, :html => {:id => "form_for_qualities",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
     <%= f.input :quality_name %>
     <%= f.input :quality_description %>
     <%= f.input :quality_notes %>
-    <%= f.input :quality_created_id %>
-    <%= f.input :quality_updated_id %>
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Qualities', vendor_qualities_path, :class => "btn" %>
   </div>
+
 <% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_qualities"] = ["vendor_quality_quality_name", "vendor_quality_quality_description", "vendor_quality_quality_notes"];
+</script>

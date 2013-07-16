@@ -1,6 +1,4 @@
-<% content_for :page_level_body_class do %>
-    login
-<% end %>
+<% content_for :page_level_body_class do %>login<% end %>
 
 <!-- Wrapper -->
 <div id="login">
@@ -9,26 +7,30 @@
 
     <div class="wrapper">    
 
-        <h1 class="glyphicons lock">Alliance Fasteners <br> POS Solution<i></i></h1>
+        <h1 class="glyphicons lock">Alliance Fasteners <br> POS Solution<!-- <i></i> --></h1>
       
         <!-- Box -->
         <div class="widget">        
             <div class="widget-head">
                 <h3 class="heading">Login area</h3>
-                <div class="pull-right">Don't have an account? 
+                <!-- <div class="pull-right">Don't have an account? 
                     <a href="#" class="btn btn-inverse btn-mini">Sign up</a>
-                </div>
+                </div> -->
             </div>
 
             <div class="widget-body">          
               <!-- Form -->
               <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-                <%= devise_error_messages! %>
-                
+                <%= content_tag(:div, flash[:error], :id => "flash_error", :class => "alert alert-error") if flash[:error] %>
+                <%= content_tag(:div, flash[:notice], :id => "flash_notice", :class => "alert alert-error") if flash[:notice] %>
+                <%= content_tag(:div, flash[:alert], :id => "flash_alert", :class => "alert alert-error") if flash[:alert] %>
+
                 <label>Email</label>
                 <%= f.email_field :email, :autofocus => true, :class=> "input-block-level",:placeholder=>"Email" %>
 
-                <label>Password <a class="password" href="">forgot your password?</a></label>
+                <!-- <div class="separator bottom"></div>  -->
+
+                <label>Password <!-- <a class="password" href="">forgot your password?</a> --> </label>
                 <%= f.password_field :password, :class => "input-block-level margin-none", :placeholder=> "Password" %>
 
                 <div class="separator bottom"></div> 
@@ -36,11 +38,11 @@
                 <div class="row-fluid">
                     <div class="span8">
                         <div class="uniformjs">
-                            <label class="checkbox">
-                                <% if devise_mapping.rememberable? %>
-                                    <%= f.check_box :remember_me %>
-                                <% end %>   
-                            </label>
+                        <label class="checkbox">
+                            <div id="uniform-undefined" class="checker">
+                                <span><% if devise_mapping.rememberable? %><%= f.check_box :remember_me %><% end %></span>
+                            </div>Remember me
+                        </label>
                         </div>
                     </div>
 
@@ -53,7 +55,7 @@
             </div>
 
             <div class="widget-footer">
-                <p class="glyphicons restart"><i></i>Please enter your username and password ...</p>
+                <p class="glyphicons lock"><i></i>Please enter your username and password ...</p>
             </div>
         </div>
         <!-- // Box END -->      
