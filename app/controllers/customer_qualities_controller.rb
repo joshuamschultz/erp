@@ -32,7 +32,9 @@ class CustomerQualitiesController < ApplicationController
   # GET /customer_qualities/new
   # GET /customer_qualities/new.json
   def new
-    @customer_quality = CustomerQuality.new
+    @duplicate = CustomerQuality.find_by_id(params[:quality_id])
+    @vendor_quality = @duplicate.present? ? @duplicate.dup : CustomerQuality.new
+
 
     respond_to do |format|
       format.html # new.html.erb
