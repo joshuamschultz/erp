@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :customer_qualities
+
+
   resources :vendor_qualities
 
 

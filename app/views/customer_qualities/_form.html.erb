@@ -1,0 +1,32 @@
+<%= simple_form_for(@customer_quality, :html => {:id => "form_for_qualities",:class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :quality_name, label: "Name", :autofocus => true %>
+    <%= f.input :quality_description, label: "Description" %>    
+    <%= f.input :quality_supplier_a, label: "Supplier A" %>
+    <%= f.input :quality_supplier_b, label: "Supplier B" %>
+    <%= f.input :quality_dimensional_cofc, label: "Dimensional Cofc" %>
+    <%= f.input :quality_material_cofc, label: "Material Cofc" %>
+    <%= f.input :quality_study, label: "Capability Study" %>
+    <%= f.input :quality_gauge, label: "Gauge R&R" %>
+    <%= f.input :quality_process_flow, label: "Process Flow" %>
+    <%= f.input :quality_fmea, label: "Fmea" %>
+    <%= f.input :quality_control_plan, label: "Control Plan" %>
+    <%= f.input :quality_psw, label: "PSW" %>
+    <%= f.input :quality_packaging, label: "Packaging" %>
+    <%= f.input :quality_floor_plan, label: "Floor Plan" %>
+    <%= f.input :quality_form, label: "Cutomer Form" %>    
+    <%= f.input :quality_notes, label: "Notes" %>
+    <%= f.input :quality_active, label: "Active" %>
+  </div>
+
+  <div class="form-actions">
+        <%= f.button :submit %>
+        <%= link_to 'Back to Qualities', customer_qualities_path, :class => "btn" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_qualities"] = ["customer_quality_quality_name", "customer_quality_quality_description", "customer_quality_quality_supplier_a", "customer_quality_quality_supplier_b", "customer_quality_quality_dimensional_cofc", "customer_quality_quality_material_cofc", "customer_quality_quality_study", "customer_quality_quality_gauge", "customer_quality_quality_process_flow", "customer_quality_quality_fmea", "customer_quality_quality_control_plan", "customer_quality_quality_psw", "customer_quality_quality_packaging", "customer_quality_quality_floor_plan", "customer_quality_quality_form", "customer_quality_quality_notes", "customer_quality_quality_active"];
+</script>
