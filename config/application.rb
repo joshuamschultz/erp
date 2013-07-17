@@ -60,5 +60,7 @@ module AllianceFasteners
     config.assets.version = '1.0'
 
     config.assets.paths << Rails.root.join("design")
+
+    config.assets.initialize_on_precompile = false
   end
 end
