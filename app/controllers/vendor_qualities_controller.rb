@@ -37,7 +37,8 @@ class VendorQualitiesController < ApplicationController
   # GET /vendor_qualities/new
   # GET /vendor_qualities/new.json
   def new
-    @vendor_quality = VendorQuality.new
+    @duplicate = VendorQuality.find_by_id(params[:quality_id])
+    @vendor_quality = @duplicate.present? ? @duplicate.dup : VendorQuality.new
 
     respond_to do |format|
       format.html # new.html.erb
