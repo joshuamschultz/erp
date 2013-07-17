@@ -89,7 +89,8 @@ class ApplicationController < ActionController::Base
 											{:path => owners_path, :name => "Owners"},
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
-											{:path => vendor_qualities_path, :name => "Vendor Qualities"}
+											{:path => vendor_qualities_path, :name => "Vendor Qualities"},
+											{:path => customer_qualities_path, :name => "Customer Qualities"}
 										]
 		menus
 	end
