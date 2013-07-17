@@ -1,0 +1,98 @@
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Owner Info</h4>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @customer_quality.quality_name %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @customer_quality.quality_description %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Supplier A :</td>
+              <td class="span5"><%= @customer_quality.quality_supplier_a %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Supplier B :</td>
+              <td class="span5"><%= @customer_quality.quality_supplier_b %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Dimensional Cofc :</td>
+              <td class="span5"><%= @customer_quality.quality_dimensional_cofc %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Material Cofc :</td>
+              <td class="span5"><%= @customer_quality.quality_material_cofc %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Capability Study :</td>
+              <td class="span5"><%= @customer_quality.quality_study %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Gauge R&R :</td>
+              <td class="span5"><%= @customer_quality.quality_gauge %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Process Flow :</td>
+              <td class="span5"><%= @customer_quality.quality_process_flow %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Fmea :</td>
+              <td class="span5"><%= @customer_quality.quality_fmea %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Control Plan :</td>
+              <td class="span5"><%= @customer_quality.quality_control_plan %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Psw :</td>
+              <td class="span5"><%= @customer_quality.quality_psw %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Packaging :</td>
+              <td class="span5"><%= @customer_quality.quality_packaging %></td>
+            </tr>
+            
+            <tr>
+              <td class="span3">Floor Plan :</td>
+              <td class="span5"><%= @customer_quality.quality_floor_plan %></td>
+            </tr>
+
+            <tr>
+              <td class="span3">Customer Form :</td>
+              <td class="span5"><%= @customer_quality.quality_form %></td>
+            </tr>
+            
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= @customer_quality.quality_notes %>%</td>
+            </tr>
+
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @customer_quality.quality_active %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="form-actions">
+      <%= link_to 'Edit', edit_customer_quality_path(@customer_quality), :class => "btn btn-small" %>
+      <%= link_to 'Back to Qualities', customer_qualities_path, :class => "btn btn-small" %>
+    </div>
+</div>

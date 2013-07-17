@@ -13,8 +13,6 @@
 
 //= require jquery
 //= require jquery_ujs
-//= require ./jquery.dataTables.min
-//= require ./jquery.dataTables.bootstrap
 
 var tab_field_forms = {};
 
@@ -26,7 +24,6 @@ $(document).ready(function(){
 	});
 
 });
-
 
 // Ajax API call initialization with callback function
 // initialize_api_call({"url": "/index", "type": "POST", "params": {"title" : "nature"}}, "callback_function", {"id" : 1});
