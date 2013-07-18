@@ -3997,7 +3997,7 @@ h2.glyphicons.cogwheels i:before {
 }
 .nav-pills > .active > a,
 .nav-pills > .active > a:hover {
-  background: #f7f0e8 url("../images/pattern-granite.png") repeat;
+  background: #f7f0e8 url("/assets/images/pattern1.png") repeat;
   border-top-color: #e0d5c6;
   border-left-color: #e0d5c6;
   border-right-color: #e0d5c6;
@@ -5204,7 +5204,7 @@ textarea {
   -webkit-box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0), inset -1px -1px 1px rgba(0, 0, 0, 0);
   border-color: #323232;
   padding: 10px;
-  background: #252525 url("../images/pattern1.png") repeat;
+  background: #252525 url("/assets/images/pattern1.png") repeat;
 }
 .alert {
   margin: 0 0 10px;
@@ -5545,13 +5545,13 @@ textarea {
   padding: 15px 10px;
 }
 #content-notification .notyfy_wrapper.notyfy_default {
-  background: #fafafa url("../images/pattern1.png") repeat;
+  background: #fafafa url("/assets/images/pattern1.png") repeat;
 }
 #content-notification .notyfy_wrapper.notyfy_dark {
-  background: #4a4846 url("../images/pattern1.png") repeat;
+  background: #4a4846 url("/assets/images/pattern1.png") repeat;
 }
 #content-notification .notyfy_wrapper.notyfy_primary {
-  background: #8ec657 url("../images/pattern1.png") repeat;
+  background: #8ec657 url("/assets/images/pattern1.png") repeat;
   box-shadow: inset 0 8px 8px -8px #1c290e, inset 0 -8px 8px -8px #5b892e;
   -moz-box-shadow: inset 0 8px 8px -8px #1c290e, inset 0 -8px 8px -8px #5b892e;
   -webkit-box-shadow: inset 0 8px 8px -8px #1c290e, inset 0 -8px 8px -8px #5b892e;
