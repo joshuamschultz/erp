@@ -12,12 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require ./theme_js/less.min.js
-//= require ./theme_js/jquery.min.js
-//= require ./theme_js/modernizr.js
-//= require ./theme_js/jquery.slimscroll.min.js
-//= require ./theme_js/common.js
-//= require ./theme_js/holder.js
-//= require ./theme_js/jquery.uniform.min.js
-//= require ./theme_js/jquery.dataTables.min.js
-//= require ./theme_js/DT_bootstrap.js
+//= require ./theme_js/less.min
+//= require ./theme_js/jquery.min
+//= require ./theme_js/modernizr
+//= require ./theme_js/bootstrap.min
+//= require ./theme_js/jquery.slimscroll.min
+//= require ./theme_js/common
+//= require ./theme_js/holder
+//= require ./theme_js/jquery.uniform.min
+//= require ./theme_js/jquery.dataTables.min
+//= require ./theme_js/DT_bootstrap
