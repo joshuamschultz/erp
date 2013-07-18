@@ -13,9 +13,7 @@
  *= require ./theme_css/glyphicons
  *= require ./theme_css/uniform.default
  *= require ./theme_css/style-dark
- *= require_self
  */
-
 
 @font-face {
   font-family: 'Open Sans';
@@ -23,6 +21,7 @@
   font-weight: 300;
   src: local('Open Sans Light'), local('OpenSans-Light'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
+
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -31,9 +30,7 @@
 }
 
 .form-inputs textarea{height:100px;}
+.radio input[type="radio"], .checkbox input[type="checkbox"]{margin-left: 0px;}
 
-.radio input[type="radio"],
-.checkbox input[type="checkbox"] {
-  margin-left: 0px;
-}
-
+.dataTables_filter {text-align: right;}
+.dataTables_length select {width: 80px;}
