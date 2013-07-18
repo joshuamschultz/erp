@@ -15,10 +15,3 @@
 //= require ./theme_js/less.min
 //= require ./theme_js/jquery.min
 //= require ./theme_js/modernizr
-//= require ./theme_js/bootstrap.min
-//= require ./theme_js/jquery.slimscroll.min
-//= require ./theme_js/common
-//= require ./theme_js/holder
-//= require ./theme_js/jquery.uniform.min
-//= require ./theme_js/jquery.dataTables.min
-//= require ./theme_js/DT_bootstrap
