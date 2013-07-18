@@ -15,3 +15,5 @@
 //= require ./theme_js/less.min
 //= require ./theme_js/jquery.min
 //= require ./theme_js/modernizr
+
+var tab_field_forms = {};

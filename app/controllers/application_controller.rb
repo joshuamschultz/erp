@@ -82,14 +82,14 @@ class ApplicationController < ActionController::Base
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
-											{:path => "#", :name => "Home Info"},
+											{:path => company_infos_path, :name => "Company Info"},
 											{:path => "#", :name => "Territories"},
 											{:path => "#", :name => "Privileges"},
 											{:path => "#", :name => "Documents"},
 											{:path => owners_path, :name => "Owners"},
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
-											{:path => vendor_qualities_path, :name => "Vendor Qualities"},
+											{:path => vendor_qualities_path, :name => "Quality ID"},
 											{:path => customer_qualities_path, :name => "Customer Qualities"}
 										]
 		menus
@@ -98,10 +98,12 @@ class ApplicationController < ActionController::Base
 	def application_shortcuts
 		[	{:name => "System", :class => "glyphicons cogwheels", :drop_down => true, :path => "#", 
 				:sub_menu => [	
+								{:name => "Company Info", :class => "", :drop_down => false, :path => company_infos_path, :sub_menu => []},
 								{:name => "Owners", :class => "", :drop_down => false, :path => owners_path, :sub_menu => []},
 								{:name => "Materials", :class => "", :drop_down => false, :path => materials_path, :sub_menu => []},
 								{:name => "Processes", :class => "", :drop_down => false, :path => process_types_path, :sub_menu => []},
-								{:name => "Vendor Qualities", :class => "", :drop_down => false, :path => vendor_qualities_path, :sub_menu => []}
+								{:name => "Quality ID", :class => "", :drop_down => false, :path => vendor_qualities_path, :sub_menu => []},
+								{:name => "Customer Qualities", :class => "", :drop_down => false, :path => customer_qualities_path, :sub_menu => []}
 							]					
 			}
 		]

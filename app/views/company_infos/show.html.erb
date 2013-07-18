@@ -1,60 +1,56 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Company Info</h4>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @company_info.company_name %></td>
+            </tr>
 
-<p>
-  <b>Company name:</b>
-  <%= @company_info.company_name %>
-</p>
+            <tr>
+              <td class="span3">Slogan :</td>
+              <td class="span5"><%= @company_info.company_slogan %></td>
+            </tr>
 
-<p>
-  <b>Company address:</b>
-  <%= @company_info.company_address %>
-</p>
+            <tr>
+              <td class="span3">Address :</td>
+              <td class="span5"><%= @company_info.company_address %></td>
+            </tr>
 
-<p>
-  <b>Company phone1:</b>
-  <%= @company_info.company_phone1 %>
-</p>
+            <tr>
+              <td class="span3">Telephone 1 :</td>
+              <td class="span5"><%= @company_info.company_phone1 %></td>
+            </tr>
 
-<p>
-  <b>Company phone2:</b>
-  <%= @company_info.company_phone2 %>
-</p>
+            <tr>
+              <td class="span3">Telephone 2 :</td>
+              <td class="span5"><%= @company_info.company_phone2 %></td>
+            </tr>
 
-<p>
-  <b>Company mobile:</b>
-  <%= @company_info.company_mobile %>
-</p>
+            <tr>
+              <td class="span3">Mobile :</td>
+              <td class="span5"><%= @company_info.company_mobile %></td>
+            </tr>
 
-<p>
-  <b>Company fax:</b>
-  <%= @company_info.company_fax %>
-</p>
+            <tr>
+              <td class="span3">Fax :</td>
+              <td class="span5"><%= @company_info.company_fax %></td>
+            </tr>
 
-<p>
-  <b>Company website:</b>
-  <%= @company_info.company_website %>
-</p>
+            <tr>
+              <td class="span3">Website :</td>
+              <td class="span5"><%= @company_info.company_website %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Company slogan:</b>
-  <%= @company_info.company_slogan %>
-</p>
-
-<p>
-  <b>Company active:</b>
-  <%= @company_info.company_active %>
-</p>
-
-<p>
-  <b>Company created:</b>
-  <%= @company_info.company_created_id %>
-</p>
-
-<p>
-  <b>Company updated:</b>
-  <%= @company_info.company_updated_id %>
-</p>
+  <div class="form-actions">
+      <%= link_to 'Update', edit_company_info_path(@company_info), :class => "btn" %>
+  </div>
+</div>
 
 
-<%= link_to 'Edit', edit_company_info_path(@company_info) %> |
-<%= link_to 'Back', company_infos_path %>
+
+

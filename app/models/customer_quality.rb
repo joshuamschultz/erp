@@ -7,7 +7,7 @@ class CustomerQuality < ActiveRecord::Base
     	self.quality_active ||= true
   end
 
-  (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 2, :maximum => 50) if validates_presence_of :quality_name
+  (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 1, :maximum => 50) if validates_presence_of :quality_name
 
   validates_length_of :quality_description, :maximum => 50
 
