@@ -8,6 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require ./theme_css/bootstrap
+ *= require ./theme_css/responsive
+ *= require ./theme_css/glyphicons
+ *= require ./theme_css/uniform.default
+ *= require ./theme_css/style-dark
  *= require_self
  */
 

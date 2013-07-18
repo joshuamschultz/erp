@@ -10,9 +10,18 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-
 //= require jquery
 //= require jquery_ujs
+//= require ./theme_js/less.min.js
+//= require ./theme_js/jquery.min.js
+//= require ./theme_js/modernizr.js
+//= require ./theme_js/bootstrap.min.js
+//= require ./theme_js/jquery.slimscroll.min.js
+//= require ./theme_js/common.js
+//= require ./theme_js/holder.js
+//= require ./theme_js/jquery.uniform.min.js
+//= require ./theme_js/jquery.dataTables.min.js
+//= require ./theme_js/DT_bootstrap.js
 
 var tab_field_forms = {};
 
