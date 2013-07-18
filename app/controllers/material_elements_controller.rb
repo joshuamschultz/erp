@@ -17,9 +17,7 @@ class MaterialElementsController < ApplicationController
         @material_elements = @material_elements.select{|element| 
             element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
                               edit_material_material_element_path(@material, element), 
-                              material_material_element_path(@material, element),
-                              [ {:name => "Duplicate", :path => new_material_material_element_path(@material, :element_id => element.id)}
-                              ]
+                              material_material_element_path(@material, element)
                             )
         }
         render json: {:aaData => @material_elements}

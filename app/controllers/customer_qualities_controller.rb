@@ -59,7 +59,7 @@ class CustomerQualitiesController < ApplicationController
 
     respond_to do |format|
       if @customer_quality.save
-        format.html { redirect_to @customer_quality, notice: 'Customer quality was successfully created.' }
+        format.html { redirect_to @customer_quality, notice: 'Quality level was successfully created.' }
         format.json { render json: @customer_quality, status: :created, location: @customer_quality }
       else
         format.html { render action: "new" }
@@ -75,7 +75,7 @@ class CustomerQualitiesController < ApplicationController
 
     respond_to do |format|
       if @customer_quality.update_attributes(params[:customer_quality])
-        format.html { redirect_to @customer_quality, notice: 'Customer quality was successfully updated.' }
+        format.html { redirect_to @customer_quality, notice: 'Quality level was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

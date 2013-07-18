@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
 											{:path => vendor_qualities_path, :name => "Quality ID"},
-											{:path => customer_qualities_path, :name => "Customer Qualities"}
+											{:path => customer_qualities_path, :name => "Quality Level"}
 										]
 		menus
 	end
@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
 								{:name => "Materials", :class => "", :drop_down => false, :path => materials_path, :sub_menu => []},
 								{:name => "Processes", :class => "", :drop_down => false, :path => process_types_path, :sub_menu => []},
 								{:name => "Quality ID", :class => "", :drop_down => false, :path => vendor_qualities_path, :sub_menu => []},
-								{:name => "Customer Qualities", :class => "", :drop_down => false, :path => customer_qualities_path, :sub_menu => []}
+								{:name => "Quality Level", :class => "", :drop_down => false, :path => customer_qualities_path, :sub_menu => []}
 							]					
 			}
 		]
