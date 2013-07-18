@@ -1,13 +1,24 @@
 class CompanyInfosController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:system][:active] = "active"
+  end
+
   # GET /company_infos
   # GET /company_infos.json
   def index
-    @company_infos = CompanyInfo.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @company_infos }
+    if CompanyInfo.first
+      redirect_to CompanyInfo.first
+    else
+      redirect_to new_company_info_path
     end
+    # @company_infos = CompanyInfo.all
+
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.json { render json: @company_infos }
+    # end
   end
 
   # GET /company_infos/1

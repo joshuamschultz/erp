@@ -1,21 +1,24 @@
-<%= simple_form_for(@company_info) do |f| %>
+<%= simple_form_for(@company_info, :html => {:id => "form_for_company",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :company_name %>
-    <%= f.input :company_address %>
-    <%= f.input :company_phone1 %>
-    <%= f.input :company_phone2 %>
-    <%= f.input :company_mobile %>
-    <%= f.input :company_fax %>
-    <%= f.input :company_website %>
-    <%= f.input :company_slogan %>
-    <%= f.input :company_active %>
-    <%= f.input :company_created_id %>
-    <%= f.input :company_updated_id %>
+    <%= f.input :company_name, :label => "Name", :autofocus => true %>
+    <%= f.input :company_slogan, :label => "Slogan" %>
+    <%= f.input :company_address, :label => "Address" %>
+    <%= f.input :company_phone1, :label => "Telephone 1" %>
+    <%= f.input :company_phone2, :label => "Telephone 2" %>
+    <%= f.input :company_mobile, :label => "Mobile" %>
+    <%= f.input :company_fax, :label => "Fax" %>
+    <%= f.input :company_website, :label => "Website" %>
   </div>
+
+  <div class="separator bottom"></div><div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_company"] = ["company_info_company_name", "company_info_company_slogan", "company_info_company_address", "company_info_company_phone1", "company_info_company_phone2", "company_info_company_mobile", "company_info_company_fax", "company_info_company_website"];
+</script>

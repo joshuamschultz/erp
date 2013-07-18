@@ -1,5 +1,3 @@
-var tab_field_forms = {};
-
 $(document).ready(function(){ 
 	form_focus_handler();
 
