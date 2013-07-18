@@ -58,5 +58,7 @@ module AllianceFasteners
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.assets.precompile += ['bootstrap.js', 'app_theme.js']
   end
 end
