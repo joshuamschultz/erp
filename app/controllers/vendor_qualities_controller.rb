@@ -58,7 +58,7 @@ class VendorQualitiesController < ApplicationController
 
     respond_to do |format|
       if @vendor_quality.save
-        format.html { redirect_to @vendor_quality, notice: 'Vendor quality was successfully created.' }
+        format.html { redirect_to @vendor_quality, notice: 'Quality ID was successfully created.' }
         format.json { render json: @vendor_quality, status: :created, location: @vendor_quality }
       else
         format.html { render action: "new" }
@@ -74,7 +74,7 @@ class VendorQualitiesController < ApplicationController
 
     respond_to do |format|
       if @vendor_quality.update_attributes(params[:vendor_quality])
-        format.html { redirect_to @vendor_quality, notice: 'Vendor quality was successfully updated.' }
+        format.html { redirect_to @vendor_quality, notice: 'Quality ID was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
