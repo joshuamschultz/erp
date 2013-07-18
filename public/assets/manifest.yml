@@ -5,8 +5,8 @@ app_theme.js: app_theme-7da2de336692e872dadfe8ac07111dcc.js
 app_theme/index.js: app_theme-7da2de336692e872dadfe8ac07111dcc.js
 application.js: application-0a2d3ca4fb04292ee2b304166d96d115.js
 application/index.js: application-0a2d3ca4fb04292ee2b304166d96d115.js
-bootstrap.js: bootstrap-c661c0f71c3b0f21cece71404b247e0f.js
-bootstrap/index.js: bootstrap-c661c0f71c3b0f21cece71404b247e0f.js
+bootstrap.min.js: bootstrap.min-c661c0f71c3b0f21cece71404b247e0f.js
+bootstrap/index.min.js: bootstrap.min-c661c0f71c3b0f21cece71404b247e0f.js
 main.js: main-c1bcebe50a04293ca6069241b286c3c1.js
 main/index.js: main-c1bcebe50a04293ca6069241b286c3c1.js
 application.css: application-33938c4cb230ac73e53cc569632844b5.css
