@@ -14,8 +14,7 @@ class ProcessTypesController < ApplicationController
       format.json { 
         @process_types = @process_types.select{|process_type| 
           process_type[:links] = CommonActions.object_crud_paths(process_type_path(process_type), 
-                        edit_process_type_path(process_type), process_type_path(process_type), 
-                        [{:name => "Duplicate", :path => new_process_type_path(:process_type_id => process_type.id)}])
+                        edit_process_type_path(process_type), process_type_path(process_type))
         }
         render json: {:aaData => @process_types} 
       }

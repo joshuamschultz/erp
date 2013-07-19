@@ -2,12 +2,20 @@ class MasterTypesController < ApplicationController
   # GET /master_types
   # GET /master_types.json
   def index
-    @master_types = MasterType.all
+      @master_types = MasterType.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @master_types }
-    end
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { 
+
+          @master_types = @master_types.select{|master_type|
+              master_type[:links] = CommonActions.object_crud_paths(nil, edit_master_type_path(master_type), 
+              master_type_path(master_type))
+          }
+          puts @master_types.to_json
+          render json: {:aaData => @master_types}
+        }
+      end
   end
 
   # GET /master_types/1
@@ -44,7 +52,7 @@ class MasterTypesController < ApplicationController
 
     respond_to do |format|
       if @master_type.save
-        format.html { redirect_to @master_type, notice: 'Master type was successfully created.' }
+        format.html { redirect_to master_types_url, notice: 'Master type was successfully created.' }
         format.json { render json: @master_type, status: :created, location: @master_type }
       else
         format.html { render action: "new" }
@@ -60,7 +68,7 @@ class MasterTypesController < ApplicationController
 
     respond_to do |format|
       if @master_type.update_attributes(params[:master_type])
-        format.html { redirect_to @master_type, notice: 'Master type was successfully updated.' }
+        format.html { redirect_to master_types_url, notice: 'Master type was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

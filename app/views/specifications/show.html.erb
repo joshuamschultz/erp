@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Specification active:</b>
+  <%= @specification.specification_active %>
+</p>
+
+<p>
+  <b>Specification created:</b>
+  <%= @specification.specification_created_id %>
+</p>
+
+<p>
+  <b>Specification updated:</b>
+  <%= @specification.specification_updated_id %>
+</p>
+
+<p>
+  <b>Specification identifier:</b>
+  <%= @specification.specification_identifier %>
+</p>
+
+<p>
+  <b>Specification description:</b>
+  <%= @specification.specification_description %>
+</p>
+
+<p>
+  <b>Specification notes:</b>
+  <%= @specification.specification_notes %>
+</p>
+
+
+<%= link_to 'Edit', edit_specification_path(@specification) %> |
+<%= link_to 'Back', specifications_path %>

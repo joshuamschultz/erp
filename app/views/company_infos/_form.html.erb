@@ -4,10 +4,11 @@
   <div class="form-inputs">
     <%= f.input :company_name, :label => "Name", :autofocus => true %>
     <%= f.input :company_slogan, :label => "Slogan" %>
-    <%= f.input :company_address, :label => "Address" %>
-    <%= f.input :company_phone1, :label => "Telephone 1" %>
-    <%= f.input :company_phone2, :label => "Telephone 2" %>
-    <%= f.input :company_mobile, :label => "Mobile" %>
+    <%= f.input :company_address1, :label => "Address" %>
+    <%= f.input :company_address2, :label => "Address" %>
+    <%#= f.input :company_phone1, :label => "Telephone 1" %>
+    <%#= f.input :company_phone2, :label => "Telephone 2" %>
+    <%#= f.input :company_mobile, :label => "Mobile" %>
     <%= f.input :company_fax, :label => "Fax" %>
     <%= f.input :company_website, :label => "Website" %>
   </div>
@@ -20,5 +21,5 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_company"] = ["company_info_company_name", "company_info_company_slogan", "company_info_company_address", "company_info_company_phone1", "company_info_company_phone2", "company_info_company_mobile", "company_info_company_fax", "company_info_company_website"];
+    tab_field_forms["form_for_company"] = ["company_info_company_name", "company_info_company_slogan", "company_info_company_address1", "company_info_company_address2", "company_info_company_fax", "company_info_company_website"];
 </script>

@@ -1,0 +1,16 @@
+<%= simple_form_for(@territory) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :territory_active %>
+    <%= f.input :territory_created_id %>
+    <%= f.input :territory_updated_id %>
+    <%= f.input :territory_identifier %>
+    <%= f.input :territory_description %>
+    <%= f.input :territory_zip %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

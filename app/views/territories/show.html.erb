@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Territory active:</b>
+  <%= @territory.territory_active %>
+</p>
+
+<p>
+  <b>Territory created:</b>
+  <%= @territory.territory_created_id %>
+</p>
+
+<p>
+  <b>Territory updated:</b>
+  <%= @territory.territory_updated_id %>
+</p>
+
+<p>
+  <b>Territory identifier:</b>
+  <%= @territory.territory_identifier %>
+</p>
+
+<p>
+  <b>Territory description:</b>
+  <%= @territory.territory_description %>
+</p>
+
+<p>
+  <b>Territory zip:</b>
+  <%= @territory.territory_zip %>
+</p>
+
+
+<%= link_to 'Edit', edit_territory_path(@territory) %> |
+<%= link_to 'Back', territories_path %>

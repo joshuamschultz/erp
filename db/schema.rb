@@ -11,11 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130717135202) do
+ActiveRecord::Schema.define(:version => 20130719083838) do
+
+  create_table "commodities", :force => true do |t|
+    t.boolean  "commodity_active"
+    t.integer  "commodity_created_id"
+    t.integer  "commodity_updated_id"
+    t.string   "commodity_identifier"
+    t.string   "commodity_description"
+    t.text     "commodity_notes"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
 
   create_table "company_infos", :force => true do |t|
     t.string   "company_name"
-    t.string   "company_address"
+    t.text     "company_address1"
+    t.text     "company_address2"
     t.string   "company_phone1"
     t.string   "company_phone2"
     t.string   "company_mobile"
@@ -60,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20130717135202) do
     t.boolean  "type_active"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "type_value"
   end
 
   create_table "material_elements", :force => true do |t|
@@ -109,6 +122,28 @@ ActiveRecord::Schema.define(:version => 20130717135202) do
     t.integer  "process_updated_id"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+  end
+
+  create_table "specifications", :force => true do |t|
+    t.boolean  "specification_active"
+    t.integer  "specification_created_id"
+    t.integer  "specification_updated_id"
+    t.string   "specification_identifier"
+    t.string   "specification_description"
+    t.text     "specification_notes"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  create_table "territories", :force => true do |t|
+    t.boolean  "territory_active"
+    t.integer  "territory_created_id"
+    t.integer  "territory_updated_id"
+    t.string   "territory_identifier"
+    t.string   "territory_description"
+    t.string   "territory_zip"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "test_items", :force => true do |t|

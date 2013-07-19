@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Commodity active:</b>
+  <%= @commodity.commodity_active %>
+</p>
+
+<p>
+  <b>Commodity created:</b>
+  <%= @commodity.commodity_created_id %>
+</p>
+
+<p>
+  <b>Commodity updated:</b>
+  <%= @commodity.commodity_updated_id %>
+</p>
+
+<p>
+  <b>Commodity identifier:</b>
+  <%= @commodity.commodity_identifier %>
+</p>
+
+<p>
+  <b>Commodity description:</b>
+  <%= @commodity.commodity_description %>
+</p>
+
+<p>
+  <b>Commodity notes:</b>
+  <%= @commodity.commodity_notes %>
+</p>
+
+
+<%= link_to 'Edit', edit_commodity_path(@commodity) %> |
+<%= link_to 'Back', commodities_path %>
