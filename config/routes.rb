@@ -1,5 +1,22 @@
 AllianceFasteners::Application.routes.draw do
 
+  get "static_pages/landing"
+
+  get "static_pages/empty"
+
+  get "static_pages/error_404"
+
+  get "static_pages/error_500"
+
+  resources :specifications
+
+
+  resources :territories
+
+
+  resources :commodities
+
+
   resources :company_infos
 
 
@@ -92,4 +109,11 @@ AllianceFasteners::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+
+  match "/404" => "static_pages#error_404"
+  match "/500" => "static_pages#error_500"
+
+  # match ':not_found' => 'account#dashboard', :constraints => { :not_found => /.*/ }
+
+  match "*path", :to => "static_pages#error_404"
 end

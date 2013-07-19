@@ -1,29 +1,49 @@
-<h1>Listing master_types</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Master Types</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Master Type', new_master_type_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th>Type name</th>
-    <th>Type description</th>
-    <th>Type category</th>
-    <th>Type active</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Category</th>                
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<% @master_types.each do |master_type| %>
-  <tr>
-    <td><%= master_type.type_name %></td>
-    <td><%= master_type.type_description %></td>
-    <td><%= master_type.type_category %></td>
-    <td><%= master_type.type_active %></td>
-    <td><%= link_to 'Show', master_type %></td>
-    <td><%= link_to 'Edit', edit_master_type_path(master_type) %></td>
-    <td><%= link_to 'Destroy', master_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+            <tbody>
 
-<br />
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Master type', new_master_type_path %>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => master_types_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "type_name" },
+                        { "mData": "type_description" },
+                        { "mData": "type_value" },
+                        { "mData": "type_category" },
+                        { "mData": "type_active"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

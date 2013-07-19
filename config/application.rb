@@ -60,5 +60,6 @@ module AllianceFasteners
     config.assets.version = '1.0'
 
     config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css"]
+
   end
 end

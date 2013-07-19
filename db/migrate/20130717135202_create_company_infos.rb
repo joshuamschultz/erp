@@ -2,7 +2,8 @@ class CreateCompanyInfos < ActiveRecord::Migration
   def change
     create_table :company_infos do |t|
       t.string :company_name
-      t.string :company_address
+      t.text :company_address1
+      t.text :company_address2
       t.string :company_phone1
       t.string :company_phone2
       t.string :company_mobile

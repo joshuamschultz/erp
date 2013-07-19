@@ -15,7 +15,7 @@ class VendorQualitiesController < ApplicationController
       format.json { 
           @vendor_qualities = @vendor_qualities.select{|quality| 
           quality[:links] = CommonActions.object_crud_paths(vendor_quality_path(quality), edit_vendor_quality_path(quality), 
-                        vendor_quality_path(quality), [{:name => "Duplicate", :path => new_vendor_quality_path(:quality_id => quality.id)}])
+                        vendor_quality_path(quality))
         }
 
         render json: {:aaData => @vendor_qualities} 

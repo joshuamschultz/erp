@@ -1,0 +1,33 @@
+<h1>Listing specifications</h1>
+
+<table>
+  <tr>
+    <th>Specification active</th>
+    <th>Specification created</th>
+    <th>Specification updated</th>
+    <th>Specification identifier</th>
+    <th>Specification description</th>
+    <th>Specification notes</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @specifications.each do |specification| %>
+  <tr>
+    <td><%= specification.specification_active %></td>
+    <td><%= specification.specification_created_id %></td>
+    <td><%= specification.specification_updated_id %></td>
+    <td><%= specification.specification_identifier %></td>
+    <td><%= specification.specification_description %></td>
+    <td><%= specification.specification_notes %></td>
+    <td><%= link_to 'Show', specification %></td>
+    <td><%= link_to 'Edit', edit_specification_path(specification) %></td>
+    <td><%= link_to 'Destroy', specification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Specification', new_specification_path %>

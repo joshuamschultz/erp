@@ -16,7 +16,7 @@ class CustomerQualitiesController < ApplicationController
 
             @customer_qualities = @customer_qualities.select{|quality| 
               quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality), 
-              customer_quality_path(quality), [{:name => "Duplicate", :path => new_customer_quality_path(:quality_id => quality.id)}])
+              customer_quality_path(quality))
             }
 
             render json: {:aaData => @customer_qualities} 
