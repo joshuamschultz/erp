@@ -9,7 +9,8 @@ class CompanyInfo < ActiveRecord::Base
 
   validates_length_of :company_address1, :company_address2, :company_fax, :company_website, :company_slogan, :maximum => 50
 
-  validates_formatting_of :company_phone1, :using => :us_phone
+  validates_formatting_of :company_phone1, :using => :us_phone, :allow_blank => true
 
-  validates_formatting_of :company_website, :using => :url
+  # validates_formatting_of :company_website, :using => :url, :allow_blank => true
+
 end
