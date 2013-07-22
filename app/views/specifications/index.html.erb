@@ -1,33 +1,46 @@
-<h1>Listing specifications</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Specifications</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Specification', new_specification_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th>Specification active</th>
-    <th>Specification created</th>
-    <th>Specification updated</th>
-    <th>Specification identifier</th>
-    <th>Specification description</th>
-    <th>Specification notes</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<% @specifications.each do |specification| %>
-  <tr>
-    <td><%= specification.specification_active %></td>
-    <td><%= specification.specification_created_id %></td>
-    <td><%= specification.specification_updated_id %></td>
-    <td><%= specification.specification_identifier %></td>
-    <td><%= specification.specification_description %></td>
-    <td><%= specification.specification_notes %></td>
-    <td><%= link_to 'Show', specification %></td>
-    <td><%= link_to 'Edit', edit_specification_path(specification) %></td>
-    <td><%= link_to 'Destroy', specification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+            <tbody>
 
-<br />
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Specification', new_specification_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => specifications_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "specification_identifier" },
+                        { "mData": "specification_description" },
+                        { "mData": "specification_notes" },
+                        { "mData": "specification_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

@@ -1,35 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Specification Info</h4>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @specification.specification_identifier %></td>
+            </tr>
 
-<p>
-  <b>Specification active:</b>
-  <%= @specification.specification_active %>
-</p>
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @specification.specification_description %></td>
+            </tr>
 
-<p>
-  <b>Specification created:</b>
-  <%= @specification.specification_created_id %>
-</p>
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= @specification.specification_notes %>%</td>
+            </tr>
 
-<p>
-  <b>Specification updated:</b>
-  <%= @specification.specification_updated_id %>
-</p>
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @specification.specification_active %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Specification identifier:</b>
-  <%= @specification.specification_identifier %>
-</p>
-
-<p>
-  <b>Specification description:</b>
-  <%= @specification.specification_description %>
-</p>
-
-<p>
-  <b>Specification notes:</b>
-  <%= @specification.specification_notes %>
-</p>
-
-
-<%= link_to 'Edit', edit_specification_path(@specification) %> |
-<%= link_to 'Back', specifications_path %>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_specification_path(@specification), :class => "btn btn-small" %>
+    <%= link_to 'Back to specifications', specifications_path, :class => "btn btn-small" %>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<%= simple_form_for(@organization, :html => {:id => "form_for_organizations", :class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization_type, label_method: :type_name, label_value: :id, include_blank: false %>
+    <%= f.input :organization_name %>
+    <%= f.input :organization_short_name %>
+    <%= f.input :organization_description %>    
+    <%= f.association :territory, label_method: :territory_identifier, label_value: :id, include_blank: false %>
+    <%= f.association :customer_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
+    <%= f.association :contact_type, label_method: :type_name, label_value: :id, include_blank: false %>
+    <%= f.association :max_vendor_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
+    <%= f.association :vendor_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
+    <%= f.input :vendor_expiration_date %>    
+    <%= f.input :organization_notes %>
+    <%= f.input :organization_active %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to 'Back to Organization', organizations_path, :class => "btn" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_organizations"] = ["organization_type_id", "owner_owner_description", "owner_owner_commission_type_id", "owner_owner_commission_amount", "owner_owner_active"];
+</script>

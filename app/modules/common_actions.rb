@@ -21,7 +21,7 @@ module CommonActions
 				shortcuts_html += '<li class="dropdown submenu">'
 				shortcuts_html += '<a href="' + shortcut[:path] + '" class="dropdown-toggle ' + shortcut[:class] + '" data-toggle="dropdown"><i></i>' + shortcut[:name] + '</a>'
 				shortcuts_html += '<ul class="dropdown-menu submenu-show submenu-hide pull-left">'
-					shortcuts_html += CommonActions.process_application_shortcuts('', shortcut[:sub_menu])
+				shortcuts_html += CommonActions.process_application_shortcuts('', shortcut[:sub_menu])
 				shortcuts_html += '</ul>'
 			end
 		end
@@ -125,7 +125,9 @@ module CommonActions
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
 											{:path => vendor_qualities_path, :name => "Quality ID"},
-											{:path => customer_qualities_path, :name => "Quality Level"}
+											{:path => specifications_path, :name => "Specifications"},
+											{:path => commodities_path, :name => "Commodities"},
+											{:path => territories_path, :name => "Territories"}
 										]
 		menus
 	end
@@ -134,12 +136,15 @@ module CommonActions
 	def application_shortcuts
 		[	{:name => "System", :class => "glyphicons cogwheels", :drop_down => true, :path => "#", 
 				:sub_menu => [	
-								{:name => "Company Info", :class => "", :drop_down => false, :path => company_infos_path, :sub_menu => []},
-								{:name => "Owners", :class => "", :drop_down => false, :path => owners_path, :sub_menu => []},
-								{:name => "Materials", :class => "", :drop_down => false, :path => materials_path, :sub_menu => []},
-								{:name => "Processes", :class => "", :drop_down => false, :path => process_types_path, :sub_menu => []},
-								{:name => "Quality ID", :class => "", :drop_down => false, :path => vendor_qualities_path, :sub_menu => []},
-								{:name => "Quality Level", :class => "", :drop_down => false, :path => customer_qualities_path, :sub_menu => []}
+								{:path => company_infos_path, :name => "Company Info", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => owners_path, :name => "Owners", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => materials_path, :name => "Materials", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => process_types_path, :name => "Processes", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => vendor_qualities_path, :name => "Quality ID", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => customer_qualities_path, :name => "Quality Level", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => specifications_path, :name => "Specifications", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => commodities_path, :name => "Commodities", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => territories_path, :name => "Territories", :class => "", :drop_down => false, :sub_menu => []}
 							]					
 			}
 		]		

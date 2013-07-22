@@ -1,0 +1,51 @@
+<h1>Listing organizations</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Organization type</th>
+    <th>Territory</th>
+    <th>Customer quality</th>
+    <th>Customer contact type</th>
+    <th>Customer max quality</th>
+    <th>Vendor quality</th>
+    <th>Vendor expiration date</th>
+    <th>Organization name</th>
+    <th>Organization short name</th>
+    <th>Organization description</th>
+    <th>Organization notes</th>
+    <th>Organization active</th>
+    <th>Organization created</th>
+    <th>Organization updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @organizations.each do |organization| %>
+  <tr>
+    <td><%= organization.user %></td>
+    <td><%= organization.organization_type_id %></td>
+    <td><%= organization.territory %></td>
+    <td><%= organization.customer_quality %></td>
+    <td><%= organization.customer_contact_type_id %></td>
+    <td><%= organization.customer_max_quality_id %></td>
+    <td><%= organization.vendor_quality %></td>
+    <td><%= organization.vendor_expiration_date %></td>
+    <td><%= organization.organization_name %></td>
+    <td><%= organization.organization_short_name %></td>
+    <td><%= organization.organization_description %></td>
+    <td><%= organization.organization_notes %></td>
+    <td><%= organization.organization_active %></td>
+    <td><%= organization.organization_created_id %></td>
+    <td><%= organization.organization_updated_id %></td>
+    <td><%= link_to 'Show', organization %></td>
+    <td><%= link_to 'Edit', edit_organization_path(organization) %></td>
+    <td><%= link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Organization', new_organization_path %>

@@ -11,7 +11,6 @@ class Owner < ActiveRecord::Base
   belongs_to :commission_type, :class_name => "MasterType", :foreign_key => "owner_commission_type_id", 
   :conditions => ['type_category = ?', 'commission_type']
 
-
   (validates_uniqueness_of :owner_identifier if validates_length_of :owner_identifier, :minimum => 2, :maximum => 20) if validates_presence_of :owner_identifier
 
   validates_length_of :owner_description, :maximum => 50

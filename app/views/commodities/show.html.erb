@@ -1,35 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Commodity Info</h4>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @commodity.commodity_identifier %></td>
+            </tr>
 
-<p>
-  <b>Commodity active:</b>
-  <%= @commodity.commodity_active %>
-</p>
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @commodity.commodity_description %></td>
+            </tr>
 
-<p>
-  <b>Commodity created:</b>
-  <%= @commodity.commodity_created_id %>
-</p>
+            <tr>
+              <td class="span3">Notes :</td>
+              <td class="span5"><%= @commodity.commodity_notes %></td>
+            </tr>
 
-<p>
-  <b>Commodity updated:</b>
-  <%= @commodity.commodity_updated_id %>
-</p>
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @commodity.commodity_active %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Commodity identifier:</b>
-  <%= @commodity.commodity_identifier %>
-</p>
-
-<p>
-  <b>Commodity description:</b>
-  <%= @commodity.commodity_description %>
-</p>
-
-<p>
-  <b>Commodity notes:</b>
-  <%= @commodity.commodity_notes %>
-</p>
-
-
-<%= link_to 'Edit', edit_commodity_path(@commodity) %> |
-<%= link_to 'Back', commodities_path %>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_commodity_path(@commodity), :class => "btn btn-small" %>
+    <%= link_to 'Back to Commodities', commodities_path, :class => "btn btn-small" %>
+  </div>
+</div>

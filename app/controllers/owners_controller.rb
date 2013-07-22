@@ -58,7 +58,7 @@ class OwnersController < ApplicationController
 
     respond_to do |format|
       if @owner.save
-        format.html { redirect_to @owner, notice: 'Owner was successfully created.' }
+        format.html { redirect_to owners_url, notice: 'Owner was successfully created.' }
         format.json { render json: @owner, status: :created, location: @owner }
       else
         format.html { render action: "new" }
@@ -74,7 +74,7 @@ class OwnersController < ApplicationController
 
     respond_to do |format|
       if @owner.update_attributes(params[:owner])
-        format.html { redirect_to @owner, notice: 'Owner was successfully updated.' }
+        format.html { redirect_to owners_url, notice: 'Owner was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -50,3 +50,5 @@ end
 
 gem 'simple_form'
 gem 'country_select'
+
+gem 'validates_formatting_of'

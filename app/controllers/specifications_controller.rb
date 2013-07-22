@@ -12,7 +12,13 @@ class SpecificationsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @specifications }
+      format.json { 
+        @specifications = @specifications.select{|specification| 
+          specification[:links] = CommonActions.object_crud_paths(specification_path(specification), edit_specification_path(specification), 
+                        specification_path(specification))
+        }
+        render json: {:aaData => @specifications} 
+      }
     end
   end
 
@@ -50,7 +56,7 @@ class SpecificationsController < ApplicationController
 
     respond_to do |format|
       if @specification.save
-        format.html { redirect_to @specification, notice: 'Specification was successfully created.' }
+        format.html { redirect_to specifications_url, notice: 'Specification was successfully created.' }
         format.json { render json: @specification, status: :created, location: @specification }
       else
         format.html { render action: "new" }
@@ -66,7 +72,7 @@ class SpecificationsController < ApplicationController
 
     respond_to do |format|
       if @specification.update_attributes(params[:specification])
-        format.html { redirect_to @specification, notice: 'Specification was successfully updated.' }
+        format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

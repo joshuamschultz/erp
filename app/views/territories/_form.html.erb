@@ -1,16 +1,19 @@
-<%= simple_form_for(@territory) do |f| %>
+<%= simple_form_for(@territory, :html => {:id => "form_for_territory",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :territory_active %>
-    <%= f.input :territory_created_id %>
-    <%= f.input :territory_updated_id %>
-    <%= f.input :territory_identifier %>
-    <%= f.input :territory_description %>
-    <%= f.input :territory_zip %>
+  <div class="form-inputs">    
+    <%= f.input :territory_identifier, :label => "Name", :autofocus => true %>
+    <%= f.input :territory_description, :label => "Description" %>
+    <%= f.input :territory_zip, :label => "Zip" %>
+    <%= f.input :territory_active, :label => "Active" %>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Territories', territories_path, :class => "btn" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_territory"] = ["territory_territory_identifier", "territory_territory_description", "territory_territory_zip", "territory_territory_active"];
+</script>
