@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130719083838) do
+ActiveRecord::Schema.define(:version => 20130722121706) do
 
   create_table "commodities", :force => true do |t|
     t.boolean  "commodity_active"
@@ -100,6 +100,31 @@ ActiveRecord::Schema.define(:version => 20130719083838) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  create_table "organizations", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "organization_type_id"
+    t.integer  "territory_id"
+    t.integer  "customer_quality_id"
+    t.integer  "customer_contact_type_id"
+    t.integer  "customer_max_quality_id"
+    t.integer  "vendor_quality_id"
+    t.date     "vendor_expiration_date"
+    t.string   "organization_name"
+    t.string   "organization_short_name"
+    t.string   "organization_description"
+    t.text     "organization_notes"
+    t.boolean  "organization_active"
+    t.integer  "organization_created_id"
+    t.integer  "organization_updated_id"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "organizations", ["customer_quality_id"], :name => "index_organizations_on_customer_quality_id"
+  add_index "organizations", ["territory_id"], :name => "index_organizations_on_territory_id"
+  add_index "organizations", ["user_id"], :name => "index_organizations_on_user_id"
+  add_index "organizations", ["vendor_quality_id"], :name => "index_organizations_on_vendor_quality_id"
 
   create_table "owners", :force => true do |t|
     t.string   "owner_identifier"

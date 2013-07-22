@@ -1,33 +1,47 @@
-<h1>Listing commodities</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Commodity</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Commodity', new_commodity_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th>Commodity active</th>
-    <th>Commodity created</th>
-    <th>Commodity updated</th>
-    <th>Commodity identifier</th>
-    <th>Commodity description</th>
-    <th>Commodity notes</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<% @commodities.each do |commodity| %>
-  <tr>
-    <td><%= commodity.commodity_active %></td>
-    <td><%= commodity.commodity_created_id %></td>
-    <td><%= commodity.commodity_updated_id %></td>
-    <td><%= commodity.commodity_identifier %></td>
-    <td><%= commodity.commodity_description %></td>
-    <td><%= commodity.commodity_notes %></td>
-    <td><%= link_to 'Show', commodity %></td>
-    <td><%= link_to 'Edit', edit_commodity_path(commodity) %></td>
-    <td><%= link_to 'Destroy', commodity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+            <tbody>
 
-<br />
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Commodity', new_commodity_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => commodities_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "commodity_identifier" },
+                        { "mData": "commodity_description" },
+                        { "mData": "commodity_notes" },
+                        { "mData": "commodity_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
+

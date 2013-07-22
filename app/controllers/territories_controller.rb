@@ -12,7 +12,13 @@ class TerritoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @territories }
+      format.json { 
+        @territories = @territories.select{|territory| 
+          territory[:links] = CommonActions.object_crud_paths(territory_path(territory), edit_territory_path(territory), 
+                        territory_path(territory))
+        }
+        render json: {:aaData => @territories} 
+      }
     end
   end
 
@@ -50,7 +56,7 @@ class TerritoriesController < ApplicationController
 
     respond_to do |format|
       if @territory.save
-        format.html { redirect_to @territory, notice: 'Territory was successfully created.' }
+        format.html { redirect_to territories_url, notice: 'Territory was successfully created.' }
         format.json { render json: @territory, status: :created, location: @territory }
       else
         format.html { render action: "new" }
@@ -66,7 +72,7 @@ class TerritoriesController < ApplicationController
 
     respond_to do |format|
       if @territory.update_attributes(params[:territory])
-        format.html { redirect_to @territory, notice: 'Territory was successfully updated.' }
+        format.html { redirect_to territories_url, notice: 'Territory was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

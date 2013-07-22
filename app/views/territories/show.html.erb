@@ -1,35 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Territory Info</h4>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+              <td class="span2">Name :</td>
+              <td class="span5"><%= @territory.territory_identifier %></td>
+            </tr>
 
-<p>
-  <b>Territory active:</b>
-  <%= @territory.territory_active %>
-</p>
+            <tr>
+              <td class="span3">Description :</td>
+              <td class="span5"><%= @territory.territory_description %></td>
+            </tr>
 
-<p>
-  <b>Territory created:</b>
-  <%= @territory.territory_created_id %>
-</p>
+            <tr>
+              <td class="span3">Zip :</td>
+              <td class="span5"><%= @territory.territory_zip %></td>
+            </tr>
 
-<p>
-  <b>Territory updated:</b>
-  <%= @territory.territory_updated_id %>
-</p>
+            <tr>
+              <td class="span3">Active :</td>
+              <td class="span5"><%= @territory.territory_active %></td>
+            </tr>
+        </tbody>
+    </table>
 
-<p>
-  <b>Territory identifier:</b>
-  <%= @territory.territory_identifier %>
-</p>
-
-<p>
-  <b>Territory description:</b>
-  <%= @territory.territory_description %>
-</p>
-
-<p>
-  <b>Territory zip:</b>
-  <%= @territory.territory_zip %>
-</p>
-
-
-<%= link_to 'Edit', edit_territory_path(@territory) %> |
-<%= link_to 'Back', territories_path %>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_territory_path(@territory), :class => "btn btn-small" %>
+    <%= link_to 'Back to Territories', territories_path, :class => "btn btn-small" %>
+  </div>
+</div>

@@ -12,7 +12,13 @@ class CommoditiesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @commodities }
+      format.json {
+        @commodities = @commodities.select{|commodity| 
+          commodity[:links] = CommonActions.object_crud_paths(commodity_path(commodity), edit_commodity_path(commodity), 
+                        commodity_path(commodity))
+        }
+        render json: {:aaData => @commodities}
+      }
     end
   end
 
@@ -50,7 +56,7 @@ class CommoditiesController < ApplicationController
 
     respond_to do |format|
       if @commodity.save
-        format.html { redirect_to @commodity, notice: 'Commodity was successfully created.' }
+        format.html { redirect_to commodities_url, notice: 'Commodity was successfully created.' }
         format.json { render json: @commodity, status: :created, location: @commodity }
       else
         format.html { render action: "new" }
@@ -66,7 +72,7 @@ class CommoditiesController < ApplicationController
 
     respond_to do |format|
       if @commodity.update_attributes(params[:commodity])
-        format.html { redirect_to @commodity, notice: 'Commodity was successfully updated.' }
+        format.html { redirect_to commodities_url, notice: 'Commodity was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

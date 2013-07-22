@@ -56,7 +56,7 @@ class ProcessTypesController < ApplicationController
 
     respond_to do |format|
       if @process_type.save
-        format.html { redirect_to @process_type, notice: 'Process type was successfully created.' }
+        format.html { redirect_to process_types_url, notice: 'Process type was successfully created.' }
         format.json { render json: @process_type, status: :created, location: @process_type }
       else
         format.html { render action: "new" }
@@ -72,7 +72,7 @@ class ProcessTypesController < ApplicationController
 
     respond_to do |format|
       if @process_type.update_attributes(params[:process_type])
-        format.html { redirect_to @process_type, notice: 'Process type was successfully updated.' }
+        format.html { redirect_to process_types_url, notice: 'Process type was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @organization.user %>
+</p>
+
+<p>
+  <b>Organization type:</b>
+  <%= @organization.organization_type_id %>
+</p>
+
+<p>
+  <b>Territory:</b>
+  <%= @organization.territory %>
+</p>
+
+<p>
+  <b>Customer quality:</b>
+  <%= @organization.customer_quality %>
+</p>
+
+<p>
+  <b>Customer contact type:</b>
+  <%= @organization.customer_contact_type_id %>
+</p>
+
+<p>
+  <b>Customer max quality:</b>
+  <%= @organization.customer_max_quality_id %>
+</p>
+
+<p>
+  <b>Vendor quality:</b>
+  <%= @organization.vendor_quality %>
+</p>
+
+<p>
+  <b>Vendor expiration date:</b>
+  <%= @organization.vendor_expiration_date %>
+</p>
+
+<p>
+  <b>Organization name:</b>
+  <%= @organization.organization_name %>
+</p>
+
+<p>
+  <b>Organization short name:</b>
+  <%= @organization.organization_short_name %>
+</p>
+
+<p>
+  <b>Organization description:</b>
+  <%= @organization.organization_description %>
+</p>
+
+<p>
+  <b>Organization notes:</b>
+  <%= @organization.organization_notes %>
+</p>
+
+<p>
+  <b>Organization active:</b>
+  <%= @organization.organization_active %>
+</p>
+
+<p>
+  <b>Organization created:</b>
+  <%= @organization.organization_created_id %>
+</p>
+
+<p>
+  <b>Organization updated:</b>
+  <%= @organization.organization_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_organization_path(@organization) %> |
+<%= link_to 'Back', organizations_path %>
