@@ -49,6 +49,6 @@ group :production do
 end
 
 gem 'simple_form'
+gem 'countries'
 gem 'country_select'
-
 gem 'validates_formatting_of'
