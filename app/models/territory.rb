@@ -14,7 +14,7 @@ class Territory < ActiveRecord::Base
 
   validates_length_of :territory_description, :maximum => 50
 
-  validates_formatting_of :territory_zip, :using => :us_zip if validates_presence_of :territory_zip
+  # validates_formatting_of :territory_zip, :using => :us_zip if validates_presence_of :territory_zip
 
   has_many :organizations
 end

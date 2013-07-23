@@ -40,7 +40,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
+    countries (0.9.2)
+      currencies (>= 0.4.0)
     country_select (1.2.0)
+    currencies (0.4.2)
     devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -130,6 +133,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 2.3.1.0)
   coffee-rails (~> 3.2.1)
+  countries
   country_select
   devise
   execjs (= 1.4.0)
