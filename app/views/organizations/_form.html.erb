@@ -44,22 +44,10 @@
 
 <script type="text/javascript">
     $(document).ready(function(){ 
-        $('#organization_organization_type_id').on('change, keypress', function(){  
-            if($('#organization_organization_type_id option:selected').text() == "Customer"){
-                $('#customer_part').show();
-                $('#vendor_part').hide();
-                $('#organization_customer_contact_type_id').focus();
-            }
-            else if($('#organization_organization_type_id option:selected').text() == "Vendor"){
-                $('#customer_part').hide();
-                $('#vendor_part').show();
-                $('#organization_vendor_quality_id').focus();
-            }
-            else{
-                $('#customer_part').hide();
-                $('#vendor_part').hide();
-                $('#organization_organization_address_1').focus();
-            }
+        $('#organization_organization_type_id').on('change', function(){  
+            organization_type_changed($('#organization_organization_type_id option:selected').text());
+        }).on('keypress', function(){  
+            organization_type_changed($('#organization_organization_type_id option:selected').text());
         });
 
         $('#organization_customer_max_quality_id').on('keypress', function(){
@@ -67,6 +55,24 @@
         });
 
     });
+
+    function organization_type_changed(org_type){
+        if(org_type == "Customer"){
+            $('#customer_part').show();
+            $('#vendor_part').hide();
+            $('#organization_customer_contact_type_id').focus();
+        }
+        else if(org_type == "Vendor"){
+            $('#customer_part').hide();
+            $('#vendor_part').show();
+            $('#organization_vendor_quality_id').focus();
+        }
+        else{
+            $('#customer_part').hide();
+            $('#vendor_part').hide();
+            $('#organization_organization_address_1').focus();
+        }
+    }
 
     date_box_fields = ["organization_vendor_expiration_date"];
 
