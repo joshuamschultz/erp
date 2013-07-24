@@ -12,5 +12,4 @@ class CompanyInfo < ActiveRecord::Base
   validates_formatting_of :company_phone1, :using => :us_phone, :allow_blank => true
 
   # validates_formatting_of :company_website, :using => :url, :allow_blank => true
-
 end

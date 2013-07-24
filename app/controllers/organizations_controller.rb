@@ -1,24 +1,37 @@
 class OrganizationsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:system][:active] = "active"
+  end
+
   # GET /organizations
   # GET /organizations.json
   def index
-    @organizations = Organization.all
+    @org_type = MasterType.find_by_type_value(params[:type] ||= "customer")
+    @organizations = @org_type.type_based_organizations
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @organizations }
+      format.json {
+        @organizations = @organizations.select{|organization| 
+          organization[:links] = CommonActions.object_crud_paths(organization_path(organization), edit_organization_path(organization), 
+                        organization_path(organization))
+        }
+        render json: {:aaData => @organizations}  }
     end
   end
 
   # GET /organizations/1
   # GET /organizations/1.json
   def show
-    @organization = Organization.find(params[:id])
+    redirect_to organizations_path
+    # @organization = Organization.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @organization }
-    end
+    # respond_to do |format|
+    #   format.html # show.html.erb
+    #   format.json { render json: @organization }
+    # end
   end
 
   # GET /organizations/new

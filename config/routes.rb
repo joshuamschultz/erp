@@ -2,7 +2,6 @@ AllianceFasteners::Application.routes.draw do
 
   resources :organizations
 
-
   get "static_pages/landing"
 
   get "static_pages/empty"

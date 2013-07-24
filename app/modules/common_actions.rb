@@ -127,7 +127,8 @@ module CommonActions
 											{:path => vendor_qualities_path, :name => "Quality ID"},
 											{:path => specifications_path, :name => "Specifications"},
 											{:path => commodities_path, :name => "Commodities"},
-											{:path => territories_path, :name => "Territories"}
+											{:path => territories_path, :name => "Territories"},
+											{:path => organizations_path, :name => "Organizations"}
 										]
 		menus
 	end
@@ -144,7 +145,8 @@ module CommonActions
 								{:path => customer_qualities_path, :name => "Quality Level", :class => "", :drop_down => false, :sub_menu => []},
 								{:path => specifications_path, :name => "Specifications", :class => "", :drop_down => false, :sub_menu => []},
 								{:path => commodities_path, :name => "Commodities", :class => "", :drop_down => false, :sub_menu => []},
-								{:path => territories_path, :name => "Territories", :class => "", :drop_down => false, :sub_menu => []}
+								{:path => territories_path, :name => "Territories", :class => "", :drop_down => false, :sub_menu => []},
+								{:path => organizations_path, :name => "Organizations", :class => "", :drop_down => false, :sub_menu => []}
 							]					
 			}
 		]		

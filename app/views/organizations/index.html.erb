@@ -1,51 +1,52 @@
-<h1>Listing organizations</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading"><%= @org_type.type_name %> Organizations</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Customer', organizations_path(type: "customer"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Vendor', organizations_path(type: "vendor"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Support', organizations_path(type: "support"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Organization', new_organization_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th>User</th>
-    <th>Organization type</th>
-    <th>Territory</th>
-    <th>Customer quality</th>
-    <th>Customer contact type</th>
-    <th>Customer max quality</th>
-    <th>Vendor quality</th>
-    <th>Vendor expiration date</th>
-    <th>Organization name</th>
-    <th>Organization short name</th>
-    <th>Organization description</th>
-    <th>Organization notes</th>
-    <th>Organization active</th>
-    <th>Organization created</th>
-    <th>Organization updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Name</th>
+                <th>Short Name</th>
+                <th>Description</th>
+                <th>Telephone</th>
+                <th>Website</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<% @organizations.each do |organization| %>
-  <tr>
-    <td><%= organization.user %></td>
-    <td><%= organization.organization_type_id %></td>
-    <td><%= organization.territory %></td>
-    <td><%= organization.customer_quality %></td>
-    <td><%= organization.customer_contact_type_id %></td>
-    <td><%= organization.customer_max_quality_id %></td>
-    <td><%= organization.vendor_quality %></td>
-    <td><%= organization.vendor_expiration_date %></td>
-    <td><%= organization.organization_name %></td>
-    <td><%= organization.organization_short_name %></td>
-    <td><%= organization.organization_description %></td>
-    <td><%= organization.organization_notes %></td>
-    <td><%= organization.organization_active %></td>
-    <td><%= organization.organization_created_id %></td>
-    <td><%= organization.organization_updated_id %></td>
-    <td><%= link_to 'Show', organization %></td>
-    <td><%= link_to 'Edit', edit_organization_path(organization) %></td>
-    <td><%= link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+            <tbody>
 
-<br />
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Organization', new_organization_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
+        :name => "table_report", :path => organizations_path(type: @org_type.type_value),
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "organization_name" },
+                        { "mData": "organization_short_name" },
+                        { "mData": "organization_description" },
+                        { "mData": "organization_telephone" },
+                        { "mData": "organization_website"},
+                        { "mData": "organization_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

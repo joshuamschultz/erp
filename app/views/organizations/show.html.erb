@@ -1,11 +1,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>User:</b>
-  <%= @organization.user %>
-</p>
-
-<p>
   <b>Organization type:</b>
   <%= @organization.organization_type_id %>
 </p>
@@ -56,6 +51,56 @@
 </p>
 
 <p>
+  <b>Organization address 1:</b>
+  <%= @organization.organization_address_1 %>
+</p>
+
+<p>
+  <b>Organization address 2:</b>
+  <%= @organization.organization_address_2 %>
+</p>
+
+<p>
+  <b>Organization city:</b>
+  <%= @organization.organization_city %>
+</p>
+
+<p>
+  <b>Organization state:</b>
+  <%= @organization.organization_state %>
+</p>
+
+<p>
+  <b>Organization country:</b>
+  <%= @organization.organization_country %>
+</p>
+
+<p>
+  <b>Organization zipcode:</b>
+  <%= @organization.organization_zipcode %>
+</p>
+
+<p>
+  <b>Organization telephone:</b>
+  <%= @organization.organization_telephone %>
+</p>
+
+<p>
+  <b>Organization fax:</b>
+  <%= @organization.organization_fax %>
+</p>
+
+<p>
+  <b>Organization email:</b>
+  <%= @organization.organization_email %>
+</p>
+
+<p>
+  <b>Organization website:</b>
+  <%= @organization.organization_website %>
+</p>
+
+<p>
   <b>Organization notes:</b>
   <%= @organization.organization_notes %>
 </p>
@@ -65,15 +110,7 @@
   <%= @organization.organization_active %>
 </p>
 
-<p>
-  <b>Organization created:</b>
-  <%= @organization.organization_created_id %>
-</p>
 
-<p>
-  <b>Organization updated:</b>
-  <%= @organization.organization_updated_id %>
-</p>
 
 
 <%= link_to 'Edit', edit_organization_path(@organization) %> |
