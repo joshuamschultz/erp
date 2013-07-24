@@ -54,7 +54,6 @@ AllianceFasteners::Application.routes.draw do
   end
 
   match "/tester" => "account#tester", via: [:get, :post] 
-  match "/organizations/:type" => "organizations#index", via: [:get]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
