@@ -16,3 +16,4 @@
 //= require ./theme_js/jquery.uniform.min
 //= require ./theme_js/jquery.dataTables.min
 //= require ./theme_js/DT_bootstrap
+//= require ./theme_js/jquery.dataTables.rowGrouping

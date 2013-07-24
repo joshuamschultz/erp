@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require ./theme_js/less.min
 //= require ./theme_js/jquery.min
+//= require jquery-ui
 //= require ./theme_js/modernizr
+//= require ./theme_js/bootstrap-datetimepicker.min
 
-var tab_field_forms = {};
+var tab_field_forms = {}, date_box_fields = [];

@@ -1,7 +1,8 @@
 $(document).ready(function(){ 
 	form_focus_handler();
+	date_box_handler();
 
-	$('#iframe_popup_dialog').on('hidden', function () {	    
+	$('#iframe_popup_dialog').on('hidden', function () {
 	    fn_popup_closed_events();
 	});
 
@@ -54,6 +55,23 @@ function form_focus_handler(){
       		});
       		    
 		});
+	});
+}
+
+
+function date_box_handler(){
+	$.each(date_box_fields, function(key, field){
+		$("#"+field).datepicker({
+			changeMonth: true,
+			changeYear: true
+		});
+		$("#"+field).datepicker("option","dateFormat","yy-mm-dd");
+		
+		// $("#"+field).datetimepicker({
+		// 	pickTime: false 
+		// }).on( "changeDate", function(ev) {
+		// 	$(this).datetimepicker("hide");
+		// });
 	});
 }
 

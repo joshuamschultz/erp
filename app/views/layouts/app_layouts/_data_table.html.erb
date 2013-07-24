@@ -1,21 +1,31 @@
+<% extras ||= {:slno => true, :grouping => false } %>
+
 <script type="text/javascript">
     $(document).ready(function(){ 
-        var oTable1 = $('#<%= name %>').dataTable({
+        var data_table = $('#<%= name %>').dataTable({
+            <% if extras[:slno] %>
+                "aaSorting": [[ 1, 'asc' ]],
+                "fnDrawCallback": function ( oSettings ) {
+                    /* Need to redo the counters if filtered or sorted */
+                    if ( oSettings.bSorted || oSettings.bFiltered )
+                    {
+                        for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+                        {
+                            $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+                        }
+                    }
+                },
+            <% end %>
             "bAutoWidth": false,
             "bProcessing": true,
             "sAjaxSource": '<%= path %>',
-            "aoColumns": <%= columns.html_safe %>,
-            "aaSorting": [[ 1, 'asc' ]],
-            "fnDrawCallback": function ( oSettings ) {
-                /* Need to redo the counters if filtered or sorted */
-                if ( oSettings.bSorted || oSettings.bFiltered )
-                {
-                    for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
-                    {
-                        $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
-                    }
-                }
-            }
+            "aoColumns": <%= columns.html_safe %>            
         });
+
+        <% if extras[:grouping] %>
+            data_table.rowGrouping({
+                "iGroupingColumnIndex": extras[:column_index]
+            });
+        <% end %>
     });
 </script>

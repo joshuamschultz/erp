@@ -1,27 +1,74 @@
-<%= simple_form_for(@organization, :html => {:id => "form_for_organizations", :class => "form-horizontal"}) do |f| %>
+<% org_type = @organization.organization_type.present? ? @organization.organization_type.type_value : "customer" %>
+
+<%= simple_form_for(@organization, :html => {:id => "form_for_oraganizations",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :organization_type, label_method: :type_name, label_value: :id, include_blank: false %>
-    <%= f.input :organization_name %>
-    <%= f.input :organization_short_name %>
-    <%= f.input :organization_description %>    
-    <%= f.association :territory, label_method: :territory_identifier, label_value: :id, include_blank: false %>
-    <%= f.association :customer_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
-    <%= f.association :contact_type, label_method: :type_name, label_value: :id, include_blank: false %>
-    <%= f.association :max_vendor_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
-    <%= f.association :vendor_quality, label_method: :quality_name, label_value: :id, include_blank: false %>
-    <%= f.input :vendor_expiration_date %>    
-    <%= f.input :organization_notes %>
-    <%= f.input :organization_active %>
+    <%= f.input :organization_name, :label => "Name", :autofocus => true %>
+    <%= f.input :organization_short_name, :label => "Short Name" %>
+    <%= f.input :organization_description, :label => "Description" %>
+
+    <%= f.association :organization_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type" %>
+
+    <div id="customer_part" style='<%= org_type == "customer" ? "" : "display:none;" %>' class="show_hide_div">
+        <%= f.association :contact_type, :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Contact Type" %>
+        <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level" %>        
+        <%= f.association :max_vendor_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Maximum Quality ID" %>
+    </div>
+
+    <div id="vendor_part" style='<%= org_type == "vendor" ? "" : "display:none;" %>' class="show_hide_div">
+        <%= f.association :vendor_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality ID" %>
+        <%= f.input :vendor_expiration_date, :as => :string, :label => "Expiration Date" %>
+    </div>
+
+    <%= f.input :organization_address_1, :label => "Address 1" %>
+    <%= f.input :organization_address_2, :label => "Address 2" %>
+    <%= f.input :organization_city, :label => "City" %>
+    <%= f.input :organization_state, :label => "State" %>
+
+    <%= f.input :organization_country, collection: Country.all.collect{|p| p[0]}.sort, :include_blank => false, group_method: :countries, :label => "Country" %>
+
+    <%= f.input :organization_zipcode, :label => "Zipcode" %>
+    <%= f.input :organization_telephone, :label => "Telephone" %>
+    <%= f.input :organization_fax, :label => "Fax" %>
+    <%= f.input :organization_email, :input_html => {class: "email_field"}, :label => "Email" %>
+    <%= f.input :organization_website, :label => "Website" %>
+    <%= f.input :organization_notes, :label => "Notes" %>
+    <%= f.input :organization_active, :label => "Active" %>
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
-    <%= link_to 'Back to Organization', organizations_path, :class => "btn" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_organizations"] = ["organization_type_id", "owner_owner_description", "owner_owner_commission_type_id", "owner_owner_commission_amount", "owner_owner_active"];
+    $(document).ready(function(){ 
+        $('#organization_organization_type_id').on('change, keypress', function(){  
+            if($('#organization_organization_type_id option:selected').text() == "Customer"){
+                $('#customer_part').show();
+                $('#vendor_part').hide();
+                $('#organization_customer_contact_type_id').focus();
+            }
+            else if($('#organization_organization_type_id option:selected').text() == "Vendor"){
+                $('#customer_part').hide();
+                $('#vendor_part').show();
+                $('#organization_vendor_quality_id').focus();
+            }
+            else{
+                $('#customer_part').hide();
+                $('#vendor_part').hide();
+                $('#organization_organization_address_1').focus();
+            }
+        });
+
+        $('#organization_customer_max_quality_id').on('keypress', function(){
+             $('#organization_organization_address_1').focus();
+        });
+
+    });
+
+    date_box_fields = ["organization_vendor_expiration_date"];
+
+    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_organization_type_id", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_max_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
 </script>
