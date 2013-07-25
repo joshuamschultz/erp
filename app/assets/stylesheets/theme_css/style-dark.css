@@ -2672,7 +2672,7 @@ body > .container-fluid.fixed #content {
   background: #616161;
   top: 15px;
   bottom: 30px;
-  left: 75px;
+  left: 105px;
   content: "";
   position: absolute;
 }
@@ -2712,7 +2712,7 @@ body > .container-fluid.fixed #content {
   max-width: 75%;
 }
 .widget-timeline ul.list-timeline li span.date {
-  width: 40px;
+  width: 70px;
   text-align: center;
 }
 .widget-timeline ul.list-timeline li .activity-icon {

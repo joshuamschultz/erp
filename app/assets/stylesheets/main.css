@@ -1,15 +1,4 @@
-/*.bwizard-steps.clickable li:not (.active ) {
-  cursor: pointer;
-}
-.bwizard-steps.clickable li:hover:not (.active ) {
-  background: #ccc;
-}
-.bwizard-steps.clickable li:hover:not (.active ):after {
-  border-left-color: #ccc;
-}
-.bwizard-steps.clickable li:hover:not (.active ) a {
-  color: #08c;
-}*/
+/*.datetimepicker{color:black;}*/
 
 .form-inputs textarea {height:100px;}
 .radio input[type="radio"], .checkbox input[type="checkbox"]{margin-left: 0px;}
@@ -19,6 +8,6 @@
 
 .alert.alert-primary {font-weight: bold;}
 
-/*.datetimepicker{color:black;}*/
-
 .show_hide_div {margin-bottom: 20px;}
+
+.view_organization_details{font-size: 13px;line-height: 25px;}
