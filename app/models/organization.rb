@@ -4,7 +4,7 @@ class Organization < ActiveRecord::Base
 	belongs_to :customer_quality
 	belongs_to :vendor_quality
 
-	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :organization_active, 
+	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id, :organization_active, 
 	:organization_address_1, :organization_address_2, :organization_city, :organization_country, 
 	:organization_created_id, :organization_description, :organization_email, :organization_fax, 
 	:organization_name, :organization_notes, :organization_short_name, :organization_state, 
@@ -38,6 +38,11 @@ class Organization < ActiveRecord::Base
 
 	belongs_to :max_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_max_quality_id"
 
+	belongs_to :min_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_min_quality_id"
+
+	has_many :comments, :as => :commentable, :dependent => :destroy
+
+	has_many :contacts, :as => :contactable, :dependent => :destroy
 
 	validates_presence_of :organization_type
 

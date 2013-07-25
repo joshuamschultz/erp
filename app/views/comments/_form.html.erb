@@ -1,0 +1,14 @@
+<%= simple_form_for(@comment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :comment %>
+    <%= f.input :comment_active %>
+    <%= f.input :comment_created_id %>
+    <%= f.input :comment_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
