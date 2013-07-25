@@ -38,7 +38,7 @@ function form_focus_handler(){
 	$.each(tab_field_forms, function(key, form){
 		$.each(form, function(index, field){
 			$(document).on('keydown','#' + field, function(e) {						
-				var keyCode = e.keyCode || e.which;					
+				var keyCode = e.keyCode || e.which;
 	            if(keyCode == 13)
 	            {
 	            	e.preventDefault();
