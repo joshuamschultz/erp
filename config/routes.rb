@@ -1,6 +1,15 @@
 AllianceFasteners::Application.routes.draw do
 
-  resources :organizations
+  resources :contacts
+
+
+  resources :comments
+
+  resources :organizations do
+      member do
+          post 'comment'
+      end
+  end
 
   get "static_pages/landing"
 
