@@ -1,0 +1,32 @@
+<%= simple_form_for(@contact, :html => {:id => "form_for_contacts",:class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.hidden_field :contactable_id, :value => @contactable.id %>
+    <%= f.hidden_field :contactable_type, :value => @contactable.class %>
+    <%= f.hidden_field :contactable_type, :value => @contact_type %>
+    <%= f.input :contact_title, :label => "Title", :autofocus => true %>
+    <%= f.input :contact_description, :label => "Description" %>
+    <%= f.input :contact_address_1, :label => "Address 1" %>
+    <%= f.input :contact_address_2, :label => "Address 2" %>
+    <%= f.input :contact_city, :label => "City" %>
+    <%= f.input :contact_state, :label => "State" %>
+    <%= f.input :contact_country, collection: Country.all.collect{|p| p[0]}.sort, :include_blank => false, group_method: :countries, :label => "Country" %>
+    <%= f.input :contact_zipcode, :label => "Zipcode" %>
+    <%= f.input :contact_telephone, :label => "Telephone" %>
+    <%= f.input :contact_fax, :label => "Fax" %>
+    <%= f.input :contact_email, :input_html => {class: "email_field"}, :label => "Email" %>
+    <%= f.input :contact_website, :label => "Website" %>
+    <%= f.input :contact_notes, :label => "Notes" %>
+    <%= f.input :contact_active, :label => "Active" %>
+  </div>
+
+  <div class="form-actions">
+        <%= f.button :submit %>
+  </div>
+<% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_contacts"] = ["contact_contact_title", "contact_contact_description", "contact_contact_address_1", "contact_contact_address_2", "contact_contact_city", "contact_contact_state", "contact_contact_country", "contact_contact_zipcode", "contact_contact_telephone", "contact_contact_fax", "contact_contact_email", "contact_contact_website", "contact_contact_notes", "contact_contact_active"];
+</script>

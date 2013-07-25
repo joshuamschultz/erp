@@ -13,7 +13,7 @@
     <div id="customer_part" style='<%= org_type == "customer" ? "" : "display:none;" %>' class="show_hide_div">
         <%= f.association :contact_type, :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Contact Type" %>
         <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level" %>        
-        <%= f.association :max_vendor_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Maximum Quality ID" %>
+        <%= f.association :min_vendor_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Minimum Quality ID" %>
     </div>
 
     <div id="vendor_part" style='<%= org_type == "vendor" ? "" : "display:none;" %>' class="show_hide_div">
@@ -39,6 +39,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Organizations', organizations_path, :class => "btn" %>
   </div>
 <% end %>
 
@@ -50,10 +51,9 @@
             organization_type_changed($('#organization_organization_type_id option:selected').text());
         });
 
-        $('#organization_customer_max_quality_id').on('keypress', function(){
+        $('#organization_customer_min_quality_id').on('keypress', function(){
              $('#organization_organization_address_1').focus();
         });
-
     });
 
     function organization_type_changed(org_type){
@@ -74,7 +74,7 @@
         }
     }
 
-    date_box_fields = ["organization_vendor_expiration_date"];
+    date_box_fields = date_box_fields.concat(["organization_vendor_expiration_date"]);
 
-    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_organization_type_id", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_max_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
+    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_organization_type_id", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
 </script>

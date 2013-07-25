@@ -30,6 +30,16 @@ module CommonActions
 	end
 
 
+	def self.record_ownership(record, current_user)
+		if record.new_record?
+			record.created_by = current_user
+		else
+			record.updated_by = current_user
+		end
+		record
+	end
+
+
   private
 
 

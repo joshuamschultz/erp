@@ -25,13 +25,14 @@ class OrganizationsController < ApplicationController
   # GET /organizations/1
   # GET /organizations/1.json
   def show
-    redirect_to organizations_path
-    # @organization = Organization.find(params[:id])
+    @organization = Organization.find(params[:id])
+    @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
+    @tags = @organization.comments.where(:comment_type => "tag").order("created_at desc") if @organization 
 
-    # respond_to do |format|
-    #   format.html # show.html.erb
-    #   format.json { render json: @organization }
-    # end
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @organization }
+    end
   end
 
   # GET /organizations/new
@@ -93,4 +94,31 @@ class OrganizationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def comment
+      @organization = Organization.find(params[:id])
+
+      if params[:type] == "tag"
+          @organization.comments.where(:comment_type => "tag").destroy_all
+          tags = params[:tags].split(",")          
+          tags.each do |tag|
+              process_organization_comments(tag, params[:type])
+          end
+          
+      elsif params[:type] == "note"
+          process_organization_comments(params[:comment], params[:type])
+      end
+
+      redirect_to @organization
+  end
+
+  private
+
+  def process_organization_comments(comment, type)
+      comment = @organization.comments.new(:comment => comment, :comment_type => type)
+      comment = CommonActions.record_ownership(comment, current_user) 
+      comment.save
+  end
+
 end
