@@ -1,0 +1,18 @@
+<%= simple_form_for(@gauge) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization %>
+    <%= f.input :gauge_tool_name %>
+    <%= f.input :gauge_tool_no %>
+    <%= f.input :gage_caliberation_at %>
+    <%= f.input :gage_caliberaion_period %>
+    <%= f.input :gauge_active %>
+    <%= f.input :gauge_created_id %>
+    <%= f.input :gauge_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

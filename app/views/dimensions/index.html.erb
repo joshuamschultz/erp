@@ -1,0 +1,35 @@
+<h1>Listing dimensions</h1>
+
+<table>
+  <tr>
+    <th>Gauge</th>
+    <th>Dimension identifier</th>
+    <th>Dimension description</th>
+    <th>Dimension notes</th>
+    <th>Dimension active</th>
+    <th>Dimension created</th>
+    <th>Dimension updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @dimensions.each do |dimension| %>
+  <tr>
+    <td><%= dimension.gauge %></td>
+    <td><%= dimension.dimension_identifier %></td>
+    <td><%= dimension.dimension_description %></td>
+    <td><%= dimension.dimension_notes %></td>
+    <td><%= dimension.dimension_active %></td>
+    <td><%= dimension.dimension_created_id %></td>
+    <td><%= dimension.dimension_updated_id %></td>
+    <td><%= link_to 'Show', dimension %></td>
+    <td><%= link_to 'Edit', edit_dimension_path(dimension) %></td>
+    <td><%= link_to 'Destroy', dimension, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dimension', new_dimension_path %>

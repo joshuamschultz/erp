@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Attachable:</b>
+  <%= @attachment.attachable_id %>
+</p>
+
+<p>
+  <b>Attachable type:</b>
+  <%= @attachment.attachable_type %>
+</p>
+
+<p>
+  <b>Attachment title:</b>
+  <%= @attachment.attachment_title %>
+</p>
+
+<p>
+  <b>Attachment description:</b>
+  <%= @attachment.attachment_description %>
+</p>
+
+<p>
+  <b>Attachment notes:</b>
+  <%= @attachment.attachment_notes %>
+</p>
+
+<p>
+  <b>Attachment file name:</b>
+  <%= @attachment.attachment_file_name %>
+</p>
+
+<p>
+  <b>Attachment file size:</b>
+  <%= @attachment.attachment_file_size %>
+</p>
+
+<p>
+  <b>Attachment content type:</b>
+  <%= @attachment.attachment_content_type %>
+</p>
+
+<p>
+  <b>Attachment public:</b>
+  <%= @attachment.attachment_public %>
+</p>
+
+<p>
+  <b>Attachment active:</b>
+  <%= @attachment.attachment_active %>
+</p>
+
+<p>
+  <b>Attachment created:</b>
+  <%= @attachment.attachment_created_id %>
+</p>
+
+<p>
+  <b>Attachment updated:</b>
+  <%= @attachment.attachment_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_attachment_path(@attachment) %> |
+<%= link_to 'Back', attachments_path %>

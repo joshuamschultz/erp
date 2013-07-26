@@ -1,0 +1,22 @@
+<%= simple_form_for(@attachment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :attachable_id %>
+    <%= f.input :attachable_type %>
+    <%= f.input :attachment_title %>
+    <%= f.input :attachment_description %>
+    <%= f.input :attachment_notes %>
+    <%= f.input :attachment_file_name %>
+    <%= f.input :attachment_file_size %>
+    <%= f.input :attachment_content_type %>
+    <%= f.input :attachment_public %>
+    <%= f.input :attachment_active %>
+    <%= f.input :attachment_created_id %>
+    <%= f.input :attachment_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

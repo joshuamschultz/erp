@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Imageable:</b>
+  <%= @image.imageable_id %>
+</p>
+
+<p>
+  <b>Imageable type:</b>
+  <%= @image.imageable_type %>
+</p>
+
+<p>
+  <b>Image title:</b>
+  <%= @image.image_title %>
+</p>
+
+<p>
+  <b>Image description:</b>
+  <%= @image.image_description %>
+</p>
+
+<p>
+  <b>Image notes:</b>
+  <%= @image.image_notes %>
+</p>
+
+<p>
+  <b>Image file name:</b>
+  <%= @image.image_file_name %>
+</p>
+
+<p>
+  <b>Image file size:</b>
+  <%= @image.image_file_size %>
+</p>
+
+<p>
+  <b>Image content type:</b>
+  <%= @image.image_content_type %>
+</p>
+
+<p>
+  <b>Image public:</b>
+  <%= @image.image_public %>
+</p>
+
+<p>
+  <b>Image active:</b>
+  <%= @image.image_active %>
+</p>
+
+<p>
+  <b>Image created:</b>
+  <%= @image.image_created_id %>
+</p>
+
+<p>
+  <b>Image updated:</b>
+  <%= @image.image_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_image_path(@image) %> |
+<%= link_to 'Back', images_path %>

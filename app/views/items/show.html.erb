@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Owner:</b>
+  <%= @item.owner %>
+</p>
+
+<p>
+  <b>Item part no:</b>
+  <%= @item.item_part_no %>
+</p>
+
+<p>
+  <b>Item name:</b>
+  <%= @item.item_name %>
+</p>
+
+<p>
+  <b>Item description:</b>
+  <%= @item.item_description %>
+</p>
+
+<p>
+  <b>Item notes:</b>
+  <%= @item.item_notes %>
+</p>
+
+<p>
+  <b>Item revision:</b>
+  <%= @item.item_revision %>
+</p>
+
+<p>
+  <b>Item revision date:</b>
+  <%= @item.item_revision_date %>
+</p>
+
+<p>
+  <b>Item tooling:</b>
+  <%= @item.item_tooling %>
+</p>
+
+<p>
+  <b>Item cost:</b>
+  <%= @item.item_cost %>
+</p>
+
+<p>
+  <b>Item quantity on order:</b>
+  <%= @item.item_quantity_on_order %>
+</p>
+
+<p>
+  <b>Item quantity in hand:</b>
+  <%= @item.item_quantity_in_hand %>
+</p>
+
+<p>
+  <b>Item active:</b>
+  <%= @item.item_active %>
+</p>
+
+<p>
+  <b>Item created:</b>
+  <%= @item.item_created_id %>
+</p>
+
+<p>
+  <b>Item updated:</b>
+  <%= @item.item_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_path(@item) %> |
+<%= link_to 'Back', items_path %>

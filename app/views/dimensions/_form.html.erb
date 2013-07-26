@@ -1,0 +1,17 @@
+<%= simple_form_for(@dimension) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :gauge %>
+    <%= f.input :dimension_identifier %>
+    <%= f.input :dimension_description %>
+    <%= f.input :dimension_notes %>
+    <%= f.input :dimension_active %>
+    <%= f.input :dimension_created_id %>
+    <%= f.input :dimension_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
