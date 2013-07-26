@@ -2,6 +2,7 @@ class AttachmentsController < ApplicationController
   # GET /attachments
   # GET /attachments.json
   def index
+    @object = Organization.first
     @attachments = Attachment.all
 
     respond_to do |format|
@@ -13,6 +14,7 @@ class AttachmentsController < ApplicationController
   # GET /attachments/1
   # GET /attachments/1.json
   def show
+    @object = Organization.first
     @attachment = Attachment.find(params[:id])
 
     respond_to do |format|
@@ -24,6 +26,7 @@ class AttachmentsController < ApplicationController
   # GET /attachments/new
   # GET /attachments/new.json
   def new
+    @object = Organization.first
     @attachment = Attachment.new
 
     respond_to do |format|
@@ -34,12 +37,14 @@ class AttachmentsController < ApplicationController
 
   # GET /attachments/1/edit
   def edit
+    @object = Organization.first
     @attachment = Attachment.find(params[:id])
   end
 
   # POST /attachments
   # POST /attachments.json
   def create
+    @object = Organization.first
     @attachment = Attachment.new(params[:attachment])
 
     respond_to do |format|
@@ -56,6 +61,7 @@ class AttachmentsController < ApplicationController
   # PUT /attachments/1
   # PUT /attachments/1.json
   def update
+    @object = Organization.first
     @attachment = Attachment.find(params[:id])
 
     respond_to do |format|
@@ -72,6 +78,7 @@ class AttachmentsController < ApplicationController
   # DELETE /attachments/1
   # DELETE /attachments/1.json
   def destroy
+    @object = Organization.first
     @attachment = Attachment.find(params[:id])
     @attachment.destroy
 

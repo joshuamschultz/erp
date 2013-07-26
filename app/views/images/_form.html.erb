@@ -1,22 +1,26 @@
-<%= simple_form_for(@image) do |f| %>
+<%= simple_form_for(@image, :html => {:id => "form_for_attachment", :class => "form-horizontal", :multipart => true }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :imageable_id %>
-    <%= f.input :imageable_type %>
-    <%= f.input :image_title %>
-    <%= f.input :image_description %>
-    <%= f.input :image_notes %>
-    <%= f.input :image_file_name %>
-    <%= f.input :image_file_size %>
-    <%= f.input :image_content_type %>
-    <%= f.input :image_public %>
-    <%= f.input :image_active %>
-    <%= f.input :image_created_id %>
-    <%= f.input :image_updated_id %>
+      <%= f.hidden_field :imageable_id, value: @object.id %>
+      <%= f.hidden_field :imageable_type, value: @object.class %>
+      <%= f.input :image_title %>
+      <%= f.input :image_description %>
+      <%= f.input :image_notes %>
+      <%= f.input :image_public %>
+      <%= f.input :image_active %>
+
+      <span class="btn btn-default btn-file">
+          <span class="fileupload-new">Select file</span>
+          <%= f.file_field :image %>
+      </span>      
   </div>
 
+  <div class="separator bottom"></div>
+
   <div class="form-actions">
-    <%= f.button :submit %>
+      <%= f.button :submit, "Save" %>
   </div>
 <% end %>
+
+

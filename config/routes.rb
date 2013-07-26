@@ -2,7 +2,6 @@ AllianceFasteners::Application.routes.draw do
   
   resources :items
 
-
   resources :images
 
   resources :attachments
