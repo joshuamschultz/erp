@@ -24,6 +24,7 @@ class ImagesController < ApplicationController
   # GET /images/new
   # GET /images/new.json
   def new
+    @object = Organization.new
     @image = Image.new
 
     respond_to do |format|
@@ -51,6 +52,8 @@ class ImagesController < ApplicationController
         format.json { render json: @image.errors, status: :unprocessable_entity }
       end
     end
+
+    puts @image.errors.to_yaml
   end
 
   # PUT /images/1
