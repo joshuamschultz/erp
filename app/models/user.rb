@@ -21,4 +21,7 @@ class User < ActiveRecord::Base
 
   has_many :created_comments, :class_name => "Comment", :foreign_key => "comment_created_id"
   has_many :updated_comments, :class_name => "Comment", :foreign_key => "comment_updated_id"
+
+  has_many :created_org_processes, :class_name => "OrganizationProcess", :foreign_key => "org_process_created_id"
+  has_many :updated_org_processes, :class_name => "OrganizationProcess", :foreign_key => "org_process_updated_id"
 end

@@ -26,6 +26,9 @@ class OrganizationsController < ApplicationController
   # GET /organizations/1.json
   def show
     @organization = Organization.find(params[:id])
+    @contactable = @organization
+    @contact_type = params[:contact_type] || "address"
+
     @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
     @tags = @organization.comments.where(:comment_type => "tag").order("created_at desc") if @organization 
 
@@ -96,29 +99,22 @@ class OrganizationsController < ApplicationController
   end
 
 
-  def comment
+  def populate
       @organization = Organization.find(params[:id])
 
       if params[:type] == "tag"
-          @organization.comments.where(:comment_type => "tag").destroy_all
-          tags = params[:tags].split(",")          
-          tags.each do |tag|
-              process_organization_comments(tag, params[:type])
-          end
+          tags = params[:tags].split(",")
+          Comment.process_organization_comments(current_user, @organization, tags, params[:type])
           
       elsif params[:type] == "note"
-          process_organization_comments(params[:comment], params[:type])
+          Comment.process_organization_comments(current_user, @organization, [params[:comment]], params[:type])
+
+      elsif params[:type] == "process"
+          OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])
       end
 
       redirect_to @organization
   end
 
-  private
-
-  def process_organization_comments(comment, type)
-      comment = @organization.comments.new(:comment => comment, :comment_type => type)
-      comment = CommonActions.record_ownership(comment, current_user) 
-      comment.save
-  end
 
 end

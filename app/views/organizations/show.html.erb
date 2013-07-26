@@ -8,9 +8,9 @@
 
                 <strong><%= @organization.organization_description %></strong><br/>
 
-                <% if @organization.organization_type.type_value == "customer" %>
+                <abbr>Contact Type : </abbr><%= @organization.contact_type.type_name if @organization.contact_type %><br/>
 
-                    <abbr>Contact Type : </abbr><%= @organization.contact_type.type_name if @organization.contact_type %><br/>
+                <% if @organization.organization_type.type_value == "customer" %>                    
 
                     <abbr>Quality Level : </abbr><%= @organization.customer_quality.quality_name if @organization.customer_quality %><br/>
 
@@ -53,7 +53,7 @@
     <div class="span8">
         <div class="row-fluid">
             <div class="span6 well">
-                <a class="widget-stats" href="#" id="alt_address_btn">
+                <a class="widget-stats" href="<%= organization_path(@organization, :contact_type => 'address') %>" id="alt_address_btn">
                     <span class="glyphicons pin_flag"><i></i></span>
                     <span class="txt">Alternate Addresses</span>
                     <div class="clearfix"></div>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="span6 well">
-                <a class="widget-stats" href="#" id="contacts_btn">
+                <a class="widget-stats" href="<%= organization_path(@organization, :contact_type => 'contact') %>" id="contacts_btn">
                     <span class="glyphicons adress_book"><i></i></span>
                     <span class="txt">Contacts</span>
                     <div class="clearfix"></div>
@@ -71,8 +71,40 @@
 
         <div class="row-fluid">
             <div id="organization_table_data" class="span12 well">
-
+                <%= render 'contacts/datatable' %>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="separator bottom"></div>
+
+<h3>Processes : <span></span></h3>
+<div class="well"> 
+    <div class="row-fluid">    
+        <div class="span12">
+            <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
+                <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)), :multiple => true, :size => 5, :class => "multi_select_box" %>
+                <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+
+<div class="separator bottom"></div>
+
+<h3>Tags : <span></span></h3>
+<div class="well"> 
+    <div class="row-fluid">    
+        <div class="span12">
+            <%= form_tag(populate_organization_path(type: "tag"), method: "post") do %>
+                <div class="input-append span11">
+                    <input type="hidden" id="organization_tags" style="width: 100%;" value="<%= @tags.collect(&:comment).join(",") %>" />
+                    <input type="hidden" name="tags" id="organization_tag_list" value="" />
+                    <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
+                </div>
+            <% end %>
         </div>
     </div>
 </div>
@@ -83,7 +115,7 @@
 <div class="well"> 
     <div class="row-fluid">    
         <div class="span12">
-            <%= form_tag(comment_organization_path(type: "note"), method: "post") do %>
+            <%= form_tag(populate_organization_path(type: "note"), method: "post") do %>
                 <div class="input-append span11">
                     <input name="comment" class="span11" type="text" placeholder="Add a note..." />
                     <button class="btn btn-default" type="submit">Save</button>
@@ -108,38 +140,14 @@
 </div>
 
 
-<div class="separator bottom"></div>
-
-<h3>Tags : <span></span></h3>
-<div class="well"> 
-    <div class="row-fluid">    
-        <div class="span12">
-            <%= form_tag(comment_organization_path(type: "tag"), method: "post") do %>
-                <div class="input-append span11">
-                    <input type="hidden" id="organization_tags" style="width: 100%;" value="<%= @tags.collect(&:comment).join(",") %>" />
-                    <input type="hidden" name="tags" id="organization_tag_list" value="" />
-                    <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
-                </div>
-            <% end %>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     $(document).ready(function(){ 
-            $("#organization_tags").select2({tags:[]});
+        $("#organization_tags").select2({tags:[]});
 
-            $("#submit_org_tags").on("click", function(e){
-              $("#organization_tag_list").val($("#organization_tags").select2("val"));
-            });
-
-            // $("#alt_address").on("click", function(){
-            //     initialize_api_call({"url": "<%= contacts_path(:object_id => @organization.id, :contact_type => 'address')%>", "type": "POST", "params": {"json" : false}}, "callback_for_contacts", {{"contact_type" : 'address'}});
-            // });
-
-            // $("#contacts_btn").on("click", function(){
-            //     initialize_api_call({"url": "<%= contacts_path(:object_id => @organization.id, :contact_type => 'contact')%>", "type": "POST", "params": {"json" : false}}, "callback_for_contacts", {"contact_type" : 'contact'});
-            // });
+        $("#submit_org_tags").on("click", function(e){
+          $("#organization_tag_list").val($("#organization_tags").select2("val"));
+        });
     });
 
     function callback_for_contacts(response, callback_params, api_params){

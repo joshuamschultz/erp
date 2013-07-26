@@ -1,0 +1,31 @@
+<h1>Listing organization_processes</h1>
+
+<table>
+  <tr>
+    <th>Organization</th>
+    <th>Process type</th>
+    <th>Org process active</th>
+    <th>Org process created</th>
+    <th>Org process updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @organization_processes.each do |organization_process| %>
+  <tr>
+    <td><%= organization_process.organization %></td>
+    <td><%= organization_process.process_type %></td>
+    <td><%= organization_process.org_process_active %></td>
+    <td><%= organization_process.org_process_created_id %></td>
+    <td><%= organization_process.org_process_updated_id %></td>
+    <td><%= link_to 'Show', organization_process %></td>
+    <td><%= link_to 'Edit', edit_organization_process_path(organization_process) %></td>
+    <td><%= link_to 'Destroy', organization_process, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Organization process', new_organization_process_path %>

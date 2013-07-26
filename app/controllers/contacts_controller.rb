@@ -2,7 +2,6 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index  
-    params[:json] ||= true 
     @contact_type = params[:contact_type] || "address"
     @contactable = Organization.find_by_id(params[:object_id])
     @contacts = @contactable.contacts.where(:contact_type => @contact_type)
@@ -10,13 +9,11 @@ class ContactsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        if params[:json]
             @contacts = @contacts.select{|contact| 
             contact[:links] = CommonActions.object_crud_paths(contact_path(contact), edit_contact_path(contact), 
                           contact_path(contact))
             }
-            render json: {:aaData => @contacts} 
-        end
+            render json: {:aaData => @contacts}        
       }
     end
   end
@@ -25,6 +22,8 @@ class ContactsController < ApplicationController
   # GET /contacts/1.json
   def show
     @contact = Contact.find(params[:id])
+    @contactable = @contact.contactable
+    @contact_type = @contact.contact_type
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,10 +33,10 @@ class ContactsController < ApplicationController
 
   # GET /contacts/new
   # GET /contacts/new.json
-  def new    
-    @contact_type = params[:contact_type]
-    @contactable = Organization.find_by_id(params[:object_id])
+  def new
     @contact = Contact.new
+    @contact_type = params[:contact_type] || "address"
+    @contactable = Organization.find_by_id(params[:object_id])    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -59,7 +58,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
-        format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+        format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully created.' }
         format.json { render json: @contact, status: :created, location: @contact }
       else
         format.html { render action: "new" }
@@ -75,7 +74,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.update_attributes(params[:contact])
-        format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
+        format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -88,10 +87,13 @@ class ContactsController < ApplicationController
   # DELETE /contacts/1.json
   def destroy
     @contact = Contact.find(params[:id])
+    @contactable = @contact.contactable
+    @contact_type = @contact.contact_type
+
     @contact.destroy
 
     respond_to do |format|
-      format.html { redirect_to contacts_url }
+      format.html { redirect_to request.referrer }
       format.json { head :no_content }
     end
   end

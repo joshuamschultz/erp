@@ -1,6 +1,7 @@
 $(document).ready(function(){ 
 	form_focus_handler();
 	date_box_handler();
+	$(".multi_select_box").multiselect();
 
 	$('#iframe_popup_dialog').on('hidden', function () {
 	    fn_popup_closed_events();
@@ -37,7 +38,7 @@ function initialize_api_call(api_params, callback, callback_params){
 function form_focus_handler(){
 	$.each(tab_field_forms, function(key, form){
 		$.each(form, function(index, field){
-			$(document).on('keydown','#' + field, function(e) {						
+			$(document).on('keydown','#' + field, function(e) {
 				var keyCode = e.keyCode || e.which;
 	            if(keyCode == 13)
 	            {

@@ -1,6 +1,6 @@
 <div class="row-fluid span8">
     <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Contact Info</h4>
+        <h4><%= @contact_type.titlecase %> Info</h4>
     </div>
     <table class="table table-striped table-bordered">
         <tbody>
@@ -21,7 +21,7 @@
 
            <tr>
               <td class="span3">Address 2 :</td>
-              <td class="span5"><%= @contact.contact_address_2 %>%</td>
+              <td class="span5"><%= @contact.contact_address_2 %></td>
             </tr>
 
             <tr>
@@ -31,7 +31,7 @@
 
             <tr>
               <td class="span3">State :</td>
-              <td class="span5"><%= @contact.contact_state %>%</td>
+              <td class="span5"><%= @contact.contact_state %></td>
             </tr>
 
             <tr>
@@ -41,7 +41,7 @@
 
             <tr>
               <td class="span3">Zipcode :</td>
-              <td class="span5"><%= @contact.contact_zipcode %>%</td>
+              <td class="span5"><%= @contact.contact_zipcode %></td>
             </tr>
 
             <tr>
@@ -51,7 +51,7 @@
 
             <tr>
               <td class="span3">Fax :</td>
-              <td class="span5"><%= @contact.contact_fax %>%</td>
+              <td class="span5"><%= @contact.contact_fax %></td>
             </tr>
 
             <tr>
@@ -79,6 +79,7 @@
 
   <div class="form-actions">
     <%= link_to 'Edit', edit_contact_path(@contact), :class => "btn btn-small" %>
-    <%= link_to 'Back to contacts', contacts_path, :class => "btn btn-small" %>
+    <%#= link_to 'Back to ' + @contact_type.titlecase.pluralize, contacts_path(:object_id => @contactable.id, :contact_type => @contact_type), :class => "btn btn-small" %>
+    <%= link_to 'Back to ' + @contactable.class.to_s, @contactable, :class => "btn btn-small" %>
   </div>
 </div>
