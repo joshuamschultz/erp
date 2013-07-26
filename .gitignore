@@ -21,6 +21,7 @@ db/schema.rb
 # Ignore test files
 /test
 /public/files
+/public/attachments
 
 # Ignore unwanted files
 *.psd
