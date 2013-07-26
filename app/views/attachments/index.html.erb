@@ -1,0 +1,45 @@
+<h1>Listing attachments</h1>
+
+<table>
+  <tr>
+    <th>Attachable</th>
+    <th>Attachable type</th>
+    <th>Attachment title</th>
+    <th>Attachment description</th>
+    <th>Attachment notes</th>
+    <th>Attachment file name</th>
+    <th>Attachment file size</th>
+    <th>Attachment content type</th>
+    <th>Attachment public</th>
+    <th>Attachment active</th>
+    <th>Attachment created</th>
+    <th>Attachment updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @attachments.each do |attachment| %>
+  <tr>
+    <td><%= attachment.attachable_id %></td>
+    <td><%= attachment.attachable_type %></td>
+    <td><%= attachment.attachment_title %></td>
+    <td><%= attachment.attachment_description %></td>
+    <td><%= attachment.attachment_notes %></td>
+    <td><%= attachment.attachment_file_name %></td>
+    <td><%= attachment.attachment_file_size %></td>
+    <td><%= attachment.attachment_content_type %></td>
+    <td><%= attachment.attachment_public %></td>
+    <td><%= attachment.attachment_active %></td>
+    <td><%= attachment.attachment_created_id %></td>
+    <td><%= attachment.attachment_updated_id %></td>
+    <td><%= link_to 'Show', attachment %></td>
+    <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
+    <td><%= link_to 'Destroy', attachment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Attachment', new_attachment_path %>

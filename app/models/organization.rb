@@ -1,9 +1,4 @@
 class Organization < ActiveRecord::Base
-	belongs_to :user
-	belongs_to :territory
-	belongs_to :customer_quality
-	belongs_to :vendor_quality
-
 	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id, :organization_active, 
 	:organization_address_1, :organization_address_2, :organization_city, :organization_country, 
 	:organization_created_id, :organization_description, :organization_email, :organization_fax, 
@@ -12,13 +7,13 @@ class Organization < ActiveRecord::Base
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
 	:vendor_quality_id
 
-	after_initialize :default_values
-
-	before_save :process_before_save
+	after_initialize :default_values	
 
 	def default_values
 		self.organization_active ||= true
 	end
+
+	before_save :process_before_save
 
 	def process_before_save
 		zipcode = self.organization_zipcode.split("")[0..1].join("") if self.organization_zipcode.present?
@@ -29,22 +24,6 @@ class Organization < ActiveRecord::Base
 		end
 		self.territory = teriitory
 	end
-
-  	belongs_to :organization_type, :class_name => "MasterType", :foreign_key => "organization_type_id", 
-  	:conditions => ['type_category = ?', 'organization_type']
-
-	belongs_to :contact_type, :class_name => "MasterType", :foreign_key => "customer_contact_type_id", 
-	:conditions => ['type_category = ?', 'customer_contact_type']
-
-	belongs_to :max_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_max_quality_id"
-
-	belongs_to :min_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_min_quality_id"
-
-	has_many :comments, :as => :commentable, :dependent => :destroy
-
-	has_many :contacts, :as => :contactable, :dependent => :destroy
-
-	has_many :organization_processes, :dependent => :destroy
 
 	validates_presence_of :organization_type
 
@@ -57,4 +36,25 @@ class Organization < ActiveRecord::Base
 	validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
 
 	validates_formatting_of :organization_email, :using => :email if validates_presence_of :organization_email
+
+
+	belongs_to :user
+	belongs_to :territory
+	belongs_to :customer_quality
+	belongs_to :vendor_quality
+
+  	belongs_to :organization_type, :class_name => "MasterType", :foreign_key => "organization_type_id", 
+  	:conditions => ['type_category = ?', 'organization_type']
+
+	belongs_to :contact_type, :class_name => "MasterType", :foreign_key => "customer_contact_type_id", 
+	:conditions => ['type_category = ?', 'customer_contact_type']
+
+	belongs_to :max_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_max_quality_id"
+
+	belongs_to :min_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_min_quality_id"
+
+	has_many :comments, :as => :commentable, :dependent => :destroy
+	has_many :contacts, :as => :contactable, :dependent => :destroy
+	has_many :organization_processes, :dependent => :destroy
+	has_many :gauges, :dependent => :destroy
 end

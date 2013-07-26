@@ -1,0 +1,24 @@
+<%= simple_form_for(@item) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :owner %>
+    <%= f.input :item_part_no %>
+    <%= f.input :item_name %>
+    <%= f.input :item_description %>
+    <%= f.input :item_notes %>
+    <%= f.input :item_revision %>
+    <%= f.input :item_revision_date %>
+    <%= f.input :item_tooling %>
+    <%= f.input :item_cost %>
+    <%= f.input :item_quantity_on_order %>
+    <%= f.input :item_quantity_in_hand %>
+    <%= f.input :item_active %>
+    <%= f.input :item_created_id %>
+    <%= f.input :item_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

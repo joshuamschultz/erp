@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @gauge.organization %>
+</p>
+
+<p>
+  <b>Gauge tool name:</b>
+  <%= @gauge.gauge_tool_name %>
+</p>
+
+<p>
+  <b>Gauge tool no:</b>
+  <%= @gauge.gauge_tool_no %>
+</p>
+
+<p>
+  <b>Gage caliberation at:</b>
+  <%= @gauge.gage_caliberation_at %>
+</p>
+
+<p>
+  <b>Gage caliberaion period:</b>
+  <%= @gauge.gage_caliberaion_period %>
+</p>
+
+<p>
+  <b>Gauge active:</b>
+  <%= @gauge.gauge_active %>
+</p>
+
+<p>
+  <b>Gauge created:</b>
+  <%= @gauge.gauge_created_id %>
+</p>
+
+<p>
+  <b>Gauge updated:</b>
+  <%= @gauge.gauge_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_gauge_path(@gauge) %> |
+<%= link_to 'Back', gauges_path %>

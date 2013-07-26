@@ -1,0 +1,49 @@
+<h1>Listing items</h1>
+
+<table>
+  <tr>
+    <th>Owner</th>
+    <th>Item part no</th>
+    <th>Item name</th>
+    <th>Item description</th>
+    <th>Item notes</th>
+    <th>Item revision</th>
+    <th>Item revision date</th>
+    <th>Item tooling</th>
+    <th>Item cost</th>
+    <th>Item quantity on order</th>
+    <th>Item quantity in hand</th>
+    <th>Item active</th>
+    <th>Item created</th>
+    <th>Item updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @items.each do |item| %>
+  <tr>
+    <td><%= item.owner %></td>
+    <td><%= item.item_part_no %></td>
+    <td><%= item.item_name %></td>
+    <td><%= item.item_description %></td>
+    <td><%= item.item_notes %></td>
+    <td><%= item.item_revision %></td>
+    <td><%= item.item_revision_date %></td>
+    <td><%= item.item_tooling %></td>
+    <td><%= item.item_cost %></td>
+    <td><%= item.item_quantity_on_order %></td>
+    <td><%= item.item_quantity_in_hand %></td>
+    <td><%= item.item_active %></td>
+    <td><%= item.item_created_id %></td>
+    <td><%= item.item_updated_id %></td>
+    <td><%= link_to 'Show', item %></td>
+    <td><%= link_to 'Edit', edit_item_path(item) %></td>
+    <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item', new_item_path %>

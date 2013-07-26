@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Gauge:</b>
+  <%= @dimension.gauge %>
+</p>
+
+<p>
+  <b>Dimension identifier:</b>
+  <%= @dimension.dimension_identifier %>
+</p>
+
+<p>
+  <b>Dimension description:</b>
+  <%= @dimension.dimension_description %>
+</p>
+
+<p>
+  <b>Dimension notes:</b>
+  <%= @dimension.dimension_notes %>
+</p>
+
+<p>
+  <b>Dimension active:</b>
+  <%= @dimension.dimension_active %>
+</p>
+
+<p>
+  <b>Dimension created:</b>
+  <%= @dimension.dimension_created_id %>
+</p>
+
+<p>
+  <b>Dimension updated:</b>
+  <%= @dimension.dimension_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_dimension_path(@dimension) %> |
+<%= link_to 'Back', dimensions_path %>
