@@ -19,3 +19,5 @@
 .ui-widget-header a:hover, a:focus {color: #005580;}
 
 .ui-multiselect-checkboxes input[type="checkbox"]{margin-right: 5px;}
+
+.radio_buttons .controls .radio{padding-top: 5px;margin-left: 5px;}

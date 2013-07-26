@@ -8,9 +8,9 @@
     <%= f.input :organization_short_name, :label => "Short Name" %>
     <%= f.input :organization_description, :label => "Description" %>
 
-    <%= f.association :organization_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type" %>
+    <%#= f.association :organization_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type" %>    
 
-    <%= f.association :contact_type, :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Contact Type" %>
+    <%= f.association :organization_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "organization_type_option"} %>
 
     <div id="customer_part" style='<%= org_type == "customer" ? "" : "display:none;" %>' class="show_hide_div">        
         <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level" %>        
@@ -21,6 +21,8 @@
         <%= f.association :vendor_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality ID" %>
         <%= f.input :vendor_expiration_date, :as => :string, :label => "Expiration Date" %>
     </div>
+
+    <%= f.association :contact_type, :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Contact Type" %>
 
     <%= f.input :organization_address_1, :label => "Address 1" %>
     <%= f.input :organization_address_2, :label => "Address 2" %>
@@ -46,10 +48,14 @@
 
 <script type="text/javascript">
     $(document).ready(function(){ 
-        $('#organization_organization_type_id').on('change', function(){  
-            organization_type_changed($('#organization_organization_type_id option:selected').text());
-        }).on('keypress', function(){  
-            organization_type_changed($('#organization_organization_type_id option:selected').text());
+        // $('#organization_organization_type_id').on('change', function(){  
+        //     organization_type_changed($('#organization_organization_type_id option:selected').text());
+        // }).on('keypress', function(){  
+        //     organization_type_changed($('#organization_organization_type_id option:selected').text());
+        // });
+
+        $('.organization_type_option').on('change', function(){  
+            organization_type_changed($('.organization_type_option:checked').parent().text());
         });
 
         $('#organization_customer_min_quality_id').on('keypress', function(){
@@ -77,5 +83,7 @@
 
     date_box_fields = date_box_fields.concat(["organization_vendor_expiration_date"]);
 
-    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_organization_type_id", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
+    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
+
+    // "organization_organization_type_id"
 </script>
