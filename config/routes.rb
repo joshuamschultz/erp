@@ -1,16 +1,25 @@
 AllianceFasteners::Application.routes.draw do
+  
+  resources :items
+
+
+  resources :images
+
+  resources :attachments
 
   resources :organization_processes
 
-
   resources :contacts
-
 
   resources :comments
 
   resources :organizations do
       member do
           post 'populate'
+      end
+
+      resources :gauges do
+          resources :dimensions
       end
   end
 
