@@ -1,0 +1,15 @@
+<%= simple_form_for(@organization_process) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization %>
+    <%= f.association :process_type %>
+    <%= f.input :org_process_active %>
+    <%= f.input :org_process_created_id %>
+    <%= f.input :org_process_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -44,6 +44,8 @@ class Organization < ActiveRecord::Base
 
 	has_many :contacts, :as => :contactable, :dependent => :destroy
 
+	has_many :organization_processes, :dependent => :destroy
+
 	validates_presence_of :organization_type
 
 	(validates_uniqueness_of :organization_name if validates_length_of :organization_name, :minimum => 2, :maximum => 50) if validates_presence_of :organization_name

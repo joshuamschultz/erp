@@ -11,3 +11,11 @@
 .show_hide_div {margin-bottom: 20px;}
 
 .view_organization_details{font-size: 13px;line-height: 25px;}
+
+.ui-multiselect-checkboxes input[type="radio"], .ui-multiselect-checkboxes input[type="checkbox"]{margin-top: -4px;}
+
+.ui-multiselect-header ul li{padding: 0;}
+
+.ui-widget-header a:hover, a:focus {color: #005580;}
+
+.ui-multiselect-checkboxes input[type="checkbox"]{margin-right: 5px;}

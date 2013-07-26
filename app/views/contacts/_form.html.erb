@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.hidden_field :contactable_id, :value => @contactable.id %>
     <%= f.hidden_field :contactable_type, :value => @contactable.class %>
-    <%= f.hidden_field :contactable_type, :value => @contact_type %>
+    <%= f.hidden_field :contact_type, :value => @contact_type %>
     <%= f.input :contact_title, :label => "Title", :autofocus => true %>
     <%= f.input :contact_description, :label => "Description" %>
     <%= f.input :contact_address_1, :label => "Address 1" %>
@@ -22,7 +22,9 @@
   </div>
 
   <div class="form-actions">
-        <%= f.button :submit %>
+        <%= f.button :submit, "Save " + @contact_type.titlecase %>
+        <%#= link_to 'Back to ' + @contact_type.titlecase.pluralize, contacts_path(:object_id => @contactable.id, :contact_type => @contact_type), :class => "btn btn-small" %>
+        <%= link_to 'Back to ' + @contactable.class.to_s, @contactable, :class => "btn btn-small" %>
   </div>
 <% end %>
 

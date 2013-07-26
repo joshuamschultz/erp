@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :organization_processes
+
+
   resources :contacts
 
 
@@ -7,7 +10,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :organizations do
       member do
-          post 'comment'
+          post 'populate'
       end
   end
 

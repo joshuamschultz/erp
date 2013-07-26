@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @organization_process.organization %>
+</p>
+
+<p>
+  <b>Process type:</b>
+  <%= @organization_process.process_type %>
+</p>
+
+<p>
+  <b>Org process active:</b>
+  <%= @organization_process.org_process_active %>
+</p>
+
+<p>
+  <b>Org process created:</b>
+  <%= @organization_process.org_process_created_id %>
+</p>
+
+<p>
+  <b>Org process updated:</b>
+  <%= @organization_process.org_process_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_organization_process_path(@organization_process) %> |
+<%= link_to 'Back', organization_processes_path %>
