@@ -18,9 +18,9 @@
 
                 <% elsif @organization.organization_type.type_value == "vendor" %>
 
-                    <abbr>Quality ID : </abbr><%= @organization.vendor_quality.quality_name @organization.vendor_quality %><br/>
+                    <abbr>Quality ID : </abbr><%= @organization.vendor_quality.quality_name if @organization.vendor_quality %><br/>
 
-                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strfdate("%m/%d/%Y") %><br/>
+                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strfdate("%m/%d/%Y") if @organization.vendor_expiration_date %><br/>
 
                 <% end %>
 
@@ -77,22 +77,24 @@
     </div>
 </div>
 
-<div class="separator bottom"></div>
 
-<h3>Processes : <span></span></h3>
-<div class="well"> 
-    <div class="row-fluid">    
-        <div class="span12">
-            <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
-                <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)), :multiple => true, :size => 5, :class => "multi_select_box" %>
-                <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
-            <% end %>
+<% if @organization.organization_type.type_value == "vendor" %>
+    <div class="separator bottom"></div>
+
+    <h3>Processes : <span></span></h3>
+    <div class="well"> 
+        <div class="row-fluid">    
+            <div class="span12">
+                <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
+                    <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)), :multiple => true, :size => 5, :class => "multi_select_box" %>
+                    <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
+                <% end %>
+            </div>
         </div>
     </div>
-</div>
 
-
-<div class="separator bottom"></div>
+    <div class="separator bottom"></div>    
+<% end %>
 
 <h3>Tags : <span></span></h3>
 <div class="well"> 
