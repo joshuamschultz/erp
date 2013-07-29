@@ -127,8 +127,7 @@ module CommonActions
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
-											{:path => company_infos_path, :name => "Company Info"},
-											{:path => "#", :name => "Territories"},
+											{:path => company_infos_path, :name => "Company Info"},											
 											{:path => "#", :name => "Privileges"},
 											{:path => "#", :name => "Documents"},
 											{:path => owners_path, :name => "Owners"},
