@@ -69,17 +69,18 @@
               <td class="span5"><%= @contact.contact_notes %></td>
             </tr>
 
-            <tr>
+            <!-- <tr>
               <td class="span3">Active :</td>
-              <td class="span5"><%= @contact.contact_active %></td>
-            </tr>
+              <td class="span5"><%#= @contact.contact_active %></td>
+            </tr> -->
 
         </tbody>
     </table>
 
   <div class="form-actions">
     <%= link_to 'Edit', edit_contact_path(@contact), :class => "btn btn-small" %>
-    <%#= link_to 'Back to ' + @contact.contact_type.titlecase.pluralize, contacts_path(:object_id => @contactable.id, :contact_type => @contact.contact_type), :class => "btn btn-small" %>
+    <%= link_to 'Delete', contact_path(@contact, :redirect_to => "index"), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+    <%= link_to 'Back to ' + @contact.contact_type.titlecase.pluralize, contacts_path(:object_id => @contactable.id, :contact_type => @contact.contact_type), :class => "btn btn-small" %>
     <%= link_to 'Back to ' + @contactable.class.to_s, @contactable, :class => "btn btn-small" %>
   </div>
 </div>

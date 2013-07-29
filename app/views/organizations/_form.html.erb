@@ -29,7 +29,7 @@
     <%= f.input :organization_city, :label => "City" %>
     <%= f.input :organization_state, :label => "State" %>
 
-    <%= f.input :organization_country, collection: Country.all.collect{|p| p[0]}.sort, :include_blank => false, group_method: :countries, :label => "Country" %>
+    <%= f.input :organization_country, collection: Country.all.collect{|p| p[0]}.sort, :include_blank => false, group_method: :countries, :label => "Country", selected: "United States" %>
 
     <%= f.input :organization_zipcode, :label => "Zipcode" %>
     <%= f.input :organization_telephone, :label => "Telephone" %>
