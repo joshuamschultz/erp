@@ -4,7 +4,7 @@
   <div class="form-inputs">    
     <%= f.input :specification_identifier, :label => "Name", :autofocus => true %>
     <%= f.input :specification_description, :label => "Description" %>
-    <%= f.input :specification_notes, :label => "Notes" %>
+    <%= f.input :specification_notes, :label => "Notes", input_html: {style: "height: 300px;"} %>
     <%= f.hidden_field :specification_active, :label => "Active" %>
   </div>
 
