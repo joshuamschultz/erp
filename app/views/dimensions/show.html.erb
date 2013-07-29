@@ -1,40 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Dimension Info</h4>
+  </div>
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <tr>
+          <td>Identifier:</td>
+          <td><%= @dimensions.dimension_identifier %></td>
+        </tr>
 
-<p>
-  <b>Gauge:</b>
-  <%= @dimension.gauge %>
-</p>
+        <tr>
+          <td>Description:</td>
+          <td><%= @dimensions.dimension_description %></td>
+        </tr>
 
-<p>
-  <b>Dimension identifier:</b>
-  <%= @dimension.dimension_identifier %>
-</p>
+        <tr>
+          <td>Notes:</td>
+          <td><%= @dimensions.dimension_notes %></td>
+        </tr>
 
-<p>
-  <b>Dimension description:</b>
-  <%= @dimension.dimension_description %>
-</p>
+        <tr>
+          <td>Active:</td>
+          <td><%= @dimensions.dimension_active %></td>
+        </tr>
+      </tbody>
+    </table>
 
-<p>
-  <b>Dimension notes:</b>
-  <%= @dimension.dimension_notes %>
-</p>
-
-<p>
-  <b>Dimension active:</b>
-  <%= @dimension.dimension_active %>
-</p>
-
-<p>
-  <b>Dimension created:</b>
-  <%= @dimension.dimension_created_id %>
-</p>
-
-<p>
-  <b>Dimension updated:</b>
-  <%= @dimension.dimension_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_dimension_path(@dimension) %> |
-<%= link_to 'Back', dimensions_path %>
+   <div class="form-actions">
+    <%= link_to 'Edit', edit_organization_gauge_dimension_path(@organizations, @gauges, @dimensions), :class => "btn btn-small"%> 
+    <%= link_to 'Back to Dimension of ' + @gauges.gauge_tool_name, organization_gauge_dimensions_path(@organizations,@gauges),:class =>"btn btn-small" %>
+  </div>
+</div>
