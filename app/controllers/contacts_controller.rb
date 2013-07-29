@@ -10,8 +10,7 @@ class ContactsController < ApplicationController
       format.html # index.html.erb
       format.json { 
             @contacts = @contacts.select{|contact| 
-            contact[:links] = CommonActions.object_crud_paths(contact_path(contact), edit_contact_path(contact), 
-                          contact_path(contact))
+            contact[:links] = CommonActions.object_crud_paths(contact_path(contact), edit_contact_path(contact), nil)
             }
             render json: {:aaData => @contacts}        
       }

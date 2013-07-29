@@ -21,9 +21,13 @@
                     <th>Last Name</th>
                 <% end %>
                 <th>Title</th>
+                <% if @contact_type == "address" %>
+                    <th>Description</th>
+                    <th>City</th>
+                <% end %>
                 <th>Telephone</th>
                 <th>Email</th>
-               <th>Website</th>
+                <th>Fax</th>
                 <th></th>
               </tr>
             </thead>
@@ -37,15 +41,19 @@
 
 <% contact_fields = (@contact_type == "contact") ? '{"mData": "first_name"}, {"mData": "last_name"},' : ' ' %>
 
+<% address_fields = (@contact_type == "address") ? '{"mData": "contact_description"}, {"mData": "contact_city"},' : ' ' %>
+
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
         :name => "table_report", :path => contacts_path(:object_id => @contactable.id, 
         :contact_type => @contact_type), :extras => {:slno => false}, 
         :columns => '[' + contact_fields + 
                     '
                         { "mData": "contact_title" },
+                    ' + address_fields +
+                    '
                         { "mData": "contact_telephone" },
                         { "mData": "contact_email" },
-                        { "mData": "contact_website" },
+                        { "mData": "contact_fax" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
