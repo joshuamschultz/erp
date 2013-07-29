@@ -6,7 +6,7 @@ class MaterialElement < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.element_active ||= true
+    self.element_active = true if self.element_active.nil?
   end
 
   # validates_uniqueness_of :element_symbol

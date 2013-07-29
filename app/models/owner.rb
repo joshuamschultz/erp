@@ -5,7 +5,7 @@ class Owner < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.owner_active ||= true
+    self.owner_active = true if self.owner_active.nil?
   end
 
   belongs_to :commission_type, :class_name => "MasterType", :foreign_key => "owner_commission_type_id", 

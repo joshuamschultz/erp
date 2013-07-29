@@ -5,7 +5,7 @@ class Comment < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-	   self.comment_active ||= true
+	   self.comment_active = true if self.comment_active.nil?
   end
 
   validates_presence_of :comment

@@ -23,7 +23,6 @@ class ContactsController < ApplicationController
   def show
     @contact = Contact.find(params[:id])
     @contactable = @contact.contactable
-    @contact_type = @contact.contact_type
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,13 +33,19 @@ class ContactsController < ApplicationController
   # GET /contacts/new
   # GET /contacts/new.json
   def new
-    @contact = Contact.new
-    @contact_type = params[:contact_type] || "address"
-    @contactable = Organization.find_by_id(params[:object_id])    
+    @contactable = Organization.find_by_id(params[:object_id])
+    if @contactable
+        @contact = Contact.new
+        @contact.contact_type = params[:contact_type] || "address"
+        @contact.contactable_id = @contactable.id
+        @contact.contactable_type = @contactable.class
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @contact }
+        respond_to do |format|
+          format.html # new.html.erb
+          format.json { render json: @contact }
+        end
+    else
+        redirect_to organizations_path
     end
   end
 
@@ -48,13 +53,13 @@ class ContactsController < ApplicationController
   def edit     
     @contact = Contact.find(params[:id])
     @contactable = @contact.contactable
-    @contact_type = @contact.contact_type
   end
 
   # POST /contacts
   # POST /contacts.json
   def create
     @contact = Contact.new(params[:contact])
+    @contactable = @contact.contactable
 
     respond_to do |format|
       if @contact.save
@@ -71,6 +76,7 @@ class ContactsController < ApplicationController
   # PUT /contacts/1.json
   def update
     @contact = Contact.find(params[:id])
+    @contactable = @contact.contactable
 
     respond_to do |format|
       if @contact.update_attributes(params[:contact])
@@ -87,8 +93,6 @@ class ContactsController < ApplicationController
   # DELETE /contacts/1.json
   def destroy
     @contact = Contact.find(params[:id])
-    @contactable = @contact.contactable
-    @contact_type = @contact.contact_type
 
     @contact.destroy
 

@@ -6,7 +6,7 @@ class Material < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.material_active ||= true
+    self.material_active = true if self.material_active.nil?
   end
 
   (validates_uniqueness_of :material_short_name if validates_length_of :material_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :material_short_name

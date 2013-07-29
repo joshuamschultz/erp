@@ -5,7 +5,7 @@ class ProcessType < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.process_active ||= true
+    self.process_active = true if self.process_active.nil?
   end
 
   (validates_uniqueness_of :process_short_name if validates_length_of :process_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :process_short_name

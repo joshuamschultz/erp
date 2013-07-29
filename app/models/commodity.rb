@@ -2,7 +2,7 @@ class Commodity < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.commodity_active ||= true
+    self.commodity_active = true if self.commodity_active.nil?
   end
   
   attr_accessible :commodity_active, :commodity_created_id, :commodity_description, 

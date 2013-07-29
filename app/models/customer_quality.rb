@@ -7,7 +7,7 @@ class CustomerQuality < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    	self.quality_active ||= true
+    	self.quality_active = true if self.quality_active.nil?
   end
 
   (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 1, :maximum => 50) if validates_presence_of :quality_name
