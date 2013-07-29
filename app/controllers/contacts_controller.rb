@@ -93,11 +93,19 @@ class ContactsController < ApplicationController
   # DELETE /contacts/1.json
   def destroy
     @contact = Contact.find(params[:id])
-
+    @contactable = @contact.contactable
+    @contact_type = @contact.contact_type || "address"
     @contact.destroy
 
     respond_to do |format|
-      format.html { redirect_to request.referrer }
+      format.html { 
+        case(params[:redirect_to])
+            when "index"
+                redirect_to contacts_path(:object_id => @contactable.id, :contact_type => @contact_type)
+            else
+                redirect_to request.referrer
+        end
+      }
       format.json { head :no_content }
     end
   end
