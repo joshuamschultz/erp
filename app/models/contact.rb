@@ -4,6 +4,12 @@ class Contact < ActiveRecord::Base
   :contact_notes, :contact_state, :contact_telephone, :contact_title, :contact_updated_id, 
   :contact_website, :contact_zipcode, :contactable_id, :contactable_type, :contact_type
 
+	after_initialize :default_values
+
+	def default_values
+		self.contact_active = true if self.contact_active.nil?
+	end
+
 	validates_presence_of :contactable
 
 	validates_length_of :contact_title, :minimum => 2, :maximum => 20 if validates_presence_of :contact_title	
@@ -14,8 +20,7 @@ class Contact < ActiveRecord::Base
 
 	validates_formatting_of :contact_email, :using => :email if validates_presence_of :contact_email
 
-
-  belongs_to :contactable, :polymorphic => true
+  	belongs_to :contactable, :polymorphic => true
 
  	# contact_type - address/contact
 end
