@@ -18,13 +18,23 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>SLNO</th>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Short Name</th>
                 <th>Description</th>
                 <th>Telephone</th>
                 <th>Website</th>
                 <th>Active</th>
+                <th>Address_1</th>
+                <th>Address_2</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Email</th>
+                <th>Fax</th>
+                <th>Notes</th>
+                <th>State</th>
+                <th>Zipcode</th>
+                <th>Expiration Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -38,14 +48,25 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
         :name => "table_report", :path => organizations_path(type: @org_type.type_value),
+        :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "id" },
                         { "mData": "organization_name" },
-                        { "mData": "organization_short_name" },
-                        { "mData": "organization_description" },
+                        { "mData": "organization_short_name", "bVisible": false },
+                        { "mData": "organization_description", "bVisible": false },
                         { "mData": "organization_telephone" },
-                        { "mData": "organization_website"},
-                        { "mData": "organization_active" },
+                        { "mData": "organization_website", "bVisible": false },
+                        { "mData": "organization_active", "bVisible": false },
+                        { "mData": "organization_address_1", "bVisible": false },
+                        { "mData": "organization_address_2", "bVisible": false },
+                        { "mData": "organization_city", "bVisible": false },
+                        { "mData": "organization_country", "bVisible": false },
+                        { "mData": "organization_email" },
+                        { "mData": "organization_fax" },
+                        { "mData": "organization_notes", "bVisible": false },
+                        { "mData": "organization_state", "bVisible": false },
+                        { "mData": "organization_zipcode", "bVisible": false },
+                        { "mData": "vendor_expiration_date", "bVisible": false },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
