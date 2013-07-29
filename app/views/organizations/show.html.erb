@@ -8,39 +8,36 @@
 
                 <strong><%= @organization.organization_description %></strong><br/>
 
-                <abbr>Contact Type : </abbr><%= @organization.contact_type.type_name if @organization.contact_type %><br/>
-
-                <% if @organization.organization_type.type_value == "customer" %>                    
-
-                    <abbr>Quality Level : </abbr><%= @organization.customer_quality.quality_name if @organization.customer_quality %><br/>
-
-                    <abbr>Minimum Quality ID : </abbr><%= @organization.min_vendor_quality.quality_name if @organization.min_vendor_quality %><br/>
-
-                <% elsif @organization.organization_type.type_value == "vendor" %>
-
-                    <abbr>Quality ID : </abbr><%= @organization.vendor_quality.quality_name if @organization.vendor_quality %><br/>
-
-                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strfdate("%m/%d/%Y") if @organization.vendor_expiration_date %><br/>
-
-                <% end %>
-
                 <abbr>Address 1 : </abbr><%= @organization.organization_address_1 %><br/>
 
                 <abbr>Address 2 : </abbr><%= @organization.organization_address_2 %><br/>
 
                 <abbr>Location : </abbr><%= @organization.organization_city %>,  <%= @organization.organization_state %>,  <%= @organization.organization_country %><br/>
 
-                <abbr>Zip : </abbr><%= @organization.organization_zipcode %><br/>
+                <abbr>Zip : </abbr><%= @organization.organization_zipcode %><br/>                
 
-                <abbr>Website : </abbr><a href="<%= @organization.organization_website %>"><%= @organization.organization_website %></a><br/>
-
-                <abbr>Active : </abbr><%= @organization.organization_active %><br/>
-
-                <abbr>E-Mail : </abbr> <a href="mailto:#"><%= @organization.organization_email %></a><br /> 
+                <abbr>Active : </abbr><%= @organization.organization_active %><br/>            
 
                 <abbr>Telephone : </abbr><%= @organization.organization_telephone %><br/>
 
-                <abbr>Fax : </abbr><%= @organization.organization_fax %>
+                <abbr>Fax : </abbr><%= @organization.organization_fax %><br/>
+
+                <abbr>Website : </abbr><a href="<%= @organization.organization_website %>"><%= @organization.organization_website %></a><br/>
+
+                <abbr>E-Mail : </abbr> <a href="mailto:#"><%= @organization.organization_email %></a><br />
+
+                <abbr>Contact Type : </abbr><%= @organization.contact_type.type_name if @organization.contact_type %><br/>
+
+                <% if @organization.organization_type.type_value == "customer" %>
+                    <abbr>Quality Level : </abbr><%= @organization.customer_quality.quality_name if @organization.customer_quality %><br/>
+
+                    <abbr>Minimum Quality ID : </abbr><%= @organization.min_vendor_quality.quality_name if @organization.min_vendor_quality %><br/>
+                    
+                <% elsif @organization.organization_type.type_value == "vendor" %>
+                    <abbr>Quality ID : </abbr><%= @organization.vendor_quality.quality_name if @organization.vendor_quality %><br/>
+
+                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strfdate("%m/%d/%Y") if @organization.vendor_expiration_date %><br/>
+                <% end %>
 
                 <p><abbr>Notes : </abbr><%= @organization.organization_notes %></p>
 
