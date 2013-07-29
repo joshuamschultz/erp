@@ -103,8 +103,8 @@
         <div class="span12">
             <%= form_tag(populate_organization_path(type: "tag"), method: "post") do %>
                 <div class="input-append span11">
-                    <input type="hidden" id="organization_tags" style="width: 100%;" value="<%= @tags.collect(&:comment).join(",") %>" />
-                    <input type="hidden" name="tags" id="organization_tag_list" value="" />
+                    <input type="hidden" id="organization_tags" style="width: 100%;" name="tags" value="<%= @tags.collect(&:comment).join(",") %>" />
+                    <!-- <input type="hidden" name="tags" id="organization_tag_list" value="" /> -->
                     <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
                 </div>
             <% end %>
@@ -148,9 +148,9 @@
     $(document).ready(function(){ 
         $("#organization_tags").select2({tags:<%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
 
-        $("#submit_org_tags").on("click", function(e){
-          $("#organization_tag_list").val($("#organization_tags").select2("val"));
-        });
+        // $("#submit_org_tags").on("click", function(e){
+        //   $("#organization_tag_list").val($("#organization_tags").select2("val"));
+        // });
     });
 
     function callback_for_contacts(response, callback_params, api_params){
