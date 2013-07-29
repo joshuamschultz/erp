@@ -145,7 +145,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){ 
-        $("#organization_tags").select2({tags:[]});
+        $("#organization_tags").select2({tags:<%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
 
         $("#submit_org_tags").on("click", function(e){
           $("#organization_tag_list").val($("#organization_tags").select2("val"));

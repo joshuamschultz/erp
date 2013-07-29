@@ -1,4 +1,8 @@
-<% extras ||= {:slno => true, :grouping => false } %>
+<%# extras ||= {:slno => true, :grouping => false } %>
+
+<% extras ||= {} %>
+<% extras[:slno] = true if extras[:slno].nil?  %>
+<% extras[:grouping] = false if extras[:grouping].nil? %>
 
 <script type="text/javascript">
     $(document).ready(function(){ 

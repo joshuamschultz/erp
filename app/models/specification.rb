@@ -2,7 +2,7 @@ class Specification < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.specification_active ||= true
+    self.specification_active = true if self.specification_active.nil?
   end
 
   attr_accessible :specification_active, :specification_created_id, :specification_description, 

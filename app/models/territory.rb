@@ -4,7 +4,7 @@ class Territory < ActiveRecord::Base
   extend ValidatesFormattingOf::ModelAdditions
 
   def default_values
-    self.territory_active ||= true
+    self.territory_active = true if self.territory_active.nil?
   end
 
   attr_accessible :territory_active, :territory_created_id, :territory_description, 

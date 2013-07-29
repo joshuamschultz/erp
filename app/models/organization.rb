@@ -10,7 +10,7 @@ class Organization < ActiveRecord::Base
 	after_initialize :default_values	
 
 	def default_values
-		self.organization_active ||= true
+		self.organization_active = true if self.organization_active.nil?
 	end
 
 	before_save :process_before_save
