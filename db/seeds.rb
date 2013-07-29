@@ -14,7 +14,7 @@ mastertypes = [
          ["All", "Sell * Quantity Shipped", "all", "commission_type", "true"],
          ["Profit", "[Sell - Cost] * Quantity Shipped", "profit", "commission_type", "true"],
          ["Fax", "", "fax" ,"customer_contact_type", "true"],
-         ["Phone", "", "phone", "customer_contact_type", "true"],
+         ["Email", "", "email", "customer_contact_type", "true"],
          ["Customer", "", "customer", "organization_type", "true"],
          ["Vendor", "", "vendor", "organization_type", "true"],
          ["Support", "", "support", "organization_type", "true"]

@@ -35,8 +35,9 @@ class Organization < ActiveRecord::Base
 
 	validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
 
-	validates_formatting_of :organization_email, :using => :email if validates_presence_of :organization_email
+	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| o.contact_type.type_value == "email" }
 
+	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| o.contact_type.type_value == "fax" }
 
 	belongs_to :user
 	belongs_to :territory
