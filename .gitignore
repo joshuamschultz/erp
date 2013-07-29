@@ -14,10 +14,6 @@
 /log/*.log
 /tmp
 
-#
-config/database.yml
-db/schema.rb
-
 # Ignore test files
 /test
 /public/files
