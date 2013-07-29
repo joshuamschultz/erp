@@ -3,9 +3,9 @@ module CommonActions
 
 	def self.object_crud_paths(show_path, edit_path, delete_path, others = [])
 		paths = ""
-		paths += "<a href='#{show_path}' class='btn btn-mini btn-success'>View</a> " if show_path
-      	paths += "<a href='#{edit_path}' class='btn btn-mini btn-info'>Edit</a> " if edit_path
-      	paths += "<a href='#{delete_path}' class='btn btn-mini btn-danger' rel='nofollow' data-method='delete' data-confirm='Are you sure?'>Delete</a> " if delete_path
+		paths += "<a href='#{show_path}' class='btn-action glyphicons eye_open btn-default'><i></i></a> " if show_path
+      	paths += "<a href='#{edit_path}' class='btn-action glyphicons pencil btn-success'><i></i></a> " if edit_path
+      	paths += "<a href='#{delete_path}' class='btn-action glyphicons remove_2 btn-danger' rel='nofollow' data-method='delete' data-confirm='Are you sure?'><i></i></a> " if delete_path
 		others.each do |other|
 			paths += "<a href='#{other[:path]}' class='btn btn-mini btn-orange'>#{other[:name]}</a> "
 		end
