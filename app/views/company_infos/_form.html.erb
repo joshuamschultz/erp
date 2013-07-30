@@ -1,4 +1,4 @@
-<%= simple_form_for(@company_info, :html => {:id => "form_for_company",:class => "form-horizontal"}) do |f| %>
+<%= simple_form_for(@company_info, :html => {:id => "form_for_company",:class => "form-horizontal", :multipart => true }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -11,9 +11,28 @@
     <%#= f.input :company_mobile, :label => "Mobile" %>
     <%= f.input :company_fax, :label => "Fax" %>
     <%= f.input :company_website, :label => "Website" %>
+
+    <div class="control-group string optional company_info_company_website">
+        <label class="control-label">Choose Logo <br/>(Only if changed)</label>
+        <div class="controls">
+              <%= f.fields_for :image, Image.new do |g| %>
+                  <div data-provides="fileupload" class="fileupload fileupload-new">
+                      <span class="btn btn-default btn-file">
+                          <span class="fileupload-new">Browse</span>
+                          <span class="fileupload-exists">Browse</span>
+                          <%= g.file_field :image %>
+                      </span>
+                      <span class="fileupload-preview"></span>
+                      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+                  </div>
+              <% end %>
+        </div>
+    </div>    
   </div>
 
-  <div class="separator bottom"></div><div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <!-- <div class="separator bottom"></div> -->
 
   <div class="form-actions">
     <%= f.button :submit %>
