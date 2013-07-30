@@ -1,18 +1,20 @@
-<%= simple_form_for(@gauge) do |f| %>
+<%= simple_form_for([@organization,@gauge], :html => {:id => "form_for_gauges",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :organization %>
-    <%= f.input :gauge_tool_name %>
-    <%= f.input :gauge_tool_no %>
-    <%= f.input :gage_caliberation_at %>
-    <%= f.input :gage_caliberaion_period %>
-    <%= f.input :gauge_active %>
-    <%= f.input :gauge_created_id %>
-    <%= f.input :gauge_updated_id %>
+    <%= f.input :gauge_tool_name, :label => "Gauge Tool Name" %>
+    <%= f.input :gauge_tool_no, :label => "Gauge Tool Number" %>
+    <%= f.input :gage_caliberation_at , :as => :string, :label => "Gauge Caliberation At"%>
+    <%= f.input :gage_caliberaion_period, :label => "Gauge Caliberation Period" %>
+    <%= f.input :gauge_active, :label => "Gauge Active" %> 
   </div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Back to Organization of' + @organization.organization_name, organization_gauges_path(@organization),:class =>"btn btn-small" %>
   </div>
 <% end %>
+<script type="text/javascript">
+    tab_field_forms["form_for_gauges"] = ["gauge_organization_id", "gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_at", "gauge_gage_caliberaion_period", "gauge_gauge_active", "gauge_gauge_created_id", "gauge_gauge_updated_id"];
+    date_box_fields = date_box_fields.concat(["gauge_gage_caliberation_at"]);
+</script>
