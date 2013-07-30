@@ -1,0 +1,17 @@
+<%= simple_form_for(@item_alt_name) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :item %>
+    <%= f.input :item_alt_identifier %>
+    <%= f.input :item_alt_description %>
+    <%= f.input :item_alt_notes %>
+    <%= f.input :item_alt_active %>
+    <%= f.input :item_alt_created_id %>
+    <%= f.input :item_alt_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

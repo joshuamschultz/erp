@@ -1,0 +1,41 @@
+<h1>Listing item_part_dimensions</h1>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Item part letter</th>
+    <th>Item part type</th>
+    <th>Item part pos tolerance</th>
+    <th>Item part neg tolerance</th>
+    <th>Item part critical</th>
+    <th>Item part notes</th>
+    <th>Item part active</th>
+    <th>Item part created</th>
+    <th>Item part updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_part_dimensions.each do |item_part_dimension| %>
+  <tr>
+    <td><%= item_part_dimension.item %></td>
+    <td><%= item_part_dimension.item_part_letter %></td>
+    <td><%= item_part_dimension.item_part_type %></td>
+    <td><%= item_part_dimension.item_part_pos_tolerance %></td>
+    <td><%= item_part_dimension.item_part_neg_tolerance %></td>
+    <td><%= item_part_dimension.item_part_critical %></td>
+    <td><%= item_part_dimension.item_part_notes %></td>
+    <td><%= item_part_dimension.item_part_active %></td>
+    <td><%= item_part_dimension.item_part_created_id %></td>
+    <td><%= item_part_dimension.item_part_updated_id %></td>
+    <td><%= link_to 'Show', item_part_dimension %></td>
+    <td><%= link_to 'Edit', edit_item_part_dimension_path(item_part_dimension) %></td>
+    <td><%= link_to 'Destroy', item_part_dimension, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item part dimension', new_item_part_dimension_path %>

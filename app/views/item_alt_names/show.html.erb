@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_alt_name.item %>
+</p>
+
+<p>
+  <b>Item alt identifier:</b>
+  <%= @item_alt_name.item_alt_identifier %>
+</p>
+
+<p>
+  <b>Item alt description:</b>
+  <%= @item_alt_name.item_alt_description %>
+</p>
+
+<p>
+  <b>Item alt notes:</b>
+  <%= @item_alt_name.item_alt_notes %>
+</p>
+
+<p>
+  <b>Item alt active:</b>
+  <%= @item_alt_name.item_alt_active %>
+</p>
+
+<p>
+  <b>Item alt created:</b>
+  <%= @item_alt_name.item_alt_created_id %>
+</p>
+
+<p>
+  <b>Item alt updated:</b>
+  <%= @item_alt_name.item_alt_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_alt_name_path(@item_alt_name) %> |
+<%= link_to 'Back', item_alt_names_path %>

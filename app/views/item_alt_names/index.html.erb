@@ -1,0 +1,35 @@
+<h1>Listing item_alt_names</h1>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Item alt identifier</th>
+    <th>Item alt description</th>
+    <th>Item alt notes</th>
+    <th>Item alt active</th>
+    <th>Item alt created</th>
+    <th>Item alt updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_alt_names.each do |item_alt_name| %>
+  <tr>
+    <td><%= item_alt_name.item %></td>
+    <td><%= item_alt_name.item_alt_identifier %></td>
+    <td><%= item_alt_name.item_alt_description %></td>
+    <td><%= item_alt_name.item_alt_notes %></td>
+    <td><%= item_alt_name.item_alt_active %></td>
+    <td><%= item_alt_name.item_alt_created_id %></td>
+    <td><%= item_alt_name.item_alt_updated_id %></td>
+    <td><%= link_to 'Show', item_alt_name %></td>
+    <td><%= link_to 'Edit', edit_item_alt_name_path(item_alt_name) %></td>
+    <td><%= link_to 'Destroy', item_alt_name, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item alt name', new_item_alt_name_path %>

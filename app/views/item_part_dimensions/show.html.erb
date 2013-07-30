@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_part_dimension.item %>
+</p>
+
+<p>
+  <b>Item part letter:</b>
+  <%= @item_part_dimension.item_part_letter %>
+</p>
+
+<p>
+  <b>Item part type:</b>
+  <%= @item_part_dimension.item_part_type %>
+</p>
+
+<p>
+  <b>Item part pos tolerance:</b>
+  <%= @item_part_dimension.item_part_pos_tolerance %>
+</p>
+
+<p>
+  <b>Item part neg tolerance:</b>
+  <%= @item_part_dimension.item_part_neg_tolerance %>
+</p>
+
+<p>
+  <b>Item part critical:</b>
+  <%= @item_part_dimension.item_part_critical %>
+</p>
+
+<p>
+  <b>Item part notes:</b>
+  <%= @item_part_dimension.item_part_notes %>
+</p>
+
+<p>
+  <b>Item part active:</b>
+  <%= @item_part_dimension.item_part_active %>
+</p>
+
+<p>
+  <b>Item part created:</b>
+  <%= @item_part_dimension.item_part_created_id %>
+</p>
+
+<p>
+  <b>Item part updated:</b>
+  <%= @item_part_dimension.item_part_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_part_dimension_path(@item_part_dimension) %> |
+<%= link_to 'Back', item_part_dimensions_path %>
