@@ -1,17 +1,19 @@
-<%= simple_form_for(@dimension) do |f| %>
+<%= simple_form_for([@organizations,@gauges,@dimensions],:html => {:id => "form_for_dimension",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :gauge %>
-    <%= f.input :dimension_identifier %>
-    <%= f.input :dimension_description %>
-    <%= f.input :dimension_notes %>
-    <%= f.input :dimension_active %>
-    <%= f.input :dimension_created_id %>
-    <%= f.input :dimension_updated_id %>
+    <%= f.input :dimension_identifier, :label => "Identifier" %>
+    <%= f.input :dimension_description, :label => "Description" %>
+    <%= f.input :dimension_notes, :label => "Notes" %>
+    <%= f.input :dimension_active, :label => "Active" %>   
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class =>"btn btn-small" %>
+    <%= link_to 'Back to Dimension of ' + @gauges.gauge_tool_name, organization_gauge_dimensions_path(@organizations,@gauges),:class =>"btn btn-small" %>
   </div>
 <% end %>
+<script type="text/javascript">
+    tab_field_forms["form_for_dimension"] = ["dimension_dimension_identifier", "dimension_dimension_description", "dimension_dimension_notes", "dimension_dimension_active"];
+    date_box_fields = date_box_fields.concat(["gauge_gage_caliberation_at"]);
+</script>

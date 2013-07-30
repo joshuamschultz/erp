@@ -1,37 +1,50 @@
-<h1>Listing gauges</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Gauges of <%= @organization.organization_name %></h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Guage', new_organization_gauge_path(@organization), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Back to Materials', organizations_path, :class => "btn btn-mini btn-info" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>SLNO</th>
+                    <th>Tool Name</th>
+                    <th>Tool No</th>
+                    <th>Caliberation At</th>
+                    <th>Caliberaion Period</th>
+                    <th>Active</th>                  
+                    <th></th>                  
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Organization</th>
-    <th>Gauge tool name</th>
-    <th>Gauge tool no</th>
-    <th>Gage caliberation at</th>
-    <th>Gage caliberaion period</th>
-    <th>Gauge active</th>
-    <th>Gauge created</th>
-    <th>Gauge updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => organization_gauges_path(@organization),
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "gauge_tool_name" },
+                        { "mData": "gauge_tool_no" },
+                        { "mData": "gage_caliberation_at" },
+                        { "mData": "gage_caliberaion_period" },
+                        { "mData": "gauge_active"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
 
-<% @gauges.each do |gauge| %>
-  <tr>
-    <td><%= gauge.organization %></td>
-    <td><%= gauge.gauge_tool_name %></td>
-    <td><%= gauge.gauge_tool_no %></td>
-    <td><%= gauge.gage_caliberation_at %></td>
-    <td><%= gauge.gage_caliberaion_period %></td>
-    <td><%= gauge.gauge_active %></td>
-    <td><%= gauge.gauge_created_id %></td>
-    <td><%= gauge.gauge_updated_id %></td>
-    <td><%= link_to 'Show', gauge %></td>
-    <td><%= link_to 'Edit', edit_gauge_path(gauge) %></td>
-    <td><%= link_to 'Destroy', gauge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
 
-<%= link_to 'New Gauge', new_gauge_path %>
+
