@@ -12,15 +12,20 @@
 
                 <strong><%= @organization.organization_description %></strong><br/>
 
-                <abbr>Address 1 : </abbr><%= @organization.organization_address_1 %><br/>
+                <!--abbr>Address 1 : </abbr-->
+                <%= @organization.organization_address_1 %><br/>
 
-                <abbr>Address 2 : </abbr><%= @organization.organization_address_2 %><br/>
+                <!--abbr>Address 2 : </abbr-->
+                <%= @organization.organization_address_2 %><br/>
 
-                <abbr>Location : </abbr><%= @organization.organization_city %>,  <%= @organization.organization_state %>,  <%= @organization.organization_country %><br/>
+                <!--abbr>Location : </abbr-->
+                <%= @organization.organization_city %>,  <%= @organization.organization_state %>,  <%= @organization.organization_zipcode %><br/>
 
-                <abbr>Zip : </abbr><%= @organization.organization_zipcode %><br/>                
+                <%= @organization.organization_country %><br/>
 
-                <abbr>Active : </abbr><%= @organization.organization_active %><br/>            
+                <!--abbr>Zip : </abbr-->
+
+                <!--abbr>Active : </abbr--><%#= @organization.organization_active %>
 
                 <abbr>Telephone : </abbr><%= @organization.organization_telephone %><br/>
 
