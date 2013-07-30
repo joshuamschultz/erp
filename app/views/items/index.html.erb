@@ -1,49 +1,59 @@
-<h1>Listing items</h1>
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Items</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Item', new_item_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Owner</th>
+                <th>Part No</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Revision</th>
+                <th>Revision Date</th>
+                <th>Tooling</th>
+                <th>Cost</th>
+                <th>Quantity On Order</th>
+                <th>Quantity In Hand</th>
+                <th>Active</th>               
+                <th></th>
+              </tr>
+            </thead>
+            <body>
+                
+            </body>
+        </table>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Owner</th>
-    <th>Item part no</th>
-    <th>Item name</th>
-    <th>Item description</th>
-    <th>Item notes</th>
-    <th>Item revision</th>
-    <th>Item revision date</th>
-    <th>Item tooling</th>
-    <th>Item cost</th>
-    <th>Item quantity on order</th>
-    <th>Item quantity in hand</th>
-    <th>Item active</th>
-    <th>Item created</th>
-    <th>Item updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @items.each do |item| %>
-  <tr>
-    <td><%= item.owner %></td>
-    <td><%= item.item_part_no %></td>
-    <td><%= item.item_name %></td>
-    <td><%= item.item_description %></td>
-    <td><%= item.item_notes %></td>
-    <td><%= item.item_revision %></td>
-    <td><%= item.item_revision_date %></td>
-    <td><%= item.item_tooling %></td>
-    <td><%= item.item_cost %></td>
-    <td><%= item.item_quantity_on_order %></td>
-    <td><%= item.item_quantity_in_hand %></td>
-    <td><%= item.item_active %></td>
-    <td><%= item.item_created_id %></td>
-    <td><%= item.item_updated_id %></td>
-    <td><%= link_to 'Show', item %></td>
-    <td><%= link_to 'Edit', edit_item_path(item) %></td>
-    <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Item', new_item_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => items_path(@organization),
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "owner_name" },
+                        { "mData": "item_part_no" },
+                        { "mData": "name" },
+                        { "mData": "item_description" },
+                        { "mData": "item_notes"},
+                        { "mData": "item_revision"},
+                        { "mData": "item_revision_date" },
+                        { "mData": "item_tooling" },
+                        { "mData": "item_cost" },
+                        { "mData": "item_quantity_on_order" },
+                        { "mData": "item_quantity_in_hand" },
+                        { "mData": "item_active" },
+                        { "mData": "links" },
+                    ]'
+    } 
+%>
