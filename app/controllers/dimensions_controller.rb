@@ -2,17 +2,16 @@ class DimensionsController < ApplicationController
   # GET /dimensions
   # GET /dimensions.json
   def index
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.all
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimensions = @gauge.dimensions.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
         @dimensions = @dimensions.select{|dimension|
-          dimension[:links] = CommonActions.object_crud_paths(organization_gauge_dimension_path(@organizations,@gauges,dimension),
-                              edit_organization_gauge_dimension_path(@organizations,@gauges,dimension),
-                              organization_gauge_dimension_path(@organizations,@gauges,dimension)
-            )}
+          dimension[:dimension_identifier] = "<a href='#{organization_gauge_dimension_path(@organization, @gauge, dimension)}'>#{dimension[:dimension_identifier]}</a>"
+          dimension[:links] = CommonActions.object_crud_paths(nil, edit_organization_gauge_dimension_path(@organization, @gauge, dimension), nil)
+      }
         render json: {:aaData => @dimensions} 
       }
     end
@@ -21,9 +20,9 @@ class DimensionsController < ApplicationController
   # GET /dimensions/1
   # GET /dimensions/1.json
   def show
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.find(params[:id])
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,9 +33,9 @@ class DimensionsController < ApplicationController
   # GET /dimensions/new
   # GET /dimensions/new.json
   def new
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.build
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,21 +45,21 @@ class DimensionsController < ApplicationController
 
   # GET /dimensions/1/edit
   def edit
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.find(params[:id])
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.find(params[:id])
   end
 
   # POST /dimensions
   # POST /dimensions.json
   def create
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.create(params[:dimension])
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.new(params[:dimension])
 
     respond_to do |format|
-      if @dimensions.save
-        format.html { redirect_to organization_gauge_dimensions_path(@organizations,@gauges), notice: 'Dimension was successfully created.' }
+      if @dimension.save
+        format.html { redirect_to organization_gauge_dimensions_path(@organization, @gauge), notice: 'Dimension was successfully created.' }
         format.json { render json: @dimension, status: :created, location: @dimension }
       else
         format.html { render action: "new" }
@@ -72,13 +71,13 @@ class DimensionsController < ApplicationController
   # PUT /dimensions/1
   # PUT /dimensions/1.json
   def update
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.find(params[:id])
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.find(params[:id])
 
     respond_to do |format|
-      if @dimensions.update_attributes(params[:dimension])
-        format.html { redirect_to organization_gauge_dimensions_path(@organizations,@gauges), notice: 'Dimension was successfully updated.' }
+      if @dimension.update_attributes(params[:dimension])
+        format.html { redirect_to organization_gauge_dimensions_path(@organization, @gauge), notice: 'Dimension was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -90,13 +89,13 @@ class DimensionsController < ApplicationController
   # DELETE /dimensions/1
   # DELETE /dimensions/1.json
   def destroy
-    @organizations = Organization.find(params[:organization_id])
-    @gauges = @organizations.gauges.find(params[:gauge_id])
-    @dimensions = @gauges.dimensions.find(params[:id])
-    @dimensions.destroy
+    @organization = Organization.find(params[:organization_id])
+    @gauge = @organization.gauges.find(params[:gauge_id])
+    @dimension = @gauge.dimensions.find(params[:id])
+    @dimension.destroy
 
     respond_to do |format|
-      format.html { redirect_to organization_gauge_dimensions_path(@organizations,@gauges), notice: 'Dimension was successfully updated.' }
+      format.html { redirect_to organization_gauge_dimensions_path(@organization, @gauge), notice: 'Dimension was successfully updated.' }
       format.json { head :no_content }
     end
   end

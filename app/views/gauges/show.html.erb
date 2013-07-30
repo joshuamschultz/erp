@@ -33,6 +33,7 @@
 
   <div class="form-actions">
     <%= link_to 'Edit', edit_organization_gauge_path(@organization, @gauge), :class => "btn btn-small"%> 
+    <%= link_to 'Dimensions', organization_gauge_dimensions_path(@organization, @gauge), :class => "btn btn-small"%> 
     <%= link_to 'Back to Gauges of ' + @organization.organization_name, organization_gauges_path(@organization), :class => "btn btn-small" %>
   </div>
 </div>

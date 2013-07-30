@@ -1,8 +1,9 @@
   <!-- Wells -->
 <div class="row-fluid">
-    <h3 class="span9 left"><%= @organization.organization_type.type_name %><span></span></h3>
-    <span class="span3 right">
+    <h3 class="span3 left"><%= @organization.organization_type.type_name %><span></span></h3>
+    <span class="span9 right">
         <%= link_to 'Edit', edit_organization_path(@organization), :class => "btn btn-small" %>
+        <%= link_to 'Gauges', organization_gauges_path(@organization), :class => "btn btn-small" if @organization.organization_type.type_value == "support" %>
         <%= link_to 'Back to Organizations', organizations_path, :class => "btn btn-small" %>
     </span>
 </div>
@@ -48,7 +49,7 @@
                 <% elsif @organization.organization_type.type_value == "vendor" %>
                     <abbr>Quality ID : </abbr><%= @organization.vendor_quality.quality_name if @organization.vendor_quality %><br/>
 
-                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strfdate("%m/%d/%Y") if @organization.vendor_expiration_date %><br/>
+                    <abbr>Expiration Date : </abbr><%= @organization.vendor_expiration_date.strftime("%m/%d/%Y") if @organization.vendor_expiration_date %><br/>
                 <% end %>
 
                 <p><abbr>Notes : </abbr><%= @organization.organization_notes %></p>

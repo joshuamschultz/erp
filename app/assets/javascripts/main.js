@@ -62,12 +62,13 @@ function form_focus_handler(){
 
 function date_box_handler(){
 	$.each(date_box_fields, function(key, field){
-		$("#"+field).datepicker({
+		$("#"+field["name"]).datepicker({
 			changeMonth: true,
 			changeYear: true
 		});
-		$("#"+field).datepicker("option","dateFormat","yy-mm-dd");
-		
+		$("#"+field["name"]).datepicker("option","dateFormat","yy-mm-dd");
+		$("#"+field["name"]).datepicker("setDate", new Date(field["value"]));
+
 		// $("#"+field).datetimepicker({
 		// 	pickTime: false 
 		// }).on( "changeDate", function(ev) {

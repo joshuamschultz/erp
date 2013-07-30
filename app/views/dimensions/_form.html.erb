@@ -1,19 +1,24 @@
-<%= simple_form_for([@organizations,@gauges,@dimensions],:html => {:id => "form_for_dimension",:class => "form-horizontal"}) do |f| %>
+<%= simple_form_for([@organization, @gauge, @dimension],:html => {:id => "form_for_dimension", :class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :dimension_identifier, :label => "Identifier" %>
+    <%= f.input :dimension_identifier, :label => "Identifier", :autofocus => true %>
     <%= f.input :dimension_description, :label => "Description" %>
     <%= f.input :dimension_notes, :label => "Notes" %>
     <%= f.input :dimension_active, :label => "Active" %>   
   </div>
 
+  <div class="separator bottom"></div>
+
   <div class="form-actions">
     <%= f.button :submit, :class =>"btn btn-small" %>
-    <%= link_to 'Back to Dimension of ' + @gauges.gauge_tool_name, organization_gauge_dimensions_path(@organizations,@gauges),:class =>"btn btn-small" %>
+
+     <%= link_to 'Delete', organization_gauge_dimension_path(@organization, @gauge, @dimension), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @dimension.new_record? %>
+
+    <%= link_to 'Back to Dimensions', organization_gauge_dimensions_path(@organization, @gauge),:class =>"btn btn-small" %>
   </div>
 <% end %>
+
 <script type="text/javascript">
     tab_field_forms["form_for_dimension"] = ["dimension_dimension_identifier", "dimension_dimension_description", "dimension_dimension_notes", "dimension_dimension_active"];
-    date_box_fields = date_box_fields.concat(["gauge_gage_caliberation_at"]);
 </script>
