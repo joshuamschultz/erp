@@ -16,8 +16,7 @@ class OrganizationsController < ApplicationController
       format.json {
         @organizations = @organizations.select{|organization| 
           organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
-          organization[:links] = CommonActions.object_crud_paths(organization_path(organization), edit_organization_path(organization), 
-                        organization_path(organization))
+          organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
         }
         render json: {:aaData => @organizations}  }
     end
