@@ -68,4 +68,7 @@ AllianceFasteners::Application.configure do
   #Mail configuration for the development 
   config.action_mailer.default_url_options = { :host => 'alliance-erp.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
+
+  # Expands the lines which load the assets
+  config.assets.debug = false
 end

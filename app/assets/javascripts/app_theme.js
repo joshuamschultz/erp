@@ -10,6 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require_self
+//= require ./theme_js/jquery.cookie
 //= require ./theme_js/jquery.slimscroll.min
 //= require ./theme_js/common
 //= require ./theme_js/holder
@@ -18,3 +20,5 @@
 //= require ./theme_js/DT_bootstrap
 //= require ./theme_js/jquery.dataTables.rowGrouping
 //= require ./theme_js/select2
+//= require ./theme_js/jasny-bootstrap.min
+//= require ./theme_js/bootstrap-fileupload

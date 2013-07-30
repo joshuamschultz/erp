@@ -15,6 +15,7 @@ class OrganizationsController < ApplicationController
       format.html # index.html.erb
       format.json {
         @organizations = @organizations.select{|organization| 
+          organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
           organization[:links] = CommonActions.object_crud_paths(organization_path(organization), edit_organization_path(organization), 
                         organization_path(organization))
         }
