@@ -2,19 +2,26 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :gauge_tool_name, :label => "Gauge Tool Name" %>
-    <%= f.input :gauge_tool_no, :label => "Gauge Tool Number" %>
-    <%= f.input :gage_caliberation_at , :as => :string, :label => "Gauge Caliberation At"%>
-    <%= f.input :gage_caliberaion_period, :label => "Gauge Caliberation Period" %>
-    <%= f.input :gauge_active, :label => "Gauge Active" %> 
+    <%= f.input :gauge_tool_name, :label => "Tool Name", :autofocus => true %>
+    <%= f.input :gauge_tool_no, :label => "Tool Number" %>
+    <%= f.input :gage_caliberation_at, :as => :string, :label => "Caliberation At" %>
+    <%= f.input :gage_caliberaion_period, :label => "Caliberation Period" %>
+    <%= f.input :gauge_active, :label => "Active" %> 
   </div>
 
+  <div class="separator bottom"></div>
+
   <div class="form-actions">
-    <%= f.button :submit %>
-    <%= link_to 'Back to Organization of' + @organization.organization_name, organization_gauges_path(@organization),:class =>"btn btn-small" %>
+    <%= f.button :submit, "Submit", :class => "btn" %>
+    <%= link_to 'Delete', organization_gauge_path(@organization, @gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @gauge.new_record? %>
+    <%= link_to 'Back to Gauges', organization_gauges_path(@organization),:class =>"btn btn-small" %>
   </div>
 <% end %>
+
 <script type="text/javascript">
-    tab_field_forms["form_for_gauges"] = ["gauge_organization_id", "gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_at", "gauge_gage_caliberaion_period", "gauge_gauge_active", "gauge_gauge_created_id", "gauge_gauge_updated_id"];
-    date_box_fields = date_box_fields.concat(["gauge_gage_caliberation_at"]);
+    tab_field_forms["form_for_gauges"] = ["gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_at", "gauge_gage_caliberaion_period", "gauge_gauge_active"];   
+
+    <% date_box_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_at %> 
+
+    date_box_fields = date_box_fields.concat([{"name":"gauge_gage_caliberation_at", "value":"<%= date_box_date %>"}]);
 </script>

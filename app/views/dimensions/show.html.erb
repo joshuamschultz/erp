@@ -6,28 +6,29 @@
       <tbody>
         <tr>
           <td>Identifier:</td>
-          <td><%= @dimensions.dimension_identifier %></td>
+          <td><%= @dimension.dimension_identifier %></td>
         </tr>
 
         <tr>
           <td>Description:</td>
-          <td><%= @dimensions.dimension_description %></td>
+          <td><%= @dimension.dimension_description %></td>
         </tr>
 
         <tr>
           <td>Notes:</td>
-          <td><%= @dimensions.dimension_notes %></td>
+          <td><%= @dimension.dimension_notes %></td>
         </tr>
 
         <tr>
           <td>Active:</td>
-          <td><%= @dimensions.dimension_active %></td>
+          <td><%= @dimension.dimension_active %></td>
         </tr>
       </tbody>
     </table>
 
    <div class="form-actions">
-    <%= link_to 'Edit', edit_organization_gauge_dimension_path(@organizations, @gauges, @dimensions), :class => "btn btn-small"%> 
-    <%= link_to 'Back to Dimension of ' + @gauges.gauge_tool_name, organization_gauge_dimensions_path(@organizations,@gauges),:class =>"btn btn-small" %>
+    <%= link_to 'Edit', edit_organization_gauge_dimension_path(@organization, @gauge, @dimension), :class => "btn btn-small"%> 
+    
+    <%= link_to 'Back to Dimensions', organization_gauge_dimensions_path(@organization, @gauge), :class =>"btn btn-small" %>
   </div>
 </div>

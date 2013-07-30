@@ -5,8 +5,8 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Gauges of <%= @organization.organization_name %></h4>
             <span class="span6 heading right">
-                <%= link_to 'New Guage', new_organization_gauge_path(@organization), :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Back to Materials', organizations_path, :class => "btn btn-mini btn-info" %>
+                <%= link_to 'Back to Organization', organization_path(@organization), :class => "btn btn-mini" %>
+                <%= link_to 'New Guage', new_organization_gauge_path(@organization), :class => "btn btn-mini btn-success" %>                
             </span>
         </div> 
     </div>
