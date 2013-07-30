@@ -15,7 +15,9 @@
  *= require ./theme_css/uniform.default
  *= require ./theme_css/datetimepicker
  *= require ./theme_css/select2
- *= require jquery.multiselect
+ *= require jquery.multiselect 
+ *= require ./theme_css/jasny-bootstrap.min
+ *= require ./theme_css/jasny-bootstrap-responsive.min
  *= require ./theme_css/style-dark
  *= require_self
  */
