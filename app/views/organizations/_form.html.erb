@@ -42,6 +42,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Delete', organization_path(@organization), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @organization.new_record? %>
     <%= link_to 'Back to Organizations', organizations_path, :class => "btn" %>
   </div>
 <% end %>
