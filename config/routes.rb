@@ -1,6 +1,9 @@
 AllianceFasteners::Application.routes.draw do
   
-  resources :items
+  resources :items do
+      resources :item_alt_names
+      resources :item_part_dimensions
+  end
 
   resources :images
 

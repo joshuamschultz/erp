@@ -1,0 +1,20 @@
+<%= simple_form_for(@item_part_dimension) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :item %>
+    <%= f.input :item_part_letter %>
+    <%= f.input :item_part_type %>
+    <%= f.input :item_part_pos_tolerance %>
+    <%= f.input :item_part_neg_tolerance %>
+    <%= f.input :item_part_critical %>
+    <%= f.input :item_part_notes %>
+    <%= f.input :item_part_active %>
+    <%= f.input :item_part_created_id %>
+    <%= f.input :item_part_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
