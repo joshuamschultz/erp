@@ -6,7 +6,14 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @items }
+      format.json { @items = @items.select{|item|
+          item[:name] = "<a href='/items/#{item.id}'>#{item.item_name}</a>"      
+          item[:owner_name] = item.owner.owner_identifier
+          item[:links] = CommonActions.object_crud_paths( nil,
+                          edit_item_path(item),nil)
+        }
+        render json: {:aaData => @items} 
+      }        
     end
   end
 
@@ -44,7 +51,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        format.html { redirect_to items_path, notice: 'Item was successfully created.' }
         format.json { render json: @item, status: :created, location: @item }
       else
         format.html { render action: "new" }
@@ -60,7 +67,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.update_attributes(params[:item])
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
+        format.html { redirect_to items_path, notice: 'Item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,7 +83,7 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to items_url }
+      format.html { redirect_to items_path }
       format.json { head :no_content }
     end
   end
