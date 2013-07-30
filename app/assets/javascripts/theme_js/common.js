@@ -185,9 +185,9 @@ $(function()
 	// main menu visibility toggle
 	$('.navbar.main .btn-navbar').click(function()
 	{
-		var disabled = typeof toggleMenuButtonWhileTourOpen != 'undefined' ? toggleMenuButtonWhileTourOpen(true) : true;
-		if (!disabled)
-			toggleMenuHidden();
+		// var disabled = typeof toggleMenuButtonWhileTourOpen != 'undefined' ? toggleMenuButtonWhileTourOpen(true) : true;
+		// if (!disabled)
+		toggleMenuHidden();
 	});
 	
 	// topnav toggle

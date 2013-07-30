@@ -10,6 +10,8 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require_self
+//= require ./theme_js/jquery.cookie
 //= require ./theme_js/jquery.slimscroll.min
 //= require ./theme_js/common
 //= require ./theme_js/holder
