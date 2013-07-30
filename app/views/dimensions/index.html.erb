@@ -3,10 +3,11 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Dimension of <%=@gauges.gauge_tool_name%> of <%= @organizations.organization_name %></h4>
+            <h4 class="span6 heading">Dimensions of <%= @gauge.gauge_tool_name %></h4>
             <span class="span6 heading right">
-                <%= link_to 'New Dimension', new_organization_gauge_dimension_path(@organizations,@gauges), :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Back to Gauge', organization_gauges_path(@organizations), :class => "btn btn-mini btn-info" %>
+                <%= link_to 'Back to Gauges', organization_gauges_path(@organization), :class => "btn btn-mini" %>
+                <%= link_to 'New Dimension', new_organization_gauge_dimension_path(@organization, @gauge), :class => "btn btn-mini btn-success" %>
+                
             </span>
         </div> 
     </div>
@@ -14,12 +15,12 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>Gauge</th>
-                <th>Dimension identifier</th>
-                <th>Dimension description</th>
-                <th>Dimension notes</th>
-                <th>Dimension active</th>    
-                <th></th>            
+                <th>SLNO</th>
+                <th>Identifier</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Active</th>    
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -31,7 +32,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report",  :path => organization_gauge_dimensions_path(@organizations,@gauges),
+        :name => "table_report",  :path => organization_gauge_dimensions_path(@organization, @gauge),
         :columns => '[
                         { "mData": "id" },
                         { "mData": "dimension_identifier" },

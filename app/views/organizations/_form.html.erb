@@ -82,7 +82,9 @@
         }
     }
 
-    date_box_fields = date_box_fields.concat(["organization_vendor_expiration_date"]);
+    <% date_box_date = @organization.new_record? ? Date.today : @organization.vendor_expiration_date %>
+
+    date_box_fields = date_box_fields.concat([{"name":"organization_vendor_expiration_date", "value":"<%= date_box_date %>"}]);
 
     tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
 
