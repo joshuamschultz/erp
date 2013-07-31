@@ -2,16 +2,14 @@ class GaugesController < ApplicationController
   # GET /gauges
   # GET /gauges.json
   def index
-    @organization = Organization.find(params[:organization_id])
-    @gauges = @organization.gauges.all
+    @gauges = Gauge.all
     respond_to do |format|
       format.html # index.html.erb
       format.json{
         @gauges = @gauges.select{|gauge|
-          gauge[:gauge_tool_name] = "<a href='#{organization_gauge_path(@organization, gauge)}'>#{gauge[:gauge_tool_name]}</a>"
-          gauge[:links] = CommonActions.object_crud_paths(nil, edit_organization_gauge_path(@organization,gauge), nil, 
-            [ {:name => "Dimensions", :path => organization_gauge_dimensions_path(@organization, gauge)}
-            ])
+          gauge[:gauge_tool_name] = "<a href='#{gauge_path(gauge)}'>#{gauge[:gauge_tool_name]}</a>"
+          gauge[:gauge_caliberator] = gauge.organization.organization_short_name
+          gauge[:links] = CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
         }
         render json: {:aaData => @gauges}
       }
@@ -21,8 +19,7 @@ class GaugesController < ApplicationController
   # GET /gauges/1
   # GET /gauges/1.json
   def show
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.find(params[:id])
+    @gauge = Gauge.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -33,8 +30,7 @@ class GaugesController < ApplicationController
   # GET /gauges/new
   # GET /gauges/new.json
   def new
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.build
+    @gauge = Gauge.new
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @gauge }
@@ -43,19 +39,17 @@ class GaugesController < ApplicationController
 
   # GET /gauges/1/edit
   def edit
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.find(params[:id])
+    @gauge = Gauge.find(params[:id])
   end
 
   # POST /gauges
   # POST /gauges.json
   def create
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.create(params[:gauge])
+    @gauge = Gauge.new(params[:gauge])
 
     respond_to do |format|
       if @gauge.save
-        format.html { redirect_to organization_gauges_path(@organization), notice: 'Gauge was successfully created.' }
+        format.html { redirect_to gauges_path, notice: 'Gauge was successfully created.' }
         format.json { render json: @gauge, status: :created, location: @gauge }
       else
         format.html { render action: "new" }
@@ -67,12 +61,11 @@ class GaugesController < ApplicationController
   # PUT /gauges/1
   # PUT /gauges/1.json
   def update
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.find(params[:id])
+    @gauge = Gauge.find(params[:id])
 
     respond_to do |format|
       if @gauge.update_attributes(params[:gauge])
-        format.html { redirect_to organization_gauges_path(@organization), notice: 'Gauge was successfully updated.' }
+        format.html { redirect_to gauges_path, notice: 'Gauge was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -84,12 +77,11 @@ class GaugesController < ApplicationController
   # DELETE /gauges/1
   # DELETE /gauges/1.json
   def destroy
-    @organization = Organization.find(params[:organization_id])
-    @gauge = @organization.gauges.find(params[:id])
+    @gauge = Gauge.find(params[:id])
     @gauge.destroy
 
     respond_to do |format|
-      format.html { redirect_to organization_gauges_path(@organization)}
+      format.html { redirect_to gauges_path, notice: 'Gauge was successfully deleted.'}
       format.json { head :no_content }
     end
   end

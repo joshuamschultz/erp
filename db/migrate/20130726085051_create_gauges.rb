@@ -4,7 +4,8 @@ class CreateGauges < ActiveRecord::Migration
       t.references :organization
       t.string :gauge_tool_name
       t.string :gauge_tool_no
-      t.date :gage_caliberation_at
+      t.date :gage_caliberation_last_at
+      t.date :gage_caliberation_due_at
       t.integer :gage_caliberaion_period
       t.boolean :gauge_active
       t.integer :gauge_created_id

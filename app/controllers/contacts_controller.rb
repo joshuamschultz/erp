@@ -1,15 +1,31 @@
 class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
+
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:contacts][:active] = "active"
+  end
+
+
   def index  
     @contact_type = params[:contact_type] || "address"
+
     @contactable = Organization.find_by_id(params[:object_id])
-    @contacts = @contactable.contacts.where(:contact_type => @contact_type)
+    if @contactable
+        @contacts = @contactable.contacts.where(:contact_type => @contact_type)
+    else
+        @org_type = MasterType.find_by_type_value(params[:org_type] ||= "vendor")
+        @organizations = @org_type.type_based_organizations
+        @contacts = Contact.where(:contact_type => @contact_type, :contactable_id => @organizations.collect(&:id), :contactable_type => "Organization")
+    end
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
             @contacts = @contacts.select{|contact|
+            contact[:organization] = "Organization : " + "<a href='#{organization_path(contact.contactable)}'>#{contact.contactable.organization_short_name}</a>"
             contact[:first_name] = "<a href='#{contact_path(contact)}'>#{contact[:first_name]}</a>" if @contact_type == "contact"
             contact[:contact_title] = "<a href='#{contact_path(contact)}'>#{contact[:contact_title]}</a>" if @contact_type == "address"
             contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)

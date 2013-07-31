@@ -13,8 +13,12 @@
         <!-- Content -->
         <div id="content">
             <p></p>            
-            <div class="innerLR">
-                <% if notice %><p id="notice" class="alert alert-primary"><%= notice %></p><% end %>
+            <div class="innerLR">  
+                <% if notice && notice.class.name == "Hash" %>
+                    <% if notice[:method] == "error" %><p id="notice" class="alert alert-error"><%= notice[:message] %></p><% end %>
+                <% elsif notice %>
+                        <p id="notice" class="alert alert-primary"><%= notice %></p>
+                <% end %>
                 <%= yield %>
             </div>
         </div>
