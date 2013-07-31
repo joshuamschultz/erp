@@ -28,7 +28,7 @@
 
         <% if extras[:grouping] %>
             data_table.rowGrouping({
-                "iGroupingColumnIndex": extras[:column_index]
+                "iGroupingColumnIndex": <%= extras[:column_index] %>
             });
         <% end %>
     });

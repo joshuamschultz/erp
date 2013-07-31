@@ -1,11 +1,14 @@
-<%= simple_form_for([@organization,@gauge], :html => {:id => "form_for_gauges",:class => "form-horizontal"}) do |f| %>
+<%= simple_form_for(@gauge, :html => {:id => "form_for_gauges",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
+  <div class="form-inputs">    
     <%= f.input :gauge_tool_name, :label => "Tool Name", :autofocus => true %>
+    <%= f.input :gauge_tool_category, :label => "Tool Category" %>
     <%= f.input :gauge_tool_no, :label => "Tool Number" %>
-    <%= f.input :gage_caliberation_at, :as => :string, :label => "Caliberation At" %>
-    <%= f.input :gage_caliberaion_period, :label => "Caliberation Period" %>
+    <%= f.association :organization, label: "Caliberator", label_method: "organization_short_name", label_value: "id", :include_blank => false %>
+    <%= f.input :gage_caliberation_last_at, :as => :string, :label => "Caliberation Last At" %>
+    <%= f.input :gage_caliberation_due_at, :as => :string, :label => "Caliberation Due At" %>
+    <%#= f.input :gage_caliberaion_period, :label => "Caliberation Period" %>
     <%= f.input :gauge_active, :label => "Active" %> 
   </div>
 
@@ -13,15 +16,16 @@
 
   <div class="form-actions">
     <%= f.button :submit, "Submit", :class => "btn" %>
-    <%= link_to 'Delete', organization_gauge_path(@organization, @gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @gauge.new_record? %>
-    <%= link_to 'Back to Gauges', organization_gauges_path(@organization),:class =>"btn btn-small" %>
+    <%= link_to 'Delete', gauge_path(@gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @gauge.new_record? %>
+    <%= link_to 'Back to Instruments', gauges_path,:class =>"btn btn-small" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_gauges"] = ["gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_at", "gauge_gage_caliberaion_period", "gauge_gauge_active"];   
+    tab_field_forms["form_for_gauges"] = ["gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_last_at", "gauge_gage_caliberation_due_at", "gauge_gauge_active"];   
 
-    <% date_box_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_at %> 
+    <% date_box_last_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_last_at %>
+    <% date_box_due_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_due_at %> 
 
-    date_box_fields = date_box_fields.concat([{"name":"gauge_gage_caliberation_at", "value":"<%= date_box_date %>"}]);
+    date_box_fields = date_box_fields.concat([{"name":"gauge_gage_caliberation_last_at", "value":"<%= date_box_last_date %>"}, {"name":"gauge_gage_caliberation_due_at", "value":"<%= date_box_due_date %>"}]);
 </script>
