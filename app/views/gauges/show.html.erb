@@ -1,39 +1,53 @@
 <div class="row-fluid span8">
   <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Guage Info</h4>
+        <h4>Instrument Info</h4>
   </div>
   <table class="table table-striped table-bordered">
     <tbody>     
       <tr>
-        <td>Tool Name:</td>
+        <td>Tool Name :</td>
         <td><%= @gauge.gauge_tool_name %></td>
       </tr>
 
       <tr>
-        <td>Tool No:</td>
+        <td>Tool Category :</td>
+        <td><%= @gauge.gauge_tool_category %></td>
+      </tr>
+
+      <tr>
+        <td>Tool No :</td>
         <td><%= @gauge.gauge_tool_no %></td>
       </tr>
 
       <tr>
-        <td>Caliberation At:</td>
-        <td><%= @gauge.gage_caliberation_at %></td>
+        <td>Caliberator :</td>
+        <td><%= @gauge.organization.organization_short_name %></td>
       </tr>
 
       <tr>
-        <td>Caliberaion Period:</td>
+        <td>Caliberation Last At :</td>
+        <td><%= @gauge.gage_caliberation_last_at %></td>
+      </tr>
+
+      <tr>
+        <td>Caliberation Due At :</td>
+        <td><%= @gauge.gage_caliberation_due_at %></td>
+      </tr>
+
+      <!-- <tr>
+        <td>Caliberaion Period :</td>
         <td><%= @gauge.gage_caliberaion_period %></td>
-      </tr>
+      </tr> -->
 
       <tr>
-        <td>Gauge Active:</td>
+        <td>Active :</td>
         <td><%= @gauge.gauge_active %></td>
       </tr>    
     </tbody>
   </table>
 
   <div class="form-actions">
-    <%= link_to 'Edit', edit_organization_gauge_path(@organization, @gauge), :class => "btn btn-small"%> 
-    <%= link_to 'Dimensions', organization_gauge_dimensions_path(@organization, @gauge), :class => "btn btn-small"%> 
-    <%= link_to 'Back to Gauges of ' + @organization.organization_name, organization_gauges_path(@organization), :class => "btn btn-small" %>
+    <%= link_to 'Edit', edit_gauge_path(@gauge), :class => "btn btn-small"%> 
+    <%= link_to 'Back to Instruments', gauges_path, :class => "btn btn-small" %>
   </div>
 </div>

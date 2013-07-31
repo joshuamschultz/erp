@@ -2,7 +2,7 @@ class OrganizationsController < ApplicationController
   before_filter :set_page_info
 
   def set_page_info
-      @menus[:system][:active] = "active"
+      @menus[:contacts][:active] = "active"
   end
 
   # GET /organizations

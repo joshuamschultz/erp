@@ -5,6 +5,10 @@ AllianceFasteners::Application.routes.draw do
       resources :item_part_dimensions
   end
 
+  resources :gauges
+
+  resources :dimensions
+
   resources :images
 
   resources :attachments
@@ -18,10 +22,6 @@ AllianceFasteners::Application.routes.draw do
   resources :organizations do
       member do
           post 'populate'
-      end
-
-      resources :gauges do
-          resources :dimensions
       end
   end
 
