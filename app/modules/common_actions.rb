@@ -101,12 +101,12 @@ module CommonActions
 
 		menus[:inventory] = {:class => "hasSubmenu glyphicons cargo", :path => "#", :name => "Inventory", :type => "multiple"}
 		menus[:inventory][:sub_menu] = 	[
-											{:path => "#", :name => "Item"},
+											{:path => "#", :name => "Items"},
 											{:path => "#", :name => "Prints"},
 											{:path => materials_path, :name => "Materials"},
-											{:path => "#", :name => "Process"},
-											{:path => "#", :name => "Specifications"},
-											{:path => "#", :name => "Dimension Type"}
+											{:path => process_types_path, :name => "Processes"},
+											{:path => specifications_path, :name => "Specifications"},
+											{:path => "#", :name => "Dimension Types"}
 										]
 
 		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
@@ -127,13 +127,14 @@ module CommonActions
 		menus[:quality][:sub_menu] = 	[
 											{:path => "#", :name => "Checklist"}, 
 											{:path => "#", :name => "Lot Info"},
+											{:path => "#", :name => "Material"}, 
 											{:path => "#", :name => "Dimensions"}, 
 											{:path => "#", :name => "Run at Rate"},
 											{:path => "#", :name => "Part Submission Warrant"}, 
 											{:path => "#", :name => "Packaging"},
 											{:path => gauges_path, :name => "Instruments"},
 											{:path => "#", :name => " Cause Analysis"}, 
-											{:path => process_types_path, :name => "Process Flow"},
+											{:path => "#", :name => "Process Flow"},
 											{:path => "#", :name => "FMEA"},
 											{:path => "#", :name => "Control Plan"},
 											{:path => "#", :name => "Customer Response"},
@@ -160,8 +161,7 @@ module CommonActions
 											{:path => owners_path, :name => "Owners"},
 											{:path => "#", :name => "Privileges"},
 											{:path => territories_path, :name => "Territories"},
-											{:path => "#", :name => "Documents"},
-											{:path => specifications_path, :name => "Specifications"},
+											{:path => "#", :name => "Documents"},											
 											{:path => commodities_path, :name => "Commodities"}
 										]
 		menus
@@ -174,8 +174,8 @@ module CommonActions
 								{:path => company_infos_path, :name => "Company Info", :class => "", :drop_down => false, :sub_menu => []},
 								{:path => owners_path, :name => "Owners", :class => "", :drop_down => false, :sub_menu => []},
 								{:path => territories_path, :name => "Territories", :class => "", :drop_down => false, :sub_menu => []},
-								{:path => specifications_path, :name => "Specifications", :class => "", :drop_down => false, :sub_menu => []},
 								{:path => commodities_path, :name => "Commodities", :class => "", :drop_down => false, :sub_menu => []}
+								# {:path => specifications_path, :name => "Specifications", :class => "", :drop_down => false, :sub_menu => []},								
 								# {:path => materials_path, :name => "Materials", :class => "", :drop_down => false, :sub_menu => []},
 								# {:path => process_types_path, :name => "Processes", :class => "", :drop_down => false, :sub_menu => []},
 								# {:path => vendor_qualities_path, :name => "Quality ID", :class => "", :drop_down => false, :sub_menu => []},

@@ -1,6 +1,12 @@
 class GaugesController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:quality][:active] = "active"
+  end
+
   # GET /gauges
-  # GET /gauges.json
+  # GET /gauges.json  
   def index
     @gauges = Gauge.all
     respond_to do |format|
@@ -49,7 +55,7 @@ class GaugesController < ApplicationController
 
     respond_to do |format|
       if @gauge.save
-        format.html { redirect_to gauges_path, notice: 'Gauge was successfully created.' }
+        format.html { redirect_to gauges_path, notice: 'Instrument was successfully created.' }
         format.json { render json: @gauge, status: :created, location: @gauge }
       else
         format.html { render action: "new" }
@@ -65,7 +71,7 @@ class GaugesController < ApplicationController
 
     respond_to do |format|
       if @gauge.update_attributes(params[:gauge])
-        format.html { redirect_to gauges_path, notice: 'Gauge was successfully updated.' }
+        format.html { redirect_to gauges_path, notice: 'Instrument was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -81,7 +87,7 @@ class GaugesController < ApplicationController
     @gauge.destroy
 
     respond_to do |format|
-      format.html { redirect_to gauges_path, notice: 'Gauge was successfully deleted.'}
+      format.html { redirect_to gauges_path, notice: 'Instrument was successfully deleted.'}
       format.json { head :no_content }
     end
   end

@@ -2,7 +2,7 @@ class ProcessTypesController < ApplicationController
   before_filter :set_page_info
 
   def set_page_info
-      @menus[:system][:active] = "active"
+      @menus[:inventory][:active] = "active"
   end
   # GET /process_types
   # GET /process_types.json

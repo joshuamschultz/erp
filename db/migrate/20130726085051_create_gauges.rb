@@ -3,6 +3,7 @@ class CreateGauges < ActiveRecord::Migration
     create_table :gauges do |t|
       t.references :organization
       t.string :gauge_tool_name
+      t.string :gauge_tool_category
       t.string :gauge_tool_no
       t.date :gage_caliberation_last_at
       t.date :gage_caliberation_due_at

@@ -1,7 +1,7 @@
 class Gauge < ActiveRecord::Base  
   attr_accessible :organization_id, :gage_caliberaion_period, :gage_caliberation_last_at, 
   :gage_caliberation_due_at, :gauge_active, :gauge_created_id, :gauge_tool_name, :gauge_tool_no, 
-  :gauge_updated_id
+  :gauge_updated_id, :gauge_tool_category
 
   after_initialize :default_values
 
