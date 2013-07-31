@@ -1,55 +1,49 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Item Part Dimesion Info</h4>
+  </div>
+  <table class="table table-striped table-bordered">
+    <tbody>     
+      <tr>
+        <td>Item part letter:</td>
+        <td><%= @item_part_dimension.item_part_letter %></td>
+      </tr>
 
-<p>
-  <b>Item:</b>
-  <%= @item_part_dimension.item %>
-</p>
+      <tr>
+        <td>Item part type:</td>
+        <td><%= @item_part_dimension.item_part_type %></td>
+      </tr>
 
-<p>
-  <b>Item part letter:</b>
-  <%= @item_part_dimension.item_part_letter %>
-</p>
+      <tr>
+        <td>Item part pos tolerance:</td>
+        <td><%= @item_part_dimension.item_part_pos_tolerance %></td>
+      </tr>
 
-<p>
-  <b>Item part type:</b>
-  <%= @item_part_dimension.item_part_type %>
-</p>
+      <tr>
+        <td>Item part neg tolerance:</td>
+        <td><%= @item_part_dimension.item_part_neg_tolerance %></td>
+      </tr>
 
-<p>
-  <b>Item part pos tolerance:</b>
-  <%= @item_part_dimension.item_part_pos_tolerance %>
-</p>
+      <tr>
+        <td>Item part critical:</td>
+        <td><%= @item_part_dimension.item_part_critical %></td>
+      </tr>
 
-<p>
-  <b>Item part neg tolerance:</b>
-  <%= @item_part_dimension.item_part_neg_tolerance %>
-</p>
+      <tr>
+        <td>Item part notes:</td>
+        <td><%= @item_part_dimension.item_part_notes %></td>
+      </tr>
 
-<p>
-  <b>Item part critical:</b>
-  <%= @item_part_dimension.item_part_critical %>
-</p>
-
-<p>
-  <b>Item part notes:</b>
-  <%= @item_part_dimension.item_part_notes %>
-</p>
-
-<p>
-  <b>Item part active:</b>
-  <%= @item_part_dimension.item_part_active %>
-</p>
-
-<p>
-  <b>Item part created:</b>
-  <%= @item_part_dimension.item_part_created_id %>
-</p>
-
-<p>
-  <b>Item part updated:</b>
-  <%= @item_part_dimension.item_part_updated_id %>
-</p>
+      <tr>
+        <td>Item part active:</td>
+        <td><%= @item_part_dimension.item_part_active %></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_item_item_part_dimension_path(@item, @item_part_dimension), :class => "btn btn-small"%> 
+    <%= link_to 'Back to item_part_dimension of ' + @item.item_name, item_item_part_dimensions_path(@item), :class => "btn btn-small" %>
+  </div>
+</div>
 
 
-<%= link_to 'Edit', edit_item_part_dimension_path(@item_part_dimension) %> |
-<%= link_to 'Back', item_part_dimensions_path %>
