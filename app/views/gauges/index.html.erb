@@ -16,6 +16,7 @@
                 <tr>
                     <!-- <th>SLNO</th> -->
                     <th>Tool Name</th>
+                    <th>Tool Category</th>
                     <th>Tool No</th>
                     <th>Caliberator</th>
                     <th>Caliberation Last At</th>
@@ -35,6 +36,7 @@
         :name => "table_report", :path => gauges_path, :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "gauge_tool_name" },
+                        { "mData": "gauge_tool_category" },
                         { "mData": "gauge_tool_no" },
                         { "mData": "gauge_caliberator" },
                         { "mData": "gage_caliberation_last_at" },

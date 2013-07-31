@@ -2,7 +2,7 @@ class CustomerQualitiesController < ApplicationController
   before_filter :set_page_info
 
   def set_page_info
-      @menus[:system][:active] = "active"
+      @menus[:quality][:active] = "active"
   end
   
   # GET /customer_qualities
