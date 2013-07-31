@@ -18,4 +18,6 @@ class Owner < ActiveRecord::Base
   validates_length_of :owner_commission_amount, :maximum => 20 if validates_presence_of :owner_commission_amount
 
   validates_presence_of :commission_type
+
+  has_many :items
 end

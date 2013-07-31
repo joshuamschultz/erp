@@ -1,17 +1,18 @@
-<%= simple_form_for(@item_alt_name) do |f| %>
+<%= simple_form_for([@item,@item_alt_name], :html => {:id => "form_for_item_alt_name",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :item %>
-    <%= f.input :item_alt_identifier %>
+    <%= f.input :item_alt_identifier, :autofocus => true %>
     <%= f.input :item_alt_description %>
     <%= f.input :item_alt_notes %>
     <%= f.input :item_alt_active %>
-    <%= f.input :item_alt_created_id %>
-    <%= f.input :item_alt_updated_id %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, "Submit", :class => "btn" %>
+    <%= link_to 'Delete', item_item_alt_name_path(@item, @item_alt_name), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @item_alt_name.new_record? %>
   </div>
 <% end %>
+<script type="text/javascript">
+    tab_field_forms["form_for_item_alt_name"] = ["item_alt_name_item_id", "item_alt_name_item_alt_identifier", "item_alt_name_item_alt_description", "item_alt_name_item_alt_notes", "item_alt_name_item_alt_active"];
+</script>
