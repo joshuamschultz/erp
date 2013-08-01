@@ -1,40 +1,34 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Item Alt Info</h4>
+  </div>
+  <table class="table table-striped table-bordered">
+    <tbody>     
+      <tr>
+        <td>Identifier:</td>
+        <td><%= @item_alt_name.item_alt_identifier %></td>
+      </tr>
 
-<p>
-  <b>Item:</b>
-  <%= @item_alt_name.item %>
-</p>
+      <tr>
+        <td>Description:</td>
+        <td><%= @item_alt_name.item_alt_description %></td>
+      </tr>
 
-<p>
-  <b>Item alt identifier:</b>
-  <%= @item_alt_name.item_alt_identifier %>
-</p>
+      <tr>
+        <td>Notes:</td>
+        <td><%= @item_alt_name.item_alt_notes %></td>
+      </tr>
 
-<p>
-  <b>Item alt description:</b>
-  <%= @item_alt_name.item_alt_description %>
-</p>
-
-<p>
-  <b>Item alt notes:</b>
-  <%= @item_alt_name.item_alt_notes %>
-</p>
-
-<p>
-  <b>Item alt active:</b>
-  <%= @item_alt_name.item_alt_active %>
-</p>
-
-<p>
-  <b>Item alt created:</b>
-  <%= @item_alt_name.item_alt_created_id %>
-</p>
-
-<p>
-  <b>Item alt updated:</b>
-  <%= @item_alt_name.item_alt_updated_id %>
-</p>
+      <tr>
+        <td>Active:</td>
+        <td><%= @item_alt_name.item_alt_active %></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_item_item_alt_name_path(@item, @item_alt_name), :class => "btn btn-small"%> 
+    <%= link_to 'Back to item_alt_name of ' + @item.item_name, item_item_alt_names_path(@item), :class => "btn btn-small" %>
+  </div>
+</div>
 
 
-<%= link_to 'Edit', edit_item_alt_name_path(@item_alt_name) %> |
-<%= link_to 'Back', item_alt_names_path %>

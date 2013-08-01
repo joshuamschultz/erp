@@ -1,35 +1,44 @@
-<h1>Listing item_alt_names</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Items Alt of <%= @item.item_name %></h4>
+            <span class="span6 heading right">
+                <%= link_to 'Back to Item', item_path(@item), :class => "btn btn-mini" %>
+                <%= link_to 'New Item alt names', new_item_item_alt_name_path(@item), :class => "btn btn-mini btn-success" %>               
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Item</th>
+                <th>Identifier</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Item</th>
-    <th>Item alt identifier</th>
-    <th>Item alt description</th>
-    <th>Item alt notes</th>
-    <th>Item alt active</th>
-    <th>Item alt created</th>
-    <th>Item alt updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @item_alt_names.each do |item_alt_name| %>
-  <tr>
-    <td><%= item_alt_name.item %></td>
-    <td><%= item_alt_name.item_alt_identifier %></td>
-    <td><%= item_alt_name.item_alt_description %></td>
-    <td><%= item_alt_name.item_alt_notes %></td>
-    <td><%= item_alt_name.item_alt_active %></td>
-    <td><%= item_alt_name.item_alt_created_id %></td>
-    <td><%= item_alt_name.item_alt_updated_id %></td>
-    <td><%= link_to 'Show', item_alt_name %></td>
-    <td><%= link_to 'Edit', edit_item_alt_name_path(item_alt_name) %></td>
-    <td><%= link_to 'Destroy', item_alt_name, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Item alt name', new_item_alt_name_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => item_item_alt_names_path(@item),
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "item_name" },
+                        { "mData": "show" },
+                        { "mData": "item_alt_description" },
+                        { "mData": "item_alt_notes" },
+                        { "mData": "item_alt_active"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
