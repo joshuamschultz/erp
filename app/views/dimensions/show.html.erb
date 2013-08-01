@@ -27,10 +27,8 @@
     </table>
 
    <div class="form-actions">
-    <%= link_to 'Edit', edit_organization_gauge_dimension_path(@organization, @gauge, @dimension), :class => "btn btn-small"%> 
+    <%= link_to 'Edit', edit_dimension_path(@dimension), :class => "btn"%> 
     
-    <%= link_to 'Back to Dimensions', organization_gauge_dimensions_path(@organization, @gauge), :class =>"btn btn-small" %>
-
-    <%= link_to 'Back to Item', organization_gauge_dimensions_path(@organization, @gauge), :class =>"btn btn-small" %>
+    <%= link_to 'Back to Dimension Types', dimensions_path, :class =>"btn" %>
   </div>
 </div>
