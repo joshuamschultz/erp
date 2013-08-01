@@ -1,5 +1,20 @@
 AllianceFasteners::Application.routes.draw do
   
+  resources :item_processes
+
+
+  resources :item_materials
+
+
+  resources :item_specifications
+
+
+  resources :item_prints
+
+
+  resources :prints
+
+
   resources :items do
       resources :item_alt_names
       resources :item_part_dimensions
