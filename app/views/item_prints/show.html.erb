@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_print.item %>
+</p>
+
+<p>
+  <b>Print:</b>
+  <%= @item_print.print %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_print_path(@item_print) %> |
+<%= link_to 'Back', item_prints_path %>

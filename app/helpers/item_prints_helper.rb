@@ -1,0 +1,2 @@
+module ItemPrintsHelper
+end

@@ -16,8 +16,8 @@ class Material < ActiveRecord::Base
   validates_length_of :material_notes, :maximum => 200
 
   has_many :material_elements, :dependent => :destroy
+  has_many :item_materials, :dependent => :destroy
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "material_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "material_updated_id"
-
 end

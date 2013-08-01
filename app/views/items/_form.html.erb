@@ -2,30 +2,49 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :owner, :label => "Owner", :autofocus => true, :label_method => 'owner_identifier',:labe_value => "id", :include_blank => false %>
-    <%= f.input :item_part_no, :label => "Part No" %>
+    <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
     <%= f.input :item_name, :label => "Name" %>
     <%= f.input :item_description, :label => "Description" %>
-    <%= f.input :item_notes, :label => "Notes" %>
     <%= f.input :item_revision, :label => "Revision" %>
     <%= f.input :item_revision_date, :as => "string", :label => "Revision Date" %>
-    <%= f.input :item_tooling, :label => "Tooling" %>
+    <%= f.association :owner, :label => "Owner", :label_method => 'owner_identifier',:labe_value => "id", :include_blank => false %>    
+    <%= f.association :organization, :label => "Organization", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
     <%= f.input :item_cost, :label => "Cost" %>
-    <%= f.input :item_quantity_on_order, :label => "Quantity On Order" %>
-    <%= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>
+    <%= f.input :item_tooling, :label => "Tooling" %>
+    <%#= f.input :item_quantity_on_order, :label => "Quantity On Order" %>
+    <%#= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>
+
+    <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, (@item.persisted? && @item.item_processes.empty?) ? [] : @item.item_processes.collect(&:process_type_id)), :multiple => true, :size => 5, :class => "multi_select_box" %>
+
+
+
+
+
+
+
+
+
+
+    <%= f.input :item_notes, :label => "Notes" %> 
     <%= f.input :item_active, :label => "Active" %>
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
     <%= link_to 'Delete', item_path(@item), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @item.new_record? %>
-    <%= link_to 'Back to items', items_path,:class =>"btn btn-small" %>
+    <%= link_to 'Back to items', items_path,:class =>"btn" %>
 
   </div>
 <% end %>
+
+
+
+
 <script type="text/javascript">
-    tab_field_forms["form_for_items"] = ["item_owner_id", "item_item_part_no", "item_item_name", "item_item_description", "item_item_notes", "item_item_revision", "item_item_revision_date", "item_item_tooling", "item_item_cost", "item_item_quantity_on_order", "item_item_quantity_in_hand", "item_item_active"];
-    date_box_fields = date_box_fields.concat(["item_item_revision_date"]);
+    tab_field_forms["form_for_items"] = ["item_owner_id", "item_item_part_no", "item_item_name", "item_item_description", "item_item_revision", "item_item_revision_date", "item_item_tooling", "item_item_cost", "item_item_notes", "item_item_active"];
+
     <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 
     date_box_fields = date_box_fields.concat([{"name":"item_item_revision_date", "value":"<%= date_box_date %>"}]);

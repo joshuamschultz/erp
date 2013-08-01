@@ -1,0 +1,25 @@
+<h1>Listing item_specifications</h1>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Specification</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_specifications.each do |item_specification| %>
+  <tr>
+    <td><%= item_specification.item %></td>
+    <td><%= item_specification.specification %></td>
+    <td><%= link_to 'Show', item_specification %></td>
+    <td><%= link_to 'Edit', edit_item_specification_path(item_specification) %></td>
+    <td><%= link_to 'Destroy', item_specification, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item specification', new_item_specification_path %>

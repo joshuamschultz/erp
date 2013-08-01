@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_process.item %>
+</p>
+
+<p>
+  <b>Process type:</b>
+  <%= @item_process.process_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_process_path(@item_process) %> |
+<%= link_to 'Back', item_processes_path %>

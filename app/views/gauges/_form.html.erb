@@ -22,7 +22,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_gauges"] = ["gauge_gauge_tool_name", "gauge_gauge_tool_no", "gauge_gage_caliberation_last_at", "gauge_gage_caliberation_due_at", "gauge_gauge_active"];   
+    tab_field_forms["form_for_gauges"] = ["gauge_gauge_tool_name", "gauge_gauge_tool_category", "gauge_gauge_tool_no", "gauge_organization_id", "gauge_gage_caliberation_last_at", "gauge_gage_caliberation_due_at", "gauge_gauge_active"];   
 
     <% date_box_last_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_last_at %>
     <% date_box_due_date = @gauge.new_record? ? Date.today : @gauge.gage_caliberation_due_at %> 

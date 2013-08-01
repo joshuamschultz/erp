@@ -1,0 +1,25 @@
+<h1>Listing item_prints</h1>
+
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Print</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_prints.each do |item_print| %>
+  <tr>
+    <td><%= item_print.item %></td>
+    <td><%= item_print.print %></td>
+    <td><%= link_to 'Show', item_print %></td>
+    <td><%= link_to 'Edit', edit_item_print_path(item_print) %></td>
+    <td><%= link_to 'Destroy', item_print, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item print', new_item_print_path %>
