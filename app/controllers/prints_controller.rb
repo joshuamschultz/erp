@@ -6,7 +6,13 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @prints }
+      format.json { 
+        @prints = @prints.select{ |print| 
+          print[:show] = "<a href='#{print_path(print)}'>#{print.print_identifier}</a>"
+          print[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+        }
+        render json: {:aaData => @prints}
+      }
     end
   end
 
@@ -44,7 +50,7 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       if @print.save
-        format.html { redirect_to @print, notice: 'Print was successfully created.' }
+        format.html { redirect_to prints_path, notice: 'Print was successfully created.' }
         format.json { render json: @print, status: :created, location: @print }
       else
         format.html { render action: "new" }
@@ -60,7 +66,7 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       if @print.update_attributes(params[:print])
-        format.html { redirect_to @print, notice: 'Print was successfully updated.' }
+        format.html { redirect_to prints_path, notice: 'Print was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,7 +82,7 @@ class PrintsController < ApplicationController
     @print.destroy
 
     respond_to do |format|
-      format.html { redirect_to prints_url }
+      format.html { redirect_to prints_path, notice: 'Print was successfully deleted.' }
       format.json { head :no_content }
     end
   end
