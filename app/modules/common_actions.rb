@@ -101,12 +101,12 @@ module CommonActions
 
 		menus[:inventory] = {:class => "hasSubmenu glyphicons cargo", :path => "#", :name => "Inventory", :type => "multiple"}
 		menus[:inventory][:sub_menu] = 	[
-											{:path => "#", :name => "Items"},
-											{:path => "#", :name => "Prints"},
+											{:path => items_path, :name => "Items"},
+											{:path => prints_path, :name => "Prints"},
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
 											{:path => specifications_path, :name => "Specifications"},
-											{:path => "#", :name => "Dimension Types"}
+											{:path => dimensions_path, :name => "Dimension Types"}
 										]
 
 		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}

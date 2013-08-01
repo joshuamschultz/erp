@@ -1,21 +1,27 @@
-<%= simple_form_for([@item,@item_part_dimension], :html => {:id => "form_for_item_dimension",:class => "form-horizontal"}) do |f| %>
+<%= simple_form_for([@item, @item_part_dimension], :html => {:id => "form_for_item_dimension",:class => "form-horizontal"}) do |f| %>
  <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :item_part_letter, :autofocus => true %>
-    <%= f.input :item_part_type %>
-    <%= f.input :item_part_pos_tolerance %>
-    <%= f.input :item_part_neg_tolerance %>
-    <%= f.input :item_part_critical %>
-    <%= f.input :item_part_notes %>
-    <%= f.input :item_part_active %>
+  <div class="form-inputs">      
+      <%= f.association :dimension, :label => "Dimension Type", :label_method => 'dimension_identifier', :label_value => "id", :include_blank => false, :autofocus => true %>
+      <%= f.input :item_part_letter, :label => "Letter" %>      
+      <%= f.input :item_part_dimension, :label => "Dimension" %>
+      <%= f.input :item_part_pos_tolerance, :label => "+ve Tolerance" %>
+      <%= f.input :item_part_neg_tolerance, :label => "-ve Tolerance" %>
+      <%= f.input :item_part_critical, :label => "Critical" %>
+      <%#= f.input :item_part_notes, :label => "Notes" %>
+      <%#= f.input :item_part_active, :label => "Active" %>
   </div>
 
+  <div class="separator bottom"></div>  
+
   <div class="form-actions">
-    <%= f.button :submit %>
-    <%= link_to 'Delete', item_item_part_dimension_path(@item, @item_part_dimension), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @item_part_dimension.new_record? %>
+      <%= f.button :submit, "Submit", :class => "btn" %>
+      <%= link_to 'Delete', item_item_part_dimension_path(@item, @item_part_dimension), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @item_part_dimension.new_record? %>
+      <%#= link_to 'Back to dimensions of ' + @item.item_name, item_item_part_dimensions_path(@item), :class => "btn" %>
+      <%= link_to 'Back', item_path(@item), :class => "btn" %>
   </div>
 <% end %>
+
 <script type="text/javascript">
     tab_field_forms["form_for_item_dimension"] = ["item_part_dimension_item_part_letter", "item_part_dimension_item_part_type", "item_part_dimension_item_part_pos_tolerance", "item_part_dimension_item_part_neg_tolerance", "item_part_dimension_item_part_critical","item_part_dimension_item_part_notes","item_part_dimension_item_part_active"];
 </script>
