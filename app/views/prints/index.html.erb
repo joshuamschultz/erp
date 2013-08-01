@@ -1,0 +1,33 @@
+<h1>Listing prints</h1>
+
+<table>
+  <tr>
+    <th>Print active</th>
+    <th>Print created</th>
+    <th>Print updated</th>
+    <th>Print identifier</th>
+    <th>Print description</th>
+    <th>Print notes</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @prints.each do |print| %>
+  <tr>
+    <td><%= print.print_active %></td>
+    <td><%= print.print_created_id %></td>
+    <td><%= print.print_updated_id %></td>
+    <td><%= print.print_identifier %></td>
+    <td><%= print.print_description %></td>
+    <td><%= print.print_notes %></td>
+    <td><%= link_to 'Show', print %></td>
+    <td><%= link_to 'Edit', edit_print_path(print) %></td>
+    <td><%= link_to 'Destroy', print, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Print', new_print_path %>

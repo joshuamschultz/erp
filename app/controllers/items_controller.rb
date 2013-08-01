@@ -7,10 +7,10 @@ class ItemsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { @items = @items.select{|item|
-          item[:name] = "<a href='/items/#{item.id}'>#{item.item_name}</a>"      
-          item[:owner_name] = item.owner.owner_identifier
-          item[:links] = CommonActions.object_crud_paths( nil,
-                          edit_item_path(item),nil)
+          item[:item_name] = "<a href='#{item_path(item)}'>#{item.item_name}</a>"
+          item[:owner_name] = "<strong><a href='#{owner_path(item.owner)}'>Owner : #{item.owner.owner_identifier}</a></strong>"
+          item[:vendor_name] = "<a href='#{organization_path(item.organization)}'>#{item.organization.organization_short_name}</a>"
+          item[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
         }
         render json: {:aaData => @items} 
       }        

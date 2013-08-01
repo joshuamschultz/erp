@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Print active:</b>
+  <%= @print.print_active %>
+</p>
+
+<p>
+  <b>Print created:</b>
+  <%= @print.print_created_id %>
+</p>
+
+<p>
+  <b>Print updated:</b>
+  <%= @print.print_updated_id %>
+</p>
+
+<p>
+  <b>Print identifier:</b>
+  <%= @print.print_identifier %>
+</p>
+
+<p>
+  <b>Print description:</b>
+  <%= @print.print_description %>
+</p>
+
+<p>
+  <b>Print notes:</b>
+  <%= @print.print_notes %>
+</p>
+
+
+<%= link_to 'Edit', edit_print_path(@print) %> |
+<%= link_to 'Back', prints_path %>

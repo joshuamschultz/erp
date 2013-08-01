@@ -13,4 +13,6 @@ class ProcessType < ActiveRecord::Base
   validates_length_of :process_description, :maximum => 50
 
   has_many :organization_processes, :dependent => :destroy
+
+  has_many :item_processes, :dependent => :destroy
 end

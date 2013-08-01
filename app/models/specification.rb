@@ -11,4 +11,6 @@ class Specification < ActiveRecord::Base
   (validates_uniqueness_of :specification_identifier if validates_length_of :specification_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :specification_identifier
 
   validates_length_of :specification_description, :maximum => 50
+
+  has_many :item_specifications, :dependent => :destroy
 end

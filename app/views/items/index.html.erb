@@ -13,18 +13,16 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>SLNO</th>
-                <th>Owner</th>
+                <th>Owner</th>                
                 <th>Part No</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Notes</th>
+                <th>Vendor</th>
                 <th>Revision</th>
                 <th>Revision Date</th>
                 <th>Tooling</th>
                 <th>Cost</th>
-                <th>Quantity On Order</th>
-                <th>Quantity In Hand</th>
+                <th>Notes</th>
                 <th>Active</th>               
                 <th></th>
               </tr>
@@ -37,21 +35,18 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => items_path(@organization),
+    {:name => "table_report", :path => items_path(@organization), :extras => {:slno => false, :grouping => true, :column_index => 0}, 
         :columns => '[
-                        { "mData": "id" },
-                        { "mData": "owner_name" },
+                        { "mData": "owner_name" },                        
                         { "mData": "item_part_no" },
-                        { "mData": "name" },
+                        { "mData": "item_name" },
                         { "mData": "item_description" },
-                        { "mData": "item_notes"},
-                        { "mData": "item_revision"},
-                        { "mData": "item_revision_date" },
+                        { "mData": "vendor_name" },                       
+                        { "mData": "item_revision", "bVisible": false},
+                        { "mData": "item_revision_date", "bVisible": false},
                         { "mData": "item_tooling" },
-                        { "mData": "item_cost" },
-                        { "mData": "item_quantity_on_order" },
-                        { "mData": "item_quantity_in_hand" },
+                        { "mData": "item_cost" },                        
+                        { "mData": "item_notes", "bVisible": false},
                         { "mData": "item_active" },
                         { "mData": "links" },
                     ]'
