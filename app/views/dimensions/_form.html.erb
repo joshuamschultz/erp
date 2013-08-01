@@ -7,7 +7,7 @@
     <%= f.association :gauge, :label => "Instrument", :label_method => 'gauge_tool_name', :label_value => "id", :include_blank => false %>  
     <%= f.input :dimension_notes, :label => "Notes" %>
     <%= f.input :dimension_active, :label => "Active" %>   
-    <%= hidden_field_tag :item_id, params[:item_id] %>   
+    <%= hidden_field_tag :item_id, params[:item_id] if params[:item_id] %>   
   </div>
 
   <div class="form-actions">
