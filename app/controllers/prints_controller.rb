@@ -1,4 +1,10 @@
 class PrintsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:inventory][:active] = "active"
+  end
+
   # GET /prints
   # GET /prints.json
   def index

@@ -1,4 +1,10 @@
 class ItemsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:inventory][:active] = "active"
+  end
+  
   # GET /items
   # GET /items.json
   def index
@@ -51,7 +57,8 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to items_path, notice: 'Item was successfully created.' }
+        Item.process_item_associations(@item, params)
+        format.html { redirect_to item_path(@item), notice: 'Item was successfully created.' }
         format.json { render json: @item, status: :created, location: @item }
       else
         format.html { render action: "new" }
@@ -67,7 +74,8 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.update_attributes(params[:item])
-        format.html { redirect_to items_path, notice: 'Item was successfully updated.' }
+        Item.process_item_associations(@item, params)
+        format.html { redirect_to item_path(@item), notice: 'Item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

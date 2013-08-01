@@ -3,11 +3,9 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Dimensions of <%= @gauge.gauge_tool_name %></h4>
+            <h4 class="span6 heading">Dimension Types</h4>
             <span class="span6 heading right">
-                <%= link_to 'Back to Gauges', organization_gauges_path(@organization), :class => "btn btn-mini" %>
-                <%= link_to 'New Dimension', new_organization_gauge_dimension_path(@organization, @gauge), :class => "btn btn-mini btn-success" %>
-                
+                <%= link_to 'New Dimension Type', new_dimension_path, :class => "btn btn-mini btn-success" %>              
             </span>
         </div> 
     </div>
@@ -15,9 +13,9 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>SLNO</th>
-                <th>Identifier</th>
+                <th>Name</th>
                 <th>Description</th>
+                <th>Instrument</th>
                 <th>Notes</th>
                 <th>Active</th>    
                 <th></th>
@@ -32,12 +30,12 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report",  :path => organization_gauge_dimensions_path(@organization, @gauge),
+        :name => "table_report",  :path => dimensions_path, :extras => {:slno => false},
         :columns => '[
-                        { "mData": "id" },
                         { "mData": "dimension_identifier" },
                         { "mData": "dimension_description" },
-                        { "mData": "dimension_notes" },
+                        { "mData": "instrument_name" },
+                        { "mData": "dimension_notes", "bVisible": false },
                         { "mData": "dimension_active" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'

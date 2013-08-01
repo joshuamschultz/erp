@@ -36,13 +36,13 @@
 
       <tr>
         <td>Item part active:</td>
-        <td><%= @item_part_dimension.item_part_active %></td>
+        <td><%#= @item_part_dimension.item_part_active %></td>
       </tr>
     </tbody>
   </table>
   <div class="form-actions">
-    <%= link_to 'Edit', edit_item_item_part_dimension_path(@item, @item_part_dimension), :class => "btn btn-small"%> 
-    <%= link_to 'Back to item_part_dimension of ' + @item.item_name, item_item_part_dimensions_path(@item), :class => "btn btn-small" %>
+    <%= link_to 'Edit', edit_item_item_part_dimension_path(@item, @item_part_dimension), :class => "btn"%> 
+    <%= link_to 'Back to dimensions of ' + @item.item_name, item_item_part_dimensions_path(@item), :class => "btn" %>
   </div>
 </div>
 
