@@ -1,33 +1,40 @@
-<h1>Listing prints</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Prints</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Print', new_print_path, :class => "btn btn-mini btn-success" %>                
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>    
+                <th>SLNO</th>              
+                <th>Name</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Print active</th>
-    <th>Print created</th>
-    <th>Print updated</th>
-    <th>Print identifier</th>
-    <th>Print description</th>
-    <th>Print notes</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @prints.each do |print| %>
-  <tr>
-    <td><%= print.print_active %></td>
-    <td><%= print.print_created_id %></td>
-    <td><%= print.print_updated_id %></td>
-    <td><%= print.print_identifier %></td>
-    <td><%= print.print_description %></td>
-    <td><%= print.print_notes %></td>
-    <td><%= link_to 'Show', print %></td>
-    <td><%= link_to 'Edit', edit_print_path(print) %></td>
-    <td><%= link_to 'Destroy', print, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Print', new_print_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report",  :path => prints_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "show" },
+                        { "mData": "print_description" },
+                        { "mData": "print_notes" },
+                        { "mData": "print_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
