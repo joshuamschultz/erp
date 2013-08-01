@@ -1,41 +1,50 @@
-<h1>Listing item_part_dimensions</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Items Alt of <%= @item.item_name %></h4>
+            <span class="span6 heading right">
+                <%= link_to 'Back to Item', item_path(@item), :class => "btn btn-mini" %>
+                <%= link_to 'New Item dimensions', new_item_item_part_dimension_path(@item), :class => "btn btn-mini btn-success" %>               
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>   
+                <th>SLNO</th> 
+                <th>Item</th>    
+                <th>Letter</th>
+                <th>Type</th>
+                <th>Pos Tolerance</th>
+                <th>Neg Tolerance</th>
+                <th>Critical</th>
+                <th>Notes</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Item</th>
-    <th>Item part letter</th>
-    <th>Item part type</th>
-    <th>Item part pos tolerance</th>
-    <th>Item part neg tolerance</th>
-    <th>Item part critical</th>
-    <th>Item part notes</th>
-    <th>Item part active</th>
-    <th>Item part created</th>
-    <th>Item part updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @item_part_dimensions.each do |item_part_dimension| %>
-  <tr>
-    <td><%= item_part_dimension.item %></td>
-    <td><%= item_part_dimension.item_part_letter %></td>
-    <td><%= item_part_dimension.item_part_type %></td>
-    <td><%= item_part_dimension.item_part_pos_tolerance %></td>
-    <td><%= item_part_dimension.item_part_neg_tolerance %></td>
-    <td><%= item_part_dimension.item_part_critical %></td>
-    <td><%= item_part_dimension.item_part_notes %></td>
-    <td><%= item_part_dimension.item_part_active %></td>
-    <td><%= item_part_dimension.item_part_created_id %></td>
-    <td><%= item_part_dimension.item_part_updated_id %></td>
-    <td><%= link_to 'Show', item_part_dimension %></td>
-    <td><%= link_to 'Edit', edit_item_part_dimension_path(item_part_dimension) %></td>
-    <td><%= link_to 'Destroy', item_part_dimension, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Item part dimension', new_item_part_dimension_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => item_item_part_dimensions_path(@item),
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "item_name" },
+                        { "mData": "show" },
+                        { "mData": "item_part_type" },
+                        { "mData": "item_part_pos_tolerance" },
+                        { "mData": "item_part_neg_tolerance" },
+                        { "mData": "item_part_critical"},
+                        { "mData": "item_part_notes"},
+                        { "mData": "item_part_active"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

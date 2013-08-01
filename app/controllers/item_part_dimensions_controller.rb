@@ -2,19 +2,29 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions
   # GET /item_part_dimensions.json
   def index
-    @item_part_dimensions = ItemPartDimension.all
+    @item = Item.find(params[:item_id])
+    @item_part_dimensions = @item.item_part_dimensions.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @item_part_dimensions }
+      format.json { @item_part_dimensions = @item_part_dimensions.select{|item_alt_dimension|
+        item_alt_dimension[:item_name] = item_alt_dimension.item.item_name
+        item_alt_dimension[:show] = "<a href='/items/#{@item.id}/item_part_dimensions/#{item_alt_dimension.id}'> #{item_alt_dimension.item_part_letter} </a>"
+        item_alt_dimension[:links] = CommonActions.object_crud_paths( nil,
+                          edit_item_item_part_dimension_path(@item,item_alt_dimension),nil)
+      
+      }
+        render json: {:aaData => @item_part_dimensions } 
+      }                
     end
   end
 
   # GET /item_part_dimensions/1
   # GET /item_part_dimensions/1.json
   def show
-    @item_part_dimension = ItemPartDimension.find(params[:id])
-
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @item_part_dimension }
@@ -24,7 +34,8 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions/new
   # GET /item_part_dimensions/new.json
   def new
-    @item_part_dimension = ItemPartDimension.new
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -34,17 +45,19 @@ class ItemPartDimensionsController < ApplicationController
 
   # GET /item_part_dimensions/1/edit
   def edit
-    @item_part_dimension = ItemPartDimension.find(params[:id])
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
   end
 
   # POST /item_part_dimensions
   # POST /item_part_dimensions.json
   def create
-    @item_part_dimension = ItemPartDimension.new(params[:item_part_dimension])
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.new(params[:item_part_dimension])
 
     respond_to do |format|
       if @item_part_dimension.save
-        format.html { redirect_to @item_part_dimension, notice: 'Item part dimension was successfully created.' }
+        format.html { redirect_to item_item_part_dimensions_path(@item), notice: 'Item part dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else
         format.html { render action: "new" }
@@ -56,11 +69,12 @@ class ItemPartDimensionsController < ApplicationController
   # PUT /item_part_dimensions/1
   # PUT /item_part_dimensions/1.json
   def update
-    @item_part_dimension = ItemPartDimension.find(params[:id])
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
 
     respond_to do |format|
       if @item_part_dimension.update_attributes(params[:item_part_dimension])
-        format.html { redirect_to @item_part_dimension, notice: 'Item part dimension was successfully updated.' }
+        format.html { redirect_to item_item_part_dimensions_path(@item), notice: 'Item part dimension was successfully created.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -72,11 +86,12 @@ class ItemPartDimensionsController < ApplicationController
   # DELETE /item_part_dimensions/1
   # DELETE /item_part_dimensions/1.json
   def destroy
-    @item_part_dimension = ItemPartDimension.find(params[:id])
+    @item = Item.find(params[:item_id])
+    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
     @item_part_dimension.destroy
 
     respond_to do |format|
-      format.html { redirect_to item_part_dimensions_url }
+      format.html { redirect_to item_item_part_dimensions_path(@item), notice: 'Item part dimension was deleted created.' }
       format.json { head :no_content }
     end
   end
