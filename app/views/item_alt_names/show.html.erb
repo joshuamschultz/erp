@@ -1,11 +1,11 @@
 <div class="row-fluid span8">
   <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Item Alt Info</h4>
+        <h4>Alt Name Info</h4>
   </div>
   <table class="table table-striped table-bordered">
     <tbody>     
       <tr>
-        <td>Identifier:</td>
+        <td>Name:</td>
         <td><%= @item_alt_name.item_alt_identifier %></td>
       </tr>
 
@@ -26,8 +26,8 @@
     </tbody>
   </table>
   <div class="form-actions">
-    <%= link_to 'Edit', edit_item_item_alt_name_path(@item, @item_alt_name), :class => "btn btn-small"%> 
-    <%= link_to 'Back to item_alt_name of ' + @item.item_name, item_item_alt_names_path(@item), :class => "btn btn-small" %>
+    <%= link_to 'Edit', edit_item_alt_name_path(@item_alt_name), :class => "btn"%> 
+    <%= link_to 'Back', item_alt_names_path, :class => "btn" %>
   </div>
 </div>
 

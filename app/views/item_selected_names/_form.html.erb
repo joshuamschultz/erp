@@ -1,0 +1,12 @@
+<%= simple_form_for(@item_selected_name) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :item %>
+    <%= f.association :item_alt_name %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

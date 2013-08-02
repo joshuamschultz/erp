@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_selected_name.item %>
+</p>
+
+<p>
+  <b>Item alt name:</b>
+  <%= @item_selected_name.item_alt_name %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_selected_name_path(@item_selected_name) %> |
+<%= link_to 'Back', item_selected_names_path %>

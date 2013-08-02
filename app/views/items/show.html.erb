@@ -8,94 +8,206 @@
 </div>
 
 <div class="row-fluid">
-    <div class="span3 well view_organization_details">
+    <div class="span3 well item_detail_view">
         <table class="table">
-            <tbody> 
+            <tbody>
               <tr>
-                <td>Owner:</td>
-                <td><%= @item.owner.owner_identifier %></td>
-              </tr>
-
-              <tr>
-                <td>Part No:</td>
+                <td>Part No :</td>
                 <td><%= @item.item_part_no %></td>
               </tr>
 
               <tr>
-                <td>Name:</td>
+                <td>Name :</td>
                 <td><%= @item.item_name %></td>
               </tr>
 
               <tr>
-                <td>Description:</td>
+                <td>Description :</td>
                 <td><%= @item.item_description %></td>
               </tr>
 
               <tr>
-                <td>Notes:</td>
-                <td><%= @item.item_notes %></td>
+                <td>Alt Names :</td>
+                <td>
+                    <%= @item.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
+                </td>
               </tr>
 
               <tr>
-                <td>Revision:</td>
+                <td>Revision :</td>
                 <td><%= @item.item_revision %></td>
               </tr>
 
               <tr>
-                <td>Revision Date:</td>
+                <td>Revision Date :</td>
                 <td><%= @item.item_revision_date %></td>
               </tr>
 
               <tr>
-                <td>Tooling:</td>
+                <td>Owner :</td>
+                <td><%= link_to @item.owner.owner_identifier, owner_path(@item.owner) %></td>
+              </tr>
+
+              <tr>
+                <td>Vendor :</td>
+                <td><%= link_to @item.organization.organization_short_name, organization_path(@item.organization) %></td>
+              </tr>                           
+
+              <tr>
+                <td>Tooling :</td>
                 <td><%= @item.item_tooling %></td>
               </tr>
 
               <tr>
-                <td>Cost:</td>
+                <td>Cost :</td>
                 <td><%= @item.item_cost %></td>
-              </tr>
-
-              <tr>
-                <td>Active:</td>
-                <td><%= @item.item_active %></td>
-              </tr>
+              </tr>             
 
               <tr>
                 <td>Specs :</td>
-                <td><%= @item.specifications.collect(&:specification_identifier).join(", ") %></td>
+                <td>
+                    <%= @item.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
+                </td>
               </tr>  
 
               <tr>
                 <td>Prints :</td>
-                <td><%= @item.prints.collect(&:print_identifier).join(", ") %></td>
+                <td>
+                    <%= @item.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
+                </td>
               </tr>
 
                <tr>
                 <td>Materials :</td>
-                <td><%= @item.materials.collect(&:material_short_name).join(", ") %></td>
+                <td>
+                  <%= @item.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
+                </td>
               </tr> 
 
-               <tr>
+              <tr>
                 <td>Processes :</td>
-                <td><%= @item.process_types.collect(&:process_short_name).join(", ") %></td>
-              </tr>               
+                <td>
+                    <%= @item.process_types.collect{|process| link_to(process.process_short_name, process_type_path(process))}.join(",  ").html_safe %>
+                </td>
+              </tr>    
+
+              <tr>
+                <td>Notes :</td>
+                <td><%= @item.item_notes %></td>
+              </tr> 
+
+              <tr>
+                <td>Active :</td>
+                <td><%= @item.item_active %></td>
+              </tr>           
 
             </tbody>
           </table>
     </div>
 
-    <div class="span9">
-          <%= render 'item_part_dimensions/item_dimensions' %>
+    <div class="span9"> 
+        <div class="row-fluid item_detail_classic_btn">
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="alt_address_btn">
+                    <h4><strong>50</strong></h4>
+                    <span class="txt"><strong>Quantity On Hand</strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="contacts_btn">
+                    <h4><strong>50</strong></h4>
+                    <span class="txt"><strong>Quantity On Order</strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="contacts_btn">
+                    <h4><strong>$<%= @item.item_cost %></strong></h4>
+                    <span class="txt"><strong>Cost</strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="contacts_btn">
+                    <h4><strong>6-42</strong></h4>
+                    <span class="txt"><strong></strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <!-- Dimensions -->
+        <%= render 'item_part_dimensions/item_dimensions' %>
     </div>
+</div>
+
+
+<!-- PO -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Purchase Orders</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New PO', "#", :class => "btn btn-mini btn-success" %> 
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
+</div>
+
+<!-- SO -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Sales Orders</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New SO', "#", :class => "btn btn-mini btn-success" %> 
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
+</div>
+
+<!-- Quotes -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Quotes</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Customer', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Vendor', "#", :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
+</div>
+
+<!-- Revision -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Revision</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Revison', "#", :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
 </div>
 
 
 
 
 
-<div class="row-fluid">
-    <div id="item_all_dimensions" class="span12">
-        
-    </div>
-</div>
+
+

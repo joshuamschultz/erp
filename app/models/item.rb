@@ -27,13 +27,18 @@ class Item < ActiveRecord::Base
   has_many :process_types, :through => :item_processes
 
   has_many :item_specifications, :dependent => :destroy
-  has_many :specifications, :through => :item_specifications
-  
-  has_many :item_alt_names, :dependent => :destroy
+  has_many :specifications, :through => :item_specifications 
+
+  has_many :item_selected_names, :dependent => :destroy
+  has_many :item_alt_names, :through => :item_selected_names
+
   has_many :item_part_dimensions, :dependent => :destroy
 
-
   	def self.process_item_associations(item, params)
+      alt_names = params[:alt_names].split(",") || []
+      alt_name_ids = ItemAltName.where(:item_alt_identifier => alt_names)
+      item.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
+
   		processes = params[:processes] || []
   		item.item_processes.where(:process_type_id != processes).destroy_all
 
@@ -46,35 +51,50 @@ class Item < ActiveRecord::Base
   		materials = params[:materials] || []
   		item.item_materials.where(:material_id != materials).destroy_all
 
+      if alt_names
+          alt_names.each do |alt_name|
+            item_alt_name = ItemAltName.find_by_item_alt_identifier(alt_name)
+
+            unless item_alt_name            
+                item_alt_name = ItemAltName.new(:item_alt_identifier => alt_name)
+                item_alt_name.save
+            end
+
+            unless item_alt_name.nil? && item.item_selected_names.find_by_item_alt_name_id(item_alt_name.id)
+                item.item_selected_names.new(:item_alt_name_id => item_alt_name.id).save
+            end
+          end
+      end
+
   		if processes
 	      	processes.each do |process_id|
-				unless item.item_processes.find_by_process_type_id(process_id)
-					process = item.item_processes.new(:process_type_id => process_id).save
-				end
+    				unless item.item_processes.find_by_process_type_id(process_id)
+    					  item.item_processes.new(:process_type_id => process_id).save
+    				end
 	      	end
 	    end
 
 	    if prints
 	      	prints.each do |print_id|
-				unless item.item_prints.find_by_print_id(print_id)
-					print = item.item_prints.new(:print_id => print_id).save
-				end
+    				unless item.item_prints.find_by_print_id(print_id)
+    					  item.item_prints.new(:print_id => print_id).save
+    				end
 	      	end
 	    end
 
 	    if specs
 	      	specs.each do |specification_id|
-				unless item.item_specifications.find_by_specification_id(specification_id)
-					specification = item.item_specifications.new(:specification_id => specification_id).save
-				end
+    				unless item.item_specifications.find_by_specification_id(specification_id)
+    					  item.item_specifications.new(:specification_id => specification_id).save
+    				end
 	      	end
 	    end
 
 	    if materials
 	      	materials.each do |material_id|
-				unless item.item_materials.find_by_material_id(material_id)
-					material = item.item_materials.new(:material_id => material_id).save
-				end
+    				unless item.item_materials.find_by_material_id(material_id)
+					      item.item_materials.new(:material_id => material_id).save
+    				end
 	      	end
 	    end
   	end
