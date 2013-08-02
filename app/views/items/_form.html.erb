@@ -5,6 +5,14 @@
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
     <%= f.input :item_name, :label => "Name" %>
     <%= f.input :item_description, :label => "Description" %>
+
+    <div class="control-group">
+        <label for="item_processes" class="optional control-label">Alt Names</label>
+        <div class="controls">
+            <input type="hidden" id="item_names" style="width: 100%;" name="alt_names" value="<%= @item.item_alt_names.collect(&:item_alt_identifier).join(",") if @item.persisted? %>" />
+        </div>
+    </div>
+
     <%= f.input :item_revision, :label => "Revision" %>
     <%= f.input :item_revision_date, :as => "string", :label => "Revision Date" %>
     <%= f.association :owner, :label => "Owner", :label_method => 'owner_identifier',:labe_value => "id", :include_blank => false %>    
@@ -13,7 +21,7 @@
     <%= f.input :item_tooling, :label => "Tooling" %>
     
     <%#= f.input :item_quantity_on_order, :label => "Quantity On Order" %>
-    <%#= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>
+    <%#= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>    
 
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Processes</label>
@@ -61,9 +69,14 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_items"] = ["item_owner_id", "item_item_part_no", "item_item_name", "item_item_description", "item_item_revision", "item_item_revision_date", "item_item_tooling", "item_item_cost", "item_item_notes", "item_item_active"];
+    tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_name", "item_item_description", "s2id_item_names .select2-input", "item_item_revision", "item_item_revision_date", "item_owner_id", "item_organization_id", "item_item_cost", "item_item_tooling", "item_item_notes", "item_item_active"];
 
     <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 
     date_box_fields = date_box_fields.concat([{"name":"item_item_revision_date", "value":"<%= date_box_date %>"}]);
+
+    $(document).ready(function(){ 
+        $("#item_names").select2({tags:<%= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
+        $("#s2id_item_names").css("width", "220px");
+    });
 </script>

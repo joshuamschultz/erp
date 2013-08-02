@@ -106,6 +106,7 @@ module CommonActions
 											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
 											{:path => specifications_path, :name => "Specifications"},
+											{:path => item_alt_names_path, :name => "Alt Names"},
 											{:path => dimensions_path, :name => "Dimension Types"}
 										]
 
