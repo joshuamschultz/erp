@@ -1,5 +1,9 @@
 AllianceFasteners::Application.routes.draw do
   
+  resources :items do
+    resources :item_revisions
+  end
+
   resources :item_selected_names
 
   resources :item_processes

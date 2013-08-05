@@ -1,0 +1,49 @@
+<h1>Listing item_revisions</h1>
+
+<table>
+  <tr>
+    <th>Item revision name</th>
+    <th>Item revision date</th>
+    <th>Item</th>
+    <th>Owner</th>
+    <th>Organization</th>
+    <th>Vendor quality</th>
+    <th>Customer quality</th>
+    <th>Item name</th>
+    <th>Item description</th>
+    <th>Item notes</th>
+    <th>Item tooling</th>
+    <th>Item cost</th>
+    <th>Item revision created</th>
+    <th>Item revision updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_revisions.each do |item_revision| %>
+  <tr>
+    <td><%= item_revision.item_revision_name %></td>
+    <td><%= item_revision.item_revision_date %></td>
+    <td><%= item_revision.item %></td>
+    <td><%= item_revision.owner %></td>
+    <td><%= item_revision.organization %></td>
+    <td><%= item_revision.vendor_quality %></td>
+    <td><%= item_revision.customer_quality %></td>
+    <td><%= item_revision.item_name %></td>
+    <td><%= item_revision.item_description %></td>
+    <td><%= item_revision.item_notes %></td>
+    <td><%= item_revision.item_tooling %></td>
+    <td><%= item_revision.item_cost %></td>
+    <td><%= item_revision.item_revision_created_id %></td>
+    <td><%= item_revision.item_revision_updated_id %></td>
+    <td><%= link_to 'Show', [item_revision.item, item_revision] %></td>
+    <td><%= link_to 'Edit', edit_item_item_revision_path(item_revision.item, item_revision) %></td>
+    <td><%= link_to 'Destroy', [item_revision.item, item_revision], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item revision', new_item_item_revision_path(params[:item_id]) %>

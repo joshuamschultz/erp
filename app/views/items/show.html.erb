@@ -12,92 +12,92 @@
         <table class="table">
             <tbody>
               <tr>
-                <td>Part No :</td>
+                <td>Part No:</td>
                 <td><%= @item.item_part_no %></td>
               </tr>
 
               <tr>
-                <td>Name :</td>
+                <td>Name:</td>
                 <td><%= @item.item_name %></td>
               </tr>
 
               <tr>
-                <td>Description :</td>
+                <td>Description:</td>
                 <td><%= @item.item_description %></td>
               </tr>
 
               <tr>
-                <td>Alt Names :</td>
+                <td>Alt Names:</td>
                 <td>
                     <%= @item.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
                 </td>
               </tr>
 
               <tr>
-                <td>Revision :</td>
+                <td>Revision:</td>
                 <td><%= @item.item_revision %></td>
               </tr>
 
               <tr>
-                <td>Revision Date :</td>
+                <td>Revision Date:</td>
                 <td><%= @item.item_revision_date %></td>
               </tr>
 
               <tr>
-                <td>Owner :</td>
+                <td>Owner:</td>
                 <td><%= link_to @item.owner.owner_identifier, owner_path(@item.owner) %></td>
               </tr>
 
               <tr>
-                <td>Vendor :</td>
+                <td>Vendor:</td>
                 <td><%= link_to @item.organization.organization_short_name, organization_path(@item.organization) %></td>
               </tr>                           
 
               <tr>
-                <td>Tooling :</td>
+                <td>Tooling:</td>
                 <td><%= @item.item_tooling %></td>
               </tr>
 
               <tr>
-                <td>Cost :</td>
+                <td>Cost:</td>
                 <td><%= @item.item_cost %></td>
               </tr>             
 
               <tr>
-                <td>Specs :</td>
+                <td>Specs:</td>
                 <td>
                     <%= @item.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
                 </td>
               </tr>  
 
               <tr>
-                <td>Prints :</td>
+                <td>Prints:</td>
                 <td>
                     <%= @item.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
                 </td>
               </tr>
 
                <tr>
-                <td>Materials :</td>
+                <td>Materials:</td>
                 <td>
                   <%= @item.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
                 </td>
               </tr> 
 
               <tr>
-                <td>Processes :</td>
+                <td>Processes:</td>
                 <td>
                     <%= @item.process_types.collect{|process| link_to(process.process_short_name, process_type_path(process))}.join(",  ").html_safe %>
                 </td>
               </tr>    
 
               <tr>
-                <td>Notes :</td>
+                <td>Notes:</td>
                 <td><%= @item.item_notes %></td>
               </tr> 
 
               <tr>
-                <td>Active :</td>
+                <td>Active:</td>
                 <td><%= @item.item_active %></td>
               </tr>           
 

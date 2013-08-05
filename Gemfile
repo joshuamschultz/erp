@@ -57,3 +57,5 @@ gem 'bootstrap-datetimepicker-rails'
 gem 'paperclip', '3.4.1'
 gem 'rmagick', '2.13.2'
 gem 'aws-sdk', '1.8.5'
+
+gem 'nested_scaffold'

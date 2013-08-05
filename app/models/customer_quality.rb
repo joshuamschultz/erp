@@ -17,4 +17,6 @@ class CustomerQuality < ActiveRecord::Base
   validates_length_of :quality_notes, :maximum => 200
 
   has_many :organizations
+
+  has_many :item_revisions
 end

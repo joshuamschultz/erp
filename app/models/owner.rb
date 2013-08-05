@@ -20,4 +20,5 @@ class Owner < ActiveRecord::Base
   validates_presence_of :commission_type
 
   has_many :items
+  has_many :item_revisions
 end
