@@ -6,6 +6,8 @@ AllianceFasteners::Application.routes.draw do
     end
   end
 
+  resources :privileges
+
   resources :item_selected_names
 
   resources :item_processes

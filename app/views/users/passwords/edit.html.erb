@@ -1,16 +1,54 @@
-<h2>Change your password</h2>
+<% content_for :page_level_body_class do %>login<% end %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+<div id="login">
+	<div class="wrapper">
+		<h1 class="glyphicons lock"><%= @home[:name] %><br>POS Solution<!-- <i></i> --></h1>
+		<!-- Box -->
+		<div class="widget">
+			<div class="widget-head">
+				<h3 class="heading">Change your password</h3>				
+			</div>
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password, :autofocus => true %></div>
 
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
+            <div class="widget-body">          
+              <!-- Form -->
+				<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+                <%= content_tag(:div, flash[:error], :id => "flash_error", :class => "alert alert-error") if flash[:error] %>
+                <%= content_tag(:div, flash[:notice], :id => "flash_notice", :class => "alert alert-error") if flash[:notice] %>
+                <%= content_tag(:div, flash[:alert], :id => "flash_alert", :class => "alert alert-error") if flash[:alert] %>
 
-  <div><%= f.submit "Change my password" %></div>
-<% end %>
+                <label>New password</label>
+                <%= f.password_field :password, :autofocus => true, :placeholder => "Your Username", :class => "input-block-level" %>
 
-<%= render "users/shared/links" %>
+                <!-- <div class="separator bottom"></div>  -->
+
+                <label class="strong">Confirm Password</label>
+                <%= f.password_field :password_confirmation, :placeholder => "Confirm Password", :class => "input-block-level" %>
+
+                <div class="separator bottom"></div> 
+
+                <div class="row-fluid">
+                    <div class="span8">
+                        <div class="uniformjs">
+                        <label class="checkbox">
+                            <div id="uniform-undefined" class="checker">
+                                
+                            </div>
+                        </label>
+                        </div>
+                    </div>
+
+                    <div class="span4 center">
+                        <button class="btn  btn-primary" type="submit">Change my password</button>
+                    </div>
+                </div>            
+              <% end %>
+              <!-- // Form END -->                
+            </div>
+            <div class="widget-footer">
+                <p class="glyphicons lock"><i></i>Please enter your password and password conformation</p>
+            </div>	
+		</div>			
+	</div>	
+</div>
+
