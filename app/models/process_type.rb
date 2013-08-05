@@ -15,5 +15,5 @@ class ProcessType < ActiveRecord::Base
   has_many :organization_processes, :dependent => :destroy
 
   has_many :item_processes, :dependent => :destroy
-  has_many :items, :through => :item_processes
+  has_many :item_revisions, :through => :item_processes
 end

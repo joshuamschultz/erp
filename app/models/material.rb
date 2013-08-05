@@ -17,7 +17,7 @@ class Material < ActiveRecord::Base
 
   has_many :material_elements, :dependent => :destroy
   has_many :item_materials, :dependent => :destroy
-  has_many :items, :through => :item_materials
+  has_many :item_revisions, :through => :item_materials
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "material_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "material_updated_id"
