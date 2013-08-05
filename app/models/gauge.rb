@@ -11,5 +11,5 @@ class Gauge < ActiveRecord::Base
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("support").id]
 
-  has_many :dimensions
+  has_many :item_part_dimensions
 end
