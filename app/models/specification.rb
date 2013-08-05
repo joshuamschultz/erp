@@ -13,5 +13,5 @@ class Specification < ActiveRecord::Base
   validates_length_of :specification_description, :maximum => 50
 
   has_many :item_specifications, :dependent => :destroy
-  has_many :items, :through => :item_specifications
+  has_many :item_revisions, :through => :item_specifications
 end

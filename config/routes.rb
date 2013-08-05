@@ -1,7 +1,9 @@
 AllianceFasteners::Application.routes.draw do
   
   resources :items do
-    resources :item_revisions
+    resources :item_revisions do
+        resources :item_part_dimensions
+    end
   end
 
   resources :item_selected_names
@@ -17,10 +19,6 @@ AllianceFasteners::Application.routes.draw do
   resources :prints
 
   resources :item_alt_names  
-
-  resources :items do      
-      resources :item_part_dimensions
-  end
 
   resources :gauges
 

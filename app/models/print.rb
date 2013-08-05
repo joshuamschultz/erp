@@ -3,7 +3,7 @@ class Print < ActiveRecord::Base
   :print_notes, :print_updated_id
   
   has_many :item_prints, :dependent => :destroy
-  has_many :items, :through => :item_prints
+  has_many :item_revisions, :through => :item_prints
 
   after_initialize :default_values
 

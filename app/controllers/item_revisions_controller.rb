@@ -3,11 +3,17 @@ class ItemRevisionsController < ApplicationController
   # GET items/1/item_revisions.json
   def index
     @item = Item.find(params[:item_id])
-    @item_revisions = @item.item_revisions
+    @item_revisions = @item.item_revisions.order("created_at desc")
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @item_revisions }
+      format.json { 
+        @item_revisions = @item_revisions.select{|revision|
+            revision[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id)}'>#{revision.item_revision_name}</a>"
+            revision[:links] = CommonActions.object_crud_paths(nil, edit_item_item_revision_path(@item, revision), nil)
+        }
+        render json: {:aaData => @item_revisions}
+      }
     end
   end
 
@@ -28,6 +34,7 @@ class ItemRevisionsController < ApplicationController
   def new
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.build
+    # @item_revision = @item.current_revision.present? ? @item.current_revision.dup : @item.item_revisions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -49,7 +56,8 @@ class ItemRevisionsController < ApplicationController
 
     respond_to do |format|
       if @item_revision.save
-        format.html { redirect_to([@item_revision.item, @item_revision], :notice => 'Item revision was successfully created.') }
+        ItemRevision.process_item_associations(@item_revision, params)
+        format.html { redirect_to(@item, :notice => 'Item revision was successfully created.') }
         format.json { render :json => @item_revision, :status => :created, :location => [@item_revision.item, @item_revision] }
       else
         format.html { render :action => "new" }
@@ -66,7 +74,8 @@ class ItemRevisionsController < ApplicationController
 
     respond_to do |format|
       if @item_revision.update_attributes(params[:item_revision])
-        format.html { redirect_to([@item_revision.item, @item_revision], :notice => 'Item revision was successfully updated.') }
+        ItemRevision.process_item_associations(@item_revision, params)
+        format.html { redirect_to(@item, :notice => 'Item revision was successfully updated.') }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -83,7 +92,7 @@ class ItemRevisionsController < ApplicationController
     @item_revision.destroy
 
     respond_to do |format|
-      format.html { redirect_to item_item_revisions_url(item) }
+      format.html { redirect_to(@item, :notice => 'Item revision was successfully deleted.') }
       format.json { head :ok }
     end
   end

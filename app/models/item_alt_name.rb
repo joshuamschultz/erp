@@ -11,5 +11,5 @@ class ItemAltName < ActiveRecord::Base
   (validates_uniqueness_of :item_alt_identifier if validates_length_of :item_alt_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :item_alt_identifier
 
   has_many :item_selected_names, :dependent => :destroy
-  has_many :items, :through => :item_selected_names
+  has_many :item_revisions, :through => :item_selected_names
 end

@@ -1,8 +1,10 @@
   <!-- Wells -->
 <div class="row-fluid">
-    <h3 class="span3 left">Item : <%= @item.item_name %><span></span></h3>
+    <h3 class="span3 left">Item Part No: <%= @item.item_part_no %><span></span></h3>
     <span class="span9 right">
-        <%= link_to 'Edit', edit_item_path(@item), :class => "btn btn-small" %> 
+        <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
+        <%= link_to 'Edit Revision', edit_item_item_revision_path(@item, @item_revision), :class => "btn btn-small" if @item_revision %> 
+        <%= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>        
         <%= link_to 'Back to Items', items_path, :class => "btn btn-small" %>
     </span>
 </div>
@@ -11,96 +13,94 @@
     <div class="span3 well item_detail_view">
         <table class="table">
             <tbody>
-              <tr>
-                <td>Part No:</td>
-                <td><%= @item.item_part_no %></td>
-              </tr>
+              <% if @item_revision %>
+                  <tr>
+                    <td>Revision Title:</td>
+                    <td><%= @item_revision.item_revision_name %></td>
+                  </tr>
 
-              <tr>
-                <td>Name:</td>
-                <td><%= @item.item_name %></td>
-              </tr>
+                  <tr>
+                    <td>Revision Date:</td>
+                    <td><%= @item_revision.item_revision_date %></td>
+                  </tr>
 
-              <tr>
-                <td>Description:</td>
-                <td><%= @item.item_description %></td>
-              </tr>
+                  <tr>
+                    <td>Part Name:</td>
+                    <td><%= @item_revision.item_name %></td>
+                  </tr>
 
-              <tr>
-                <td>Alt Names:</td>
-                <td>
-                    <%= @item.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
-                </td>
-              </tr>
+                  <tr>
+                    <td>Description:</td>
+                    <td><%= @item_revision.item_description %></td>
+                  </tr>
 
-              <tr>
-                <td>Revision:</td>
-                <td><%= @item.item_revision %></td>
-              </tr>
+                  <tr>
+                    <td>Alt Names:</td>
+                    <td>
+                        <%= @item_revision.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
+                    </td>
+                  </tr>                
 
-              <tr>
-                <td>Revision Date:</td>
-                <td><%= @item.item_revision_date %></td>
-              </tr>
+                  <tr>
+                    <td>Owner:</td>
+                    <td><%= link_to @item_revision.owner.owner_identifier, owner_path(@item_revision.owner) %></td>
+                  </tr>
 
-              <tr>
-                <td>Owner:</td>
-                <td><%= link_to @item.owner.owner_identifier, owner_path(@item.owner) %></td>
-              </tr>
+                  <tr>
+                    <td>Vendor:</td>
+                    <td><%= link_to @item_revision.organization.organization_short_name, organization_path(@item_revision.organization) %></td>
+                  </tr>                           
 
-              <tr>
-                <td>Vendor:</td>
-                <td><%= link_to @item.organization.organization_short_name, organization_path(@item.organization) %></td>
-              </tr>                           
+                  <tr>
+                    <td>Tooling:</td>
+                    <td><%= @item_revision.item_tooling %></td>
+                  </tr>
 
-              <tr>
-                <td>Tooling:</td>
-                <td><%= @item.item_tooling %></td>
-              </tr>
+                  <tr>
+                    <td>Cost:</td>
+                    <td>$<%= @item_revision.item_cost.to_f %></td>
+                  </tr>             
 
-              <tr>
-                <td>Cost:</td>
-                <td><%= @item.item_cost %></td>
-              </tr>             
+                  <tr>
+                    <td>Specs:</td>
+                    <td>
+                        <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
+                    </td>
+                  </tr>  
 
-              <tr>
-                <td>Specs:</td>
-                <td>
-                    <%= @item.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
-                </td>
-              </tr>  
+                  <tr>
+                    <td>Prints:</td>
+                    <td>
+                        <%= @item_revision.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
+                    </td>
+                  </tr>
 
-              <tr>
-                <td>Prints:</td>
-                <td>
-                    <%= @item.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
-                </td>
-              </tr>
+                   <tr>
+                    <td>Materials:</td>
+                    <td>
+                      <%= @item_revision.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
+                    </td>
+                  </tr> 
 
-               <tr>
-                <td>Materials:</td>
-                <td>
-                  <%= @item.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
-                </td>
-              </tr> 
+                  <tr>
+                    <td>Processes:</td>
+                    <td>
+                        <%= @item_revision.process_types.collect{|process| link_to(process.process_short_name, process_type_path(process))}.join(",  ").html_safe %>
+                    </td>
+                  </tr>    
 
-              <tr>
-                <td>Processes:</td>
-                <td>
-                    <%= @item.process_types.collect{|process| link_to(process.process_short_name, process_type_path(process))}.join(",  ").html_safe %>
-                </td>
-              </tr>    
-
-              <tr>
-                <td>Notes:</td>
-                <td><%= @item.item_notes %></td>
-              </tr> 
+                  <tr>
+                    <td>Notes:</td>
+                    <td><%= @item_revision.item_notes %></td>
+                  </tr>
+              <% else %>              
+                  <tr>No Revision available!</tr>
+              <% end %>
 
               <tr>
                 <td>Active:</td>
                 <td><%= @item.item_active %></td>
-              </tr>           
-
+              </tr>
             </tbody>
           </table>
     </div>
@@ -125,7 +125,7 @@
 
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="contacts_btn">
-                    <h4><strong>$<%= @item.item_cost %></strong></h4>
+                    <h4><strong>$<%= @item_revision.item_cost.to_f if @item_revision %></strong></h4>
                     <span class="txt"><strong>Cost</strong></span>
                     <div class="clearfix"></div>
                 </a>
@@ -143,7 +143,7 @@
         <div class="separator bottom"></div>
 
         <!-- Dimensions -->
-        <%= render 'item_part_dimensions/item_dimensions' %>
+        <%#= render 'item_part_dimensions/item_dimensions' %>
     </div>
 </div>
 
@@ -192,18 +192,8 @@
     <div class="widget-body" style="height:150px"></div>
 </div>
 
-<!-- Revision -->
-<div class="widget">
-    <div class="widget-head">
-        <div class="row-fluid">
-            <h4 class="span6 heading">Revision</h4>
-            <span class="span6 heading right">
-                <%= link_to 'New Revison', "#", :class => "btn btn-mini btn-success" %>
-            </span>
-        </div> 
-    </div>
-    <div class="widget-body" style="height:150px"></div>
-</div>
+<!-- Revisions -->
+<%= render 'item_revisions/item_revisions' %>
 
 
 

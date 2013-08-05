@@ -26,7 +26,7 @@
                 <th>Active</th> 
                 <th>Quantity on Hand</th>  
                 <th>Quantity on Order</th>   
-                <th></th>
+                <!-- <th></th> -->
               </tr>
             </thead>
             <body>
@@ -37,22 +37,21 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report", :path => items_path(@organization), :extras => {:slno => false}, 
+    {:name => "table_report", :path => items_path, :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "owner_name", "bVisible": false },                        
                         { "mData": "item_part_no" },
                         { "mData": "item_name" },
                         { "mData": "item_description" },
                         { "mData": "vendor_name", "bVisible": false },                       
-                        { "mData": "item_revision" },
+                        { "mData": "item_revision_name" },
                         { "mData": "item_revision_date", "bVisible": false},
                         { "mData": "item_tooling", "bVisible": false },
                         { "mData": "item_cost" },                        
                         { "mData": "item_notes", "bVisible": false},
                         { "mData": "item_active", "bVisible": false },
                         { "mData": "item_quantity_in_hand" },
-                        { "mData": "item_quantity_on_order" },
-                        { "mData": "links" },
+                        { "mData": "item_quantity_on_order" }
                     ]'
     } 
 %>
