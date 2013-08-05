@@ -58,4 +58,6 @@ class Organization < ActiveRecord::Base
 	has_many :contacts, :as => :contactable, :dependent => :destroy
 	has_many :organization_processes, :dependent => :destroy
 	has_many :gauges, :dependent => :destroy
+
+	has_many :item_revisions
 end

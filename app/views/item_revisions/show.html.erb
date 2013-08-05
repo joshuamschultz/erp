@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item revision name:</b>
+  <%= @item_revision.item_revision_name %>
+</p>
+
+<p>
+  <b>Item revision date:</b>
+  <%= @item_revision.item_revision_date %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_revision.item %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @item_revision.owner %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @item_revision.organization %>
+</p>
+
+<p>
+  <b>Vendor quality:</b>
+  <%= @item_revision.vendor_quality %>
+</p>
+
+<p>
+  <b>Customer quality:</b>
+  <%= @item_revision.customer_quality %>
+</p>
+
+<p>
+  <b>Item name:</b>
+  <%= @item_revision.item_name %>
+</p>
+
+<p>
+  <b>Item description:</b>
+  <%= @item_revision.item_description %>
+</p>
+
+<p>
+  <b>Item notes:</b>
+  <%= @item_revision.item_notes %>
+</p>
+
+<p>
+  <b>Item tooling:</b>
+  <%= @item_revision.item_tooling %>
+</p>
+
+<p>
+  <b>Item cost:</b>
+  <%= @item_revision.item_cost %>
+</p>
+
+<p>
+  <b>Item revision created:</b>
+  <%= @item_revision.item_revision_created_id %>
+</p>
+
+<p>
+  <b>Item revision updated:</b>
+  <%= @item_revision.item_revision_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_item_revision_path(@item_revision.item, @item_revision) %> |
+<%= link_to 'Back', item_item_revisions_path(@item_revision.item) %>

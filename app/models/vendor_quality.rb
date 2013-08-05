@@ -19,4 +19,6 @@ class VendorQuality < ActiveRecord::Base
   has_many :max_quality_customers, :class_name => "Organization", :foreign_key => "customer_max_quality_id"
 
   has_many :min_quality_customers, :class_name => "Organization", :foreign_key => "customer_min_quality_id"
+
+  has_many :item_revisions
 end
