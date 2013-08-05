@@ -14,7 +14,7 @@ class DimensionsController < ApplicationController
       format.json { 
         @dimensions = @dimensions.select{|dimension|
           dimension[:dimension_identifier] = "<a href='#{dimension_path(dimension)}'>#{dimension[:dimension_identifier]}</a>"
-          dimension[:instrument_name] = "<a href='#{gauge_path(dimension.gauge)}'>#{dimension.gauge.gauge_tool_name}</a>"
+          # dimension[:instrument_name] = "<a href='#{gauge_path(dimension.gauge)}'>#{dimension.gauge.gauge_tool_name}</a>"
           dimension[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
       }
         render json: {:aaData => @dimensions} 
