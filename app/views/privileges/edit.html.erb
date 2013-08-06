@@ -1,0 +1,28 @@
+<h4 class="heading">Edit user</h4>
+<%= simple_form_for(@user,:url => {:action => "update"}, :html => {:id => "form_for_previlage", :class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">    
+    <%= f.input :email, :autofocus => true %>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation %>
+    <%= f.input :name %>
+    <%= f.input :gender %>
+    <%= f.input :address %>  
+    <%= f.input :city %> 
+    <%= f.input :state %>  
+    <%= f.input :country %> 
+    <%= f.input :telephone_no %>  
+    <%= f.input :mobile_no %>
+    <%= f.input :active %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit %>
+         <%= link_to 'Delete', privilege_path(@user), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @user.new_record? %>
+    <%= link_to 'Back to Prints', privileges_path,:class =>"btn" %>
+  </div>
+<% end %>
+<script type="text/javascript">
+    tab_field_forms["form_for_previlage"] = ["user_email", "user_password", "user_password_confirmation", "user_name", "user_gender", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+</script>
+
