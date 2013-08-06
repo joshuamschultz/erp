@@ -2,23 +2,24 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-      <%= f.hidden_field :attachable_id, value: @object.id %>
-      <%= f.hidden_field :attachable_type, value: @object.class %>
-      <%= f.input :attachment_title, label: "Title" %>
+      <%= f.hidden_field :attachable_id %>
+      <%= f.hidden_field :attachable_type %>
+      <%= f.input :attachment_revision_title, label: "Revision Title" %>
+      <%= f.input :attachment_revision_date, label: "Revision Date" %>
+      <%= f.input :attachment_name, label: "Name" %>
       <%= f.input :attachment_description, label: "Description" %>
-      <%= f.input :attachment_notes, label: "Notes" %>
+      <%#= f.input :attachment_notes, label: "Notes" %>
       <%= f.input :attachment_public, label: "Public" %>
-      <%= f.input :attachment_active, label: "Active" %>
-      <span class="btn btn-default btn-file">
-          <!-- <span class="fileupload-new">Select file</span> -->
-          <%= f.input :attachment %>
-      </span>
+      <%= f.input :attachment, label: "Attachment (Only if changed/new)" %>
+      <%#= f.input :attachment_active, label: "Active" %>
   </div>
 
   <div class="separator bottom"></div>
 
   <div class="form-actions">
       <%= f.button :submit, "Save" %>
+      <%= link_to 'Delete', attachment_path(@attachment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @attachment.new_record? %>
+      <%= link_to 'Back', @attachment.attachable.redirect_path, :class =>"btn" %>
   </div>
 
 <% end %>
