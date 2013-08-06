@@ -17,10 +17,10 @@ class ItemsController < ApplicationController
             item_revision = item.current_revision
             item[:item_part_no] = "<a href='#{item_path(item)}'><strong>#{item.item_part_no}</strong></a>"            
             if item_revision
-              item[:owner_name] = "<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"              
+              item[:owner_name] = "" #"<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"              
               item[:item_name] = item_revision.item_name
               item[:item_description] = "test"
-              item[:vendor_name] = "<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
+              item[:vendor_name] = "" # "<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
               item[:item_revision_name] = item_revision.item_revision_name
               item[:item_revision_date] = item_revision.item_revision_date
               item[:item_tooling] = item_revision.item_tooling
