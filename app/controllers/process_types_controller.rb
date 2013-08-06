@@ -25,6 +25,7 @@ class ProcessTypesController < ApplicationController
   # GET /process_types/1.json
   def show
     @process_type = ProcessType.find(params[:id])
+    @object = @process_type
 
     respond_to do |format|
       format.html # show.html.erb

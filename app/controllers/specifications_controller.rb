@@ -26,6 +26,7 @@ class SpecificationsController < ApplicationController
   # GET /specifications/1.json
   def show
     @specification = Specification.find(params[:id])
+    @object = @specification
 
     respond_to do |format|
       format.html # show.html.erb

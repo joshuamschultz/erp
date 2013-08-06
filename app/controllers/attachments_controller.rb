@@ -11,7 +11,7 @@ class AttachmentsController < ApplicationController
           @attachments = @attachments.select{|attachment|
               # attachment[:attachment_name] = "<a href='#{attachment_path(attachment)}'>#{attachment.attachment_name}</a>"              
               attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
-              attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' class='btn-action glyphicons file btn-success'><i></i></a> "
+              attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
             }
           render json: {:aaData => @attachments} 
       }
