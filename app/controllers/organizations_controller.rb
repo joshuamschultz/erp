@@ -27,6 +27,7 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     @contactable = @organization
+    @object = @organization
     @contact_type = params[:contact_type] || "address"
 
     @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
