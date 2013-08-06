@@ -1,35 +1,41 @@
-<div class="row-fluid span8">
-  <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Print Info</h4>
-  </div>
-    <table class="table table-striped table-bordered">
-      <tbody>      
-        <tr>
-          <td>Print identifier:</td>
-          <td><%= @print.print_identifier %></td>
-        </tr>
-
-        <tr>
-          <td>Print description:</td>
-          <td><%= @print.print_description %></td>
-        </tr>
-
-        <tr>
-          <td>Print notes:</td>
-          <td><%= @print.print_notes %></td>
-        </tr>
-
-         <tr>
-          <td>Print active:</td>
-          <td><%= @print.print_active %></td>
-        </tr>
-      </tbody>
-    </table>
-  <div class="form-actions">
-    <%= link_to 'Edit', edit_print_path(@print), :class => "btn"%>     
-    <%= link_to 'Back to Prints', prints_path, :class =>"btn" %>
-  </div>
+  <!-- Wells -->
+<div class="row-fluid">
+    <h4 class="span3 left">Print Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_print_path(@print), :class => "btn"%>     
+        <%= link_to 'Back to Prints', prints_path, :class =>"btn" %>
+    </span>
 </div>
 
-<!-- Attachments -->
-<%= render 'attachments/attachments' %>
+<div class="row-fluid">
+    <div class="span3 well item_detail_view">
+        <table class="table">
+            <tbody>
+                  <tr>
+                    <td>Identifier:</td>
+                    <td><%= @print.print_identifier %></td>
+                  </tr>
+
+                  <tr>
+                    <td>Description:</td>
+                    <td><%= @print.print_description %></td>
+                  </tr>
+
+                  <tr>
+                    <td>Notes:</td>
+                    <td><%= @print.print_notes %></td>
+                  </tr>
+
+                   <tr>
+                    <td>Active:</td>
+                    <td><%= @print.print_active %></td>
+                  </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="span9"> 
+        <!-- Attachments -->
+        <%= render 'attachments/attachments' %>
+    </div>
+</div>
