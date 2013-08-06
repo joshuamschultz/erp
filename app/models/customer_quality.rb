@@ -1,4 +1,6 @@
 class CustomerQuality < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   attr_accessible :quality_active, :quality_control_plan, :quality_created_id, :quality_description, 
   :quality_dimensional_cofc, :quality_floor_plan, :quality_fmea, :quality_form, :quality_gauge, 
   :quality_material_cofc, :quality_name, :quality_notes, :quality_packaging, :quality_process_flow, 
@@ -19,4 +21,10 @@ class CustomerQuality < ActiveRecord::Base
   has_many :organizations
 
   has_many :item_revisions
+
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+
+  def redirect_path
+      customer_quality_path(self)
+  end
 end

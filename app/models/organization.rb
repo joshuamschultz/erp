@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+	include Rails.application.routes.url_helpers
+
 	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id, :organization_active, 
 	:organization_address_1, :organization_address_2, :organization_city, :organization_country, 
 	:organization_created_id, :organization_description, :organization_email, :organization_fax, 
@@ -58,6 +60,11 @@ class Organization < ActiveRecord::Base
 	has_many :contacts, :as => :contactable, :dependent => :destroy
 	has_many :organization_processes, :dependent => :destroy
 	has_many :gauges, :dependent => :destroy
-
 	has_many :item_revisions
+
+	has_many :attachments, :as => :attachable, :dependent => :destroy
+
+	def redirect_path
+      	organization_path(self)
+  	end
 end

@@ -1,4 +1,6 @@
 class VendorQuality < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   attr_accessible :quality_active, :quality_created_id, :quality_description, :quality_name, 
   :quality_notes, :quality_updated_id
 
@@ -21,4 +23,10 @@ class VendorQuality < ActiveRecord::Base
   has_many :min_quality_customers, :class_name => "Organization", :foreign_key => "customer_min_quality_id"
 
   has_many :item_revisions
+
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+
+  def redirect_path
+      vendor_quality_path(self)
+  end
 end
