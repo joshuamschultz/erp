@@ -5,7 +5,8 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Attachments</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Attachment', new_attachment_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Attachment', new_attachment_path(attachable_type: @object.class.name, attachable_id: @object.id), :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'Back', @object.redirect_path, :class =>"btn" %>
             </span>
         </div> 
     </div>
@@ -15,11 +16,13 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>SLNO</th>
                 <th>Name</th>
+                <th>Revision Title</th>
+                <th>Revision Date</th>                
                 <th>Description</th>
-                <th>Commission Type</th>
-                <th>Commission Percentage</th>
+                <th>Notes</th>
+                <th>Public</th>
+                <th>Status</th>
                 <th>Active</th>
                 <th></th>
               </tr>
@@ -32,50 +35,19 @@
     </div>
 </div>
 
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report", :path => attachments_path(attachable_type: @object.class.name, attachable_id: @object.id),:extras => {:slno => false}, 
+        :columns => '[
+                        { "mData": "attachment_name" },
+                        { "mData": "attachment_revision_title" },                        
+                        { "mData": "attachment_revision_date" },                        
+                        { "mData": "attachment_description" },
+                        { "mData": "attachment_notes", "bVisible": false },                       
+                        { "mData": "attachment_public" },
+                        { "mData": "attachment_status" },
+                        { "mData": "attachment_active" },
+                        { "mData": "links" }
+                    ]'
+    } 
+%>
 
-
-<h1>Listing attachments</h1>
-
-<table>
-  <tr>
-    <th>Attachable</th>
-    <th>Attachable type</th>
-    <th>Attachment title</th>
-    <th>Attachment description</th>
-    <th>Attachment notes</th>
-    <th>Attachment file name</th>
-    <th>Attachment file size</th>
-    <th>Attachment content type</th>
-    <th>Attachment public</th>
-    <th>Attachment active</th>
-    <th>Attachment created</th>
-    <th>Attachment updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @attachments.each do |attachment| %>
-  <tr>
-    <td><%= attachment.attachable_id %></td>
-    <td><%= attachment.attachable_type %></td>
-    <td><%= attachment.attachment_title %></td>
-    <td><%= attachment.attachment_description %></td>
-    <td><%= attachment.attachment_notes %></td>
-    <td><%= attachment.attachment_file_name %></td>
-    <td><%= attachment.attachment_file_size %></td>
-    <td><%= attachment.attachment_content_type %></td>
-    <td><%= attachment.attachment_public %></td>
-    <td><%= attachment.attachment_active %></td>
-    <td><%= attachment.attachment_created_id %></td>
-    <td><%= attachment.attachment_updated_id %></td>
-    <td><%= link_to 'Show', attachment %></td>
-    <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
-    <td><%= link_to 'Destroy', attachment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Attachment', new_attachment_path %>

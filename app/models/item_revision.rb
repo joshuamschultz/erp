@@ -1,4 +1,6 @@
 class ItemRevision < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   belongs_to :item
   belongs_to :owner
   belongs_to :organization
@@ -33,6 +35,8 @@ class ItemRevision < ActiveRecord::Base
   has_many :item_alt_names, :through => :item_selected_names
 
   has_many :item_part_dimensions, :dependent => :destroy
+
+  has_many :attachments, :as => :attachable, :dependent => :destroy
 
 	def self.process_item_associations(item_revision, params)
       	if item_revision
@@ -100,5 +104,9 @@ class ItemRevision < ActiveRecord::Base
     	    end
       	end
   	end
+
+    def redirect_path
+        item_path(self.item, revision_id: self.id)
+    end
 
 end
