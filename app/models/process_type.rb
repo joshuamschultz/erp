@@ -1,4 +1,6 @@
 class ProcessType < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   attr_accessible :process_active, :process_created_id, :process_description, 
   :process_notes, :process_short_name, :process_updated_id
 
@@ -16,4 +18,9 @@ class ProcessType < ActiveRecord::Base
 
   has_many :item_processes, :dependent => :destroy
   has_many :item_revisions, :through => :item_processes
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+
+  def redirect_path
+      process_type_path(self)
+  end
 end

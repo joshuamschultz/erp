@@ -1,4 +1,6 @@
 class Specification < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   after_initialize :default_values
 
   def default_values
@@ -14,4 +16,9 @@ class Specification < ActiveRecord::Base
 
   has_many :item_specifications, :dependent => :destroy
   has_many :item_revisions, :through => :item_specifications
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+
+  def redirect_path
+      specification_path(self)
+  end
 end
