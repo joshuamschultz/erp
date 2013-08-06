@@ -3,16 +3,17 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions.json
   def index
     @item = Item.find(params[:item_id])
-    @item_part_dimensions = @item.item_part_dimensions.all
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimensions = @item_revision.item_part_dimensions.all
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
           @item_part_dimensions = @item_part_dimensions.select{|item_part_dimension|
             item_part_dimension[:dimension_type] = item_part_dimension.dimension.dimension_identifier
-            item_part_dimension[:gauge] = item_part_dimension.dimension.gauge.gauge_tool_name
-            # item_part_dimension[:item_part_letter] = "<a href='#{item_item_part_dimension_path(@item, item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
-            item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_part_dimension_path(@item, item_part_dimension), nil)      
+            item_part_dimension[:gauge_name] = item_part_dimension.gauge.present? ? item_part_dimension.gauge.gauge_tool_name : ""
+            item_part_dimension[:item_part_letter] = "<a href='#{item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
+            item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)      
           }
           render json: {:aaData => @item_part_dimensions } 
       }                
@@ -23,7 +24,8 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions/1.json
   def show
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
     
     respond_to do |format|
       format.html # show.html.erb
@@ -35,7 +37,8 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions/new.json
   def new
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.build
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,7 +49,8 @@ class ItemPartDimensionsController < ApplicationController
   # GET /item_part_dimensions/1/edit
   def edit
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
   end
 
   # POST /item_part_dimensions
@@ -54,11 +58,12 @@ class ItemPartDimensionsController < ApplicationController
   # item_item_part_dimensions_path(@item)
   def create
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.new(params[:item_part_dimension])
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.new(params[:item_part_dimension])
 
     respond_to do |format|
       if @item_part_dimension.save
-        format.html { redirect_to item_path(@item), notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to item_item_revision_item_part_dimensions_path, notice: 'Item dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else
         format.html { render action: "new" }
@@ -71,11 +76,12 @@ class ItemPartDimensionsController < ApplicationController
   # PUT /item_part_dimensions/1.json
   def update
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
 
     respond_to do |format|
       if @item_part_dimension.update_attributes(params[:item_part_dimension])
-        format.html { redirect_to item_path(@item), notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to item_item_revision_item_part_dimensions_path, notice: 'Item dimension was successfully created.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -92,7 +98,7 @@ class ItemPartDimensionsController < ApplicationController
     @item_part_dimension.destroy
 
     respond_to do |format|
-      format.html { redirect_to item_path(@item), notice: 'Item dimension was deleted created.' }
+      format.html { redirect_to item_item_revision_item_part_dimensions_path(@item), notice: 'Item dimension was deleted successfully.' }
       format.json { head :no_content }
     end
   end
