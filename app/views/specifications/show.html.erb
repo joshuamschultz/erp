@@ -1,36 +1,41 @@
-<div class="row-fluid span8">
-    <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Specification Info</h4>
-    </div>
-    <table class="table table-striped table-bordered">
-        <tbody>
-            <tr>
-              <td class="span2">Name :</td>
-              <td class="span5"><%= @specification.specification_identifier %></td>
-            </tr>
-
-            <tr>
-              <td class="span3">Description :</td>
-              <td class="span5"><%= @specification.specification_description %></td>
-            </tr>
-
-            <tr>
-              <td class="span3">Notes :</td>
-              <td class="span5"><%= @specification.specification_notes %></td>
-            </tr>
-
-            <tr>
-              <td class="span3">Active :</td>
-              <td class="span5"><%= @specification.specification_active %></td>
-            </tr>
-        </tbody>
-    </table>
-
-  <div class="form-actions">
-    <%= link_to 'Edit', edit_specification_path(@specification), :class => "btn btn-small" %>
-    <%= link_to 'Back to specifications', specifications_path, :class => "btn btn-small" %>
-  </div>
+  <!-- Wells -->
+<div class="row-fluid">
+    <h4 class="span3 left">Specification Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_specification_path(@specification), :class => "btn btn-small" %>
+        <%= link_to 'Back to specifications', specifications_path, :class => "btn btn-small" %>
+    </span>
 </div>
 
-<!-- Attachments -->
-<%= render 'attachments/attachments' %>
+<div class="row-fluid">
+    <div class="span3 well item_detail_view">
+        <table class="table">
+            <tbody>
+                <tr>
+                  <td class="span2">Name :</td>
+                  <td class="span5"><%= @specification.specification_identifier %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Description :</td>
+                  <td class="span5"><%= @specification.specification_description %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Notes :</td>
+                  <td class="span5"><%= @specification.specification_notes %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Active :</td>
+                  <td class="span5"><%= @specification.specification_active %></td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="span9"> 
+        <!-- Attachments -->
+        <%= render 'attachments/attachments' %>
+    </div>
+</div>
