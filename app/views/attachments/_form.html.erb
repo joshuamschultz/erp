@@ -4,8 +4,8 @@
   <div class="form-inputs">
       <%= f.hidden_field :attachable_id %>
       <%= f.hidden_field :attachable_type %>
-      <%= f.input :attachment_revision_title, label: "Revision Title" %>
-      <%= f.input :attachment_revision_date, label: "Revision Date" %>
+      <%= f.input :attachment_revision_title, label: "Revision Title", :autofocus => true %>
+      <%= f.input :attachment_revision_date, :as => "string", label: "Revision Date" %>
       <%= f.input :attachment_name, label: "Name" %>
       <%= f.input :attachment_description, label: "Description" %>
       <%#= f.input :attachment_notes, label: "Notes" %>
@@ -23,3 +23,12 @@
   </div>
 
 <% end %>
+
+
+<script type="text/javascript">
+  tab_field_forms["form_for_attachment"] = ["attachment_attachment_revision_title", "attachment_attachment_revision_date", "attachment_attachment_name", "attachment_attachment_description", "attachment_attachment_public", "attachment_attachment"];
+
+  <% date_box_date = @attachment.new_record? ? Date.today : @attachment.attachment_revision_date %> 
+
+  date_box_fields = date_box_fields.concat([{"name":"attachment_attachment_revision_date", "value":"<%= date_box_date %>"}]);
+</script>

@@ -15,4 +15,5 @@ class ItemPartDimension < ActiveRecord::Base
 
   validates_presence_of :item_revision
   validates_presence_of :dimension
+  validates_presence_of :gauge
 end

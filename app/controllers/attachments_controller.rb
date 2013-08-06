@@ -53,7 +53,7 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       if @attachment.save
-        format.html { redirect_to attachments_path(attachable_type: @attachment.attachable.class.name, attachable_id: @attachment.attachable.id), notice: 'Attachment was successfully created.' }
+        format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
         format.json { render json: @attachment, status: :created, location: @attachment }
       else
         puts @attachment.errors.to_yaml
@@ -70,7 +70,7 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       if @attachment.update_attributes(params[:attachment])
-        format.html { redirect_to attachments_path(attachable_type: @attachment.attachable.class.name, attachable_id: @attachment.attachable.id), notice: 'Attachment was successfully updated.' }
+        format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }
       else
         puts @attachment.errors.to_yaml

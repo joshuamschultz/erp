@@ -13,17 +13,17 @@
     </div>
     <!-- // Widget heading END -->
     <div class="widget-body">
-        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+        <table id="table_report_item_dimensions" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>   
                 <th>Type</th>
+                <th>Gauge</th>
                 <th>Letter</th>
                 <th>Dimension</th>
                 <th>+ve Tolerance</th>
                 <th>-ve Tolerance</th>
                 <th>Critical</th>
-                <th>Notes</th>
-                <th>Gauge</th>
+                <th>Notes</th>                
                 <th></th>
               </tr>
             </thead>
@@ -33,16 +33,16 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => item_item_revision_item_part_dimensions_path(@item, @item_revision),:extras => {:slno => false},
+        :name => "table_report_item_dimensions", :path => item_item_revision_item_part_dimensions_path(@item, @item_revision),:extras => {:slno => false},
         :columns => '[
                         { "mData": "dimension_type" },
+                        { "mData": "gauge_name"},
                         { "mData": "item_part_letter" },
                         { "mData": "item_part_dimension" },
                         { "mData": "item_part_pos_tolerance" },
                         { "mData": "item_part_neg_tolerance" },
                         { "mData": "item_part_critical"},
-                        { "mData": "item_part_notes", "bVisible": false},
-                        { "mData": "gauge_name"},
+                        { "mData": "item_part_notes", "bVisible": false},                        
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 

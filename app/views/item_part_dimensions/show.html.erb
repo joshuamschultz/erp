@@ -3,7 +3,17 @@
         <h4>Item Part Dimesion Info</h4>
   </div>
   <table class="table table-striped table-bordered">
-    <tbody>     
+    <tbody>  
+      <tr>
+        <td>Dimension Type:</td>
+        <td><%= @item_part_dimension.dimension.dimension_identifier  if @item_part_dimension.dimension %></td>
+      </tr>
+
+      <tr>
+        <td>Instrument:</td>
+        <td><%= @item_part_dimension.gauge.gauge_tool_name if @item_part_dimension.gauge %></td>
+      </tr>   
+
       <tr>
         <td>Item part letter:</td>
         <td><%= @item_part_dimension.item_part_letter %></td>
@@ -33,6 +43,6 @@
   </table>
   <div class="form-actions">
     <%= link_to 'Edit', edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,@item_part_dimension), :class => "btn"%> 
-    <%= link_to 'Back', item_item_revision_item_part_dimensions_path(@item), :class => "btn" %>
+    <%= link_to 'Back', @item, :class => "btn" %>
   </div>
 </div>

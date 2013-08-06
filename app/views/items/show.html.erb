@@ -143,10 +143,12 @@
         <div class="separator bottom"></div>
 
         <!-- Dimensions -->
-        <%#= render 'item_part_dimensions/item_dimensions' %>
+        <%= render 'item_part_dimensions/item_dimensions' %>
     </div>
 </div>
 
+<!-- Attachments -->
+<%= render 'attachments/attachments' if @item_revision %>
 
 <!-- PO -->
 <div class="widget">

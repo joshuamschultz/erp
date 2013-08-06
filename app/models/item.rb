@@ -3,6 +3,7 @@ class Item < ActiveRecord::Base
   :item_created_id, :item_updated_id, :item_revisions_attributes
 
   has_many :item_revisions, :dependent => :destroy
+  has_many :item_part_dimensions, :through => :item_revisions
 
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 
