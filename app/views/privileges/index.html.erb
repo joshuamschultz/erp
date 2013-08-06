@@ -1,0 +1,53 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Users</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New User', new_privilege_path, :class => "btn btn-mini btn-success" %>                
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Telephone no</th>
+                <th>Mobile no</th>
+                <th>Active</th>
+                <th></th>   
+              </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report",  :path => privileges_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "email" },
+                        { "mData": "show" },
+                        { "mData": "gender" },
+                        { "mData": "address" },
+                        { "mData": "city" },
+                        { "mData": "state" },
+                        { "mData": "country" },
+                        { "mData": "telephone_no" },
+                        { "mData": "mobile_no" },
+                        { "mData": "active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
