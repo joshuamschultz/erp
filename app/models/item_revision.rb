@@ -12,6 +12,9 @@ class ItemRevision < ActiveRecord::Base
   :organization_id, :vendor_quality_id, :customer_quality_id
 
   validates_presence_of :owner
+  validates_presence_of :organization
+  validates_presence_of :vendor_quality
+
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
