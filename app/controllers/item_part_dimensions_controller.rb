@@ -63,7 +63,7 @@ class ItemPartDimensionsController < ApplicationController
 
     respond_to do |format|
       if @item_part_dimension.save
-        format.html { redirect_to item_item_revision_item_part_dimensions_path, notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to @item, notice: 'Item dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else
         format.html { render action: "new" }
@@ -81,7 +81,7 @@ class ItemPartDimensionsController < ApplicationController
 
     respond_to do |format|
       if @item_part_dimension.update_attributes(params[:item_part_dimension])
-        format.html { redirect_to item_item_revision_item_part_dimensions_path, notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to @item, notice: 'Item dimension was successfully created.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -94,11 +94,12 @@ class ItemPartDimensionsController < ApplicationController
   # DELETE /item_part_dimensions/1.json
   def destroy
     @item = Item.find(params[:item_id])
-    @item_part_dimension = @item.item_part_dimensions.find(params[:id])
+    @item_revision = @item.item_revisions.find(params[:item_revision_id])
+    @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
     @item_part_dimension.destroy
 
     respond_to do |format|
-      format.html { redirect_to item_item_revision_item_part_dimensions_path(@item), notice: 'Item dimension was deleted successfully.' }
+      format.html { redirect_to @item, notice: 'Item dimension was deleted successfully.' }
       format.json { head :no_content }
     end
   end

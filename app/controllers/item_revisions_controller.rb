@@ -3,7 +3,7 @@ class ItemRevisionsController < ApplicationController
   # GET items/1/item_revisions.json
   def index
     @item = Item.find(params[:item_id])
-    @item_revisions = @item.item_revisions.order("created_at desc")
+    @item_revisions = @item.item_revisions.order("item_revision_date desc")
 
     respond_to do |format|
       format.html # index.html.erb

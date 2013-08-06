@@ -47,10 +47,11 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    @item = Item.find(params[:id])
+    @item = Item.find(params[:id])    
     if @item
       @item_revision = @item.item_revisions.find_by_id(params[:revision_id]) 
       @item_revision = @item.current_revision unless @item_revision
+      @object = @item_revision
     end
 
     respond_to do |format|
