@@ -1,65 +1,38 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Attachment Info</h4>
+  </div>
+  <table class="table table-striped table-bordered">
+    <tbody> 
+      <tr>
+        <td>Title:</td>
+        <td><%= @attachment.attachment_revision_title %></td>
+      </tr>
 
-<p>
-  <b>Attachable:</b>
-  <%= @attachment.attachable_id %>
-</p>
+       <tr>
+        <td>Revision Date:</td>
+        <td><%= @attachment.attachment_revision_date %></td>
+      </tr>
 
-<p>
-  <b>Attachable type:</b>
-  <%= @attachment.attachable_type %>
-</p>
+      <tr>
+        <td>Description:</td>
+        <td><%= @attachment.attachment_description %></td>
+      </tr>
 
-<p>
-  <b>Attachment title:</b>
-  <%= @attachment.attachment_title %>
-</p>
+      <tr>
+        <td>Attachment file name:</td>
+        <td><%= @attachment.attachment_file_name %></td>
+      </tr>
 
-<p>
-  <b>Attachment description:</b>
-  <%= @attachment.attachment_description %>
-</p>
+      <tr>
+        <td>Attachment public:</td>
+        <td><%= @attachment.attachment_public %></td>
+      </tr>
 
-<p>
-  <b>Attachment notes:</b>
-  <%= @attachment.attachment_notes %>
-</p>
-
-<p>
-  <b>Attachment file name:</b>
-  <%= @attachment.attachment_file_name %>
-</p>
-
-<p>
-  <b>Attachment file size:</b>
-  <%= @attachment.attachment_file_size %>
-</p>
-
-<p>
-  <b>Attachment content type:</b>
-  <%= @attachment.attachment_content_type %>
-</p>
-
-<p>
-  <b>Attachment public:</b>
-  <%= @attachment.attachment_public %>
-</p>
-
-<p>
-  <b>Attachment active:</b>
-  <%= @attachment.attachment_active %>
-</p>
-
-<p>
-  <b>Attachment created:</b>
-  <%= @attachment.attachment_created_id %>
-</p>
-
-<p>
-  <b>Attachment updated:</b>
-  <%= @attachment.attachment_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_attachment_path(@attachment) %> |
-<%= link_to 'Back', attachments_path %>
+    </tbody>
+  </table>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_attachment_path(@attachment), :class => "btn btn-small"%> 
+    <%= link_to 'Back', @attachment.attachable.redirect_path, :class => "btn btn-small" %>
+  </div>
+</div>
