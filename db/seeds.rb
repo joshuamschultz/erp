@@ -17,7 +17,11 @@ mastertypes = [
          ["Email", "", "email", "customer_contact_type", "true"],
          ["Customer", "", "customer", "organization_type", "true"],
          ["Vendor", "", "vendor", "organization_type", "true"],
-         ["Support", "", "support", "organization_type", "true"]
+         ["Support", "", "support", "organization_type", "true"],
+         ["Admin", "", "admin", "privilege", "true"],
+         ["Manager", "", "manager", "privilege", "true"],
+         ["Quality", "", "quality", "privilege", "true"],
+         ["Operation", "", "operation", "privilege", "true"]
 ]
 
 mastertypes.each do |master|
