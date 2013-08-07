@@ -1,0 +1,53 @@
+<h1>Listing po_lines</h1>
+
+<table>
+  <tr>
+    <th>Po header</th>
+    <th>Organization</th>
+    <th>So line</th>
+    <th>Vendor quality</th>
+    <th>Customer quality</th>
+    <th>Item</th>
+    <th>Item revision</th>
+    <th>Po line customer po</th>
+    <th>Po line cost</th>
+    <th>Po line quantity</th>
+    <th>Po line total</th>
+    <th>Po line status</th>
+    <th>Po line notes</th>
+    <th>Po line active</th>
+    <th>Po line created</th>
+    <th>Po line updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @po_lines.each do |po_line| %>
+  <tr>
+    <td><%= po_line.po_header %></td>
+    <td><%= po_line.organization %></td>
+    <td><%= po_line.so_line %></td>
+    <td><%= po_line.vendor_quality %></td>
+    <td><%= po_line.customer_quality %></td>
+    <td><%= po_line.item %></td>
+    <td><%= po_line.item_revision %></td>
+    <td><%= po_line.po_line_customer_po %></td>
+    <td><%= po_line.po_line_cost %></td>
+    <td><%= po_line.po_line_quantity %></td>
+    <td><%= po_line.po_line_total %></td>
+    <td><%= po_line.po_line_status %></td>
+    <td><%= po_line.po_line_notes %></td>
+    <td><%= po_line.po_line_active %></td>
+    <td><%= po_line.po_line_created_id %></td>
+    <td><%= po_line.po_line_updated_id %></td>
+    <td><%= link_to 'Show', [po_line.po_header, po_line] %></td>
+    <td><%= link_to 'Edit', edit_po_header_po_line_path(po_line.po_header, po_line) %></td>
+    <td><%= link_to 'Destroy', [po_line.po_header, po_line], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Po line', new_po_header_po_line_path(params[:po_header_id]) %>

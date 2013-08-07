@@ -1,5 +1,15 @@
 AllianceFasteners::Application.routes.draw do
   
+  resources :po_headers do
+    resources :po_lines
+  end
+
+  resources :so_lines
+
+
+  resources :po_headers
+
+
   resources :items do
     resources :item_revisions do
         resources :item_part_dimensions

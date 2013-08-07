@@ -1,0 +1,85 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Po header:</b>
+  <%= @po_line.po_header %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @po_line.organization %>
+</p>
+
+<p>
+  <b>So line:</b>
+  <%= @po_line.so_line %>
+</p>
+
+<p>
+  <b>Vendor quality:</b>
+  <%= @po_line.vendor_quality %>
+</p>
+
+<p>
+  <b>Customer quality:</b>
+  <%= @po_line.customer_quality %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @po_line.item %>
+</p>
+
+<p>
+  <b>Item revision:</b>
+  <%= @po_line.item_revision %>
+</p>
+
+<p>
+  <b>Po line customer po:</b>
+  <%= @po_line.po_line_customer_po %>
+</p>
+
+<p>
+  <b>Po line cost:</b>
+  <%= @po_line.po_line_cost %>
+</p>
+
+<p>
+  <b>Po line quantity:</b>
+  <%= @po_line.po_line_quantity %>
+</p>
+
+<p>
+  <b>Po line total:</b>
+  <%= @po_line.po_line_total %>
+</p>
+
+<p>
+  <b>Po line status:</b>
+  <%= @po_line.po_line_status %>
+</p>
+
+<p>
+  <b>Po line notes:</b>
+  <%= @po_line.po_line_notes %>
+</p>
+
+<p>
+  <b>Po line active:</b>
+  <%= @po_line.po_line_active %>
+</p>
+
+<p>
+  <b>Po line created:</b>
+  <%= @po_line.po_line_created_id %>
+</p>
+
+<p>
+  <b>Po line updated:</b>
+  <%= @po_line.po_line_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_po_header_po_line_path(@po_line.po_header, @po_line) %> |
+<%= link_to 'Back', po_header_po_lines_path(@po_line.po_header) %>

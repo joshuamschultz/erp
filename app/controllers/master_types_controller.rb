@@ -12,7 +12,6 @@ class MasterTypesController < ApplicationController
               master_type[:links] = CommonActions.object_crud_paths(nil, edit_master_type_path(master_type), 
               master_type_path(master_type))
           }
-          puts @master_types.to_json
           render json: {:aaData => @master_types}
         }
       end

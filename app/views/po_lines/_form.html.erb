@@ -1,0 +1,22 @@
+<%= simple_form_for([@po_line.po_header, @po_line]) do |f| %>
+    <%= f.error_notification %>
+
+    <%= f.association :po_header %>
+    <%= f.association :organization %>
+    <%= f.association :so_line %>
+    <%= f.association :vendor_quality %>
+    <%= f.association :customer_quality %>
+    <%= f.association :item %>
+    <%= f.association :item_revision %>
+    <%= f.input :po_line_customer_po %>
+    <%= f.input :po_line_cost %>
+    <%= f.input :po_line_quantity %>
+    <%= f.input :po_line_total %>
+    <%= f.input :po_line_status %>
+    <%= f.input :po_line_notes %>
+    <%= f.input :po_line_active %>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+<% end %>

@@ -23,6 +23,7 @@ class VendorQuality < ActiveRecord::Base
   has_many :min_quality_customers, :class_name => "Organization", :foreign_key => "customer_min_quality_id"
 
   has_many :item_revisions
+  has_many :po_lines
 
   has_many :attachments, :as => :attachable, :dependent => :destroy
 

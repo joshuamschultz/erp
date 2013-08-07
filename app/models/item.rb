@@ -5,6 +5,8 @@ class Item < ActiveRecord::Base
   has_many :item_revisions, :dependent => :destroy
   has_many :item_part_dimensions, :through => :item_revisions
 
+  has_many :po_lines, :dependent => :destroy
+
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 
   after_initialize :default_values
