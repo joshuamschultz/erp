@@ -59,3 +59,6 @@ gem 'rmagick', '2.13.2'
 gem 'aws-sdk', '1.8.5'
 
 gem 'nested_scaffold'
+gem 'cancan'
+
+gem 'role_model'
