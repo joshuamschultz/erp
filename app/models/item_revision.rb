@@ -41,6 +41,8 @@ class ItemRevision < ActiveRecord::Base
 
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
+  has_many :po_lines, :dependent => :destroy
+
 	def self.process_item_associations(item_revision, params)
       	if item_revision
 			alt_names = params[:alt_names].split(",") || []

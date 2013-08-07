@@ -61,7 +61,8 @@ class Organization < ActiveRecord::Base
 	has_many :organization_processes, :dependent => :destroy
 	has_many :gauges, :dependent => :destroy
 	has_many :item_revisions
-
+	has_many :po_headers, :dependent => :destroy #For vendor
+	has_many :po_lines, :dependent => :destroy #For Customers
 	has_many :attachments, :as => :attachable, :dependent => :destroy
 
 	def redirect_path

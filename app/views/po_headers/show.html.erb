@@ -1,0 +1,67 @@
+  <!-- Wells -->
+<div class="row-fluid">
+    <h4 class="span3 left">PO Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+        <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
+    </span>
+</div>
+
+<div class="row-fluid">
+    <div class="span3 well item_detail_view">
+        <table class="table">
+            <tbody>
+                <tr>
+                  <td class="span2">PO Type :</td>
+                  <td class="span5"><%= @po_header.po_type.type_name %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Vendor :</td>
+                  <td class="span5"><a href='<%= organization_path(@po_header.organization) %>'><%= @po_header.organization.organization_name %></a></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Notes :</td>
+                  <td class="span5"><%= @po_header.po_notes %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Active :</td>
+                  <td class="span5"><%= @po_header.po_active %></td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="span9">
+        <div class="row-fluid">
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="alt_address_btn">
+                      <span class="glyphicons message_out"><i></i></span>
+                      <span class="txt">Send</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn">
+                      <span class="glyphicons print"><i></i></span>
+                      <span class="txt">Print</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn">
+                      <span class="glyphicons notes_2"><i></i></span>
+                      <span class="txt">Add Quote</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+        </div>
+
+        <!-- Attachments -->
+        <%#= render 'attachments/attachments' %>
+    </div>
+</div>

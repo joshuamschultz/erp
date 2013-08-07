@@ -1,0 +1,25 @@
+<%= simple_form_for(@po_header, :html => {:id => "form_for_po_header",:class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons %>
+    <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
+    <%#= f.input :po_identifier %>
+    <%#= f.input :po_description %>
+    <%#= f.input :po_total %>
+    <%#= f.input :po_status %>
+    <%= f.input :po_notes %>
+    <%= f.input :po_active %>
+  </div>
+
+  <div class="form-actions">
+      <%= f.button :submit %>
+      <%= link_to 'Delete', po_header_path(@po_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_header.new_record? %>
+      <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" unless @po_header.new_record? %>
+      <%= link_to 'Back to PO List', po_headers_path, :class =>"btn" if @po_header.new_record? %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_po_header"] = ["owner_owner_identifier", "owner_owner_description", "owner_owner_commission_type_id", "owner_owner_commission_amount", "owner_owner_active"];
+</script>
