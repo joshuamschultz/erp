@@ -2,6 +2,9 @@ AllianceFasteners::Application.routes.draw do
   
   resources :po_headers do
     resources :po_lines
+    member do
+        post 'populate'
+    end
   end
 
   resources :so_lines
@@ -49,6 +52,7 @@ AllianceFasteners::Application.routes.draw do
   resources :organizations do
       member do
           post 'populate'
+          get 'organization_info'
       end
   end
 
