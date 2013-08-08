@@ -23,7 +23,6 @@ class Attachment < ActiveRecord::Base
 
   def create_level_default
       self.attachment_status = "pending"
-      # self.attachment_active = false
   end
 
 end

@@ -19,14 +19,14 @@ class Comment < ActiveRecord::Base
 
   # comment_type - tag/note
 
-  def self.process_organization_comments(current_user, organization, comments, type)
+  def self.process_comments(current_user, commentable, comments, type)
       if type == "tag"
-          organization.comments.where(:comment_type => "tag").destroy_all
+          commentable.comments.where(:comment_type => "tag").destroy_all
       end
 
       if comments
           comments.each do |comment|
-              comment = organization.comments.new(:comment => comment, :comment_type => type)
+              comment = commentable.comments.new(:comment => comment, :comment_type => type)
               comment = CommonActions.record_ownership(comment, current_user) 
               comment.save
           end

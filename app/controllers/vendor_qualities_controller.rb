@@ -27,7 +27,7 @@ class VendorQualitiesController < ApplicationController
   # GET /vendor_qualities/1.json
   def show
     @vendor_quality = VendorQuality.find(params[:id])
-    @object = @vendor_quality
+    @attachable = @vendor_quality
 
     respond_to do |format|
       format.html # show.html.erb

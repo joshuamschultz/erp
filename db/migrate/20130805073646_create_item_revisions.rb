@@ -11,8 +11,8 @@ class CreateItemRevisions < ActiveRecord::Migration
       t.string :item_name
       t.string :item_description
       t.text :item_notes
-      t.decimal :item_tooling
-      t.decimal :item_cost
+      t.decimal :item_tooling, :precision => 10, :scale => 2
+      t.decimal :item_cost, :scale => 2
       t.integer :item_revision_created_id
       t.integer :item_revision_updated_id
 

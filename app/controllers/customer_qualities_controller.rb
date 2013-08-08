@@ -28,7 +28,7 @@ class CustomerQualitiesController < ApplicationController
   # GET /customer_qualities/1.json
   def show
     @customer_quality = CustomerQuality.find(params[:id])
-    @object = @customer_quality
+    @attachable = @customer_quality
 
     respond_to do |format|
       format.html # show.html.erb

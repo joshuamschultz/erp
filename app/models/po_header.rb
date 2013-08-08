@@ -1,12 +1,8 @@
-class PoHeader < ActiveRecord::Base
-  has_many :po_lines
-  belongs_to :organization
-  
-  attr_accessible :po_active, :po_created_id, :po_description, :po_identifier, :po_notes, 
-  :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id
+class PoHeader < ActiveRecord::Base 
+  include Rails.application.routes.url_helpers
 
-  belongs_to :po_type, :class_name => "MasterType", :foreign_key => "po_type_id", 
-  	:conditions => ['type_category = ?', 'po_type']
+  attr_accessible :po_active, :po_created_id, :po_description, :po_identifier, :po_notes, 
+  :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id  
 
   validates_presence_of :organization
   validates_presence_of :po_type
@@ -17,6 +13,19 @@ class PoHeader < ActiveRecord::Base
 
   def create_level_defaults
   		self.po_status = "open"
+  end
+
+  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
+
+  belongs_to :po_type, :class_name => "MasterType", :foreign_key => "po_type_id", 
+  	:conditions => ['type_category = ?', 'po_type']
+
+  has_many :po_lines, :dependent => :destroy
+  has_many :comments, :as => :commentable, :dependent => :destroy
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+
+  def redirect_path
+      po_header_path(self)
   end
 
 end

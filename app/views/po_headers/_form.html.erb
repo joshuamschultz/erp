@@ -1,25 +1,55 @@
-<%= simple_form_for(@po_header, :html => {:id => "form_for_po_header",:class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<div class="row-fluid">
+  <div class="span4 well item_detail_view">
+      <!-- h4 class="center">Vendor Info</h4>
 
-  <div class="form-inputs">
-    <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons %>
-    <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
-    <%#= f.input :po_identifier %>
-    <%#= f.input :po_description %>
-    <%#= f.input :po_total %>
-    <%#= f.input :po_status %>
-    <%= f.input :po_notes %>
-    <%= f.input :po_active %>
+      <div class="separator bottom"></div> -->
+
+      <div id="po_header_vendor_info"></div>
+
   </div>
 
-  <div class="form-actions">
-      <%= f.button :submit %>
-      <%= link_to 'Delete', po_header_path(@po_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_header.new_record? %>
-      <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" unless @po_header.new_record? %>
-      <%= link_to 'Back to PO List', po_headers_path, :class =>"btn" if @po_header.new_record? %>
+  <div class="span8 well item_detail_view">
+      <%= simple_form_for(@po_header, :html => {:id => "form_for_po_header",:class => "form-horizontal"}) do |f| %>
+        <%= f.error_notification %>
+
+        <div class="form-inputs">
+            <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons %>
+
+            <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
+
+            <div class="separator bottom"></div>
+
+            <%= f.input :po_notes, :label => "Notes" %>
+        </div>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <div class="form-actions">
+            <%= f.submit "Submit", :class =>"btn" %>
+            <%= link_to 'Delete', po_header_path(@po_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_header.new_record? %>
+            <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" unless @po_header.new_record? %>
+            <%= link_to 'Back to PO List', po_headers_path, :class =>"btn" if @po_header.new_record? %>
+        </div>
+      <% end %>
   </div>
-<% end %>
+</div>
+
 
 <script type="text/javascript">
-    tab_field_forms["form_for_po_header"] = ["owner_owner_identifier", "owner_owner_description", "owner_owner_commission_type_id", "owner_owner_commission_amount", "owner_owner_active"];
+    tab_field_forms["form_for_po_header"] = ["po_header_organization_id", "po_header_po_notes"];
+
+    $(document).ready(function(){ 
+        $("#po_header_organization_id").on("change", function(){
+            initialize_api_call({"url": "/organizations/" + $("#po_header_organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+        });
+
+        initialize_api_call({"url": "/organizations/" + $("#po_header_organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+    });
+
+
+    function set_vendor_info(response, callback_params, api_params){
+        $("#po_header_vendor_info").html(response);
+        return false;
+    }
 </script>

@@ -11,6 +11,11 @@ module CommonActions
 		end
 		paths
 	end
+
+
+	def self.linkable(path, title, extras = {})
+		"<a href='#{path}'>#{title}</a>"
+	end
 	
 
 	def self.process_application_shortcuts(shortcuts_html, shortcuts)

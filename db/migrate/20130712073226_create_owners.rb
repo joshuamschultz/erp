@@ -4,7 +4,7 @@ class CreateOwners < ActiveRecord::Migration
       t.string :owner_identifier
       t.string :owner_description
       t.integer :owner_commission_type_id
-      t.decimal :owner_commission_amount
+      t.decimal :owner_commission_amount, :precision => 10, :scale => 2
       t.integer :owner_created_id
       t.integer :owner_updated_id
       t.boolean :owner_active, :default => true
