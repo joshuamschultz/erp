@@ -12,26 +12,41 @@
         <table class="table">
             <tbody>
                 <tr>
-                  <td class="span2">PO Type :</td>
+                  <td class="span2">Type:</td>
                   <td class="span5"><%= @po_header.po_type.type_name %></td>
                 </tr>
 
                 <tr>
-                  <td class="span3">Vendor :</td>
-                  <td class="span5"><a href='<%= organization_path(@po_header.organization) %>'><%= @po_header.organization.organization_name %></a></td>
+                  <td class="span3">Total:</td>
+                  <td class="span5">$<%= @po_header.po_total.to_f %></td>
                 </tr>
 
                 <tr>
-                  <td class="span3">Notes :</td>
+                  <td class="span3">Status:</td>
+                  <td class="span5"><%= @po_header.po_status %></td>
+                </tr>
+
+                <tr>
+                  <td class="span3">Notes:</td>
                   <td class="span5"><%= @po_header.po_notes %></td>
                 </tr>
 
-                <tr>
+                <!-- <tr>
                   <td class="span3">Active :</td>
-                  <td class="span5"><%= @po_header.po_active %></td>
-                </tr>
+                  <td class="span5"><%#= @po_header.po_active %></td>
+                </tr> -->
             </tbody>
-          </table>
+        </table>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <h4 class="center">Vendor Info</h4>
+
+        <div class="separator bottom"></div>
+
+        <%= render :partial => 'organizations/organization_info', 
+        :locals => {:organization => @po_header.organization} %>
     </div>
 
     <div class="span9">
@@ -61,7 +76,19 @@
             </div>
         </div>
 
-        <!-- Attachments -->
-        <%#= render 'attachments/attachments' %>
+        <!-- Line Items -->
+        <%= render 'po_lines/line_items' %>
     </div>
 </div>
+
+<div class="separator bottom"></div>
+
+<!-- Attachments -->
+<%= render 'attachments/attachments' %>
+
+
+<div class="separator bottom"></div>
+
+
+<%= render :partial => 'comments/comments', 
+:locals => {:extras => {:link => populate_po_header_path(type: "note")}} %>

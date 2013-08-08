@@ -5,7 +5,7 @@ class CreatePoHeaders < ActiveRecord::Migration
       t.references :organization
       t.string :po_identifier
       t.string :po_description
-      t.decimal :po_total
+      t.decimal :po_total, :precision => 10, :scale => 2
       t.string :po_status
       t.text :po_notes
       t.boolean :po_active

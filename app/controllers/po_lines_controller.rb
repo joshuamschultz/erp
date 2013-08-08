@@ -7,7 +7,15 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @po_lines }
+      format.json { 
+          @po_lines = @po_lines.select{|po_line|
+              po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item.item_part_no)
+              po_line[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)
+              po_line[:customer_quality_name] = CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name)
+              po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+          }
+          render json: {:aaData => @po_lines}
+       }
     end
   end
 
@@ -49,7 +57,13 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.save
-        format.html { redirect_to([@po_line.po_header, @po_line], :notice => 'Po line was successfully created.') }
+        format.html { 
+            if params[:commit] == "Save"
+                redirect_to @po_header, :notice => 'Line item was successfully created.' 
+            else 
+                redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
+            end
+        }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
         format.html { render :action => "new" }
@@ -66,7 +80,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
-        format.html { redirect_to([@po_line.po_header, @po_line], :notice => 'Po line was successfully updated.') }
+        format.html { redirect_to @po_header, :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -83,7 +97,7 @@ class PoLinesController < ApplicationController
     @po_line.destroy
 
     respond_to do |format|
-      format.html { redirect_to po_header_po_lines_url(po_header) }
+      format.html { redirect_to @po_header, :notice => 'Line item was successfully deleted.' }
       format.json { head :ok }
     end
   end

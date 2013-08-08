@@ -6,6 +6,7 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :organization
   belongs_to :vendor_quality
   belongs_to :customer_quality
+  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
@@ -14,13 +15,11 @@ class ItemRevision < ActiveRecord::Base
   validates_presence_of :owner
   validates_presence_of :organization
   validates_presence_of :vendor_quality
-
-  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
-
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
   validates_length_of :item_revision_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_revision_name
-
   validates_presence_of :item_revision_date
+  validates_numericality_of :item_cost if validates_presence_of :item_cost
+  validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
   has_many :item_prints, :dependent => :destroy
   has_many :prints, :through => :item_prints

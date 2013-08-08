@@ -1,22 +1,62 @@
-<%= simple_form_for([@po_line.po_header, @po_line]) do |f| %>
+<div class="separator bottom"></div>
+<%= simple_form_for([@po_line.po_header, @po_line], :html => {:id => "form_for_po_line",:class => "form-horizontal"}) do |f| %>
     <%= f.error_notification %>
 
-    <%= f.association :po_header %>
-    <%= f.association :organization %>
-    <%= f.association :so_line %>
-    <%= f.association :vendor_quality %>
-    <%= f.association :customer_quality %>
-    <%= f.association :item %>
-    <%= f.association :item_revision %>
-    <%= f.input :po_line_customer_po %>
-    <%= f.input :po_line_cost %>
-    <%= f.input :po_line_quantity %>
-    <%= f.input :po_line_total %>
-    <%= f.input :po_line_status %>
-    <%= f.input :po_line_notes %>
-    <%= f.input :po_line_active %>
+    <%#= f.association :po_header %>
+    <%= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
+    <%#= f.association :so_line %>
+    <%#= f.association :vendor_quality %>
+    <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name',:labe_value => "id", :include_blank => false %>
+
+    <%= f.input :po_line_customer_po, :label => "Customer PO" %>
+
+    <%= f.association :item, :label => "Item", :label_method => 'item_part_no',:labe_value => "id", :include_blank => false %>
+    <%#= f.association :item_revision %>    
+    <%= f.input :po_line_cost, :label => "Cost" %>
+    <%= f.input :po_line_quantity, :label => "Quantity" %>
+    <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+    <%#= f.input :po_line_status %>
+    <%#= f.input :po_line_notes %>
+    <%#= f.input :po_line_active %>
+
+    <div class="separator bottom"></div>
 
     <div class="actions">
-      <%= f.submit %>
+        <%= f.submit "Save", :class =>"btn" %>
+        <%= f.submit "Save and Add New", :class =>"btn" if @po_line.new_record? %>
+        <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
+        <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" %>
     </div>
 <% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_po_line"] = ["po_line_organization_id", "po_line_customer_quality_id", "po_line_po_line_customer_po", "po_line_item_id", "po_line_po_line_cost", "po_line_po_line_quantity"];
+
+    $(document).ready(function(){ 
+        $("#po_line_po_line_cost").on("input", function(){
+            calculate_line_item_total();
+        });
+
+        $("#po_line_po_line_quantity").on("input", function(){
+            calculate_line_item_total();
+        });
+
+        $("#po_line_item_id").on("change", function(){
+            initialize_api_call({"url": "/items/" + $("#po_line_item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+        });
+
+        initialize_api_call({"url": "/items/" + $("#po_line_item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+    });
+
+    function calculate_line_item_total(){
+        var po_line_total = parseFloat($("#po_line_po_line_cost").val(), 10) * parseFloat($("#po_line_po_line_quantity").val(), 10);
+        if(isNaN(po_line_total) == false)
+            $("#po_line_po_line_total").val(po_line_total.toFixed(2));
+    }
+
+    function set_item_revision_cost(response, callback_params, api_params){
+        $("#po_line_po_line_cost").val(response.item_cost);
+        return false;
+    }
+</script>

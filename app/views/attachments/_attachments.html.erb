@@ -5,8 +5,8 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Attachments</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Attachment', new_attachment_path(attachable_type: @object.class.name, attachable_id: @object.id), :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'Back', @object.redirect_path, :class =>"btn" %>
+                <%= link_to 'New Attachment', new_attachment_path(attachable_type: @attachable.class.name, attachable_id: @attachable.id), :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'Back', @attachable.redirect_path, :class =>"btn" %>
             </span>
         </div> 
     </div>
@@ -36,7 +36,7 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_attachments", :path => attachments_path(attachable_type: @object.class.name, attachable_id: @object.id),:extras => {:slno => false}, 
+    {:name => "table_report_attachments", :path => attachments_path(attachable_type: @attachable.class.name, attachable_id: @attachable.id),:extras => {:slno => false}, 
         :columns => '[
                         { "mData": "attachment_name" },
                         { "mData": "attachment_revision_title" },                        

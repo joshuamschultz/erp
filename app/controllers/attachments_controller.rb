@@ -2,8 +2,8 @@ class AttachmentsController < ApplicationController
   # GET /attachments
   # GET /attachments.json
   def index
-    @object = params[:attachable_type].constantize.find(params[:attachable_id])
-    @attachments = @object.attachments.order("attachment_revision_date desc")
+    @attachable = params[:attachable_type].constantize.find(params[:attachable_id])
+    @attachments = @attachable.attachments.order("attachment_revision_date desc")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,8 +32,8 @@ class AttachmentsController < ApplicationController
   # GET /attachments/new
   # GET /attachments/new.json
   def new
-    @object = params[:attachable_type].constantize.find(params[:attachable_id])
-    @attachment = @object.attachments.build
+    @attachable = params[:attachable_type].constantize.find(params[:attachable_id])
+    @attachment = @attachable.attachments.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -84,11 +84,11 @@ class AttachmentsController < ApplicationController
   # DELETE /attachments/1.json
   def destroy
     @attachment = Attachment.find(params[:id])
-    @object = @attachment.attachable
+    @attachable = @attachment.attachable
     @attachment.destroy
 
     respond_to do |format|
-      format.html { redirect_to @object.redirect_path }
+      format.html { redirect_to @attachable.redirect_path }
       format.json { head :no_content }
     end
   end

@@ -27,11 +27,11 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     @contactable = @organization
-    @object = @organization
+    @attachable = @organization
     @contact_type = params[:contact_type] || "address"
 
     @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
-    @tags = @organization.comments.where(:comment_type => "tag").order("created_at desc") if @organization 
+    @tags = @organization.present? ? @organization.comments.where(:comment_type => "tag").order("created_at desc") : [] 
 
     respond_to do |format|
       format.html # show.html.erb
@@ -105,16 +105,21 @@ class OrganizationsController < ApplicationController
 
       if params[:type] == "tag"
           tags = params[:tags].split(",")
-          Comment.process_organization_comments(current_user, @organization, tags, params[:type])
+          Comment.process_comments(current_user, @organization, tags, params[:type])
           
       elsif params[:type] == "note"
-          Comment.process_organization_comments(current_user, @organization, [params[:comment]], params[:type])
+          Comment.process_comments(current_user, @organization, [params[:comment]], params[:type])
 
       elsif params[:type] == "process"
           OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])
       end
 
       redirect_to @organization
+  end
+
+  def organization_info
+      @organization = Organization.find(params[:id])
+      render :layout => false
   end
 
 

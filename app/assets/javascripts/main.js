@@ -19,7 +19,7 @@ function initialize_api_call(api_params, callback, callback_params){
 	if(!callback_params) callback_params = {};
 
 	$.ajax({
-		  url : api_params["url"], type : api_params["type"], data : api_params["params"],
+		  url : api_params["url"], type : api_params["type"], data : api_params["params"], dataType: api_params["data_type"], 
 		  success : function(response)
 		  {		  	
 		  	if(callback && callback != ""){

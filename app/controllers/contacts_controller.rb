@@ -25,9 +25,9 @@ class ContactsController < ApplicationController
       format.html # index.html.erb
       format.json { 
             @contacts = @contacts.select{|contact|
-            contact[:organization] = "<strong><a href='#{organization_path(contact.contactable)}'>Organization : #{contact.contactable.organization_short_name}</a></strong>"
-            contact[:first_name] = "<a href='#{contact_path(contact)}'>#{contact[:first_name]}</a>" if @contact_type == "contact"
-            contact[:contact_title] = "<a href='#{contact_path(contact)}'>#{contact[:contact_title]}</a>" if @contact_type == "address"
+            contact[:organization] = CommonActions.linkable(organization_path(contact.contactable), "Organization : " + contact.contactable.organization_short_name)
+            contact[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == "contact"
+            contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
             contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
             }
             render json: {:aaData => @contacts}        

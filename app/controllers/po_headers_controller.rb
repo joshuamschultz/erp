@@ -1,12 +1,21 @@
 class PoHeadersController < ApplicationController
   before_filter :find_relations
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:purchases][:active] = "active"
+  end
 
   def find_relations
+      params[:status] ||= "open"
+
+      puts params[:status]
+
       if params[:vendor_id].present?
           @vendor = Organization.find(params[:vendor_id])
-          @po_headers = @vendor.present? ? @vendor.po_headers.order(:created_at) : []
+          @po_headers = @vendor.present? ? @vendor.po_headers.where(:po_status => params[:status]).order(:created_at) : []
       else
-          @po_headers = PoHeader.order(:created_at)
+          @po_headers = PoHeader.where(:po_status => params[:status]).order(:created_at)
       end
   end
 
@@ -30,6 +39,8 @@ class PoHeadersController < ApplicationController
   # GET /po_headers/1.json
   def show
     @po_header = PoHeader.find(params[:id])
+    @attachable = @po_header
+    @notes = @po_header.present? ? @po_header.comments.where(:comment_type => "note").order("created_at desc") : []  
 
     respond_to do |format|
       format.html # show.html.erb
@@ -96,4 +107,16 @@ class PoHeadersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def populate
+      @po_header = PoHeader.find(params[:id])
+
+      if params[:type] == "note"
+          Comment.process_comments(current_user, @po_header, [params[:comment]], params[:type])
+      end
+
+      redirect_to @po_header
+  end
+
+
 end

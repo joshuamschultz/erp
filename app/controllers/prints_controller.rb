@@ -26,7 +26,7 @@ class PrintsController < ApplicationController
   # GET /prints/1.json
   def show
     @print = Print.find(params[:id])
-    @object = @print
+    @attachable = @print
 
     respond_to do |format|
       format.html # show.html.erb
