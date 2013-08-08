@@ -1,4 +1,10 @@
 class PoLinesController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:purchases][:active] = "active"
+  end
+  
   # GET po_headers/1/po_lines
   # GET po_headers/1/po_lines.json
   def index

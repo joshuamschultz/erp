@@ -94,7 +94,7 @@ module CommonActions
 
 		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
 		menus[:purchases][:sub_menu] = 	[
-											{:path => "#", :name => "Purchase Orders"}, 
+											{:path => po_headers_path, :name => "Purchase Orders"}, 
 											{:path => "#", :name => "PO Information"}
 										]		
 
