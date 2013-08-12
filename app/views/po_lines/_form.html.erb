@@ -1,33 +1,39 @@
-<div class="separator bottom"></div>
-<%= simple_form_for([@po_line.po_header, @po_line], :html => {:id => "form_for_po_line",:class => "form-horizontal"}) do |f| %>
-    <%= f.error_notification %>
+<div class="row-fluid">
+    <!-- PO Info -->
+    <%= render :partial => 'po_headers/po_header_info' %>
 
-    <%#= f.association :po_header %>
-    <%= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
-    <%#= f.association :so_line %>
-    <%#= f.association :vendor_quality %>
-    <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
+    <div class="span9 well">
+        <%= simple_form_for([@po_line.po_header, @po_line], :html => {:id => "form_for_po_line",:class => "form-horizontal"}) do |f| %>
+            <%= f.error_notification %>
 
-    <%= f.input :po_line_customer_po, :label => "Customer PO" %>
+            <%#= f.association :po_header %>
+            <%= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
+            <%#= f.association :so_line %>
+            <%#= f.association :vendor_quality %>
+            <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
 
-    <%= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
-    <%#= f.association :item_revision %>    
-    <%= f.input :po_line_cost, :label => "Cost" %>
-    <%= f.input :po_line_quantity, :label => "Quantity" %>
-    <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
-    <%#= f.input :po_line_status %>
-    <%#= f.input :po_line_notes %>
-    <%#= f.input :po_line_active %>
+            <%= f.input :po_line_customer_po, :label => "Customer PO" %>
 
-    <div class="separator bottom"></div>
+            <%= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
+            <%#= f.association :item_revision %>    
+            <%= f.input :po_line_cost, :label => "Cost" %>
+            <%= f.input :po_line_quantity, :label => "Quantity" %>
+            <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+            <%#= f.input :po_line_status %>
+            <%#= f.input :po_line_notes %>
+            <%#= f.input :po_line_active %>
 
-    <div class="actions">
-        <%= f.submit "Save", :class =>"btn" %>
-        <%= f.submit "Save and Add New", :class =>"btn" if @po_line.new_record? %>
-        <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
-        <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" %>
+            <div class="separator bottom"></div>
+
+            <div class="actions">
+                <%= f.submit "Save", :class =>"btn" %>
+                <%#= f.submit "Save and Add New", :class =>"btn" if @po_line.new_record? %>
+                <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
+                <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" %>
+            </div>
+        <% end %>
     </div>
-<% end %>
+</div>
 
 
 <script type="text/javascript">
@@ -60,3 +66,10 @@
         return false;
     }
 </script>
+
+
+<div class="separator bottom"></div>
+
+<!-- Line Items -->
+<%= render :partial => 'po_lines/line_items' %>
+

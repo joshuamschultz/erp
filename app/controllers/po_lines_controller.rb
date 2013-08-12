@@ -64,11 +64,12 @@ class PoLinesController < ApplicationController
     respond_to do |format|
       if @po_line.save
         format.html { 
-            if params[:commit] == "Save"
-                redirect_to @po_header, :notice => 'Line item was successfully created.' 
-            else 
-                redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
-            end
+            # if params[:commit] == "Save"
+            #     redirect_to @po_header, :notice => 'Line item was successfully created.' 
+            # else
+            #     redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
+            # end
+            redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
         }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
@@ -86,7 +87,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
-        format.html { redirect_to @po_header, :notice => 'Line item was successfully updated.' }
+        format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -103,7 +104,7 @@ class PoLinesController < ApplicationController
     @po_line.destroy
 
     respond_to do |format|
-      format.html { redirect_to @po_header, :notice => 'Line item was successfully deleted.' }
+      format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully deleted.' }
       format.json { head :ok }
     end
   end

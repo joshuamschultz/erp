@@ -20,6 +20,7 @@ class PoLine < ActiveRecord::Base
 
   before_save :update_item_total
   after_save :update_po_total
+  after_destroy :update_po_total
 
   before_create :create_level_default
 
