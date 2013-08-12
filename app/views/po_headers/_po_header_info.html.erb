@@ -3,17 +3,17 @@
       <tbody>
           <tr>
             <td class="span2">Type:</td>
-            <td class="span5"><%= @po_header.po_type.type_name %></td>
+            <td class="span5"><strong><%= @po_header.po_type.type_name %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Total:</td>
-            <td class="span5"><strong>$<%= @po_header.po_total.to_f %></strong></td>
+            <td class="span5"><strong><h4>$<%= @po_header.po_total.to_f %></h4></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Status:</td>
-            <td class="span5"><%= @po_header.po_status %></td>
+            <td class="span5"><strong><%= @po_header.po_status %></strong></td>
           </tr>
 
           <!-- <tr>
