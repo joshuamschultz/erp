@@ -1,0 +1,40 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">Type:</td>
+            <td class="span5"><%= @po_header.po_type.type_name %></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Total:</td>
+            <td class="span5"><strong>$<%= @po_header.po_total.to_f %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Status:</td>
+            <td class="span5"><%= @po_header.po_status %></td>
+          </tr>
+
+          <!-- <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><%#= @po_header.po_notes %></td>
+          </tr> -->
+
+          <!-- <tr>
+            <td class="span3">Active :</td>
+            <td class="span5"><%#= @po_header.po_active %></td>
+          </tr> -->
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <h4 class="center">Vendor Info</h4>
+
+  <div class="separator bottom"></div>
+
+  <%= render :partial => 'organizations/organization_info', 
+        :locals => {:organization => @po_header.organization} %>
+</div>
