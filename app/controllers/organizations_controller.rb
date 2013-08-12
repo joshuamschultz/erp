@@ -8,8 +8,12 @@ class OrganizationsController < ApplicationController
   # GET /organizations
   # GET /organizations.json
   def index
-    @org_type = MasterType.find_by_type_value(params[:type] ||= "customer")
-    @organizations = @org_type.type_based_organizations
+    if params[:type]
+        @org_type = MasterType.find_by_type_value(params[:type])
+        @organizations = @org_type.type_based_organizations
+    else
+        @organizations = Organization.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb

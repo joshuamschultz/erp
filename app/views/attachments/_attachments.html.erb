@@ -16,14 +16,18 @@
         <table id="table_report_attachments" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
+                <th>File ID</th>
                 <th>Name</th>
-                <th>Revision Title</th>
-                <th>Revision Date</th>                
+                <th>Revision</th>
+                <th>Effective Date</th>                
                 <th>Description</th>
                 <th>Notes</th>
                 <th>Public</th>
                 <th>Status</th>
                 <th>Active</th>
+                <th>Uploaded Date</th>
+                <th>Uploaded By</th>
+                <th>Approved By</th>
                 <th></th>
               </tr>
             </thead>
@@ -38,14 +42,18 @@
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {:name => "table_report_attachments", :path => attachments_path(attachable_type: @attachable.class.name, attachable_id: @attachable.id),:extras => {:slno => false}, 
         :columns => '[
+                        { "mData": "id" },
                         { "mData": "attachment_name" },
-                        { "mData": "attachment_revision_title" },                        
-                        { "mData": "attachment_revision_date" },                        
-                        { "mData": "attachment_description" },
-                        { "mData": "attachment_notes", "bVisible": false },                       
+                        { "mData": "attachment_revision_title" },
+                        { "mData": "effective_date" },
+                        { "mData": "attachment_description", "bVisible": false },
+                        { "mData": "attachment_notes", "bVisible": false },
                         { "mData": "attachment_public" },
-                        { "mData": "attachment_status" },
-                        { "mData": "attachment_active" },
+                        { "mData": "attachment_status", "bVisible": false },
+                        { "mData": "attachment_active", "bVisible": false },
+                        { "mData": "uploaded_date", "bVisible": false },
+                        { "mData": "uploaded_by" },
+                        { "mData": "approved_by", "bVisible": false },
                         { "mData": "links" }
                     ]'
     } 

@@ -1,16 +1,20 @@
 <address class="margin-none">
     <h4><a href="<%= organization_path(organization) %>"><strong><%= organization.organization_name %></strong></a> (<%= organization.organization_short_name %>)</h4>
 
-    <strong><%= organization.organization_description %></strong><br/>
+    <strong>
+        <%= ('<p>' + organization.organization_description + '</p>').html_safe if organization.organization_description.present? %>
+    </strong>
 
     <!--abbr>Address 1 : </abbr-->
-    <%= organization.organization_address_1 %><br/>
+    <%= ('<p>' + organization.organization_address_1 + '</p>').html_safe if organization.organization_address_1.present? %>
 
     <!--abbr>Address 2 : </abbr-->
-    <%= organization.organization_address_2 %><br/>
+    <%= ('<p>' + organization.organization_address_2 + '</p>').html_safe if organization.organization_address_2.present? %>
 
     <!--abbr>Location : </abbr-->
-    <%= organization.organization_city %>,  <%= organization.organization_state %>,  <%= organization.organization_zipcode %><br/>
+    <%= (organization.organization_city + ', ').html_safe if organization.organization_city.present? %> 
+    <%= (organization.organization_state + ', ').html_safe if organization.organization_state.present? %> 
+    <%= organization.organization_zipcode %><br/>
 
     <%= organization.organization_country %><br/>
 
