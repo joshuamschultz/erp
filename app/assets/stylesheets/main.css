@@ -1,6 +1,7 @@
 /*.datetimepicker{color:black;}*/
 
 .form-inputs textarea {height:100px;}
+.control-group textarea {height:100px;}
 .radio input[type="radio"], .checkbox input[type="checkbox"]{margin-left: 0px;}
 
 .dataTables_filter {text-align: right;}
