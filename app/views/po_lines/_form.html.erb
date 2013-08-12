@@ -3,14 +3,14 @@
     <%= f.error_notification %>
 
     <%#= f.association :po_header %>
-    <%= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
+    <%= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
     <%#= f.association :so_line %>
     <%#= f.association :vendor_quality %>
-    <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name',:labe_value => "id", :include_blank => false %>
+    <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
 
     <%= f.input :po_line_customer_po, :label => "Customer PO" %>
 
-    <%= f.association :item, :label => "Item", :label_method => 'item_part_no',:labe_value => "id", :include_blank => false %>
+    <%= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
     <%#= f.association :item_revision %>    
     <%= f.input :po_line_cost, :label => "Cost" %>
     <%= f.input :po_line_quantity, :label => "Quantity" %>

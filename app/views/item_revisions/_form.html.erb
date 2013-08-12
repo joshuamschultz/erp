@@ -16,7 +16,7 @@
         </div>
         
         <%= f.association :owner, :label => "Owner", :label_method => 'owner_identifier',:label_value => "id", :include_blank => false %>    
-        <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:labe_value => "id", :include_blank => false %>
+        <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
         <%= f.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
         <%= f.input :item_cost, :label => "Cost" %>
         <%= f.input :item_tooling, :label => "Tooling" %>
