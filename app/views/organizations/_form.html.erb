@@ -48,37 +48,52 @@
 <% end %>
 
 <script type="text/javascript">
-    $(document).ready(function(){ 
-        // $('#organization_organization_type_id').on('change', function(){  
-        //     organization_type_changed($('#organization_organization_type_id option:selected').text());
-        // }).on('keypress', function(){  
-        //     organization_type_changed($('#organization_organization_type_id option:selected').text());
-        // });
+    var org_form_fields1 = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description"];
 
+    var org_form_fields2 = ["organization_customer_contact_type_id", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
+
+    var customer_fields = ["organization_customer_quality_id", "organization_customer_min_quality_id"];
+
+    var vendor_fields = ["organization_vendor_quality_id", "organization_vendor_expiration_date"];    
+
+    $(document).ready(function(){ 
         $('.organization_type_option').on('change', function(){  
             organization_type_changed($('.organization_type_option:checked').parent().text());
         });
 
-        $('#organization_customer_min_quality_id').on('keypress', function(){
-             $('#organization_organization_address_1').focus();
+        $('#organization_vendor_quality_id').on('keypress', function(){
+             $('#organization_vendor_expiration_date').focus();
+        });     
+
+        $('#organization_vendor_expiration_date').on('keypress', function(){
+             $('#organization_customer_contact_type_id').focus();
+        });   
+
+        $(".organization_type_option").each(function(){
+            org_form_fields1.push($(this).attr('id'));
         });
+
+        tab_field_forms["form_for_oraganizations"] = org_form_fields1.concat(customer_fields, org_form_fields2);
     });
 
     function organization_type_changed(org_type){
         if(org_type == "Customer"){
             $('#customer_part').show();
             $('#vendor_part').hide();
-            $('#organization_customer_contact_type_id').focus();
+            $('#organization_customer_quality_id').focus();            
+            tab_field_forms["form_for_oraganizations"] = org_form_fields1.concat(customer_fields, org_form_fields2);
         }
         else if(org_type == "Vendor"){
             $('#customer_part').hide();
             $('#vendor_part').show();
-            $('#organization_vendor_quality_id').focus();
+            $('#organization_vendor_quality_id').focus();            
+            tab_field_forms["form_for_oraganizations"] = org_form_fields1.concat(vendor_fields, org_form_fields2);
         }
         else{
             $('#customer_part').hide();
             $('#vendor_part').hide();
-            $('#organization_organization_address_1').focus();
+            $('#organization_customer_contact_type_id').focus();
+            tab_field_forms["form_for_oraganizations"] = org_form_fields1.concat(org_form_fields2);
         }
     }
 
@@ -86,7 +101,5 @@
 
     date_box_fields = date_box_fields.concat([{"name":"organization_vendor_expiration_date", "value":"<%= date_box_date %>"}]);
 
-    tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
-
-    // "organization_organization_type_id"
+    // tab_field_forms["form_for_oraganizations"] = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description", "organization_customer_contact_type_id", "organization_customer_quality_id", "organization_customer_min_quality_id", "organization_vendor_quality_id", "organization_vendor_expiration_date", "organization_organization_address_1", "organization_organization_address_2", "organization_organization_city", "organization_organization_state", "organization_organization_country", "organization_organization_zipcode", "organization_organization_telephone", "organization_organization_fax", "organization_organization_email", "organization_organization_website", "organization_organization_notes", "organization_organization_active"];
 </script>
