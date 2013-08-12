@@ -9,7 +9,11 @@ class AttachmentsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @attachments = @attachments.select{|attachment|
-              # attachment[:attachment_name] = "<a href='#{attachment_path(attachment)}'>#{attachment.attachment_name}</a>"              
+              attachment[:attachment_name] = CommonActions.linkable(attachment_path(attachment), attachment.attachment_name)
+              attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
+              attachment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
+              attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
+              attachment[:approved_by] = ""
               attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
               attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
             }
@@ -50,9 +54,10 @@ class AttachmentsController < ApplicationController
   # POST /attachments.json
   def create
     @attachment = Attachment.new(params[:attachment])
+    CommonActions.record_ownership(@attachment, current_user)
 
     respond_to do |format|
-      if @attachment.save
+      if @attachment.save        
         format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
         format.json { render json: @attachment, status: :created, location: @attachment }
       else
@@ -67,9 +72,11 @@ class AttachmentsController < ApplicationController
   # PUT /attachments/1.json
   def update
     @attachment = Attachment.find(params[:id])
+    CommonActions.record_ownership(@attachment, current_user)
 
     respond_to do |format|
       if @attachment.update_attributes(params[:attachment])
+        CommonActions.record_ownership(@attachment, current_user) 
         format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }
       else

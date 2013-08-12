@@ -3,8 +3,9 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading"><%= @org_type.type_name %> Organizations</h4>
+            <h4 class="span6 heading"><%= @org_type.type_name if @org_type %> Organizations</h4>
             <span class="span6 heading right">
+                <%= link_to 'All', organizations_path, :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Customer', organizations_path(type: "customer"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Vendor', organizations_path(type: "vendor"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Support', organizations_path(type: "support"), :class => "btn btn-mini btn-info" %>
@@ -47,7 +48,7 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
-        :name => "table_report", :path => organizations_path(type: @org_type.type_value),
+        :name => "table_report", :path => organizations_path(type: (@org_type.type_value if @org_type)),
         :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "id" },

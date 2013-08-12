@@ -23,6 +23,10 @@ class Attachment < ActiveRecord::Base
 
   def create_level_default
       self.attachment_status = "pending"
+      # self.attachment_active = false
   end
+
+  belongs_to :created_by, :class_name => "User", :foreign_key => "attachment_created_id"
+  belongs_to :updated_by, :class_name => "User", :foreign_key => "attachment_updated_id"
 
 end
