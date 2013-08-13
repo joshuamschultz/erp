@@ -42,6 +42,7 @@ class PoLinesController < ApplicationController
   def new
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.build
+    @po_line[:organization_org_id] = @po_line.organization_id
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,26 +54,23 @@ class PoLinesController < ApplicationController
   def edit
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.find(params[:id])
+    # @po_line[:organization_org_id] = @po_line.organization_id
   end
 
   # POST po_headers/1/po_lines
   # POST po_headers/1/po_lines.json
   def create
+    params[:po_line][:organization_id], params[:organization_id] = params[:organization_id], params[:po_line][:organization_id]
+    params[:po_line][:item_id], params[:item_id] = params[:organization_id], params[:po_line][:item_id]
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.build(params[:po_line])
 
     respond_to do |format|
       if @po_line.save
-        format.html { 
-            # if params[:commit] == "Save"
-            #     redirect_to @po_header, :notice => 'Line item was successfully created.' 
-            # else
-            #     redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
-            # end
-            redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' 
-        }
+        format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
+        @po_line.organization_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end
@@ -82,14 +80,18 @@ class PoLinesController < ApplicationController
   # PUT po_headers/1/po_lines/1
   # PUT po_headers/1/po_lines/1.json
   def update
+    params[:po_line][:organization_id], params[:organization_id] = params[:organization_id], params[:po_line][:organization_id]
+    params[:po_line][:item_id], params[:item_id] = params[:organization_id], params[:po_line][:item_id]
     @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])
+    @po_line = @po_header.po_lines.find(params[:id])    
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
+        @po_line.organization_id = ""
+        @po_line.item_id = ""
         format.html { render :action => "edit" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end

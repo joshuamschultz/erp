@@ -73,6 +73,6 @@
 
   $(document).ready(function(){ 
      $("#item_names").select2({tags:<%= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
-      $("#s2id_item_names").css("width", "220px");
+     $("#s2id_item_names").css("width", "220px");
   });
 </script>

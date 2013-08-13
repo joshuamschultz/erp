@@ -12,7 +12,7 @@ class Item < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.item_active = true if self.item_active.nil?
+    self.item_active = true if self.attributes.has_key?("item_active") && self.item_active.nil?
   end
   
   (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :minimum => 2, :maximum => 50) if validates_presence_of :item_part_no

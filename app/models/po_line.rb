@@ -15,6 +15,7 @@ class PoLine < ActiveRecord::Base
   validates_presence_of :po_header
   validates_presence_of :organization
   validates_presence_of :customer_quality
+  validates_presence_of :item
   validates_numericality_of :po_line_cost if validates_presence_of :po_line_cost
   validates_numericality_of :po_line_quantity if validates_presence_of :po_line_quantity
 

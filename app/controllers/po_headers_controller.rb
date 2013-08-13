@@ -51,7 +51,7 @@ class PoHeadersController < ApplicationController
   # GET /po_headers/new
   # GET /po_headers/new.json
   def new
-    @po_header = @po_headers.build
+    @po_header = @po_headers.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -67,13 +67,15 @@ class PoHeadersController < ApplicationController
   # POST /po_headers
   # POST /po_headers.json
   def create
-    @po_header = PoHeader.new(params[:po_header])
+    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
+    @po_header = PoHeader.new(params[:po_header])    
 
     respond_to do |format|
       if @po_header.save
-        format.html { redirect_to @po_header, notice: 'Po header was successfully created.' }
+        format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
-      else
+      else        
+        @po_header.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end
@@ -83,13 +85,15 @@ class PoHeadersController < ApplicationController
   # PUT /po_headers/1
   # PUT /po_headers/1.json
   def update
-    @po_header = PoHeader.find(params[:id])
+    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
+    @po_header = PoHeader.find(params[:id])    
 
     respond_to do |format|
       if @po_header.update_attributes(params[:po_header])
-        format.html { redirect_to @po_header, notice: 'Po header was successfully updated.' }
+        format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully updated.' }
         format.json { head :no_content }
       else
+        @po_header.organization_id = ""
         format.html { render action: "edit" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end
