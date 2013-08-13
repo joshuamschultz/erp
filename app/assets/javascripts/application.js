@@ -19,5 +19,6 @@
 //= require ./theme_js/modernizr
 //= require ./theme_js/bootstrap-datetimepicker.min
 //= require jquery.multiselect
+//= require autocomplete-rails
 
 var tab_field_forms = {}, date_box_fields = [];

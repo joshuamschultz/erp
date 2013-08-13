@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   before_filter :set_page_info
+  autocomplete :item, :item_part_no, :full => true
 
   def set_page_info
       @menus[:inventory][:active] = "active"

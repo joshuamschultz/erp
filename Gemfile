@@ -22,6 +22,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'rails3-jquery-autocomplete'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -59,6 +60,6 @@ gem 'rmagick', '2.13.2'
 gem 'aws-sdk', '1.8.5'
 
 gem 'nested_scaffold'
-gem 'cancan'
 
+gem 'cancan'
 gem 'role_model'

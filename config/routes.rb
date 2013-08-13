@@ -17,6 +17,7 @@ AllianceFasteners::Application.routes.draw do
     resources :item_revisions do
         resources :item_part_dimensions
     end
+    get :autocomplete_item_item_part_no, :on => :collection
   end
 
   resources :privileges
@@ -54,6 +55,7 @@ AllianceFasteners::Application.routes.draw do
           post 'populate'
           get 'organization_info'
       end
+      get :autocomplete_organization_organization_name, :on => :collection
   end
 
   get "static_pages/landing"

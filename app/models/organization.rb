@@ -9,10 +9,27 @@ class Organization < ActiveRecord::Base
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
 	:vendor_quality_id
 
+	scope :organizations, lambda{|type| 
+		case(type)
+			when "vendor"
+				where(:organization_type_id => MasterType.find_by_type_value("vendor").id)
+			when "customer"
+				where(:organization_type_id => MasterType.find_by_type_value("customer").id)
+			when "support"
+				where(:organization_type_id => MasterType.find_by_type_value("support").id)
+		end
+	}
+
+	# scope :vendor_only, where(:organization_type_id => MasterType.find_by_type_value("vendor").id)
+
+	# scope :customer_only, where(:organization_type_id => MasterType.find_by_type_value("customer").id)
+
+	# scope :support_only, where(:organization_type_id => MasterType.find_by_type_value("support").id)
+
 	after_initialize :default_values	
 
 	def default_values
-		self.organization_active = true if self.organization_active.nil?
+		self.organization_active = true if self.attributes.has_key?("organization_active") && self.organization_active.nil?
 	end
 
 	before_save :process_before_save

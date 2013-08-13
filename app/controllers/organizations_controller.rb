@@ -1,8 +1,15 @@
 class OrganizationsController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :organization, :organization_name, :full => true
+
   def set_page_info
       @menus[:contacts][:active] = "active"
+  end
+
+  def get_autocomplete_items(parameters)
+    items = super(parameters)    
+    items = items.organizations(params[:type])
   end
 
   # GET /organizations
@@ -121,9 +128,14 @@ class OrganizationsController < ApplicationController
       redirect_to @organization
   end
 
+
   def organization_info
       @organization = Organization.find(params[:id])
-      render :layout => false
+      if @organization
+        render :layout => false
+      else
+        render :text => "" and return
+      end
   end
 
 
