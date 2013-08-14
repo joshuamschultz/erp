@@ -1,6 +1,10 @@
 class MasterType < ActiveRecord::Base
   attr_accessible :type_active, :type_category, :type_description, :type_name, :type_value
 
+  scope :po_types, where(:type_category => 'po_type')
+
+  scope :organization_types, where(:type_category => 'organization_type')
+
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
