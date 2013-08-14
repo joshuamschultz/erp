@@ -1,41 +1,10 @@
-  <!-- Wells -->
-<div class="row-fluid">
-    <h4 class="span3 left">Print Info</h4>
-    <span class="span9 right">
-        <%= link_to 'Edit', edit_print_path(@print), :class => "btn"%>     
-        <%= link_to 'Back to Prints', prints_path, :class =>"btn" %>
-    </span>
-</div>
-
-<div class="row-fluid">
-    <div class="span3 well item_detail_view">
-        <table class="table">
-            <tbody>
-                  <tr>
-                    <td>Identifier:</td>
-                    <td><%= @print.print_identifier %></td>
-                  </tr>
-
-                  <tr>
-                    <td>Description:</td>
-                    <td><%= @print.print_description %></td>
-                  </tr>
-
-                  <tr>
-                    <td>Notes:</td>
-                    <td><%= @print.print_notes %></td>
-                  </tr>
-
-                   <tr>
-                    <td>Active:</td>
-                    <td><%= @print.print_active %></td>
-                  </tr>
-            </tbody>
-          </table>
-    </div>
-
-    <div class="span9"> 
-        <!-- Attachments -->
-        <%#= render 'attachments/attachments' %>
-    </div>
+<!-- Attachment -->
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_print_path(@print), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', print_path(@print), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', prints_path, :class => "btn btn-small" %>
+  </div>
 </div>

@@ -26,6 +26,15 @@ class Attachment < ActiveRecord::Base
       # self.attachment_active = false
   end
 
+  def attachment_fields
+      self[:effective_date] = self.attachment_revision_date ? self.attachment_revision_date.strftime("%m-%d-%Y") : ""
+      self[:uploaded_date] = self.created_at.strftime("%m-%d-%Y")
+      self[:uploaded_by] = self.created_by ? self.created_by.name : "" 
+      self[:approved_by] = ""
+      self[:links] = "<a href='#{self.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
+      self
+  end
+
   belongs_to :created_by, :class_name => "User", :foreign_key => "attachment_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "attachment_updated_id"
 
