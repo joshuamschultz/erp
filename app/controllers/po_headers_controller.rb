@@ -37,7 +37,7 @@ class PoHeadersController < ApplicationController
       format.json { 
           @po_headers = @po_headers.select{|po_header|
               po_header[:po_type_name] = po_header.po_type.type_name
-              po_header[:vendor_name] = "<a href='#{organization_path(po_header.organization)}'>Vendor : #{po_header.organization.organization_name}</a>"
+              po_header[:vendor_name] = "<a href='#{organization_path(po_header.organization)}'>#{po_header.organization.organization_name}</a>"
               po_header[:links] = CommonActions.object_crud_paths(po_header_path(po_header), edit_po_header_path(po_header), nil)
           }
           render json: {:aaData => @po_headers}

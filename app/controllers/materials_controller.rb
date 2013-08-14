@@ -1,5 +1,6 @@
 class MaterialsController < ApplicationController
   before_filter :set_page_info
+  autocomplete :material, :material_short_name, :full => true
 
   def set_page_info
       @menus[:inventory][:active] = "active"
