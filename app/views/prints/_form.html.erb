@@ -1,12 +1,27 @@
 <%= simple_form_for(@print, :html => {:id => "form_for_print", :class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :print_identifier, :label => "Name", :autofocus => true %>
-    <%= f.input :print_description, :label => "Description" %>
-    <%= f.input :print_notes, :label => "Notes" %>
-    <%= f.input :print_active, :label => "Active" %>
-  </div>
+ <!--  <div class="form-inputs">
+    <%#= f.input :print_identifier, :label => "Name", :autofocus => true %>
+    <%#= f.input :print_description, :label => "Description" %>
+    <%#= f.input :print_notes, :label => "Notes" %>
+    <%#= f.input :print_active, :label => "Active" %>
+  </div> -->
+  
+<div class="form-inputs">
+  <%= f.simple_fields_for [:attachment, Attachment.new] do |g| %>    
+        <%= g.hidden_field :attachable_id %>
+        <%= g.hidden_field :attachable_type %>
+        <%= g.input :attachment_name, label: "Name", :autofocus => true %>
+        <%= g.input :attachment_revision_title, label: "Revision" %>
+        <%= g.input :attachment_revision_date, :as => "string", label: "Effective Date" %>
+        <%= g.input :attachment_description, label: "Description" %>
+        <%#= f.input :attachment_notes, label: "Notes" %>
+        <%= g.input :attachment_public, label: "Public" %>
+        <%= g.input :attachment, label: "Attachment (Only if changed/new)" %>
+        <%#= f.input :attachment_active, label: "Active" %>    
+  <% end %>
+</div>
 
   <div class="form-actions">
     <%= f.button :submit %>
@@ -15,6 +30,8 @@
     <%= link_to 'Back to Prints', prints_path,:class =>"btn" %>
   </div>
 <% end %>
+
+
 <script type="text/javascript">
     tab_field_forms["form_for_print"] = ["print_print_identifier", "print_print_description", "print_print_notes", "print_print_active"];
 </script>
