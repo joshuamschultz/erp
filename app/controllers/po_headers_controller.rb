@@ -1,21 +1,31 @@
 class PoHeadersController < ApplicationController
   before_filter :find_relations
   before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update]  
 
   def set_page_info
       @menus[:purchases][:active] = "active"
   end
 
-  def find_relations
-      params[:status] ||= "open"
+  def set_autocomplete_values
+    organization = Organization.find_by_organization_name(params[:po_header][:organization_id])
+    params[:organization_id] = organization.id if organization && params[:organization_id] == ""
 
-      puts params[:status]
+    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
+  end
+
+  def find_relations
+      params[:status] ||= nil
 
       if params[:vendor_id].present?
           @vendor = Organization.find(params[:vendor_id])
-          @po_headers = @vendor.present? ? @vendor.po_headers.where(:po_status => params[:status]).order(:created_at) : []
+          @po_headers = @vendor.present? ? @vendor.po_headers.order(:created_at) : []
       else
-          @po_headers = PoHeader.where(:po_status => params[:status]).order(:created_at)
+          @po_headers = PoHeader.order(:created_at)
+      end
+
+      if params[:status] && @po_headers.any?
+          @po_headers = @po_headers.where(:po_status => params[:status])
       end
   end
 
@@ -67,7 +77,6 @@ class PoHeadersController < ApplicationController
   # POST /po_headers
   # POST /po_headers.json
   def create
-    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
     @po_header = PoHeader.new(params[:po_header])    
 
     respond_to do |format|
@@ -75,7 +84,7 @@ class PoHeadersController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
       else        
-        @po_header.organization_id = ""
+        @po_header.organization_id = params[:organization_id]
         format.html { render action: "new" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end
@@ -85,7 +94,6 @@ class PoHeadersController < ApplicationController
   # PUT /po_headers/1
   # PUT /po_headers/1.json
   def update
-    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
     @po_header = PoHeader.find(params[:id])    
 
     respond_to do |format|
@@ -93,7 +101,7 @@ class PoHeadersController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully updated.' }
         format.json { head :no_content }
       else
-        @po_header.organization_id = ""
+        @po_header.organization_id = params[:organization_id]
         format.html { render action: "edit" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end

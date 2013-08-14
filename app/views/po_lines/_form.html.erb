@@ -9,28 +9,31 @@
             <%#= f.association :po_header %>
             <%#= f.association :organization, :autofocus => true, :label => "Customer", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
 
+            <%= f.association :item, :url => autocomplete_item_item_part_no_items_path, :as => :autocomplete, :id_element => '#item_id', required: true, :label => "Item", :autofocus => true %>
+
+            <%= f.input :po_line_quantity, :label => "Quantity" %>
+
+            <%= f.input :po_line_cost, :label => "Cost" %>
+
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
-
-            <%= hidden_field_tag :organization_id, (@po_line.organization.id unless @po_line.new_record? && @po_line.organization.nil?) %>
-
-            <%#= f.association :so_line %>
-            <%#= f.association :vendor_quality %>
-            <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
 
             <%= f.input :po_line_customer_po, :label => "Customer PO" %>
 
-            <%#= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
+            <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
 
-            <%= f.association :item, :url => autocomplete_item_item_part_no_items_path, :as => :autocomplete, :id_element => '#item_id', required: true, :label => "Item" %>
+            <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+            
+            <%= f.input :po_line_notes, :label => "Notes" %>
+
+            <%= hidden_field_tag :organization_id, (@po_line.organization.id if @po_line.persisted? && @po_line.organization) %>
 
             <%= hidden_field_tag :item_id, (@po_line.item.id unless @po_line.new_record? && @po_line.item.nil?) %>
 
-            <%#= f.association :item_revision %>    
-            <%= f.input :po_line_cost, :label => "Cost" %>
-            <%= f.input :po_line_quantity, :label => "Quantity" %>
-            <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+            <%#= f.association :so_line %>
+            <%#= f.association :vendor_quality %>
+            <%#= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
+            <%#= f.association :item_revision %>
             <%#= f.input :po_line_status %>
-            <%= f.input :po_line_notes %>
             <%#= f.input :po_line_active %>
 
             <div class="separator bottom"></div>
@@ -47,20 +50,20 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_po_line"] = ["po_line_organization_id", "po_line_customer_quality_id", "po_line_po_line_customer_po", "po_line_item_id", "po_line_po_line_cost", "po_line_po_line_quantity"];
+    tab_field_forms["form_for_po_line"] = ["po_line_item_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_organization_id", "po_line_po_line_customer_po", "po_line_customer_quality_id"];
 
     $(document).ready(function(){ 
         $("#po_line_organization_id").on("change", function(){
             if($("#organization_id").val() == "")
-                $("#po_line_organization_id").val("");            
+                $("#po_line_organization_id").val("");          
         });
 
-        $("#po_line_item_id").on("change", function(){
+        $("#po_line_item_id").on("focusout", function(){
             if($("#item_id").val() != "")
                 initialize_api_call({"url": "/items/" + $("#item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+            else
+                $("#po_line_po_line_cost").val("");
         });
-
-        $("#po_line_organization_id").focus();
 
         if($("#item_id").val() != "")
             initialize_api_call({"url": "/items/" + $("#po_line_item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
@@ -69,7 +72,7 @@
             $("#po_line_organization_id").val("<%= @po_line.organization.organization_name if @po_line.organization %>");
             $("#organization_id").val("<%= @po_line.organization.id if @po_line.organization %>");
 
-            $("#po_line_item_id").val("<%= @po_line.item.organization_name if @po_line.item %>");
+            $("#po_line_item_id").val("<%= @po_line.item.item_part_no if @po_line.item %>");
             $("#item_id").val("<%= @po_line.item.id if @po_line.item %>");
         <% end %>
 
@@ -84,8 +87,11 @@
 
     function calculate_line_item_total(){
         var po_line_total = parseFloat($("#po_line_po_line_cost").val(), 10) * parseFloat($("#po_line_po_line_quantity").val(), 10);
+
         if(isNaN(po_line_total) == false)
-            $("#po_line_po_line_total").val(po_line_total.toFixed(2));
+            $("#po_line_po_line_total").val(po_line_total.toFixed(5));
+        else
+            $("#po_line_po_line_total").val("");
     }
 
     function set_item_revision_cost(response, callback_params, api_params){
