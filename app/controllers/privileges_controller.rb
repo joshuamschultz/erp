@@ -10,6 +10,7 @@ class PrivilegesController < ApplicationController
       	 @users = @users.select{ |user| 
           user[:show] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
           user[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
+          user[:role] = user.role_symbols[0].to_s
         }
         render json: {:aaData => @users}
       }
@@ -47,10 +48,11 @@ class PrivilegesController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(params[:user])
+    @user.roles = [params[:role]]
     password_temp = password = Devise.friendly_token.first(8)
     @user.password = password_temp
     @user.password_confirmation = password_temp
-	@user.reset_password_token= User.reset_password_token 
+	  @user.reset_password_token= User.reset_password_token 
 
     respond_to do |format|
       if @user.save
@@ -67,8 +69,12 @@ class PrivilegesController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
+    if params[:user][:password].blank?
+      params[:user].delete("password")
+      params[:user].delete("password_confirmation")
+    end
 
+    @user = User.find(params[:id])
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to privileges_path, notice: 'User was successfully updated.' }
@@ -78,6 +84,22 @@ class PrivilegesController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+    # if @user.update_attributes(params[:user])
+    #    redirect_to privileges_path
+    # end
+    # @user = User.find(params[:id])
+    # params[:user].delete(:current_password)
+    # @user.update_without_password(params[:user])
+    # redirect_to privileges_path
+    # respond_to do |format|
+    #   if @user.update_attributes(params[:user])
+    #     format.html { redirect_to privileges_path, notice: 'User was successfully updated.' }
+    #     format.json { head :no_content }
+    #   else
+    #     format.html { render action: "edit" }
+    #     format.json { render json: @user.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /users/1
