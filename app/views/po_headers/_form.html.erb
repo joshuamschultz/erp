@@ -13,7 +13,7 @@
         <%= f.error_notification %>
 
         <div class="form-inputs">
-            <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :autofocus => true, input_html: {class: "po_types"} %>
+            <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :autofocus => true, input_html: {class: "po_types"}, :checked => MasterType.po_types.first.id %>
 
             <%#= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
 
