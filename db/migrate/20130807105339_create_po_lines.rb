@@ -9,9 +9,9 @@ class CreatePoLines < ActiveRecord::Migration
       t.references :item
       t.references :item_revision
       t.string :po_line_customer_po
-      t.decimal :po_line_cost, :precision => 10, :scale => 2
+      t.decimal :po_line_cost, :precision => 15, :scale => 5
       t.integer :po_line_quantity
-      t.decimal :po_line_total, :precision => 10, :scale => 2
+      t.decimal :po_line_total, :precision => 15, :scale => 5
       t.string :po_line_status
       t.text :po_line_notes
       t.boolean :po_line_active
