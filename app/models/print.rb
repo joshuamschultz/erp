@@ -21,4 +21,5 @@ class Print < ActiveRecord::Base
   def redirect_path
       print_path(self)
   end
+
 end

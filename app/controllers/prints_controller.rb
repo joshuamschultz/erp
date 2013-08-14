@@ -8,14 +8,16 @@ class PrintsController < ApplicationController
   # GET /prints
   # GET /prints.json
   def index
-    @prints = Print.all
+    @prints = Print.joins(:attachment).all
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        @prints = @prints.select{ |print| 
-          print[:show] = "<a href='#{print_path(print)}'>#{print.print_identifier}</a>"
-          print[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+        @prints = @prints.collect{ |print|
+          attachment = print.attachment.attachment_fields
+          attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
+          attachment[:links] += CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+          attachment
         }
         render json: {:aaData => @prints}
       }
@@ -26,7 +28,7 @@ class PrintsController < ApplicationController
   # GET /prints/1.json
   def show
     @print = Print.find(params[:id])
-    @attachable = @print
+    @attachment = @print.attachment
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,6 +40,7 @@ class PrintsController < ApplicationController
   # GET /prints/new.json
   def new
     @print = Print.new
+    @print.build_attachment
 
     respond_to do |format|
       format.html # new.html.erb
