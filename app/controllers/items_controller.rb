@@ -89,6 +89,7 @@ class ItemsController < ApplicationController
         format.html { redirect_to item_path(@item), notice: 'Item was successfully created.' }
         format.json { render json: @item, status: :created, location: @item }
       else
+        puts @item.errors.to_yaml
         format.html { render action: "new" }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end

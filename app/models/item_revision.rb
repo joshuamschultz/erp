@@ -16,7 +16,7 @@ class ItemRevision < ActiveRecord::Base
   validates_presence_of :organization
   validates_presence_of :vendor_quality
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
-  validates_length_of :item_revision_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_revision_name
+  validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
   validates_presence_of :item_revision_date
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling

@@ -30,7 +30,7 @@ class PoLine < ActiveRecord::Base
   end
 
   def update_item_total
-      self.po_line_total = self.po_line_cost * self.po_line_quantity
+      self.po_line_total = self.po_line_cost.round(5) * self.po_line_quantity.round(5)
   end
 
   def update_po_total

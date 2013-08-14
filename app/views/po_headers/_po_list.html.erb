@@ -6,6 +6,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">PO List</h4>
             <span class="span6 heading right">
+                <%= link_to 'All', po_headers_path(:vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Open', po_headers_path(:status => "open", :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', po_headers_path(:status => "closed", :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'New PO', new_po_header_path(:vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>                

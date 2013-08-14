@@ -15,7 +15,7 @@ class Item < ActiveRecord::Base
     self.item_active = true if self.attributes.has_key?("item_active") && self.item_active.nil?
   end
   
-  (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :minimum => 2, :maximum => 50) if validates_presence_of :item_part_no
+  (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :maximum => 50) if validates_presence_of :item_part_no
    
   def current_revision
       self.item_revisions.order("created_at desc").first
