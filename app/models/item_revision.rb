@@ -21,8 +21,8 @@ class ItemRevision < ActiveRecord::Base
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
-  has_many :item_prints, :dependent => :destroy
-  has_many :prints, :through => :item_prints
+  has_one :item_print, :dependent => :destroy
+  has_one :print, :through => :item_print
 
   has_many :item_materials, :dependent => :destroy
   has_many :materials, :through => :item_materials
