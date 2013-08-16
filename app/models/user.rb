@@ -1,3 +1,4 @@
+require 'role_model'
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -5,14 +6,17 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, 
   :trackable, :validatable, :token_authenticatable, :lockable, :timeoutable
 
+  include RoleModel
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, 
-  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active
+  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask
   # attr_accessible :title, :body
 
+  roles_attribute :roles_mask
+
+  roles :superadmin, :manager, :quality, :operations, :clerical, :logistics, :vendor, :customer
 
   has_one :organization 
-
 
   has_many :created_materials, :class_name => "Material", :foreign_key => "material_created_id"
   has_many :updated_materials, :class_name => "Material", :foreign_key => "material_updated_id"
