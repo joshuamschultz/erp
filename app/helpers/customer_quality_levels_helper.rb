@@ -1,0 +1,2 @@
+module CustomerQualityLevelsHelper
+end
