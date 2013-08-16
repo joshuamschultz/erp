@@ -1,4 +1,20 @@
 class ItemSelectedNamesController < ApplicationController
+  autocomplete :item_selected_name, :item_name, :display_value => :with_alt_name
+
+  def get_autocomplete_items(parameters)    
+    items = super(parameters)
+
+    recent_revisions = ItemRevision.joins(:item).where("latest_revision = ?", true)
+
+    matched_revisions = recent_revisions.where("item_part_no like ?", "%" + params[:term] + "%")
+    matched_names = ItemSelectedName.where(:item_revision_id => matched_revisions.map(&:id))
+
+    matched_altnames = ItemSelectedName.joins(:item_alt_name).where("item_alt_identifier like ?", "%" + params[:term] + "%")
+    .where(:item_revision_id => recent_revisions.map(&:id))
+
+    items = ItemSelectedName.where(:id => (matched_names + matched_altnames).map(&:id))
+  end
+
   # GET /item_selected_names
   # GET /item_selected_names.json
   def index
@@ -17,7 +33,7 @@ class ItemSelectedNamesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @item_selected_name }
+      format.json { render json: @item_selected_name.item_revision }
     end
   end
 

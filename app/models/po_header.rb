@@ -2,7 +2,7 @@ class PoHeader < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessible :po_active, :po_created_id, :po_description, :po_identifier, :po_notes, 
-  :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id  
+  :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id
 
   validates_presence_of :organization
   validates_presence_of :po_type
