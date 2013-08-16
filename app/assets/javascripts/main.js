@@ -64,15 +64,21 @@ function date_box_handler(){
 	$.each(date_box_fields, function(key, field){
 		$("#"+field["name"]).datepicker({
 			changeMonth: true,
-			changeYear: true
+			changeYear: true,
+			onSelect: function(dateText) {
+			   	$(this).focus();
+			}
 		});
 		$("#"+field["name"]).datepicker("option","dateFormat","yy-mm-dd");
 		$("#"+field["name"]).datepicker("setDate", new Date(field["value"]));
 
 		// $("#"+field).datetimepicker({
 		// 	pickTime: false 
-		// }).on( "changeDate", function(ev) {
-		// 	$(this).datetimepicker("hide");
+		// });
+
+		// $("#"+field["name"]).on("change", function(ev) {
+		// 	console.log(11);
+		// 	$(this).focus();
 		// });
 	});
 }

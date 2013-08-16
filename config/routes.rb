@@ -32,7 +32,9 @@ AllianceFasteners::Application.routes.draw do
 
   resources :item_prints
 
-  resources :prints
+  resources :prints do
+    get :autocomplete_print_print_identifier, :on => :collection
+  end
 
   resources :item_alt_names  
 
@@ -95,6 +97,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :materials do
     resources :material_elements
+    get :autocomplete_material_material_short_name, :on => :collection
   end
 
   resources :test_items

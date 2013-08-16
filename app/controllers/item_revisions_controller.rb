@@ -1,6 +1,13 @@
 class ItemRevisionsController < ApplicationController
   # GET items/1/item_revisions
   # GET items/1/item_revisions.json
+  before_filter :set_autocomplete_values, only: [:create, :update] 
+
+  def set_autocomplete_values
+      params[:item_revision][:print_id], params[:print_id] = params[:print_id], params[:item_revision][:print_id]
+      params[:item_revision][:material_id], params[:material_id] = params[:material_id], params[:item_revision][:material_id]
+  end
+
   def index
     @item = Item.find(params[:item_id])
     @item_revisions = @item.item_revisions.order("item_revision_date desc")

@@ -1,20 +1,27 @@
-<%= simple_form_for(@specification, :html => {:id => "form_for_specification",:class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for(@specification, :html => {:id => "form_for_specification", :class => "form-horizontal", :multipart => true}) do |g| %>
+  <%= g.error_notification %>
 
-  <div class="form-inputs">    
-    <%= f.input :specification_identifier, :label => "Name", :autofocus => true %>
-    <%= f.input :specification_description, :label => "Description" %>
-    <%= f.input :specification_notes, :label => "Notes", input_html: {style: "height: 300px;"} %>
-    <%= f.input :specification_active, :label => "Active" %>
-  </div>
+  <%= g.simple_fields_for :attachment do |f| %>
+    <div class="form-inputs">        
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>    
+    </div>
+  <% end %>
+
+  <div class="separator bottom"></div> 
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= g.button :submit, :class => "btn" %>
+
+    <%= link_to 'Delete', specification_path(@specification), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @specification.new_record? %>
+    
     <%= link_to 'Back to Specifications', specifications_path, :class => "btn" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_specification"] = ["specification_specification_identifier", "specification_specification_description", "specification_specification_notes", "specification_specification_active"];
-</script>
+  tab_field_forms["form_for_specification"] = ["specification_attachment_attributes_attachment_name", "specification_attachment_attributes_attachment_revision_title", "specification_attachment_attributes_attachment_revision_date", "specification_attachment_attributes_attachment_description", "specification_attachment_attributes_attachment_public", "specification_attachment_attributes_attachment"];
 
+  <% date_box_date = @specification.new_record? ? Date.today : @specification.attachment.attachment_revision_date %> 
+
+  date_box_fields = date_box_fields.concat([{"name":"specification_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
+</script>
