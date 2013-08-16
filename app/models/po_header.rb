@@ -9,10 +9,12 @@ class PoHeader < ActiveRecord::Base
 
   # (validates_uniqueness_of :po_identifier if validates_length_of :po_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :po_identifier
 
-  before_create :create_level_defaults
+  before_create :before_create_level_defaults
 
-  def create_level_defaults
+  def before_create_level_defaults
   		self.po_status = "open"
+      self.po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+      self.po_identifier.slice!(2)
   end
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]

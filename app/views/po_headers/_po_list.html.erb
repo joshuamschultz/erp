@@ -38,10 +38,9 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report_po_header_list", :path => po_headers_path(:status => params[:status], :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :extras => {:slno => false, 
-        :grouping => true, :column_index => 2},
+        :name => "table_report_po_header_list", :path => po_headers_path(:status => params[:status], :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :extras => {:slno => false},
         :columns => '[
-                        { "mData": "id" },
+                        { "mData": "po_id" },
                         { "mData": "po_type_name" },
                         { "mData": "vendor_name" },
                         { "mData": "po_identifier", "bVisible": false },
@@ -53,3 +52,5 @@
                     ]'
     } 
 %>
+
+<!-- :grouping => true, :column_index => 2 -->

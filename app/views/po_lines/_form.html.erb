@@ -19,11 +19,11 @@
 
             <%= f.input :po_line_customer_po, :label => "Customer PO" %>
 
-            <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
-
-            <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+            <%= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>            
             
             <%= f.input :po_line_notes, :label => "Notes" %>
+
+            <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
 
             <%= hidden_field_tag :organization_id, (@po_line.organization.id if @po_line.persisted? && @po_line.organization) %>
 
@@ -50,7 +50,7 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_po_line"] = ["po_line_item_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_organization_id", "po_line_po_line_customer_po", "po_line_customer_quality_id"];
+    tab_field_forms["form_for_po_line"] = ["po_line_item_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_organization_id", "po_line_po_line_customer_po", "po_line_customer_quality_id", "po_line_po_line_notes"];
 
     $(document).ready(function(){ 
         $("#po_line_organization_id").on("change", function(){
