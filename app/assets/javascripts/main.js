@@ -1,7 +1,7 @@
 $(document).ready(function(){ 
 	form_focus_handler();
 	date_box_handler();
-	$(".multi_select_box").multiselect();
+	$(".multi_select_box").multiselect().multiselectfilter();
 
 	$('#iframe_popup_dialog').on('hidden', function () {
 	    fn_popup_closed_events();
