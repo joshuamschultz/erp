@@ -30,7 +30,12 @@
                 </div>
             </div> -->
 
-            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>
+            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>             
+
+            <div class="control-group">
+                <label for="item_processes" class="optional control-label"></label>
+                <div class="controls"> <%= link_to 'New Print', new_print_path, :class => "btn btn-small", :target => "_blank" %> </div>
+            </div>
 
             <%= hidden_field_tag :print_id %>
 
