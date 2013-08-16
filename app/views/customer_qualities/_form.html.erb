@@ -3,23 +3,36 @@
 
   <div class="form-inputs">
     <%= f.input :quality_name, label: "Name", :autofocus => true %>
-    <%= f.input :quality_description, label: "Description" %>    
-    <%= f.input :quality_supplier_a, label: "Supplier A" %>
-    <%= f.input :quality_supplier_b, label: "Supplier B" %>
-    <%= f.input :quality_dimensional_cofc, label: "Dimensional Cofc" %>
-    <%= f.input :quality_material_cofc, label: "Material Cofc" %>
-    <%= f.input :quality_study, label: "Capability Study" %>
-    <%= f.input :quality_gauge, label: "Gauge R&R" %>
-    <%= f.input :quality_process_flow, label: "Process Flow" %>
-    <%= f.input :quality_fmea, label: "Fmea" %>
-    <%= f.input :quality_control_plan, label: "Control Plan" %>
-    <%= f.input :quality_psw, label: "PSW" %>
-    <%= f.input :quality_packaging, label: "Packaging" %>
-    <%= f.input :quality_floor_plan, label: "Floor Plan" %>
-    <%= f.input :quality_form, label: "Cutomer Form" %>    
-    <%= f.input :quality_notes, label: "Notes" %>
-    <%= f.input :quality_active, label: "Active" %>
+    <%= f.input :quality_description, label: "Description" %>   
+
+
+    <div class="control-group">
+        <label for="item_processes" class="optional control-label">Quality Levels</label>
+        <div class="controls">
+            <%= select_tag "customer_quality_levels[]", options_for_select(MasterType.quality_levels.collect {|quality| [quality.type_name, quality.id]}, @customer_quality.persisted? ? (@customer_quality.customer_quality_levels.empty? ? [] : @customer_quality.customer_quality_levels.collect(&:master_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
+        </div>
+    </div>
+
+
+
+    <%#= f.input :quality_supplier_a, label: "Supplier A" %>
+    <%#= f.input :quality_supplier_b, label: "Supplier B" %>
+    <%#= f.input :quality_dimensional_cofc, label: "Dimensional Cofc" %>
+    <%#= f.input :quality_material_cofc, label: "Material Cofc" %>
+    <%#= f.input :quality_study, label: "Capability Study" %>
+    <%#= f.input :quality_gauge, label: "Gauge R&R" %>
+    <%#= f.input :quality_process_flow, label: "Process Flow" %>
+    <%#= f.input :quality_fmea, label: "Fmea" %>
+    <%#= f.input :quality_control_plan, label: "Control Plan" %>
+    <%#= f.input :quality_psw, label: "PSW" %>
+    <%#= f.input :quality_packaging, label: "Packaging" %>
+    <%#= f.input :quality_floor_plan, label: "Floor Plan" %>
+    <%#= f.input :quality_form, label: "Cutomer Form" %>    
+    <%#= f.input :quality_notes, label: "Notes" %>
+    <%#= f.input :quality_active, label: "Active" %>
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
         <%= f.button :submit, "Submit" %>

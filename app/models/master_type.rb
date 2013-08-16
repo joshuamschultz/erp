@@ -5,6 +5,8 @@ class MasterType < ActiveRecord::Base
 
   scope :organization_types, where(:type_category => 'organization_type')
 
+  scope :quality_levels, where(:type_category => 'customer_quality_level')
+
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
@@ -12,6 +14,10 @@ class MasterType < ActiveRecord::Base
   has_many :contact_based_organizations, :class_name => "Organization", :foreign_key => "customer_contact_type_id"
 
   has_many :type_based_pos, :class_name => "PoHeader", :foreign_key => "po_type_id"
+
+  has_many :customer_quality_levels, :dependent => :destroy
+  has_many :customer_qualities, :through => :customer_quality_levels
+
 
   validates_uniqueness_of :type_value
 

@@ -1,0 +1,12 @@
+<%= simple_form_for(@customer_quality_level) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :customer_quality %>
+    <%= f.association :master_type %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
