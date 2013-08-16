@@ -1,24 +1,20 @@
-<%= simple_form_for(@print, :html => {:id => "form_for_print", :class => "form-horizontal"}) do |g| %>
+<%= simple_form_for(@print, :html => {:id => "form_for_print", :class => "form-horizontal", :multipart => true}) do |g| %>
   <%= g.error_notification %>
 
- <!--  <div class="form-inputs">
-    <%#= f.input :print_identifier, :label => "Name", :autofocus => true %>
-    <%#= f.input :print_description, :label => "Description" %>
-    <%#= f.input :print_notes, :label => "Notes" %>
-    <%#= f.input :print_active, :label => "Active" %>
-  </div> -->
-  
-<div class="form-inputs">
-  <%= g.simple_fields_for :attachment do |f| %>    
-        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
+  <%= g.simple_fields_for :attachment do |f| %>
+    <div class="form-inputs">        
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>    
+    </div>
   <% end %>
-</div>
+
+  <div class="separator bottom"></div> 
 
   <div class="form-actions">
-    <%= g.button :submit %>
-         <%= link_to 'Delete', print_path(@print), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @print.new_record? %>
+    <%= g.button :submit, :class => "btn" %>
+         
+    <%= link_to 'Delete', print_path(@print), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @print.new_record? %>
 
-    <%= link_to 'Back to Prints', prints_path,:class =>"btn" %>
+    <%= link_to 'Back to Prints', prints_path, :class =>"btn" %>
   </div>
 <% end %>
 

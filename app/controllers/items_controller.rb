@@ -1,6 +1,12 @@
 class ItemsController < ApplicationController
   before_filter :set_page_info
   autocomplete :item, :item_part_no, :full => true
+  before_filter :set_autocomplete_values, only: [:create, :update] 
+
+  def set_autocomplete_values
+      params[:item][:item_revisions_attributes]["0"][:print_id], params[:print_id] = params[:print_id], params[:item][:item_revisions_attributes]["0"][:print_id]
+      params[:item][:item_revisions_attributes]["0"][:material_id], params[:material_id] = params[:material_id], params[:item][:item_revisions_attributes]["0"][:material_id]
+  end
 
   def set_page_info
       @menus[:inventory][:active] = "active"

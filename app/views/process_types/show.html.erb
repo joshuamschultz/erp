@@ -1,41 +1,9 @@
-  <!-- Wells -->
-<div class="row-fluid">
-    <h4 class="span3 left">Process Info</h4>
-    <span class="span9 right">
-        <%= link_to 'Edit', edit_process_type_path(@process_type), :class => "btn btn-small" %>
-        <%= link_to 'Back to Processes', process_types_path, :class => "btn btn-small" %>
-    </span>
-</div>
-
-<div class="row-fluid">
-    <div class="span3 well item_detail_view">
-        <table class="table">
-            <tbody>
-                  <tr>
-                    <td class="span2">Short Name :</td>
-                    <td class="span5"><%= @process_type.process_short_name %></td>
-                  </tr>
-
-                  <tr>
-                    <td class="span3">Description :</td>
-                    <td class="span5"><%= @process_type.process_description %></td>
-                  </tr>
-
-                  <tr>
-                    <td class="span3">Notes :</td>
-                    <td class="span5"><%= @process_type.process_notes %></td>
-                  </tr>
-
-                  <tr>
-                    <td class="span3">Active :</td>
-                    <td class="span5"><%= @process_type.process_active %></td>
-                  </tr>
-            </tbody>
-          </table>
-    </div>
-
-    <div class="span9"> 
-        <!-- Attachments -->
-        <%= render 'attachments/attachments' %>
-    </div>
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_process_type_path(@process_type), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', process_type_path(@process_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', process_types_path, :class => "btn btn-small" %>
+  </div>
 </div>
