@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Customer quality:</b>
+  <%= @customer_quality_level.customer_quality %>
+</p>
+
+<p>
+  <b>Master type:</b>
+  <%= @customer_quality_level.master_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_customer_quality_level_path(@customer_quality_level) %> |
+<%= link_to 'Back', customer_quality_levels_path %>
