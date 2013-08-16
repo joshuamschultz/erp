@@ -8,6 +8,7 @@ class CreatePoLines < ActiveRecord::Migration
       t.references :customer_quality
       t.references :item
       t.references :item_revision
+      t.references :item_selected_name
       t.string :po_line_customer_po
       t.decimal :po_line_cost, :precision => 15, :scale => 5
       t.integer :po_line_quantity
