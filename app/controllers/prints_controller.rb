@@ -1,6 +1,8 @@
 class PrintsController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :print, :print_identifier, :full => true
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -8,14 +10,16 @@ class PrintsController < ApplicationController
   # GET /prints
   # GET /prints.json
   def index
-    @prints = Print.all
+    @prints = Print.joins(:attachment).all
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        @prints = @prints.select{ |print| 
-          print[:show] = "<a href='#{print_path(print)}'>#{print.print_identifier}</a>"
-          print[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+        @prints = @prints.collect{ |print|
+          attachment = print.attachment.attachment_fields
+          # attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
+          attachment[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+          attachment
         }
         render json: {:aaData => @prints}
       }
@@ -26,7 +30,7 @@ class PrintsController < ApplicationController
   # GET /prints/1.json
   def show
     @print = Print.find(params[:id])
-    @attachable = @print
+    @attachment = @print.attachment
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,6 +42,7 @@ class PrintsController < ApplicationController
   # GET /prints/new.json
   def new
     @print = Print.new
+    @print.build_attachment
 
     respond_to do |format|
       format.html # new.html.erb
@@ -56,6 +61,7 @@ class PrintsController < ApplicationController
     @print = Print.new(params[:print])
 
     respond_to do |format|
+      @print.attachment.created_by = current_user
       if @print.save
         format.html { redirect_to prints_path, notice: 'Print was successfully created.' }
         format.json { render json: @print, status: :created, location: @print }
@@ -72,6 +78,7 @@ class PrintsController < ApplicationController
     @print = Print.find(params[:id])
 
     respond_to do |format|
+      @print.attachment.updated_by = current_user
       if @print.update_attributes(params[:print])
         format.html { redirect_to prints_path, notice: 'Print was successfully updated.' }
         format.json { head :no_content }
