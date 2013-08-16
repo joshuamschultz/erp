@@ -21,24 +21,32 @@
         <%= f.input :item_cost, :label => "Cost" %>
         <%= f.input :item_tooling, :label => "Tooling" %>
 
+        <!--  <div class="control-group">
+            <label for="item_prints" class="optional control-label">Prints</label>
+            <div class="controls">
+                <%#= select_tag "prints[]", options_for_select(Print.all.map {|print| [print.print_identifier, print.id]}, @item_revision.persisted? ? (@item_revision.item_prints.empty? ? [] : @item_revision.item_prints.collect(&:print_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_prints" %>
+            </div>
+        </div> -->
+
+        <%= f.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>
+
+        <%= hidden_field_tag :print_id %>
+
+       <!--  <div class="control-group">
+            <label for="item_materials" class="optional control-label">Materials</label>
+            <div class="controls">
+                <%#= select_tag "materials[]", options_for_select(Material.all.map {|material| [material.material_short_name, material.id]}, @item_revision.persisted? ? (@item_revision.item_materials.empty? ? [] : @item_revision.item_materials.collect(&:material_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_materials" %>
+            </div>
+        </div> -->
+
+        <%= f.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
+
+        <%= hidden_field_tag :material_id %>
+
         <div class="control-group">
             <label for="item_processes" class="optional control-label">Processes</label>
             <div class="controls">
                 <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @item_revision.persisted? ? (@item_revision.item_processes.empty? ? [] : @item_revision.item_processes.collect(&:process_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_processes" %>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label for="item_prints" class="optional control-label">Prints</label>
-            <div class="controls">
-                <%= select_tag "prints[]", options_for_select(Print.all.map {|print| [print.print_identifier, print.id]}, @item_revision.persisted? ? (@item_revision.item_prints.empty? ? [] : @item_revision.item_prints.collect(&:print_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_prints" %>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label for="item_materials" class="optional control-label">Materials</label>
-            <div class="controls">
-                <%= select_tag "materials[]", options_for_select(Material.all.map {|material| [material.material_short_name, material.id]}, @item_revision.persisted? ? (@item_revision.item_materials.empty? ? [] : @item_revision.item_materials.collect(&:material_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_materials" %>
             </div>
         </div>
 
@@ -65,7 +73,7 @@
 
 
 <script type="text/javascript">
-  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "s2id_item_names .select2-input", "item_revision_owner_id", "item_revision_organization_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_item_notes"];
+  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "s2id_item_names .select2-input", "item_revision_owner_id", "item_revision_organization_id", "item_revision_vendor_quality_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_print_id", "item_revision_material_id", "item_revision_item_notes"];
 
   <% date_box_date = @item_revision.new_record? ? Date.today : @item_revision.item_revision_date %> 
 
@@ -74,5 +82,13 @@
   $(document).ready(function(){ 
      $("#item_names").select2({tags:<%= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
      $("#s2id_item_names").css("width", "220px");
+
+    <% unless @item_revision.new_record? %>
+        $("#item_revision_print_id").val("<%= @item_revision.print.print_identifier if @item_revision.print %>");
+        $("#print_id").val("<%= @item_revision.print.id if @item_revision.print %>");
+
+        $("#item_revision_material_id").val("<%= @item_revision.material.material_short_name if @item_revision.material %>");
+        $("#material_id").val("<%= @item_revision.material.id if @item_revision.material %>");
+    <% end %>
   });
 </script>

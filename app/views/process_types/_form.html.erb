@@ -1,19 +1,28 @@
-<%= simple_form_for(@process_type, :html => {:id => "form_for_processes",:class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for(@process_type, :html => {:id => "form_for_processes",:class => "form-horizontal", :multipart => true}) do |g| %>
+  <%= g.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :process_short_name, :label => "Short Name", :autofocus => true %>
-    <%= f.input :process_description, :label => "Description"  %>
-    <%= f.input :process_notes, :label => "Notes"  %>
-    <%= f.input :process_active, :label => "Active"  %>
-  </div>
+  <%= g.simple_fields_for :attachment do |f| %>
+    <div class="form-inputs">        
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
+    </div>
+  <% end %>
+
+  <div class="separator bottom"></div> 
 
   <div class="form-actions">
-    <%= f.button :submit %>
-    <%= link_to 'Back to Processes', process_types_path, :class => "btn btn-small" %>
+    <%= g.button :submit, :class => "btn" %>
+
+    <%= link_to 'Delete', process_type_path(@process_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @process_type.new_record? %>
+    
+    <%= link_to 'Back to Processes', process_types_path, :class => "btn" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_processes"] = ["process_type_process_short_name", "process_type_process_description", "process_type_process_notes", "process_type_process_active"];
+  tab_field_forms["form_for_processes"] = ["process_type_attachment_attributes_attachment_name", "process_type_attachment_attributes_attachment_revision_title", "process_type_attachment_attributes_attachment_revision_date", "process_type_attachment_attributes_attachment_description", "process_type_attachment_attributes_attachment_public", "process_type_attachment_attributes_attachment"];
+
+  <% date_box_date = @process_type.new_record? ? Date.today : @process_type.attachment.attachment_revision_date %> 
+
+  date_box_fields = date_box_fields.concat([{"name":"process_type_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
 </script>
+

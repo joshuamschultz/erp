@@ -11,9 +11,9 @@ class Attachment < ActiveRecord::Base
 
   # validates_attachment_content_type :attachment, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
   
-  validates_presence_of :attachment_revision_title
+  validates_length_of :attachment_revision_title, :maximum => 50 if validates_presence_of :attachment_revision_title
 
-  validates_presence_of :attachment_name
+  (validates :attachment_name, :uniqueness => { :scope => :attachable_type, :message => "already exists!" } if validates_length_of :attachment_name, :maximum => 50) if validates_presence_of :attachment_name
 
   validates_presence_of :attachment
 
@@ -27,11 +27,12 @@ class Attachment < ActiveRecord::Base
   end
 
   def attachment_fields
+      self[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
       self[:effective_date] = self.attachment_revision_date ? self.attachment_revision_date.strftime("%m-%d-%Y") : ""
       self[:uploaded_date] = self.created_at.strftime("%m-%d-%Y")
       self[:uploaded_by] = self.created_by ? self.created_by.name : "" 
       self[:approved_by] = ""
-      self[:links] = "<a href='#{self.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
+      # self[:links] = "<a href='#{self.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
       self
   end
 

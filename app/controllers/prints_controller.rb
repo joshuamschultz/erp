@@ -1,6 +1,8 @@
 class PrintsController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :print, :print_identifier, :full => true
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -15,8 +17,8 @@ class PrintsController < ApplicationController
       format.json { 
         @prints = @prints.collect{ |print|
           attachment = print.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
-          attachment[:links] += CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+          # attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
+          attachment[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
           attachment
         }
         render json: {:aaData => @prints}
@@ -59,6 +61,7 @@ class PrintsController < ApplicationController
     @print = Print.new(params[:print])
 
     respond_to do |format|
+      @print.attachment.created_by = current_user
       if @print.save
         format.html { redirect_to prints_path, notice: 'Print was successfully created.' }
         format.json { render json: @print, status: :created, location: @print }
@@ -75,6 +78,7 @@ class PrintsController < ApplicationController
     @print = Print.find(params[:id])
 
     respond_to do |format|
+      @print.attachment.updated_by = current_user
       if @print.update_attributes(params[:print])
         format.html { redirect_to prints_path, notice: 'Print was successfully updated.' }
         format.json { head :no_content }
