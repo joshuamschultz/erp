@@ -24,7 +24,9 @@ AllianceFasteners::Application.routes.draw do
 
   resources :privileges
 
-  resources :item_selected_names
+  resources :item_selected_names do
+      get :autocomplete_item_selected_name_item_name, :on => :collection
+  end
 
   resources :item_processes
 
