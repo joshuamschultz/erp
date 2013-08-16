@@ -64,7 +64,25 @@
                   <tr>
                     <td>Cost:</td>
                     <td>$<%= @item_revision.item_cost.to_f %></td>
-                  </tr>             
+                  </tr>
+
+                  <tr>
+                    <td>Print:</td>
+                    <td>
+                        <%#= @item_revision.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
+
+                        <%= link_to(@item_revision.print.print_identifier, print_path(@item_revision.print).html_safe) if @item_revision.print %>
+                    </td>
+                  </tr>
+
+                   <tr>
+                    <td>Material:</td>
+                    <td>
+                      <%#= @item_revision.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
+
+                      <%= link_to(@item_revision.material.material_short_name, material_path(@item_revision.material).html_safe) if @item_revision.material %>
+                    </td>
+                  </tr> 
 
                   <tr>
                     <td>Specs:</td>
@@ -72,20 +90,6 @@
                         <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
                     </td>
                   </tr>  
-
-                  <tr>
-                    <td>Prints:</td>
-                    <td>
-                        <%= @item_revision.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
-                    </td>
-                  </tr>
-
-                   <tr>
-                    <td>Materials:</td>
-                    <td>
-                      <%= @item_revision.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
-                    </td>
-                  </tr> 
 
                   <tr>
                     <td>Processes:</td>
