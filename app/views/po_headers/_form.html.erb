@@ -19,7 +19,7 @@
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-            <%= hidden_field_tag :organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>
+            <%= hidden_field_tag :organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>            
 
             <div class="separator bottom"></div>
 

@@ -7,14 +7,15 @@ class PoLinesController < ApplicationController
   end
 
   def set_autocomplete_values
-    organization = Organization.find_by_organization_name(params[:po_line][:organization_id])
-    params[:organization_id] = organization.id if organization && params[:organization_id] == ""
+    # organization = Organization.find_by_organization_name(params[:po_line][:organization_id])
+    # params[:organization_id] = organization.id if organization && params[:organization_id] == ""
 
-    item = Item.find_by_item_part_no(params[:po_line][:item_id])
-    params[:item_id] = item.id if item && params[:item_id] == ""
+    # item = Item.find_by_item_part_no(params[:po_line][:item_id])
+    # params[:item_id] = item.id if item && params[:item_id] == ""
 
     params[:po_line][:organization_id], params[:organization_id] = params[:organization_id], params[:po_line][:organization_id]
-    params[:po_line][:item_id], params[:item_id] = params[:item_id], params[:po_line][:item_id]
+    # params[:po_line][:item_id], params[:item_id] = params[:item_id], params[:po_line][:item_id]
+    params[:po_line][:item_selected_name_id], params[:alt_name_id] = params[:alt_name_id], params[:po_line][:item_selected_name_id]
   end
   
   # GET po_headers/1/po_lines

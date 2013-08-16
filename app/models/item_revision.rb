@@ -10,7 +10,7 @@ class ItemRevision < ActiveRecord::Base
 
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
-  :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id
+  :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision
 
   validates_presence_of :owner
   validates_presence_of :organization
@@ -22,6 +22,16 @@ class ItemRevision < ActiveRecord::Base
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
   validates_presence_of :print
   validates_presence_of :material
+
+  after_save :update_recent_revision
+
+  def update_recent_revision    
+      ItemRevision.skip_callback("save", :after, :update_recent_revision)
+      recent_revison = self.item.item_revisions.order("item_revision_date desc").first
+      recent_revison.update_attributes(:latest_revision => true)
+      self.item.item_revisions.where("id != ?", recent_revison.id).update_all(:latest_revision => false)
+      ItemRevision.set_callback("save", :after, :update_recent_revision)
+  end
 
   # has_one :item_print, :dependent => :destroy
   # has_one :print, :through => :item_print

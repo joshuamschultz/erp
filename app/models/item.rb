@@ -3,6 +3,7 @@ class Item < ActiveRecord::Base
   :item_created_id, :item_updated_id, :item_revisions_attributes
 
   has_many :item_revisions, :dependent => :destroy
+  # has_many :item_selected_names, :through => :item_revisions
   has_many :item_part_dimensions, :through => :item_revisions
 
   has_many :po_lines, :dependent => :destroy
@@ -18,7 +19,8 @@ class Item < ActiveRecord::Base
   (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :minimum => 2, :maximum => 50) if validates_presence_of :item_part_no
    
   def current_revision
-      self.item_revisions.order("created_at desc").first
+      # self.item_revisions.find_by_latest_revision(true)
+      self.item_revisions.order("item_revision_date desc").first
   end
 
 end
