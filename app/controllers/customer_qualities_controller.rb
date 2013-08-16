@@ -57,9 +57,9 @@ class CustomerQualitiesController < ApplicationController
   # POST /customer_qualities.json
   def create
     @customer_quality = CustomerQuality.new(params[:customer_quality])
-
     respond_to do |format|
       if @customer_quality.save
+        CustomerQuality.quality_level_associations(@customer_quality, params)
         format.html { redirect_to customer_qualities_url, notice: 'Quality level was successfully created.' }
         format.json { render json: @customer_quality, status: :created, location: @customer_quality }
       else

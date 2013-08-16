@@ -1,0 +1,25 @@
+<h1>Listing customer_quality_levels</h1>
+
+<table>
+  <tr>
+    <th>Customer quality</th>
+    <th>Master type</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @customer_quality_levels.each do |customer_quality_level| %>
+  <tr>
+    <td><%= customer_quality_level.customer_quality %></td>
+    <td><%= customer_quality_level.master_type %></td>
+    <td><%= link_to 'Show', customer_quality_level %></td>
+    <td><%= link_to 'Edit', edit_customer_quality_level_path(customer_quality_level) %></td>
+    <td><%= link_to 'Destroy', customer_quality_level, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Customer quality level', new_customer_quality_level_path %>
