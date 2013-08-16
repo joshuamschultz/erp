@@ -10,7 +10,7 @@ class ItemRevision < ActiveRecord::Base
 
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
-  :organization_id, :vendor_quality_id, :customer_quality_id
+  :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id
 
   validates_presence_of :owner
   validates_presence_of :organization
@@ -20,12 +20,18 @@ class ItemRevision < ActiveRecord::Base
   validates_presence_of :item_revision_date
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
+  validates_presence_of :print
+  validates_presence_of :material
 
-  has_many :item_prints, :dependent => :destroy
-  has_many :prints, :through => :item_prints
+  # has_one :item_print, :dependent => :destroy
+  # has_one :print, :through => :item_print
 
-  has_many :item_materials, :dependent => :destroy
-  has_many :materials, :through => :item_materials
+  belongs_to :print
+
+  # has_many :item_materials, :dependent => :destroy
+  # has_many :materials, :through => :item_materials
+
+  belongs_to :material
 
   has_many :item_processes, :dependent => :destroy
   has_many :process_types, :through => :item_processes
@@ -44,21 +50,21 @@ class ItemRevision < ActiveRecord::Base
 
 	def self.process_item_associations(item_revision, params)
       	if item_revision
-			alt_names = params[:alt_names].split(",") || []
-			alt_name_ids = ItemAltName.where(:item_alt_identifier => alt_names)
-			item_revision.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
+    			alt_names = params[:alt_names].split(",") || []
+    			alt_name_ids = ItemAltName.where(:item_alt_identifier => alt_names)
+    			item_revision.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
 
       		processes = params[:processes] || []
       		item_revision.item_processes.where(:process_type_id != processes).destroy_all
 
-      		prints = params[:prints] || []
-      		item_revision.item_prints.where(:print_id != prints).destroy_all
+      		# prints = params[:prints] || []
+      		# item_revision.item_prints.where(:print_id != prints).destroy_all
 
       		specs = params[:specs] || []
       		item_revision.item_specifications.where(:specification_id != specs).destroy_all
 
-      		materials = params[:materials] || []
-      		item_revision.item_materials.where(:material_id != materials).destroy_all
+      		# materials = params[:materials] || []
+      		# item_revision.item_materials.where(:material_id != materials).destroy_all
 
           	if alt_names
               	alt_names.each do |alt_name|
@@ -83,13 +89,13 @@ class ItemRevision < ActiveRecord::Base
     	      	end
     	    end
 
-    	    if prints
-    	      	prints.each do |print_id|
-        				unless item_revision.item_prints.find_by_print_id(print_id)
-        					  item_revision.item_prints.new(:print_id => print_id).save
-        				end
-    	      	end
-    	    end
+    	    # if prints
+    	    #   	prints.each do |print_id|
+        	# 			unless item_revision.item_prints.find_by_print_id(print_id)
+        	# 				  item_revision.item_prints.new(:print_id => print_id).save
+        	# 			end
+    	    #   	end
+    	    # end
 
     	    if specs
     	      	specs.each do |specification_id|
@@ -99,13 +105,13 @@ class ItemRevision < ActiveRecord::Base
     	      	end
     	    end
 
-    	    if materials
-    	      	materials.each do |material_id|
-        				unless item_revision.item_materials.find_by_material_id(material_id)
-    					      item_revision.item_materials.new(:material_id => material_id).save
-        				end
-    	      	end
-    	    end
+    	    # if materials
+    	    #   	materials.each do |material_id|
+        	# 			unless item_revision.item_materials.find_by_material_id(material_id)
+    			#          item_revision.item_materials.new(:material_id => material_id).save
+        	# 			end
+    	    #   	end
+    	    # end
       	end
   	end
 

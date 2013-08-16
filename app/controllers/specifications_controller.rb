@@ -8,14 +8,16 @@ class SpecificationsController < ApplicationController
   # GET /specifications
   # GET /specifications.json
   def index
-    @specifications = Specification.all
+    @specifications = Specification.joins(:attachment).all
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        @specifications = @specifications.select{|specification| 
-          specification[:links] = CommonActions.object_crud_paths(specification_path(specification), edit_specification_path(specification), 
-                        specification_path(specification))
+        @specifications = @specifications.collect{|specification| 
+          attachment = specification.attachment.attachment_fields
+          # attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
+          attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
+          attachment
         }
         render json: {:aaData => @specifications} 
       }
@@ -26,7 +28,7 @@ class SpecificationsController < ApplicationController
   # GET /specifications/1.json
   def show
     @specification = Specification.find(params[:id])
-    @attachable = @specification
+    @attachment = @specification.attachment
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,6 +40,7 @@ class SpecificationsController < ApplicationController
   # GET /specifications/new.json
   def new
     @specification = Specification.new
+    @specification.build_attachment
 
     respond_to do |format|
       format.html # new.html.erb
@@ -56,6 +59,7 @@ class SpecificationsController < ApplicationController
     @specification = Specification.new(params[:specification])
 
     respond_to do |format|
+      @specification.attachment.created_by = current_user
       if @specification.save
         format.html { redirect_to specifications_url, notice: 'Specification was successfully created.' }
         format.json { render json: @specification, status: :created, location: @specification }
@@ -72,6 +76,7 @@ class SpecificationsController < ApplicationController
     @specification = Specification.find(params[:id])
 
     respond_to do |format|
+      @specification.attachment.updated_by = current_user
       if @specification.update_attributes(params[:specification])
         format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
         format.json { head :no_content }

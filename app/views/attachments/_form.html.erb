@@ -2,16 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-      <%= f.hidden_field :attachable_id %>
-      <%= f.hidden_field :attachable_type %>
-      <%= f.input :attachment_name, label: "Name", :autofocus => true %>
-      <%= f.input :attachment_revision_title, label: "Revision" %>
-      <%= f.input :attachment_revision_date, :as => "string", label: "Effective Date" %>      
-      <%= f.input :attachment_description, label: "Description" %>
-      <%#= f.input :attachment_notes, label: "Notes" %>
-      <%= f.input :attachment_public, label: "Public" %>
-      <%= f.input :attachment, label: "Attachment (Only if changed/new)" %>
-      <%#= f.input :attachment_active, label: "Active" %>
+      <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
   </div>
 
   <div class="separator bottom"></div>
