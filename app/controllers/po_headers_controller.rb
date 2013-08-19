@@ -8,25 +8,27 @@ class PoHeadersController < ApplicationController
   end
 
   def set_autocomplete_values
-    organization = Organization.find_by_organization_name(params[:po_header][:organization_id])
-    params[:organization_id] = organization.id if organization && params[:organization_id] == ""
+    # organization = Organization.find_by_organization_name(params[:po_header][:organization_id])
+    # params[:organization_id] = organization.id if organization && params[:organization_id] == ""    
 
     params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
+    params[:po_header][:organization_id] = params[:org_organization_id] if params[:po_header][:organization_id] == ""
   end
 
   def find_relations
-      params[:status] ||= nil
+      params[:po_status] ||= nil
 
-      if params[:vendor_id].present?
-          @vendor = Organization.find(params[:vendor_id])
-          @po_headers = @vendor.present? ? @vendor.po_headers.order(:created_at) : []
+      if params[:organization_id].present?
+          @organization = Organization.find(params[:organization_id])
+          @po_headers = @organization.present? ? @organization.purchase_orders : []
+      elsif params[:item_revision_id].present?
+          @item_revision = ItemRevision.find(params[:item_revision_id])
+          @po_headers = @item_revision.present? ? @item_revision.purchase_orders : []
       else
           @po_headers = PoHeader.order(:created_at)
       end
 
-      if params[:status] && @po_headers.any?
-          @po_headers = @po_headers.where(:po_status => params[:status])
-      end
+      @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status] && @po_headers.any?
   end
 
   # GET /po_headers

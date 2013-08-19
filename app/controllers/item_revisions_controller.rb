@@ -5,7 +5,10 @@ class ItemRevisionsController < ApplicationController
 
   def set_autocomplete_values
       params[:item_revision][:print_id], params[:print_id] = params[:print_id], params[:item_revision][:print_id]
+      params[:item_revision][:print_id] = params[:org_print_id] if params[:item_revision][:print_id] == ""
+
       params[:item_revision][:material_id], params[:material_id] = params[:material_id], params[:item_revision][:material_id]
+      params[:item_revision][:material_id] = params[:org_material_id] if params[:item_revision][:material_id] == ""
   end
 
   def index

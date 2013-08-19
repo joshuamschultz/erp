@@ -40,7 +40,7 @@ class OrganizationsController < ApplicationController
     @contactable = @organization
     @attachable = @organization
     @contact_type = params[:contact_type] || "address"
-
+    
     @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
     @tags = @organization.present? ? @organization.comments.where(:comment_type => "tag").order("created_at desc") : [] 
 

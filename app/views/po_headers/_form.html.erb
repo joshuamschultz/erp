@@ -19,7 +19,9 @@
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-            <%= hidden_field_tag :organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>            
+            <%= hidden_field_tag :organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>
+
+            <%= hidden_field_tag :org_organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>        
 
             <div class="separator bottom"></div>
 
@@ -55,7 +57,6 @@
 
         <% unless @po_header.new_record? %>
             $("#po_header_organization_id").val("<%= @po_header.organization.organization_name if @po_header.organization %>");
-            $("#organization_id").val("<%= @po_header.organization.id if @po_header.organization %>");
         <% end %>
 
         if($("#organization_id").val() != "")

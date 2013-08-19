@@ -7,15 +7,11 @@ class PoLinesController < ApplicationController
   end
 
   def set_autocomplete_values
-    # organization = Organization.find_by_organization_name(params[:po_line][:organization_id])
-    # params[:organization_id] = organization.id if organization && params[:organization_id] == ""
-
-    # item = Item.find_by_item_part_no(params[:po_line][:item_id])
-    # params[:item_id] = item.id if item && params[:item_id] == ""
-
     params[:po_line][:organization_id], params[:organization_id] = params[:organization_id], params[:po_line][:organization_id]
-    # params[:po_line][:item_id], params[:item_id] = params[:item_id], params[:po_line][:item_id]
+    params[:po_line][:organization_id] = params[:org_organization_id] if params[:po_line][:organization_id] == ""
+
     params[:po_line][:item_selected_name_id], params[:alt_name_id] = params[:alt_name_id], params[:po_line][:item_selected_name_id]
+    params[:po_line][:item_selected_name_id] = params[:alt_name_id] if params[:po_line][:item_selected_name_id] == ""
   end
   
   # GET po_headers/1/po_lines
@@ -28,7 +24,7 @@ class PoLinesController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @po_lines = @po_lines.select{|po_line|
-              po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item.item_part_no)
+              po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item, revision_id: po_line.item_revision.id), po_line.item.item_part_no)
               po_line[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)
               po_line[:customer_quality_name] = CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name)
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)

@@ -30,7 +30,9 @@
 
         <%= f.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>
 
-        <%= hidden_field_tag :print_id %>
+        <%= hidden_field_tag :print_id, (@item_revision.print.id if @item_revision.print) %>
+
+        <%= hidden_field_tag :org_print_id, (@item_revision.print.id if @item_revision.print) %>
 
        <!--  <div class="control-group">
             <label for="item_materials" class="optional control-label">Materials</label>
@@ -41,7 +43,9 @@
 
         <%= f.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
 
-        <%= hidden_field_tag :material_id %>
+        <%= hidden_field_tag :material_id, (@item_revision.material.id if @item_revision.material) %>
+
+        <%= hidden_field_tag :org_material_id, (@item_revision.material.id if @item_revision.material) %>
 
         <div class="control-group">
             <label for="item_processes" class="optional control-label">Processes</label>
@@ -85,10 +89,8 @@
 
     <% unless @item_revision.new_record? %>
         $("#item_revision_print_id").val("<%= @item_revision.print.print_identifier if @item_revision.print %>");
-        $("#print_id").val("<%= @item_revision.print.id if @item_revision.print %>");
 
         $("#item_revision_material_id").val("<%= @item_revision.material.material_short_name if @item_revision.material %>");
-        $("#material_id").val("<%= @item_revision.material.id if @item_revision.material %>");
     <% end %>
   });
 </script>

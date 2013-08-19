@@ -2,6 +2,7 @@
 <div class="row-fluid">
     <h3 class="span3 left">Item Part No: <%= @item.item_part_no %><span></span></h3>
     <span class="span9 right">
+        <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
         <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
         <%= link_to 'Edit Revision', edit_item_item_revision_path(@item, @item_revision), :class => "btn btn-small" if @item_revision %> 
         <%= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>        
@@ -156,23 +157,32 @@
     </div>
 </div>
 
+<%= render :partial => 'po_headers/po_list', locals: {
+        all_path: item_path(@item, :revision_id => @item_revision.id),
+        open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
+        closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
+        index_path: po_headers_path(:po_status => params[:po_status], :item_revision_id => @item_revision.id),
+        new_path: new_po_header_path
+    }
+%>
+
 <!-- Attachments -->
 <%= render 'attachments/attachments' if @item_revision %>
 
 <!-- PO -->
-<div class="widget">
+<!-- <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
             <h4 class="span6 heading">Purchase Orders</h4>
             <span class="span6 heading right">
-                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New PO', "#", :class => "btn btn-mini btn-success" %> 
+                <%#= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'New PO', "#", :class => "btn btn-mini btn-success" %> 
             </span>
         </div> 
     </div>
     <div class="widget-body" style="height:150px"></div>
-</div>
+</div> -->
 
 <!-- SO -->
 <div class="widget">

@@ -85,4 +85,27 @@ class Organization < ActiveRecord::Base
 	def redirect_path
       	organization_path(self)
   	end
+
+  	def purchase_orders
+  		case(self.organization_type.type_value)
+          	when "customer"
+              	PoHeader.joins(:po_lines).where("po_lines.organization_id = ?", self.id)
+          	when "vendor"
+              	PoHeader.where("organization_id = ?", self.id)
+          	else
+              	PoHeader.where("organization_id = ?", 0)
+      	end
+  	end 	
+
+  	def purchase_order_title
+  		case(self.organization_type.type_value)
+          	when "customer"
+              	" For Customer"
+          	when "vendor"
+              	" From Vendor"
+          	else
+              	""
+      	end
+  	end
+
 end

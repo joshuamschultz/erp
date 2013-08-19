@@ -1,1 +1,8 @@
-<%= render :partial => 'po_headers/po_list' %>
+<%= render :partial => 'po_headers/po_list', locals: {
+		all_path: po_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
+		open_path: po_headers_path(:po_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
+		closed_path: po_headers_path(:po_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
+		index_path: po_headers_path(:po_status => params[:po_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
+		new_path: new_po_header_path
+	}
+%>
