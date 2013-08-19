@@ -77,8 +77,6 @@ class PoLinesController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
-        @po_line.organization_id = params[:organization_id]
-        @po_line.item_id = params[:item_id]
         format.html { render :action => "new" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end
@@ -96,8 +94,6 @@ class PoLinesController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
-        @po_line.organization_id = params[:organization_id]
-        @po_line.item_id = params[:item_id]
         format.html { render :action => "edit" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end
