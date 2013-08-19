@@ -11,15 +11,23 @@
 
             <%#= f.association :item, :url => autocomplete_item_item_part_no_items_path, :as => :autocomplete, :id_element => '#item_id', required: true, :label => "Item", :autofocus => true %>
 
+            <%#= hidden_field_tag :item_id, (@po_line.item.id unless @po_line.new_record? && @po_line.item.nil?) %>
+
             <%= f.association :item_selected_name, :url => autocomplete_item_selected_name_item_name_item_selected_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item", :autofocus => true %>
 
-            <%= hidden_field_tag :alt_name_id %>
+            <%= hidden_field_tag :alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
+
+            <%= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
             <%= f.input :po_line_quantity, :label => "Quantity" %>
 
             <%= f.input :po_line_cost, :label => "Cost" %>
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
+
+            <%= hidden_field_tag :organization_id, (@po_line.organization.id if @po_line.persisted? && @po_line.organization) %>
+
+            <%= hidden_field_tag :org_organization_id, (@po_line.organization.id if @po_line.persisted? && @po_line.organization) %>
 
             <%= f.input :po_line_customer_po, :label => "Customer PO" %>
 
@@ -28,11 +36,7 @@
             <%= f.input :po_line_notes, :label => "Notes" %>
 
             <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
-
-            <%= hidden_field_tag :organization_id, (@po_line.organization.id if @po_line.persisted? && @po_line.organization) %>
-
-            <%= hidden_field_tag :item_id, (@po_line.item.id unless @po_line.new_record? && @po_line.item.nil?) %>
-
+            
             <%#= f.association :so_line %>
             <%#= f.association :vendor_quality %>
             <%#= f.association :item, :label => "Item", :label_method => 'item_part_no',:label_value => "id", :include_blank => false %>
@@ -62,13 +66,6 @@
                 $("#po_line_organization_id").val("");          
         });
 
-        // $("#po_line_item_id").on("focusout", function(){
-        //     if($("#item_id").val() != "")
-        //         initialize_api_call({"url": "/items/" + $("#item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
-        //     else
-        //         $("#po_line_po_line_cost").val("");
-        // });
-
         $("#po_line_item_selected_name_id").on("focusout", function(){
             if($("#alt_name_id").val() != "")
                 initialize_api_call({"url": "/item_selected_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
@@ -76,21 +73,13 @@
                 $("#po_line_po_line_cost").val("");
         });
 
-        // if($("#item_id").val() != "")
-        //     initialize_api_call({"url": "/items/" + $("#po_line_item_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
-
         if($("#alt_name_id").val() != "")
             initialize_api_call({"url": "/item_selected_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
 
         <% unless @po_line.new_record? %>
             $("#po_line_organization_id").val("<%= @po_line.organization.organization_name if @po_line.organization %>");
-            $("#organization_id").val("<%= @po_line.organization.id if @po_line.organization %>");
-
-            // $("#po_line_item_id").val("<%#= @po_line.item.item_part_no if @po_line.item %>");
-            // $("#item_id").val("<%#= @po_line.item.id if @po_line.item %>");
 
             $("#po_line_item_selected_name_id").val("<%= @po_line.item_selected_name.with_alt_name if @po_line.item_selected_name %>");
-            $("#alt_name_id").val("<%= @po_line.item_selected_name.id if @po_line.item_selected_name %>");
         <% end %>
 
         $("#po_line_po_line_cost").on("input", function(){

@@ -30,4 +30,6 @@ class PoHeader < ActiveRecord::Base
       po_header_path(self)
   end
 
+  scope :status_based_pos, lambda{|status| where(:po_status => status) }
+
 end

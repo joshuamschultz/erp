@@ -42,6 +42,17 @@
 
 <div class="separator bottom"></div> 
 
+<%= render :partial => 'po_headers/po_list', locals: {
+        all_path: organization_path(@organization),
+        open_path: organization_path(@organization, :po_status => "open"),
+        closed_path: organization_path(@organization, :po_status => "closed"),
+        index_path: po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id),
+        new_path: new_po_header_path
+    } if ["customer", "vendor"].include?(@organization.organization_type.type_value)
+%>
+
+<!-- if @organization.organization_type.type_value == "vendor" -->
+
 <!-- Attachments -->
 <%= render 'attachments/attachments' %>
 

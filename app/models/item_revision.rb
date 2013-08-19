@@ -129,4 +129,8 @@ class ItemRevision < ActiveRecord::Base
         item_path(self.item, revision_id: self.id)
     end
 
+    def purchase_orders
+        PoHeader.joins(:po_lines).where("po_lines.item_revision_id = ?", self.id)
+    end 
+
 end

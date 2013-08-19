@@ -37,7 +37,7 @@
                 <div class="controls"> <%= link_to 'New Print', new_print_path, :class => "btn btn-small", :target => "_blank" %> </div>
             </div>
 
-            <%= hidden_field_tag :print_id %>
+            <%= hidden_field_tag :print_id %>            
 
             <!-- <div class="control-group">
                 <label for="item_materials" class="optional control-label">Materials</label>
@@ -48,7 +48,7 @@
 
             <%= g.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
 
-            <%= hidden_field_tag :material_id %>
+            <%= hidden_field_tag :material_id %>            
 
             <div class="control-group">
                 <label for="item_processes" class="optional control-label">Processes</label>
