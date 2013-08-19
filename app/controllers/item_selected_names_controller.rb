@@ -4,7 +4,8 @@ class ItemSelectedNamesController < ApplicationController
   def get_autocomplete_items(parameters)    
     items = super(parameters)
 
-    recent_revisions = ItemRevision.joins(:item).where("latest_revision = ?", true)
+    recent_revisions = ItemRevision.recent_revisions
+    # ItemRevision.joins(:item).where("latest_revision = ?", true)
 
     matched_revisions = recent_revisions.where("item_part_no like ?", "%" + params[:term] + "%")
     matched_names = ItemSelectedName.where(:item_revision_id => matched_revisions.map(&:id))

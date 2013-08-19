@@ -15,7 +15,12 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    if params[:organization_id].present?
+        @organization = Organization.find(params[:organization_id])
+        @items = @organization.present? ? @organization.items_with_recent_revision : []
+    else
+        @items = Item.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb

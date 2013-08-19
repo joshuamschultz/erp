@@ -23,4 +23,6 @@ class Item < ActiveRecord::Base
       self.item_revisions.order("item_revision_date desc").first
   end
 
+  scope :item_with_recent_revisions, joins(:item_revisions).where("item_revisions.latest_revision = ?", true)
+
 end

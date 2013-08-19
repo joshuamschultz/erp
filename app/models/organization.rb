@@ -108,4 +108,12 @@ class Organization < ActiveRecord::Base
       	end
   	end
 
+  	def items_with_recent_revision
+  		Item.item_with_recent_revisions.where("item_revisions.organization_id = ?", self.id)
+  	end
+
+  	def type_name
+  		self.organization_type.type_value
+  	end
+
 end
