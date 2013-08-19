@@ -12,4 +12,6 @@ class ItemSelectedName < ActiveRecord::Base
 
   has_many :po_lines
 
+  validates :item_alt_name_id, :uniqueness => { :scope => :item_revision_id, :message => "already exists!" }
+
 end
