@@ -42,16 +42,49 @@
 
 <div class="separator bottom"></div> 
 
+<%  if ["customer", "vendor"].include?(@organization.organization_type.type_value) %>
+
 <%= render :partial => 'po_headers/po_list', locals: {
         all_path: organization_path(@organization),
         open_path: organization_path(@organization, :po_status => "open"),
         closed_path: organization_path(@organization, :po_status => "closed"),
         index_path: po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id),
         new_path: new_po_header_path
-    } if ["customer", "vendor"].include?(@organization.organization_type.type_value)
+    }
 %>
 
+<!-- SO -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Sales Orders</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New SO', "#", :class => "btn btn-mini btn-success" %> 
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
+</div>
+
+<!-- Quotes -->
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Quotes</h4>
+            <span class="span6 heading right">
+                <%= link_to 'Customer', "#", :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Vendor', "#", :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body" style="height:150px"></div>
+</div>
+
 <!-- if @organization.organization_type.type_value == "vendor" -->
+
+<% end %>
 
 <!-- Attachments -->
 <%= render 'attachments/attachments' %>
