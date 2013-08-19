@@ -6,5 +6,20 @@
 <%= f.input :attachment_description, label: "Description" %>
 <%#= f.input :attachment_notes, label: "Notes" %>
 <%= f.input :attachment_public, label: "Public" %>
-<%= f.input :attachment, label: "Attachment (Only if changed/new)" %>
+<%#= f.input :attachment, label: "Attachment (Only if changed/new)" %>
 <%#= f.input :attachment_active, label: "Active" %>
+
+<div class="control-group file required attachment_attachment <%= "error" if @attachment && @attachment.errors && @attachment.errors[:attachment] != [] %>">
+    <label class="control-label">Choose File <br/>(Only if changed/new)</label>
+    <div class="controls">
+          <div data-provides="fileupload" class="fileupload fileupload-exists">                      
+              <span class="btn btn-default btn-file">
+                  <span class="fileupload-new">Browse/Drop File</span>
+                  <span class="fileupload-exists">Browse/Drop File</span>
+                  <%= f.file_field :attachment %>
+              </span>
+              <span class="fileupload-preview"></span>
+              <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+          </div>
+    </div>
+</div>

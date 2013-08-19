@@ -19,9 +19,7 @@
 
             <%= hidden_field_tag :alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
-            <%= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
-
-            
+            <%= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>            
 
             <%= f.input :po_line_cost, :label => "Cost" %>
 
@@ -91,6 +89,8 @@
         $("#po_line_po_line_quantity").on("input", function(){
             calculate_line_item_total();
         });
+
+        $("#po_line_item_selected_name_id").focus();
     });
 
     function calculate_line_item_total(){

@@ -7,6 +7,7 @@ $(document).ready(function(){
 	    fn_popup_closed_events();
 	});
 
+	setTimeout(click_upload_close, 2000);
 });
 
 
@@ -101,4 +102,8 @@ function show_iframe_popup(iframe_url, params){
      	$('iframe').attr("src", iframe_url);
     });    
     $('#iframe_popup_dialog').modal({show:true});
+}
+
+function click_upload_close(){
+    $(".close").click();
 }
