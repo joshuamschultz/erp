@@ -33,18 +33,17 @@ class CustomerQuality < ActiveRecord::Base
   end
 
   def self.quality_level_associations(customer_quality, params)
-
     if customer_quality
-      quality_levels = params[:customer_quality_levels] || []
-      customer_quality.customer_quality_levels.where(:master_type_id != quality_levels).destroy_all
+        quality_levels = params[:customer_quality_levels] || []
+        customer_quality.customer_quality_levels.where(:master_type_id != quality_levels).destroy_all
     end
     
     if quality_levels
-      quality_levels.each do |quality_id|
-        unless customer_quality.customer_quality_levels.find_by_id(quality_id)
-            customer_quality.customer_quality_levels.new(:master_type_id => quality_id).save
+        quality_levels.each do |quality_id|
+            unless customer_quality.customer_quality_levels.find_by_id(quality_id)
+                customer_quality.customer_quality_levels.new(:master_type_id => quality_id).save
+            end
         end
-      end
     end
   end
 

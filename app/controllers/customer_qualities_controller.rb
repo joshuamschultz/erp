@@ -76,6 +76,7 @@ class CustomerQualitiesController < ApplicationController
 
     respond_to do |format|
       if @customer_quality.update_attributes(params[:customer_quality])
+        CustomerQuality.quality_level_associations(@customer_quality, params)
         format.html { redirect_to customer_qualities_url, notice: 'Quality level was successfully updated.' }
         format.json { head :no_content }
       else
