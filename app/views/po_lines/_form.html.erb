@@ -11,15 +11,17 @@
 
             <%#= f.association :item, :url => autocomplete_item_item_part_no_items_path, :as => :autocomplete, :id_element => '#item_id', required: true, :label => "Item", :autofocus => true %>
 
-            <%#= hidden_field_tag :item_id, (@po_line.item.id unless @po_line.new_record? && @po_line.item.nil?) %>
+            <%#= hidden_field_tag :item_id, (@po_line.item.id unless @po_line.new_record? && @po_line.item.nil?) %>            
 
-            <%= f.association :item_selected_name, :url => autocomplete_item_selected_name_item_name_item_selected_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item", :autofocus => true %>
+            <%= f.association :item_selected_name, :url => autocomplete_item_selected_name_item_name_item_selected_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+
+            <%= f.input :po_line_quantity, :label => "Quantity" %>
 
             <%= hidden_field_tag :alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
             <%= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
-            <%= f.input :po_line_quantity, :label => "Quantity" %>
+            
 
             <%= f.input :po_line_cost, :label => "Cost" %>
 
