@@ -1,4 +1,10 @@
 AllianceFasteners::Application.routes.draw do
+
+  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+
+  devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
+      root :to => 'devise/sessions#new'
+  end  
   
   resources :customer_quality_levels
 
@@ -109,14 +115,10 @@ AllianceFasteners::Application.routes.draw do
 
   resources :test_packages
 
+  match "/tester" => "account#tester", via: [:get, :post] 
+
 
   get "account/dashboard"
-
-  devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
-      root :to => 'devise/sessions#new'
-  end
-
-  match "/tester" => "account#tester", via: [:get, :post] 
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -180,5 +182,5 @@ AllianceFasteners::Application.routes.draw do
 
   # match ':not_found' => 'account#dashboard', :constraints => { :not_found => /.*/ }
 
-  match "*path", :to => "static_pages#error_404"
+  # match "*path", :to => "static_pages#error_404"
 end
