@@ -1,0 +1,18 @@
+<%= simple_form_for(@attachment, :html => {:id => "form_for_attachment", :class => "form-horizontal", :multipart => true }) do |f| %>
+      <%= f.hidden_field :attachable_id %>
+      <%= f.hidden_field :attachable_type %>
+      <%= hidden_field_tag :attachment_process_type, "droppable" %>
+      <div data-provides="fileupload" class="fileupload fileupload-exists">
+          <span class="btn btn-default btn-file span12 file-droppable">
+              <span class="fileupload-new">Browse/Drop File</span>
+              <span class="fileupload-exists">Browse/Drop File</span>
+              <%= f.file_field :attachment %>
+          </span>
+          <span class="fileupload-preview"></span>
+          <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+      </div>
+
+      <div class="form-actions center">
+          <%= f.button :submit, "Upload", :class => "btn btn-success" %>
+      </div>
+<% end %>

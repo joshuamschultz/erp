@@ -26,6 +26,7 @@ class GaugesController < ApplicationController
   # GET /gauges/1.json
   def show
     @gauge = Gauge.find(params[:id])
+    @attachable = @gauge
 
     respond_to do |format|
       format.html # show.html.erb

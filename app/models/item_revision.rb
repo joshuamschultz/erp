@@ -60,9 +60,9 @@ class ItemRevision < ActiveRecord::Base
 
 	def self.process_item_associations(item_revision, params)
       	if item_revision
-    			alt_names = params[:alt_names].split(",") || []
-    			alt_name_ids = ItemAltName.where(:item_alt_identifier => alt_names)
-    			item_revision.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
+    			# alt_names = params[:alt_names].split(",") || []
+    			# alt_name_ids = ItemAltName.where(:item_alt_identifier => alt_names)
+    			# item_revision.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
 
       		processes = params[:processes] || []
       		item_revision.item_processes.where(:process_type_id != processes).destroy_all
@@ -76,20 +76,20 @@ class ItemRevision < ActiveRecord::Base
       		# materials = params[:materials] || []
       		# item_revision.item_materials.where(:material_id != materials).destroy_all
 
-          	if alt_names
-              	alt_names.each do |alt_name|
-	                item_alt_name = ItemAltName.find_by_item_alt_identifier(alt_name)
+           # if alt_names
+           #    	alt_names.each do |alt_name|
+           #        item_alt_name = ItemAltName.find_by_item_alt_identifier(alt_name)
 
-	                unless item_alt_name            
-	                    item_alt_name = ItemAltName.new(:item_alt_identifier => alt_name)
-	                    item_alt_name.save
-	                end
+           #        unless item_alt_name            
+           #            item_alt_name = ItemAltName.new(:item_alt_identifier => alt_name)
+           #            item_alt_name.save
+           #        end
 
-	                unless item_alt_name.nil? && item_revision.item_selected_names.find_by_item_alt_name_id(item_alt_name.id)
-	                    item_revision.item_selected_names.new(:item_alt_name_id => item_alt_name.id).save
-	                end
-              	end
-          	end
+           #        unless item_alt_name.nil? && item_revision.item_selected_names.find_by_item_alt_name_id(item_alt_name.id)
+           #            item_revision.item_selected_names.new(:item_alt_name_id => item_alt_name.id).save
+           #        end
+           #    	end
+           # end
 
       		if processes
     	      	processes.each do |process_id|

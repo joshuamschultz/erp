@@ -8,12 +8,12 @@
             <%= g.input :item_name, :label => "Name" %>
             <%= g.input :item_description, :label => "Description" %>
 
-            <div class="control-group">
+            <!-- <div class="control-group">
                 <label for="item_processes" class="optional control-label">Alt Names</label>
                 <div class="controls">
-                    <input type="hidden" id="item_names" style="width: 100%;" name="alt_names" value="<%= @item.current_revision.item_alt_names.collect(&:item_alt_identifier).join(",") if @item.persisted? %>" />
+                    <input type="hidden" id="item_names" style="width: 100%;" name="alt_names" value="<%#= @item.current_revision.item_alt_names.collect(&:item_alt_identifier).join(",") if @item.persisted? %>" />
                 </div>
-            </div>
+            </div> -->
 
             <%= g.input :item_revision_name, :label => "Revision" %>
             <%= g.input :item_revision_date, :as => "string", :label => "Revision Date" %>
@@ -84,15 +84,17 @@
 
 <script type="text/javascript">
     <% unless @item.persisted? %>
-        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_description", "s2id_item_names .select2-input", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_organization_id", "item_item_revisions_attributes_0_vendor_quality_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
+        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_description", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_organization_id", "item_item_revisions_attributes_0_vendor_quality_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
 
         <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 
         date_box_fields = date_box_fields.concat([{"name":"item_item_revisions_attributes_0_item_revision_date", "value":"<%= date_box_date %>"}]);
 
         $(document).ready(function(){ 
-                $("#item_names").select2({tags:<%= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
-                $("#s2id_item_names").css("width", "220px");
+                // $("#item_names").select2({tags:<%#= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
+                // $("#s2id_item_names").css("width", "220px");
+
+                // "s2id_item_names .select2-input",
         });
     <% else %>
         tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_active"];
