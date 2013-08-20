@@ -46,7 +46,9 @@ AllianceFasteners::Application.routes.draw do
     get :autocomplete_print_print_identifier, :on => :collection
   end
 
-  resources :item_alt_names  
+  resources :item_alt_names do
+      get :autocomplete_item_alt_name_item_alt_identifier, :on => :collection
+  end
 
   resources :gauges
 
