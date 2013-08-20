@@ -53,11 +53,12 @@ module CommonActions
 	end
 
 	def initialize_request
-		params[:layout] = params[:layout] == "false" ? false : true
-
-		@home = {:name => CompanyInfo.first ? CompanyInfo.first.company_name : "Alliance Fasteners"}
-		@menus = application_main_menu
-		@shortcuts = application_shortcuts
+		unless params[:controller] == "rails_admin/main"
+			params[:layout] = params[:layout] == "false" ? false : true
+			@home = {:name => CompanyInfo.first ? CompanyInfo.first.company_name : "Alliance Fasteners"}
+			@menus = application_main_menu
+			@shortcuts = application_shortcuts
+		end
 	end
 
 
