@@ -63,3 +63,5 @@ gem 'nested_scaffold'
 
 gem 'cancan'
 gem 'role_model'
+
+gem 'rails_admin'
