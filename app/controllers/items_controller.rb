@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_filter :set_page_info
   autocomplete :item, :item_part_no, :full => true
-  before_filter :set_autocomplete_values, only: [:create, :update] 
+  before_filter :set_autocomplete_values, only: [:create] 
 
   def set_autocomplete_values
       params[:item][:item_revisions_attributes]["0"][:print_id], params[:print_id] = params[:print_id], params[:item][:item_revisions_attributes]["0"][:print_id]

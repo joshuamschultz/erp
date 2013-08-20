@@ -57,14 +57,19 @@ class AttachmentsController < ApplicationController
     CommonActions.record_ownership(@attachment, current_user)
 
     respond_to do |format|
-      if @attachment.save        
-        format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
-        format.json { render json: @attachment, status: :created, location: @attachment }
-      else
-        puts @attachment.errors.to_yaml
-        format.html { render action: "new" }
-        format.json { render json: @attachment.errors, status: :unprocessable_entity }
-      end
+        if params[:attachment_process_type] == "droppable"
+            @attachment.save(:validate => false)
+            format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+        else
+          if @attachment.save
+            format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+            format.json { render json: @attachment, status: :created, location: @attachment }
+          else
+            puts @attachment.errors.to_yaml
+            format.html { render action: "new" }
+            format.json { render json: @attachment.errors, status: :unprocessable_entity }
+          end
+        end
     end
   end
 

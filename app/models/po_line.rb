@@ -7,15 +7,16 @@ class PoLine < ActiveRecord::Base
   belongs_to :item
   belongs_to :item_revision
   belongs_to :item_selected_name
+  belongs_to :item_alt_name
 
   attr_accessible :po_line_active, :po_line_cost, :po_line_created_id, :po_line_customer_po, 
   :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
-  :item_id, :item_revision_id, :item_selected_name_id
+  :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id
 
   validates_presence_of :po_header
   validates_presence_of :organization
-  validates_presence_of :item_selected_name
+  validates_presence_of :item_alt_name
   validates_numericality_of :po_line_cost if validates_presence_of :po_line_cost
   validates_numericality_of :po_line_quantity if validates_presence_of :po_line_quantity
 
@@ -30,9 +31,9 @@ class PoLine < ActiveRecord::Base
   end
 
   def update_item_total
-      self.po_line_total = self.po_line_cost.round(5) * self.po_line_quantity.round(5)
-      self.item = self.item_selected_name.item_revision.item
-      self.item_revision = self.item_selected_name.item_revision
+      self.po_line_total = self.po_line_cost.round(10) * self.po_line_quantity.round(10)
+      self.item = self.item_alt_name.item
+      self.item_revision = self.item_alt_name.item.current_revision
   end
 
   def update_po_total

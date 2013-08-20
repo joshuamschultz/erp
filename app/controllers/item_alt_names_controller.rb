@@ -1,20 +1,37 @@
 class ItemAltNamesController < ApplicationController
   before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update]
+  autocomplete :item_alt_name, :item_alt_identifier, :display_value => :alt_item_name
 
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
 
+  def set_autocomplete_values
+    params[:item_alt_name][:organization_id], params[:organization_id] = params[:organization_id], params[:item_alt_name][:organization_id]
+    params[:item_alt_name][:organization_id] = params[:org_organization_id] if params[:item_alt_name][:organization_id] == ""
+
+    params[:item_alt_name][:item_id], params[:item_id] = params[:item_id], params[:item_alt_name][:item_id]
+    params[:item_alt_name][:item_id] = params[:org_item_id] if params[:item_alt_name][:item_id] == ""
+  end
+
+  def get_autocomplete_items(parameters)    
+    items = super(parameters)
+    matched_altnames = ItemAltName.where("organization_id is NULL or organization_id = ?", params[:organization_id])
+    items = matched_altnames.where("item_alt_identifier like ?", "%" + params[:term] + "%")
+  end
+
   # GET /item_alt_names
   # GET /item_alt_names.json
   def index
-    @item_alt_names = ItemAltName.all
+    @item_alt_names = ItemAltName.where("organization_id is not NULL")
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
         @item_alt_names = @item_alt_names.select{|alt_name|
-          alt_name[:show] = "<a href='#{item_alt_name_path(alt_name)}'> #{alt_name.item_alt_identifier} </a>"
+          alt_name[:item_name] = "<a href='#{item_path(alt_name.item)}'> #{alt_name.item.item_part_no} </a>"
+          alt_name[:customer_name] = alt_name.organization.present? ? "<a href='#{organization_path(alt_name.organization)}'> #{alt_name.organization.organization_name} </a>" : ""
           alt_name[:links] = CommonActions.object_crud_paths( nil, edit_item_alt_name_path(alt_name), nil)
         }
         render json:  {:aaData => @item_alt_names} 
@@ -26,10 +43,11 @@ class ItemAltNamesController < ApplicationController
   # GET /item_alt_names/1.json
   def show
     @item_alt_name = ItemAltName.find(params[:id])
-    
+    @current_revision = @item_alt_name.item.current_revision if @item_alt_name.item
+    @current_revision = {item_cost: "No Revision Found!"} if @current_revision.nil?
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @item_alt_name }
+      format.json { render json: @current_revision }
     end
   end
 
