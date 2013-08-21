@@ -13,8 +13,8 @@ class GaugesController < ApplicationController
       format.html # index.html.erb
       format.json{
         @gauges = @gauges.select{|gauge|
-          gauge[:gauge_tool_name] = "<a href='#{gauge_path(gauge)}'>#{gauge[:gauge_tool_name]}</a>"
-          gauge[:gauge_caliberator] = gauge.organization.present? ? gauge.organization.organization_short_name : "" 
+          gauge[:gauge_tool_name] = CommonActions.linkable(gauge_path(gauge), gauge[:gauge_tool_name])
+          gauge[:gauge_caliberator] = gauge.organization.present? ? CommonActions.linkable(organization_path(gauge.organization), gauge.organization.organization_short_name) : "" 
           gauge[:links] = CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
         }
         render json: {:aaData => @gauges}

@@ -1,0 +1,17 @@
+<%= simple_form_for(@po_shipment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :po_line %>
+    <%= f.input :shipped_item_identifier %>
+    <%= f.input :shipped_item_count %>
+    <%= f.input :shipped_item_description %>
+    <%= f.input :po_shipment_active %>
+    <%= f.input :po_shipment_created_id %>
+    <%= f.input :po_shipment_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

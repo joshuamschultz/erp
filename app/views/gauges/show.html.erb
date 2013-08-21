@@ -27,7 +27,7 @@
 
           <tr>
             <td>Caliberator:</td>
-            <td><%= @gauge.organization.organization_short_name if @gauge.organization %></td>
+            <td><%= link_to @gauge.organization.organization_short_name, @gauge.organization if @gauge.organization %></td>
           </tr>
 
           <tr>

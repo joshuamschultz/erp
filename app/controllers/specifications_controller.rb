@@ -15,7 +15,7 @@ class SpecificationsController < ApplicationController
       format.json { 
         @specifications = @specifications.collect{|specification| 
           attachment = specification.attachment.attachment_fields
-          # attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
           attachment
         }
