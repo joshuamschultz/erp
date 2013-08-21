@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :po_shipments
+
+
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
