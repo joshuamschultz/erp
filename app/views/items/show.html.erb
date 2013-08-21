@@ -35,12 +35,12 @@
                     <td><%= @item_revision.item_description %></td>
                   </tr>
 
-                  <tr>
+                  <!-- <tr>
                     <td>Alt Names:</td>
                     <td>
-                        <%= @item_revision.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
+                        <%#= @item_revision.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
                     </td>
-                  </tr>                
+                  </tr> -->                
 
                   <tr>
                     <td>Owner:</td>
