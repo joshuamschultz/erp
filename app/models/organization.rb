@@ -76,6 +76,7 @@ class Organization < ActiveRecord::Base
 	has_many :comments, :as => :commentable, :dependent => :destroy
 	has_many :contacts, :as => :contactable, :dependent => :destroy
 	has_many :organization_processes, :dependent => :destroy
+	has_many :process_types, :through => :organization_processes
 	has_many :gauges, :dependent => :destroy
 	has_many :item_revisions
 	has_many :po_headers, :dependent => :destroy #For vendor
