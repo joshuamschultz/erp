@@ -72,7 +72,7 @@
                     <td>
                         <%#= @item_revision.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
 
-                        <%= link_to(@item_revision.print.print_identifier, print_path(@item_revision.print).html_safe) if @item_revision.print %>
+                        <%= link_to(@item_revision.print.print_identifier, @item_revision.print.attachment.attachment.url(:original), target: "_blank") if @item_revision.print %>
                     </td>
                   </tr>
 
@@ -88,14 +88,14 @@
                   <tr>
                     <td>Specs:</td>
                     <td>
-                        <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, specification_path(spec))}.join(",  ").html_safe %>
+                        <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, spec.attachment.attachment.url(:original), target: "_blank")}.join(",  ").html_safe %>
                     </td>
                   </tr>  
 
                   <tr>
                     <td>Processes:</td>
                     <td>
-                        <%= @item_revision.process_types.collect{|process| link_to(process.process_short_name, process_type_path(process))}.join(",  ").html_safe %>
+                        <%= @item_revision.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank")}.join(",  ").html_safe %>
                     </td>
                   </tr>    
 
