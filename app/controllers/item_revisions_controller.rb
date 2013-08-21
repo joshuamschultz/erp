@@ -9,6 +9,9 @@ class ItemRevisionsController < ApplicationController
 
       params[:item_revision][:material_id], params[:material_id] = params[:material_id], params[:item_revision][:material_id]
       params[:item_revision][:material_id] = params[:org_material_id] if params[:item_revision][:material_id] == ""
+  
+      params[:item_revision][:organization_id], params[:organization_id] = params[:organization_id], params[:item_revision][:organization_id]
+      params[:item_revision][:organization_id] = params[:org_organization_id] if params[:item_revision][:organization_id] == ""
   end
 
   def index
@@ -70,6 +73,9 @@ class ItemRevisionsController < ApplicationController
         format.html { redirect_to(@item, :notice => 'Item revision was successfully created.') }
         format.json { render :json => @item_revision, :status => :created, :location => [@item_revision.item, @item_revision] }
       else
+        @item_revision.print_id = ""
+        @item_revision.material_id = ""
+        @item_revision.organization_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @item_revision.errors, :status => :unprocessable_entity }
       end

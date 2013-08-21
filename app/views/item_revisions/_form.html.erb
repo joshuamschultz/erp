@@ -15,8 +15,18 @@
             </div>
         </div> -->
         
-        <%= f.association :owner, :label => "Owner", :label_method => 'owner_identifier',:label_value => "id", :include_blank => false %>    
-        <%= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
+        <%= f.association :owner, :label => "Owner", :label_method => 'owner_identifier',:label_value => "id", :include_blank => false %>   
+
+        <%#= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
+
+         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
+
+        <%= hidden_field_tag :organization_id, (@item_revision.organization.id unless @item_revision.new_record? && @item_revision.organization.nil?) %>
+
+        <%= hidden_field_tag :org_organization_id, (@item_revision.organization.id unless @item_revision.new_record? && @item_revision.organization.nil?) %>
+
+
+
         <%#= f.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
         <%= f.input :item_cost, :label => "Cost" %>
         <%= f.input :item_tooling, :label => "Tooling" %>
@@ -77,7 +87,7 @@
 
 
 <script type="text/javascript">
-  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "item_revision_owner_id", "item_revision_organization_id", "item_revision_vendor_quality_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_print_id", "item_revision_material_id", "item_revision_item_notes"];
+  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "item_revision_owner_id", "item_revision_organization_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_print_id", "item_revision_material_id", "item_revision_item_notes"];
 
   <% date_box_date = @item_revision.new_record? ? Date.today : @item_revision.item_revision_date %> 
 
@@ -91,6 +101,8 @@
         $("#item_revision_print_id").val("<%= @item_revision.print.print_identifier if @item_revision.print %>");
 
         $("#item_revision_material_id").val("<%= @item_revision.material.material_short_name if @item_revision.material %>");
+
+        $("#item_revision_organization_id").val("<%= @item_revision.organization.organization_name if @item_revision.organization %>");
     <% end %>
   });
 </script>
