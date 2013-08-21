@@ -43,7 +43,7 @@
         <abbr>Expiration Date: </abbr><%= organization.vendor_expiration_date.strftime("%m-%d-%Y") if organization.vendor_expiration_date %><br/>
     <% end %>
 
-    <abbr>Processes: </abbr><%= @organization.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank")}.join(",  ").html_safe %><br/>
+    <abbr>Processes: </abbr><%= @organization.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank") if process.attachment }.join(",  ").html_safe %><br/>
 
     <p><abbr>Notes: </abbr><%= organization.organization_notes %></p>
 </address>
