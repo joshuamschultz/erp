@@ -52,10 +52,10 @@
                     <td><%= link_to @item_revision.organization.organization_short_name, organization_path(@item_revision.organization) if @item_revision.organization %></td>
                   </tr> 
 
-                  <tr>
+                  <!-- <tr>
                     <td>Quality:</td>
-                    <td><%= link_to @item_revision.vendor_quality.quality_name, vendor_quality_path(@item_revision.vendor_quality) if @item_revision.vendor_quality %></td>
-                  </tr>                           
+                    <td><%#= link_to @item_revision.vendor_quality.quality_name, vendor_quality_path(@item_revision.vendor_quality) if @item_revision.vendor_quality %></td>
+                  </tr> -->                           
 
                   <tr>
                     <td>Tooling:</td>

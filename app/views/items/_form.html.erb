@@ -19,7 +19,7 @@
             <%= g.input :item_revision_date, :as => "string", :label => "Revision Date" %>
             <%= g.association :owner, :label => "Owner", :label_method => 'owner_identifier',:label_value => "id", :include_blank => false %>    
             <%= g.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
-            <%= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
+            <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
             <%= g.input :item_cost, :label => "Cost" %>
             <%= g.input :item_tooling, :label => "Tooling" %>
 
