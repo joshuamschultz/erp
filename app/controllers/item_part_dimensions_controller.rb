@@ -10,8 +10,8 @@ class ItemPartDimensionsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @item_part_dimensions = @item_part_dimensions.select{|item_part_dimension|
-            item_part_dimension[:dimension_type] = item_part_dimension.dimension.dimension_identifier
-            item_part_dimension[:gauge_name] = item_part_dimension.gauge.present? ? item_part_dimension.gauge.gauge_tool_name : ""
+            item_part_dimension[:dimension_type] = CommonActions.linkable(dimension_path(item_part_dimension.dimension), item_part_dimension.dimension.dimension_identifier)
+            item_part_dimension[:gauge_name] = item_part_dimension.gauge.present? ? CommonActions.linkable(gauge_path(item_part_dimension.gauge), item_part_dimension.gauge.gauge_tool_name) : ""
             item_part_dimension[:item_part_letter] = "<a href='#{item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
             item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)      
           }
