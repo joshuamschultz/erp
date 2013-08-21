@@ -68,6 +68,8 @@
 <script type="text/javascript">
     tab_field_forms["form_for_po_line"] = ["po_line_organization_id", "po_line_po_line_customer_po", "po_line_item_alt_name_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_po_line_notes"];
 
+    var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
+
     $(document).ready(function(){ 
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
 
@@ -77,6 +79,8 @@
             }
             else{   
                 $("#po_line_item_alt_name_id").attr("data-autocomplete", alt_name_path + "?organization_id=" + $("#organization_id").val());
+
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val(), "type": "GET", "params": {"type" : "min_quality"}, "data_type": "json"}, "check_customer_min_quality", {});
             }
         });
 
@@ -127,6 +131,16 @@
         $("#po_line_po_line_cost").val(response.item_cost);
         calculate_line_item_total();
         return false;
+    }
+
+    function check_customer_min_quality(response, callback_params, api_params){
+        if(response.min_vendor_quality != undefined && response.min_vendor_quality != ""){
+            if(vendor_quality > response.min_vendor_quality)
+                alert("Vendor Cannot Supply Aerospace Quality! Customer Min Quality ID : '" + response.min_vendor_quality + "' , Vendor Quality ID : '" + vendor_quality + "'");
+        }
+        else{
+
+        }
     }
 </script>
 

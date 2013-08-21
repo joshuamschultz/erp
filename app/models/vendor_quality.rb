@@ -10,7 +10,15 @@ class VendorQuality < ActiveRecord::Base
     self.quality_active = true if self.quality_active.nil?
   end
 
-  (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 1, :maximum => 50) if validates_presence_of :quality_name
+  before_validation :before_validate_values
+
+  def before_validate_values
+      self.quality_name = self.quality_name.upcase
+  end
+
+  (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 1, :maximum => 1) if validates_presence_of :quality_name
+
+  validates_format_of :quality_name, :with => /^[a-zA-Z]*$/i, :message => "can only contain letter!"
 
   validates_length_of :quality_description, :maximum => 50
 

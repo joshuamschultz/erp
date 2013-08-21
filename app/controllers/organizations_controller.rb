@@ -46,7 +46,15 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @organization }
+      format.json { 
+        case(params[:type])
+            when "min_quality"
+                min_vendor_quality = @organization.min_vendor_quality.present? ? @organization.min_vendor_quality.quality_name : ""
+                render json: {min_vendor_quality: min_vendor_quality}
+            else
+                render json: @organization
+        end
+      }
     end
   end
 
