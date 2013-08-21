@@ -17,7 +17,7 @@ class PrintsController < ApplicationController
       format.json { 
         @prints = @prints.collect{ |print|
           attachment = print.attachment.attachment_fields
-          # attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
           attachment
         }

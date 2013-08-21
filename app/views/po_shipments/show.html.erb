@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Po line:</b>
+  <%= @po_shipment.po_line %>
+</p>
+
+<p>
+  <b>Shipped item identifier:</b>
+  <%= @po_shipment.shipped_item_identifier %>
+</p>
+
+<p>
+  <b>Shipped item count:</b>
+  <%= @po_shipment.shipped_item_count %>
+</p>
+
+<p>
+  <b>Shipped item description:</b>
+  <%= @po_shipment.shipped_item_description %>
+</p>
+
+<p>
+  <b>Po shipment active:</b>
+  <%= @po_shipment.po_shipment_active %>
+</p>
+
+<p>
+  <b>Po shipment created:</b>
+  <%= @po_shipment.po_shipment_created_id %>
+</p>
+
+<p>
+  <b>Po shipment updated:</b>
+  <%= @po_shipment.po_shipment_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_po_shipment_path(@po_shipment) %> |
+<%= link_to 'Back', po_shipments_path %>

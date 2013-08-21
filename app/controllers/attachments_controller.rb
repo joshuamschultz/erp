@@ -58,8 +58,12 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
         if params[:attachment_process_type] == "droppable"
-            @attachment.save(:validate => false)
-            format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+            if @attachment.attachment.present?
+                @attachment.save(:validate => false)
+                format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+            else
+                format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Please select an attachment to upload!' }
+            end
         else
           if @attachment.save
             format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }

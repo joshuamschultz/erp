@@ -14,7 +14,7 @@ class ProcessTypesController < ApplicationController
       format.json { 
         @process_types = @process_types.collect{|process_type| 
           attachment = process_type.attachment.attachment_fields
-          # attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
           attachment
         }

@@ -38,6 +38,7 @@ class ItemsController < ApplicationController
               item[:item_tooling] = item_revision.item_tooling
               item[:item_cost] = item_revision.item_cost
               item[:item_notes] = item_revision.item_notes
+              item[:item_alt_parts] = item.item_alt_names.collect(&:item_alt_identifier).join(", ")
             else
               item[:owner_name] = ""
               item[:item_name] = ""
@@ -48,6 +49,7 @@ class ItemsController < ApplicationController
               item[:item_tooling] = ""
               item[:item_cost] = ""
               item[:item_notes] = ""
+              item[:item_alt_parts] = ""
             end
             item[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
         }

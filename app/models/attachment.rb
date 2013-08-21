@@ -27,7 +27,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def attachment_fields
-      self[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
+      # self[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
       self[:effective_date] = self.attachment_revision_date ? self.attachment_revision_date.strftime("%m-%d-%Y") : ""
       self[:uploaded_date] = self.created_at.strftime("%m-%d-%Y")
       self[:uploaded_by] = self.created_by ? self.created_by.name : "" 
