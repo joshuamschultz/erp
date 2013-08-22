@@ -81,10 +81,11 @@ module CommonActions
 
 		menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Contacts", :type => "multiple"}
 		menus[:contacts][:sub_menu] = 	[
+											{:path => organizations_path, :name => "Organizations"},
 											{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"}, 
 											{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
-											{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
-											{:path => organizations_path, :name => "Organizations"}
+											{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"}
+											
 										]
 
 		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => "#", :name => "Quotes", :type => "multiple"}

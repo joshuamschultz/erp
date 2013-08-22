@@ -157,6 +157,9 @@
     </div>
 </div>
 
+<!-- Attachments -->
+<%= render 'attachments/attachments' if @item_revision %>
+
 <%= render :partial => 'po_headers/po_list', locals: {
         all_path: item_path(@item, :revision_id => @item_revision.id),
         open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
@@ -166,8 +169,6 @@
     }
 %>
 
-<!-- Attachments -->
-<%= render 'attachments/attachments' if @item_revision %>
 
 <!-- PO -->
 <!-- <div class="widget">
