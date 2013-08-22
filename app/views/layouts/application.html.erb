@@ -21,8 +21,7 @@
     <%= javascript_include_tag "application", "bootstrap.min" %>    
 
 </head>
-<body class="<%= yield :page_level_body_class %>"> 
-
+<body class="<%= yield :page_level_body_class %>">
     <% if current_user && params[:layout] %>
         <%= render :partial => 'layouts/app_layouts/main_layout' %>           
     <% else %>
@@ -31,6 +30,6 @@
 
     <%= stylesheet_link_tag "main", :media => "all" %>
 
-    <%= javascript_include_tag "app_theme", "main" %>   
+    <%= javascript_include_tag "app_theme", "main" %>
 </body>
 </html>

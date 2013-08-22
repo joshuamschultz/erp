@@ -54,7 +54,6 @@ class PoHeadersController < ApplicationController
     @po_header = PoHeader.find(params[:id])
     @attachable = @po_header
     @notes = @po_header.present? ? @po_header.comments.where(:comment_type => "note").order("created_at desc") : []  
-    @attachment = @po_header.attachments.new
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @po_header }

@@ -5,8 +5,10 @@
 <% extras[:grouping] = false if extras[:grouping].nil? %>
 
 <script type="text/javascript">
+    var data_<%= name %>;
+    
     $(document).ready(function(){ 
-        var data_table = $('#<%= name %>').dataTable({
+        data_<%= name %> = $('#<%= name %>').dataTable({
             <% if extras[:slno] %>
                 "aaSorting": [[ 1, 'asc' ]],
                 "fnDrawCallback": function ( oSettings ) {

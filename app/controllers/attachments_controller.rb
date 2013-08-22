@@ -1,4 +1,6 @@
 class AttachmentsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => :create
+
   # GET /attachments
   # GET /attachments.json
   def index
@@ -53,26 +55,24 @@ class AttachmentsController < ApplicationController
   # POST /attachments
   # POST /attachments.json
   def create
-    @attachment = Attachment.new(params[:attachment])
-    CommonActions.record_ownership(@attachment, current_user)
+    bool_saved = false
+    if params[:attachment_process_type] == "droppable"
+        @attachment = Attachment.new(:attachment => params[:file], :attachable_id => params[:attachable_id], :attachable_type => params[:attachable_type])
+        CommonActions.record_ownership(@attachment, current_user)
+        bool_saved = @attachment.save(:validate => false)
+    else
+        @attachment = Attachment.new(params[:attachment])
+        CommonActions.record_ownership(@attachment, current_user)
+        bool_saved = @attachment.save
+    end
 
     respond_to do |format|
-        if params[:attachment_process_type] == "droppable"
-            if @attachment.attachment.present?
-                @attachment.save(:validate => false)
-                format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
-            else
-                format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Please select an attachment to upload!' }
-            end
+        if bool_saved
+          format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+          format.json { render json: @attachment, status: :created, location: @attachment }
         else
-          if @attachment.save
-            format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
-            format.json { render json: @attachment, status: :created, location: @attachment }
-          else
-            puts @attachment.errors.to_yaml
-            format.html { render action: "new" }
-            format.json { render json: @attachment.errors, status: :unprocessable_entity }
-          end
+          format.html { render action: "new" }
+          format.json { render json: @attachment.errors, status: :unprocessable_entity }
         end
     end
   end

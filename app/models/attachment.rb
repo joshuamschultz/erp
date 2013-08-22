@@ -2,7 +2,8 @@ class Attachment < ActiveRecord::Base
   attr_accessible :attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
   :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
   :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active, 
-  :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment
+  :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment, 
+  :attachment_file_name
 
   belongs_to :attachable, :polymorphic => true
 
@@ -23,6 +24,7 @@ class Attachment < ActiveRecord::Base
 
   def create_level_default
       self.attachment_status = "pending"
+      self.attachment_name = self.attachment_file_name if self.attachment_name.nil? || self.attachment_name == ""
       # self.attachment_active = false
   end
 
