@@ -6,8 +6,8 @@
       <%= f.association :gauge, :label => "Instrument", :label_method => 'gauge_tool_name', :label_value => "id", :include_blank => false %>  
       <%= f.input :item_part_letter, :label => "Letter" %>      
       <%= f.input :item_part_dimension, :label => "Dimension" %>
-      <%= f.input :item_part_pos_tolerance, :label => "+ve Tolerance" %>
-      <%= f.input :item_part_neg_tolerance, :label => "-ve Tolerance" %>
+      <%= f.input :item_part_pos_tolerance, :label => "+ Tolerance" %>
+      <%= f.input :item_part_neg_tolerance, :label => "- Tolerance" %>
       <%= f.input :item_part_critical, :label => "Critical" %>
       <%#= f.input :item_part_notes, :label => "Notes" %>
       <%#= f.input :item_part_active, :label => "Active" %>
