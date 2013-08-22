@@ -22,3 +22,5 @@
 //= require ./theme_js/select2
 //= require ./theme_js/jasny-bootstrap.min
 //= require ./theme_js/bootstrap-fileupload
+//= require ./theme_js/plupload.full.js
+//= require ./theme_js/dropzone.min.js
