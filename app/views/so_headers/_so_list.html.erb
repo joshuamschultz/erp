@@ -1,0 +1,53 @@
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Sales Order</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New So Header', new_so_header_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Organization</th>
+                <th>Name</th>
+                <th>Bill to</th>
+                <th>Ship to</th>
+                <th>Cofc</th>
+                <th>Squality</th>
+                <th>Total</th>
+                <th>Notes</th>
+                <th>Comments</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <body>
+                
+            </body>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_items", :path => so_headers_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "organization_name_so"},
+                        { "mData": "so_header_name" },
+                        { "mData": "so_bill_to_id" },
+                        { "mData": "so_ship_to_id" },
+                        { "mData": "so_cofc" },                       
+                        { "mData": "so_squality" },
+                        { "mData": "so_total" },
+                        { "mData": "so_notes"},
+                        { "mData": "so_comments" },                        
+                        { "mData": "so_status"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        
+                    ]'
+    } 
+%>

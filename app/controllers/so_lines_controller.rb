@@ -1,83 +1,107 @@
 class SoLinesController < ApplicationController
-  # GET /so_lines
-  # GET /so_lines.json
+  before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update]
+
+  def set_page_info
+      @menus[:sales][:active] = "active"
+  end
+
+  def set_autocomplete_values
+    params[:so_line][:organization_id], params[:organization_id] = params[:organization_id], params[:so_line][:organization_id]
+    params[:so_line][:organization_id] = params[:org_organization_id] if params[:so_line][:organization_id] == ""
+
+    params[:so_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:so_line][:item_alt_name_id]
+    params[:so_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:so_line][:item_alt_name_id] == ""
+  end
+
   def index
-    @so_lines = SoLine.all
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_lines = @so_header.so_lines
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @so_lines }
+      format.json { 
+        @so_lines = @so_lines.select{|so_line|
+          so_line[:so_header_name] = so_line.so_header.so_identifier
+          so_line[:links] = CommonActions.object_crud_paths(nil, edit_so_header_so_line_path(@so_header, so_line), nil)
+          so_line[:customer_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name)
+        }
+        render json: {:aaData => @so_lines} 
+      }
     end
   end
 
-  # GET /so_lines/1
-  # GET /so_lines/1.json
+
   def show
-    @so_line = SoLine.find(params[:id])
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @so_line }
+      format.json { render :json => @so_line }
     end
   end
 
-  # GET /so_lines/new
-  # GET /so_lines/new.json
+ 
   def new
-    @so_line = SoLine.new
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.build
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @so_line }
+      format.json { render :json => @so_line }
     end
   end
 
-  # GET /so_lines/1/edit
+  # GET so_headers/1/so_lines/1/edit
   def edit
-    @so_line = SoLine.find(params[:id])
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.find(params[:id])
   end
 
-  # POST /so_lines
-  # POST /so_lines.json
+  
   def create
-    @so_line = SoLine.new(params[:so_line])
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.build(params[:so_line])
 
     respond_to do |format|
       if @so_line.save
-        format.html { redirect_to @so_line, notice: 'So line was successfully created.' }
-        format.json { render json: @so_line, status: :created, location: @so_line }
+        format.html { redirect_to new_so_header_so_line_path(@so_header), :notice => 'So line was successfully created.' }
+        format.json { render :json => @so_line, :status => :created, :location => [@so_line.so_header, @so_line] }
       else
-        format.html { render action: "new" }
-        format.json { render json: @so_line.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.json { render :json => @so_line.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /so_lines/1
-  # PUT /so_lines/1.json
+  # PUT so_headers/1/so_lines/1
+  # PUT so_headers/1/so_lines/1.json
   def update
-    @so_line = SoLine.find(params[:id])
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.find(params[:id])
 
     respond_to do |format|
       if @so_line.update_attributes(params[:so_line])
-        format.html { redirect_to @so_line, notice: 'So line was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to([@so_line.so_header, @so_line], :notice => 'So line was successfully updated.') }
+        format.json { head :ok }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @so_line.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.json { render :json => @so_line.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /so_lines/1
-  # DELETE /so_lines/1.json
+  # DELETE so_headers/1/so_lines/1
+  # DELETE so_headers/1/so_lines/1.json
   def destroy
-    @so_line = SoLine.find(params[:id])
+    @so_header = SoHeader.find(params[:so_header_id])
+    @so_line = @so_header.so_lines.find(params[:id])
     @so_line.destroy
 
     respond_to do |format|
-      format.html { redirect_to so_lines_url }
-      format.json { head :no_content }
+      format.html { redirect_to so_header_so_lines_url(so_header) }
+      format.json { head :ok }
     end
   end
 end
