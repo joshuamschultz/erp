@@ -7,10 +7,7 @@ AllianceFasteners::Application.routes.draw do
     end
   end
 
-  resources :so_headers
-
   resources :po_shipments
-
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
@@ -26,12 +23,6 @@ AllianceFasteners::Application.routes.draw do
         post 'populate'
     end
   end
-
-  resources :so_lines
-
-
-  resources :po_headers
-
 
   resources :items do
     resources :item_revisions do

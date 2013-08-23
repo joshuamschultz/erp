@@ -1,5 +1,4 @@
 <div class="row-fluid">
-    <!-- PO Info -->
     <%= render :partial => 'po_headers/po_header_info' %>
 
     <div class="span9 well">
@@ -56,7 +55,6 @@
 
             <div class="actions">
                 <%= f.submit "Save", :class =>"btn" %>
-                <%#= f.submit "Save and Add New", :class =>"btn" if @po_line.new_record? %>
                 <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
                 <%= link_to 'Back to PO', po_header_path(@po_header), :class =>"btn" %>
             </div>
@@ -103,7 +101,7 @@
             $("#po_line_item_alt_name_id").attr("data-autocomplete", alt_name_path + "?organization_id=" + $("#org_organization_id").val());
         <% end %>
 
-        $("#po_line_po_line_cost").on("change", function(){
+        $("#po_line_po_line_cost").change(function(){
             calculate_line_item_total();
         });
 

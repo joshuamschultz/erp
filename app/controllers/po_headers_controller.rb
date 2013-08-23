@@ -38,10 +38,10 @@ class PoHeadersController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @po_headers = @po_headers.select{|po_header|
-              po_header[:po_id] =  "<a href='#{po_header_path(po_header)}'>#{po_header.po_identifier}</a>"
+              po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
-              po_header[:vendor_name] = "<a href='#{organization_path(po_header.organization)}'>#{po_header.organization.organization_name}</a>"
-              po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), po_header_path(po_header))
+              po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
+              po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
           }
           render json: {:aaData => @po_headers}
       }

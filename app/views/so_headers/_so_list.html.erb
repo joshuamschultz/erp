@@ -13,15 +13,12 @@
         <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>Organization</th>
-                <th>Name</th>
-                <th>Bill to</th>
-                <th>Ship to</th>
+                <th>SO ID</th>
+                <th>Customer</th>
+                <th>Bill To</th>
+                <th>Ship To</th>
                 <th>Cofc</th>
                 <th>Squality</th>
-                <th>Total</th>
-                <th>Notes</th>
-                <th>Comments</th>
                 <th>Status</th>
                 <th></th>
               </tr>
@@ -36,15 +33,12 @@
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {:name => "table_report_items", :path => so_headers_path, :extras => {:slno => false},
         :columns => '[
-                        { "mData": "organization_name_so"},
-                        { "mData": "so_header_name" },
-                        { "mData": "so_bill_to_id" },
-                        { "mData": "so_ship_to_id" },
+                        { "mData": "so_id" },
+                        { "mData": "customer_name"},
+                        { "mData": "bill_to_address_name" },
+                        { "mData": "ship_to_address_name" },
                         { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },
-                        { "mData": "so_total" },
-                        { "mData": "so_notes"},
-                        { "mData": "so_comments" },                        
+                        { "mData": "so_squality" },                       
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         

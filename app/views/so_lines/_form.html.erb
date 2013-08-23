@@ -1,15 +1,20 @@
 <div class="row-fluid">
-    <!-- PO Info -->
     <%= render :partial => 'so_headers/so_header_info' %>
     <div class="span9 well">
         <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
-            <%= f.error_notification %>         
-            <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+            <%= f.error_notification %>     
 
-            <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id unless @so_line.new_record?) %>
+            <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
-            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id unless @so_line.new_record?) %>
+            <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.persisted? && @so_line.item_alt_name) %>
 
+            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.persisted? && @so_line.item_alt_name) %>            
+
+            <%= f.input :so_line_cost, :label => "Cost" %>            
+
+            <%= f.input :so_line_quantity, :label => "Quantity" %>
+            
+            <%= f.input :so_line_freight, :label => "Freight Charge" %>
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
@@ -17,21 +22,14 @@
 
             <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.persisted? && @so_line.organization) %>
 
-            <%= f.input :so_line_cost %>
+            <%= f.input :so_line_notes, :label => "Notes" %>
 
-            <%= f.input :so_line_price %>
-
-            <%= f.input :so_line_quantity %>
-            
-            <%= f.input :so_line_freight %>
-
-            <%= f.input :so_line_status %>   
+            <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
 
             <div class="separator bottom"></div>
       
             <div class="actions">
                 <%= f.submit "Save", :class =>"btn" %>
-                <%#= f.submit "Save and Add New", :class =>"btn" if @po_line.new_record? %>
                 <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
                 <%= link_to 'Back to SO', so_header_path(@so_header), :class =>"btn" %>
            </div>
@@ -41,8 +39,60 @@
 
 <div class="separator bottom"></div>
 
-<!-- Line Items -->
 <%= render :partial => 'so_lines/line_items' %>
+
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_organization_id", "so_line_so_line_cost", "so_line_so_line_price", "so_line_so_line_quantity", "so_line_so_line_freight", "so_line_so_line_status"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_so_line_freight", "so_line_organization_id", "so_line_so_line_notes"];
+
+    $(document).ready(function(){ 
+        $("#so_line_item_alt_name_id").on("focusout", function(){
+            if($("#alt_name_id").val() != "")
+                initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+            else if($("#org_alt_name_id").val() != "")
+                initialize_api_call({"url": "/item_alt_names/" + $("#org_alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+            else{
+                $("#so_line_so_line_cost").val("");
+                calculate_line_item_total();
+            }
+        });
+
+        $("#so_line_so_line_cost").change(function(){
+            calculate_line_item_total();
+        });
+
+        $("#so_line_so_line_cost").on("input", function(){
+            calculate_line_item_total();
+        });
+
+        $("#so_line_so_line_quantity").on("input", function(){
+            calculate_line_item_total();
+        });
+
+        $("#so_line_so_line_freight").on("input", function(){
+            calculate_line_item_total();
+        });
+
+        <% unless @so_line.new_record? %>
+            $("#so_line_organization_id").val("<%= @so_line.organization.organization_name if @so_line.organization %>");
+
+            $("#so_line_item_alt_name_id").val("<%= @so_line.item_alt_name.alt_item_name if @so_line.item_alt_name %>");
+        <% end %>
+
+        $("#so_line_item_alt_name_id").focus();
+    });    
+
+    function calculate_line_item_total(){
+        var so_line_total = (parseFloat($("#so_line_so_line_cost").val(), 10) * parseFloat($("#so_line_so_line_quantity").val(), 10)) + parseFloat($("#so_line_so_line_freight").val(), 10);
+
+        if(isNaN(so_line_total) == false)
+            $("#so_line_so_line_price").val(so_line_total); //.toFixed(10)
+        else
+            $("#so_line_so_line_price").val("");
+    }
+
+    function set_item_revision_cost(response, callback_params, api_params){
+        $("#so_line_so_line_cost").val(response.item_cost);
+        calculate_line_item_total();
+        return false;
+    }
 </script>
