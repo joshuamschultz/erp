@@ -1,23 +1,2 @@
-<h1>Listing so_lines</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @so_lines.each do |so_line| %>
-  <tr>
-    <td><%= so_line.name %></td>
-    <td><%= link_to 'Show', so_line %></td>
-    <td><%= link_to 'Edit', edit_so_line_path(so_line) %></td>
-    <td><%= link_to 'Destroy', so_line, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New So line', new_so_line_path %>
+<!-- Line Items -->
+<%= render :partial => 'so_lines/line_items' %>

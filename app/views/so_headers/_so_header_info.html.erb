@@ -1,0 +1,52 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">SO ID:</td>
+            <td class="span5"><strong><%= @so_header.so_identifier %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span2">So bill to:</td>
+            <td class="span5"><strong><%= @so_header.so_bill_to_id  %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">So ship to:</td>
+            <td class="span5"><strong><h4>$<%= @so_header.so_ship_to_id %></h4></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">So cofc:</td>
+            <td class="span5"><strong><%=  @so_header.so_cofc  %></strong></td>
+          </tr>
+
+           <tr>
+            <td class="span3">So total:</td>
+            <td class="span5"><strong><%=  @so_header.so_total  %></strong></td>
+          </tr>
+
+          <!-- "%0.5f" %  -->
+
+          <!-- <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><%#= @po_header.po_notes %></td>
+          </tr> -->
+
+          <!-- <tr>
+            <td class="span3">Active :</td>
+            <td class="span5"><%#= @po_header.po_active %></td>
+          </tr> -->
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <h4 class="center">Customer Info</h4>
+
+  <div class="separator bottom"></div>
+
+  <%= render :partial => 'organizations/organization_info', 
+        :locals => {:organization => @so_header.organization} %>
+</div>

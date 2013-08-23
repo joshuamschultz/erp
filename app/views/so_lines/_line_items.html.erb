@@ -1,0 +1,49 @@
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Items</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New So Lines', new_so_header_so_line_path(@so_header), :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>So header</th>
+                <th>Item</th>
+                <th>Name</th>
+                <th>So line cost</th>
+                <th>So line price</th>
+                <th>So line quantity</th>
+                <th>So line freight</th>
+                <th>So line status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <body>
+                
+            </body>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_items", :path => so_header_so_lines_path(@so_header), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "so_header_name"},
+                        { "mData": "so_item_name" },
+                        { "mData": "customer_name" },
+                        { "mData": "so_line_cost" },
+                        { "mData": "so_line_price" },                       
+                        { "mData": "so_line_quantity" },
+                        { "mData": "so_line_freight" },
+                        { "mData": "so_line_status"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        
+                    ]'
+    } 
+%>

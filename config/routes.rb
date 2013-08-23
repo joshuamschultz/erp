@@ -1,5 +1,14 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :so_headers do
+    resources :so_lines
+    member do
+        post 'populate'
+    end
+  end
+
+  resources :so_headers
+
   resources :po_shipments
 
 
