@@ -33,12 +33,12 @@
     <abbr>Contact Type: </abbr><%= organization.contact_type.type_name if organization.contact_type %><br/>
 
     <% if organization.organization_type.type_value == "customer" %>
-        <abbr>Quality Level: </abbr><%= organization.customer_quality.quality_name if organization.customer_quality %><br/>
+        <abbr>Quality Level: </abbr><%= link_to organization.customer_quality.quality_name, organization.customer_quality if organization.customer_quality %><br/>
 
-        <abbr>Minimum Quality ID: </abbr><%= organization.min_vendor_quality.quality_name if organization.min_vendor_quality %><br/>
+        <abbr>Minimum Quality ID: </abbr><%= link_to organization.min_vendor_quality.quality_name, organization.min_vendor_quality if organization.min_vendor_quality %><br/>
         
     <% elsif organization.organization_type.type_value == "vendor" %>
-        <abbr>Quality ID: </abbr><%= organization.vendor_quality.quality_name if organization.vendor_quality %><br/>
+        <abbr>Quality ID: </abbr><%= link_to organization.vendor_quality.quality_name, organization.vendor_quality if organization.vendor_quality %><br/>
 
         <abbr>Expiration Date: </abbr><%= organization.vendor_expiration_date.strftime("%m-%d-%Y") if organization.vendor_expiration_date %><br/>
     <% end %>

@@ -21,12 +21,11 @@ class PoLinesController < ApplicationController
     @po_lines = @po_header.po_lines
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { redirect_to new_po_header_po_line_path(@po_header) }
       format.json { 
           @po_lines = @po_lines.select{|po_line|
               po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item, item_revision: po_line.item_revision.id), po_line.item_alt_name.item_alt_identifier)
-              po_line[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)
-              # po_line[:customer_quality_name] = CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name)
+              po_line[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)              
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
           }
           render json: {:aaData => @po_lines}
@@ -63,7 +62,6 @@ class PoLinesController < ApplicationController
   def edit
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.find(params[:id])
-    # @po_line[:organization_org_id] = @po_line.organization_id
   end
 
   # POST po_headers/1/po_lines

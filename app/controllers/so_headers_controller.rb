@@ -1,4 +1,4 @@
--class SoHeadersController < ApplicationController
+class SoHeadersController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update] 
 
@@ -18,8 +18,10 @@
       format.html # index.html.erb
       format.json { 
          @so_headers = @so_headers.select{|so_header|
-          so_header[:organization_name_so] = so_header.organization.organization_name
-          so_header[:so_header_name] =  "<a href='#{so_header_path(so_header)}'>#{so_header[:so_identifier]}</a>"
+          so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
+          so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
+          so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_title)
+          so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_title)
           so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
          }
          render json: {:aaData => @so_headers} 
@@ -63,7 +65,7 @@
 
     respond_to do |format|
       if @so_header.save
-        format.html { redirect_to so_headers_path, notice: 'So header was successfully created.' }
+        format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully created.' }
         format.json { render json: @so_header, status: :created, location: @so_header }
       else
         format.html { render action: "new" }
@@ -79,7 +81,7 @@
 
     respond_to do |format|
       if @so_header.update_attributes(params[:so_header])
-        format.html { redirect_to so_headers_path, notice: 'So header was successfully updated.' }
+        format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -109,4 +111,5 @@
 
       redirect_to @so_header
   end
+
 end

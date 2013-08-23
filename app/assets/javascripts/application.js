@@ -21,5 +21,6 @@
 //= require jquery.multiselect
 //= require jquery.multiselect.filter
 //= require autocomplete-rails
+//= require mustache
 
 var tab_field_forms = {}, date_box_fields = [];

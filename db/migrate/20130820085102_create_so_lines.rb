@@ -9,8 +9,10 @@ class CreateSoLines < ActiveRecord::Migration
       t.decimal :so_line_cost, :precision => 15, :scale => 10
       t.decimal :so_line_price, :precision => 15, :scale => 10
       t.integer :so_line_quantity
-      t.decimal :so_line_freight
+      t.decimal :so_line_freight      
       t.string :so_line_status
+      t.text :so_line_notes
+      t.boolean :so_line_active
       t.integer :so_line_created_id
       t.integer :so_line_updated_id
 

@@ -14,11 +14,8 @@ class PoLine < ActiveRecord::Base
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
   :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id
 
-  validates_presence_of :po_header
-  validates_presence_of :organization
-  validates_presence_of :item_alt_name
-  validates_numericality_of :po_line_cost if validates_presence_of :po_line_cost
-  validates_numericality_of :po_line_quantity if validates_presence_of :po_line_quantity  
+  validates_presence_of :po_header, :organization, :item_alt_name, :po_line_cost, :po_line_quantity
+  validates_numericality_of :po_line_cost, :po_line_quantity
 
   before_create :create_level_default
 

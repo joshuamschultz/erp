@@ -5,8 +5,6 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Line Items</h4>
             <span class="span6 heading right">
-                <%#= link_to 'Open', po_headers_path(:status => "open", :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'Closed', po_headers_path(:status => "closed", :vendor_id => (@vendor.nil? ? nil : @vendor.id)), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'New Line Item', new_po_header_po_line_path(@po_header), :class => "btn btn-mini btn-success"  %>  
             </span>
         </div> 
@@ -16,10 +14,9 @@
         <table id="table_report_po_line_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>                   
-                    <th>Part No</th>                    
+                    <th>Part No</th>
                     <th>Customer</th>
                     <th>Customer PO</th>
-                    <!-- <th>Customer Quality</th> -->
                     <th>Status</th>
                     <th>Quantity</th>
                     <th>Cost</th>
