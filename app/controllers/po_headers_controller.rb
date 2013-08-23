@@ -1,5 +1,5 @@
 class PoHeadersController < ApplicationController
-  before_filter :find_relations
+  before_filter :find_relations, only: [:index] 
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]  
 
@@ -8,11 +8,8 @@ class PoHeadersController < ApplicationController
   end
 
   def set_autocomplete_values
-    # organization = Organization.find_by_organization_name(params[:po_header][:organization_id])
-    # params[:organization_id] = organization.id if organization && params[:organization_id] == ""    
-
-    params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
-    params[:po_header][:organization_id] = params[:org_organization_id] if params[:po_header][:organization_id] == ""
+      params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
+      params[:po_header][:organization_id] = params[:org_organization_id] if params[:po_header][:organization_id] == ""
   end
 
   def find_relations
@@ -28,7 +25,7 @@ class PoHeadersController < ApplicationController
           @po_headers = PoHeader.order(:created_at)
       end
 
-      @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status] && @po_headers.any?
+      @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status].present? && @po_headers.any?
   end
 
   # GET /po_headers
@@ -36,7 +33,7 @@ class PoHeadersController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {           
           @po_headers = @po_headers.select{|po_header|
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
@@ -63,7 +60,7 @@ class PoHeadersController < ApplicationController
   # GET /po_headers/new
   # GET /po_headers/new.json
   def new
-    @po_header = @po_headers.new
+    @po_header = PoHeader.new
 
     respond_to do |format|
       format.html # new.html.erb

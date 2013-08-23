@@ -1,6 +1,6 @@
   <!-- Wells -->
 <div class="row-fluid">
-    <h3 class="span3 left"><%= @organization.organization_type.type_name %><span></span></h3>
+    <h4 class="span3 left"><%= @organization.organization_type.type_name %><span></span></h4>
     <span class="span9 right">
         <%= link_to 'Edit', edit_organization_path(@organization), :class => "btn btn-small" %>
         <%#= link_to 'Gauges', organization_gauges_path(@organization), :class => "btn btn-small" if @organization.organization_type.type_value == "support" %>
@@ -40,35 +40,32 @@
     </div>
 </div>
 
-<div class="separator bottom"></div> 
+<!-- <div class="separator bottom"></div>  -->
+
+<!-- Attachments -->
+<%= render 'attachments/attachments' %>
 
 <%= render :partial => 'items/items' if @organization.type_name == "vendor" %>
 
 <%  if ["customer", "vendor"].include?(@organization.type_name) %>
 
     <%= render :partial => 'po_headers/po_list', locals: {
-            all_path: organization_path(@organization),
-            open_path: organization_path(@organization, :po_status => "open"),
-            closed_path: organization_path(@organization, :po_status => "closed"),
-            index_path: po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id),
-            new_path: new_po_header_path
+        all_path: organization_path(@organization),
+        open_path: organization_path(@organization, :po_status => "open"),
+        closed_path: organization_path(@organization, :po_status => "closed"),
+        index_path: po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id),
+        new_path: new_po_header_path
         }
     %>
 
-    <!-- SO -->
-    <div class="widget">
-        <div class="widget-head">
-            <div class="row-fluid">
-                <h4 class="span6 heading">Sales Orders</h4>
-                <span class="span6 heading right">
-                    <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
-                    <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
-                    <%= link_to 'New SO', "#", :class => "btn btn-mini btn-success" %> 
-                </span>
-            </div> 
-        </div>
-        <div class="widget-body" style="height:150px"></div>
-    </div>
+    <%= render :partial => 'so_headers/so_list', locals: {
+        all_path: organization_path(@organization),
+        open_path: organization_path(@organization, :so_status => "open"),
+        closed_path: organization_path(@organization, :so_status => "closed"),
+        index_path: so_headers_path(:so_status => params[:so_status], :organization_id => @organization.id),
+        new_path: new_so_header_path
+        }
+    %>    
 
     <!-- Quotes -->
     <div class="widget">
@@ -86,10 +83,6 @@
 
     <!-- if @organization.organization_type.type_value == "vendor" -->
 <% end %>
-
-<!-- Attachments -->
-<%= render 'attachments/attachments' %>
-
 
 <div class="separator bottom"></div>
 
