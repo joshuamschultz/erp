@@ -1,4 +1,5 @@
 class SoHeadersController < ApplicationController
+  before_filter :find_relations, only: [:index]
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update] 
 
@@ -7,17 +8,31 @@ class SoHeadersController < ApplicationController
   end
 
   def set_autocomplete_values
-    params[:so_header][:organization_id], params[:organization_id] = params[:organization_id], params[:so_header][:organization_id]
-    params[:so_header][:organization_id] = params[:org_organization_id] if params[:so_header][:organization_id] == ""
+      params[:so_header][:organization_id], params[:organization_id] = params[:organization_id], params[:so_header][:organization_id]
+      params[:so_header][:organization_id] = params[:org_organization_id] if params[:so_header][:organization_id] == ""
+  end
+
+  def find_relations
+      params[:so_status] ||= nil
+
+      if params[:organization_id].present?
+          @organization = Organization.find(params[:organization_id])
+          @so_headers = @organization.present? ? @organization.sales_orders : []
+      elsif params[:item_revision_id].present?
+          @item_revision = ItemRevision.find(params[:item_revision_id])
+          @so_headers = @item_revision.present? ? @item_revision.sales_orders : []
+      else
+          @so_headers = SoHeader.order(:created_at)
+      end
+
+      @so_headers = @so_headers.status_based_sos(params[:so_status]) if params[:so_status].present? && @so_headers.any?
   end
 
   def index
-    @so_headers = SoHeader.all
-
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-         @so_headers = @so_headers.select{|so_header|
+      format.json {         
+        @so_headers = @so_headers.select{|so_header|
           so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
           so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
           so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_title)

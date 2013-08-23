@@ -100,14 +100,25 @@ class Organization < ActiveRecord::Base
           	else
               	PoHeader.where("organization_id = ?", 0)
       	end
+  	end
+
+  	def sales_orders
+  		case(self.organization_type.type_value)
+          	when "customer"              	
+              	SoHeader.where("organization_id = ?", self.id)
+          	when "vendor"
+              	SoHeader.joins(:so_lines).where("so_lines.organization_id = ?", self.id)
+          	else
+              	SoHeader.where("organization_id = ?", 0)
+      	end
   	end 	
 
-  	def purchase_order_title
+  	def organization_type_title
   		case(self.organization_type.type_value)
           	when "customer"
-              	" For Customer"
+              	" With Customer"
           	when "vendor"
-              	" From Vendor"
+              	" With Vendor"
           	else
               	""
       	end

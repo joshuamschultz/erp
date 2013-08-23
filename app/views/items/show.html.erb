@@ -1,6 +1,6 @@
   <!-- Wells -->
 <div class="row-fluid">
-    <h3 class="span3 left">Item Part No: <%= @item.item_part_no %><span></span></h3>
+    <h4 class="span3 left">Part No: <%= @item.item_part_no %><span></span></h4>
     <span class="span9 right">
         <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
         <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
@@ -161,44 +161,22 @@
 <%= render 'attachments/attachments' if @item_revision %>
 
 <%= render :partial => 'po_headers/po_list', locals: {
-        all_path: item_path(@item, :revision_id => @item_revision.id),
-        open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
-        closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
-        index_path: po_headers_path(:po_status => params[:po_status], :item_revision_id => @item_revision.id),
-        new_path: new_po_header_path
+    all_path: item_path(@item, :revision_id => @item_revision.id),
+    open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
+    closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
+    index_path: po_headers_path(:po_status => params[:po_status], :item_revision_id => @item_revision.id),
+    new_path: new_po_header_path
     }
 %>
 
-
-<!-- PO -->
-<!-- <div class="widget">
-    <div class="widget-head">
-        <div class="row-fluid">
-            <h4 class="span6 heading">Purchase Orders</h4>
-            <span class="span6 heading right">
-                <%#= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'New PO', "#", :class => "btn btn-mini btn-success" %> 
-            </span>
-        </div> 
-    </div>
-    <div class="widget-body" style="height:150px"></div>
-</div> -->
-
-<!-- SO -->
-<div class="widget">
-    <div class="widget-head">
-        <div class="row-fluid">
-            <h4 class="span6 heading">Sales Orders</h4>
-            <span class="span6 heading right">
-                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New SO', "#", :class => "btn btn-mini btn-success" %> 
-            </span>
-        </div> 
-    </div>
-    <div class="widget-body" style="height:150px"></div>
-</div>
+<%= render :partial => 'so_headers/so_list', locals: {
+    all_path: item_path(@item, :revision_id => @item_revision.id),
+    open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
+    closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
+    index_path: so_headers_path(:so_status => params[:so_status], :item_revision_id => @item_revision.id),
+    new_path: new_so_header_path
+    }
+%>
 
 <!-- Quotes -->
 <div class="widget">

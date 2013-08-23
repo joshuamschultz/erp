@@ -131,6 +131,10 @@ class ItemRevision < ActiveRecord::Base
 
     def purchase_orders
         PoHeader.joins(:po_lines).where("po_lines.item_revision_id = ?", self.id)
+    end
+
+    def sales_orders
+        SoHeader.joins(:so_lines).where("so_lines.item_revision_id = ?", self.id)
     end 
 
     scope :recent_revisions, joins(:item).where("item_revisions.latest_revision = ?", true)

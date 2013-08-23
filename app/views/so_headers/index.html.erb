@@ -1,1 +1,8 @@
-<%= render :partial => 'so_headers/so_list' %>
+<%= render :partial => 'so_headers/so_list', locals: {
+	all_path: so_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
+	open_path: so_headers_path(:so_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
+	closed_path: so_headers_path(:so_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
+	index_path: so_headers_path(:so_status => params[:so_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
+	new_path: new_so_header_path
+	}
+%>
