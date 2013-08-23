@@ -1,0 +1,48 @@
+<div class="row-fluid">
+  <div class="span4 well item_detail_view">
+      <!-- h4 class="center">Vendor Info</h4>
+
+      <div class="separator bottom"></div> -->
+
+      <div id="po_header_vendor_info"></div>
+
+  </div>
+  <div class="span8 well item_detail_view">
+    <%= simple_form_for(@so_header, :html => {:id => "form_for_so_header",:class => "form-horizontal"}) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
+        <%= hidden_field_tag :organization_id, (@so_header.organization.id unless @so_header.new_record? && @so_header.organization.nil?) %>
+        <%= hidden_field_tag :org_organization_id, (@so_header.organization.id unless @so_header.new_record? && @so_header.organization.nil?) %>  
+        
+        <%= f.input :so_identifier, :label => "Name" %>
+        <%= f.input :so_bill_to_id, :label => "Bill To Id" %>
+        <%= f.input :so_ship_to_id, :label => "Ship To Id" %>
+        <%= f.input :so_cofc, :label => "Cofc"  %>
+        <%= f.input :so_squality, :label => "Squality" %>
+        <%= f.input :so_total, :label => "Total" %>
+        <%= f.input :so_notes, :label => "Notes" %>
+        <%= f.input :so_comments, :label => "Comments" %>
+        <%= f.input :so_status, :label => "Status" %>
+      </div>
+      <div class="separator bottom"></div>
+      <div class="form-actions">
+        <%= f.button :submit, "Submit", :class => 'btn' %>
+        <%= link_to 'Delete', so_header_path(@so_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_header.new_record? %>
+        <%= link_to 'Back', so_headers_path,:class =>"btn btn-small" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+  <% unless @so_header.new_record? %>
+      <!-- Line Items -->
+      <%= render :partial => 'so_lines/line_items' %>
+  <% end %>
+<script type="text/javascript">
+    tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_identifier", "so_header_so_bill_to_id", "so_header_so_ship_to_id", "so_header_so_cofc", "so_header_so_squality", "so_header_so_total", "so_header_so_notes","so_header_so_comments", "so_header_so_status"];
+      
+      $(function() {
+        $("#so_header_organization_id").focus();
+      })
+</script>

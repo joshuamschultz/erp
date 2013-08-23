@@ -1,0 +1,63 @@
+  <!-- Wells -->
+<div class="row-fluid">
+    <h4 class="span3 left">SO Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
+        <%= link_to 'Back', so_headers_path, :class => "btn btn-small" %>
+    </span>
+</div>
+
+<div class="row-fluid">
+    <!-- PO Info -->
+    <%= render :partial => 'so_headers/so_header_info' %>
+
+    <div class="span9">
+        <div class="row-fluid">
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="alt_address_btn">
+                      <span class="glyphicons message_out"><i></i></span>
+                      <span class="txt">Send</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn">
+                      <span class="glyphicons print"><i></i></span>
+                      <span class="txt">Print</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn">
+                      <span class="glyphicons notes_2"><i></i></span>
+                      <span class="txt">Add Quote</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+        </div>
+
+        <!-- Line Items -->
+        <%= render :partial => 'so_lines/line_items' %>
+    </div>
+</div>
+
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+    <div class="span3">
+        <%= render :partial => 'attachments/droppable_form' %>
+    </div>
+
+    <div class="span9">
+        <%= render 'attachments/attachments' %>
+    </div> 
+</div>
+
+
+<div class="separator bottom"></div>
+
+
+<%= render :partial => 'comments/comments', 
+:locals => {:extras => {:link => populate_so_header_path(type: "note")}} %>

@@ -1,10 +1,51 @@
-<p id="notice"><%= notice %></p>
+<<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>So Info</h4>
+  </div>
+  <table class="table table-striped table-bordered">
+    <tbody>
+    <tr>
+      <td>So header:</td>
+      <td><%= @so_line.so_header.so_identifier %></td>
+    </tr>
 
-<p>
-  <b>Name:</b>
-  <%= @so_line.name %>
-</p>
+    <tr>
+      <td>Item:</td>
+      <td><%= @so_line.item %></td>
+    </tr>
 
+    <tr>
+      <td>Vendor</td>
+      <td><%= @so_line.organization.organization_name %></td>
+    </tr>
 
-<%= link_to 'Edit', edit_so_line_path(@so_line) %> |
-<%= link_to 'Back', so_lines_path %>
+    <tr>
+      <td>So line cost:</td>
+      <td><%= @so_line.so_line_cost %></td>
+    </tr>
+
+    <tr>
+      <td>So line price:</td>
+      <td><%= @so_line.so_line_price %></td>
+    </tr>
+
+    <tr>
+      <td>So line quantity:</td>
+      <td><%= @so_line.so_line_quantity %></td>
+    </tr>
+
+    <tr>
+      <td>So line freight:</td>
+      <td><%= @so_line.so_line_freight %></td>
+    </tr>
+
+    <tr>
+      <td>So line status:</td>
+      <td><%= @so_line.so_line_status %></td>
+    </tr>
+
+    <div class="form-actions">
+      <%= link_to 'Edit', edit_so_header_so_line_path(@so_line.so_header, @so_line), :class => "btn btn-small" %> 
+      <%= link_to 'Back', so_header_so_lines_path(@so_line.so_header), :class => "btn btn-small" %>
+    </div>
+</div>
