@@ -8,6 +8,8 @@ class Item < ActiveRecord::Base
 
   has_many :po_lines, :dependent => :destroy
 
+  has_many :so_lines, :dependent => :destroy
+
   has_many :item_alt_names, :dependent => :destroy
 
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true

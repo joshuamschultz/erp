@@ -1,0 +1,112 @@
+-class SoHeadersController < ApplicationController
+  before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update] 
+
+  def set_page_info
+      @menus[:sales][:active] = "active"
+  end
+
+  def set_autocomplete_values
+    params[:so_header][:organization_id], params[:organization_id] = params[:organization_id], params[:so_header][:organization_id]
+    params[:so_header][:organization_id] = params[:org_organization_id] if params[:so_header][:organization_id] == ""
+  end
+
+  def index
+    @so_headers = SoHeader.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { 
+         @so_headers = @so_headers.select{|so_header|
+          so_header[:organization_name_so] = so_header.organization.organization_name
+          so_header[:so_header_name] =  "<a href='#{so_header_path(so_header)}'>#{so_header[:so_identifier]}</a>"
+          so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
+         }
+         render json: {:aaData => @so_headers} 
+      }
+    end
+  end
+
+  # GET /so_headers/1
+  # GET /so_headers/1.json
+  def show
+    @so_header = SoHeader.find(params[:id])
+    @attachable = @so_header
+    @notes = @so_header.present? ? @so_header.comments.where(:comment_type => "note").order("created_at desc") : []  
+    @attachment = @so_header.attachments.new
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @so_header }
+    end
+  end
+
+  # GET /so_headers/new
+  # GET /so_headers/new.json
+  def new
+    @so_header = SoHeader.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @so_header }
+    end
+  end
+
+  # GET /so_headers/1/edit
+  def edit
+    @so_header = SoHeader.find(params[:id])
+  end
+
+  # POST /so_headers
+  # POST /so_headers.json
+  def create
+    @so_header = SoHeader.new(params[:so_header])
+
+    respond_to do |format|
+      if @so_header.save
+        format.html { redirect_to so_headers_path, notice: 'So header was successfully created.' }
+        format.json { render json: @so_header, status: :created, location: @so_header }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @so_header.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /so_headers/1
+  # PUT /so_headers/1.json
+  def update
+    @so_header = SoHeader.find(params[:id])
+
+    respond_to do |format|
+      if @so_header.update_attributes(params[:so_header])
+        format.html { redirect_to so_headers_path, notice: 'So header was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @so_header.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /so_headers/1
+  # DELETE /so_headers/1.json
+  def destroy
+    @so_header = SoHeader.find(params[:id])
+    @so_header.destroy
+
+    respond_to do |format|
+      format.html { redirect_to so_headers_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def populate
+      @so_header = SoHeader.find(params[:id])
+
+      if params[:type] == "note"
+          Comment.process_comments(current_user, @so_header, [params[:comment]], params[:type])
+      end
+
+      redirect_to @so_header
+  end
+end
