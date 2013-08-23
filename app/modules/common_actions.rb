@@ -102,7 +102,7 @@ module CommonActions
 
 		menus[:sales] = {:class => "hasSubmenu glyphicons stats", :path => "#", :name => "Sales", :type => "multiple"}
 		menus[:sales][:sub_menu] = 		[
-											{:path => "#", :name => "Sales Orders"}, 
+											{:path => so_headers_path, :name => "Sales Orders"}, 
 											{:path => "#", :name => "SO Information"}
 										]
 
