@@ -7,7 +7,7 @@ class CreateSoHeaders < ActiveRecord::Migration
       t.integer :so_ship_to_id
       t.boolean :so_cofc
       t.boolean :so_squality
-      t.decimal :so_total, :precision => 15, :scale => 5
+      t.decimal :so_total, :precision => 15, :scale => 10
       t.text :so_notes
       t.text :so_comments
       t.string :so_status
