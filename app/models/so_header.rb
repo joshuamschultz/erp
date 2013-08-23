@@ -1,4 +1,6 @@
 class SoHeader < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+  
 	attr_accessible :so_bill_to_id, :so_cofc, :so_comments, :so_identifier, :so_notes, 
 	:so_ship_to_id, :so_squality, :so_status, :so_total, :organization_id
   
@@ -22,6 +24,10 @@ class SoHeader < ActiveRecord::Base
   		self.so_status = "open"
     	self.so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
     	self.so_identifier.slice!(2)
+  end
+
+  def redirect_path
+      so_header_path(self)
   end
 
   scope :status_based_sos, lambda{|status| where(:so_status => status) }
