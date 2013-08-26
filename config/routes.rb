@@ -100,11 +100,15 @@ AllianceFasteners::Application.routes.draw do
   resources :company_infos
 
 
-  resources :customer_qualities
+  resources :customer_qualities do
+      get 'set_default'
+  end
 
 
-  resources :vendor_qualities
-
+  resources :vendor_qualities do
+      get 'set_default'
+  end
+  
 
   resources :owners
 
