@@ -2,6 +2,7 @@ class CreateMaterialElements < ActiveRecord::Migration
   def change
     create_table :material_elements do |t|
       t.references :material
+      t.references :element
       t.string :element_symbol
       t.string :element_name
       t.string :element_low_range
