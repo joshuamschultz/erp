@@ -1,33 +1,41 @@
-<h1>Listing elements</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Elements</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Element', new_element_path, :class => "btn btn-mini btn-success" %>              
+            </span>
+        </div> 
+    </div>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Notes</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+            </thead>
 
-<table>
-  <tr>
-    <th>Element name</th>
-    <th>Element symbol</th>
-    <th>Element notes</th>
-    <th>Element created</th>
-    <th>Element updated</th>
-    <th>Element active</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @elements.each do |element| %>
-  <tr>
-    <td><%= element.element_name %></td>
-    <td><%= element.element_symbol %></td>
-    <td><%= element.element_notes %></td>
-    <td><%= element.element_created_id %></td>
-    <td><%= element.element_updated_id %></td>
-    <td><%= element.element_active %></td>
-    <td><%= link_to 'Show', element %></td>
-    <td><%= link_to 'Edit', edit_element_path(element) %></td>
-    <td><%= link_to 'Destroy', element, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Element', new_element_path %>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report",  :path => elements_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "element_name" },
+                        { "mData": "element_symbol" },
+                        { "mData": "element_notes", "bVisible": false },
+                        { "mData": "element_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
