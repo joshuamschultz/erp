@@ -24,8 +24,9 @@ class Attachment < ActiveRecord::Base
 
   def create_level_default
       self.attachment_status = "pending"
-      self.attachment_name = self.attachment_file_name if self.attachment_name.nil? || self.attachment_name == ""
-      # self.attachment_active = false
+      # attachment_secret = SecureRandom.hex(4)
+      # self.attachment_name = File.basename(self.attachment_file_name, ".*") + "_" + attachment_secret if (self.attachment_name.nil? || self.attachment_name == "") && self.attachment_file_name.present?
+      self.attachment_name = self.attachment_file_name if (self.attachment_name.nil? || self.attachment_name == "") && self.attachment_file_name.present?
   end
 
   def attachment_fields
@@ -40,5 +41,16 @@ class Attachment < ActiveRecord::Base
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "attachment_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "attachment_updated_id"
+
+  def attachment_url(type)
+      case(type)
+          when "url"
+              self.attachment.url(:original)
+          when "link"
+              "<a href='#{self.attachment.url(:original)}' target='_blank'>#{self.attachment_name}</a>".html_safe
+          else
+              ""
+      end
+  end
 
 end

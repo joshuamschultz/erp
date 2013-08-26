@@ -59,8 +59,8 @@ img/glyphicons-halflings-white.png: img/glyphicons-halflings-white-6cccd17a7aed9
 img/glyphicons-halflings-white/index.png: img/glyphicons-halflings-white-6cccd17a7aed91dbc0157d343c68c0d9.png
 img/glyphicons-halflings.png: img/glyphicons-halflings-2851b489e8c39f8fad44fc10efb99c3e.png
 img/glyphicons-halflings/index.png: img/glyphicons-halflings-2851b489e8c39f8fad44fc10efb99c3e.png
-main.css: main-bc84e29caf18d6f7764cf6350d6e669d.css
-main/index.css: main-bc84e29caf18d6f7764cf6350d6e669d.css
+main.css: main-830a85d3f87a646de9ef99bb84bffd4c.css
+main/index.css: main-830a85d3f87a646de9ef99bb84bffd4c.css
 rails_admin/aristo/images/bg_fallback.png: rails_admin/aristo/images/bg_fallback-6f9cb8477029d43d00adaa46dd7cf940.png
 rails_admin/aristo/images/bg_fallback/index.png: rails_admin/aristo/images/bg_fallback-6f9cb8477029d43d00adaa46dd7cf940.png
 rails_admin/aristo/images/icon_sprite.png: rails_admin/aristo/images/icon_sprite-0e02a0dbc3fa128644d7c5b6e6217014.png

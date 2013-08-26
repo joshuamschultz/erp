@@ -7,7 +7,7 @@ class Organization < ActiveRecord::Base
 	:organization_name, :organization_notes, :organization_short_name, :organization_state, 
 	:organization_telephone, :organization_type_id, :organization_updated_id, :organization_website, 
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
-	:vendor_quality_id
+	:vendor_quality_id, :organization_complete
 
 	scope :organizations, lambda{|type| 
 		case(type)
@@ -41,7 +41,26 @@ class Organization < ActiveRecord::Base
 			teriitory = Territory.new(:territory_identifier => zipcode)
 			teriitory.save
 		end
-		self.territory = teriitory
+		self.territory = teriitory		
+
+		unless CommonActions.nil_or_blank(self.organization_name) || 
+			CommonActions.nil_or_blank(self.organization_short_name) || 
+			CommonActions.nil_or_blank(self.organization_description) || 
+			CommonActions.nil_or_blank(self.organization_address_1) || 
+			CommonActions.nil_or_blank(self.organization_city) || 
+			CommonActions.nil_or_blank(self.organization_state) || 
+			CommonActions.nil_or_blank(self.organization_zipcode) || 
+			CommonActions.nil_or_blank(self.organization_telephone) || 
+			CommonActions.nil_or_blank(self.organization_website) || 
+			(self.contact_type.type_value == "fax" ? CommonActions.nil_or_blank(self.organization_fax) : CommonActions.nil_or_blank(self.organization_email)) ||
+			(self.organization_type.type_value == "customer" ? (self.customer_quality.nil? || self.min_vendor_quality.nil?) : false) || 
+			(self.organization_type.type_value == "vendor" ? self.vendor_quality.nil? : false)
+				self.organization_complete = true
+		else
+				self.organization_complete = false
+		end
+
+		return true
 	end
 
 	validates_presence_of :organization_type
@@ -85,7 +104,6 @@ class Organization < ActiveRecord::Base
 	has_many :item_alt_names, :dependent => :destroy
 	has_many :so_headers
     has_many :so_lines
-
 
 	def redirect_path
       	organization_path(self)
