@@ -1,4 +1,12 @@
 class ElementsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+
+  end
+
+  autocomplete :element, :element_name, :full => true
+
   # GET /elements
   # GET /elements.json
   def index
@@ -6,7 +14,12 @@ class ElementsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @elements }
+      format.json { @elements.select{ |element|
+        element[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
+        element[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
+        }
+        render json: {:aaData => @elements} 
+      }
     end
   end
 
@@ -44,7 +57,7 @@ class ElementsController < ApplicationController
 
     respond_to do |format|
       if @element.save
-        format.html { redirect_to @element, notice: 'Element was successfully created.' }
+        format.html { redirect_to elements_path, notice: 'Element was successfully created.' }
         format.json { render json: @element, status: :created, location: @element }
       else
         format.html { render action: "new" }
@@ -60,7 +73,7 @@ class ElementsController < ApplicationController
 
     respond_to do |format|
       if @element.update_attributes(params[:element])
-        format.html { redirect_to @element, notice: 'Element was successfully updated.' }
+        format.html { redirect_to elements_path, notice: 'Element was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
