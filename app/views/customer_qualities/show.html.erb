@@ -3,6 +3,7 @@
     <h4 class="span3 left">Quality Level Info</h4>
     <span class="span9 right">
         <%= link_to 'Edit', edit_customer_quality_path(@customer_quality), :class => "btn btn-small" %>
+        <%= link_to (@customer_quality.default_quality.present? ? 'Already Set to Default' : 'Set to Default'), customer_quality_set_default_path(@customer_quality), :class => "btn btn-small" %>
         <%= link_to 'Back to Qualities', customer_qualities_path, :class => "btn btn-small" %>
     </span>
 </div>

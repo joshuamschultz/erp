@@ -32,14 +32,14 @@ class ItemsController < ApplicationController
             if item_revision
               item[:owner_name] = "" #"<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"              
               item[:item_name] = item_revision.item_name
-              item[:item_description] = "test"
+              item[:item_description] = ""
               item[:vendor_name] = "" # "<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
               item[:item_revision_name] = item_revision.item_revision_name
               item[:item_revision_date] = item_revision.item_revision_date
               item[:item_tooling] = item_revision.item_tooling
               item[:item_cost] = item_revision.item_cost
               item[:item_notes] = item_revision.item_notes
-              item[:item_alt_parts] = item.item_alt_names.collect(&:item_alt_identifier).join(", ")
+              item[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
             else
               item[:owner_name] = ""
               item[:item_name] = ""

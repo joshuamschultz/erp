@@ -25,4 +25,5 @@ class ItemAltName < ActiveRecord::Base
   def alt_item_name
   		self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
   end
+
 end

@@ -65,13 +65,15 @@ class Organization < ActiveRecord::Base
 
 	validates_presence_of :organization_type
 
+	validates_presence_of :contact_type
+
 	(validates_uniqueness_of :organization_name if validates_length_of :organization_name, :minimum => 2, :maximum => 50) if validates_presence_of :organization_name
 
-	(validates_uniqueness_of :organization_short_name if validates_length_of :organization_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :organization_short_name	
+	# (validates_uniqueness_of :organization_short_name if validates_length_of :organization_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :organization_short_name	
 
-	validates_formatting_of :organization_telephone, :using => :us_phone if validates_presence_of :organization_telephone
+	# validates_formatting_of :organization_telephone, :using => :us_phone if validates_presence_of :organization_telephone
 
-	validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
+	# validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
 
 	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| o.contact_type.type_value == "email" }
 
