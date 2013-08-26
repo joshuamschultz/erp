@@ -21,7 +21,8 @@
               <span class="fileupload-preview"></span>
               <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
           </div>
-          <div>Current File : <%= @attachment.attachment_url("link") if @attachment.persisted? %></div>
+          <div><%= @attachment.attachment_url("link") if @attachment && @attachment.persisted? %>
+          </div>
     </div>
 </div>
 

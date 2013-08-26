@@ -47,7 +47,7 @@ class Attachment < ActiveRecord::Base
           when "url"
               self.attachment.url(:original)
           when "link"
-              "<a href='#{self.attachment.url(:original)}' target='_blank'>#{self.attachment_name}</a>".html_safe
+              "Current File : <a href='#{self.attachment.url(:original)}' target='_blank'>#{self.attachment_name}</a>".html_safe
           else
               ""
       end

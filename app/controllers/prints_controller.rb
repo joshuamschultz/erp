@@ -53,6 +53,7 @@ class PrintsController < ApplicationController
   # GET /prints/1/edit
   def edit
     @print = Print.find(params[:id])
+    @attachment = @print.attachment
   end
 
   # POST /prints

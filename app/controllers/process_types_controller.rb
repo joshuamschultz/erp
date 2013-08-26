@@ -50,6 +50,7 @@ class ProcessTypesController < ApplicationController
   # GET /process_types/1/edit
   def edit
     @process_type = ProcessType.find(params[:id])
+    @attachment = @process_type.attachment
   end
 
   # POST /process_types
