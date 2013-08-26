@@ -17,11 +17,9 @@
             <thead>
               <tr>
                 <th>SLNO</th>
-                <th>Name</th>
-                <th>Symbol</th>
+                <th>Element</th>
                 <th>Low Range</th>
                 <th>High Range</th>
-                <th>Active</th>
                 <th></th>
               </tr>
             </thead>
@@ -34,15 +32,12 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => material_material_elements_path(@material),
+    {:name => "table_report", :path => material_material_elements_path(@material),
         :columns => '[
                         { "mData": "id" },
                         { "mData": "element_name" },
-                        { "mData": "element_symbol" },
                         { "mData": "element_low_range" },
                         { "mData": "element_high_range" },
-                        { "mData": "element_active" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 

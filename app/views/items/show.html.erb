@@ -5,7 +5,7 @@
         <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
         <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
         <%= link_to 'Edit Revision', edit_item_item_revision_path(@item, @item_revision), :class => "btn btn-small" if @item_revision %> 
-        <%= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>        
+        <%#= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>        
         <%= link_to 'Back to Items', items_path, :class => "btn btn-small" %>
     </span>
 </div>
@@ -35,12 +35,12 @@
                     <td><%= @item_revision.item_description %></td>
                   </tr>
 
-                  <!-- <tr>
+                  <tr>
                     <td>Alt Names:</td>
                     <td>
-                        <%#= @item_revision.item_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
+                        <%= @item.customer_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
                     </td>
-                  </tr> -->                
+                  </tr>           
 
                   <tr>
                     <td>Owner:</td>
@@ -119,7 +119,7 @@
         <div class="row-fluid item_detail_classic_btn">
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
-                    <h4><strong>50</strong></h4>
+                    <h5><strong>50</strong></h5>
                     <span class="txt"><strong>Quantity On Hand</strong></span>
                     <div class="clearfix"></div>
                 </a>
@@ -127,24 +127,32 @@
 
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
-                    <h4><strong>50</strong></h4>
+                    <h5><strong>50</strong></h5>
                     <span class="txt"><strong>Quantity On Order</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
 
-            <div class="span3 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
-                    <h4><strong>$<%= @item_revision.item_cost.to_f if @item_revision %></strong></h4>
+                    <h5><strong>$<%= @item_revision.item_cost.to_f if @item_revision %></strong></h5>
                     <span class="txt"><strong>Cost</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
 
-            <div class="span3 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
-                    <h4><strong>6-42</strong></h4>
+                    <h5><strong>6-42</strong></h5>
                     <span class="txt"><strong>Location</strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span2 well">
+                <a class="widget-stats" href="#" id="">
+                    <h5><strong>50</strong></h5>
+                    <span class="txt"><strong>Lots</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>

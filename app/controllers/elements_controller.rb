@@ -1,11 +1,10 @@
 class ElementsController < ApplicationController
   before_filter :set_page_info
+  autocomplete :element, :element_name, :full => true
 
   def set_page_info
-
-  end
-
-  autocomplete :element, :element_name, :full => true
+    @menus[:inventory][:active] = "active"
+  end  
 
   # GET /elements
   # GET /elements.json

@@ -26,7 +26,7 @@
                 <th>Active</th> 
                 <th>Quantity on Hand</th>  
                 <th>Quantity on Order</th>  
-                <th>Alt Parts</th>  
+                <th>Alt Names</th>  
                 <!-- <th></th> -->
               </tr>
             </thead>
@@ -42,8 +42,8 @@
         :columns => '[
                         { "mData": "owner_name", "bVisible": false },                        
                         { "mData": "item_part_no" },
-                        { "mData": "item_name" },
-                        { "mData": "item_description" },
+                        { "mData": "item_name", "bVisible": false },
+                        { "mData": "item_description", "bVisible": false },
                         { "mData": "vendor_name", "bVisible": false },                       
                         { "mData": "item_revision_name" },
                         { "mData": "item_revision_date", "bVisible": false},
@@ -53,7 +53,7 @@
                         { "mData": "item_active", "bVisible": false },
                         { "mData": "item_quantity_in_hand" },
                         { "mData": "item_quantity_on_order" },
-                        { "mData": "item_alt_parts", "bVisible": false }
+                        { "mData": "item_alt_parts" }
                     ]'
     } 
 %>

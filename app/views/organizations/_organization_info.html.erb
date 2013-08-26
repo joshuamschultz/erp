@@ -1,26 +1,21 @@
 <address class="margin-none">
-    <h4><a href="<%= organization_path(organization) %>"><strong><%= organization.organization_name %></strong></a> (<%= organization.organization_short_name %>)</h4>
+    <h4><a href="<%= organization_path(organization) %>"><strong><%= organization.organization_name %></strong></a> <%= "(" + organization.organization_short_name + ")" if organization.organization_short_name.present? %></h4>
 
     <strong>
-        <%= ('<p>' + organization.organization_description + '</p>').html_safe if organization.organization_description.present? %>
+        <%= ("<p>" + organization.organization_description + "</p>").html_safe %>
     </strong>
 
-    <!--abbr>Address 1 : </abbr-->
-    <%= (organization.organization_address_1 + "<br />").html_safe if organization.organization_address_1.present? %>
+    <%= organization.organization_address_1.present? ? (organization.organization_address_1 + "<br />").html_safe : "" %>
 
-    <!--abbr>Address 2 : </abbr-->
-    <%= (organization.organization_address_2 + '<br />').html_safe if organization.organization_address_2.present? %>
+    <%= organization.organization_address_2.present? ? (organization.organization_address_2 + '<br />').html_safe : "" %>
 
-    <!--abbr>Location : </abbr-->
-    <%= (organization.organization_city + ', ').html_safe if organization.organization_city.present? %> 
-    <%= (organization.organization_state + ', ').html_safe if organization.organization_state.present? %> 
-    <%= organization.organization_zipcode %><br/>
+    <%= (organization.organization_city + ', ').html_safe if organization.organization_city.present? %>
+
+    <%= (organization.organization_state + ', ').html_safe if organization.organization_state.present? %>
+
+    <%= (organization.organization_zipcode + "<br/>").html_safe if organization.organization_zipcode.present? %>
 
     <%= organization.organization_country %><br/>
-
-    <!--abbr>Zip : </abbr-->
-
-    <!--abbr>Active : </abbr--><%#= organization.organization_active %>
 
     <abbr>Telephone: </abbr><%= organization.organization_telephone %><br/>
 

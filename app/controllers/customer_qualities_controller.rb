@@ -77,7 +77,7 @@ class CustomerQualitiesController < ApplicationController
     respond_to do |format|
       if @customer_quality.update_attributes(params[:customer_quality])
         CustomerQuality.quality_level_associations(@customer_quality, params)
-        format.html { redirect_to customer_qualities_url, notice: 'Quality level was successfully updated.' }
+        format.html { redirect_to customer_qualities_url, notice: 'Quality Level was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -97,4 +97,17 @@ class CustomerQualitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def set_default
+    @customer_quality = CustomerQuality.find(params[:customer_quality_id])
+    respond_to do |format|
+      if @customer_quality
+          MasterType.where(:type_category => "default_customer_quality").destroy_all
+          MasterType.create(:type_name => "Default Customer Quality", :type_description => "", :type_value => @customer_quality.id, :type_category => "default_customer_quality", :type_active => true)
+      end
+      format.html { redirect_to @customer_quality, notice: 'Quality Level was successfully added as default.' }
+      format.json { head :no_content }
+    end
+  end
+
 end

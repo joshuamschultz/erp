@@ -3,8 +3,11 @@
 
   <div class="form-inputs">
     <%= f.hidden_field :material_id, :value => @material.id %>
+
     <%= f.association :element, :url => autocomplete_element_element_name_elements_path, :as => :autocomplete, :id_element => '#element_id', required: true, :label => "Element" %>
+
     <%= hidden_field_tag :element_id, (@material_element.element.id if @material_element.persisted? && @material_element.element) %>
+
     <%= hidden_field_tag :org_element_id, (@material_element.element.id if @material_element.persisted? && @material_element.element) %>
 
     <%= f.input :element_low_range, :label => "Low Range" %>
@@ -22,8 +25,13 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_elements"] = ["material_element_element_id", "material_element_element_low_range", "material_element_element_high_range"];
-    $(document).ready(function(){ 
-       $("#material_element_element_id").focus();
-    });
+  tab_field_forms["form_for_elements"] = ["material_element_element_id", "material_element_element_low_range", "material_element_element_high_range"];
+
+  $(document).ready(function(){ 
+    $("#material_element_element_id").focus();
+
+    <% unless @material_element.new_record? %>
+      $("#material_element_element_id").val("<%= @material_element.element.element_name if @material_element.element %>");
+    <% end %>
+  });
 </script>

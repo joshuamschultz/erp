@@ -47,4 +47,8 @@ class CustomerQuality < ActiveRecord::Base
     end
   end
 
+  def default_quality
+      MasterType.find_by_type_category_and_type_value("default_customer_quality", self.id)
+  end
+
 end

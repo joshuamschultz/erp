@@ -1,8 +1,8 @@
 class VendorQuality < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessible :quality_active, :quality_created_id, :quality_description, :quality_name, 
-  :quality_notes, :quality_updated_id
+  attr_accessible :quality_active, :quality_created_id, :quality_description, 
+  :quality_name, :quality_notes, :quality_updated_id
 
    after_initialize :default_values
 
@@ -37,4 +37,9 @@ class VendorQuality < ActiveRecord::Base
   def redirect_path
       vendor_quality_path(self)
   end
+
+  def default_quality
+      MasterType.find_by_type_category_and_type_value("default_vendor_quality", self.id)
+  end
+
 end

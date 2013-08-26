@@ -45,4 +45,8 @@ class Item < ActiveRecord::Base
 
   scope :item_with_recent_revisions, joins(:item_revisions).where("item_revisions.latest_revision = ?", true)
 
+  def customer_alt_names
+      self.item_alt_names.where("organization_id is not NULL")
+  end
+  
 end

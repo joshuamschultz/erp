@@ -95,4 +95,17 @@ class VendorQualitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def set_default
+    @vendor_quality = VendorQuality.find(params[:vendor_quality_id])
+    respond_to do |format|
+      if @vendor_quality
+          MasterType.where(:type_category => "default_vendor_quality").destroy_all
+          MasterType.create(:type_name => "Default Vendor Quality", :type_description => "", :type_value => @vendor_quality.id, :type_category => "default_vendor_quality", :type_active => true)
+      end
+      format.html { redirect_to @vendor_quality, notice: 'Quality ID was successfully added as default.' }
+      format.json { head :no_content }
+    end
+  end
+
 end

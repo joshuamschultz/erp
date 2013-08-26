@@ -1,8 +1,14 @@
 class MaterialElementsController < ApplicationController
   before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update]
 
   def set_page_info
       @menus[:inventory][:active] = "active"
+  end
+
+  def set_autocomplete_values
+      params[:material_element][:element_id], params[:element_id] = params[:element_id], params[:material_element][:element_id]
+      params[:material_element][:element_id] = params[:org_element_id] if params[:material_element][:element_id] == ""
   end
 
   # GET /material_elements
@@ -15,6 +21,7 @@ class MaterialElementsController < ApplicationController
       format.html # index.html.erb
       format.json { 
         @material_elements = @material_elements.select{|element| 
+            element[:element_name] = CommonActions.linkable(element_path(element.element), element.element.element_name)
             element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
                               edit_material_material_element_path(@material, element), 
                               material_material_element_path(@material, element)
@@ -68,6 +75,7 @@ class MaterialElementsController < ApplicationController
         # material_material_element_path(@material, @material_element)
         format.json { render json: @material_element, status: :created, location: @material_element }
       else
+        @material_element.element_id = ""
         format.html { render action: "new" }
         format.json { render json: @material_element.errors, status: :unprocessable_entity }
       end
@@ -86,6 +94,7 @@ class MaterialElementsController < ApplicationController
         # material_material_element_path(@material, @material_element)
         format.json { head :no_content }
       else
+        @material_element.element_id = ""
         format.html { render action: "edit" }
         format.json { render json: @material_element.errors, status: :unprocessable_entity }
       end
