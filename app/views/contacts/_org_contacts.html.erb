@@ -13,7 +13,7 @@
     <!-- // Widget heading END -->
 
     <div class="widget-body">
-        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed row-fluid">
+        <table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid">
             <thead>
               <tr>
                 <% if @contact_type == "contact" %>
@@ -44,7 +44,7 @@
 <% address_fields = (@contact_type == "address") ? '{"mData": "contact_description"}, {"mData": "contact_city"},' : ' ' %>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
-        :name => "table_report", :path => contacts_path(:object_id => @contactable.id, 
+        :name => "table_report_contacts", :path => contacts_path(:object_id => @contactable.id, 
         :contact_type => @contact_type), :extras => {:slno => false}, 
         :columns => '[' + contact_fields + 
                     '

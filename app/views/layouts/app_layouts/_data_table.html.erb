@@ -29,7 +29,7 @@
         });
 
         <% if extras[:grouping] %>
-            data_table.rowGrouping({
+            data_<%= name %>.rowGrouping({
                 "iGroupingColumnIndex": <%= extras[:column_index] %>
             });
         <% end %>

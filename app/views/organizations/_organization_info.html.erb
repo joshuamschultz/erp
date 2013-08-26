@@ -45,5 +45,7 @@
 
     <abbr>Processes: </abbr><%= organization.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank") if process.attachment }.join(",  ").html_safe %><br/>
 
-    <p><abbr>Notes: </abbr><%= organization.organization_notes %></p>
+    <abbr>Notes: </abbr><%= organization.organization_notes %><br/>
+
+    <abbr>Profile: </abbr><strong><%= organization.organization_complete ? "Complete" : "Incomplete" %></strong>
 </address>

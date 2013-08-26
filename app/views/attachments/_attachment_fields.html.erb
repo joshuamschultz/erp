@@ -10,7 +10,7 @@
 <%= f.input :attachment_active, label: "Active" %>
 
 <div class="control-group file required attachment_attachment">
-    <label class="control-label">Choose File <br/><span style="color:#BD362F;">(Only if changed/new)</span></label>
+    <label class="control-label">Choose File <br/><span style="color:#BD362F;">(If changed/new)</span></label>
     <div class="controls">
           <div data-provides="fileupload" class="fileupload fileupload-exists"> 
               <span class="btn btn-default btn-file">
@@ -21,7 +21,10 @@
               <span class="fileupload-preview"></span>
               <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
           </div>
+          <div>Current File : <%= @attachment.attachment_url("link") if @attachment.persisted? %></div>
     </div>
 </div>
+
+
 
  <%#= "error" if @attachment && @attachment.errors && @attachment.errors[:attachment] != [] %>
