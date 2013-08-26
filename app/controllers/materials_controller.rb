@@ -62,8 +62,14 @@ class MaterialsController < ApplicationController
     @material = Material.new(params[:material])   
 
     respond_to do |format|
-      if @material.valid?        
-        @material.material_elements = @duplicate.material_elements.collect{|element| new_element = element.dup } if @duplicate
+      if @material.valid? 
+        if @duplicate   
+          @duplicate.material_elements.each do |element|
+              new_element = element.dup
+              new_element.material_id = @material.id
+              @material.material_elements << new_element
+          end
+        end   
         @material.save
         format.html { redirect_to materials_url, notice: 'Material was successfully created.' }
         format.json { render json: @material, status: :created, location: @material }
