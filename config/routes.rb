@@ -1,6 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
-  resources :elements
+  resources :elements do
+    get :autocomplete_element_element_name, :on => :collection
+  end
 
 
   resources :so_headers do

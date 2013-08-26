@@ -1,35 +1,35 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Element Info</h4>
+  </div>
+    <table class="table table-striped table-bordered">
+      <tbody>
+      <tr>
+        <td>Name:</td>
+        <td><%= @element.element_name %></td>
+      </tr>
 
-<p>
-  <b>Element name:</b>
-  <%= @element.element_name %>
-</p>
+      <tr>
+        <td>Symbol:</td>
+        <td><%= @element.element_symbol %></td>
+      </tr>
 
-<p>
-  <b>Element symbol:</b>
-  <%= @element.element_symbol %>
-</p>
+      <tr>
+        <td>Notes:</td>
+        <td><%= @element.element_notes %></td>
+      </tr>
+      <tr>
+        <td>Active:</td>
+        <td><%= @element.element_active %></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_element_path(@element), :class => "btn" %> 
 
-<p>
-  <b>Element notes:</b>
-  <%= @element.element_notes %>
-</p>
-
-<p>
-  <b>Element created:</b>
-  <%= @element.element_created_id %>
-</p>
-
-<p>
-  <b>Element updated:</b>
-  <%= @element.element_updated_id %>
-</p>
-
-<p>
-  <b>Element active:</b>
-  <%= @element.element_active %>
-</p>
+    <%= link_to 'Back', elements_path, :class => "btn" %>    
+  </div>
+</div>
 
 
-<%= link_to 'Edit', edit_element_path(@element) %> |
-<%= link_to 'Back', elements_path %>
+
