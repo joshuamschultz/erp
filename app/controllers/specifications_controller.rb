@@ -51,6 +51,7 @@ class SpecificationsController < ApplicationController
   # GET /specifications/1/edit
   def edit
     @specification = Specification.find(params[:id])
+    @attachment = @specification.attachment
   end
 
   # POST /specifications
