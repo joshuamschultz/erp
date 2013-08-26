@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :elements
+
+
   resources :so_headers do
     resources :so_lines
     member do

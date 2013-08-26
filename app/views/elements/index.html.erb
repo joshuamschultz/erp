@@ -1,0 +1,33 @@
+<h1>Listing elements</h1>
+
+<table>
+  <tr>
+    <th>Element name</th>
+    <th>Element symbol</th>
+    <th>Element notes</th>
+    <th>Element created</th>
+    <th>Element updated</th>
+    <th>Element active</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @elements.each do |element| %>
+  <tr>
+    <td><%= element.element_name %></td>
+    <td><%= element.element_symbol %></td>
+    <td><%= element.element_notes %></td>
+    <td><%= element.element_created_id %></td>
+    <td><%= element.element_updated_id %></td>
+    <td><%= element.element_active %></td>
+    <td><%= link_to 'Show', element %></td>
+    <td><%= link_to 'Edit', edit_element_path(element) %></td>
+    <td><%= link_to 'Destroy', element, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Element', new_element_path %>

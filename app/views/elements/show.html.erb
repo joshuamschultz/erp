@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Element name:</b>
+  <%= @element.element_name %>
+</p>
+
+<p>
+  <b>Element symbol:</b>
+  <%= @element.element_symbol %>
+</p>
+
+<p>
+  <b>Element notes:</b>
+  <%= @element.element_notes %>
+</p>
+
+<p>
+  <b>Element created:</b>
+  <%= @element.element_created_id %>
+</p>
+
+<p>
+  <b>Element updated:</b>
+  <%= @element.element_updated_id %>
+</p>
+
+<p>
+  <b>Element active:</b>
+  <%= @element.element_active %>
+</p>
+
+
+<%= link_to 'Edit', edit_element_path(@element) %> |
+<%= link_to 'Back', elements_path %>
