@@ -28,6 +28,7 @@ class ContactsController < ApplicationController
             contact[:organization] = CommonActions.linkable(organization_path(contact.contactable), "Organization : " + contact.contactable.organization_short_name)
             contact[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == "contact"
             contact[:contact_name] = contact.contact_title
+            contact[:contact_default] = contact.default_address.present? ? "selected" : ""
             contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
             contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
           }
@@ -127,4 +128,21 @@ class ContactsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def set_default
+    @contact = Contact.find(params[:contact_id])
+    @contactable = @contact.contactable
+
+    respond_to do |format|
+      if @contact && @contactable
+          type_category = @contactable.contact_type_category("address")
+          MasterType.where(:type_category => type_category).destroy_all
+          MasterType.create(:type_name => "Default Organization Contact/Address", :type_description => "", :type_value => @contact.id, :type_category => type_category, :type_active => true)
+      end
+      format.html { redirect_to @contact, notice: 'Address was successfully added as default.' }
+      format.json { head :no_content }
+    end
+  end
+
+
 end

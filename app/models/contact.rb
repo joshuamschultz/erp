@@ -42,4 +42,9 @@ class Contact < ActiveRecord::Base
 
  	has_many :billed_so_orders, :class_name => "SoHeader", :foreign_key => "so_bill_to_id"
  	has_many :shipped_so_orders, :class_name => "SoHeader", :foreign_key => "so_ship_to_id"
+
+ 	def default_address
+ 		type_category = self.contactable.contact_type_category("address")
+ 		MasterType.find_by_type_category_and_type_value(type_category, self.id)
+ 	end
 end

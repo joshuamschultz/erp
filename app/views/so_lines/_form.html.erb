@@ -14,7 +14,7 @@
 
             <%= f.input :so_line_quantity, :label => "Quantity" %>
             
-            <%= f.input :so_line_freight, :label => "Freight Charge" %>
+            <%#= f.input :so_line_freight, :label => "Freight Charge" %>
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
@@ -42,7 +42,7 @@
 <%= render :partial => 'so_lines/line_items' %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_so_line_freight", "so_line_organization_id", "so_line_so_line_notes"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_notes"];
 
     $(document).ready(function(){ 
         $("#so_line_item_alt_name_id").on("focusout", function(){
@@ -82,7 +82,9 @@
     });    
 
     function calculate_line_item_total(){
-        var so_line_total = (parseFloat($("#so_line_so_line_cost").val(), 10) * parseFloat($("#so_line_so_line_quantity").val(), 10)) + parseFloat($("#so_line_so_line_freight").val(), 10);
+        var so_line_total = (parseFloat($("#so_line_so_line_cost").val(), 10) * parseFloat($("#so_line_so_line_quantity").val(), 10));
+        
+        // + parseFloat($("#so_line_so_line_freight").val(), 10);
 
         if(isNaN(so_line_total) == false)
             $("#so_line_so_line_price").val(so_line_total); //.toFixed(10)
