@@ -3,25 +3,39 @@ class ItemRevision < ActiveRecord::Base
 
   belongs_to :item
   belongs_to :owner
-  belongs_to :organization
+  belongs_to :print
+  belongs_to :material
   belongs_to :vendor_quality
   belongs_to :customer_quality
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
-  :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision
+  :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
+  :item_revision_complete
 
-  validates_presence_of :owner
-  validates_presence_of :organization
-  # validates_presence_of :vendor_quality
+  before_save :process_before_save
+
+  def process_before_save
+      unless CommonActions.nil_or_blank(self.item_name) || 
+        CommonActions.nil_or_blank(self.item_description) || 
+        CommonActions.nil_or_blank(self.item_revision_name) || 
+        CommonActions.nil_or_blank(self.item_cost) || 
+        CommonActions.nil_or_blank(self.item_tooling) || 
+        self.owner.nil? || self.organization.nil? || self.print.nil? || self.material.nil?
+          self.item_revision_complete = true
+      else
+          self.item_revision_complete = false
+      end
+
+      return true
+  end
+
+  validates_presence_of :owner, :organization, :print, :material, :item_revision_date
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
   validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
-  validates_presence_of :item_revision_date
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
-  validates_presence_of :print
-  validates_presence_of :material
 
   after_save :update_recent_revision
 
@@ -34,28 +48,19 @@ class ItemRevision < ActiveRecord::Base
   end
 
   # has_one :item_print, :dependent => :destroy
-  # has_one :print, :through => :item_print
-
-  belongs_to :print
+  # has_one :print, :through => :item_print 
 
   # has_many :item_materials, :dependent => :destroy
   # has_many :materials, :through => :item_materials
 
-  belongs_to :material
-
   has_many :item_processes, :dependent => :destroy
   has_many :process_types, :through => :item_processes
-
   has_many :item_specifications, :dependent => :destroy
   has_many :specifications, :through => :item_specifications 
-
   has_many :item_selected_names, :dependent => :destroy
   has_many :item_alt_names, :through => :item_selected_names
-
   has_many :item_part_dimensions, :dependent => :destroy
-
   has_many :attachments, :as => :attachable, :dependent => :destroy
-
   has_many :po_lines, :dependent => :destroy
 
 	def self.process_item_associations(item_revision, params)

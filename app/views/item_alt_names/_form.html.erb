@@ -14,10 +14,15 @@
 
   <%= hidden_field_tag :org_organization_id, (@item_alt_name.organization.id if @item_alt_name.persisted? && @item_alt_name.organization) %>    
 
-    <%= f.input :item_alt_identifier, label: "Alt Name" %>
-    <%= f.input :item_alt_description, label: "Description" %>
-    <%= f.input :item_alt_notes, label: "Notes" %>
-    <%= f.input :item_alt_active, label: "Active" %>
+  <%= f.input :item_alt_identifier, label: "Alt Name" %>
+
+  <% unless params[:new_item] %> 
+      <%= f.input :item_alt_description, label: "Description" %>
+      <%= f.input :item_alt_notes, label: "Notes" %>
+      <%= f.input :item_alt_active, label: "Active" %>
+  <% end %>
+
+  <%= hidden_field_tag :new_item, true if params[:new_item] %> 
   </div>
 
   <div class="separator bottom"></div>
@@ -30,7 +35,11 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_item_alt_name"] = ["item_alt_name_item_id", "item_alt_name_organization_id", "item_alt_name_item_alt_identifier", "item_alt_name_item_alt_description", "item_alt_name_item_alt_notes", "item_alt_name_item_alt_active"];
+    <% unless params[:new_item] %> 
+        tab_field_forms["form_for_item_alt_name"] = ["item_alt_name_item_id", "item_alt_name_organization_id", "item_alt_name_item_alt_identifier", "item_alt_name_item_alt_description", "item_alt_name_item_alt_notes", "item_alt_name_item_alt_active"];
+    <% else %>
+        tab_field_forms["form_for_item_alt_name"] = ["item_alt_name_item_id", "item_alt_name_organization_id", "item_alt_name_item_alt_identifier"];
+    <% end %>
 
     $(document).ready(function(){ 
 

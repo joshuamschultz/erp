@@ -1,8 +1,9 @@
 class ItemRevisionsController < ApplicationController
+  before_filter :set_page_info
+  before_filter :set_autocomplete_values, only: [:create, :update]
+
   # GET items/1/item_revisions
   # GET items/1/item_revisions.json
-  before_filter :set_autocomplete_values, only: [:create, :update] 
-
   def set_autocomplete_values
       params[:item_revision][:print_id], params[:print_id] = params[:print_id], params[:item_revision][:print_id]
       params[:item_revision][:print_id] = params[:org_print_id] if params[:item_revision][:print_id] == ""
@@ -12,6 +13,10 @@ class ItemRevisionsController < ApplicationController
   
       params[:item_revision][:organization_id], params[:organization_id] = params[:organization_id], params[:item_revision][:organization_id]
       params[:item_revision][:organization_id] = params[:org_organization_id] if params[:item_revision][:organization_id] == ""
+  end
+
+  def set_page_info
+      @menus[:inventory][:active] = "active"
   end
 
   def index
