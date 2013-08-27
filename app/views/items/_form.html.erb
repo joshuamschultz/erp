@@ -7,7 +7,7 @@
     <%= f.simple_fields_for :item_revisions do |g| %>
             <%#= g.input :item_name, :label => "Name" %>
 
-            <%= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Name" %>
+            <%= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Part Name" %>
 
             <%= g.input :item_description, :label => "Description" %>
 
