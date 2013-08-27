@@ -35,8 +35,16 @@ class SoHeadersController < ApplicationController
         @so_headers = @so_headers.select{|so_header|
           so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
           so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
-          so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_title)
-          so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_title)
+          if so_header.bill_to_address
+              so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_title)
+          else
+              so_header[:bill_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+          end
+          if so_header.ship_to_address
+              so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_title)
+          else
+              so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+          end
           so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
          }
          render json: {:aaData => @so_headers} 

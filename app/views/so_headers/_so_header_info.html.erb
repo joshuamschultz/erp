@@ -13,12 +13,12 @@
 
           <tr>
             <td class="span2">Bill To:</td>
-            <td class="span5"><strong><%= link_to @so_header.bill_to_address.contact_title, @so_header.bill_to_address %></strong></td>
+            <td class="span5"><strong><%= @so_header.bill_to_address ? link_to(@so_header.bill_to_address.contact_title, @so_header.bill_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Ship To:</td>
-            <td class="span5"><strong><%= link_to @so_header.ship_to_address.contact_title, @so_header.bill_to_address %></strong></td>
+            <td class="span5"><strong><%= @so_header.ship_to_address ? link_to(@so_header.ship_to_address.contact_title, @so_header.ship_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong></td>
           </tr>
 
           <!-- <tr>

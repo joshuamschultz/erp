@@ -5,7 +5,10 @@
         <%= f.input :item_revision_name, :label => "Revision Title", :autofocus => true %>
         <%= f.input :item_revision_date, :as => "string", :label => "Revision Date" %>
 
-        <%= f.input :item_name, :label => "Part Name" %>
+        <%#= f.input :item_name, :label => "Part Name" %>
+        <%= f.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Name" %>
+
+
         <%= f.input :item_description, :label => "Description" %>
 
         <!-- <div class="control-group">
