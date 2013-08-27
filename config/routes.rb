@@ -68,7 +68,9 @@ AllianceFasteners::Application.routes.draw do
 
   resources :organization_processes
 
-  resources :contacts
+  resources :contacts do
+      get 'set_default'
+  end
 
   resources :comments
 
