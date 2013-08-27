@@ -1,6 +1,8 @@
 class CommoditiesController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :commodity, :commodity_identifier, :full => true
+
   def set_page_info
       @menus[:system][:active] = "active"
   end
