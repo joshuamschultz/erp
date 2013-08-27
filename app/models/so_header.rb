@@ -4,7 +4,7 @@ class SoHeader < ActiveRecord::Base
 	attr_accessible :so_bill_to_id, :so_cofc, :so_comments, :so_identifier, :so_notes, 
 	:so_ship_to_id, :so_squality, :so_status, :so_total, :organization_id
   
-  validates_presence_of :organization, :bill_to_address, :ship_to_address
+  validates_presence_of :organization
   
   belongs_to :organization
 

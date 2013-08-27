@@ -16,7 +16,7 @@
 
         <div class="control-group select required so_header_bill_to_address">
             <label for="so_header_so_bill_to_id" class="select required control-label">
-                <abbr title="required">*</abbr> Bill To
+                <abbr title="required"></abbr> Bill To
             </label>
             <div class="controls">
                 <select name="so_header[so_bill_to_id]" id="so_header_so_bill_to_id" class="select required">
@@ -27,12 +27,18 @@
 
         <div class="control-group select required so_header_ship_to_address">
             <label for="so_header_so_ship_to_id" class="select required control-label">
-                <abbr title="required">*</abbr> Ship To
+                <abbr title="required"></abbr> Ship To
             </label>            
             <div class="controls">
                 <select name="so_header[so_ship_to_id]" id="so_header_so_ship_to_id" class="select required">
 
                 </select>
+            </div>
+        </div>
+
+       <div class="control-group">
+            <div class="controls">
+                * If addresses are blank will be using profile address.
             </div>
         </div>
 

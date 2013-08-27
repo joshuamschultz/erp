@@ -75,6 +75,7 @@ AllianceFasteners::Application.routes.draw do
   resources :comments
 
   resources :organizations do
+      get 'main_address'
       member do
           post 'populate'
           get 'organization_info'
