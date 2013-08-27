@@ -111,6 +111,11 @@
                 <td>Active:</td>
                 <td><%= @item.item_active %></td>
               </tr>
+
+              <tr>
+                <td>Profile:</td>
+                <td><strong><%= @item_revision.item_revision_complete ? "Complete" : "Incomplete" %></strong></td>
+              </tr>
             </tbody>
           </table>
     </div>

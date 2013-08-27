@@ -21,9 +21,9 @@
 
          <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-        <%= hidden_field_tag :organization_id, (@item_revision.organization.id unless @item_revision.new_record? && @item_revision.organization.nil?) %>
+        <%= hidden_field_tag :organization_id, (@item_revision.organization.id if @item_revision.persisted? && @item_revision.organization) %>
 
-        <%= hidden_field_tag :org_organization_id, (@item_revision.organization.id unless @item_revision.new_record? && @item_revision.organization.nil?) %>
+        <%= hidden_field_tag :org_organization_id, (@item_revision.organization.id if @item_revision.persisted? && @item_revision.organization) %>
 
 
 

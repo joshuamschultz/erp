@@ -71,14 +71,24 @@ class ItemAltNamesController < ApplicationController
   # POST /item_alt_names.json
   def create
     @item_alt_name = ItemAltName.new(params[:item_alt_name])
-    respond_to do |format|
-      if @item_alt_name.save
-        format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully created.' }
-        format.json { render json: @item_alt_name, status: :created, location: @item_alt_name }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @item_alt_name.errors, status: :unprocessable_entity }
-      end
+    respond_to do |format|      
+        if params[:new_item] && params[:item_alt_name][:item_id] == "" &&  params[:item_id] != ""
+            @item = Item.new(:item_part_no => params[:item_id])
+            @item.item_revisions.build
+            @item.save(:validate => false)
+            @item_alt_name.item_id = @item.id
+            @item_alt_name.save
+            format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        elsif @item_alt_name.save
+            format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully created.' }
+            format.json { render json: @item_alt_name, status: :created, location: @item_alt_name }
+        else
+            @item_alt_name.valid?
+            @item_alt_name.item_id = ""
+            @item_alt_name.organization_id = ""
+            format.html { render action: "new" }
+            format.json { render json: @item_alt_name.errors, status: :unprocessable_entity }
+        end
     end
   end
 
@@ -92,6 +102,8 @@ class ItemAltNamesController < ApplicationController
         format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully updated.' }
         format.json { head :no_content }
       else
+        @item_alt_name.item_id = ""
+        @item_alt_name.organization_id = ""
         format.html { render action: "edit" }
         format.json { render json: @item_alt_name.errors, status: :unprocessable_entity }
       end

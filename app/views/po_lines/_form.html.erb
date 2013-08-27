@@ -34,6 +34,11 @@
 
             <%= hidden_field_tag :org_alt_name_id, (@po_line.item_alt_name.id unless @po_line.new_record?) %>
 
+            <div class="control-group">
+                <label for="item_processes" class="optional control-label"></label>
+                <div class="controls"> <%= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn btn-small", :target => "_blank" %> </div>
+            </div>
+
             <%= f.input :po_line_quantity, :label => "Quantity" %>                       
 
             <%= f.input :po_line_cost, :label => "Cost" %>            
