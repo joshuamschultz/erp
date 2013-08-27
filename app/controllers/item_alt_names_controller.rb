@@ -17,8 +17,8 @@ class ItemAltNamesController < ApplicationController
 
   def get_autocomplete_items(parameters)    
     items = super(parameters)
-    matched_altnames = ItemAltName.where("organization_id is NULL or organization_id = ?", params[:organization_id])
-    items = matched_altnames.where("item_alt_identifier like ?", "%" + params[:term] + "%")
+    # matched_altnames = ItemAltName.where("organization_id is NULL or organization_id = ?", params[:organization_id])
+    items = ItemAltName.where("item_alt_identifier like ?", "%" + params[:term] + "%")
   end
 
   # GET /item_alt_names
