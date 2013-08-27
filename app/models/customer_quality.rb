@@ -22,6 +22,7 @@ class CustomerQuality < ActiveRecord::Base
 
   has_many :item_revisions
   has_many :po_lines
+  has_many :so_lines
 
   has_many :attachments, :as => :attachable, :dependent => :destroy
 

@@ -22,6 +22,8 @@
 
             <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.persisted? && @so_line.organization) %>
 
+            <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => (@so_line.persisted? && @so_line.customer_quality.present? ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
+
             <%= f.input :so_line_notes, :label => "Notes" %>
 
             <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
@@ -42,7 +44,7 @@
 <%= render :partial => 'so_lines/line_items' %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_notes"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_organization_id", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
     $(document).ready(function(){ 
         $("#so_line_item_alt_name_id").on("focusout", function(){
