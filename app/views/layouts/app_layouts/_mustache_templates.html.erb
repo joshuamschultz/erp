@@ -2,7 +2,7 @@
 <script type="text/template" class="<%= type %>-template" style="display:none">
 	<% case(type) %>
 		<% when "address-select-box" %>
-				{{# aaData}}<option value="{{id}}">{{contact_name}}</option>{{/ aaData}}
+				{{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_name}}</option>{{/ aaData}}
 		<% else %>
 
 	<% end%>

@@ -36,8 +36,8 @@
             </div>
         </div>
 
-        <%= f.input :so_cofc, :label => "COFC"  %>
-        <%= f.input :so_squality, :label => "S Quality" %>
+        <%#= f.input :so_cofc, :label => "COFC"  %>
+        <%#= f.input :so_squality, :label => "S Quality" %>
 
         <%#= f.association :bill_to_address, :label => "Bill To", :label_method => "contact_title", :label_value => "id", :include_blank => false %>
 
@@ -68,7 +68,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_bill_to_id", "so_header_so_ship_to_id", "so_header_so_cofc", "so_header_so_squality"];
+    tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_bill_to_id", "so_header_so_ship_to_id"];
       
     $(document).ready(function(){ 
         $("#so_header_organization_id").on("focusout", function(){

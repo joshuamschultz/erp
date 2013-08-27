@@ -152,4 +152,13 @@ class Organization < ActiveRecord::Base
   		self.organization_type.type_value
   	end
 
+  	def contact_type_category(type)
+ 		"default_" + type + "_of_org_" + self.id.to_s
+ 	end
+
+ 	def default_address
+ 		type_category = self.contact_type_category("address")
+ 		MasterType.find_by_type_category(type_category)
+ 	end
+
 end
