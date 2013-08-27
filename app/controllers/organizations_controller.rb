@@ -151,5 +151,9 @@ class OrganizationsController < ApplicationController
       end
   end
 
+  def main_address
+      @organization = Organization.find(params[:organization_id])
+  end
+
 
 end
