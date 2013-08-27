@@ -51,6 +51,9 @@ class OrganizationsController < ApplicationController
             when "min_quality"
                 min_vendor_quality = @organization.min_vendor_quality.present? ? @organization.min_vendor_quality.quality_name : ""
                 render json: {min_vendor_quality: min_vendor_quality}
+            when "quality_level"
+                quality_level = @organization.customer_quality.present? ? @organization.customer_quality : ""
+                render json: {quality_level: quality_level}
             else
                 render json: @organization
         end

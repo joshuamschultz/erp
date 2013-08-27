@@ -7,13 +7,8 @@
   <table class="table table-striped table-bordered">
     <tbody>
         <tr>
-          <td class="span2">Symbol :</td>
-          <td class="span5"><%= @material_element.element_symbol %></td>
-        </tr>
-
-        <tr>
-          <td class="span3">Name :</td>
-          <td class="span5"><%= @material_element.element_name %></td>
+          <td class="span3">Element :</td>
+          <td class="span5"><%= link_to @material_element.element.element_name, @material_element.element %></td>
         </tr>
 
         <tr>

@@ -24,6 +24,7 @@ class SoLinesController < ApplicationController
         @so_lines = @so_lines.select{|so_line|
           so_line[:item_part_no] = CommonActions.linkable(item_path(so_line.item, item_revision: so_line.item_revision.id), so_line.item_alt_name.item_alt_identifier)
           so_line[:vendor_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name)
+          so_line[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
           so_line[:links] = CommonActions.object_crud_paths(nil, edit_so_header_so_line_path(@so_header, so_line), nil)
           so_line[:customer_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name)
         }
