@@ -97,7 +97,9 @@ AllianceFasteners::Application.routes.draw do
   resources :territories
 
 
-  resources :commodities
+  resources :commodities do
+      get :autocomplete_commodity_commodity_identifier, :on => :collection
+  end
 
 
   resources :company_infos
