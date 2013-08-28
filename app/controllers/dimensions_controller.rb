@@ -2,7 +2,7 @@ class DimensionsController < ApplicationController
   before_filter :set_page_info
 
   def set_page_info
-      @menus[:inventory][:active] = "active"
+      @menus[:quality][:active] = "active"
   end
 
   # GET /dimensions

@@ -22,6 +22,7 @@ class MaterialElementsController < ApplicationController
       format.json { 
         @material_elements = @material_elements.select{|element| 
             element[:element_name] = CommonActions.linkable(element_path(element.element), element.element.element_name)
+            element[:element_symbol] = element.element.element_symbol
             element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
                               edit_material_material_element_path(@material, element), 
                               material_material_element_path(@material, element)

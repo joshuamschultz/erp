@@ -1,10 +1,16 @@
 class ElementsController < ApplicationController
   before_filter :set_page_info
-  autocomplete :element, :element_name, :full => true
+  autocomplete :element, :element_name, :full => true, :display_value => :element_symbol_name
 
   def set_page_info
     @menus[:inventory][:active] = "active"
-  end  
+  end
+
+  def get_autocomplete_items(parameters)
+    items = super(parameters)  
+    input_term = "%" + params[:term] + "%"
+    items = Element.where("element_name like ? or element_symbol like ?", input_term, input_term)
+  end
 
   # GET /elements
   # GET /elements.json

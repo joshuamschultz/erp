@@ -113,13 +113,12 @@ module CommonActions
 		menus[:inventory] = {:class => "hasSubmenu glyphicons cargo", :path => "#", :name => "Inventory", :type => "multiple"}
 		menus[:inventory][:sub_menu] = 	[
 											{:path => items_path, :name => "Items"},
+											{:path => item_alt_names_path, :name => "Alt Names"},
 											{:path => prints_path, :name => "Prints"},
-											{:path => elements_path, :name => "Elements"},
-											{:path => materials_path, :name => "Materials"},
 											{:path => process_types_path, :name => "Processes"},
 											{:path => specifications_path, :name => "Specifications"},
-											{:path => item_alt_names_path, :name => "Alt Names"},
-											{:path => dimensions_path, :name => "Dimension Types"}
+											{:path => materials_path, :name => "Materials"},
+											{:path => elements_path, :name => "Elements"}
 										]
 
 		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
@@ -153,7 +152,8 @@ module CommonActions
 											{:path => "#", :name => "Customer Response"},
 											{:path => "#", :name => "Quality Action"},
 											{:path => vendor_qualities_path, :name => "Quality ID"},
-											{:path => customer_qualities_path, :name => "Quality Level"}
+											{:path => customer_qualities_path, :name => "Quality Level"},
+											{:path => dimensions_path, :name => "Dimension Types"}
 										]
 		
 		menus[:shipments] = {:class => "glyphicons boat", :path => "#", :name => "Shipments", :type => "single"}
