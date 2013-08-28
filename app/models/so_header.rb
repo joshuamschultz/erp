@@ -24,6 +24,7 @@ class SoHeader < ActiveRecord::Base
   		self.so_status = "open"
     	self.so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
     	self.so_identifier.slice!(2)
+      self.so_identifier = "S" + self.so_identifier
   end
 
   def redirect_path

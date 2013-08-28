@@ -31,7 +31,7 @@
     $("#material_element_element_id").focus();
 
     <% unless @material_element.new_record? %>
-      $("#material_element_element_id").val("<%= @material_element.element.element_name if @material_element.element %>");
+      $("#material_element_element_id").val("<%= @material_element.element.element_symbol_name if @material_element.element %>");
     <% end %>
   });
 </script>

@@ -8,6 +8,10 @@ class Element < ActiveRecord::Base
   
   def default_values
   		self.element_active = true if self.attributes.has_key?("element_active") && self.element_active.nil?
-  end  
+  end
+
+  def element_symbol_name
+  		self.element_name + " (#{self.element_symbol})"
+  end
 
 end

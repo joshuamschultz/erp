@@ -15,6 +15,7 @@ class PoHeader < ActiveRecord::Base
   		self.po_status = "open"
       self.po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
       self.po_identifier.slice!(2)
+      self.po_identifier = "P" + self.po_identifier
   end
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
