@@ -48,7 +48,19 @@ mastertypes = [
          ["Parker Form 35", "", "parker_form_35", "customer_quality_level", "true"],
          ["Parker Form 36", "", "parker_form_36", "customer_quality_level", "true"],
          ["Textron Cof C", "", "textron_cof_c", "customer_quality_level", "true"],
-         ["Goodrich Release Check", "", "goodrich_release_check", "customer_quality_level", "true"]
+         ["Goodrich Release Check", "", "goodrich_release_check", "customer_quality_level", "true"],
+         # Inspection level
+         ["Level 1" ,"" ,"level_1" , "inspection_level", "true"],
+         ["Level 2" ,"" ,"level_2" , "inspection_level", "true"],
+         ["Level 3" ,"" ,"level_3" , "inspection_level", "true"],
+         # Inspection method
+         ["Single", "", "single", "inspection_method", "true"],
+         ["Double", "", "double", "inspection_method", "true"],
+         ["Multiple", "", "multiple", "inspection_method", "true"],
+         # Inspection Type
+         ["Normal", "", "normal", "inspection_type", "true"],
+         ["Reduced", "", "reduced", "inspection_type", "true"],
+         ["Tightened", "", "tightened", "inspection_type", "true"]
 ]
 
 mastertypes.each do |master|
