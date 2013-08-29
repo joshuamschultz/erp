@@ -1,0 +1,2 @@
+module QualityLotsHelper
+end

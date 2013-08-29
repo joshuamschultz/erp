@@ -39,6 +39,10 @@ GEM
       sass (~> 3.2)
     builder (3.0.4)
     cancan (1.6.10)
+    client_side_validations (3.2.6)
+    client_side_validations-simple_form (2.1.0)
+      client_side_validations (~> 3.2.5)
+      simple_form (~> 2.1.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.1)
@@ -187,6 +191,8 @@ DEPENDENCIES
   bootstrap-datetimepicker-rails
   bootstrap-sass (~> 2.3.1.0)
   cancan
+  client_side_validations
+  client_side_validations-simple_form
   coffee-rails (~> 3.2.1)
   countries
   country_select

@@ -1,0 +1,75 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Po header:</b>
+  <%= @quality_lot.po_header %>
+</p>
+
+<p>
+  <b>Po line:</b>
+  <%= @quality_lot.po_line %>
+</p>
+
+<p>
+  <b>Item revision:</b>
+  <%= @quality_lot.item_revision %>
+</p>
+
+<p>
+  <b>Lot control no:</b>
+  <%= @quality_lot.lot_control_no %>
+</p>
+
+<p>
+  <b>Lot quantity:</b>
+  <%= @quality_lot.lot_quantity %>
+</p>
+
+<p>
+  <b>Inspection level:</b>
+  <%= @quality_lot.inspection_level_id %>
+</p>
+
+<p>
+  <b>Inspection method:</b>
+  <%= @quality_lot.inspection_method_id %>
+</p>
+
+<p>
+  <b>Inspection type:</b>
+  <%= @quality_lot.inspection_type_id %>
+</p>
+
+<p>
+  <b>Lot inspector:</b>
+  <%= @quality_lot.lot_inspector_id %>
+</p>
+
+<p>
+  <b>Lot finalized at:</b>
+  <%= @quality_lot.lot_finalized_at %>
+</p>
+
+<p>
+  <b>Lot notes:</b>
+  <%= @quality_lot.lot_notes %>
+</p>
+
+<p>
+  <b>Lot active:</b>
+  <%= @quality_lot.lot_active %>
+</p>
+
+<p>
+  <b>Lot created:</b>
+  <%= @quality_lot.lot_created_id %>
+</p>
+
+<p>
+  <b>Lot updated:</b>
+  <%= @quality_lot.lot_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_po_header_quality_lot_path(@quality_lot.po_header, @quality_lot) %> |
+<%= link_to 'Back', po_header_quality_lots_path(@quality_lot.po_header) %>
