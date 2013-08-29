@@ -15,6 +15,10 @@ class MasterType < ActiveRecord::Base
 
   has_many :type_based_pos, :class_name => "PoHeader", :foreign_key => "po_type_id"
 
+  has_many :level_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_level_id"
+  has_many :method_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_method_id"
+  has_many :type_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_type_id"
+
   has_many :customer_quality_levels, :dependent => :destroy
   has_many :customer_qualities, :through => :customer_quality_levels
 

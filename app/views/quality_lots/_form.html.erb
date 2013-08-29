@@ -1,0 +1,73 @@
+<%= form_for([@quality_lot.po_header, @quality_lot]) do |f| %>
+  <% if @quality_lot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@quality_lot.errors.count, "error") %> prohibited this quality_lot from being saved:</h2>
+
+      <ul>
+      <% @quality_lot.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :po_header %><br />
+    <%= f.text_field :po_header %>
+  </div>
+  <div class="field">
+    <%= f.label :po_line %><br />
+    <%= f.text_field :po_line %>
+  </div>
+  <div class="field">
+    <%= f.label :item_revision %><br />
+    <%= f.text_field :item_revision %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_control_no %><br />
+    <%= f.text_field :lot_control_no %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_quantity %><br />
+    <%= f.number_field :lot_quantity %>
+  </div>
+  <div class="field">
+    <%= f.label :inspection_level_id %><br />
+    <%= f.number_field :inspection_level_id %>
+  </div>
+  <div class="field">
+    <%= f.label :inspection_method_id %><br />
+    <%= f.number_field :inspection_method_id %>
+  </div>
+  <div class="field">
+    <%= f.label :inspection_type_id %><br />
+    <%= f.number_field :inspection_type_id %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_inspector_id %><br />
+    <%= f.number_field :lot_inspector_id %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_finalized_at %><br />
+    <%= f.datetime_select :lot_finalized_at %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_notes %><br />
+    <%= f.text_area :lot_notes %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_active %><br />
+    <%= f.check_box :lot_active %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_created_id %><br />
+    <%= f.number_field :lot_created_id %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_updated_id %><br />
+    <%= f.number_field :lot_updated_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

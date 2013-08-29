@@ -24,6 +24,7 @@ class PoHeader < ActiveRecord::Base
   	:conditions => ['type_category = ?', 'po_type']
 
   has_many :po_lines, :dependent => :destroy
+  has_many :quality_lots, :dependent => :destroy
   has_many :comments, :as => :commentable, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
 

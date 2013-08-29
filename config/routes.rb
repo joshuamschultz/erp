@@ -4,7 +4,6 @@ AllianceFasteners::Application.routes.draw do
     get :autocomplete_element_element_name, :on => :collection
   end
 
-
   resources :so_headers do
     resources :so_lines
     member do
@@ -23,6 +22,7 @@ AllianceFasteners::Application.routes.draw do
   resources :customer_quality_levels
 
   resources :po_headers do
+    resources :quality_lots
     resources :po_lines
     member do
         post 'populate'

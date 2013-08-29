@@ -62,6 +62,7 @@ class ItemRevision < ActiveRecord::Base
   has_many :item_part_dimensions, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :po_lines, :dependent => :destroy
+  has_many :quality_lots, :dependent => :destroy
 
 	def self.process_item_associations(item_revision, params)
       	if item_revision
