@@ -21,6 +21,9 @@ class SoHeadersController < ApplicationController
       elsif params[:item_revision_id].present?
           @item_revision = ItemRevision.find(params[:item_revision_id])
           @so_headers = @item_revision.present? ? @item_revision.sales_orders : []
+      elsif params[:item_id].present?
+          @item = Item.find(params[:item_id])
+          @so_headers = @item.present? ? @item.sales_orders : []
       else
           @so_headers = SoHeader.order(:created_at)
       end

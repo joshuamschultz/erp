@@ -177,7 +177,7 @@
     all_path: item_path(@item, :revision_id => @item_revision.id),
     open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
     closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
-    index_path: po_headers_path(:po_status => params[:po_status], :item_revision_id => @item_revision.id),
+    index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id),
     new_path: new_po_header_path
     }
 %>
@@ -186,7 +186,7 @@
     all_path: item_path(@item, :revision_id => @item_revision.id),
     open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
     closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
-    index_path: so_headers_path(:so_status => params[:so_status], :item_revision_id => @item_revision.id),
+    index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id),
     new_path: new_so_header_path
     }
 %>
