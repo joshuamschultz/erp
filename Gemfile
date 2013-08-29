@@ -65,3 +65,6 @@ gem 'cancan'
 gem 'role_model'
 
 gem 'rails_admin'
+
+gem 'client_side_validations'
+gem 'client_side_validations-simple_form'
