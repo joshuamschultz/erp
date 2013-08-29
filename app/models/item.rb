@@ -48,5 +48,13 @@ class Item < ActiveRecord::Base
   def customer_alt_names
       self.item_alt_names.where("organization_id is not NULL")
   end
+
+  def purchase_orders
+      PoHeader.joins(:po_lines).where("po_lines.item_id = ?", self.id)
+  end
+
+  def sales_orders
+      SoHeader.joins(:so_lines).where("so_lines.item_id = ?", self.id)
+  end 
   
 end
