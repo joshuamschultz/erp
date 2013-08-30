@@ -1,16 +1,27 @@
-<%= simple_form_for(@fmea_type) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for(@fmea_type, :html => {:id => "form_for_processes",:class => "form-horizontal", :multipart => true}) do |g| %>
+  <%= g.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :fmea_name %>
-    <%= f.input :fmea_description %>
-    <%= f.input :fmea_notes %>
-    <%= f.input :fmea_active %>
-    <%= f.input :fmea_created_id %>
-    <%= f.input :fmea_updated_id %>
-  </div>
+  <%= g.simple_fields_for :attachment do |f| %>
+    <div class="form-inputs">        
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
+    </div>
+  <% end %>
+
+  <div class="separator bottom"></div> 
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= g.button :submit, :class => "btn" %>
+
+    <%= link_to 'Delete', fmea_type_path(@fmea_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @fmea_type.new_record? %>
+    
+    <%= link_to 'Back to Processes', fmea_types_path, :class => "btn" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_processes"] = ["fmea_type_attachment_attributes_attachment_name", "fmea_type_attachment_attributes_attachment_revision_title", "fmea_type_attachment_attributes_attachment_revision_date", "fmea_type_attachment_attributes_attachment_description", "fmea_type_attachment_attributes_attachment_public", "fmea_type_attachment_attributes_attachment_active", "fmea_type_attachment_attributes_attachment"];
+
+  <% date_box_date = @fmea_type.new_record? ? Date.today : @fmea_type.attachment.attachment_revision_date %> 
+
+  date_box_fields = date_box_fields.concat([{"name":"fmea_type_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
+</script>

@@ -1,4 +1,10 @@
 class FmeaTypesController < ApplicationController
+   before_filter :set_page_info
+
+  def set_page_info
+  end
+  # GET
+
   # GET /fmea_types
   # GET /fmea_types.json
   def index
@@ -6,7 +12,15 @@ class FmeaTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @fmea_types }
+      format.json { 
+          @fmea_types = @fmea_types.collect{|fmea_type| 
+          attachment = fmea_type.attachment.attachment_fields
+          attachment[:attachment_name] = CommonActions.linkable(fmea_type_path(fmea_type), attachment.attachment_name)
+          attachment[:links] = CommonActions.object_crud_paths(nil, edit_fmea_type_path(fmea_type), nil)
+          attachment
+        }
+        render json: {:aaData => @fmea_types} 
+      }
     end
   end
 
@@ -14,6 +28,7 @@ class FmeaTypesController < ApplicationController
   # GET /fmea_types/1.json
   def show
     @fmea_type = FmeaType.find(params[:id])
+    @attachment = @fmea_type.attachment
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +40,7 @@ class FmeaTypesController < ApplicationController
   # GET /fmea_types/new.json
   def new
     @fmea_type = FmeaType.new
+    @fmea_type.build_attachment
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,8 +59,9 @@ class FmeaTypesController < ApplicationController
     @fmea_type = FmeaType.new(params[:fmea_type])
 
     respond_to do |format|
+      @fmea_type.attachment.created_by = current_user
       if @fmea_type.save
-        format.html { redirect_to @fmea_type, notice: 'Fmea type was successfully created.' }
+        format.html { redirect_to fmea_types_url, notice: 'Fmea type was successfully created.' }
         format.json { render json: @fmea_type, status: :created, location: @fmea_type }
       else
         format.html { render action: "new" }
@@ -59,8 +76,9 @@ class FmeaTypesController < ApplicationController
     @fmea_type = FmeaType.find(params[:id])
 
     respond_to do |format|
+      @fmea_type.attachment.created_by = current_user
       if @fmea_type.update_attributes(params[:fmea_type])
-        format.html { redirect_to @fmea_type, notice: 'Fmea type was successfully updated.' }
+        format.html { redirect_to fmea_types_url, notice: 'Fmea type was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
