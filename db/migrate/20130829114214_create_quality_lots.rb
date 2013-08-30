@@ -4,6 +4,9 @@ class CreateQualityLots < ActiveRecord::Migration
       t.references :po_header
       t.references :po_line
       t.references :item_revision
+      t.references :process_flow
+      t.references :control_plan
+      t.references :fmea_type
       t.string :lot_control_no
       t.integer :lot_quantity
       t.integer :inspection_level_id
@@ -11,6 +14,7 @@ class CreateQualityLots < ActiveRecord::Migration
       t.integer :inspection_type_id
       t.integer :lot_inspector_id
       t.datetime :lot_finalized_at
+      t.string :lot_aql_no
       t.text :lot_notes
       t.boolean :lot_active
       t.integer :lot_created_id

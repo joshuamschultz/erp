@@ -1,0 +1,33 @@
+<h1>Listing control_plans</h1>
+
+<table>
+  <tr>
+    <th>Plan name</th>
+    <th>Plan description</th>
+    <th>Plan notes</th>
+    <th>Plan active</th>
+    <th>Plan created</th>
+    <th>Plan updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @control_plans.each do |control_plan| %>
+  <tr>
+    <td><%= control_plan.plan_name %></td>
+    <td><%= control_plan.plan_description %></td>
+    <td><%= control_plan.plan_notes %></td>
+    <td><%= control_plan.plan_active %></td>
+    <td><%= control_plan.plan_created_id %></td>
+    <td><%= control_plan.plan_updated_id %></td>
+    <td><%= link_to 'Show', control_plan %></td>
+    <td><%= link_to 'Edit', edit_control_plan_path(control_plan) %></td>
+    <td><%= link_to 'Destroy', control_plan, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Control plan', new_control_plan_path %>

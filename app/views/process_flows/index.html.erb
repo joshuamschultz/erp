@@ -1,0 +1,35 @@
+<h1>Listing process_flows</h1>
+
+<table>
+  <tr>
+    <th>Process identifier</th>
+    <th>Process name</th>
+    <th>Process description</th>
+    <th>Process notes</th>
+    <th>Process active</th>
+    <th>Process created</th>
+    <th>Process updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @process_flows.each do |process_flow| %>
+  <tr>
+    <td><%= process_flow.process_identifier %></td>
+    <td><%= process_flow.process_name %></td>
+    <td><%= process_flow.process_description %></td>
+    <td><%= process_flow.process_notes %></td>
+    <td><%= process_flow.process_active %></td>
+    <td><%= process_flow.process_created_id %></td>
+    <td><%= process_flow.process_updated_id %></td>
+    <td><%= link_to 'Show', process_flow %></td>
+    <td><%= link_to 'Edit', edit_process_flow_path(process_flow) %></td>
+    <td><%= link_to 'Destroy', process_flow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Process flow', new_process_flow_path %>

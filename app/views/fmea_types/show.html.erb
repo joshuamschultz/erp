@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Fmea name:</b>
+  <%= @fmea_type.fmea_name %>
+</p>
+
+<p>
+  <b>Fmea description:</b>
+  <%= @fmea_type.fmea_description %>
+</p>
+
+<p>
+  <b>Fmea notes:</b>
+  <%= @fmea_type.fmea_notes %>
+</p>
+
+<p>
+  <b>Fmea active:</b>
+  <%= @fmea_type.fmea_active %>
+</p>
+
+<p>
+  <b>Fmea created:</b>
+  <%= @fmea_type.fmea_created_id %>
+</p>
+
+<p>
+  <b>Fmea updated:</b>
+  <%= @fmea_type.fmea_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_fmea_type_path(@fmea_type) %> |
+<%= link_to 'Back', fmea_types_path %>
