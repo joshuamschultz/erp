@@ -1,0 +1,16 @@
+<%= simple_form_for(@control_plan) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :plan_name %>
+    <%= f.input :plan_description %>
+    <%= f.input :plan_notes %>
+    <%= f.input :plan_active %>
+    <%= f.input :plan_created_id %>
+    <%= f.input :plan_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

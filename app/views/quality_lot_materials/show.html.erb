@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quality lot:</b>
+  <%= @quality_lot_material.quality_lot %>
+</p>
+
+<p>
+  <b>Material element:</b>
+  <%= @quality_lot_material.material_element %>
+</p>
+
+<p>
+  <b>Lot material tested:</b>
+  <%= @quality_lot_material.lot_material_tested %>
+</p>
+
+<p>
+  <b>Lot material result:</b>
+  <%= @quality_lot_material.lot_material_result %>
+</p>
+
+<p>
+  <b>Lot material notes:</b>
+  <%= @quality_lot_material.lot_material_notes %>
+</p>
+
+<p>
+  <b>Lot material active:</b>
+  <%= @quality_lot_material.lot_material_active %>
+</p>
+
+<p>
+  <b>Lot material created:</b>
+  <%= @quality_lot_material.lot_material_created_id %>
+</p>
+
+<p>
+  <b>Lot material updated:</b>
+  <%= @quality_lot_material.lot_material_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_quality_lot_material_path(@quality_lot_material) %> |
+<%= link_to 'Back', quality_lot_materials_path %>

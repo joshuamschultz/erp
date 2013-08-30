@@ -1,0 +1,18 @@
+<%= simple_form_for(@quality_lot_material) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :quality_lot %>
+    <%= f.association :material_element %>
+    <%= f.input :lot_material_tested %>
+    <%= f.input :lot_material_result %>
+    <%= f.input :lot_material_notes %>
+    <%= f.input :lot_material_active %>
+    <%= f.input :lot_material_created_id %>
+    <%= f.input :lot_material_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

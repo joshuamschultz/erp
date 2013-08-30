@@ -1,0 +1,37 @@
+<h1>Listing quality_lot_materials</h1>
+
+<table>
+  <tr>
+    <th>Quality lot</th>
+    <th>Material element</th>
+    <th>Lot material tested</th>
+    <th>Lot material result</th>
+    <th>Lot material notes</th>
+    <th>Lot material active</th>
+    <th>Lot material created</th>
+    <th>Lot material updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @quality_lot_materials.each do |quality_lot_material| %>
+  <tr>
+    <td><%= quality_lot_material.quality_lot %></td>
+    <td><%= quality_lot_material.material_element %></td>
+    <td><%= quality_lot_material.lot_material_tested %></td>
+    <td><%= quality_lot_material.lot_material_result %></td>
+    <td><%= quality_lot_material.lot_material_notes %></td>
+    <td><%= quality_lot_material.lot_material_active %></td>
+    <td><%= quality_lot_material.lot_material_created_id %></td>
+    <td><%= quality_lot_material.lot_material_updated_id %></td>
+    <td><%= link_to 'Show', quality_lot_material %></td>
+    <td><%= link_to 'Edit', edit_quality_lot_material_path(quality_lot_material) %></td>
+    <td><%= link_to 'Destroy', quality_lot_material, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Quality lot material', new_quality_lot_material_path %>
