@@ -1,5 +1,17 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :control_plans
+
+
+  resources :fmea_types
+
+
+  resources :quality_lot_materials
+
+
+  resources :process_flows
+
+
   resources :elements do
     get :autocomplete_element_element_name, :on => :collection
   end
