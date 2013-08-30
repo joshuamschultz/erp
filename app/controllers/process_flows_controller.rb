@@ -1,12 +1,25 @@
 class ProcessFlowsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+  end
+
   # GET /process_flows
   # GET /process_flows.json
   def index
-    @process_flows = ProcessFlow.all
+    @process_flows = ProcessFlow.joins(:attachment).all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @process_flows }
+      format.json { 
+        @process_flows = @process_flows.collect{|process_flow| 
+        attachment = process_flow.attachment.attachment_fields
+        attachment[:attachment_name] = CommonActions.linkable(process_flow_path(process_flow), attachment.attachment_name)
+        attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_flow_path(process_flow), nil)
+        attachment
+        }
+        render json: { :aaData => @process_flows } 
+      }
     end
   end
 
@@ -14,7 +27,7 @@ class ProcessFlowsController < ApplicationController
   # GET /process_flows/1.json
   def show
     @process_flow = ProcessFlow.find(params[:id])
-
+    @attachment = @process_flow.attachment
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @process_flow }
@@ -25,6 +38,7 @@ class ProcessFlowsController < ApplicationController
   # GET /process_flows/new.json
   def new
     @process_flow = ProcessFlow.new
+    @process_flow.build_attachment
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +49,7 @@ class ProcessFlowsController < ApplicationController
   # GET /process_flows/1/edit
   def edit
     @process_flow = ProcessFlow.find(params[:id])
+    @attachment = @process_flow.attachment
   end
 
   # POST /process_flows
@@ -43,8 +58,9 @@ class ProcessFlowsController < ApplicationController
     @process_flow = ProcessFlow.new(params[:process_flow])
 
     respond_to do |format|
+      @process_flow.attachment.created_by = current_user   
       if @process_flow.save
-        format.html { redirect_to @process_flow, notice: 'Process flow was successfully created.' }
+        format.html { redirect_to process_flows_url, notice: 'Process flow was successfully created.' }
         format.json { render json: @process_flow, status: :created, location: @process_flow }
       else
         format.html { render action: "new" }
@@ -59,8 +75,9 @@ class ProcessFlowsController < ApplicationController
     @process_flow = ProcessFlow.find(params[:id])
 
     respond_to do |format|
+      @process_flow.attachment.updated_by = current_user
       if @process_flow.update_attributes(params[:process_flow])
-        format.html { redirect_to @process_flow, notice: 'Process flow was successfully updated.' }
+        format.html { redirect_to process_flows_url, notice: 'Process flow was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
