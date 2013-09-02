@@ -16,7 +16,7 @@ class FmeaType < ActiveRecord::Base
 
 
   def redirect_path
-      process_type_path(self)
+      fmea_type_path(self)
   end
 
   before_save :before_save_values
