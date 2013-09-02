@@ -4,6 +4,7 @@ class SoLinesController < ApplicationController
 
   def set_page_info
       @menus[:sales][:active] = "active"
+      simple_form_validation = true
   end
 
   def set_autocomplete_values
