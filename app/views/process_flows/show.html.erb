@@ -1,40 +1,9 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Process identifier:</b>
-  <%= @process_flow.process_identifier %>
-</p>
-
-<p>
-  <b>Process name:</b>
-  <%= @process_flow.process_name %>
-</p>
-
-<p>
-  <b>Process description:</b>
-  <%= @process_flow.process_description %>
-</p>
-
-<p>
-  <b>Process notes:</b>
-  <%= @process_flow.process_notes %>
-</p>
-
-<p>
-  <b>Process active:</b>
-  <%= @process_flow.process_active %>
-</p>
-
-<p>
-  <b>Process created:</b>
-  <%= @process_flow.process_created_id %>
-</p>
-
-<p>
-  <b>Process updated:</b>
-  <%= @process_flow.process_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_process_flow_path(@process_flow) %> |
-<%= link_to 'Back', process_flows_path %>
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_process_flow_path(@process_flow), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', process_flow_path(@process_flow), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', process_flows_path, :class => "btn btn-small" %>
+  </div>
+</div>
