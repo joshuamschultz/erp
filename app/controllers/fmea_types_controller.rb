@@ -8,7 +8,7 @@ class FmeaTypesController < ApplicationController
   # GET /fmea_types
   # GET /fmea_types.json
   def index
-    @fmea_types = FmeaType.all
+    @fmea_types = FmeaType.joins(:attachment).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -76,7 +76,7 @@ class FmeaTypesController < ApplicationController
     @fmea_type = FmeaType.find(params[:id])
 
     respond_to do |format|
-      @fmea_type.attachment.created_by = current_user
+      @fmea_type.attachment.updated_by = current_user
       if @fmea_type.update_attributes(params[:fmea_type])
         format.html { redirect_to fmea_types_url, notice: 'Fmea type was successfully updated.' }
         format.json { head :no_content }

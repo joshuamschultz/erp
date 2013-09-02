@@ -1,35 +1,9 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Plan name:</b>
-  <%= @control_plan.plan_name %>
-</p>
-
-<p>
-  <b>Plan description:</b>
-  <%= @control_plan.plan_description %>
-</p>
-
-<p>
-  <b>Plan notes:</b>
-  <%= @control_plan.plan_notes %>
-</p>
-
-<p>
-  <b>Plan active:</b>
-  <%= @control_plan.plan_active %>
-</p>
-
-<p>
-  <b>Plan created:</b>
-  <%= @control_plan.plan_created_id %>
-</p>
-
-<p>
-  <b>Plan updated:</b>
-  <%= @control_plan.plan_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_control_plan_path(@control_plan) %> |
-<%= link_to 'Back', control_plans_path %>
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_control_plan_path(@control_plan), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', control_plan_path(@control_plan), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', control_plans_path, :class => "btn btn-small" %>
+  </div>
+</div>
