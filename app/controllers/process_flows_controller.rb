@@ -1,7 +1,10 @@
 class ProcessFlowsController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :process_flow, :process_name, :full => true
+
   def set_page_info
+    @menus[:quality][:active] = "active"
   end
 
   # GET /process_flows

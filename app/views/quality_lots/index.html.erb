@@ -1,49 +1,15 @@
-<h1>Listing quality_lots</h1>
+<div class="row-fluid">
+    <h4 class="span3 left">Lots</h4>
+    <span class="span9 right">        
+        <%= link_to 'Back', quality_lots_lot_info_path, :class => "btn btn-small" %>
+    </span>
+</div>
 
-<table>
-  <tr>
-    <th>Po header</th>
-    <th>Po line</th>
-    <th>Item revision</th>
-    <th>Lot control no</th>
-    <th>Lot quantity</th>
-    <th>Inspection level</th>
-    <th>Inspection method</th>
-    <th>Inspection type</th>
-    <th>Lot inspector</th>
-    <th>Lot finalized at</th>
-    <th>Lot notes</th>
-    <th>Lot active</th>
-    <th>Lot created</th>
-    <th>Lot updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="row-fluid">
+  <%= render :partial => 'po_headers/po_header_info' %>
 
-<% @quality_lots.each do |quality_lot| %>
-  <tr>
-    <td><%= quality_lot.po_header %></td>
-    <td><%= quality_lot.po_line %></td>
-    <td><%= quality_lot.item_revision %></td>
-    <td><%= quality_lot.lot_control_no %></td>
-    <td><%= quality_lot.lot_quantity %></td>
-    <td><%= quality_lot.inspection_level_id %></td>
-    <td><%= quality_lot.inspection_method_id %></td>
-    <td><%= quality_lot.inspection_type_id %></td>
-    <td><%= quality_lot.lot_inspector_id %></td>
-    <td><%= quality_lot.lot_finalized_at %></td>
-    <td><%= quality_lot.lot_notes %></td>
-    <td><%= quality_lot.lot_active %></td>
-    <td><%= quality_lot.lot_created_id %></td>
-    <td><%= quality_lot.lot_updated_id %></td>
-    <td><%= link_to 'Show', [quality_lot.po_header, quality_lot] %></td>
-    <td><%= link_to 'Edit', edit_po_header_quality_lot_path(quality_lot.po_header, quality_lot) %></td>
-    <td><%= link_to 'Destroy', [quality_lot.po_header, quality_lot], :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+  <div class="span9">
+	<%= render :partial => 'quality_lots/lots' %>
+  </div>
 
-<br />
-
-<%= link_to 'New Quality lot', new_po_header_quality_lot_path(params[:po_header_id]) %>
+</div>

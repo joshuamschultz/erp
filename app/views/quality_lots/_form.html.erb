@@ -1,73 +1,107 @@
-<%= form_for([@quality_lot.po_header, @quality_lot]) do |f| %>
-  <% if @quality_lot.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@quality_lot.errors.count, "error") %> prohibited this quality_lot from being saved:</h2>
+<div class="row-fluid">
+  <%= render :partial => 'po_headers/po_header_info' %>
 
-      <ul>
-      <% @quality_lot.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+  <div class="span9 well">
+    <%= simple_form_for([@po_header, @quality_lot], :html => {:id => "form_for_lots", :class => "form-horizontal"}) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+          <%= f.association :po_line, collection: @po_header.po_lines, label_method: :po_line_item_name, label_value: :id, label: "Item", :autofocus => true, :include_blank => false %>
+
+          <div class="control-group select required quality_lot_item_revision">
+                <label for="quality_lot_item_revision_id" class="select required control-label">
+                    <abbr title="required">*</abbr> Item revision
+                </label>
+                <div class="controls">
+                    <select required="required" name="quality_lot[item_revision_id]" id="quality_lot_item_revision_id" class="select required">
+
+                    </select>
+                </div>
+          </div>
+
+          <%#= f.input :lot_control_no, label: "Control No" %>
+
+          <%= f.input :lot_quantity, label: "Quantity" %>
+
+          <%= f.association :inspection_level, label_method: :type_name, label_value: :id, label: "Inspection Level", :include_blank => false %>
+
+          <%= f.association :inspection_method, label_method: :type_name, label_value: :id, label: "Inspection Method", :include_blank => false %>
+
+          <%= f.association :inspection_type, label_method: :type_name, label_value: :id, label: "Inspection Type", :include_blank => false %>
+
+          <%= f.association :process_flow, :url => autocomplete_process_flow_process_name_process_flows_path, :as => :autocomplete, :id_element => '#process_flow_id', required: true, :label => "Process Flow" %>
+
+          <%= hidden_field_tag :process_flow_id, (@quality_lot.process_flow_id if @quality_lot.persisted? && @quality_lot.process_flow) %>
+
+          <%= hidden_field_tag :org_process_flow_id, (@quality_lot.process_flow_id if @quality_lot.persisted? && @quality_lot.process_flow) %>
+
+
+          <%= f.association :fmea_type, :url => autocomplete_fmea_type_fmea_name_fmea_types_path, :as => :autocomplete, :id_element => '#fmea_type_id', required: true, :label => "FMEA" %>
+
+          <%= hidden_field_tag :fmea_type_id, (@quality_lot.fmea_type_id if @quality_lot.persisted? && @quality_lot.fmea_type) %>
+
+          <%= hidden_field_tag :org_fmea_type_id, (@quality_lot.fmea_type_id if @quality_lot.persisted? && @quality_lot.fmea_type) %>
+
+          <%= f.association :control_plan, :url => autocomplete_control_plan_plan_name_control_plans_path, :as => :autocomplete, :id_element => '#control_plan_id', required: true, :label => "Control Plan" %>
+
+          <%= hidden_field_tag :control_plan_id, (@quality_lot.control_plan_id if @quality_lot.persisted? && @quality_lot.control_plan) %>
+
+          <%= hidden_field_tag :org_control_plan_id, (@quality_lot.control_plan_id if @quality_lot.persisted? && @quality_lot.control_plan) %>
+
+
+          <%= f.input :lot_finalized_at, as: :string, label: "Finalized At" %>
+
+          <%= f.input :lot_notes, label: "Notes" %>
+
+          <%#= f.input :lot_active, label: "Active" %>
+      </div>
+
+      <div class="separator bottom"></div>
+
+      <div class="form-actions">
+          <%= f.button :submit, :class => 'btn' %>
+          <%= link_to 'Delete', po_header_quality_lot_path(@po_header, @quality_lot), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_lot.new_record? %>
+          <%= link_to 'Back', po_header_path(@po_header), :class => "btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_lots"] = ["quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_lot_finalized_at", "quality_lot_lot_notes"];
+
+  <% date_box_date = @quality_lot.new_record? ? Date.today : @quality_lot.lot_finalized_at %>
+
+  date_box_fields = date_box_fields.concat([{"name":"quality_lot_lot_finalized_at", "value":"<%= date_box_date %>"}]);
+
+  $(document).ready(function(){ 
+      $("#quality_lot_po_line_id").change(function(){
+          initiate_line_revisions();
+      });
+
+      initiate_line_revisions();
+
+      <% unless @quality_lot.new_record? %>
+          $("#quality_lot_process_flow_id").val("<%= @quality_lot.process_flow.process_name if @quality_lot.process_flow %>");
+
+          $("#quality_lot_fmea_type_id").val("<%= @quality_lot.fmea_type.fmea_name if @quality_lot.fmea_type %>");
+
+          $("#quality_lot_control_plan_id").val("<%= @quality_lot.control_plan._plan_name if @quality_lot.control_plan %>");    
       <% end %>
-      </ul>
-    </div>
-  <% end %>
+  });
 
-  <div class="field">
-    <%= f.label :po_header %><br />
-    <%= f.text_field :po_header %>
-  </div>
-  <div class="field">
-    <%= f.label :po_line %><br />
-    <%= f.text_field :po_line %>
-  </div>
-  <div class="field">
-    <%= f.label :item_revision %><br />
-    <%= f.text_field :item_revision %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_control_no %><br />
-    <%= f.text_field :lot_control_no %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_quantity %><br />
-    <%= f.number_field :lot_quantity %>
-  </div>
-  <div class="field">
-    <%= f.label :inspection_level_id %><br />
-    <%= f.number_field :inspection_level_id %>
-  </div>
-  <div class="field">
-    <%= f.label :inspection_method_id %><br />
-    <%= f.number_field :inspection_method_id %>
-  </div>
-  <div class="field">
-    <%= f.label :inspection_type_id %><br />
-    <%= f.number_field :inspection_type_id %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_inspector_id %><br />
-    <%= f.number_field :lot_inspector_id %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_finalized_at %><br />
-    <%= f.datetime_select :lot_finalized_at %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_notes %><br />
-    <%= f.text_area :lot_notes %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_active %><br />
-    <%= f.check_box :lot_active %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_created_id %><br />
-    <%= f.number_field :lot_created_id %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_updated_id %><br />
-    <%= f.number_field :lot_updated_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+  function initiate_line_revisions(){
+      if($("#quality_lot_po_line_id").val() != "")
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "po_line_revisions", "id": $("#quality_lot_po_line_id").val()}}, "set_po_line_revisions", {});
+      else
+        $("#quality_lot_item_revision_id").html("");
+  }
+
+  function set_po_line_revisions(response, callback_params, api_params){
+      var html = $.trim(Mustache.render($(".revision-select-box-template").html(), response));
+      $("#quality_lot_item_revision_id").html(html);
+  }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "revision-select-box"} %>

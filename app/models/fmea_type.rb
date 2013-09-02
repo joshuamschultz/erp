@@ -7,7 +7,7 @@ class FmeaType < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.fmea_active = true if self.fmea_active.nil?
+    self.fmea_active = true if self.attributes.has_key?("fmea_active") && self.fmea_active.nil?
   end
 
   has_one :attachment, :as => :attachable, :dependent => :destroy

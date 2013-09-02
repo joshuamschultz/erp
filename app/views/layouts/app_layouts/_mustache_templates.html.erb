@@ -1,11 +1,13 @@
 <% unless type.nil? %>
 <script type="text/template" class="<%= type %>-template" style="display:none">
-	<% case(type) %>
-		<% when "address-select-box" %>
-				{{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_name}}</option>{{/ aaData}}
-		<% else %>
+<% case(type) %>
+	<% when "address-select-box" %>
+			{{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_name}}</option>{{/ aaData}}
+	<% when "revision-select-box" %>
+			{{# aaData}}<option value="{{id}}">{{item_revision_name}}</option>{{/ aaData}}
+	<% else %>
 
-	<% end%>
+<% end%>
 </script>
 <% end%>
 

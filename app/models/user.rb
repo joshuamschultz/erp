@@ -18,8 +18,11 @@ class User < ActiveRecord::Base
 
   has_one :organization 
 
+  has_many :inspected_lots, :class_name => "QualityLot", :foreign_key => "lot_inspector_id"
+
   has_many :created_materials, :class_name => "Material", :foreign_key => "material_created_id"
   has_many :updated_materials, :class_name => "Material", :foreign_key => "material_updated_id"
+
   has_many :created_elements, :class_name => "MaterialElement", :foreign_key => "element_created_id"
   has_many :updated_elements, :class_name => "MaterialElement", :foreign_key => "element_updated_id"
 

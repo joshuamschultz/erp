@@ -59,9 +59,11 @@
 
 <%= render 'attachments/attachments' %>
 
-
 <div class="separator bottom"></div>
 
+<%= render :partial => 'quality_lots/lots' %>
+
+<div class="separator bottom"></div>
 
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_po_header_path(type: "note")}} %>
