@@ -1,4 +1,4 @@
-<%= simple_form_for(@control_plan, :html => {:id => "form_for_processes",:class => "form-horizontal", :multipart => true}) do |g| %>
+<%= simple_form_for(@control_plan, :html => {:id => "form_for_control_plans",:class => "form-horizontal", :multipart => true}) do |g| %>
   <%= g.error_notification %>
 
   <%= g.simple_fields_for :attachment do |f| %>
@@ -14,12 +14,12 @@
 
     <%= link_to 'Delete', control_plan_path(@control_plan), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @control_plan.new_record? %>
     
-    <%= link_to 'Back to Processes', control_plans_path, :class => "btn" %>
+    <%= link_to 'Back to Control Plans', control_plans_path, :class => "btn" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-  tab_field_forms["form_for_processes"] = ["control_plan_attachment_attributes_attachment_name", "control_plan_attachment_attributes_attachment_revision_title", "control_plan_attachment_attributes_attachment_revision_date", "control_plan_attachment_attributes_attachment_description", "control_plan_attachment_attributes_attachment_public", "control_plan_attachment_attributes_attachment_active", "control_plan_attachment_attributes_attachment"];
+  tab_field_forms["form_for_control_plans"] = ["control_plan_attachment_attributes_attachment_name", "control_plan_attachment_attributes_attachment_revision_title", "control_plan_attachment_attributes_attachment_revision_date", "control_plan_attachment_attributes_attachment_description", "control_plan_attachment_attributes_attachment_public", "control_plan_attachment_attributes_attachment_active", "control_plan_attachment_attributes_attachment"];
 
   <% date_box_date = @control_plan.new_record? ? Date.today : @control_plan.attachment.attachment_revision_date %> 
 
