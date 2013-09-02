@@ -51,6 +51,7 @@ class FmeaTypesController < ApplicationController
   # GET /fmea_types/1/edit
   def edit
     @fmea_type = FmeaType.find(params[:id])
+    @attachment = @fmea_type.attachment
   end
 
   # POST /fmea_types
