@@ -1,75 +1,94 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid">
+  <%= render :partial => 'po_headers/po_header_info' %>
 
-<p>
-  <b>Po header:</b>
-  <%= @quality_lot.po_header %>
-</p>
+  <div class="span9">
+    <div class="row-fluid">
+      <div class="label label-large label-info arrowed-in arrowed-right">
+            <h4>Lot Info</h4>
+      </div>
+        <table class="table table-striped table-bordered">
+          <tbody>
+          <tr>
+            <td>Control No:</td>
+            <td><%= @quality_lot.id %></td>
+          </tr>
 
-<p>
-  <b>Po line:</b>
-  <%= @quality_lot.po_line %>
-</p>
+          <!-- <tr>
+            <td>Item:</td>
+            <td><%#= link_to(@quality_lot.po_line.po_line_item_name, item_path(@quality_lot.po_line.item) if @quality_lot.po_line %></td>
+          </tr> -->
 
-<p>
-  <b>Item revision:</b>
-  <%= @quality_lot.item_revision %>
-</p>
+          <tr>
+            <td>Item:</td>
+            <td><%= link_to(@quality_lot.po_line.item_alt_name.item_alt_identifier + " (Revision: " + @quality_lot.item_revision.item_revision_name + ")", item_path(@quality_lot.item_revision.item, revision_id: @quality_lot.item_revision_id)) if @quality_lot.item_revision %></td>
+          </tr>      
 
-<p>
-  <b>Lot control no:</b>
-  <%= @quality_lot.lot_control_no %>
-</p>
+          <tr>
+            <td>Lot quantity:</td>
+            <td><%= @quality_lot.lot_quantity %></td>
+          </tr>
 
-<p>
-  <b>Lot quantity:</b>
-  <%= @quality_lot.lot_quantity %>
-</p>
+          <tr>
+            <td>Inspection Level:</td>
+            <td><%= link_to(@quality_lot.inspection_level.type_name, @quality_lot.inspection_level) if @quality_lot.inspection_level %></td>
+          </tr>
 
-<p>
-  <b>Inspection level:</b>
-  <%= @quality_lot.inspection_level_id %>
-</p>
+          <tr>
+            <td>Inspection Method:</td>
+            <td><%= link_to(@quality_lot.inspection_method.type_name, @quality_lot.inspection_method) if @quality_lot.inspection_method %></td>
+          </tr>
 
-<p>
-  <b>Inspection method:</b>
-  <%= @quality_lot.inspection_method_id %>
-</p>
+          <tr>
+            <td>Inspection Type:</td>
+            <td><%= link_to(@quality_lot.inspection_type.type_name, @quality_lot.inspection_type) if @quality_lot.inspection_type %></td>
+          </tr>
 
-<p>
-  <b>Inspection type:</b>
-  <%= @quality_lot.inspection_type_id %>
-</p>
+          <tr>
+            <td>Inspector:</td>
+            <td><%= @quality_lot.lot_inspector.name if @quality_lot.lot_inspector %></td>
+          </tr>
 
-<p>
-  <b>Lot inspector:</b>
-  <%= @quality_lot.lot_inspector_id %>
-</p>
+          <tr>
+            <td>Process Flow:</td>
+            <td><%= link_to(@quality_lot.process_flow.process_name, @quality_lot.process_flow) if @quality_lot.process_flow %></td>
+          </tr>
 
-<p>
-  <b>Lot finalized at:</b>
-  <%= @quality_lot.lot_finalized_at %>
-</p>
+          <tr>
+            <td>FMEA:</td>
+            <td><%= link_to(@quality_lot.fmea_type.fmea_name, @quality_lot.fmea_type) if @quality_lot.fmea_type %></td>
+          </tr>
 
-<p>
-  <b>Lot notes:</b>
-  <%= @quality_lot.lot_notes %>
-</p>
+          <tr>
+            <td>Control Plan:</td>
+            <td><%= link_to(@quality_lot.control_plan.plan_name, @quality_lot.control_plan) if @quality_lot.control_plan %></td>
+          </tr>
 
-<p>
-  <b>Lot active:</b>
-  <%= @quality_lot.lot_active %>
-</p>
+          <tr>
+            <td>Finalized At:</td>
+            <td><%= @quality_lot.lot_finalized_at.to_date %></td>
+          </tr>
 
-<p>
-  <b>Lot created:</b>
-  <%= @quality_lot.lot_created_id %>
-</p>
+          <tr>
+            <td>Notes:</td>
+            <td><%= @quality_lot.lot_notes %></td>
+          </tr>
 
-<p>
-  <b>Lot updated:</b>
-  <%= @quality_lot.lot_updated_id %>
-</p>
+          <!-- <tr>
+            <td>Active:</td>
+            <td><%= @quality_lot.lot_active %></td>
+          </tr> -->
 
+          <tr>
+            <td>Created At:</td>
+            <td><%= @quality_lot.created_at.to_date %></td>
+          </tr>
 
-<%= link_to 'Edit', edit_po_header_quality_lot_path(@quality_lot.po_header, @quality_lot) %> |
-<%= link_to 'Back', po_header_quality_lots_path(@quality_lot.po_header) %>
+          </tbody>
+        </table>
+      <div class="form-actions">
+        <%= link_to "Edit", edit_po_header_quality_lot_path(@po_header, @quality_lot), :class => "btn" %>     
+        <%= link_to "Back to Lots of #{@po_header.po_identifier}", po_header_quality_lots_path(@po_header), :class =>"btn" %>
+      </div>
+    </div>
+  </div>
+</div>

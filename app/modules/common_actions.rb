@@ -138,7 +138,7 @@ module CommonActions
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
 		menus[:quality][:sub_menu] = 	[
 											{:path => "#", :name => "Checklist"}, 
-											{:path => "#", :name => "Lot Info"},
+											{:path => quality_lots_lot_info_path, :name => "Lot Info"},
 											{:path => "#", :name => "Material"}, 
 											{:path => "#", :name => "Dimensions"}, 
 											{:path => "#", :name => "Run at Rate"},
@@ -146,9 +146,9 @@ module CommonActions
 											{:path => "#", :name => "Packaging"},
 											{:path => gauges_path, :name => "Instruments"},
 											{:path => "#", :name => " Cause Analysis"}, 
-											{:path => "#", :name => "Process Flow"},
-											{:path => "#", :name => "FMEA"},
-											{:path => "#", :name => "Control Plan"},
+											{:path => process_flows_path, :name => "Process Flow"},
+											{:path => fmea_types_path, :name => "FMEA"},
+											{:path => control_plans_path, :name => "Control Plan"},
 											{:path => "#", :name => "Customer Response"},
 											{:path => "#", :name => "Quality Action"},
 											{:path => vendor_qualities_path, :name => "Quality ID"},

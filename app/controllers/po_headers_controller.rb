@@ -41,7 +41,9 @@ class PoHeadersController < ApplicationController
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
               po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
-              po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+              po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil,
+                              [ {:name => "Lots", :path => po_header_quality_lots_path(po_header)}
+                              ])
           }
           render json: {:aaData => @po_headers}
       }

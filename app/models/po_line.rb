@@ -41,4 +41,8 @@ class PoLine < ActiveRecord::Base
       self.po_header.update_attributes(:po_total => self.po_header.po_lines.sum(:po_line_total))
   end
 
+  def po_line_item_name
+      self.item_alt_name.alt_item_name
+  end
+
 end

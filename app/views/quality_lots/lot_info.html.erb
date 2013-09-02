@@ -1,0 +1,8 @@
+<%= render :partial => 'po_headers/po_list', locals: {
+        all_path: quality_lots_lot_info_path,
+        open_path: quality_lots_lot_info_path(:po_status => "open"),
+        closed_path: quality_lots_lot_info_path(:po_status => "closed"),
+        index_path: po_headers_path(:po_status => params[:po_status]),
+        new_path: new_po_header_path, lot_info: true
+	}
+%>

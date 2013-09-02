@@ -1,9 +1,11 @@
 class FmeaTypesController < ApplicationController
-   before_filter :set_page_info
+  before_filter :set_page_info
+
+  autocomplete :fmea_type, :fmea_name, :full => true
 
   def set_page_info
+    @menus[:quality][:active] = "active"
   end
-  # GET
 
   # GET /fmea_types
   # GET /fmea_types.json
