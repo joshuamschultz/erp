@@ -97,3 +97,6 @@
     </div>
   </div>
 </div>
+
+<%= render :partial => 'comments/comments', 
+:locals => {:extras => {:link => populate_po_header_quality_lot_path(@po_header, @quality_lot, type: "note")}} %>

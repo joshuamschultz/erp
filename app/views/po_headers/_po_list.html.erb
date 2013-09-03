@@ -10,7 +10,7 @@
                 <%= link_to 'All', all_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" %>                
+                <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>                
             </span>
         </div> 
     </div>
