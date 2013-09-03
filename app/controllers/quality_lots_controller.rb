@@ -53,6 +53,7 @@ class QualityLotsController < ApplicationController
   def show
     @po_header = PoHeader.find(params[:po_header_id])
     @quality_lot = @po_header.quality_lots.find(params[:id])
+    @notes = @quality_lot.present? ? @quality_lot.comments.where(:comment_type => "note").order("created_at desc") : [] 
 
     respond_to do |format|
       format.html # show.html.erb
@@ -131,4 +132,16 @@ class QualityLotsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  def populate
+      @po_header = PoHeader.find(params[:po_header_id])
+      @quality_lot = @po_header.quality_lots.find(params[:id])
+
+      if params[:type] == "note"
+          Comment.process_comments(current_user, @quality_lot, [params[:comment]], params[:type])
+      end
+
+      redirect_to([@po_header, @quality_lot], :notice => 'Comment added successfully.')
+  end
+
 end

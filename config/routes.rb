@@ -40,7 +40,11 @@ AllianceFasteners::Application.routes.draw do
   resources :customer_quality_levels
 
   resources :po_headers do
-    resources :quality_lots
+    resources :quality_lots do
+        member do
+          post 'populate'
+        end
+    end
     resources :po_lines
     member do
         post 'populate'

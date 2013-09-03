@@ -27,5 +27,18 @@ class QualityLot < ActiveRecord::Base
 
 	belongs_to :lot_inspector, :class_name => "User", :foreign_key => "lot_inspector_id"
 
-	validates_presence_of :po_line, :item_revision, :fmea_type, :control_plan, :process_flow, :lot_quantity
+	has_many :comments, :as => :commentable, :dependent => :destroy
+
+	validates_presence_of :po_line, :item_revision, :lot_quantity
+	#, :fmea_type, :control_plan, :process_flow, 
+
+	validate :check_lot_quantity
+
+	def check_lot_quantity
+		lot_total_quantity = self.po_line.quality_lots.where("id != ?", self.id).sum(:lot_quantity)
+		if (lot_total_quantity + self.lot_quantity) > self.po_line.po_line_quantity
+			errors.add(:lot_quantity, "exceeded than PO item quantity (#{self.po_line.po_line_quantity})")
+		end
+	end
+
 end
