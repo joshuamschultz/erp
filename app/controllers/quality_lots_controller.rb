@@ -47,7 +47,8 @@ class QualityLotsController < ApplicationController
             quality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
             quality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
             quality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
-            quality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y") if quality_lot.lot_inspector
+            quality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y")
+            quality_lot[:total_lots] = quality_lot.po_line.quality_lots.count
           }
           render json: {:aaData => @quality_lots}
       }
