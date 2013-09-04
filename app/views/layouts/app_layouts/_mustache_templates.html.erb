@@ -5,6 +5,8 @@
 			{{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_name}}</option>{{/ aaData}}
 	<% when "revision-select-box" %>
 			{{# aaData}}<option value="{{id}}">{{item_revision_name}}</option>{{/ aaData}}
+	<% when "line-item-select-box" %>
+			{{# aaData}}<option value="{{id}}">{{po_line_item_name}}</option>{{/ aaData}}
 	<% else %>
 
 <% end%>
