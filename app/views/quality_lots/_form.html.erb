@@ -1,12 +1,25 @@
-<div class="row-fluid">
-  <%= render :partial => 'po_headers/po_header_info' %>
+<!-- <div class="row-fluid">
+  <%#= render :partial => 'po_headers/po_header_info' %>
 
-  <div class="span9 well">
-    <%= simple_form_for([@po_header, @quality_lot], :html => {:id => "form_for_lots", :class => "form-horizontal"}) do |f| %>
+  <div class="span9 well"> -->
+    <%= simple_form_for(@quality_lot, :html => {:id => "form_for_lots", :class => "form-horizontal"}) do |f| %>
       <%= f.error_notification %>
 
       <div class="form-inputs">
-          <%= f.association :po_line, collection: @po_header.po_lines, label_method: :po_line_item_name, label_value: :id, label: "Item", :autofocus => true, :include_blank => false %>
+          <%= f.association :po_header, label_method: :po_identifier, label_value: :id, label: "Item", :autofocus => true, :include_blank => false %>
+
+          <%#= f.association :po_line, label_method: :po_line_item_name, label_value: :id, label: "Item", :autofocus => true, :include_blank => false %>
+
+          <div class="control-group select required quality_lot_po_line">
+                <label for="quality_lot_po_line_id" class="select required control-label">
+                    <abbr title="required">*</abbr> Item
+                </label>
+                <div class="controls">
+                    <select name="quality_lot[po_line_id]" id="quality_lot_po_line_id" class="select required" autofocus="autofocus">
+
+                    </select>
+                </div>
+          </div>
 
           <div class="control-group select required quality_lot_item_revision">
                 <label for="quality_lot_item_revision_id" class="select required control-label">
@@ -62,48 +75,87 @@
 
       <div class="form-actions">
           <%= f.button :submit, :class => 'btn' %>
-          <%= link_to 'Delete', po_header_quality_lot_path(@po_header, @quality_lot), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_lot.new_record? %>
-          <%= link_to 'Back', po_header_path(@po_header), :class => "btn" %>
+          <%= link_to 'Delete', quality_lot_path(@quality_lot), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_lot.new_record? %>
+          <%= link_to 'Back', quality_lots_path, :class => "btn" %>
       </div>
     <% end %>
-  </div>
-</div>
+<!--   </div>
+</div> -->
+
 
 <script type="text/javascript">
-  tab_field_forms["form_for_lots"] = ["quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_lot_aql_no", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_lot_finalized_at", "quality_lot_lot_notes"];
+  tab_field_forms["form_for_lots"] = ["quality_lot_po_header_id", "quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_lot_aql_no", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_lot_finalized_at", "quality_lot_lot_notes"];
 
   <% date_box_date = @quality_lot.new_record? ? Date.today : @quality_lot.lot_finalized_at %>
 
   date_box_fields = date_box_fields.concat([{"name":"quality_lot_lot_finalized_at", "value":"<%= date_box_date %>"}]);
 
+  var page_initial = true;
+
   $(document).ready(function(){ 
+      $("#quality_lot_po_header_id").change(function(){
+          initiate_line_items();
+      });
+
       $("#quality_lot_po_line_id").change(function(){
           initiate_line_revisions();
       });
-
-      initiate_line_revisions();
 
       <% unless @quality_lot.new_record? %>
           $("#quality_lot_process_flow_id").val("<%= @quality_lot.process_flow.process_name if @quality_lot.process_flow %>");
 
           $("#quality_lot_fmea_type_id").val("<%= @quality_lot.fmea_type.fmea_name if @quality_lot.fmea_type %>");
 
-          $("#quality_lot_control_plan_id").val("<%= @quality_lot.control_plan._plan_name if @quality_lot.control_plan %>");    
+          $("#quality_lot_control_plan_id").val("<%= @quality_lot.control_plan._plan_name if @quality_lot.control_plan %>");   
+
+          $("#quality_lot_po_header_id").val("<%= @quality_lot.po_header_id %>");
+
+          initiate_line_items();
+      <% else %>
+          initiate_line_items();
       <% end %>
   });
 
-  function initiate_line_revisions(){
-      if($("#quality_lot_po_line_id").val() != "")
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "po_line_revisions", "id": $("#quality_lot_po_line_id").val()}}, "set_po_line_revisions", {});
-      else
-        $("#quality_lot_item_revision_id").html("");
+  function initiate_line_items(){
+      if($("#quality_lot_po_header_id").val() != "" && $("#quality_lot_po_header_id").val() != null)
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "po_header_items", "id": $("#quality_lot_po_header_id").val()}}, "set_po_header_items", {});
+      else{
+            $("#quality_lot_po_line_id").html("");
+            page_initial = false;
+      }  
   }
+
+  function set_po_header_items(response, callback_params, api_params){
+      var html = $.trim(Mustache.render($(".line-item-select-box-template").html(), response));
+      $("#quality_lot_po_line_id").html(html);
+      <% unless @quality_lot.new_record? %>
+        if(page_initial == true)
+            $("#quality_lot_po_line_id").val("<%= @quality_lot.po_line_id %>");
+      <% end %>
+      initiate_line_revisions();
+  }
+
+  function initiate_line_revisions(){
+      if($("#quality_lot_po_line_id").val() != "" && $("#quality_lot_po_line_id").val() != null)
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "po_line_revisions", "id": $("#quality_lot_po_line_id").val()}}, "set_po_line_revisions", {});
+      else{
+          $("#quality_lot_item_revision_id").html("");
+          page_initial = false;
+      }
+  }  
 
   function set_po_line_revisions(response, callback_params, api_params){
       var html = $.trim(Mustache.render($(".revision-select-box-template").html(), response));
       $("#quality_lot_item_revision_id").html(html);
-  }
+      <% unless @quality_lot.new_record? %>
+        if(page_initial == true)  
+            $("#quality_lot_item_revision_id").val("<%= @quality_lot.item_revision_id %>");
+      <% end %>
+
+      page_initial = false;
+  }  
 
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "revision-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "line-item-select-box"} %>

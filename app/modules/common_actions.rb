@@ -49,6 +49,12 @@ module CommonActions
 	end
 
 
+	def self.current_hour_letter
+		hour_letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
+		hour_letter[Time.now.hour]
+	end
+
+
   private
 
 
@@ -138,7 +144,7 @@ module CommonActions
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
 		menus[:quality][:sub_menu] = 	[
 											{:path => "#", :name => "Checklist"}, 
-											{:path => quality_lots_lot_info_path, :name => "Lot Info"},
+											{:path => quality_lots_path, :name => "Lot Info"},
 											{:path => "#", :name => "Material"}, 
 											{:path => "#", :name => "Dimensions"}, 
 											{:path => "#", :name => "Run at Rate"},

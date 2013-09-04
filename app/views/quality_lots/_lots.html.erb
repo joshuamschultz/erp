@@ -1,9 +1,9 @@
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Lots of <%= @po_header.po_identifier %></h4>
+            <h4 class="span6 heading">Lots</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Lot', new_po_header_quality_lot_path(@po_header), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Lot', new_quality_lot_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -13,12 +13,14 @@
             <thead>
               <tr>
                 <th>Control No</th>
-                <th>Item</th>
+                <th>Part No</th>
                 <th>Quantity</th>
+                <th>PO</th>
                 <th>Inspection Level</th>
                 <th>Inspection Method</th>
                 <th>Inspection Type</th>
                 <th>Inspector</th>
+                <th>Date Created</th>
                 <th></th>
               </tr>
             </thead>
@@ -32,15 +34,17 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report_lots", :path => po_header_quality_lots_path(@po_header), :extras => {:slno => false},
+        :name => "table_report_lots", :path => quality_lots_path, :extras => {:slno => false},
         :columns => '[
                         { "mData": "lot_control_no" },
                         { "mData": "item_with_revision" },                        
                         { "mData": "lot_quantity" },
+                        { "mData": "po_identifier" },
                         { "mData": "inspection_level_name", "bVisible": false },
                         { "mData": "inspection_method_name", "bVisible": false },
                         { "mData": "inspection_type_name", "bVisible": false },     
                         { "mData": "inspector_name"},
+                        { "mData": "created_date"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
