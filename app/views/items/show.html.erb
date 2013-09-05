@@ -155,8 +155,8 @@
             </div>
 
             <div class="span2 well">
-                <a class="widget-stats" href="#" id="">
-                    <h5><strong>50</strong></h5>
+                <a class="widget-stats" href="<%= quality_lots_path(:item_id => @item.id) %>" id="">
+                    <h5><strong><%= @item.quality_lots.count %></strong></h5>
                     <span class="txt"><strong>Lots</strong></span>
                     <div class="clearfix"></div>
                 </a>
@@ -200,10 +200,12 @@
                 <%= link_to 'Customer', "#", :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Vendor', "#", :class => "btn btn-mini btn-success" %>
             </span>
-        </div> 
+        </div>
     </div>
     <div class="widget-body" style="height:150px"></div>
 </div>
+
+<%= render :partial => 'quality_lots/lots' %>
 
 <!-- Revisions -->
 <%= render 'item_revisions/item_revisions' %>

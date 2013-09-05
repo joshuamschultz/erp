@@ -35,12 +35,12 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report_lots", :path => quality_lots_path, :extras => {:slno => false},
+        :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
         :columns => '[
                         { "mData": "lot_control_no" },
                         { "mData": "item_with_revision" },                        
                         { "mData": "lot_quantity" },
-                        { "mData": "total_lots" },
+                        { "mData": "total_lots", "bVisible": false },
                         { "mData": "po_identifier" },
                         { "mData": "inspection_level_name", "bVisible": false },
                         { "mData": "inspection_method_name", "bVisible": false },

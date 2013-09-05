@@ -7,6 +7,7 @@ class Item < ActiveRecord::Base
   has_many :item_part_dimensions, :through => :item_revisions
 
   has_many :po_lines, :dependent => :destroy
+  has_many :quality_lots, through: :po_lines
 
   has_many :so_lines, :dependent => :destroy
 

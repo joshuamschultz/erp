@@ -26,7 +26,14 @@ class QualityLotsController < ApplicationController
   def index
     # @po_header = PoHeader.find(params[:po_header_id])
     # @quality_lots = @po_header.quality_lots
-    @quality_lots = QualityLot.all
+
+    if params[:item_id].present?
+        @item = Item.find(params[:item_id])
+        @quality_lots = @item.quality_lots
+    else
+        @quality_lots = QualityLot.all
+    end
+    
 
     respond_to do |format|
       format.html # index.html.erb
