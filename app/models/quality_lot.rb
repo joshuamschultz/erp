@@ -51,7 +51,7 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def lot_with_part_no
-		self.lot_control_no + " / #{self.po_line.po_line_item_name}"
+		"#{self.lot_control_no} / #{self.po_line.po_line_item_name}"
 	end
 
 	def lot_item_material_elements
