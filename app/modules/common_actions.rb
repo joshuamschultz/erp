@@ -145,7 +145,7 @@ module CommonActions
 		menus[:quality][:sub_menu] = 	[
 											{:path => "#", :name => "Checklist"}, 
 											{:path => quality_lots_path, :name => "Lot Info"},
-											{:path => "#", :name => "Material"}, 
+											{:path => quality_lot_materials_path, :name => "Material"}, 
 											{:path => "#", :name => "Dimensions"}, 
 											{:path => "#", :name => "Run at Rate"},
 											{:path => "#", :name => "Part Submission Warrant"}, 

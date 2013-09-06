@@ -5,6 +5,8 @@ class Element < ActiveRecord::Base
   has_many :material_elements
 
   after_initialize :default_values 
+
+  validates_uniqueness_of :element_name if validates_presence_of :element_name, :element_symbol
   
   def default_values
   		self.element_active = true if self.attributes.has_key?("element_active") && self.element_active.nil?

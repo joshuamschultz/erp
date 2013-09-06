@@ -3,6 +3,8 @@ class CreateQualityLotMaterials < ActiveRecord::Migration
     create_table :quality_lot_materials do |t|
       t.references :quality_lot
       t.references :material_element
+      t.string :lot_element_low_range
+      t.string :lot_element_high_range
       t.boolean :lot_material_tested
       t.string :lot_material_result
       t.text :lot_material_notes

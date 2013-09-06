@@ -1,0 +1,60 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quality lot:</b>
+  <%= @quality_lot_dimension.quality_lot %>
+</p>
+
+<p>
+  <b>Item part dimension:</b>
+  <%= @quality_lot_dimension.item_part_dimension %>
+</p>
+
+<p>
+  <b>Lot dimension avg:</b>
+  <%= @quality_lot_dimension.lot_dimension_avg %>
+</p>
+
+<p>
+  <b>Lot dimension std:</b>
+  <%= @quality_lot_dimension.lot_dimension_std %>
+</p>
+
+<p>
+  <b>Lot dimension max:</b>
+  <%= @quality_lot_dimension.lot_dimension_max %>
+</p>
+
+<p>
+  <b>Lot dimension min:</b>
+  <%= @quality_lot_dimension.lot_dimension_min %>
+</p>
+
+<p>
+  <b>Lot dimension status:</b>
+  <%= @quality_lot_dimension.lot_dimension_status %>
+</p>
+
+<p>
+  <b>Lot dimension notes:</b>
+  <%= @quality_lot_dimension.lot_dimension_notes %>
+</p>
+
+<p>
+  <b>Lot dimension active:</b>
+  <%= @quality_lot_dimension.lot_dimension_active %>
+</p>
+
+<p>
+  <b>Lot dimension created:</b>
+  <%= @quality_lot_dimension.lot_dimension_created_id %>
+</p>
+
+<p>
+  <b>Lot dimension updated:</b>
+  <%= @quality_lot_dimension.lot_dimension_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_quality_lot_dimension_path(@quality_lot_dimension) %> |
+<%= link_to 'Back', quality_lot_dimensions_path %>

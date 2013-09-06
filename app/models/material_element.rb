@@ -8,6 +8,8 @@ class MaterialElement < ActiveRecord::Base
 
   after_initialize :default_values
 
+  has_many :quality_lot_materials, :dependent => :destroy
+
   def default_values
     self.element_active = true if self.element_active.nil?
   end
@@ -19,4 +21,9 @@ class MaterialElement < ActiveRecord::Base
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "element_created_id"
   belongs_to :updated_by, :class_name => "User", :foreign_key => "element_updated_id"
+
+  def element_with_symbol
+      "#{self.element.element_name} (#{self.element.element_symbol})"
+  end
+  
 end
