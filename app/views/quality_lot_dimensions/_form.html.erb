@@ -22,7 +22,7 @@
     <%= f.input :lot_dimension_max, label: "Max" %>
     <%= f.input :lot_dimension_min, label: "Min" %>
     <%= f.input :lot_dimension_status, label: "Status" do %>
-        <%= f.select :lot_dimension_status, [["accepted", "Accept"], ["rejected", "Reject"]], include_blank: false %>
+        <%= f.select :lot_dimension_status, [["Accepted", "Accepted"], ["Rejected", "Rejected"]], include_blank: false %>
     <% end %>
 
     <%#= f.input :lot_dimension_notes %>
