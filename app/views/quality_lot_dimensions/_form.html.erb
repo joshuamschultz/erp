@@ -1,0 +1,67 @@
+<%= simple_form_for(@quality_lot_dimension, :html => {:id => "form_for_material_dimensions", :class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :quality_lot, label_method: :lot_with_part_no, label_value: :id, label: "Lot", :autofocus => true, :include_blank => false %>
+
+    <div class="control-group select required quality_lot_dimension_item_part_dimension">
+        <label for="quality_lot_dimension_item_part_dimension_id" class="select required control-label">
+            <abbr title="required">*</abbr> Part Dimension
+        </label>
+        <div class="controls">
+            <select required="required" name="quality_lot_dimension[item_part_dimension_id]" id="quality_lot_dimension_item_part_dimension_id" class="select required">
+
+            </select>
+        </div>
+    </div>
+
+    <%#= f.association :item_part_dimension %>
+
+    <%= f.input :lot_dimension_avg, label: "Avg" %>
+    <%= f.input :lot_dimension_std, label: "STD" %>
+    <%= f.input :lot_dimension_max, label: "Max" %>
+    <%= f.input :lot_dimension_min, label: "Min" %>
+    <%= f.input :lot_dimension_status, label: "Status" do %>
+        <%= f.select :lot_dimension_status, [["accepted", "Accept"], ["rejected", "Reject"]], include_blank: false %>
+    <% end %>
+
+    <%#= f.input :lot_dimension_notes %>
+    <%#= f.input :lot_dimension_active %>
+
+    <div class="separator bottom"></div>
+
+    <div class="form-actions">
+        <%= f.button :submit %>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_material_dimensions"] = ["quality_lot_dimension_quality_lot_id", "quality_lot_dimension_item_part_dimension_id", "quality_lot_dimension_lot_dimension_avg", "quality_lot_dimension_lot_dimension_std", "quality_lot_dimension_lot_dimension_max", "quality_lot_dimension_lot_dimension_min", "quality_lot_dimension_lot_dimension_status"];
+
+  $(document).ready(function(){ 
+      $("#quality_lot_dimension_quality_lot_id").change(function(){
+          initiate_item_dimensions();
+      });
+
+      initiate_item_dimensions();
+  });
+
+  function initiate_item_dimensions(){
+      if($("#quality_lot_dimension_quality_lot_id").val() != "" && $("#quality_lot_dimension_quality_lot_id").val() != null)
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "lot_item_dimensions", "id": $("#quality_lot_dimension_quality_lot_id").val()}}, "set_item_dimensions", {});
+      else{
+          $("#quality_lot_dimension_item_part_dimension_id").html("");
+      }
+  } 
+
+  function set_item_dimensions(response, callback_params, api_params){
+      var html = $.trim(Mustache.render($(".item-dimension-select-box-template").html(), response));
+      $("#quality_lot_dimension_item_part_dimension_id").html(html);
+       <% unless @quality_lot_dimension.new_record? %>
+          $("#quality_lot_dimension_item_part_dimension_id").val(<%= @quality_lot_dimension.item_part_dimension_id %>);
+      <% end %>      
+  }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "item-dimension-select-box"} %>

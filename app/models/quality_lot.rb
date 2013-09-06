@@ -29,6 +29,8 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :lot_inspector, :class_name => "User", :foreign_key => "lot_inspector_id"
 
 	has_many :comments, :as => :commentable, :dependent => :destroy
+	has_many :quality_lot_materials, :dependent => :destroy
+	has_many :quality_lot_dimensions, :dependent => :destroy
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
@@ -46,6 +48,18 @@ class QualityLot < ActiveRecord::Base
 	def set_lot_control_no
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + self.id.to_s
+	end
+
+	def lot_with_part_no
+		self.lot_control_no + " / #{self.po_line.po_line_item_name}"
+	end
+
+	def lot_item_material_elements
+		(self.item_revision.present? && self.item_revision.material.present?) ?	self.item_revision.material.material_elements : []
+	end
+
+	def lot_item_dimensions
+		self.item_revision.present? ? self.item_revision.item_part_dimensions : []
 	end
 
 end

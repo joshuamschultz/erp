@@ -1,37 +1,47 @@
-<h1>Listing quality_lot_materials</h1>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Material Element Test</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Material Element Test', new_quality_lot_material_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
 
-<table>
-  <tr>
-    <th>Quality lot</th>
-    <th>Material element</th>
-    <th>Lot material tested</th>
-    <th>Lot material result</th>
-    <th>Lot material notes</th>
-    <th>Lot material active</th>
-    <th>Lot material created</th>
-    <th>Lot material updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report_lots" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Lot</th>
+                    <th>Element</th>
+                    <th>Low Range</th>
+                    <th>High Range</th>
+                    <th>Tested</th>
+                    <th>Result</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
 
-<% @quality_lot_materials.each do |quality_lot_material| %>
-  <tr>
-    <td><%= quality_lot_material.quality_lot %></td>
-    <td><%= quality_lot_material.material_element %></td>
-    <td><%= quality_lot_material.lot_material_tested %></td>
-    <td><%= quality_lot_material.lot_material_result %></td>
-    <td><%= quality_lot_material.lot_material_notes %></td>
-    <td><%= quality_lot_material.lot_material_active %></td>
-    <td><%= quality_lot_material.lot_material_created_id %></td>
-    <td><%= quality_lot_material.lot_material_updated_id %></td>
-    <td><%= link_to 'Show', quality_lot_material %></td>
-    <td><%= link_to 'Edit', edit_quality_lot_material_path(quality_lot_material) %></td>
-    <td><%= link_to 'Destroy', quality_lot_material, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+            <tbody>
 
-<br />
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Quality lot material', new_quality_lot_material_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report_lots", :path => quality_lot_materials_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "lot_control_no" },
+                        { "mData": "lot_element_name" },
+                        { "mData": "lot_element_low_range" },
+                        { "mData": "lot_element_high_range" },
+                        { "mData": "lot_material_tested" },
+                        { "mData": "lot_material_result" },
+                        { "mData": "created_date" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

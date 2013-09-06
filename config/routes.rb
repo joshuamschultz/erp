@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :quality_lot_dimensions
+
+
   get "common_actions/get_info"
   get "quality_lots/lot_info"
 
