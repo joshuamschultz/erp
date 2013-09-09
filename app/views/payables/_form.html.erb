@@ -1,0 +1,25 @@
+<%= simple_form_for(@payable) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization %>
+    <%= f.association :po_header %>
+    <%= f.input :payable_to_id %>
+    <%= f.input :payable_identifier %>
+    <%= f.input :payable_description %>
+    <%= f.input :payable_cost %>
+    <%= f.input :payable_discount %>
+    <%= f.input :payable_total %>
+    <%= f.input :payable_invoice_date %>
+    <%= f.input :payable_due_date %>
+    <%= f.input :payable_notes %>
+    <%= f.input :payable_status %>
+    <%= f.input :payable_active %>
+    <%= f.input :payable_created_id %>
+    <%= f.input :payable_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
