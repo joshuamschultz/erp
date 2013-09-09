@@ -1,0 +1,51 @@
+<h1>Listing payables</h1>
+
+<table>
+  <tr>
+    <th>Organization</th>
+    <th>Po header</th>
+    <th>Payable to</th>
+    <th>Payable identifier</th>
+    <th>Payable description</th>
+    <th>Payable cost</th>
+    <th>Payable discount</th>
+    <th>Payable total</th>
+    <th>Payable invoice date</th>
+    <th>Payable due date</th>
+    <th>Payable notes</th>
+    <th>Payable status</th>
+    <th>Payable active</th>
+    <th>Payable created</th>
+    <th>Payable updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @payables.each do |payable| %>
+  <tr>
+    <td><%= payable.organization %></td>
+    <td><%= payable.po_header %></td>
+    <td><%= payable.payable_to_id %></td>
+    <td><%= payable.payable_identifier %></td>
+    <td><%= payable.payable_description %></td>
+    <td><%= payable.payable_cost %></td>
+    <td><%= payable.payable_discount %></td>
+    <td><%= payable.payable_total %></td>
+    <td><%= payable.payable_invoice_date %></td>
+    <td><%= payable.payable_due_date %></td>
+    <td><%= payable.payable_notes %></td>
+    <td><%= payable.payable_status %></td>
+    <td><%= payable.payable_active %></td>
+    <td><%= payable.payable_created_id %></td>
+    <td><%= payable.payable_updated_id %></td>
+    <td><%= link_to 'Show', payable %></td>
+    <td><%= link_to 'Edit', edit_payable_path(payable) %></td>
+    <td><%= link_to 'Destroy', payable, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Payable', new_payable_path %>

@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :payables
+
+
   resources :quality_lot_dimensions
 
 
