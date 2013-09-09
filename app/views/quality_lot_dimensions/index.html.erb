@@ -1,0 +1,51 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Dimension Analysis</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Dimension Analysis', new_quality_lot_dimension_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+
+    <div class="widget-body">
+        <table id="table_report_dimension_analysis" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Lot</th>
+                    <th>Dimension</th>
+                    <th>+ Tol</th>
+                    <th>- Tol</th>
+                    <th>Avg</th>
+                    <th>STD</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report_dimension_analysis", :path => quality_lot_dimensions_path(grouped: true), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "lot_control_no" },
+                        { "mData": "item_part_letter" },
+                        { "mData": "item_part_pos_tolerance" },
+                        { "mData": "item_part_neg_tolerance" },
+                        { "mData": "lot_dimension_avg" },
+                        { "mData": "lot_dimension_std" },
+                        { "mData": "lot_dimension_max" },
+                        { "mData": "lot_dimension_min" },
+                        { "mData": "lot_dimension_status" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

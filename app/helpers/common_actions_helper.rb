@@ -1,0 +1,2 @@
+module CommonActionsHelper
+end

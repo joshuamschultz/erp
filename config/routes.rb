@@ -1,16 +1,25 @@
 AllianceFasteners::Application.routes.draw do
 
-  resources :control_plans
+  resources :quality_lot_dimensions
 
 
-  resources :fmea_types
+  get "common_actions/get_info"
+  get "quality_lots/lot_info"
 
+  resources :control_plans do
+    get :autocomplete_control_plan_plan_name, :on => :collection
+  end
+
+  resources :fmea_types do
+    get :autocomplete_fmea_type_fmea_name, :on => :collection
+  end
 
   resources :quality_lot_materials
 
 
-  resources :process_flows
-
+  resources :process_flows do
+    get :autocomplete_process_flow_process_name, :on => :collection
+  end
 
   resources :elements do
     get :autocomplete_element_element_name, :on => :collection
@@ -33,11 +42,16 @@ AllianceFasteners::Application.routes.draw do
   
   resources :customer_quality_levels
 
-  resources :po_headers do
-    resources :quality_lots
+  resources :po_headers do    
     resources :po_lines
     member do
         post 'populate'
+    end
+  end
+
+  resources :quality_lots do
+    member do
+      post 'populate'
     end
   end
 

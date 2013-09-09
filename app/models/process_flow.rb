@@ -7,7 +7,7 @@ class ProcessFlow < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-    self.process_active = true if self.process_active.nil?
+    self.process_active = true if self.attributes.has_key?("process_active") && self.process_active.nil?
   end
 
   has_one :attachment, :as => :attachable, :dependent => :destroy
