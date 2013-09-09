@@ -1,0 +1,80 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @payable.organization %>
+</p>
+
+<p>
+  <b>Po header:</b>
+  <%= @payable.po_header %>
+</p>
+
+<p>
+  <b>Payable to:</b>
+  <%= @payable.payable_to_id %>
+</p>
+
+<p>
+  <b>Payable identifier:</b>
+  <%= @payable.payable_identifier %>
+</p>
+
+<p>
+  <b>Payable description:</b>
+  <%= @payable.payable_description %>
+</p>
+
+<p>
+  <b>Payable cost:</b>
+  <%= @payable.payable_cost %>
+</p>
+
+<p>
+  <b>Payable discount:</b>
+  <%= @payable.payable_discount %>
+</p>
+
+<p>
+  <b>Payable total:</b>
+  <%= @payable.payable_total %>
+</p>
+
+<p>
+  <b>Payable invoice date:</b>
+  <%= @payable.payable_invoice_date %>
+</p>
+
+<p>
+  <b>Payable due date:</b>
+  <%= @payable.payable_due_date %>
+</p>
+
+<p>
+  <b>Payable notes:</b>
+  <%= @payable.payable_notes %>
+</p>
+
+<p>
+  <b>Payable status:</b>
+  <%= @payable.payable_status %>
+</p>
+
+<p>
+  <b>Payable active:</b>
+  <%= @payable.payable_active %>
+</p>
+
+<p>
+  <b>Payable created:</b>
+  <%= @payable.payable_created_id %>
+</p>
+
+<p>
+  <b>Payable updated:</b>
+  <%= @payable.payable_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_payable_path(@payable) %> |
+<%= link_to 'Back', payables_path %>
