@@ -1,8 +1,10 @@
 class ControlPlansController < ApplicationController
   before_filter :set_page_info
 
+  autocomplete :control_plan, :plan_name, :full => true
+
   def set_page_info
-      
+    @menus[:quality][:active] = "active"
   end
 
   # GET /control_plans

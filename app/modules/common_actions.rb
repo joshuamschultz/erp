@@ -7,7 +7,8 @@ module CommonActions
       	paths += "<a href='#{edit_path}' class='btn-action glyphicons pencil btn-success'><i></i></a> " if edit_path
       	paths += "<a href='#{delete_path}' class='btn-action glyphicons remove_2 btn-danger' rel='nofollow' data-method='delete' data-confirm='Are you sure?'><i></i></a> " if delete_path
 		others.each do |other|
-			paths += "<a href='#{other[:path]}' class='btn btn-mini btn-orange'>#{other[:name]}</a> "
+			other[:method] ||= "get"
+			paths += "<a href='#{other[:path]}' class='btn btn-mini btn-orange' data-method='#{other[:method]}'>#{other[:name]}</a> "
 		end
 		paths
 	end
@@ -46,6 +47,12 @@ module CommonActions
 			record.updated_by = current_user
 		end
 		record
+	end
+
+
+	def self.current_hour_letter
+		hour_letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
+		hour_letter[Time.now.hour]
 	end
 
 
@@ -138,17 +145,17 @@ module CommonActions
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
 		menus[:quality][:sub_menu] = 	[
 											{:path => "#", :name => "Checklist"}, 
-											{:path => "#", :name => "Lot Info"},
-											{:path => "#", :name => "Material"}, 
-											{:path => "#", :name => "Dimensions"}, 
+											{:path => quality_lots_path, :name => "Lot Info"},
+											{:path => quality_lot_materials_path, :name => "Material"}, 
+											{:path => quality_lot_dimensions_path, :name => "Dimensions"}, 
 											{:path => "#", :name => "Run at Rate"},
 											{:path => "#", :name => "Part Submission Warrant"}, 
 											{:path => "#", :name => "Packaging"},
 											{:path => gauges_path, :name => "Instruments"},
 											{:path => "#", :name => " Cause Analysis"}, 
-											{:path => "#", :name => "Process Flow"},
-											{:path => "#", :name => "FMEA"},
-											{:path => "#", :name => "Control Plan"},
+											{:path => process_flows_path, :name => "Process Flow"},
+											{:path => fmea_types_path, :name => "FMEA"},
+											{:path => control_plans_path, :name => "Control Plan"},
 											{:path => "#", :name => "Customer Response"},
 											{:path => "#", :name => "Quality Action"},
 											{:path => vendor_qualities_path, :name => "Quality ID"},

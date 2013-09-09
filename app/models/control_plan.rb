@@ -1,12 +1,13 @@
 class ControlPlan < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessible :plan_active, :plan_created_id, :plan_description, :plan_name, :plan_notes, :plan_updated_id, :attachment_attributes
+  attr_accessible :plan_active, :plan_created_id, :plan_description, :plan_name, 
+  :plan_notes, :plan_updated_id, :attachment_attributes
 
   after_initialize :default_values
 
   def default_values
-    self.plan_active = true if self.plan_active.nil?
+    self.plan_active = true if self.attributes.has_key?("plan_active") && self.plan_active.nil?
   end
 
   has_one :attachment, :as => :attachable, :dependent => :destroy

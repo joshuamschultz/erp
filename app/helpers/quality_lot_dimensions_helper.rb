@@ -1,0 +1,2 @@
+module QualityLotDimensionsHelper
+end

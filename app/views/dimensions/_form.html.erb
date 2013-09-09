@@ -10,7 +10,7 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Submit", :class =>"btn" %>
+    <%= f.button :submit, "Submit", :class => "btn" %>
 
      <%= link_to 'Delete', dimension_path(@dimension), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @dimension.new_record? %>
 
