@@ -89,7 +89,7 @@ class AttachmentsController < ApplicationController
         format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }
       else
-        puts @attachment.errors.to_yaml
+        # puts @attachment.errors.to_yaml
         format.html { render action: "edit" }
         format.json { render json: @attachment.errors, status: :unprocessable_entity }
       end
