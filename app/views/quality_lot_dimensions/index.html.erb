@@ -5,7 +5,7 @@
         <div class="widget">
             <div class="widget-head">
                 <div class="row-fluid">
-                    <h4 class="span6 heading">Dimension Analysis</h4>
+                    <h4 class="span6 heading">Dimension Analysis of <%= link_to @quality_lot.lot_control_no, quality_lot_path(@quality_lot) %></h4>
                     <span class="span6 heading right">
                         <%#= link_to 'New', new_quality_lot_dimension_path(quality_lot_id: @quality_lot.id), :class => "btn btn-mini btn-success" %>
                         <%= link_to 'Update', new_quality_lot_dimension_path(quality_lot_id: @quality_lot.id), :class => "btn btn-mini btn-success" %>
@@ -44,7 +44,7 @@
     {
         :name => "table_report_dimension_analysis", :path => quality_lot_dimensions_path(quality_lot_id: @quality_lot.id), :extras => {:slno => false},
         :columns => '[
-                        { "mData": "lot_control_no" },
+                        { "mData": "lot_control_no", "bVisible": false },
                         { "mData": "item_part_letter" },
                         { "mData": "item_part_pos_tolerance" },
                         { "mData": "item_part_neg_tolerance" },
