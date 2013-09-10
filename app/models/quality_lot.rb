@@ -62,4 +62,21 @@ class QualityLot < ActiveRecord::Base
 		self.item_revision.present? ? self.item_revision.item_part_dimensions : []
 	end
 
+
+  	def process_quality_lot_dimensions(params)
+  		self.quality_lot_dimensions.destroy_all
+
+  		params[:dimension_field_data].each do |row_index, row_data|
+  			row_data.each do |field_index, field_data|  				
+  				QualityLotDimension.create(quality_lot_id: self.id, 
+				item_part_dimension_id: params[:dimension_header_data][field_index], 
+				lot_dimension_value: field_data)
+
+				puts params[:dimension_header_data][field_index]
+  				puts field_data
+  				puts"\n"
+  			end  			
+  		end
+  	end
+  	
 end

@@ -1,0 +1,91 @@
+<% values_count = values[0].present? ? values[0].count : 5 %>
+
+<% objects.each_with_index do |object, i_int|%>
+	<%= hidden_field_tag "#{name}_header_data[#{i_int}]", object.id %>
+<% end %>
+
+<div class="row-fluid">
+  	<div class="span12">
+		<table id="<%= name %>_editable_table" class="dynamicTable table table-striped table-bordered table-condensed">
+			<thead>
+			    <tr>
+			    	<% objects.each do |object|%>
+			    		<th><%= object[title_field] %></th>
+			    	<% end %>
+			    	<th></th>
+			    </tr>
+			</thead>
+
+		    <tbody id="<%= name %>_editable_table_body">
+		    	<% for i_int in 0..values_count-1 %>
+			    	<tr id="<%= name %>_editable_tr_id_<%= i_int %>">
+				    	<% for j_int in 0..objects.count-1 %>
+				    		<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]) %></td>
+				    	<% end %>
+				    	<td><%= link_to "Delete", "#", class: "btn btn-small btn-danger", onclick: "delete_editable_row($(this).parent().parent()); return false" %></td>
+			    	</tr>
+		    	<% end %>
+		    </tbody>
+		</table>
+ 	</div>	
+</div> 
+
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+	<div class="span12 right">
+		<%= f.submit "Save", class: "btn" %>
+		<%= link_to "Add Row", "#", class: "btn", onclick: "add_editable_row(); return false" %>
+		<%= link_to "Back", back, class: "btn" %>
+	</div>
+</div>
+
+<div class="separator bottom"></div>
+
+<script type="text/javascript">
+var edit_tab_field_forms = {};
+var editable_rows_count = <%= values_count %>;
+var editable_fields_count = <%= objects.count %>;
+
+$(document).ready(function(){
+	bind_editable_row_tab();
+});
+
+function add_editable_row(){	
+	var new_row_html = "<tr id='<%= name %>_editable_tr_id_" + editable_rows_count + "'>";
+	for(i_int=0;i_int<editable_fields_count;i_int++){
+		new_row_html += "<td>"
+		new_row_html += "<input type='text' name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='<%= name %>_field_data_" + editable_rows_count + "_" + i_int + "'>";
+		new_row_html += "</td>";
+	}
+	new_row_html += "<td><a onclick='delete_editable_row($(this).parent().parent()); return false' class='btn btn-small btn-danger' href='#'>Delete</a></td>"
+	new_row_html += "</tr>";
+	$("#<%= name %>_editable_table_body").append(new_row_html);
+	editable_rows_count += 1;	
+	bind_editable_row_tab();
+}
+
+function delete_editable_row(element){
+	element.remove();
+	editable_rows_count -= 1;
+	set_editable_row_tab();
+}
+
+function bind_editable_row_tab(){
+	$("#<%= form %> input[type=text]").on("keydown",function(e){		
+		var keyCode = e.keyCode || e.which;
+		var form_id = $(this).closest('form').attr("id");
+		var current_index = $(this).index('input:text');
+		var next_element = $('input:text').eq(current_index + 1).attr('id');
+		var next_index = $("#"+next_element).index('input:text');
+       	if(keyCode == 13){
+       		e.preventDefault();
+       	    if(next_index > -1)
+				$("#"+next_element).focus();
+			else
+				$("#<%= form %>").submit();
+       	}	
+   	});
+}
+
+</script>
