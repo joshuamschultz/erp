@@ -34,7 +34,7 @@ class QualityLotDimensionsController < ApplicationController
                   lot_dimension_values << value.to_i
               end
 
-              lot_dimension[:lot_dimension_std] = 0 # "%0.6f" % lot_dimension_values.stdev
+              lot_dimension[:lot_dimension_std] = "%0.6f" % lot_dimension_values.stdev
               lot_dimension[:lot_dimension_max] = lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value)
               lot_dimension[:lot_dimension_min] = lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value)
           end

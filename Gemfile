@@ -68,4 +68,4 @@ gem 'rails_admin'
 
 gem 'client_side_validations'
 gem 'client_side_validations-simple_form'
-# gem "ruby-standard-deviation", "~> 2.0.0"
+gem "ruby-standard-deviation", "~> 2.0.0"
