@@ -35,3 +35,5 @@
 
 .btn-file{width: 195px;}
 .btn-file > input{opacity: 0.05; z-index: 999;}
+
+.editable_table input[type=text] {width:75px;}
