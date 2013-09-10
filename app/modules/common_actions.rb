@@ -14,10 +14,10 @@ module CommonActions
 	end
 
 
-
 	def self.linkable(path, title, extras = {})
 		"<a href='#{path}'>#{title}</a>"
 	end
+	
 
 	def self.nil_or_blank(attribute)
 		attribute.nil? || attribute.eql?("")
