@@ -1,0 +1,113 @@
+<div class="span3 well item_detail_view">
+    <table class="table">
+        <tbody>
+          <tr>
+              <td>Part Number:</td>
+              <td><strong><%= @item.item_part_no %></strong></td>
+          </tr>
+
+          <% if @item_revision %>
+              <tr>
+                <td>Revision Title:</td>
+                <td><%= @item_revision.item_revision_name %></td>
+              </tr>
+
+              <tr>
+                <td>Revision Date:</td>
+                <td><%= @item_revision.item_revision_date %></td>
+              </tr>
+
+              <tr>
+                <td>Part Name:</td>
+                <td><%= @item_revision.item_name %></td>
+              </tr>
+
+              <tr>
+                <td>Description:</td>
+                <td><%= @item_revision.item_description %></td>
+              </tr>
+
+              <tr>
+                <td>Alt Names:</td>
+                <td>
+                    <%= @item.customer_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
+                </td>
+              </tr>           
+
+              <tr>
+                <td>Owner:</td>
+                <td><%= link_to @item_revision.owner.owner_identifier, owner_path(@item_revision.owner) if @item_revision.owner %></td>
+              </tr>
+
+              <tr>
+                <td>Vendor:</td>
+                <td><%= link_to @item_revision.organization.organization_short_name, organization_path(@item_revision.organization) if @item_revision.organization %></td>
+              </tr> 
+
+              <!-- <tr>
+                <td>Quality:</td>
+                <td><%#= link_to @item_revision.vendor_quality.quality_name, vendor_quality_path(@item_revision.vendor_quality) if @item_revision.vendor_quality %></td>
+              </tr> -->                           
+
+              <tr>
+                <td>Tooling:</td>
+                <td><%= @item_revision.item_tooling %></td>
+              </tr>
+
+              <tr>
+                <td>Cost:</td>
+                <td>$<%= @item_revision.item_cost.to_f %></td>
+              </tr>
+
+              <tr>
+                <td>Print:</td>
+                <td>
+                    <%#= @item_revision.prints.collect{|print| link_to(print.print_identifier, print_path(print))}.join(",  ").html_safe %>
+
+                    <%= link_to(@item_revision.print.print_identifier, @item_revision.print.attachment.attachment.url(:original), target: "_blank") if @item_revision.print && @item_revision.print.attachment %>
+                </td>
+              </tr>
+
+               <tr>
+                <td>Material:</td>
+                <td>
+                  <%#= @item_revision.materials.collect{|material| link_to(material.material_short_name, material_path(material))}.join(",  ").html_safe %>
+
+                  <%= link_to(@item_revision.material.material_short_name, material_path(@item_revision.material).html_safe) if @item_revision.material %>
+                </td>
+              </tr> 
+
+              <tr>
+                <td>Specs:</td>
+                <td>
+                    <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, spec.attachment.attachment.url(:original), target: "_blank") if spec.attachment }.join(",  ").html_safe %>
+                </td>
+              </tr>  
+
+              <tr>
+                <td>Processes:</td>
+                <td>
+                    <%= @item_revision.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank") if process.attachment }.join(",  ").html_safe %>
+                </td>
+              </tr>    
+
+              <tr>
+                <td>Notes:</td>
+                <td><%= @item_revision.item_notes %></td>
+              </tr>
+          <% else %>              
+              <tr>No Revision available!</tr>
+          <% end %>
+
+          <tr>
+            <td>Active:</td>
+            <td><%= @item.item_active %></td>
+          </tr>
+
+          <tr>
+            <td>Profile:</td>
+            <td><strong><%= @item_revision.item_revision_complete ? "Complete" : "Incomplete" %></strong></td>
+          </tr>
+        </tbody>
+      </table>
+</div>

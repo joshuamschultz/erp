@@ -14,6 +14,7 @@ module CommonActions
 	end
 
 
+
 	def self.linkable(path, title, extras = {})
 		"<a href='#{path}'>#{title}</a>"
 	end
