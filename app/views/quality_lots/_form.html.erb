@@ -6,7 +6,8 @@
 <% if params[:lot_shelf] && @quality_lot.persisted? %>
     <%= simple_form_for(@quality_lot, :html => {:id => "form_for_lots", :class => "form-horizontal"}) do |f| %>
         <%= f.error_notification %>
-        <div class="form-inputs">
+        <div class="form-inputs"> 
+            <%= hidden_field_tag :lot_shelf, true %>
             <%= f.input :lot_shelf_number, label: "Shelf" %>
             <%= f.input :lot_shelf_unit, label: "Unit" %>
         </div>
