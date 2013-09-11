@@ -72,10 +72,6 @@ class QualityLot < ActiveRecord::Base
   				QualityLotDimension.create(quality_lot_id: self.id, 
 				item_part_dimension_id: params[:dimension_header_data][field_index], 
 				lot_dimension_value: field_data)
-
-				# puts params[:dimension_header_data][field_index]
-  		# 		puts field_data
-  		# 		puts"\n"
   			end  			
   		end
   	end
