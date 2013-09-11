@@ -15,14 +15,18 @@ class QualityLotDimension < ActiveRecord::Base
 
       pos_tolerance = self.item_part_dimension.item_part_pos_tolerance.to_f
       neg_tolerance = self.item_part_dimension.item_part_neg_tolerance.to_f
-      dimension_max = self.all_lot_dimensions.maximum(:lot_dimension_value)
-      dimension_min = self.all_lot_dimensions.minimum(:lot_dimension_value)
+      dimension_max = self.all_lot_dimensions.maximum(:lot_dimension_value).to_f
+      dimension_min = self.all_lot_dimensions.minimum(:lot_dimension_value).to_f
 
+      # unless pos_tolerance.nil? || neg_tolerance.nil? || dimension_max.nil? || dimension_min.nil?
+      # end
+      
       if dimension_max.between?(pos_tolerance,neg_tolerance) && dimension_min.between?(pos_tolerance,neg_tolerance)
           self.all_lot_dimensions.update_all(:lot_dimension_status => "accepted")
       else
           self.all_lot_dimensions.update_all(:lot_dimension_status => "rejected")
       end
+
 
   		QualityLotDimension.set_callback("save", :after, :process_after_save)
   end
