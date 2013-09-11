@@ -15,7 +15,8 @@ class QualityLot < ActiveRecord::Base
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
-  	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id
+  	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
+  	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number
 
    	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
 	:conditions => ['type_category = ?', 'inspection_level']
