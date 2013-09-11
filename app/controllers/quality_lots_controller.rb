@@ -131,6 +131,7 @@ class QualityLotsController < ApplicationController
         @quality_lot.lot_shelf_number = params[:quality_lot][:lot_shelf_number]
         @quality_lot.lot_shelf_unit = params[:quality_lot][:lot_shelf_unit]
         @quality_lot.save(:validate => false)
+        puts @quality_lot.errors.to_yaml
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully updated.') }
         format.json { head :ok }
       elsif @quality_lot.update_attributes(params[:quality_lot])
