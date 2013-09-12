@@ -68,15 +68,14 @@ AllianceFasteners::Application.configure do
   #Mail configuration for the development 
   config.action_mailer.default_url_options = { :host => '54.227.239.153' }
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :address =>'smtp.gmail.com',
-    :port => 587,
-    :domain => 'gmail.com',
-    :user_name => 'eventsparks@gmail.com',
-    :password => 'agileblaze525',
-    :authentication => 'plain',
-    :enable_starttls_auto => true  
-  }
+  # config.action_mailer.smtp_settings = {
+  #   :address =>'smtp.gmail.com',
+  #   :port => 587,
+  #   :user_name => 'eventsparks@gmail.com',
+  #   :password => 'agileblaze525',
+  #   :authentication => 'plain',
+  #   :enable_starttls_auto => true
+  # }
 
   # Expands the lines which load the assets
   config.assets.debug = false
