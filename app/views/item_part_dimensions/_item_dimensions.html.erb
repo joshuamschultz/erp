@@ -1,13 +1,15 @@
+<% item_page = true if item_page.nil? %>
+
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Dimensions<%#= @item.item_name %></h4>
+            <h4 class="span6 heading">Dimensions <%= "of " unless item_page %> <%= link_to "#{@item.item_part_no}", @item unless item_page %></h4>
             <span class="span6 heading right">
                 <%#= link_to 'Back to Item', item_path(@item), :class => "btn btn-mini" %>
-                <%= link_to 'New Dimension Type', new_dimension_path(:item_id => @item.id), :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Item dimension', new_item_item_revision_item_part_dimension_path(@item, @item_revision), :class => "btn btn-mini btn-success" %>               
+                <%= link_to 'New Dimension Type', new_dimension_path(:item_id => @item.id), :class => "btn btn-mini btn-success" if item_page %>
+                <%= link_to 'New Item dimension', new_item_item_revision_item_part_dimension_path(@item, @item_revision), :class => "btn btn-mini btn-success" if item_page %>               
             </span>
         </div> 
     </div>
@@ -43,7 +45,7 @@
                         { "mData": "item_part_neg_tolerance" },
                         { "mData": "item_part_critical"},
                         { "mData": "item_part_notes", "bVisible": false},                        
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        { "mData": "links", "bSortable": false, "bSearchable": false, "bVisible": ' + item_page.to_s + ' }
                     ]'
     } 
 %>
