@@ -19,6 +19,7 @@
     <%= f.input :mobile_no %>
     <%= f.input :active %>
   </div>
+  <div class="separator bottom"></div>
   <div class="form-actions">
     <%= f.button :submit %>
          <%= link_to 'Delete', privilege_path(@user), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @user.new_record? %>
@@ -26,5 +27,5 @@
   </div>
 <% end %>
 <script type="text/javascript">
-    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_gender", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
 </script>

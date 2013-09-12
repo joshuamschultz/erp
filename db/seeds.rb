@@ -7,7 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 unless User.find_by_email('joshua@alliance.com')
-	user = User.create(email: 'joshua@alliance.com', name: 'joshua', password: '12345678', password_confirmation: '12345678')
+	user = User.new(email: 'joshua@alliance.com', name: 'joshua', password: '12345678', password_confirmation: '12345678')
+   user.roles = [:superadmin]
+   user.save
 end
 
 mastertypes = [

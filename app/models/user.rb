@@ -34,4 +34,6 @@ class User < ActiveRecord::Base
 
   has_many :created_attachments, :class_name => "Attachment", :foreign_key => "attachment_created_id"
   has_many :updated_attachments, :class_name => "Attachment", :foreign_key => "attachment_updated_id"
+
+  validates_presence_of :email, :name
 end
