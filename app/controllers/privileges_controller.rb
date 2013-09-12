@@ -75,6 +75,7 @@ class PrivilegesController < ApplicationController
     end
 
     @user = User.find(params[:id])
+    @user.roles = [params[:role]]
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to privileges_path, notice: 'User was successfully updated.' }
