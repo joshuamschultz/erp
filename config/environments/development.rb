@@ -42,7 +42,7 @@ AllianceFasteners::Application.configure do
     :address =>'smtp.gmail.com',
     :port => 587,
     :domain => "192.168.1.31:80",
-    :user_name => 'eventsparks@gmail.com',
+    :user_name => 'eventsparks',
     :password => 'agileblaze525',
     :authentication => 'plain',
     :enable_starttls_auto => true  
