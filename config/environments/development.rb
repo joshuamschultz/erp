@@ -36,7 +36,7 @@ AllianceFasteners::Application.configure do
   config.assets.debug = false
 
   #Mail configuration for the development 
-  config.action_mailer.default_url_options = { :host => '192.168.1.135:3000' }
+  config.action_mailer.default_url_options = { :host => '192.168.1.31:3000' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :address =>'smtp.gmail.com',

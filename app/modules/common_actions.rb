@@ -180,7 +180,7 @@ module CommonActions
 		menus[:system][:sub_menu] = 	[
 											{:path => company_infos_path, :name => "Home Info"},
 											{:path => owners_path, :name => "Owners"},
-											{:path => "#", :name => "Privileges"},
+											{:path => privileges_path, :name => "Privileges"},
 											{:path => territories_path, :name => "Territories"},
 											{:path => "#", :name => "Documents"},											
 											{:path => commodities_path, :name => "Commodities"}
