@@ -1,0 +1,7 @@
+<h2>Welcome</h2>
+
+<p>Hello <%= @user.email %>,</p>
+
+<p>Welcome to Alliance Fastners POS Solution. Follow the instructions to set credentials.</p>
+
+<p><%= link_to 'Click here to set your credentials', edit_password_url(@user, :reset_password_token => @user.reset_password_token) %></p>
