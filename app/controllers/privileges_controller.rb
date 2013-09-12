@@ -3,7 +3,8 @@ class PrivilegesController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.where("id != ?", current_user.id)
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
