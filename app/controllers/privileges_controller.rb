@@ -8,7 +8,8 @@ class PrivilegesController < ApplicationController
       format.html # index.html.erb
       format.json { 
       	 @users = @users.select{ |user| 
-          user[:show] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
+          user[:user_email] = "<a href='mailto:#{user.email}' target='_top'>#{user.email}</a>"
+          user[:user_name] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
           user[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
           user[:role] = user.role_symbols[0].to_s
         }
@@ -52,11 +53,13 @@ class PrivilegesController < ApplicationController
     password_temp = password = Devise.friendly_token.first(8)
     @user.password = password_temp
     @user.password_confirmation = password_temp
-	  @user.reset_password_token= User.reset_password_token 
+	  @user.reset_password_token= User.reset_password_token
+    @user.reset_password_sent_at= Time.now
 
     respond_to do |format|
       if @user.save
-      	@user.send_reset_password_instructions
+      	# @user.send_reset_password_instructions
+        UserMailer.welcome_email(@user).deliver
         format.html { redirect_to privileges_path, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
