@@ -53,7 +53,7 @@ class ImagesController < ApplicationController
       end
     end
 
-    puts @image.errors.to_yaml
+    # puts @image.errors.to_yaml
   end
 
   # PUT /images/1

@@ -40,7 +40,7 @@ class TestItemsController < ApplicationController
 
   # GET /test_items/1/edit
   def edit
-    puts "dsssssssssssssssssssssssssss"
+    # puts "dsssssssssssssssssssssssssss"
     @test_item = TestItem.find(params[:id])    
   end
 

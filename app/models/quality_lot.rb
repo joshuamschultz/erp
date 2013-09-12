@@ -15,7 +15,8 @@ class QualityLot < ActiveRecord::Base
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
-  	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id
+  	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
+  	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number
 
    	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
 	:conditions => ['type_category = ?', 'inspection_level']
@@ -62,4 +63,17 @@ class QualityLot < ActiveRecord::Base
 		self.item_revision.present? ? self.item_revision.item_part_dimensions : []
 	end
 
+
+  	def process_quality_lot_dimensions(params)
+  		self.quality_lot_dimensions.destroy_all
+
+  		params[:dimension_field_data].each do |row_index, row_data|
+  			row_data.each do |field_index, field_data|  				
+  				QualityLotDimension.create(quality_lot_id: self.id, 
+				item_part_dimension_id: params[:dimension_header_data][field_index], 
+				lot_dimension_value: field_data)
+  			end  			
+  		end
+  	end
+  	
 end
