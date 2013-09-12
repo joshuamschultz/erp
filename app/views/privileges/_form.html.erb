@@ -10,7 +10,7 @@
         <%= select_tag 'role', options_for_select([["Super Admin", "superadmin"], ["Manager", "manager"], ["Quality", "quality"], ["Operations", "operations"], ["Clerical", "clerical"], ["Logistics", "logistics"], ["Vendor", "vendor"], ["Customer", "customer"]]), :class => "string optional" %>
       </div>
     </div>
-    <%= f.input :gender %>
+    <%= f.input :gender, label: 'Gender', collection: [['Male'], ['Female']], as: :radio_buttons, :checked => "Male"  %>
     <%= f.input :address %>  
     <%= f.input :city %> 
     <%= f.input :state %>  
@@ -22,7 +22,7 @@
   <div class="form-actions">
     <%= f.button :submit %>
          <%= link_to 'Delete', privilege_path(@user), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @user.new_record? %>
-    <%= link_to 'Back to Prints', privileges_path,:class =>"btn" %>
+    <%= link_to 'Back to Users', privileges_path,:class =>"btn" %>
   </div>
 <% end %>
 <script type="text/javascript">
