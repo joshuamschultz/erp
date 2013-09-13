@@ -1,0 +1,80 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">ID:</td>
+            <td class="span5"><strong><%= link_to @payable.id, @payable %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span2">Vendor:</td>
+            <td class="span5"><strong><%= link_to @payable.organization.organization_name, @payable.organization if @payable.organization %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span2">PO:</td>
+            <td class="span5"><strong><%= link_to @payable.po_header.po_identifier, @payable.po_header if @payable.po_header %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span2">Payable To:</td>
+            <td class="span5"><strong><%= @payable.payable_to_address ? link_to(@payable.payable_to_address.contact_title, @payable.payable_to_address) : (link_to(@payable.organization.organization_name, organization_main_address_path(@payable.organization)) if @payable.organization) %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Description:</td>
+            <td class="span5"><strong><%= @payable.payable_description %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Cost:</td>
+            <td class="span5"><strong><%= @payable.payable_cost.to_f %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Discount:</td>
+            <td class="span5"><strong><%= @payable.payable_discount.to_f %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Total:</td>
+            <td class="span5"><strong><h4>$<%= @payable.payable_total.to_f %></h4></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Invoice Date:</td>
+            <td class="span5"><strong><%= @payable.payable_invoice_date %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Due Date:</td>
+            <td class="span5"><strong><%= @payable.payable_due_date %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Status:</td>
+            <td class="span5"><strong><%= @payable.payable_status %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><strong><%= @payable.payable_notes %></strong></td>
+          </tr>          
+
+          <!-- "%0.5f" %  -->
+
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <% if @payable.organization %>
+      <h4 class="center">Vendor Info</h4>
+
+      <div class="separator bottom"></div>
+
+      <%= render :partial => 'organizations/organization_info', 
+            :locals => {:organization => @payable.organization} %>
+  <% end %>
+</div>

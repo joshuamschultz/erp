@@ -50,6 +50,7 @@ AllianceFasteners::Application.routes.draw do
     member do
         post 'populate'
     end
+    get :autocomplete_po_header_po_identifier, :on => :collection
   end
 
   resources :quality_lots do
