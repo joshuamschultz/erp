@@ -1,25 +1,118 @@
-<%= simple_form_for(@payable) do |f| %>
+<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :organization %>
-    <%= f.association :po_header %>
-    <%= f.input :payable_to_id %>
-    <%= f.input :payable_identifier %>
+    <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
+
+    <%= hidden_field_tag :organization_id, (@payable.organization.id if @payable.persisted? && @payable.organization.present?) %>
+
+    <%= hidden_field_tag :org_organization_id, (@payable.organization.id if @payable.persisted? && @payable.organization.present?) %>
+
+    <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path(organization_id: 0), :as => :autocomplete, :id_element => '#po_header_id', required: true, :label => "PO" %>
+
+    <%= hidden_field_tag :po_header_id, (@payable.po_header.id if @payable.persisted? && @payable.po_header.present?) %>
+
+    <%= hidden_field_tag :org_po_header_id, (@payable.po_header.id if @payable.persisted? && @payable.po_header.present?) %>
+
+    <%#= f.association :po_header %>
+    <%#= f.association :payable_to_address %>
+    <%#= f.input :payable_active %>
+    <%#= f.input :payable_identifier %>
+
+    <div class="control-group select optional payable_payable_to_address">
+        <label for="payable_payable_to_id" class="select optional control-label">Payable To</label>
+        <div class="controls">
+            <select name="payable[payable_to_id]" id="payable_payable_to_id" class="select optional">
+
+            </select>
+        </div>
+    </div>
+    
     <%= f.input :payable_description %>
     <%= f.input :payable_cost %>
-    <%= f.input :payable_discount %>
-    <%= f.input :payable_total %>
-    <%= f.input :payable_invoice_date %>
-    <%= f.input :payable_due_date %>
-    <%= f.input :payable_notes %>
-    <%= f.input :payable_status %>
-    <%= f.input :payable_active %>
-    <%= f.input :payable_created_id %>
-    <%= f.input :payable_updated_id %>
+    <%= f.input :payable_discount %>    
+    <%= f.input :payable_invoice_date, :as => :string %>
+    <%= f.input :payable_due_date, :as => :string %>
+    <%= f.input :payable_notes %>    
+    <%= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' } %>
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_po_header_id", "payable_payable_to_id", "payable_payable_description", "payable_payable_cost", "payable_payable_discount", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_notes"];
+
+    <% date_box_date1 = @payable.new_record? ? Date.today : @payable.payable_invoice_date %>
+    <% date_box_date2 = @payable.new_record? ? Date.today : @payable.payable_due_date %>
+
+    date_box_fields = date_box_fields.concat([{"name":"payable_payable_invoice_date", "value":"<%= date_box_date1 %>"}, {"name":"payable_payable_due_date", "value":"<%= date_box_date2 %>"}]);
+
+    var org_po_header_path = "<%= autocomplete_po_header_po_identifier_po_headers_path %>";
+
+    $(document).ready(function(){ 
+        $("#payable_organization_id").on("focusout", function(){
+            if($("#organization_id").val() != ""){
+              $("#payable_po_header_id").attr("data-autocomplete", org_po_header_path + "?organization_id=" + $("#organization_id").val());
+
+              initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+            }
+            else{
+                $("#payable_po_header_id").attr("data-autocomplete", org_po_header_path + "?organization_id=0");
+                $("#payable_payable_to_id").html("");
+            }
+        });
+
+        // $("#payable_payable_cost").change(function(){
+        //     calculate_payable_total();
+        // });
+
+        $("#payable_payable_cost").on("input", function(){
+            calculate_payable_total();
+        });
+
+        $("#payable_payable_discount").on("input", function(){
+            calculate_payable_total();
+        });
+
+        <% unless @payable.new_record? %>
+            $("#payable_organization_id").val("<%= @payable.organization.organization_name if @payable.organization %>");
+
+            $("#payable_po_header_id").val("<%= @payable.po_header.po_identifier if @payable.po_header %>");
+
+            initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+        <% end %>
+
+        $("#payable_organization_id").focus();
+    });
+
+    function set_vendor_addresses(response, callback_params, api_params){        
+        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        $("#payable_payable_to_id").html(html);
+
+        <% unless @payable.new_record? %>
+            if($("#organization_id").val() == '<%= @payable.organization_id if @payable.organization %>'){
+                $("#payable_payable_to_id").val('<%= @payable.payable_to_id if @payable.payable_to_address %>');
+            }
+        <% end %>
+
+        return false;
+    }
+
+    function calculate_payable_total(){
+        var payable_total = (parseFloat($("#payable_payable_cost").val(), 10) - parseFloat($("#payable_payable_discount").val(), 10));
+
+        if(isNaN(payable_total) == false)
+            $("#payable_payable_total").val(payable_total); //.toFixed(10)
+        else
+            $("#payable_payable_total").val("");
+    }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>

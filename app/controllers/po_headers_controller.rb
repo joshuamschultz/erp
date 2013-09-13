@@ -2,6 +2,7 @@ class PoHeadersController < ApplicationController
   before_filter :find_relations, only: [:index] 
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]  
+  autocomplete :po_header, :po_identifier, :full => true
 
   def set_page_info
       @menus[:purchases][:active] = "active"
@@ -10,6 +11,13 @@ class PoHeadersController < ApplicationController
   def set_autocomplete_values
       params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
       params[:po_header][:organization_id] = params[:org_organization_id] if params[:po_header][:organization_id] == ""
+  end
+
+  def get_autocomplete_items(parameters)
+      items = super(parameters)
+      if params[:organization_id].present?
+          items = items.where(:organization_id => params[:organization_id])
+      end
   end
 
   def find_relations

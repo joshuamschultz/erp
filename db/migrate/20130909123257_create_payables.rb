@@ -6,9 +6,9 @@ class CreatePayables < ActiveRecord::Migration
       t.integer :payable_to_id
       t.string :payable_identifier
       t.string :payable_description
-      t.decimal :payable_cost
-      t.decimal :payable_discount
-      t.decimal :payable_total
+      t.decimal :payable_cost, :precision => 15, :scale => 10, :default => 0
+      t.decimal :payable_discount, :precision => 15, :scale => 10, :default => 0
+      t.decimal :payable_total, :precision => 15, :scale => 10, :default => 0
       t.date :payable_invoice_date
       t.date :payable_due_date
       t.text :payable_notes
