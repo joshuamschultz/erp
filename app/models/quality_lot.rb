@@ -68,7 +68,7 @@ class QualityLot < ActiveRecord::Base
 
   	def process_quality_lot_dimensions(params)
   		self.quality_lot_dimensions.destroy_all
-
+  		params[:dimension_field_data] ||= []
   		params[:dimension_field_data].each do |row_index, row_data|
   			row_data.each do |field_index, field_data|  				
   				QualityLotDimension.create(quality_lot_id: self.id, 

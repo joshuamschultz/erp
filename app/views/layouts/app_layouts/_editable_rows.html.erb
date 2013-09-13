@@ -1,4 +1,4 @@
-<% values_count = values[0].present? ? values[0].count : 5 %>
+<% values_count = values[0].present? ? values[0].count : default_rows %>
 
 <% objects.each_with_index do |object, i_int|%>
 	<%= hidden_field_tag "#{name}_header_data[#{i_int}]", object.id %>
