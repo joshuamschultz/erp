@@ -19,6 +19,7 @@ class QualityLotDimensionsController < ApplicationController
           @quality_lot_dimensions.each do |lot_dimension|
               lot_dimension[:lot_control_no] = CommonActions.linkable(quality_lot_path(lot_dimension.quality_lot), lot_dimension.quality_lot.lot_control_no)
               lot_dimension[:item_part_letter] = CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revision.item, lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
+              lot_dimension[:item_part_dimensions] = lot_dimension.item_part_dimension.item_part_dimension #CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revision.item, lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
               lot_dimension[:item_part_pos_tolerance] = lot_dimension.item_part_dimension.item_part_pos_tolerance
               lot_dimension[:item_part_neg_tolerance] = lot_dimension.item_part_dimension.item_part_neg_tolerance
 

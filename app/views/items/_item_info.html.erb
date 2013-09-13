@@ -1,6 +1,13 @@
 <div class="span3 well item_detail_view">
     <table class="table">
         <tbody>
+          <% if @quality_lot %>
+            <tr>
+                <td>Lot:</td>
+                <td><strong><%= link_to @quality_lot.lot_control_no, quality_lot_path(@quality_lot) %></strong></td>
+            </tr>
+          <% end %>
+
           <tr>
               <td>Part Number:</td>
               <td><strong><%= link_to @item.item_part_no, item_path(@item, revision_id: (@item_revision.nil? ? 0 : @item_revision.id)) %></strong></td>
