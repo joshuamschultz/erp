@@ -12,7 +12,8 @@
   <%= hidden_field_tag :quality_lot_id, @quality_lot.id %>
 
   <%= render :partial => 'layouts/app_layouts/editable_rows', locals: {f: f, form: "form_for_lot_dimensions", name: "dimension", 
-    title_field: :item_part_letter, value_field: :lot_dimension_value, objects: objects, values: values, back: quality_lot_dimensions_path(quality_lot_id: @quality_lot.id) } %>
+    title_field: :item_part_letter, value_field: :lot_dimension_value, objects: objects, values: values, back: quality_lot_dimensions_path(quality_lot_id: @quality_lot.id),
+    default_rows: 30 } %>
 <% end %>
 
 <%= render :partial => 'item_part_dimensions/item_dimensions', locals: {item_page: false} %>
