@@ -3,7 +3,7 @@
         <tbody>
           <tr>
               <td>Part Number:</td>
-              <td><strong><%= @item.item_part_no %></strong></td>
+              <td><strong><%= link_to @item.item_part_no, item_path(@item, revision_id: (@item_revision.nil? ? 0 : @item_revision.id)) %></strong></td>
           </tr>
 
           <% if @item_revision %>
@@ -106,7 +106,7 @@
 
           <tr>
             <td>Profile:</td>
-            <td><strong><%= @item_revision.item_revision_complete ? "Complete" : "Incomplete" %></strong></td>
+            <td><strong><%= (@item_revision.present? && @item_revision.item_revision_complete) ? "Complete" : "Incomplete" %></strong></td>
           </tr>
         </tbody>
       </table>

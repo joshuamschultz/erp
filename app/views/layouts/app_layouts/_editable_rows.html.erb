@@ -79,8 +79,18 @@ function bind_editable_row_tab(){
 		var keyCode = e.keyCode || e.which;
 		var form_id = $(this).closest('form').attr("id");
 		var current_index = $(this).index('input:text');
-		var next_element = $('input:text').eq(current_index + 1).attr('id');
+		var next_element = $('input:text').eq(current_index + <%= objects.count %>).attr('id');
 		var next_index = $("#"+next_element).index('input:text');
+
+		if(next_index == -1){
+			next_index = (current_index % <%= objects.count %>) + 1;
+
+			if(next_index == <%= objects.count %>)
+				next_index = -1;
+
+			var next_element = $('input:text').eq(next_index).attr('id');
+		}
+
        	if(keyCode == 13){
        		e.preventDefault();
        	    if(next_index > -1)
