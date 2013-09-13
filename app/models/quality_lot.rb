@@ -6,11 +6,11 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :control_plan
 	belongs_to :process_flow
 
-	after_create :after_create_values
+	before_create :before_create_values
 
-	def after_create_values
+	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
-		self.save(:validate => false)
+		# self.save(:validate => false)
 	end
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
@@ -47,8 +47,10 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def set_lot_control_no
+		currnt_month_count = QualityLot.where("month(created_at) = ?", Date.today.month).count
+
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + self.id.to_s
+		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (currnt_month_count + 1).to_s
 	end
 
 	def lot_with_part_no
