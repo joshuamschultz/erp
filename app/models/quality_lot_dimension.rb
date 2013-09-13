@@ -13,8 +13,8 @@ class QualityLotDimension < ActiveRecord::Base
   def process_after_save
   		QualityLotDimension.skip_callback("save", :after, :process_after_save)
 
-      pos_tolerance = self.item_part_dimension.item_part_pos_tolerance.to_f
-      neg_tolerance = self.item_part_dimension.item_part_neg_tolerance.to_f
+      pos_tolerance = self.item_part_dimension.item_part_dimension.to_f + self.item_part_dimension.item_part_pos_tolerance.to_f
+      neg_tolerance = self.item_part_dimension.item_part_dimension.to_f - self.item_part_dimension.item_part_neg_tolerance.to_f
       dimension_max = self.all_lot_dimensions.maximum(:lot_dimension_value).to_f
       dimension_min = self.all_lot_dimensions.minimum(:lot_dimension_value).to_f
 
@@ -26,7 +26,6 @@ class QualityLotDimension < ActiveRecord::Base
       else
           self.all_lot_dimensions.update_all(:lot_dimension_status => "rejected")
       end
-
 
   		QualityLotDimension.set_callback("save", :after, :process_after_save)
   end
