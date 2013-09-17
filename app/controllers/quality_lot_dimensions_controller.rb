@@ -38,7 +38,7 @@ class QualityLotDimensionsController < ApplicationController
               
               lot_dimension_values = []
               lot_dimension.all_lot_dimensions.collect(&:lot_dimension_value).each do |value|
-                lot_dimension_values << value.to_i
+                lot_dimension_values << value.to_f
               end
 
               lot_dimension[:lot_dimension_std] = lot_dimension_values.stdev.round(6) rescue 0
