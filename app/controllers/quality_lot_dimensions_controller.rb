@@ -27,15 +27,16 @@ class QualityLotDimensionsController < ApplicationController
               # lot_dimension_links <<  {:name => "Accept", :method => "put", :path => quality_lot_dimension_path(lot_dimension, status: "accepted") } if lot_dimension.lot_dimension_status == "rejected" || lot_dimension.lot_dimension_status.nil?
               # lot_dimension_links <<  {:name => "Reject", :method => "put", :path => quality_lot_dimension_path(lot_dimension, status: "rejected") } if lot_dimension.lot_dimension_status == "accepted" || lot_dimension.lot_dimension_status.nil?
               # lot_dimension[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_dimension_path(lot_dimension, quality_lot_id: @quality_lot.id), nil)
+              # "%0.6f" % (
 
-              lot_dimension[:lot_dimension_avg] = "%0.6f" % (lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count)
+              lot_dimension[:lot_dimension_avg] = lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count
               
               lot_dimension_values = []
               lot_dimension.all_lot_dimensions.collect(&:lot_dimension_value).each do |value|
-                  lot_dimension_values << value.to_i
+                lot_dimension_values << value.to_i
               end
 
-              lot_dimension[:lot_dimension_std] = "%0.6f" % lot_dimension_values.stdev rescue 0
+              lot_dimension[:lot_dimension_std] = lot_dimension_values.stdev rescue 0
               lot_dimension[:lot_dimension_max] = lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value)
               lot_dimension[:lot_dimension_min] = lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value)
           end
