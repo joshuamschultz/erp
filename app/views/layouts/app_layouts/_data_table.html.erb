@@ -3,6 +3,8 @@
 <% extras ||= {} %>
 <% extras[:slno] = true if extras[:slno].nil?  %>
 <% extras[:grouping] = false if extras[:grouping].nil? %>
+<% extras[:sorted] = 0 if extras[:sorted].nil? %>
+<% extras[:order] = "asc" if extras[:order].nil? %>
 
 <script type="text/javascript">
     var data_<%= name %>;
@@ -25,6 +27,7 @@
             "bAutoWidth": false,
             "bProcessing": true,
             "sAjaxSource": '<%= path %>',
+            "aaSorting": [[<%= extras[:sorted] %>, "<%= extras[:order] %>"]],
             "aoColumns": <%= columns.html_safe %>        
         });
 

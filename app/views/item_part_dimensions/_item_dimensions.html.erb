@@ -35,7 +35,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report_item_dimensions", :path => item_item_revision_item_part_dimensions_path(@item, @item_revision),:extras => {:slno => false},
+        :name => "table_report_item_dimensions", :path => item_item_revision_item_part_dimensions_path(@item, @item_revision), :extras => {:slno => false, :sorted => 2, :order => "asc"},
         :columns => '[
                         { "mData": "dimension_type" },
                         { "mData": "gauge_name"},
