@@ -32,6 +32,7 @@ class QualityLot < ActiveRecord::Base
 	has_many :comments, :as => :commentable, :dependent => :destroy
 	has_many :quality_lot_materials, :dependent => :destroy
 	has_many :quality_lot_dimensions, :dependent => :destroy
+	has_many :quality_lot_capabilities, :dependent => :destroy
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
@@ -62,7 +63,7 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def lot_item_dimensions
-		self.item_revision.present? ? self.item_revision.item_part_dimensions : []
+		self.item_revision.present? ? self.item_revision.item_part_dimensions.order(:item_part_letter) : []
 	end
 
 
@@ -70,11 +71,24 @@ class QualityLot < ActiveRecord::Base
   		self.quality_lot_dimensions.destroy_all
   		params[:dimension_field_data] ||= []
   		params[:dimension_field_data].each do |row_index, row_data|
-  			row_data.each do |field_index, field_data|  				
+  			row_data.each do |field_index, field_data|
   				QualityLotDimension.create(quality_lot_id: self.id, 
 				item_part_dimension_id: params[:dimension_header_data][field_index], 
 				lot_dimension_value: field_data)
-  			end  			
+  			end
+  		end
+  	end
+
+
+  	def process_quality_lot_capabilities(params)
+  		self.quality_lot_capabilities.destroy_all
+  		params[:capability_field_data] ||= []
+  		params[:capability_field_data].each do |row_index, row_data|
+  			row_data.each do |field_index, field_data|
+  				QualityLotCapability.create(quality_lot_id: self.id, 
+				item_part_dimension_id: params[:capability_header_data][field_index], 
+				lot_dimension_value: field_data)
+  			end
   		end
   	end
   	
