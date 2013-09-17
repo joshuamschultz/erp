@@ -18,6 +18,7 @@ class PoHeadersController < ApplicationController
       if params[:organization_id].present?
           items = items.where(:organization_id => params[:organization_id])
       end
+      items
   end
 
   def find_relations

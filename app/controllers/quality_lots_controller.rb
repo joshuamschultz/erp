@@ -7,6 +7,9 @@ class QualityLotsController < ApplicationController
   end
 
   def set_autocomplete_values
+      params[:quality_lot][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:quality_lot][:po_header_id]
+      params[:quality_lot][:po_header_id] = params[:org_po_header_id] if params[:quality_lot][:po_header_id] == ""
+
       params[:quality_lot][:process_flow_id], params[:process_flow_id] = params[:process_flow_id], params[:quality_lot][:process_flow_id]
       params[:quality_lot][:process_flow_id] = params[:org_process_flow_id] if params[:quality_lot][:process_flow_id] == ""
 
