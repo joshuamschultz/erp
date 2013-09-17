@@ -8,7 +8,7 @@
         <%= f.error_notification %>
         <div class="form-inputs"> 
             <%= hidden_field_tag :lot_shelf, true %>
-            <%= f.input :lot_shelf_number, label: "Shelf" %>
+            <%= f.input :lot_shelf_number, label: "Shelf", :autofocus => true %>
             <%= f.input :lot_shelf_unit, label: "Unit" %>
         </div>
 
@@ -33,7 +33,9 @@
       <div class="form-inputs">
         <%#= f.association :po_header, label_method: :po_identifier, label_value: :id, label: "PO", :autofocus => true, :include_blank => false %>
 
-        <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', required: true, :label => "PO" %>
+        <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', required: true, :label => "PO" if @quality_lot.new_record? %>
+
+        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' } unless @quality_lot.new_record? %>
 
         <%= hidden_field_tag :po_header_id, (@quality_lot.po_header.id if @quality_lot.persisted? && @quality_lot.po_header.present?) %>
 
@@ -145,6 +147,8 @@
         <% else %>
             initiate_line_items();
         <% end %>
+
+        $("#quality_lot_po_header_id").focus();
     });
 
     function initiate_line_items(){
