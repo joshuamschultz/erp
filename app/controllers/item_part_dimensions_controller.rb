@@ -5,6 +5,9 @@ class ItemPartDimensionsController < ApplicationController
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
     @item_part_dimensions = @item_revision.item_part_dimensions.order("item_part_letter asc")
+    if params[:critical].present?
+        @item_part_dimensions = @item_part_dimensions.where(:item_part_critical => true)
+    end
 
     respond_to do |format|
       format.html # index.html.erb

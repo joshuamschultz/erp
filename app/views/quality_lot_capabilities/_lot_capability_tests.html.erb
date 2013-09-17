@@ -1,0 +1,46 @@
+<% unless @quality_lot_dimension.new_record? %>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span7 heading">Dimension Analysis of <%= link_to @quality_lot_dimension.quality_lot.lot_control_no, @quality_lot_dimension.quality_lot %> </h4>
+            <span class="span5 heading right">
+                <%= link_to 'New Dimension Analysis', new_quality_lot_dimension_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+
+    <div class="widget-body">
+        <table id="table_report_dimension_analysis_tests" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Lot</th>
+                    <th>Dimension</th>
+                    <th>+ Tol</th>
+                    <th>- Tol</th>
+                    <th>Value</th>                   
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report_dimension_analysis_tests", :path => quality_lot_dimensions_path(lot_id: @quality_lot_dimension.quality_lot_id), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "lot_control_no", "bVisible": false },
+                        { "mData": "item_part_letter" },
+                        { "mData": "item_part_pos_tolerance", "bVisible": false },
+                        { "mData": "item_part_neg_tolerance", "bVisible": false },
+                        { "mData": "lot_dimension_value" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
+
+<% end %> 

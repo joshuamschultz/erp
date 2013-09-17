@@ -18,5 +18,6 @@ class ItemPartDimension < ActiveRecord::Base
   validates_presence_of :gauge
 
   has_many :quality_lot_dimensions, :dependent => :destroy
+  has_many :quality_lot_capabilities, :dependent => :destroy
 
 end
