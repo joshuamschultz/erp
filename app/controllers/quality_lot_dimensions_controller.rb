@@ -13,7 +13,7 @@ class QualityLotDimensionsController < ApplicationController
     if @quality_lot
         @item_revision = @quality_lot.item_revision
         @item = @item_revision.item
-        @quality_lot_dimensions = @quality_lot.quality_lot_dimensions.group(:quality_lot_id, :item_part_dimension_id)
+        @quality_lot_dimensions = @quality_lot.quality_lot_dimensions.order(:item_part_dimension_id).group(:quality_lot_id, :item_part_dimension_id)
     else
         @quality_lot_dimensions = []
     end

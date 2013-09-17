@@ -4,7 +4,7 @@ class ItemPartDimensionsController < ApplicationController
   def index
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
-    @item_part_dimensions = @item_revision.item_part_dimensions.all
+    @item_part_dimensions = @item_revision.item_part_dimensions.order(:item_part_letter)
 
     respond_to do |format|
       format.html # index.html.erb
