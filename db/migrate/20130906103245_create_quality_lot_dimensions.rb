@@ -3,7 +3,7 @@ class CreateQualityLotDimensions < ActiveRecord::Migration
     create_table :quality_lot_dimensions do |t|
       t.references :quality_lot
       t.references :item_part_dimension
-      t.decimal :lot_dimension_value, :precision => 15, :scale => 10      
+      t.decimal :lot_dimension_value, :precision => 15, :scale => 10
       t.string :lot_dimension_status
       t.text :lot_dimension_notes
       t.boolean :lot_dimension_active
