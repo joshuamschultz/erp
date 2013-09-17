@@ -9,7 +9,7 @@
 		<table id="<%= name %>_editable_table" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
 			<thead>
 			    <tr>
-			    	<th>SlNo</th>
+			    	<th>Sl No</th>
 			    	<% objects.each do |object|%>
 			    		<th><%= object[title_field] %></th>
 			    	<% end %>
@@ -105,10 +105,8 @@ function bind_editable_row_tab(){
 }
 
 function set_editable_row_slno(){
-	var i_int = 1;
-	$(".editable_rows_slno").each(function() {
-		$(this).html(i_int);
-		i_int += 1;
+	$(".editable_rows_slno").each(function(index){
+		$(this).html(index + 1);
 	});
 }
 
