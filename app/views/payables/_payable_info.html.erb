@@ -6,6 +6,7 @@
             <td class="span5"><strong><%= link_to @payable.id, @payable %></strong></td>
           </tr>
 
+      <% if @payable.organization %>
           <tr>
             <td class="span2">Vendor:</td>
             <td class="span5"><strong><%= link_to @payable.organization.organization_name, @payable.organization if @payable.organization %></strong></td>
@@ -20,25 +21,26 @@
             <td class="span2">Payable To:</td>
             <td class="span5"><strong><%= @payable.payable_to_address ? link_to(@payable.payable_to_address.contact_title, @payable.payable_to_address) : (link_to(@payable.organization.organization_name, organization_main_address_path(@payable.organization)) if @payable.organization) %></strong></td>
           </tr>
+      <% end %>
 
           <tr>
             <td class="span3">Description:</td>
             <td class="span5"><strong><%= @payable.payable_description %></strong></td>
           </tr>
 
-          <tr>
+          <!-- <tr>
             <td class="span3">Cost:</td>
-            <td class="span5"><strong><%= @payable.payable_cost.to_f %></strong></td>
-          </tr>
+            <td class="span5"><strong><%#= @payable.payable_cost %></strong></td>
+          </tr> -->
 
           <tr>
             <td class="span3">Discount:</td>
-            <td class="span5"><strong><%= @payable.payable_discount.to_f %></strong></td>
+            <td class="span5"><strong><%= @payable.payable_discount %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Total:</td>
-            <td class="span5"><strong><h4>$<%= @payable.payable_total.to_f %></h4></strong></td>
+            <td class="span5"><strong><h4>$<%= @payable.payable_total %></h4></strong></td>
           </tr>
 
           <tr>

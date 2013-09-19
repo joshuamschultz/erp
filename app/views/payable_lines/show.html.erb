@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Payable:</b>
+  <%= @payable_line.payable %>
+</p>
+
+<p>
+  <b>Payable line identifier:</b>
+  <%= @payable_line.payable_line_identifier %>
+</p>
+
+<p>
+  <b>Payable line description:</b>
+  <%= @payable_line.payable_line_description %>
+</p>
+
+<p>
+  <b>Payable line cost:</b>
+  <%= @payable_line.payable_line_cost %>
+</p>
+
+<p>
+  <b>Payable line notes:</b>
+  <%= @payable_line.payable_line_notes %>
+</p>
+
+<p>
+  <b>Payable line status:</b>
+  <%= @payable_line.payable_line_status %>
+</p>
+
+<p>
+  <b>Payable line active:</b>
+  <%= @payable_line.payable_line_active %>
+</p>
+
+<p>
+  <b>Payable line created:</b>
+  <%= @payable_line.payable_line_created_id %>
+</p>
+
+<p>
+  <b>Payable line updated:</b>
+  <%= @payable_line.payable_line_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_payable_payable_line_path(@payable_line.payable, @payable_line) %> |
+<%= link_to 'Back', payable_payable_lines_path(@payable_line.payable) %>
