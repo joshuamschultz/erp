@@ -5,12 +5,14 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading"><%= "Add Lots for a " if lot_info %> Purchase Order <%= @organization.organization_type_title if @organization %> <%#= "With Selected Revision" if @item_revision %> </h4>
+            <h4 class="span6 heading"><%= "Add Lots for a " if lot_info %> Purchase Order <%= @organization.organization_type_title if @organization %> 
+                <%#= "With Selected Revision" if @item_revision %> 
+            </h4>
             <span class="span6 heading right">
                 <%= link_to 'All', all_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>                
+                <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>
             </span>
         </div> 
     </div>

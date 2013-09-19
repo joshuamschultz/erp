@@ -16,7 +16,23 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @payables }
+      format.json { 
+          @payables = @payables.select{|payable|
+              payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.id)
+              payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
+              payable[:vendor_name] = payable.organization.present? ? CommonActions.linkable(organization_path(payable.organization), payable.organization.organization_name) : "-"
+              if payable.payable_to_address
+                payable[:payable_to_name] = CommonActions.linkable(contact_path(payable.payable_to_address), payable.payable_to_address.contact_title)
+              elsif payable.organization
+                payable[:payable_to_name] = CommonActions.linkable(organization_main_address_path(payable.organization), payable.organization.organization_name)
+              else
+                payable[:payable_to_name] = "-"
+              end              
+              payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil)
+          }
+          render json: {:aaData => @payables}
+
+      }
     end
   end
 
@@ -24,6 +40,7 @@ class PayablesController < ApplicationController
   # GET /payables/1.json
   def show
     @payable = Payable.find(params[:id])
+    @po_header = @payable.po_header
 
     respond_to do |format|
       format.html # show.html.erb

@@ -12,7 +12,8 @@ class PoLinesController < ApplicationController
     params[:po_line][:organization_id] = params[:org_organization_id] if params[:po_line][:organization_id] == ""
 
     params[:po_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:po_line][:item_alt_name_id]
-    params[:po_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:po_line][:item_alt_name_id] == ""
+    params[:po_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:po_line][:item_alt_name_id] == "" || params[:po_line][:item_alt_name_id].nil?
+  
   end
   
   # GET po_headers/1/po_lines

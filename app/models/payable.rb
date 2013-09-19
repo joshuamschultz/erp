@@ -1,4 +1,5 @@
 class Payable < ActiveRecord::Base
+  has_many :payable_lines
   belongs_to :organization
   belongs_to :po_header
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 
@@ -9,12 +10,21 @@ class Payable < ActiveRecord::Base
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
-  # validates_presence_of :organization, :po_header
+  has_many :payable_lines, :dependent => :destroy
+
+  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_description
 
   before_save :process_before_save
 
   def process_before_save
-  		self.payable_total = self.payable_cost.to_f - self.payable_discount.to_f
+  		self.payable_total = self.update_payable_total
+      return true
+  end
+
+  def update_payable_total
+      payable_total = self.payable_lines.sum(:payable_line_cost) - self.payable_discount
+      payable_total += self.po_header.po_total if self.po_header
+      payable_total
   end
 
 end

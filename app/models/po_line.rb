@@ -29,20 +29,20 @@ class PoLine < ActiveRecord::Base
   before_save :update_item_total
 
   def update_item_total
-      self.po_line_total = self.po_line_cost.round(10) * self.po_line_quantity.round(10)
-      self.item = self.item_alt_name.item
-      self.item_revision = self.item_alt_name.item.current_revision
+    self.po_line_total = self.po_line_cost * self.po_line_quantity
+    self.item = self.item_alt_name.item
+    self.item_revision = self.item_alt_name.item.current_revision
   end
 
   after_save :update_po_total
   after_destroy :update_po_total
 
   def update_po_total
-      self.po_header.update_attributes(:po_total => self.po_header.po_lines.sum(:po_line_total))
+    self.po_header.update_attributes(:po_total => self.po_header.po_lines.sum(:po_line_total))
   end
 
   def po_line_item_name
-      self.item_alt_name.alt_item_name
+    self.item_alt_name.alt_item_name
   end
 
 end

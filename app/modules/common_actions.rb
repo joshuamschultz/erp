@@ -131,7 +131,7 @@ module CommonActions
 
 		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
 		menus[:accounts][:sub_menu] = 	[											
-											{:path => "#", :name => "Payables"},
+											{:path => payables_path, :name => "Payables"},
 											{:path => "#", :name => "Payments"},
 											{:path => "#", :name => "Receivables"}
 										]
