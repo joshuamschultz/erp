@@ -22,6 +22,11 @@ class CommonActionsController < ApplicationController
 
         when "material_element_info"
           result = MaterialElement.find(params[:id])
+
+         when "organization_payables"
+          organization = Organization.find(params[:id])
+          result = organization.present? ? organization.payables : []
+
   		end
   		render json: {:aaData => result}
   end

@@ -1,4 +1,11 @@
-<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal well"}) do |f| %>
+<div class="row-fluid">
+  <div class="span4 well item_detail_view">
+      <div id="payable_vendor_info"></div>
+  </div>
+
+  <div class="span8 well item_detail_view">
+
+<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -57,9 +64,13 @@
     <%= link_to 'Back to Payables', payables_path, :class => "btn" %>
   </div>
 <% end %>
+</div>
+</div>
 
 
-<%= render :partial => 'payable_lines/line_items' unless @payable.new_record? %>
+<%= render :partial => 'payable_lines/line_items' if @payable.persisted? %>
+
+<%= render :partial => 'po_lines/line_items' if @payable.persisted? && @po_header %>
 
 
 <script type="text/javascript">
@@ -79,13 +90,16 @@
             }
 
             if($("#organization_id").val() != ""){
-              $("#payable_po_header_id").attr("data-autocomplete", org_po_header_path + "?organization_id=" + $("#organization_id").val());
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
 
-              initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+                $("#payable_po_header_id").attr("data-autocomplete", org_po_header_path + "?organization_id=" + $("#organization_id").val());
+
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
             }
             else{
                 $("#payable_po_header_id").attr("data-autocomplete", org_po_header_path + "?organization_id=0");
                 $("#payable_payable_to_id").html("");
+                $("#payable_vendor_info").html("");
             }
         });
 
@@ -112,6 +126,8 @@
 
             if($("#organization_id").val() != ""){
                 initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
             }
 
             <% unless @payable.organization.nil? %>
@@ -153,6 +169,11 @@
     //     $("#payable_payable_cost").val(response.po_total);
     //     calculate_payable_total();
     // }
+
+    function set_vendor_info(response, callback_params, api_params){
+        $("#payable_vendor_info").html(response);
+        return false;
+    }
 
 </script>
 

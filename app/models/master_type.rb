@@ -7,6 +7,8 @@ class MasterType < ActiveRecord::Base
 
   scope :quality_levels, where(:type_category => 'customer_quality_level')
 
+  scope :payment_types, where(:type_category => 'payment_type')
+
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
@@ -18,6 +20,8 @@ class MasterType < ActiveRecord::Base
   has_many :level_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_level_id"
   has_many :method_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_method_id"
   has_many :type_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_type_id"
+
+  has_many :type_based_payments, :class_name => "Payment", :foreign_key => "payment_type_id"
 
   has_many :customer_quality_levels, :dependent => :destroy
   has_many :customer_qualities, :through => :customer_quality_levels

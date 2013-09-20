@@ -1,0 +1,39 @@
+<h1>Listing receivable_lines</h1>
+
+<table>
+  <tr>
+    <th>Receivable</th>
+    <th>Receivable line identifier</th>
+    <th>Receivable line description</th>
+    <th>Receivable line cost</th>
+    <th>Receivable line notes</th>
+    <th>Receivable line status</th>
+    <th>Receivable line active</th>
+    <th>Receivable line created</th>
+    <th>Receivable line updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @receivable_lines.each do |receivable_line| %>
+  <tr>
+    <td><%= receivable_line.receivable %></td>
+    <td><%= receivable_line.receivable_line_identifier %></td>
+    <td><%= receivable_line.receivable_line_description %></td>
+    <td><%= receivable_line.receivable_line_cost %></td>
+    <td><%= receivable_line.receivable_line_notes %></td>
+    <td><%= receivable_line.receivable_line_status %></td>
+    <td><%= receivable_line.receivable_line_active %></td>
+    <td><%= receivable_line.receivable_line_created_id %></td>
+    <td><%= receivable_line.receivable_line_updated_id %></td>
+    <td><%= link_to 'Show', [receivable_line.receivable, receivable_line] %></td>
+    <td><%= link_to 'Edit', edit_receivable_receivable_line_path(receivable_line.receivable, receivable_line) %></td>
+    <td><%= link_to 'Destroy', [receivable_line.receivable, receivable_line], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Receivable line', new_receivable_receivable_line_path(params[:receivable_id]) %>

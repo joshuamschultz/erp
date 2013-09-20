@@ -11,6 +11,32 @@
 			{{# aaData}}<option value="{{id}}">{{element_with_symbol}}</option>{{/ aaData}}
 	<% when "item-dimension-select-box" %>
 			{{# aaData}}<option value="{{id}}">{{item_part_letter}}</option>{{/ aaData}}
+	<% when "payable-select-box" %>
+			{{# aaData}}<option value="{{id}}">{{payable_identifier}}</option>{{/ aaData}}
+	<% when "payment-line-row-html" %>
+			<tr>
+		      <td>
+		        <div class='control-group select required payment_payment_lines_payable'>
+		          <div class='controls'>
+		            <select name='payment[payment_lines_attributes][{{row_count}}][payable_id]' id='payment_payment_lines_attributes_{{row_count}}_payable_id' class='select required payment_payable_new'>
+		            		// {{row_data}}
+		            </select>
+		          </div>
+		        </div>
+		      </td>
+		      <td><input type='text' value='' name='name' id='name' disabled='disabled'></td>
+		      <td><input type='text' value='' name='name2' id='name2' disabled='disabled'></td>
+		      <td>
+		        <div class='control-group decimal required payment_payment_lines_payment_line_amount'>
+		          <div class='controls'>
+		            <input type='number' value='0.0' step='any' required='required' name='payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required'>
+		          </div>
+		        </div>
+		      </td>
+		      <td>
+		      	<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
+		      </td>
+      		</tr>
 	<% else %>
 
 <% end%>

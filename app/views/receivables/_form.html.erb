@@ -1,0 +1,22 @@
+<%= simple_form_for(@receivable) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization %>
+    <%= f.association :so_header %>
+    <%= f.input :receivable_identifier %>
+    <%= f.input :receivable_description %>
+    <%= f.input :receivable_cost %>
+    <%= f.input :receivable_discount %>
+    <%= f.input :receivable_total %>
+    <%= f.input :receivable_notes %>
+    <%= f.input :receivable_status %>
+    <%= f.input :receivable_active %>
+    <%= f.input :receivable_created_id %>
+    <%= f.input :receivable_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

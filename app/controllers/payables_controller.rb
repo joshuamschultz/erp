@@ -62,6 +62,7 @@ class PayablesController < ApplicationController
   # GET /payables/1/edit
   def edit
     @payable = Payable.find(params[:id])
+    @po_header = @payable.po_header
   end
 
   # POST /payables
