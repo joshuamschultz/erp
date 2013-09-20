@@ -62,7 +62,12 @@ mastertypes = [
          # Inspection Type
          ["Normal", "", "normal", "inspection_type", "true"],
          ["Reduced", "", "reduced", "inspection_type", "true"],
-         ["Tightened", "", "tightened", "inspection_type", "true"]
+         ["Tightened", "", "tightened", "inspection_type", "true"],
+         #Payment Types
+         ["Cash", "", "cash", "payment_type", "true"],
+         ["Check", "", "check", "payment_type", "true"],
+         ["Credit", "", "credit", "payment_type", "true"],
+         ["ACH", "", "ach", "payment_type", "true"]
 ]
 
 mastertypes.each do |master|
