@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @payment.organization %>
+</p>
+
+<p>
+  <b>Payment type:</b>
+  <%= @payment.payment_type_id %>
+</p>
+
+<p>
+  <b>Payment check code:</b>
+  <%= @payment.payment_check_code %>
+</p>
+
+<p>
+  <b>Payment check amount:</b>
+  <%= @payment.payment_check_amount %>
+</p>
+
+<p>
+  <b>Payment check no:</b>
+  <%= @payment.payment_check_no %>
+</p>
+
+<p>
+  <b>Payment identifier:</b>
+  <%= @payment.payment_identifier %>
+</p>
+
+<p>
+  <b>Payment description:</b>
+  <%= @payment.payment_description %>
+</p>
+
+<p>
+  <b>Payment notes:</b>
+  <%= @payment.payment_notes %>
+</p>
+
+<p>
+  <b>Payment status:</b>
+  <%= @payment.payment_status %>
+</p>
+
+<p>
+  <b>Payment active:</b>
+  <%= @payment.payment_active %>
+</p>
+
+<p>
+  <b>Payment created:</b>
+  <%= @payment.payment_created_id %>
+</p>
+
+<p>
+  <b>Payment updated:</b>
+  <%= @payment.payment_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_payment_path(@payment) %> |
+<%= link_to 'Back', payments_path %>

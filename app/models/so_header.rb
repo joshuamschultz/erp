@@ -17,6 +17,7 @@ class SoHeader < ActiveRecord::Base
 	has_many :attachments, :as => :attachable, :dependent => :destroy  
 	has_many :comments, :as => :commentable, :dependent => :destroy
 	has_many :so_lines, :dependent => :destroy
+  has_many :receivables, :dependent => :destroy
 
 	before_create :before_create_level_defaults
 

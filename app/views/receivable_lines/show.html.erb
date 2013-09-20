@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Receivable:</b>
+  <%= @receivable_line.receivable %>
+</p>
+
+<p>
+  <b>Receivable line identifier:</b>
+  <%= @receivable_line.receivable_line_identifier %>
+</p>
+
+<p>
+  <b>Receivable line description:</b>
+  <%= @receivable_line.receivable_line_description %>
+</p>
+
+<p>
+  <b>Receivable line cost:</b>
+  <%= @receivable_line.receivable_line_cost %>
+</p>
+
+<p>
+  <b>Receivable line notes:</b>
+  <%= @receivable_line.receivable_line_notes %>
+</p>
+
+<p>
+  <b>Receivable line status:</b>
+  <%= @receivable_line.receivable_line_status %>
+</p>
+
+<p>
+  <b>Receivable line active:</b>
+  <%= @receivable_line.receivable_line_active %>
+</p>
+
+<p>
+  <b>Receivable line created:</b>
+  <%= @receivable_line.receivable_line_created_id %>
+</p>
+
+<p>
+  <b>Receivable line updated:</b>
+  <%= @receivable_line.receivable_line_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_receivable_receivable_line_path(@receivable_line.receivable, @receivable_line) %> |
+<%= link_to 'Back', receivable_receivable_lines_path(@receivable_line.receivable) %>

@@ -42,3 +42,9 @@
 .editable_table_container{width: 100%; overflow: hidden;-ms-overflow-x: auto; /* IE8 */ 
 	overflow-x: auto;
 }
+
+.data_lines_table .control-group{margin-bottom: 0px !important;}
+.data_lines_table .control-group .controls {margin-left: 0px !important;}
+.data_lines_table select {width: 125px !important;} 
+.data_lines_table input[type=text] {width: 100px !important;}
+.data_lines_table input[type=number] {width: 60px !important;}

@@ -106,6 +106,8 @@ class Organization < ActiveRecord::Base
 	has_many :item_alt_names, :dependent => :destroy
 	has_many :so_headers
     has_many :so_lines
+    has_many :payables, :dependent => :destroy
+    has_many :receivables, :dependent => :destroy
 
 	def redirect_path
       	organization_path(self)
