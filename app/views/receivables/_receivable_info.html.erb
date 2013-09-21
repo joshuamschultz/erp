@@ -1,0 +1,68 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">ID:</td>
+            <td class="span5"><strong><%= link_to @receivable.id, @receivable %></strong></td>
+          </tr>
+
+      <% if @receivable.organization %>
+          <tr>
+            <td class="span2">Customer:</td>
+            <td class="span5"><strong><%= link_to @receivable.organization.organization_name, @receivable.organization if @receivable.organization %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span2">SO:</td>
+            <td class="span5"><strong><%= link_to @receivable.so_header.so_identifier, @receivable.so_header if @receivable.so_header %></strong></td>
+          </tr>
+
+      <% end %>
+
+          <tr>
+            <td class="span3">Description:</td>
+            <td class="span5"><strong><%= @receivable.receivable_description %></strong></td>
+          </tr>
+
+          <!-- <tr>
+            <td class="span3">Cost:</td>
+            <td class="span5"><strong><%#= @receivable.receivable_cost %></strong></td>
+          </tr> -->
+
+          <tr>
+            <td class="span3">Discount:</td>
+            <td class="span5"><strong><%= @receivable.receivable_discount %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Total:</td>
+            <td class="span5"><strong><h4>$<%= @receivable.receivable_total %></h4></strong></td>
+          </tr>          
+
+          <tr>
+            <td class="span3">Status:</td>
+            <td class="span5"><strong><%= @receivable.receivable_status %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><strong><%= @receivable.receivable_notes %></strong></td>
+          </tr>          
+
+          <!-- "%0.5f" %  -->
+
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <% if @receivable.organization %>
+      <h4 class="center">Customer Info</h4>
+
+      <div class="separator bottom"></div>
+
+      <%= render :partial => 'organizations/organization_info', 
+            :locals => {:organization => @receivable.organization} %>
+  <% end %>
+</div>

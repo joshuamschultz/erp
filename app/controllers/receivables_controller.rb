@@ -1,4 +1,14 @@
 class ReceivablesController < ApplicationController
+  before_filter :set_autocomplete_values, only: [:create, :update]
+
+  def set_autocomplete_values
+    params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
+    params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
+
+    params[:receivable][:so_header_id], params[:so_header_id] = params[:so_header_id], params[:receivable][:so_header_id]
+    params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
+  end
+
   # GET /receivables
   # GET /receivables.json
   def index
@@ -6,7 +16,15 @@ class ReceivablesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @receivables }
+      format.json { 
+        @receivables = @receivables.select{|receivable|
+              receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.id)
+              receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
+              receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
+              receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil)
+          }
+          render json: {:aaData => @receivables}
+      }
     end
   end
 
@@ -14,6 +32,7 @@ class ReceivablesController < ApplicationController
   # GET /receivables/1.json
   def show
     @receivable = Receivable.find(params[:id])
+    @so_header = @receivable.so_header
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,6 +54,7 @@ class ReceivablesController < ApplicationController
   # GET /receivables/1/edit
   def edit
     @receivable = Receivable.find(params[:id])
+    @so_header = @receivable.so_header
   end
 
   # POST /receivables
