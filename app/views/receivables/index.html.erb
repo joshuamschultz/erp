@@ -1,45 +1,41 @@
-<h1>Listing receivables</h1>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Receivables</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New receivable', new_receivable_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
 
-<table>
-  <tr>
-    <th>Organization</th>
-    <th>So header</th>
-    <th>Receivable identifier</th>
-    <th>Receivable description</th>
-    <th>Receivable cost</th>
-    <th>Receivable discount</th>
-    <th>Receivable total</th>
-    <th>Receivable notes</th>
-    <th>Receivable status</th>
-    <th>Receivable active</th>
-    <th>Receivable created</th>
-    <th>Receivable updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report_receivable_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Receivable ID</th>
+                    <th>Customer</th>
+                    <th>SO</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<% @receivables.each do |receivable| %>
-  <tr>
-    <td><%= receivable.organization %></td>
-    <td><%= receivable.so_header %></td>
-    <td><%= receivable.receivable_identifier %></td>
-    <td><%= receivable.receivable_description %></td>
-    <td><%= receivable.receivable_cost %></td>
-    <td><%= receivable.receivable_discount %></td>
-    <td><%= receivable.receivable_total %></td>
-    <td><%= receivable.receivable_notes %></td>
-    <td><%= receivable.receivable_status %></td>
-    <td><%= receivable.receivable_active %></td>
-    <td><%= receivable.receivable_created_id %></td>
-    <td><%= receivable.receivable_updated_id %></td>
-    <td><%= link_to 'Show', receivable %></td>
-    <td><%= link_to 'Edit', edit_receivable_path(receivable) %></td>
-    <td><%= link_to 'Destroy', receivable, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
-
-<%= link_to 'New Receivable', new_receivable_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_receivable_list", :path => receivables_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "receivable_identifier" },
+                        { "mData": "customer_name" },
+                        { "mData": "so_identifier" },
+                        { "mData": "receivable_description" },
+                        { "mData": "receivable_total" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

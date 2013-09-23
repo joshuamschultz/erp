@@ -26,7 +26,7 @@
             </thead>
 
             <tbody>
-
+                
             </tbody>
         </table>
     </div>
@@ -46,3 +46,40 @@
                     ]'
     } 
 %>
+
+<script type="text/javascript">
+    // var data_table_report;
+    
+    // $(document).ready(function(){ 
+    //     data_table_report = $('#table_report').dataTable({
+    //             "aaSorting": [[ 1, 'asc' ]],
+    //             "fnDrawCallback": function ( oSettings ) {
+    //                 /* Need to redo the counters if filtered or sorted */
+    //                 if ( oSettings.bSorted || oSettings.bFiltered )
+    //                 {
+    //                     for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+    //                     {
+    //                         $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+    //                     }
+    //                 }
+    //             },
+    //         "bAutoWidth": false,
+    //         "bProcessing": true,
+    //         "bServerSide": true,
+    //         "iTotalRecords": <%= Owner.count %>,
+    //         "iTotalDisplayRecords": 10,
+    //         "sAjaxSource": '/owners',
+    //         "aaSorting": [[0, "asc"]],
+    //         "aoColumns": [
+    //                     { "mData": "id" },
+    //                     { "mData": "owner_identifier" },
+    //                     { "mData": "owner_description" },
+    //                     { "mData": "owner_commission_type" },
+    //                     { "mData": "owner_commission_percentage"},
+    //                     { "mData": "owner_active" },
+    //                     { "mData": "links", "bSortable": false, "bSearchable": false }
+    //                 ]        
+    //     });
+
+    // });
+</script>

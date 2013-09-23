@@ -1,53 +1,36 @@
-<%= form_for([@receivable_line.receivable, @receivable_line]) do |f| %>
-  <% if @receivable_line.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@receivable_line.errors.count, "error") %> prohibited this receivable_line from being saved:</h2>
+<div class="row-fluid">
 
-      <ul>
-      <% @receivable_line.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render :partial => 'receivables/receivable_info' %>
 
-  <div class="field">
-    <%= f.label :receivable %><br />
-    <%= f.text_field :receivable %>
+  <div class="span9 well">
+    <%= simple_form_for([@receivable, @receivable_line], :html => {:id => "form_for_receivable_line", :class => "form-horizontal"}) do |f| %>
+
+        <%= f.error_notification %>
+
+        <div class="form-inputs">
+            <%= f.input :receivable_line_description, :label => "Description", autofocus: true %>
+            <%= f.input :receivable_line_cost, :label => "Cost" %>
+            <%= f.input :receivable_line_notes, :label => "Notes" %>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <div class="actions">
+            <%= f.submit "Save", :class =>"btn" %>
+            <%= link_to 'Delete', receivable_receivable_line_path(@receivable, @receivable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable_line.new_record? %>
+            <%= link_to 'Back to Receivable', receivable_path(@receivable), :class =>"btn" %>
+        </div>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :receivable_line_identifier %><br />
-    <%= f.text_field :receivable_line_identifier %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_description %><br />
-    <%= f.text_field :receivable_line_description %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_cost %><br />
-    <%= f.text_field :receivable_line_cost %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_notes %><br />
-    <%= f.text_area :receivable_line_notes %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_status %><br />
-    <%= f.text_field :receivable_line_status %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_active %><br />
-    <%= f.check_box :receivable_line_active %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_created_id %><br />
-    <%= f.number_field :receivable_line_created_id %>
-  </div>
-  <div class="field">
-    <%= f.label :receivable_line_updated_id %><br />
-    <%= f.number_field :receivable_line_updated_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_receivable_line"] = ["receivable_line_receivable_line_description", "receivable_line_receivable_line_cost", "receivable_line_receivable_line_notes"];
+</script>
+
+
+<div class="separator bottom"></div>
+
+<%= render :partial => 'receivable_lines/line_items' %>
+
+<%= render :partial => 'so_lines/line_items' if @so_header %>

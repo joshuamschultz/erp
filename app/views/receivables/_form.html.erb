@@ -1,22 +1,122 @@
-<%= simple_form_for(@receivable) do |f| %>
+<div class="row-fluid">
+  <div class="span4 well item_detail_view">
+      <div id="receivable_customer_info"></div>
+  </div>
+
+  <div class="span8 well item_detail_view">
+
+<%= simple_form_for(@receivable, :html => {:id => "form_for_receivable",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :organization %>
-    <%= f.association :so_header %>
-    <%= f.input :receivable_identifier %>
-    <%= f.input :receivable_description %>
-    <%= f.input :receivable_cost %>
-    <%= f.input :receivable_discount %>
-    <%= f.input :receivable_total %>
-    <%= f.input :receivable_notes %>
-    <%= f.input :receivable_status %>
-    <%= f.input :receivable_active %>
-    <%= f.input :receivable_created_id %>
-    <%= f.input :receivable_updated_id %>
+    <% unless @receivable.new_record? %>
+        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" if @receivable.organization.present? %>
+    <% else %>
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', :label => "Customer" %>
+    <% end %>
+
+    <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.persisted? && @receivable.organization.present?) %>
+
+    <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.persisted? && @receivable.organization.present?) %>
+
+    <% unless @receivable.new_record? %>
+        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" if @receivable.organization.present? %>
+    <% else %>
+        <%= f.association :so_header, :url => autocomplete_so_header_so_identifier_so_headers_path(organization_id: 0), :as => :autocomplete, :id_element => '#so_header_id', :label => "SO" %>
+    <% end %>
+
+    <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.persisted? && @receivable.so_header.present?) %>
+
+    <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.persisted? && @receivable.so_header.present?) %>
+
+    <%= f.input :receivable_description, :label => "Description" %>        
+    <%= f.input :receivable_notes, :label => "Notes" %>
+    <%= f.input :receivable_discount, :label => "Discount" if @receivable.persisted? %>
+   
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Delete', receivable_path(@receivable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable.new_record? %>
+    <%= link_to 'Back to Receivables', receivables_path, :class => "btn" %>
   </div>
 <% end %>
+</div>
+</div>
+
+
+<%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? %>
+
+<%= render :partial => 'so_lines/line_items' if @receivable.persisted? && @so_header %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_receivable"] = ["receivable_organization_id", "receivable_so_header_id", "receivable_receivable_description", "receivable_receivable_notes"];
+
+    var org_so_header_path = "<%= autocomplete_so_header_so_identifier_so_headers_path %>";
+
+    $(document).ready(function(){ 
+        $("#receivable_organization_id").on("focusout", function(){
+            if($("#organization_id").val() == ""){
+                $("#organization_id").val($("#org_organization_id").val());
+            }
+
+            if($("#organization_id").val() != ""){
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+
+                $("#receivable_so_header_id").attr("data-autocomplete", org_so_header_path + "?organization_id=" + $("#organization_id").val());
+
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+            }
+            else{
+                $("#receivable_so_header_id").attr("data-autocomplete", org_so_header_path + "?organization_id=0");
+                $("#receivable_receivable_to_id").html("");
+                $("#receivable_customer_info").html("");
+            }
+        });
+
+        $("#receivable_so_header_id").change(function(){
+            initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_so_header_cost", {});
+        });
+
+        <% unless @receivable.new_record? %>
+            $("#receivable_organization_id").val("<%= @receivable.organization.organization_name if @receivable.organization %>");
+
+            $("#receivable_so_header_id").val("<%= @receivable.so_header.so_identifier if @receivable.so_header %>");
+
+            if($("#organization_id").val() != ""){
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+            }
+
+            <% unless @receivable.organization.nil? %>
+                $("#receivable_receivable_to_id").focus();
+            <% else %>
+                $("#receivable_receivable_description").focus();
+            <% end %>
+
+            tab_field_forms["form_for_paybles"].push("receivable_receivable_discount");
+
+        <% else %>
+            $("#receivable_receivable_description").focus();
+        <% end %>
+    });
+
+    function set_customer_addresses(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        $("#receivable_receivable_to_id").html(html);
+
+      
+    }
+
+    function set_customer_info(response, callback_params, api_params){
+        $("#receivable_customer_info").html(response);
+        return false;
+    }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>

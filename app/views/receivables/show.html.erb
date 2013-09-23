@@ -1,65 +1,17 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid">
+    <h4 class="span3 left">Receivable Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_receivable_path(@receivable), :class => "btn btn-small" %>
+        <%= link_to 'Back', receivables_path, :class => "btn btn-small" %>
+    </span>
+</div>
 
-<p>
-  <b>Organization:</b>
-  <%= @receivable.organization %>
-</p>
+<div class="row-fluid">
+    <%= render :partial => 'receivables/receivable_info' %>
 
-<p>
-  <b>So header:</b>
-  <%= @receivable.so_header %>
-</p>
+    <div class="span9">
+        <%= render :partial => 'receivable_lines/line_items' %>
 
-<p>
-  <b>Receivable identifier:</b>
-  <%= @receivable.receivable_identifier %>
-</p>
-
-<p>
-  <b>Receivable description:</b>
-  <%= @receivable.receivable_description %>
-</p>
-
-<p>
-  <b>Receivable cost:</b>
-  <%= @receivable.receivable_cost %>
-</p>
-
-<p>
-  <b>Receivable discount:</b>
-  <%= @receivable.receivable_discount %>
-</p>
-
-<p>
-  <b>Receivable total:</b>
-  <%= @receivable.receivable_total %>
-</p>
-
-<p>
-  <b>Receivable notes:</b>
-  <%= @receivable.receivable_notes %>
-</p>
-
-<p>
-  <b>Receivable status:</b>
-  <%= @receivable.receivable_status %>
-</p>
-
-<p>
-  <b>Receivable active:</b>
-  <%= @receivable.receivable_active %>
-</p>
-
-<p>
-  <b>Receivable created:</b>
-  <%= @receivable.receivable_created_id %>
-</p>
-
-<p>
-  <b>Receivable updated:</b>
-  <%= @receivable.receivable_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_receivable_path(@receivable) %> |
-<%= link_to 'Back', receivables_path %>
+        <%= render :partial => 'so_lines/line_items' if @so_header %>
+    </div>
+</div>

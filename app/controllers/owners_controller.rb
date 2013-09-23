@@ -7,8 +7,15 @@ class OwnersController < ApplicationController
   # GET /owners
   # GET /owners.json
   def index
-    @owners = Owner.all
 
+    # query = search(Owner)
+    # @owners = Owner.page(page).per(per_page)
+    # if params[:sSearch].present?
+    #     @owners = Owner.where(query, search: "%#{params[:sSearch]}%")
+    # end
+
+    @owners = Owner.all
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
@@ -94,4 +101,25 @@ class OwnersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+# for datables searcha and paginaiton
+  def search(model)
+    tabel_model = model
+    fields = tabel_model.column_names
+    str = ""
+    fields.each do |value|
+        str += value+" like :search " if value == fields.last 
+        str += value+" like :search or " unless value == fields.last  
+    end
+    str
+  end
+
+  def page
+    params[:iDisplayStart].to_i/per_page + 1
+  end
+
+  def per_page
+    params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
+  end
+
 end

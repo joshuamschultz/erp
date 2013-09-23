@@ -7,7 +7,12 @@ class ReceivableLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @receivable_lines }
+      format.json { 
+           @receivable_lines = @receivable_lines.select{|receivable_line|              
+              receivable_line[:links] = CommonActions.object_crud_paths(nil, edit_receivable_receivable_line_path(@receivable, receivable_line), nil)
+          }
+          render json: {:aaData => @receivable_lines}
+       }
     end
   end
 
@@ -27,6 +32,7 @@ class ReceivableLinesController < ApplicationController
   # GET receivables/1/receivable_lines/new.json
   def new
     @receivable = Receivable.find(params[:receivable_id])
+    @so_header = @receivable.so_header
     @receivable_line = @receivable.receivable_lines.build
 
     respond_to do |format|
@@ -38,6 +44,7 @@ class ReceivableLinesController < ApplicationController
   # GET receivables/1/receivable_lines/1/edit
   def edit
     @receivable = Receivable.find(params[:receivable_id])
+    @so_header = @receivable.so_header
     @receivable_line = @receivable.receivable_lines.find(params[:id])
   end
 
@@ -49,7 +56,7 @@ class ReceivableLinesController < ApplicationController
 
     respond_to do |format|
       if @receivable_line.save
-        format.html { redirect_to([@receivable_line.receivable, @receivable_line], :notice => 'Receivable line was successfully created.') }
+        format.html { redirect_to(new_receivable_receivable_line_path(@receivable), :notice => 'Line item was successfully created.') }
         format.json { render :json => @receivable_line, :status => :created, :location => [@receivable_line.receivable, @receivable_line] }
       else
         format.html { render :action => "new" }
@@ -66,7 +73,7 @@ class ReceivableLinesController < ApplicationController
 
     respond_to do |format|
       if @receivable_line.update_attributes(params[:receivable_line])
-        format.html { redirect_to([@receivable_line.receivable, @receivable_line], :notice => 'Receivable line was successfully updated.') }
+        format.html { redirect_to(new_receivable_receivable_line_path(@receivable), :notice => 'Line item was successfully updated.') }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
@@ -83,7 +90,7 @@ class ReceivableLinesController < ApplicationController
     @receivable_line.destroy
 
     respond_to do |format|
-      format.html { redirect_to receivable_receivable_lines_url(receivable) }
+      format.html { redirect_to(new_receivable_receivable_line_path(@receivable), :notice => 'Line item was successfully deleted.') }
       format.json { head :ok }
     end
   end
