@@ -1,45 +1,41 @@
-<h1>Listing payments</h1>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Payments</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Payment', new_payment_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
 
-<table>
-  <tr>
-    <th>Organization</th>
-    <th>Payment type</th>
-    <th>Payment check code</th>
-    <th>Payment check amount</th>
-    <th>Payment check no</th>
-    <th>Payment identifier</th>
-    <th>Payment description</th>
-    <th>Payment notes</th>
-    <th>Payment status</th>
-    <th>Payment active</th>
-    <th>Payment created</th>
-    <th>Payment updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report_payment_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Identifier</th>
+                    <th>Organization</th>                    
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<% @payments.each do |payment| %>
-  <tr>
-    <td><%= payment.organization %></td>
-    <td><%= payment.payment_type_id %></td>
-    <td><%= payment.payment_check_code %></td>
-    <td><%= payment.payment_check_amount %></td>
-    <td><%= payment.payment_check_no %></td>
-    <td><%= payment.payment_identifier %></td>
-    <td><%= payment.payment_description %></td>
-    <td><%= payment.payment_notes %></td>
-    <td><%= payment.payment_status %></td>
-    <td><%= payment.payment_active %></td>
-    <td><%= payment.payment_created_id %></td>
-    <td><%= payment.payment_updated_id %></td>
-    <td><%= link_to 'Show', payment %></td>
-    <td><%= link_to 'Edit', edit_payment_path(payment) %></td>
-    <td><%= link_to 'Destroy', payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
-
-<%= link_to 'New Payment', new_payment_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_payment_list", :path => payments_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "payment_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "payment_description" },
+                        { "mData": "payment_type_name" },
+                        { "mData": "payment_check_amount" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

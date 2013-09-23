@@ -1,6 +1,12 @@
 class PaymentsController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update] 
 
+  before_filter :set_page_info  
+
+  def set_page_info
+      @menus[:accounts][:active] = "active"
+  end
+
   def set_autocomplete_values
     params[:payment][:organization_id], params[:organization_id] = params[:organization_id], params[:payment][:organization_id]
     params[:payment][:organization_id] = params[:org_organization_id] if params[:payment][:organization_id] == ""
@@ -13,7 +19,15 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @payments }
+      format.json { 
+          @payments = @payments.select{|payment|
+              payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.id)              
+              payment[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
+              payment[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
+              payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
+          }
+          render json: {:aaData => @payments}
+      }
     end
   end
 
@@ -54,6 +68,7 @@ class PaymentsController < ApplicationController
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render json: @payment, status: :created, location: @payment }
       else
+        @payment.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end

@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @receipt.organization %>
+</p>
+
+<p>
+  <b>Receipt type:</b>
+  <%= @receipt.receipt_type_id %>
+</p>
+
+<p>
+  <b>Receipt check code:</b>
+  <%= @receipt.receipt_check_code %>
+</p>
+
+<p>
+  <b>Receipt check amount:</b>
+  <%= @receipt.receipt_check_amount %>
+</p>
+
+<p>
+  <b>Receipt check no:</b>
+  <%= @receipt.receipt_check_no %>
+</p>
+
+<p>
+  <b>Receipt identifier:</b>
+  <%= @receipt.receipt_identifier %>
+</p>
+
+<p>
+  <b>Receipt description:</b>
+  <%= @receipt.receipt_description %>
+</p>
+
+<p>
+  <b>Receipt notes:</b>
+  <%= @receipt.receipt_notes %>
+</p>
+
+<p>
+  <b>Receipt status:</b>
+  <%= @receipt.receipt_status %>
+</p>
+
+<p>
+  <b>Receipt active:</b>
+  <%= @receipt.receipt_active %>
+</p>
+
+<p>
+  <b>Receipt created:</b>
+  <%= @receipt.receipt_created_id %>
+</p>
+
+<p>
+  <b>Receipt updated:</b>
+  <%= @receipt.receipt_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_receipt_path(@receipt) %> |
+<%= link_to 'Back', receipts_path %>

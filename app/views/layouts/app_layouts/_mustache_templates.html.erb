@@ -24,12 +24,14 @@
 		          </div>
 		        </div>
 		      </td>
-		      <td><input type='text' value='' name='name' id='name' disabled='disabled'></td>
-		      <td><input type='text' value='' name='name2' id='name2' disabled='disabled'></td>
+		      <td><input type='text' value='' name='invoice_date' id='invoice_date' disabled='disabled'></td>
+		      <td><input type='text' value='' name='invoice_due_date' id='invoice_due_date' disabled='disabled'></td>
+		      <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
+		      <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
 		      <td>
 		        <div class='control-group decimal required payment_payment_lines_payment_line_amount'>
 		          <div class='controls'>
-		            <input type='number' value='0.0' step='any' required='required' name='payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required'>
+		            <input type='number' value='0.0' step='any' required='required' name='payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required payment_payable_amount'>
 		          </div>
 		        </div>
 		      </td>

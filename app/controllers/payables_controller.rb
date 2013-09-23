@@ -1,6 +1,12 @@
 class PayablesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update] 
 
+  before_filter :set_page_info  
+
+  def set_page_info
+      @menus[:accounts][:active] = "active"
+  end
+
    def set_autocomplete_values
     params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
     params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""

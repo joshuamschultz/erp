@@ -1,4 +1,7 @@
 AllianceFasteners::Application.routes.draw do
+  resources :receipts do
+    resources :receipt_lines
+  end
 
   resources :receivables do
     resources :receivable_lines
@@ -6,13 +9,11 @@ AllianceFasteners::Application.routes.draw do
 
   resources :receivables
 
-
   resources :payments do
     resources :payment_lines
   end
 
   resources :payments
-
 
   resources :payables do
     resources :payable_lines
@@ -20,12 +21,9 @@ AllianceFasteners::Application.routes.draw do
 
   resources :quality_lot_capabilities
 
-
   resources :payables
 
-
   resources :quality_lot_dimensions
-
 
   get "common_actions/get_info"
   get "quality_lots/lot_info"

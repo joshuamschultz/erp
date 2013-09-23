@@ -18,10 +18,10 @@
 
         <%= hidden_field_tag :org_organization_id, (@payment.organization.id if @payment.persisted? && @payment.organization.present?) %>
 
-        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "organization_type_option"}, :checked => (MasterType.payment_types.first.id if @payment.new_record?) %>
+        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.first.id if @payment.new_record?) %>
 
         <%= f.input :payment_check_code, :label => "Check Code" %>
-        <%= f.input :payment_check_amount, :label => "Check Amount" %>
+        <%= f.input :payment_check_amount, :label => "Amount" %>
         <%= f.input :payment_description, :label => "Description" %>
         <%= f.input :payment_notes, :label => "Notes" %>
       </div>
@@ -37,8 +37,10 @@
         <thead>
             <tr>
                 <th>Invoice</th>
-                <th>Amount</th>
-                <th>Amount</th>
+                <th>Date</th>
+                <th>Due Date</th>
+                <th>Total</th>
+                <th>Balance</th>
                 <th>Amount</th>
                 <th></th>
             </tr>
@@ -47,9 +49,11 @@
             <%= f.fields_for :payment_lines, payment_lines do |payment_line| %>                
                 <tr>
                     <td><%= payment_line.association :payable, label: false, label_method: :payable_identifier, label_value: :id, :include_blank => false, collection: payable_collection, input_html: { class: (@payment.new_record? ? "payment_payable_new" : "payment_payable_edit") } %></td>
-                    <td><%= text_field_tag :name, "", :disabled => true %></td>
-                    <td><%= text_field_tag :name2, "", :disabled => true %></td>
-                    <td><%= payment_line.input :payment_line_amount, label: false %></td>
+                    <td><%= text_field_tag :invoice_date, "", :disabled => true %></td>
+                    <td><%= text_field_tag :invoice_due_date, "", :disabled => true %></td>
+                    <td><%= text_field_tag :invoice_amount, "", :disabled => true %></td>
+                    <td><%= text_field_tag :invoice_balance, "", :disabled => true %></td>
+                    <td><%= payment_line.input :payment_line_amount, label: false, :input_html => {class: "payment_payable_amount"} %></td>
                     <td><a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a></td>
                 </tr>
             <% end %>
@@ -71,6 +75,7 @@
 
 <script type="text/javascript">
     tab_field_forms["form_for_payments"] = [];
+
     var payable_select_html = "";
 
     $(document).ready(function(){ 
@@ -101,9 +106,42 @@
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_payables", "id": $("#organization_id").val()}}, "set_payment_payables", {});
             }
 
-        <% end %>
+        <% end %>        
 
-        $("#payment_organization_id").focus();
+        $(".payment_type_option").on("change", function(){
+            payment_type_changed($('.payment_type_option:checked').parent().text(), true);
+        });
+
+        $(".payment_type_option").on("keydown", function(){
+            payment_type_changed($('.payment_type_option:checked').parent().text(), true);
+            return false;
+        });
+
+        payment_type_changed($('.payment_type_option:checked').parent().text(), false);
+
+        // $("#payment_organization_id").focus();
+
+        $(document).on("change", ".payment_payable_edit", function(){
+            call_payment_payable_info($(this));
+        });
+
+        $(document).on("change", ".payment_payable_new", function(){
+            call_payment_payable_info($(this));
+        });
+
+        $(document).on("keydown", ".payment_payable_edit", function(e){
+            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
+        });
+
+        $(document).on("keydown", ".payment_payable_new", function(e){
+            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
+        });
+
+        $(document).on("keydown", ".payment_payable_amount", function(e){
+            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_edit", true);
+        });
+
+        set_all_payment_payable_info("all");
     });
 
     function set_vendor_info(response, callback_params, api_params){
@@ -121,12 +159,56 @@
         var html = $.trim(Mustache.render($(".payment-line-row-html-template").html(), {"row_count" : payment_line_row_count, "row_data" : payable_select_html}));
         $("#payment_lines_table_body").append(html);
         $("#payment_payment_lines_attributes_"+payment_line_row_count+"_payable_id").html(payable_select_html);
+        call_payment_payable_info($(".payment_payable_new").last());
     }
 
     function delete_payment_line_row(payment_line_id){
       <% if @payment.persisted? %>
           initialize_api_call({"url": "/payments/<%= @payment.id %>/payment_lines/"+ payment_line_id, "type": "DELETE", "data_type": "json", "params": {}}, "", {});
       <% end %>
+    }
+
+    function payment_type_changed(payment_type, change_focus){
+        if(payment_type == "Check"){
+            $('.payment_payment_check_code').show();
+            if(change_focus)
+                $('#payment_payment_check_code').focus();
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_code", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+        }
+        else{
+            $('.payment_payment_check_code').hide();
+            $('#payment_payment_check_code').val("");
+            if(change_focus)
+                $('#payment_payment_check_amount').focus();
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+        }
+    }
+
+    function call_payment_payable_info(selected_payable){
+        if(selected_payable.val() != "" || selected_payable.val() != null)
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "payment_payable_info", "id": selected_payable.val()}}, "set_payment_payable_info", {"object" : selected_payable});
+    }
+
+    function set_payment_payable_info(response, callback_params, api_params){
+        callback_params["object"].closest("tr").find("#invoice_date").val(response.aaData.payable_invoice_date);
+        callback_params["object"].closest("tr").find("#invoice_due_date").val(response.aaData.payable_due_date);
+        callback_params["object"].closest("tr").find("#invoice_amount").val(response.aaData.payable_total);
+        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.payable_balance);
+        callback_params["object"].closest("tr").find(".payment_payable_amount").focus();
+    }
+
+    function set_all_payment_payable_info(type){
+        if(type == "edit" || type == "all"){
+            $(".payment_payable_edit").each(function(index){
+                call_payment_payable_info($(this));
+            });
+        }
+
+        if(type == "new" || type == "all"){
+            $(".payment_payable_new").each(function(index){
+                call_payment_payable_info($(this));
+            });
+        }
     }
 
 </script>

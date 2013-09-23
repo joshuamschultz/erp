@@ -37,4 +37,8 @@ class Payable < ActiveRecord::Base
       self.payable_status = "open"
   end
 
+  def payable_current_balance
+      self.payable_total - self.payment_lines.sum(:payment_line_amount)
+  end
+
 end
