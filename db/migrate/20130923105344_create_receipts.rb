@@ -4,7 +4,7 @@ class CreateReceipts < ActiveRecord::Migration
       t.references :organization
       t.integer :receipt_type_id
       t.string :receipt_check_code
-      t.decimal :receipt_check_amount
+      t.decimal :receipt_check_amount, :precision => 25, :scale => 10, :default => 0
       t.string :receipt_check_no
       t.string :receipt_identifier
       t.string :receipt_description
