@@ -89,6 +89,8 @@
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
 
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_payables", "id": $("#organization_id").val()}}, "set_payment_payables", {});
+
+                set_all_payment_payable_info("all");
             }
             else{
                 $("#payment_vendor_info").html("");
