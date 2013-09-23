@@ -54,6 +54,7 @@ AllianceFasteners::Application.routes.draw do
     member do
         post 'populate'
     end
+    get :autocomplete_so_header_so_identifier, :on => :collection
   end
 
   resources :po_shipments

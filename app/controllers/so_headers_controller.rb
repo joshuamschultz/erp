@@ -2,6 +2,7 @@ class SoHeadersController < ApplicationController
   before_filter :find_relations, only: [:index]
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update] 
+  autocomplete :so_header, :so_identifier, :full => true
 
   def set_page_info
       @menus[:sales][:active] = "active"
