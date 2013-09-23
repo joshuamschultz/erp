@@ -1,0 +1,59 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">ID:</td>
+            <td class="span5"><strong><%= link_to @payment.id, @payment %></strong></td>
+          </tr>
+
+        <% if @payment.organization %>
+          <tr>
+            <td class="span2">Vendor:</td>
+            <td class="span5"><strong><%= link_to @payment.organization.organization_name, @payment.organization if @payment.organization %></strong></td>
+          </tr>
+        <% end %>
+
+          <tr>
+            <td class="span3">Description:</td>
+            <td class="span5"><strong><%= @payment.payment_description %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Type:</td>
+            <td class="span5"><strong><%= @payment.payment_type.type_name if @payment.payment_type %></strong></td>
+          </tr>
+
+        <% if @payment.payment_type.type_value == "check" %>
+           <tr>
+            <td class="span3">Check Code:</td>
+            <td class="span5"><strong><%= @payment.payment_check_code %></strong></td>
+          </tr>
+        <% end %>         
+
+          <tr>
+            <td class="span3">Amount:</td>
+            <td class="span5"><strong><h4>$<%= @payment.payment_check_amount %></4></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><strong><%= @payment.payment_notes %></strong></td>
+          </tr>          
+
+          <!-- "%0.5f" %  -->
+
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <% if @payment.organization %>
+      <h4 class="center">Vendor Info</h4>
+
+      <div class="separator bottom"></div>
+
+      <%= render :partial => 'organizations/organization_info', 
+            :locals => {:organization => @payment.organization} %>
+  <% end %>
+</div>

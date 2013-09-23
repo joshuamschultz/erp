@@ -1,0 +1,22 @@
+<%= simple_form_for(@receipt) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :organization %>
+    <%= f.input :receipt_type_id %>
+    <%= f.input :receipt_check_code %>
+    <%= f.input :receipt_check_amount %>
+    <%= f.input :receipt_check_no %>
+    <%= f.input :receipt_identifier %>
+    <%= f.input :receipt_description %>
+    <%= f.input :receipt_notes %>
+    <%= f.input :receipt_status %>
+    <%= f.input :receipt_active %>
+    <%= f.input :receipt_created_id %>
+    <%= f.input :receipt_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

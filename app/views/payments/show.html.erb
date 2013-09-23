@@ -1,65 +1,15 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid">
+    <h4 class="span3 left">Payment Info</h4>
+    <span class="span9 right">
+        <%= link_to 'Edit', edit_payment_path(@payment), :class => "btn btn-small" %>
+        <%= link_to 'Back', payments_path, :class => "btn btn-small" %>
+    </span>
+</div>
 
-<p>
-  <b>Organization:</b>
-  <%= @payment.organization %>
-</p>
+<div class="row-fluid">
+    <%= render :partial => 'payments/payment_info' %>
 
-<p>
-  <b>Payment type:</b>
-  <%= @payment.payment_type_id %>
-</p>
-
-<p>
-  <b>Payment check code:</b>
-  <%= @payment.payment_check_code %>
-</p>
-
-<p>
-  <b>Payment check amount:</b>
-  <%= @payment.payment_check_amount %>
-</p>
-
-<p>
-  <b>Payment check no:</b>
-  <%= @payment.payment_check_no %>
-</p>
-
-<p>
-  <b>Payment identifier:</b>
-  <%= @payment.payment_identifier %>
-</p>
-
-<p>
-  <b>Payment description:</b>
-  <%= @payment.payment_description %>
-</p>
-
-<p>
-  <b>Payment notes:</b>
-  <%= @payment.payment_notes %>
-</p>
-
-<p>
-  <b>Payment status:</b>
-  <%= @payment.payment_status %>
-</p>
-
-<p>
-  <b>Payment active:</b>
-  <%= @payment.payment_active %>
-</p>
-
-<p>
-  <b>Payment created:</b>
-  <%= @payment.payment_created_id %>
-</p>
-
-<p>
-  <b>Payment updated:</b>
-  <%= @payment.payment_updated_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_payment_path(@payment) %> |
-<%= link_to 'Back', payments_path %>
+    <div class="span9">
+        <%= render :partial => 'payment_lines/payment_lines' %>
+    </div>
+</div>

@@ -7,7 +7,16 @@ class PaymentLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @payment_lines }
+      format.json { 
+          @payment_lines = @payment_lines.select{|payment_line|
+              payment_line[:payable_identifier] = CommonActions.linkable(payable_path(payment_line.payable), payment_line.payable.payable_identifier)
+              payment_line[:payable_invoice_date] = payment_line.payable.payable_invoice_date
+              payment_line[:payable_due_date] = payment_line.payable.payable_due_date
+              payment_line[:payable_total] = payment_line.payable.payable_total
+              payment_line[:payable_balance] = payment_line.payable.payable_current_balance
+          }
+          render json: {:aaData => @payment_lines}
+      }
     end
   end
 

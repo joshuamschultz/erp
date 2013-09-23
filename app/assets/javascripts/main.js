@@ -107,3 +107,40 @@ function show_iframe_popup(iframe_url, params){
 function click_upload_close(){
     $(".close").click();
 }
+
+function table_row_next_focus(e, form_name, current_element, next_element, next_row){
+    var keyCode = e.keyCode || e.which;
+    var found_next_element = null;
+    if(keyCode == 13){
+        e.preventDefault();
+        if(next_row){
+            found_next_element = current_element.closest("tr").next();
+            found_next_element = next_visible_element(found_next_element);
+            found_next_element = found_next_element.find(next_element);
+        }
+        else
+            found_next_element = current_element.closest("tr").find(next_element);
+
+        var next_index = found_next_element.index();
+
+        if(next_index != -1){
+            found_next_element.focus();
+            return false;     
+        }
+        else{
+            $(form_name).submit();
+            return true;
+        }
+    }
+    else
+    	return true;
+}
+
+function next_visible_element(element){
+    if(element.attr("type") == "hidden"){
+        element = element.next();
+        element = next_visible_element(element);
+    }
+    
+    return element;
+}

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Receipt:</b>
+  <%= @receipt_line.receipt %>
+</p>
+
+<p>
+  <b>Receipt line amount:</b>
+  <%= @receipt_line.receipt_line_amount %>
+</p>
+
+<p>
+  <b>Receipt line created:</b>
+  <%= @receipt_line.receipt_line_created_id %>
+</p>
+
+<p>
+  <b>Receipt line updated:</b>
+  <%= @receipt_line.receipt_line_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_receipt_receipt_line_path(@receipt_line.receipt, @receipt_line) %> |
+<%= link_to 'Back', receipt_receipt_lines_path(@receipt_line.receipt) %>

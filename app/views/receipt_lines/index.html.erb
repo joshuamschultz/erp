@@ -1,0 +1,29 @@
+<h1>Listing receipt_lines</h1>
+
+<table>
+  <tr>
+    <th>Receipt</th>
+    <th>Receipt line amount</th>
+    <th>Receipt line created</th>
+    <th>Receipt line updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @receipt_lines.each do |receipt_line| %>
+  <tr>
+    <td><%= receipt_line.receipt %></td>
+    <td><%= receipt_line.receipt_line_amount %></td>
+    <td><%= receipt_line.receipt_line_created_id %></td>
+    <td><%= receipt_line.receipt_line_updated_id %></td>
+    <td><%= link_to 'Show', [receipt_line.receipt, receipt_line] %></td>
+    <td><%= link_to 'Edit', edit_receipt_receipt_line_path(receipt_line.receipt, receipt_line) %></td>
+    <td><%= link_to 'Destroy', [receipt_line.receipt, receipt_line], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Receipt line', new_receipt_receipt_line_path(params[:receipt_id]) %>
