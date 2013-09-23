@@ -81,6 +81,7 @@ class PayablesController < ApplicationController
         format.html { redirect_to @payable, notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
+        @payable.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end
