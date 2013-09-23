@@ -29,17 +29,10 @@
 
     <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.persisted? && @receivable.so_header.present?) %>
 
-    <%#= f.association :so_header %>
-    <%#= f.association :receivable_to_address %>
-    <%#= f.input :receivable_active %>
-    <%#= f.input :receivable_identifier %>
-
-    
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>
     <%= f.input :receivable_discount, :label => "Discount" if @receivable.persisted? %>
-    <%#= f.input :receivable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
-    <%#= f.input :receivable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
+   
   </div>
 
   <div class="separator bottom"></div>
@@ -88,18 +81,6 @@
             initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_so_header_cost", {});
         });
 
-        // $("#receivable_receivable_cost").change(function(){
-        //     calculate_receivable_total();
-        // });
-
-        // $("#receivable_receivable_cost").on("input", function(){
-        //     calculate_receivable_total();
-        // });
-
-        // $("#receivable_receivable_discount").on("input", function(){
-        //     calculate_receivable_total();
-        // });
-
         <% unless @receivable.new_record? %>
             $("#receivable_organization_id").val("<%= @receivable.organization.organization_name if @receivable.organization %>");
 
@@ -120,7 +101,7 @@
             tab_field_forms["form_for_paybles"].push("receivable_receivable_discount");
 
         <% else %>
-            $("#receivable_organization_id").focus();
+            $("#receivable_receivable_description").focus();
         <% end %>
     });
 
@@ -130,20 +111,6 @@
 
       
     }
-
-    // function calculate_receivable_total(){
-    //     var receivable_total = (parseFloat($("#receivable_receivable_cost").val(), 10) - parseFloat($("#receivable_receivable_discount").val(), 10));
-
-    //     if(isNaN(receivable_total) == false)
-    //         $("#receivable_receivable_total").val(receivable_total); //.toFixed(10)
-    //     else
-    //         $("#receivable_receivable_total").val("");
-    // }
-
-    // function set_so_header_cost(response, callback_params, api_params){
-    //     $("#receivable_receivable_cost").val(response.po_total);
-    //     calculate_receivable_total();
-    // }
 
     function set_customer_info(response, callback_params, api_params){
         $("#receivable_customer_info").html(response);
