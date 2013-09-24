@@ -24,7 +24,7 @@ class PayablesController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @payables = @payables.select{|payable|
-              payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.id)
+              payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.payable_identifier)
               payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
               payable[:vendor_name] = payable.organization.present? ? CommonActions.linkable(organization_path(payable.organization), payable.organization.organization_name) : "-"
               if payable.payable_to_address
