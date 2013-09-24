@@ -18,7 +18,7 @@ class ReceivablesController < ApplicationController
       format.html # index.html.erb
       format.json { 
         @receivables = @receivables.select{|receivable|
-              receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.id)
+              receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
               receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil)
@@ -64,10 +64,11 @@ class ReceivablesController < ApplicationController
 
     respond_to do |format|
       if @receivable.save
-        format.html { redirect_to @receivable, notice: 'Receivable was successfully created.' }
+        format.html { redirect_to edit_receivable_path(@receivable), notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
         @receivable.organization_id = ""
+        @receivable.so_header_id = ""
         format.html { render action: "new" }
         format.json { render json: @receivable.errors, status: :unprocessable_entity }
       end

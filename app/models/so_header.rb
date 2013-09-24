@@ -7,7 +7,6 @@ class SoHeader < ActiveRecord::Base
   validates_presence_of :organization
   
   belongs_to :organization
-
   belongs_to :bill_to_address, :class_name => "Contact", :foreign_key => "so_bill_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 

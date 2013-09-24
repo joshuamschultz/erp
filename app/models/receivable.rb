@@ -1,7 +1,7 @@
 class Receivable < ActiveRecord::Base
   has_many :receivable_shipments, :dependent => :destroy
   has_many :receivable_lines, :dependent => :destroy
-  has_many :receipt_lines, :dependent => :destroy
+  # has_many :receipt_lines, :dependent => :destroy
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]  
   belongs_to :so_header

@@ -12,5 +12,6 @@ class CreateReceivableShipments < ActiveRecord::Migration
       t.timestamps
     end
     add_index :receivable_shipments, :receivable_id
+    add_index :receivable_shipments, :so_line_id
   end
 end

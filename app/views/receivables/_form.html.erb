@@ -1,3 +1,4 @@
+<%= simple_form_for(@receivable, :html => {:id => "form_for_receivables",:class => "form-horizontal"}) do |f| %>
 <div class="row-fluid">
   <div class="span4 well item_detail_view">
       <div id="receivable_customer_info"></div>
@@ -5,7 +6,6 @@
 
   <div class="span8 well item_detail_view">
 
-<%= simple_form_for(@receivable, :html => {:id => "form_for_receivable",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -31,8 +31,7 @@
 
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>
-    <%= f.input :receivable_discount, :label => "Discount" if @receivable.persisted? %>
-   
+    <%= f.input :receivable_discount, :label => "Discount" if @receivable.persisted? %>   
   </div>
 
   <div class="separator bottom"></div>
@@ -40,20 +39,52 @@
   <div class="form-actions">
     <%= f.button :submit %>
     <%= link_to 'Delete', receivable_path(@receivable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable.new_record? %>
-    <%= link_to 'Back to Receivables', receivables_path, :class => "btn" %>
+    <%= link_to 'Back', @receivable, :class => "btn" %>
   </div>
+</div>
+</div>
+
+
+<% if @receivable.persisted? && @receivable.organization.present? %>
+    <div class="separator bottom"></div>
+    <div class="form-inputs">
+    <div class="row-fluid">
+    <div class="span12">
+        <table id="receivable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Part No</th>
+                    <th>Quantity Ordered</th>
+                    <th>Quantity Shipped</th>
+                    <th>Cost</th>
+                    <th>Shipped</th>
+                </tr>
+            </thead>
+            <tbody id="receivable_shipments_table_table_body">
+                <%= f.fields_for :receivable_shipments, @receivable.receivable_shipments do |receivable_shipment| %>
+                    <tr>
+                        <td><%= link_to receivable_shipment.object.so_line.item_alt_name.item_alt_identifier, item_path(receivable_shipment.object.so_line.item) %></td>
+                        <td><%= receivable_shipment.object.so_line.so_line_quantity %></td>
+                        <td><%= receivable_shipment.object.so_line.receivable_shipments.sum(:receivable_shipment_count) %></td>
+                        <td><%= receivable_shipment.object.so_line.so_line_cost %></td>
+                        <td><%= receivable_shipment.input :receivable_shipment_count, label: false, input_html: { class: 'receivable_shipment_count' } %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    </div>
 <% end %>
-</div>
-</div>
 
+<% end %>
 
-<%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? %>
+<%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? && @receivable.organization.nil? %>
 
-<%= render :partial => 'so_lines/line_items' if @receivable.persisted? && @so_header %>
-
+<%#= render :partial => 'so_lines/line_items' if @receivable.persisted? && @so_header %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_receivable"] = ["receivable_organization_id", "receivable_so_header_id", "receivable_receivable_description", "receivable_receivable_notes"];
+    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_so_header_id", "receivable_receivable_description", "receivable_receivable_notes"];
 
     var org_so_header_path = "<%= autocomplete_so_header_so_identifier_so_headers_path %>";
 
@@ -98,20 +129,23 @@
                 $("#receivable_receivable_description").focus();
             <% end %>
 
-            tab_field_forms["form_for_receivable"].push("receivable_receivable_discount");
+            tab_field_forms["form_for_receivables"].push("receivable_receivable_discount");
 
             $("#receivable_receivable_description").focus();
 
         <% else %>
             $("#receivable_organization_id").focus();
         <% end %>
+
+        $(document).on("keydown", ".receivable_shipment_count", function(e){
+            receivable_fine_to_submit = true;
+            receivable_fine_to_submit = table_row_next_focus(e, "#form_for_receivables", $(this), ".receivable_shipment_count", true);
+        });
     });
 
     function set_customer_addresses(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
-        $("#receivable_receivable_to_id").html(html);
-
-      
+        $("#receivable_receivable_to_id").html(html);      
     }
 
     function set_customer_info(response, callback_params, api_params){
