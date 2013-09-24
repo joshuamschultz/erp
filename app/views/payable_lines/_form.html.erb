@@ -18,7 +18,7 @@
         <div class="actions">
             <%= f.submit "Save", :class =>"btn" %>
             <%= link_to 'Delete', payable_payable_line_path(@payable, @payable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable_line.new_record? %>
-            <%= link_to 'Back to Payable', payable_path(@payable), :class =>"btn" %>
+            <%= link_to 'Back', payable_path(@payable), :class =>"btn" %>
         </div>
     <% end %>
   </div>
@@ -27,7 +27,6 @@
 <script type="text/javascript">
     tab_field_forms["form_for_payable_line"] = ["payable_line_payable_line_description", "payable_line_payable_line_cost", "payable_line_payable_line_notes"];
 </script>
-
 
 <div class="separator bottom"></div>
 

@@ -1,0 +1,37 @@
+<%= form_for([@payable_shipment.payable, @payable_shipment]) do |f| %>
+  <% if @payable_shipment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@payable_shipment.errors.count, "error") %> prohibited this payable_shipment from being saved:</h2>
+
+      <ul>
+      <% @payable_shipment.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :payable_shipment_identifier %><br />
+    <%= f.text_field :payable_shipment_identifier %>
+  </div>
+  <div class="field">
+    <%= f.label :payable_shipment_count %><br />
+    <%= f.number_field :payable_shipment_count %>
+  </div>
+  <div class="field">
+    <%= f.label :payable_shipment_cost %><br />
+    <%= f.text_field :payable_shipment_cost %>
+  </div>
+  <div class="field">
+    <%= f.label :payable_shipment_created_id %><br />
+    <%= f.number_field :payable_shipment_created_id %>
+  </div>
+  <div class="field">
+    <%= f.label :payable_shipment_updated_id %><br />
+    <%= f.number_field :payable_shipment_updated_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

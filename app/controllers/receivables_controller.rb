@@ -67,6 +67,7 @@ class ReceivablesController < ApplicationController
         format.html { redirect_to @receivable, notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
+        @receivable.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @receivable.errors, status: :unprocessable_entity }
       end

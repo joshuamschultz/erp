@@ -15,6 +15,7 @@ class PoLine < ActiveRecord::Base
   :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id
 
   has_many :quality_lots, :dependent => :destroy
+  has_many :payable_shipments, :dependent => :destroy
 
   validates_presence_of :item_alt_name_id, :organization_id
   validates_presence_of :po_header, :organization, :item_alt_name, :po_line_cost, :po_line_quantity

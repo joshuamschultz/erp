@@ -1,3 +1,4 @@
+<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
 <div class="row-fluid">
   <div class="span4 well item_detail_view">
       <div id="payable_vendor_info"></div>
@@ -5,7 +6,6 @@
 
   <div class="span8 well item_detail_view">
 
-<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -61,16 +61,50 @@
   <div class="form-actions">
     <%= f.button :submit %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>
-    <%= link_to 'Back to Payables', payables_path, :class => "btn" %>
+    <%= link_to 'Back', @payable, :class => "btn" %>
   </div>
+
+</div>
+</div>
+
+<% if @payable.persisted? && @payable.organization.present? %>
+    <div class="separator bottom"></div>
+    <div class="form-inputs">
+    <div class="row-fluid">
+    <div class="span12">
+        <table id="payable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Part No</th>
+                    <th>Quantity Ordered</th>
+                    <th>Quantity Received</th>
+                    <th>Cost</th>
+                    <th>Received</th>
+                </tr>
+            </thead>
+            <tbody id="payable_shipments_table_table_body">
+                <%= f.fields_for :payable_shipments, @payable.payable_shipments do |payable_shipment| %>
+                    <tr>
+                        <td><%= link_to payable_shipment.object.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.object.po_line.item) %></td>
+                        <td><%= payable_shipment.object.po_line.po_line_quantity %></td>
+                        <td><%= payable_shipment.object.po_line.payable_shipments.sum(:payable_shipment_count) %></td>
+                        <td><%= payable_shipment.object.po_line.po_line_cost %></td>
+                        <td><%= payable_shipment.input :payable_shipment_count, label: false, input_html: { class: 'payable_shipment_count' } %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    </div>
 <% end %>
-</div>
-</div>
+
+<% end %>
 
 
-<%= render :partial => 'payable_lines/line_items' if @payable.persisted? %>
+<%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.organization.nil? %>
 
-<%= render :partial => 'po_lines/line_items' if @payable.persisted? && @po_header %>
+<%#= render :partial => 'po_lines/line_items' if @payable.persisted? && @po_header %>
 
 
 <script type="text/javascript">
@@ -82,6 +116,8 @@
     date_box_fields = date_box_fields.concat([{"name":"payable_payable_invoice_date", "value":"<%= date_box_date1 %>"}, {"name":"payable_payable_due_date", "value":"<%= date_box_date2 %>"}]);
 
     var org_po_header_path = "<%= autocomplete_po_header_po_identifier_po_headers_path %>";
+
+    var payable_fine_to_submit = true;
 
     $(document).ready(function(){ 
         $("#payable_organization_id").on("focusout", function(){
@@ -107,18 +143,6 @@
             initialize_api_call({"url": "/po_headers/" + $("#po_header_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_po_header_cost", {});
         });
 
-        // $("#payable_payable_cost").change(function(){
-        //     calculate_payable_total();
-        // });
-
-        // $("#payable_payable_cost").on("input", function(){
-        //     calculate_payable_total();
-        // });
-
-        // $("#payable_payable_discount").on("input", function(){
-        //     calculate_payable_total();
-        // });
-
         <% unless @payable.new_record? %>
             $("#payable_organization_id").val("<%= @payable.organization.organization_name if @payable.organization %>");
 
@@ -141,6 +165,18 @@
         <% else %>
             $("#payable_organization_id").focus();
         <% end %>
+
+        $(document).on("keydown", ".payable_shipment_count", function(e){
+            payable_fine_to_submit = true;
+            payable_fine_to_submit = table_row_next_focus(e, "#form_for_paybles", $(this), ".payable_shipment_count", true);
+        });
+
+        $("#form_for_payments").submit(function(e){
+            if(payable_fine_to_submit == false)
+                e.preventDefault();
+            else
+                payable_fine_to_submit = true;
+        });
     });
 
     function set_vendor_addresses(response, callback_params, api_params){
@@ -155,20 +191,6 @@
 
         return false;
     }
-
-    // function calculate_payable_total(){
-    //     var payable_total = (parseFloat($("#payable_payable_cost").val(), 10) - parseFloat($("#payable_payable_discount").val(), 10));
-
-    //     if(isNaN(payable_total) == false)
-    //         $("#payable_payable_total").val(payable_total); //.toFixed(10)
-    //     else
-    //         $("#payable_payable_total").val("");
-    // }
-
-    // function set_po_header_cost(response, callback_params, api_params){
-    //     $("#payable_payable_cost").val(response.po_total);
-    //     calculate_payable_total();
-    // }
 
     function set_vendor_info(response, callback_params, api_params){
         $("#payable_vendor_info").html(response);

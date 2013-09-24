@@ -1,0 +1,31 @@
+<h1>Listing payable_shipments</h1>
+
+<table>
+  <tr>
+    <th>Payable shipment identifier</th>
+    <th>Payable shipment count</th>
+    <th>Payable shipment cost</th>
+    <th>Payable shipment created</th>
+    <th>Payable shipment updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @payable_shipments.each do |payable_shipment| %>
+  <tr>
+    <td><%= payable_shipment.payable_shipment_identifier %></td>
+    <td><%= payable_shipment.payable_shipment_count %></td>
+    <td><%= payable_shipment.payable_shipment_cost %></td>
+    <td><%= payable_shipment.payable_shipment_created_id %></td>
+    <td><%= payable_shipment.payable_shipment_updated_id %></td>
+    <td><%= link_to 'Show', [payable_shipment.payable, payable_shipment] %></td>
+    <td><%= link_to 'Edit', edit_payable_payable_shipment_path(payable_shipment.payable, payable_shipment) %></td>
+    <td><%= link_to 'Destroy', [payable_shipment.payable, payable_shipment], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Payable shipment', new_payable_payable_shipment_path(params[:payable_id]) %>

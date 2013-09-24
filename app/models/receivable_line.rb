@@ -10,10 +10,7 @@ class ReceivableLine < ActiveRecord::Base
 	after_destroy :update_receivable_total
 
 	def update_receivable_total
-		Receivable.skip_callback("save", :before, :process_before_save)
-		receivable_total = self.receivable.update_receivable_total	  
-		puts self.receivable.update_attributes(:receivable_total => receivable_total)
-		Receivable.set_callback("save", :before, :process_before_save)
+		receivable_total = self.receivable.process_receivable_total
 	end
 
 end

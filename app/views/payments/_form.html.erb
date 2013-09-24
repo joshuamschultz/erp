@@ -46,7 +46,7 @@
             </tr>
         </thead>
         <tbody id="payment_lines_table_body">
-            <%= f.fields_for :payment_lines, payment_lines do |payment_line| %>                
+            <%= f.fields_for :payment_lines, payment_lines do |payment_line| %>
                 <tr>
                     <td><%= payment_line.association :payable, label: false, label_method: :payable_identifier, label_value: :id, :include_blank => false, collection: payable_collection, input_html: { class: (@payment.new_record? ? "payment_payable_new" : "payment_payable_edit") } %></td>
                     <td><%= text_field_tag :invoice_date, "", :disabled => true %></td>
@@ -77,6 +77,8 @@
     tab_field_forms["form_for_payments"] = [];
 
     var payable_select_html = "";
+
+    var payment_fine_to_submit = true;
 
     $(document).ready(function(){ 
         // alert($(".payment_payable_new").length);
@@ -133,16 +135,26 @@
             call_payment_payable_info($(this));
         });
 
+        $("#form_for_payments").submit(function(e){
+            if(payment_fine_to_submit == false)
+                e.preventDefault();
+            else
+                payment_fine_to_submit = true;
+        });
+
         $(document).on("keydown", ".payment_payable_edit", function(e){
-            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
+            payment_fine_to_submit = true;
+            payment_fine_to_submit = table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
         });
 
         $(document).on("keydown", ".payment_payable_new", function(e){
-            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
+            payment_fine_to_submit = true;
+            payment_fine_to_submit = table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_amount", false);
         });
 
         $(document).on("keydown", ".payment_payable_amount", function(e){
-            return table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_edit", true);
+            payment_fine_to_submit = true;
+            payment_fine_to_submit = table_row_next_focus(e, "#form_for_payments", $(this), ".payment_payable_edit", true);
         });
 
         set_all_payment_payable_info("all");

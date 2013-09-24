@@ -10,10 +10,7 @@ class PayableLine < ActiveRecord::Base
   after_destroy :update_payable_total
 
   def update_payable_total
-  	  Payable.skip_callback("save", :before, :process_before_save)
-  	  payable_total = self.payable.update_payable_total	  
-      puts self.payable.update_attributes(:payable_total => payable_total)
-      Payable.set_callback("save", :before, :process_before_save)
+  	  payable_total = self.payable.process_payable_total
   end
 
 end

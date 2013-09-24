@@ -17,6 +17,16 @@
             <td class="span5"><strong><%= link_to @receivable.so_header.so_identifier, @receivable.so_header if @receivable.so_header %></strong></td>
           </tr>
 
+          <tr>
+            <td class="span2">Bill To:</td>
+            <td class="span5"><strong><%= @receivable.so_header.bill_to_address ? link_to(@receivable.so_header.bill_to_address.contact_title, @receivable.so_header.bill_to_address) : link_to(@receivable.so_header.organization.organization_name, organization_main_address_path(@receivable.so_header.organization)) %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Ship To:</td>
+            <td class="span5"><strong><%= @receivable.so_header.ship_to_address ? link_to(@receivable.so_header.ship_to_address.contact_title, @receivable.so_header.ship_to_address) : link_to(@receivable.so_header.organization.organization_name, organization_main_address_path(@receivable.so_header.organization)) %></strong></td>
+          </tr>
+
       <% end %>
 
           <tr>
@@ -31,7 +41,7 @@
 
           <tr>
             <td class="span3">Discount:</td>
-            <td class="span5"><strong><%= @receivable.receivable_discount %></strong></td>
+            <td class="span5"><strong>$<%= @receivable.receivable_discount %></strong></td>
           </tr>
 
           <tr>

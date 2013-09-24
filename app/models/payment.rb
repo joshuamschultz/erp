@@ -38,7 +38,7 @@ class Payment < ActiveRecord::Base
         errors.add(:payment_check_amount, "is not assigned to any PO!")
 
       elsif total_amount > self.payment_check_amount
-        errors.add(:payment_check_amount, "is not sufficient!  Total line amount : #{total_amount}")
+        errors.add(:payment_check_amount, "is not sufficient!  Total lines amount : #{total_amount}")
       end
   end
 
