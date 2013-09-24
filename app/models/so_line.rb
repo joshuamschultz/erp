@@ -15,6 +15,8 @@ class SoLine < ActiveRecord::Base
 
   validates_numericality_of :so_line_cost, :so_line_quantity
 
+  has_many :receivable_shipments, :dependent => :destroy
+
   before_create :create_level_default
 
   def create_level_default

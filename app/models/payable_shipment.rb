@@ -20,9 +20,9 @@ class PayableShipment < ActiveRecord::Base
   validate :check_total_received, :on => :update
 
   def check_total_received
-  		total_received = self.po_line.payable_shipments.sum(:payable_shipment_count) + self.payable_shipment_count
+  		total_received = self.po_line.payable_shipments.where("id != ?", self.id).sum(:payable_shipment_count) + self.payable_shipment_count
   		if total_received > self.po_line.po_line_quantity
-  			errors.add(:payable_shipment_count, "exceeded than ordered!")
+  			 errors.add(:payable_shipment_count, "exceeded than ordered!")
   		end
   end
 

@@ -1,6 +1,5 @@
 class PaymentsController < ApplicationController
-  before_filter :set_autocomplete_values, only: [:create, :update] 
-
+  before_filter :set_autocomplete_values, only: [:create, :update]
   before_filter :set_page_info  
 
   def set_page_info
@@ -86,6 +85,7 @@ class PaymentsController < ApplicationController
         format.html { redirect_to @payment, notice: 'Payment was successfully updated.' }
         format.json { head :no_content }
       else
+        puts @payment.errors.to_yaml
         format.html { render action: "edit" }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end
