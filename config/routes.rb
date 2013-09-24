@@ -1,4 +1,12 @@
 AllianceFasteners::Application.routes.draw do
+  resources :receivables do
+    resources :receivable_shipments
+  end
+
+  resources :payables do
+    resources :payable_shipments
+  end
+
   resources :receipts do
     resources :receipt_lines
   end
