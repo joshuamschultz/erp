@@ -123,7 +123,7 @@ function table_row_next_focus(e, form_name, current_element, next_element, next_
 
         var next_index = found_next_element.index();
 
-        if(next_index != -1){
+        if(next_index > -1){
             found_next_element.focus();
             return false;     
         }

@@ -78,10 +78,11 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.save
-        format.html { redirect_to @payable, notice: 'Payable was successfully created.' }
+        format.html { redirect_to edit_payable_path(@payable), notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
         @payable.organization_id = ""
+        @payable.po_header_id = ""
         format.html { render action: "new" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end

@@ -4,10 +4,10 @@ class OwnersController < ApplicationController
   def set_page_info
       @menus[:system][:active] = "active"
   end
+
   # GET /owners
   # GET /owners.json
   def index
-
     # query = search(Owner)
     # @owners = Owner.page(page).per(per_page)
     # if params[:sSearch].present?

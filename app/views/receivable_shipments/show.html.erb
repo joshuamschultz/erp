@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Receivable shipment identifier:</b>
+  <%= @receivable_shipment.receivable_shipment_identifier %>
+</p>
+
+<p>
+  <b>Receivable shipment count:</b>
+  <%= @receivable_shipment.receivable_shipment_count %>
+</p>
+
+<p>
+  <b>Receivable shipment cost:</b>
+  <%= @receivable_shipment.receivable_shipment_cost %>
+</p>
+
+<p>
+  <b>Receivable shipment created:</b>
+  <%= @receivable_shipment.receivable_shipment_created_id %>
+</p>
+
+<p>
+  <b>Receivable shipment updated:</b>
+  <%= @receivable_shipment.receivable_shipment_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_receivable_receivable_shipment_path(@receivable_shipment.receivable, @receivable_shipment) %> |
+<%= link_to 'Back', receivable_receivable_shipments_path(@receivable_shipment.receivable) %>

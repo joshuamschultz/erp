@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Payable shipment identifier:</b>
+  <%= @payable_shipment.payable_shipment_identifier %>
+</p>
+
+<p>
+  <b>Payable shipment count:</b>
+  <%= @payable_shipment.payable_shipment_count %>
+</p>
+
+<p>
+  <b>Payable shipment cost:</b>
+  <%= @payable_shipment.payable_shipment_cost %>
+</p>
+
+<p>
+  <b>Payable shipment created:</b>
+  <%= @payable_shipment.payable_shipment_created_id %>
+</p>
+
+<p>
+  <b>Payable shipment updated:</b>
+  <%= @payable_shipment.payable_shipment_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_payable_payable_shipment_path(@payable_shipment.payable, @payable_shipment) %> |
+<%= link_to 'Back', payable_payable_shipments_path(@payable_shipment.payable) %>

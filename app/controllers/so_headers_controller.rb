@@ -13,6 +13,14 @@ class SoHeadersController < ApplicationController
       params[:so_header][:organization_id] = params[:org_organization_id] if params[:so_header][:organization_id] == ""
   end
 
+  def get_autocomplete_items(parameters)
+      items = super(parameters)
+      if params[:organization_id].present?
+          items = items.where(:organization_id => params[:organization_id])
+      end
+      items
+  end
+
   def find_relations
       params[:so_status] ||= nil
 

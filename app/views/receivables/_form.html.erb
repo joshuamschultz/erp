@@ -68,7 +68,7 @@
 
                 $("#receivable_so_header_id").attr("data-autocomplete", org_so_header_path + "?organization_id=" + $("#organization_id").val());
 
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+                // initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
             }
             else{
                 $("#receivable_so_header_id").attr("data-autocomplete", org_so_header_path + "?organization_id=0");
@@ -78,7 +78,7 @@
         });
 
         $("#receivable_so_header_id").change(function(){
-            initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_so_header_cost", {});
+            // initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_so_header_cost", {});
         });
 
         <% unless @receivable.new_record? %>
@@ -87,7 +87,7 @@
             $("#receivable_so_header_id").val("<%= @receivable.so_header.so_identifier if @receivable.so_header %>");
 
             if($("#organization_id").val() != ""){
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+                // initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
 
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
             }
@@ -98,10 +98,12 @@
                 $("#receivable_receivable_description").focus();
             <% end %>
 
-            tab_field_forms["form_for_paybles"].push("receivable_receivable_discount");
+            tab_field_forms["form_for_receivable"].push("receivable_receivable_discount");
+
+            $("#receivable_receivable_description").focus();
 
         <% else %>
-            $("#receivable_receivable_description").focus();
+            $("#receivable_organization_id").focus();
         <% end %>
     });
 

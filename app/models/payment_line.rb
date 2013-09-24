@@ -6,4 +6,15 @@ class PaymentLine < ActiveRecord::Base
 
   validates_presence_of :payment_line_amount, :payable_id
 
+  validate :check_total_received
+
+  def check_total_received
+  		total_received = self.payable.payment_lines.sum(:payment_line_amount) + self.payment_line_amount
+  		puts total_received
+  		if total_received > self.payable.payable_total
+  			errors.add(:payment_line_amount, "exceeded than payable total!")
+  		end
+  		# errors.add(:payment_line_amount, "exceeded than payable total!")
+  end
+
 end
