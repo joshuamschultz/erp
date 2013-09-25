@@ -39,6 +39,33 @@
 		      	<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
 		      </td>
       		</tr>
+    <% when "receivable-select-box" %>
+			{{# aaData}}<option value="{{id}}">{{receivable_identifier}}</option>{{/ aaData}}
+	<% when "receipt-line-row-html" %>
+			<tr>
+		      <td>
+		        <div class='control-group select required receipt_receipt_lines_receivable'>
+		          <div class='controls'>
+		            <select name='receipt[receipt_lines_attributes][{{row_count}}][receivable_id]' id='receipt_receipt_lines_attributes_{{row_count}}_receivable_id' class='select required receipt_receivable_new'>
+		            		// {{row_data}}
+		            </select>
+		          </div>
+		        </div>
+		      </td>
+		      <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
+		      <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
+		      <td>
+		        <div class='control-group decimal required receipt_receipt_lines_receipt_line_amount'>
+		          <div class='controls'>
+		            <input type='number' value='0.0' step='any' required='required' name='receipt[receipt_lines_attributes][{{row_count}}]receipt_line_amount]' id='receipt_receipt_lines_attributes_{{row_count}}_receipt_line_amount' class='numeric decimal required receipt_receivable_amount'>
+		          </div>
+		        </div>
+		      </td>
+		      <td>
+		      	<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
+		      </td>
+      		</tr>
+	
 	<% else %>
 
 <% end%>

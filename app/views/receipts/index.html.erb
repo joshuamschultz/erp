@@ -1,45 +1,41 @@
-<h1>Listing receipts</h1>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Receipts</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Receipt', new_receipt_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
 
-<table>
-  <tr>
-    <th>Organization</th>
-    <th>Receipt type</th>
-    <th>Receipt check code</th>
-    <th>Receipt check amount</th>
-    <th>Receipt check no</th>
-    <th>Receipt identifier</th>
-    <th>Receipt description</th>
-    <th>Receipt notes</th>
-    <th>Receipt status</th>
-    <th>Receipt active</th>
-    <th>Receipt created</th>
-    <th>Receipt updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report_receipt_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Identifier</th>
+                    <th>Organization</th>                    
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<% @receipts.each do |receipt| %>
-  <tr>
-    <td><%= receipt.organization %></td>
-    <td><%= receipt.receipt_type_id %></td>
-    <td><%= receipt.receipt_check_code %></td>
-    <td><%= receipt.receipt_check_amount %></td>
-    <td><%= receipt.receipt_check_no %></td>
-    <td><%= receipt.receipt_identifier %></td>
-    <td><%= receipt.receipt_description %></td>
-    <td><%= receipt.receipt_notes %></td>
-    <td><%= receipt.receipt_status %></td>
-    <td><%= receipt.receipt_active %></td>
-    <td><%= receipt.receipt_created_id %></td>
-    <td><%= receipt.receipt_updated_id %></td>
-    <td><%= link_to 'Show', receipt %></td>
-    <td><%= link_to 'Edit', edit_receipt_path(receipt) %></td>
-    <td><%= link_to 'Destroy', receipt, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
 
-<br />
-
-<%= link_to 'New Receipt', new_receipt_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_receipt_list", :path => receipts_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "receipt_identifier" },
+                        { "mData": "customer_name" },
+                        { "mData": "receipt_description" },
+                        { "mData": "receipt_type_name" },
+                        { "mData": "receipt_check_amount" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

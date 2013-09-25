@@ -1,22 +1,213 @@
-<%= simple_form_for(@receipt) do |f| %>
-  <%= f.error_notification %>
+<%= simple_form_for(@receipt, :html => {:id => "form_for_receipts",:class => "form-horizontal"}) do |f| %>
+<%= f.error_notification %>  
 
   <div class="form-inputs">
-    <%= f.association :organization %>
-    <%= f.input :receipt_type_id %>
-    <%= f.input :receipt_check_code %>
-    <%= f.input :receipt_check_amount %>
-    <%= f.input :receipt_check_no %>
-    <%= f.input :receipt_identifier %>
-    <%= f.input :receipt_description %>
-    <%= f.input :receipt_notes %>
-    <%= f.input :receipt_status %>
-    <%= f.input :receipt_active %>
-    <%= f.input :receipt_created_id %>
-    <%= f.input :receipt_updated_id %>
+    <div class="row-fluid">
+      <div class="span4 well item_detail_view">
+        <div id="receipt_customer_info"></div>
+      </div>
+
+      <div class="span8 well item_detail_view">
+        <% unless @receipt.new_record? %>
+            <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" if @receipt.organization.present? %>
+        <% else %>
+            <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', :label => "Customer" %>
+        <% end %>
+
+        <%= hidden_field_tag :organization_id, (@receipt.organization.id if @receipt.persisted? && @receipt.organization.present?) %>
+
+        <%= hidden_field_tag :org_organization_id, (@receipt.organization.id if @receipt.persisted? && @receipt.organization.present?) %>
+
+        <%= f.association :receipt_type, :label => "Receipt Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "receipt_type_option"}, :checked => (MasterType.payment_types.first.id if @receipt.new_record?) %>
+
+        <%= f.input :receipt_check_code, :label => "Check Code" %>
+        <%= f.input :receipt_check_amount, :label => "Amount" %>
+        <%= f.input :receipt_description, :label => "Description" %>
+        <%= f.input :receipt_notes, :label => "Notes" %>
+      </div>
+    </div>
+
+    <div class="separator bottom"></div>
+
+    <% receipt_lines = @receipt.new_record? || (@receipt.persisted? && @receipt.receipt_lines.empty?) ? [ReceiptLine.new]*0 : @receipt.receipt_lines %>
+
+    <% receivable_collection = @receipt.new_record? ? [] : @receipt.organization.receivables %>
+
+    <table id="receipt_lines_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Invoice</th>
+                <th>Total</th>
+                <th>Balance</th>
+                <th>Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="receipt_lines_table_body">
+            <%= f.fields_for :receipt_lines, receipt_lines do |receipt_line| %>                
+                <tr>
+                    <td><%= receipt_line.association :receivable, label: false, label_method: :receivable_identifier, label_value: :id, :include_blank => false, collection: receivable_collection, input_html: { class: (@receipt.new_record? ? "receipt_receivable_new" : "receipt_receivable_edit") } %></td>
+                    <td><%= text_field_tag :invoice_amount, "", :disabled => true %></td>
+                    <td><%= text_field_tag :invoice_balance, "", :disabled => true %></td>
+                    <td><%= receipt_line.input :receipt_line_amount, label: false, :input_html => {class: "receipt_receivable_amount"} %></td>
+                    <td><a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
   </div>
 
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class => "btn" %>
+    <%= link_to 'Add Row', "#", :class => "btn", :onclick => "add_receipt_line_row(); return false" %>
+    <%= link_to 'Delete', receipt_path(@receipt), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receipt.new_record? %>
+    <%= link_to 'Back to receipts', receipts_path, :class => "btn" %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_receipts"] = [];
+
+    var receivable_select_html = "";
+
+    $(document).ready(function(){ 
+        // alert($(".receipt_receivable_new").length);
+        $("#receipt_organization_id").on("focusout", function(){
+            if($("#organization_id").val() == ""){
+                $("#organization_id").val($("#org_organization_id").val());
+            }
+
+            if($("#organization_id").val() != ""){
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_receivables", "id": $("#organization_id").val()}}, "set_receipt_receivables", {});
+            }
+            else{
+                $("#receipt_customer_info").html("");
+                $(".receipt_receivable_new").html("");
+                receivable_select_html = "";
+            }
+        });
+
+        <% unless @receipt.new_record? %>
+            $("#receipt_organization_id").val("<%= @receipt.organization.organization_name if @receipt.organization %>");
+
+            if($("#organization_id").val() != ""){
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_receivables", "id": $("#organization_id").val()}}, "set_receipt_receivables", {});
+            }
+
+        <% end %>        
+
+        $(".receipt_type_option").on("change", function(){
+            receipt_type_changed($('.receipt_type_option:checked').parent().text(), true);
+        });
+
+        $(".receipt_type_option").on("keydown", function(){
+            receipt_type_changed($('.receipt_type_option:checked').parent().text(), true);
+            return false;
+        });
+
+        receipt_type_changed($('.receipt_type_option:checked').parent().text(), false);
+
+        // $("#receipt_organization_id").focus();
+
+        $(document).on("change", ".receipt_receivable_edit", function(){
+            call_receipt_receivable_info($(this));
+        });
+
+        $(document).on("change", ".receipt_receivable_new", function(){
+            call_receipt_receivable_info($(this));
+        });
+
+        $(document).on("keydown", ".receipt_receivable_edit", function(e){
+            return table_row_next_focus(e, "#form_for_receipts", $(this), ".receipt_receivable_amount", false);
+        });
+
+        $(document).on("keydown", ".receipt_receivable_new", function(e){
+            return table_row_next_focus(e, "#form_for_receipts", $(this), ".receipt_receivable_amount", false);
+        });
+
+        $(document).on("keydown", ".receipt_receivable_amount", function(e){
+            return table_row_next_focus(e, "#form_for_receipts", $(this), ".receipt_receivable_edit", true);
+        });
+
+        set_all_receipt_receivable_info("all");
+    });
+
+    function set_customer_info(response, callback_params, api_params){
+        $("#receipt_customer_info").html(response);
+        return false;
+    }
+
+    function set_receipt_receivables(response, callback_params, api_params){
+        receivable_select_html = $.trim(Mustache.render($(".receivable-select-box-template").html(), response));
+        $(".receipt_receivable_new").html(receivable_select_html);
+    }
+
+    function add_receipt_line_row(){
+        var receipt_line_row_count = $(".receipt_receivable_new").length + $(".receipt_receivable_edit").length;
+        var html = $.trim(Mustache.render($(".receipt-line-row-html-template").html(), {"row_count" : receipt_line_row_count, "row_data" : receivable_select_html}));
+        $("#receipt_lines_table_body").append(html);
+        $("#receipt_receipt_lines_attributes_"+receipt_line_row_count+"_receivable_id").html(receivable_select_html);
+        call_receipt_receivable_info($(".receipt_receivable_new").last());
+    }
+
+    function delete_receipt_line_row(receipt_line_id){
+      <% if @receipt.persisted? %>
+          initialize_api_call({"url": "/receipts/<%= @receipt.id %>/receipt_lines/"+ receipt_line_id, "type": "DELETE", "data_type": "json", "params": {}}, "", {});
+      <% end %>
+    }
+
+    function receipt_type_changed(receipt_type, change_focus){
+        if(receipt_type == "Check"){
+            $('.receipt_receipt_check_code').show();
+            if(change_focus)
+                $('#receipt_receipt_check_code').focus();
+            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_check_code", "receipt_receipt_check_amount", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
+        }
+        else{
+            $('.receipt_receipt_check_code').hide();
+            $('#receipt_receipt_check_code').val("");
+            if(change_focus)
+                $('#receipt_receipt_check_amount').focus();
+            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_check_amount", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
+        }
+    }
+
+    function call_receipt_receivable_info(selected_receivable){
+        if(selected_receivable.val() != "" || selected_receivable.val() != null)
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "receipt_receivable_info", "id": selected_receivable.val()}}, "set_receipt_receivable_info", {"object" : selected_receivable});
+    }
+
+    function set_receipt_receivable_info(response, callback_params, api_params){
+        callback_params["object"].closest("tr").find("#invoice_date").val(response.aaData.receivable_invoice_date);
+        callback_params["object"].closest("tr").find("#invoice_due_date").val(response.aaData.receivable_due_date);
+        callback_params["object"].closest("tr").find("#invoice_amount").val(response.aaData.receivable_total);
+        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.receivable_balance);
+        callback_params["object"].closest("tr").find(".receipt_receivable_amount").focus();
+    }
+
+    function set_all_receipt_receivable_info(type){
+        if(type == "edit" || type == "all"){
+            $(".receipt_receivable_edit").each(function(index){
+                call_receipt_receivable_info($(this));
+            });
+        }
+
+        if(type == "new" || type == "all"){
+            $(".receipt_receivable_new").each(function(index){
+                call_receipt_receivable_info($(this));
+            });
+        }
+    }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "receivable-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "receipt-line-row-html"} %>
