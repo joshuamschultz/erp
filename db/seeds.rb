@@ -68,6 +68,7 @@ mastertypes = [
          ["Check", "", "check", "payment_type", "true"],
          ["Credit", "", "credit", "payment_type", "true"],
          ["ACH", "", "ach", "payment_type", "true"]
+         
 ]
 
 mastertypes.each do |master|

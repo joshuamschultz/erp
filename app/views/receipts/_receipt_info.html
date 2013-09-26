@@ -1,0 +1,59 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+      <tbody>
+          <tr>
+            <td class="span2">ID:</td>
+            <td class="span5"><strong><%= link_to @receipt.id, @receipt %></strong></td>
+          </tr>
+
+        <% if @receipt.organization %>
+          <tr>
+            <td class="span2">Customer:</td>
+            <td class="span5"><strong><%= link_to @receipt.organization.organization_name, @receipt.organization if @receipt.organization %></strong></td>
+          </tr>
+        <% end %>
+
+          <tr>
+            <td class="span3">Description:</td>
+            <td class="span5"><strong><%= @receipt.receipt_description %></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Type:</td>
+            <td class="span5"><strong><%= @receipt.receipt_type.type_name if @receipt.receipt_type %></strong></td>
+          </tr>
+
+        <% if @receipt.receipt_type.type_value == "check" %>
+           <tr>
+            <td class="span3">Check Code:</td>
+            <td class="span5"><strong><%= @receipt.receipt_check_code %></strong></td>
+          </tr>
+        <% end %>         
+
+          <tr>
+            <td class="span3">Amount:</td>
+            <td class="span5"><strong><h4>$<%= @receipt.receipt_check_amount %></4></strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Notes:</td>
+            <td class="span5"><strong><%= @receipt.receipt_notes %></strong></td>
+          </tr>          
+
+          <!-- "%0.5f" %  -->
+
+      </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+
+  <% if @receipt.organization %>
+      <h4 class="center">Customer Info</h4>
+
+      <div class="separator bottom"></div>
+
+      <%= render :partial => 'organizations/organization_info', 
+            :locals => {:organization => @receipt.organization} %>
+  <% end %>
+</div>

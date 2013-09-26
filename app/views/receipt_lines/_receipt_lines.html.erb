@@ -1,0 +1,37 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Receipt Lines</h4>
+            <span class="span6 heading right">
+                
+            </span>
+        </div> 
+    </div>
+
+    <div class="widget-body">
+        <table id="table_report_receipt_line_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Invoice</th>
+                    <th>Total</th>
+                    <th>Balance</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_receipt_line_list", :path => receipt_receipt_lines_path(@receipt), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "receivable_identifier" },
+                        { "mData": "receivable_total" },
+                        { "mData": "receivable_balance" },
+                        { "mData": "receipt_line_amount" }
+                    ]'
+    } 
+%>

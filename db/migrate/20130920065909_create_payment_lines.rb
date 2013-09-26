@@ -10,5 +10,6 @@ class CreatePaymentLines < ActiveRecord::Migration
       t.timestamps
     end
     add_index :payment_lines, :payment_id
+    add_index :payment_lines, :payable_id
   end
 end
