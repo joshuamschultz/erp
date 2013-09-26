@@ -65,7 +65,7 @@ class Receivable < ActiveRecord::Base
   end
 
   def receivable_current_balance
-      self.receivable_total - self.receivable_lines.sum(:receivable_line_cost)
+      self.receivable_total - self.receipt_lines.sum(:receipt_line_amount)
   end
 
 end
