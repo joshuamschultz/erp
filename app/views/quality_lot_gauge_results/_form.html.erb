@@ -1,29 +1,37 @@
-<%= form_for([@quality_lot_gauge_result.quality_lot_gauge, @quality_lot_gauge_result]) do |f| %>
-  <% if @quality_lot_gauge_result.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@quality_lot_gauge_result.errors.count, "error") %> prohibited this quality_lot_gauge_result from being saved:</h2>
+<% @quality_lot = @quality_lot_gauge.quality_lot %>
+<% @item_revision = @quality_lot.item_revision %>
+<% @item = @item_revision.item %>
 
-      <ul>
-      <% @quality_lot_gauge_result.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% values = [] %>
+<% objects = @quality_lot.lot_item_dimensions.where(:id => @quality_lot_gauge.quality_lot_gauge_dimensions.collect(&:item_part_dimension_id)).order(:id) %>
 
-  <div class="field">
-    <%= f.label :quality_lot_gauge %><br />
-    <%= f.text_field :quality_lot_gauge %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_gauge_result_appraiser %><br />
-    <%= f.text_field :lot_gauge_result_appraiser %>
-  </div>
-  <div class="field">
-    <%= f.label :lot_gauge_result_value %><br />
-    <%= f.text_field :lot_gauge_result_value %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<% objects.each do |object| %>
+    <% values << object.quality_lot_gauge_results.where("quality_lot_gauge_id = ? and lot_gauge_result_appraiser = ?", @quality_lot_gauge.id, params[:appraisor]).order(:item_part_dimension_id).all %>
 <% end %>
+
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+  <div class="span2">
+      Appraisor 1
+      <%= link_to radio_button_tag(:appraisor, 1, (true if params[:appraisor] == "1")), new_quality_lot_gauge_quality_lot_gauge_result_path(@quality_lot_gauge, appraisor: 1) %>      
+  </div>
+  <div class="span2">
+      Appraisor 2
+      <%= link_to radio_button_tag(:appraisor, 2, (true if params[:appraisor] == "2")), new_quality_lot_gauge_quality_lot_gauge_result_path(@quality_lot_gauge, appraisor: 2) %>
+  </div>
+  <div class="span2">
+      Appraisor 3
+      <%= link_to radio_button_tag(:appraisor, 3, (true if params[:appraisor] == "3")), new_quality_lot_gauge_quality_lot_gauge_result_path(@quality_lot_gauge, appraisor: 3) %>
+  </div>
+</div>
+
+<div class="separator bottom"></div>
+
+<%= form_for([@quality_lot_gauge, @quality_lot_gauge_result], :html => {:id => "form_for_lot_gauge_results"} ) do |f| %>
+  <%= hidden_field_tag :appraiser, params[:appraisor] %>
+  <%= f.hidden_field :lot_gauge_result_appraiser, value: params[:appraisor] %>
+  <%= render :partial => 'layouts/app_layouts/editable_rows', locals: {f: f, form: "form_for_lot_gauge_results", name: "gauge", title_field: :item_part_letter, value_field: :lot_gauge_result_value, objects: objects, values: values, back: edit_quality_lot_gauge_path(@quality_lot_gauge, quality_lot_id: @quality_lot.id), default_rows: 5 } %>
+<% end %>
+
+<%= render :partial => 'item_part_dimensions/item_dimensions', locals: {item_page: false} %>

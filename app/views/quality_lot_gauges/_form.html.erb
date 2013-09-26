@@ -1,16 +1,34 @@
-<%= simple_form_for(@quality_lot_gauge) do |f| %>
-  <%= f.error_notification %>
+<% @item_revision = @quality_lot.item_revision %>
+<% @item = @item_revision.item %>
 
-  <div class="form-inputs">
-    <%= f.association :quality_lot %>
-    <%= f.input :lot_gauge_status %>
-    <%= f.input :lot_gauge_notes %>
-    <%= f.input :lot_gauge_active %>
-    <%= f.input :lot_gauge_created_id %>
-    <%= f.input :lot_gauge_updated_id %>
-  </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+<div class="row-fluid"> 
+  <%= render :partial => 'items/item_info' %>
+
+  <div class="span9 well">        
+      <%= simple_form_for(@quality_lot_gauge, :html => {:id => "form_for_lot_gauges", :class => "form-horizontal"} ) do |f| %>
+        <%= f.error_notification %>
+
+        <div class="form-inputs">
+            <%= f.hidden_field :quality_lot_id, value: @quality_lot.id %>
+            <%= hidden_field_tag :quality_lot_id, @quality_lot.id %>
+            <div class="control-group">
+                <label for="quote_dimensions" class="optional control-label">Dimensions</label>
+                <div class="controls">
+                    <%= select_tag "dimensions[]", options_for_select(@quality_lot.lot_item_dimensions.all.map {|dimension| [dimension.item_part_letter, dimension.id]}, @quality_lot_gauge.persisted? ? (@quality_lot_gauge.quality_lot_gauge_dimensions.empty? ? [] : @quality_lot_gauge.quality_lot_gauge_dimensions.collect(&:item_part_dimension_id)) : []), :multiple => true, :size => 10, :class => "multi_select_box", :id => "quote_dimensions" %>
+
+                    <%= f.submit "Update", :class =>"btn" %>
+
+                    <%= link_to 'Back', quality_lot_dimensions_path(quality_lot_id: @quality_lot.id), :class =>"btn" %>
+                </div>
+            </div>
+        </div>
+      <% end %>
+      
+      <%= render 'quality_lot_gauge_results/index' %>
+
   </div>
-<% end %>
+</div>
+
+
+<%= render :partial => 'item_part_dimensions/item_dimensions', locals: {item_page: false} %>
