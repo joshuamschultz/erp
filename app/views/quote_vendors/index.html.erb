@@ -1,0 +1,31 @@
+<h1>Listing quote_vendors</h1>
+
+<table>
+  <tr>
+    <th>Quote</th>
+    <th>Organization</th>
+    <th>Quote vendor status</th>
+    <th>Quote vendor created</th>
+    <th>Quote vendor updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @quote_vendors.each do |quote_vendor| %>
+  <tr>
+    <td><%= quote_vendor.quote %></td>
+    <td><%= quote_vendor.organization %></td>
+    <td><%= quote_vendor.quote_vendor_status %></td>
+    <td><%= quote_vendor.quote_vendor_created_id %></td>
+    <td><%= quote_vendor.quote_vendor_updated_id %></td>
+    <td><%= link_to 'Show', [quote_vendor.quote, quote_vendor] %></td>
+    <td><%= link_to 'Edit', edit_quote_quote_vendor_path(quote_vendor.quote, quote_vendor) %></td>
+    <td><%= link_to 'Destroy', [quote_vendor.quote, quote_vendor], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Quote vendor', new_quote_quote_vendor_path(params[:quote_id]) %>

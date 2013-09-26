@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quote:</b>
+  <%= @quote_line.quote %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @quote_line.item %>
+</p>
+
+<p>
+  <b>Item revision:</b>
+  <%= @quote_line.item_revision %>
+</p>
+
+<p>
+  <b>Item alt name:</b>
+  <%= @quote_line.item_alt_name %>
+</p>
+
+<p>
+  <b>Quote line identifier:</b>
+  <%= @quote_line.quote_line_identifier %>
+</p>
+
+<p>
+  <b>Quote line quantity:</b>
+  <%= @quote_line.quote_line_quantity %>
+</p>
+
+<p>
+  <b>Quote line cost:</b>
+  <%= @quote_line.quote_line_cost %>
+</p>
+
+<p>
+  <b>Quote line total:</b>
+  <%= @quote_line.quote_line_total %>
+</p>
+
+<p>
+  <b>Quote line status:</b>
+  <%= @quote_line.quote_line_status %>
+</p>
+
+<p>
+  <b>Quote line notes:</b>
+  <%= @quote_line.quote_line_notes %>
+</p>
+
+<p>
+  <b>Quote line active:</b>
+  <%= @quote_line.quote_line_active %>
+</p>
+
+<p>
+  <b>Quote line created:</b>
+  <%= @quote_line.quote_line_created_id %>
+</p>
+
+<p>
+  <b>Quote line updated:</b>
+  <%= @quote_line.quote_line_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_quote_quote_line_path(@quote_line.quote, @quote_line) %> |
+<%= link_to 'Back', quote_quote_lines_path(@quote_line.quote) %>

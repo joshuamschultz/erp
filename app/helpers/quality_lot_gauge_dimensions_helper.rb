@@ -1,0 +1,2 @@
+module QualityLotGaugeDimensionsHelper
+end

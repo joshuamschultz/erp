@@ -1,0 +1,2 @@
+module QualityLotGaugesHelper
+end

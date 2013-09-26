@@ -1,0 +1,33 @@
+<h1>Listing quality_lot_gauges</h1>
+
+<table>
+  <tr>
+    <th>Quality lot</th>
+    <th>Lot gauge status</th>
+    <th>Lot gauge notes</th>
+    <th>Lot gauge active</th>
+    <th>Lot gauge created</th>
+    <th>Lot gauge updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @quality_lot_gauges.each do |quality_lot_gauge| %>
+  <tr>
+    <td><%= quality_lot_gauge.quality_lot %></td>
+    <td><%= quality_lot_gauge.lot_gauge_status %></td>
+    <td><%= quality_lot_gauge.lot_gauge_notes %></td>
+    <td><%= quality_lot_gauge.lot_gauge_active %></td>
+    <td><%= quality_lot_gauge.lot_gauge_created_id %></td>
+    <td><%= quality_lot_gauge.lot_gauge_updated_id %></td>
+    <td><%= link_to 'Show', quality_lot_gauge %></td>
+    <td><%= link_to 'Edit', edit_quality_lot_gauge_path(quality_lot_gauge) %></td>
+    <td><%= link_to 'Destroy', quality_lot_gauge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Quality lot gauge', new_quality_lot_gauge_path %>

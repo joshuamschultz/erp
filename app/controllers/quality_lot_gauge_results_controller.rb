@@ -1,0 +1,90 @@
+class QualityLotGaugeResultsController < ApplicationController
+  # GET quality_lot_gauges/1/quality_lot_gauge_results
+  # GET quality_lot_gauges/1/quality_lot_gauge_results.json
+  def index
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_results = @quality_lot_gauge.quality_lot_gauge_results
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render :json => @quality_lot_gauge_results }
+    end
+  end
+
+  # GET quality_lot_gauges/1/quality_lot_gauge_results/1
+  # GET quality_lot_gauges/1/quality_lot_gauge_results/1.json
+  def show
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render :json => @quality_lot_gauge_result }
+    end
+  end
+
+  # GET quality_lot_gauges/1/quality_lot_gauge_results/new
+  # GET quality_lot_gauges/1/quality_lot_gauge_results/new.json
+  def new
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.build
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render :json => @quality_lot_gauge_result }
+    end
+  end
+
+  # GET quality_lot_gauges/1/quality_lot_gauge_results/1/edit
+  def edit
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.find(params[:id])
+  end
+
+  # POST quality_lot_gauges/1/quality_lot_gauge_results
+  # POST quality_lot_gauges/1/quality_lot_gauge_results.json
+  def create
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.build(params[:quality_lot_gauge_result])
+
+    respond_to do |format|
+      if @quality_lot_gauge_result.save
+        format.html { redirect_to([@quality_lot_gauge_result.quality_lot_gauge, @quality_lot_gauge_result], :notice => 'Quality lot gauge result was successfully created.') }
+        format.json { render :json => @quality_lot_gauge_result, :status => :created, :location => [@quality_lot_gauge_result.quality_lot_gauge, @quality_lot_gauge_result] }
+      else
+        format.html { render :action => "new" }
+        format.json { render :json => @quality_lot_gauge_result.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT quality_lot_gauges/1/quality_lot_gauge_results/1
+  # PUT quality_lot_gauges/1/quality_lot_gauge_results/1.json
+  def update
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.find(params[:id])
+
+    respond_to do |format|
+      if @quality_lot_gauge_result.update_attributes(params[:quality_lot_gauge_result])
+        format.html { redirect_to([@quality_lot_gauge_result.quality_lot_gauge, @quality_lot_gauge_result], :notice => 'Quality lot gauge result was successfully updated.') }
+        format.json { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.json { render :json => @quality_lot_gauge_result.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE quality_lot_gauges/1/quality_lot_gauge_results/1
+  # DELETE quality_lot_gauges/1/quality_lot_gauge_results/1.json
+  def destroy
+    @quality_lot_gauge = QualityLotGauge.find(params[:quality_lot_gauge_id])
+    @quality_lot_gauge_result = @quality_lot_gauge.quality_lot_gauge_results.find(params[:id])
+    @quality_lot_gauge_result.destroy
+
+    respond_to do |format|
+      format.html { redirect_to quality_lot_gauge_quality_lot_gauge_results_url(quality_lot_gauge) }
+      format.json { head :ok }
+    end
+  end
+end
