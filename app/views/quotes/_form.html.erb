@@ -33,5 +33,10 @@
 </div>
 
 <% unless @quote.new_record? %>
-    <%#= render :partial => 'quote_lines/line_items' %>
+    <%= render :partial => 'quote_lines/line_items' %>
 <% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_quote"] = ["quote_quote_description", "quote_quote_notes" ];
+    $("#quote_quote_description").focus();
+</script>
