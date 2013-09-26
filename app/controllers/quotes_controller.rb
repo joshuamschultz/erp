@@ -45,7 +45,7 @@ class QuotesController < ApplicationController
     respond_to do |format|
       if @quote.save
         Quote.process_quote_associations(@quote, params)
-        format.html { redirect_to @quote, notice: 'Quote was successfully created.' }
+        format.html { redirect_to new_quote_quote_line_path(@quote), notice: 'Quote was successfully created.' }
         format.json { render json: @quote, status: :created, location: @quote }
       else
         format.html { render action: "new" }
