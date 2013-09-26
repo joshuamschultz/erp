@@ -1,0 +1,2 @@
+module QualityLotGaugeResultsHelper
+end

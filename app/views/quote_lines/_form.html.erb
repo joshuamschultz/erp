@@ -1,0 +1,24 @@
+<div class="row-fluid">
+  <%= render :partial => 'quotes/quote_info' %>
+
+  <div class="span8 well item_detail_view">
+      <%= simple_form_for([@quote, @quote_line], :html => {:id => "form_for_quote_line",:class => "form-horizontal"}) do |f| %>
+        <%= f.error_notification %>
+        
+        <div class="form-inputs">
+          <%= f.association :item_alt_name %>
+          <%= f.input :quote_line_quantity, :label => "Quantity" %>
+          <%= f.input :quote_line_notes, :label => "Notes" %>
+        </div>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <div class="form-actions">
+            <%= f.submit "Submit", :class =>"btn" %>
+            <%= link_to 'Delete', quote_quote_line_path(@quote, @quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quote_line.new_record? %>
+            <%= link_to 'Back', quote_path(@quote), :class =>"btn" %>
+        </div>
+      <% end %>
+  </div>
+</div>

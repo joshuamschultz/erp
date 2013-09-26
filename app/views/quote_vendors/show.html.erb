@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quote:</b>
+  <%= @quote_vendor.quote %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @quote_vendor.organization %>
+</p>
+
+<p>
+  <b>Quote vendor status:</b>
+  <%= @quote_vendor.quote_vendor_status %>
+</p>
+
+<p>
+  <b>Quote vendor created:</b>
+  <%= @quote_vendor.quote_vendor_created_id %>
+</p>
+
+<p>
+  <b>Quote vendor updated:</b>
+  <%= @quote_vendor.quote_vendor_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_quote_quote_vendor_path(@quote_vendor.quote, @quote_vendor) %> |
+<%= link_to 'Back', quote_quote_vendors_path(@quote_vendor.quote) %>

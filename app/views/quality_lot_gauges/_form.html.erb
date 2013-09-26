@@ -1,0 +1,16 @@
+<%= simple_form_for(@quality_lot_gauge) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :quality_lot %>
+    <%= f.input :lot_gauge_status %>
+    <%= f.input :lot_gauge_notes %>
+    <%= f.input :lot_gauge_active %>
+    <%= f.input :lot_gauge_created_id %>
+    <%= f.input :lot_gauge_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

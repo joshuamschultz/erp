@@ -1,4 +1,26 @@
 AllianceFasteners::Application.routes.draw do
+  resources :quality_lot_gauges do
+    resources :quality_lot_gauge_results
+  end
+
+  resources :quality_lot_gauges do
+    resources :quality_lot_gauge_dimensions
+  end
+
+  resources :quality_lot_gauges
+
+
+  resources :quotes do
+    resources :quote_vendors
+  end
+
+  resources :quotes do
+    resources :quote_lines
+  end
+
+  resources :quotes
+
+
   resources :receivables do
     resources :receivable_shipments
   end

@@ -1,0 +1,29 @@
+<%= form_for([@quality_lot_gauge_result.quality_lot_gauge, @quality_lot_gauge_result]) do |f| %>
+  <% if @quality_lot_gauge_result.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@quality_lot_gauge_result.errors.count, "error") %> prohibited this quality_lot_gauge_result from being saved:</h2>
+
+      <ul>
+      <% @quality_lot_gauge_result.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :quality_lot_gauge %><br />
+    <%= f.text_field :quality_lot_gauge %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_gauge_result_appraiser %><br />
+    <%= f.text_field :lot_gauge_result_appraiser %>
+  </div>
+  <div class="field">
+    <%= f.label :lot_gauge_result_value %><br />
+    <%= f.text_field :lot_gauge_result_value %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,37 @@
+<div class="row-fluid">
+  <div class="span4 well item_detail_view">
+      <div id="quote_item_info"></div>
+  </div>
+
+  <div class="span8 well item_detail_view">
+      <%= simple_form_for(@quote, :html => {:id => "form_for_quote",:class => "form-horizontal"}) do |f| %>
+        <%= f.error_notification %>
+        
+        <div class="form-inputs">
+          <%= f.input :quote_description, :label => "Description" %>
+          <%= f.input :quote_notes, :label => "Notes" %>
+
+          <div class="control-group">
+              <label for="quote_vendors" class="optional control-label">Vendors</label>
+              <div class="controls">
+                  <%= select_tag "vendors[]", options_for_select(Organization.organizations("vendor").map {|org| [org.organization_name, org.id]}, @quote.persisted? ? (@quote.quote_vendors.empty? ? [] : @quote.quote_vendors.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "quote_organizations" %>
+              </div>
+          </div>
+
+        </div>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <div class="form-actions">
+            <%= f.submit "Submit", :class =>"btn" %>
+            <%= link_to 'Delete', quote_path(@quote), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quote.new_record? %>
+            <%= link_to 'Back', quotes_path, :class =>"btn" %>
+        </div>
+      <% end %>
+  </div>
+</div>
+
+<% unless @quote.new_record? %>
+    <%#= render :partial => 'quote_lines/line_items' %>
+<% end %>

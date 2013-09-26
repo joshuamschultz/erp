@@ -21,6 +21,7 @@ class ItemAltName < ActiveRecord::Base
   has_many :item_revisions, :through => :item_selected_names
   has_many :po_lines
   has_many :so_lines
+  has_many :quote_lines
 
   def alt_item_name
   		self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
