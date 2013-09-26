@@ -38,7 +38,7 @@ class Receipt < ActiveRecord::Base
         errors.add(:receipt_check_amount, "is not assigned to any SO!")
 
       elsif total_amount > self.receipt_check_amount
-        errors.add(:receipt_check_amount, "is not sufficient!  Total line amount : #{total_amount}")
+        errors.add(:receipt_check_amount, "is not sufficient!  Total line amount needed: #{total_amount}")
       end
   end
 

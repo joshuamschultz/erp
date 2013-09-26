@@ -137,6 +137,14 @@
             return table_row_next_focus(e, "#form_for_receipts", $(this), ".receipt_receivable_edit", true);
         });
 
+        $(document).on("keydown", "#receipt_receipt_check_code", function(e){
+            var keyCode = e.keyCode || e.which;
+            if(keyCode == 13){
+                e.preventDefault();
+                $('#receipt_receipt_check_amount').focus();
+            }
+        });
+
         set_all_receipt_receivable_info("all");
     });
 

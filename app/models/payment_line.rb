@@ -18,7 +18,7 @@ class PaymentLine < ActiveRecord::Base
   			errors.add(:payment_line_amount, "exceeded than payable total!")
   		end
 
-      if self.payable.payment_lines.collect(&:payable_id).include?(self.payable_id)
+      if self.new_record? && self.payable.payment_lines.collect(&:payable_id).include?(self.payable_id)
           errors.add(:payment_line_amount, "duplicate payable entry!")
       end
   end

@@ -135,6 +135,14 @@
             call_payment_payable_info($(this));
         });
 
+        $(document).on("keydown", "#payment_payment_check_code", function(e){
+            var keyCode = e.keyCode || e.which;
+            if(keyCode == 13){
+                e.preventDefault();
+                $('#payment_payment_check_amount').focus();
+            }
+        });
+
         $("#form_for_payments").submit(function(e){
             if(payment_fine_to_submit == false)
                 e.preventDefault();
