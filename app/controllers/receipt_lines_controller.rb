@@ -7,7 +7,14 @@ class ReceiptLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @receipt_lines }
+      format.json { 
+         @receipt_lines = @receipt_lines.select{|receipt_line|
+              receipt_line[:receivable_identifier] = CommonActions.linkable(receivable_path(receipt_line.receivable), receipt_line.receivable.receivable_identifier)
+              receipt_line[:receivable_total] = receipt_line.receivable.receivable_total
+              receipt_line[:receivable_balance] = receipt_line.receivable.receivable_current_balance
+          }
+          render json: {:aaData => @receipt_lines}
+      }
     end
   end
 

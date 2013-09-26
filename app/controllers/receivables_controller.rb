@@ -1,6 +1,12 @@
 class ReceivablesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:accounts][:active] = "active"
+  end
+
   def set_autocomplete_values
     params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
     params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""

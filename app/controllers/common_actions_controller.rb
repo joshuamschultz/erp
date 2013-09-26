@@ -27,10 +27,19 @@ class CommonActionsController < ApplicationController
           organization = Organization.find(params[:id])
           result = organization.present? ? organization.payables : []
 
+        when "organization_receivables"
+          organization = Organization.find(params[:id])
+          result = organization.present? ? organization.receivables : []
+
         when "payment_payable_info"
           payable = Payable.find(params[:id])
           payable["payable_balance"] = payable.payable_current_balance
           result = payable
+
+        when "receipt_receivable_info"
+          receivable = Receivable.find(params[:id])
+          receivable["receivable_balance"] = receivable.receivable_current_balance
+          result = receivable
 
   		end
   		render json: {:aaData => result}

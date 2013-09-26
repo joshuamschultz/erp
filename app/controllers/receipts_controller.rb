@@ -1,4 +1,17 @@
 class ReceiptsController < ApplicationController
+ 
+  before_filter :set_autocomplete_values, only: [:create, :update] 
+
+  before_filter :set_page_info  
+
+  def set_page_info
+      @menus[:accounts][:active] = "active"
+  end
+
+  def set_autocomplete_values
+    params[:receipt][:organization_id], params[:organization_id] = params[:organization_id], params[:receipt][:organization_id]
+    params[:receipt][:organization_id] = params[:org_organization_id] if params[:receipt][:organization_id] == ""
+  end
   # GET /receipts
   # GET /receipts.json
   def index
@@ -6,7 +19,15 @@ class ReceiptsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @receipts }
+      format.json {
+        @receipts = @receipts.select{|receipt|
+              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.id)              
+              receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
+              receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
+              receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+      }
+       render json: {:aaData => @receipts}
+    }
     end
   end
 
@@ -57,6 +78,7 @@ class ReceiptsController < ApplicationController
   # PUT /receipts/1.json
   def update
     @receipt = Receipt.find(params[:id])
+    params[:receipt][:receipt_lines_attributes] = @receipt.process_removed_lines(params[:receipt][:receipt_lines_attributes])
 
     respond_to do |format|
       if @receipt.update_attributes(params[:receipt])
