@@ -25,7 +25,7 @@
         </div>
       <% end %>
       
-      <%= render 'quality_lot_gauge_results/index' %>
+      <%= render 'quality_lot_gauge_results/index' unless @quality_lot_gauge.new_record? %>
 
   </div>
 </div>
