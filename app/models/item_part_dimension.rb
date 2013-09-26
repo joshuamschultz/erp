@@ -19,5 +19,6 @@ class ItemPartDimension < ActiveRecord::Base
 
   has_many :quality_lot_dimensions, :dependent => :destroy
   has_many :quality_lot_capabilities, :dependent => :destroy
-
+  has_many :quality_lot_gauge_dimensions, :dependent => :destroy
+  has_many :quality_lot_gauge_results, :dependent => :destroy
 end

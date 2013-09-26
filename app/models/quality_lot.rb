@@ -33,6 +33,7 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_materials, :dependent => :destroy
 	has_many :quality_lot_dimensions, :dependent => :destroy
 	has_many :quality_lot_capabilities, :dependent => :destroy
+	has_many :quality_lot_gauges, :dependent => :destroy
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
