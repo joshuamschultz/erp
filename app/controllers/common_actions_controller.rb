@@ -25,11 +25,11 @@ class CommonActionsController < ApplicationController
 
         when "organization_payables"
           organization = Organization.find(params[:id])
-          result = organization.present? ? organization.payables : []
+          result = organization.present? ? organization.payables.where(:payable_status => "open") : []
 
         when "organization_receivables"
           organization = Organization.find(params[:id])
-          result = organization.present? ? organization.receivables : []
+          result = organization.present? ? organization.receivables.where(:receivable_status => "open") : []
 
         when "payment_payable_info"
           payable = Payable.find(params[:id])
