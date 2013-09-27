@@ -14,9 +14,9 @@
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', :label => "Customer" %>
         <% end %>
 
-        <%= hidden_field_tag :organization_id, (@receipt.organization.id if @receipt.persisted? && @receipt.organization.present?) %>
+        <%= hidden_field_tag :organization_id, (@receipt.organization.id if @receipt.present? && @receipt.organization.present?) %>
 
-        <%= hidden_field_tag :org_organization_id, (@receipt.organization.id if @receipt.persisted? && @receipt.organization.present?) %>
+        <%= hidden_field_tag :org_organization_id, (@receipt.organization.id if @receipt.present? && @receipt.organization.present?) %>
 
         <%= f.association :receipt_type, :label => "Receipt Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "receipt_type_option"}, :checked => (MasterType.payment_types.first.id if @receipt.new_record?) %>
 
@@ -29,9 +29,13 @@
 
     <div class="separator bottom"></div>
 
-    <% receipt_lines = @receipt.new_record? || (@receipt.persisted? && @receipt.receipt_lines.empty?) ? [ReceiptLine.new]*0 : @receipt.receipt_lines %>
+    <%# receipt_lines = @receipt.new_record? || (@receipt.persisted? && @receipt.receipt_lines.empty?) ? [ReceiptLine.new]*0 : @receipt.receipt_lines %>
 
-    <% receivable_collection = @receipt.new_record? ? [] : @receipt.organization.receivables %>
+    <%# receivable_collection = @receipt.new_record? ? [] : @receipt.organization.receivables %>
+
+    <% receipt_lines = (@receipt.present? && @receipt.receipt_lines.any?) ? @receipt.receipt_lines : [ReceiptLine.new]*0 %>
+
+    <% receivable_collection = (@receipt.present? && @receipt.organization.present?) ? @receipt.organization.receivables : [] %>
 
     <table id="receipt_lines_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
         <thead>
@@ -75,7 +79,6 @@
     var receivable_select_html = "";
 
     $(document).ready(function(){ 
-        // alert($(".receipt_receivable_new").length);
         $("#receipt_organization_id").on("focusout", function(){
             if($("#organization_id").val() == ""){
                 $("#organization_id").val($("#org_organization_id").val());
@@ -93,7 +96,7 @@
             }
         });
 
-        <% unless @receipt.new_record? %>
+        <% unless @receipt.nil? %>
             $("#receipt_organization_id").val("<%= @receipt.organization.organization_name if @receipt.organization %>");
 
             if($("#organization_id").val() != ""){
@@ -156,6 +159,7 @@
     function set_receipt_receivables(response, callback_params, api_params){
         receivable_select_html = $.trim(Mustache.render($(".receivable-select-box-template").html(), response));
         $(".receipt_receivable_new").html(receivable_select_html);
+        set_all_receipt_receivable_info("new");
     }
 
     function add_receipt_line_row(){
@@ -189,7 +193,7 @@
     }
 
     function call_receipt_receivable_info(selected_receivable){
-        if(selected_receivable.val() != "" || selected_receivable.val() != null)
+        if(selected_receivable.val() != "" && selected_receivable.val() != null)
             initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "receipt_receivable_info", "id": selected_receivable.val()}}, "set_receipt_receivable_info", {"object" : selected_receivable});
     }
 

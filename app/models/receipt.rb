@@ -1,5 +1,5 @@
 class Receipt < ActiveRecord::Base
-  has_many :receipt_lines, :dependent => :destroy
+  has_many :receipt_lines, :dependent => :destroy, :before_add => :set_receipt
   belongs_to :organization
 
   attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no, 
@@ -40,6 +40,12 @@ class Receipt < ActiveRecord::Base
       elsif total_amount > self.receipt_check_amount
         errors.add(:receipt_check_amount, "is not sufficient!  Total line amount needed: #{total_amount}")
       end
+  end
+
+  private
+
+  def set_receipt(line)
+      line.receipt ||= self
   end
 
 end
