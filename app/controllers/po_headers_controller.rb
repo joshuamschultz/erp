@@ -11,6 +11,9 @@ class PoHeadersController < ApplicationController
   def set_autocomplete_values
       params[:po_header][:organization_id], params[:organization_id] = params[:organization_id], params[:po_header][:organization_id]
       params[:po_header][:organization_id] = params[:org_organization_id] if params[:po_header][:organization_id] == ""
+
+      params[:po_header][:customer_id], params[:customer_id] = params[:customer_id], params[:po_header][:customer_id]
+      params[:po_header][:customer_id] = params[:org_customer_id] if params[:po_header][:customer_id] == ""
   end
 
   def get_autocomplete_items(parameters)
