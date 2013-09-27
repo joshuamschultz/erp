@@ -15,10 +15,8 @@
             <thead>
                 <tr>                   
                     <th>Part No</th>
-                    <th>Status</th>
                     <th>Quantity</th>
-                    <th>Cost</th>
-                    <th>Total</th>
+                    <th>Note</th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,10 +31,8 @@
         :name => "table_report_quote_line_list", :path => quote_quote_lines_path(@quote), :extras => {:slno => false},
         :columns => '[
                         { "mData": "item_part_no" },
-                        { "mData": "quote_line_status" },
                         { "mData": "quote_line_quantity" },
-                        { "mData": "quote_line_cost" },
-                        { "mData": "quote_line_total" },
+                        { "mData": "quote_line_notes" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
