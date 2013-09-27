@@ -14,30 +14,31 @@
 
         <% if @po_header %>
             <table id="payable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Part No</th>
-                    <th>Quantity Ordered</th>
-                    <th>Quantity Received</th>
-                    <th>Cost</th>
-                    <th>Received</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody id="payable_shipments_table_table_body">
-                <% @payable.payable_shipments.each do |payable_shipment| %>
+                <thead>
                     <tr>
-                        <td><%= link_to payable_shipment.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.po_line.item) %></td>
-                        <td><%= payable_shipment.po_line.po_line_quantity %></td>
-                        <td><%= payable_shipment.po_line.payable_shipments.sum(:payable_shipment_count) %></td>
-                        <td><%= payable_shipment.po_line.po_line_cost %></td>
-                        <td><%= payable_shipment.payable_shipment_count %></td>
-                        <td><%= payable_shipment.payable_shipment_count * payable_shipment.po_line.po_line_cost %></td>
+                        <th>Part No</th>
+                        <th>Quantity Ordered</th>
+                        <th>Quantity Received</th>
+                        <th>Cost</th>
+                        <th>Received</th>
+                        <th>Amount</th>
                     </tr>
-                <% end %>
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody id="payable_shipments_table_table_body">
+                    <% @payable.payable_shipments.where("payable_shipment_count > 0").each do |payable_shipment| %>
+                        <tr>
+                            <td><%= link_to payable_shipment.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.po_line.item) %></td>
+                            <td><%= payable_shipment.po_line.po_line_quantity %></td>
+                            <td><%= payable_shipment.po_line.payable_shipments.sum(:payable_shipment_count) %></td>
+                            <td><%= payable_shipment.po_line.po_line_cost %></td>
+                            <td><%= payable_shipment.payable_shipment_count %></td>
+                            <td><%= payable_shipment.payable_shipment_count * payable_shipment.po_line.po_line_cost %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
         <% end %>
     </div>
 </div>
+
+<%= render :partial => 'po_lines/line_items' if @po_header %>

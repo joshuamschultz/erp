@@ -68,6 +68,7 @@ class ReceiptsController < ApplicationController
         format.html { redirect_to @receipt, notice: 'Receipt was successfully created.' }
         format.json { render json: @receipt, status: :created, location: @receipt }
       else
+        # @receipt.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @receipt.errors, status: :unprocessable_entity }
       end

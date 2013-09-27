@@ -67,7 +67,7 @@ class PaymentsController < ApplicationController
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render json: @payment, status: :created, location: @payment }
       else
-        @payment.organization_id = ""
+        # @payment.organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end
@@ -85,7 +85,6 @@ class PaymentsController < ApplicationController
         format.html { redirect_to @payment, notice: 'Payment was successfully updated.' }
         format.json { head :no_content }
       else
-        puts @payment.errors.to_yaml
         format.html { render action: "edit" }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end
