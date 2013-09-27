@@ -1,5 +1,6 @@
 class Payment < ActiveRecord::Base
-  has_many :payment_lines, :dependent => :destroy
+  has_many :payment_lines, :dependent => :destroy, :before_add => :set_payment
+
   belongs_to :organization
 
   attr_accessible :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no, 
@@ -40,6 +41,13 @@ class Payment < ActiveRecord::Base
       elsif total_amount > self.payment_check_amount
         errors.add(:payment_check_amount, "is not sufficient!  Total lines amount needed: #{total_amount}")
       end
+  end
+
+  private
+
+  def set_payment(line)
+      line.payment ||= self
+      puts line.id
   end
 
 end
