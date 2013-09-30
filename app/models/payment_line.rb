@@ -9,6 +9,7 @@ class PaymentLine < ActiveRecord::Base
   validate :check_total_received
 
   # validates :payable_id, uniqueness: { scope: :payment_id }
+  # validates :payment_id, :uniqueness => { :scope => :payable_id, :message => "duplicate entry!" }
 
   def other_payment_lines
       self.payable.payment_lines.where("id != ?", self.id)
@@ -20,14 +21,11 @@ class PaymentLine < ActiveRecord::Base
   			 errors.add(:payment_line_amount, "exceeded than payable total!")
   		end
 
-      # payable_ids = self.payment.payment_lines.collect(&:payable_id)
-
-      # if self.new_record? && payable_ids.uniq.length != payable_ids.length
-      #     errors.add(:payment_line_amount, "duplicate payable entry!")
+      # if self.payment.new_record? 
+      #     payable_ids = self.payment.payment_lines.collect(&:payable_id)
+      #     errors.add(:payment_line_amount, "duplicate payable entry!") unless payable_ids.uniq == payable_ids
       # end
   end
-
-  # validates :payment_id, :uniqueness => { :scope => :payable_id, :message => "duplicate entry!" }
 
   after_save :process_after_save
 

@@ -147,4 +147,14 @@ class SoHeadersController < ApplicationController
       redirect_to @so_header
   end
 
+  def so_info
+      @so_header = SoHeader.find(params[:id])
+      @organization = @so_header.organization if @so_header
+      if @organization
+          render :layout => false
+      else
+          render :text => "" and return
+      end
+  end
+
 end

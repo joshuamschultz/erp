@@ -81,6 +81,7 @@ AllianceFasteners::Application.routes.draw do
     resources :so_lines
     member do
         post 'populate'
+        get 'so_info'
     end
     get :autocomplete_so_header_so_identifier, :on => :collection
   end
@@ -99,6 +100,7 @@ AllianceFasteners::Application.routes.draw do
     resources :po_lines
     member do
         post 'populate'
+        get 'po_info'
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
   end

@@ -1,47 +1,45 @@
-<div class="span3 well item_detail_view">
-  <table class="table">
-      <tbody>
-          <tr>
-            <td class="span2">PO ID:</td>
-            <td class="span5"><strong><%= link_to @po_header.po_identifier, @po_header %></strong></td>
-          </tr>
+<table class="table">
+    <tbody>
+        <tr>
+          <td class="span2">PO ID:</td>
+          <td class="span5"><strong><%= link_to @po_header.po_identifier, @po_header %></strong></td>
+        </tr>
 
-          <tr>
-            <td class="span2">Type:</td>
-            <td class="span5"><strong><%= @po_header.po_type.type_name %></strong></td>
-          </tr>
+        <tr>
+          <td class="span2">Type:</td>
+          <td class="span5"><strong><%= @po_header.po_type.type_name %></strong></td>
+        </tr>
 
-          <tr>
-            <td class="span3">Total:</td>
-            <td class="span5"><strong><h4>$<%= @po_header.po_total %></h4></strong></td>
-          </tr>
+        <tr>
+          <td class="span3">Total:</td>
+          <td class="span5"><strong><h4>$<%= @po_header.po_total %></h4></strong></td>
+        </tr>
 
-          <tr>
-            <td class="span3">Status:</td>
-            <td class="span5"><strong><%= @po_header.po_status %></strong></td>
-          </tr>
+        <tr>
+          <td class="span3">Status:</td>
+          <td class="span5"><strong><%= @po_header.po_status %></strong></td>
+        </tr>
 
-          <!-- "%0.5f" %  -->
+        <!-- "%0.5f" %  -->
 
-          <!-- <tr>
-            <td class="span3">Notes:</td>
-            <td class="span5"><%#= @po_header.po_notes %></td>
-          </tr> -->
+        <!-- <tr>
+          <td class="span3">Notes:</td>
+          <td class="span5"><%#= @po_header.po_notes %></td>
+        </tr> -->
 
-          <!-- <tr>
-            <td class="span3">Active :</td>
-            <td class="span5"><%#= @po_header.po_active %></td>
-          </tr> -->
-      </tbody>
-  </table>
+        <!-- <tr>
+          <td class="span3">Active :</td>
+          <td class="span5"><%#= @po_header.po_active %></td>
+        </tr> -->
+    </tbody>
+</table>
 
-  <div class="separator bottom"></div>
-  <div class="separator bottom"></div>
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
 
-  <h4 class="center">Vendor Info</h4>
+<h4 class="center">Vendor Info</h4>
 
-  <div class="separator bottom"></div>
+<div class="separator bottom"></div>
 
-  <%= render :partial => 'organizations/organization_info', 
-        :locals => {:organization => @po_header.organization} %>
-</div>
+<%= render :partial => 'organizations/organization_info', 
+      :locals => {:organization => @po_header.organization} %>

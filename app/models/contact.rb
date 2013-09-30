@@ -48,4 +48,5 @@ class Contact < ActiveRecord::Base
  		type_category = self.contactable.contact_type_category("address")
  		MasterType.find_by_type_category_and_type_value(type_category, self.id)
  	end
+
 end

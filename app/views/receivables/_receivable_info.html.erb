@@ -67,12 +67,12 @@
   <div class="separator bottom"></div>
   <div class="separator bottom"></div>
 
-  <% if @receivable.organization %>
-      <h4 class="center">Customer Info</h4>
+  <% if @receivable.so_header %>
+      <h4 class="center">SO Info</h4>
 
-      <div class="separator bottom"></div>
+      <%= render :partial => 'so_headers/so_header_info' %>
 
-      <%= render :partial => 'organizations/organization_info', 
+      <%#= render :partial => 'organizations/organization_info', 
             :locals => {:organization => @receivable.organization} %>
   <% end %>
 </div>

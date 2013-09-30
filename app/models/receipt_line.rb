@@ -18,13 +18,12 @@ class ReceiptLine < ActiveRecord::Base
   def check_total_received
       total_shipped = self.other_receipt_lines.sum(:receipt_line_amount) + self.receipt_line_amount
       if total_shipped > self.receivable.receivable_total
-        errors.add(:receipt_line_amount, "exceeded than receivable total!")
-      end
+          errors.add(:receipt_line_amount, "exceeded than receivable total!")
+      end      
 
-      # receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
-
-      # if receivable_ids.uniq.length != receivable_ids.length 
-      #     errors.add(:receipt_line_amount, "duplicate receivable entry!")
+      # if self.receipt.new_record?
+      #     receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
+      #     errors.add(:receipt_line_amount, "duplicate receivable entry!") unless receivable_ids.uniq == receivable_ids
       # end
   end
 

@@ -12,7 +12,8 @@ class ContactsController < ApplicationController
   def index  
     @contact_type = params[:contact_type] || "address"
 
-    @contactable = Organization.find_by_id(params[:object_id])
+    @contactable = Organization.find_organization(params)
+
     if @contactable
         @contacts = @contactable.contacts.where(:contact_type => @contact_type)
     else
