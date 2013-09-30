@@ -8,9 +8,6 @@ class ReceivablesController < ApplicationController
   end
 
   def set_autocomplete_values
-    params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
-    params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
-
     params[:receivable][:so_header_id], params[:so_header_id] = params[:so_header_id], params[:receivable][:so_header_id]
     params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
   end
@@ -73,8 +70,6 @@ class ReceivablesController < ApplicationController
         format.html { redirect_to edit_receivable_path(@receivable), notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
-        @receivable.organization_id = ""
-        @receivable.so_header_id = ""
         format.html { render action: "new" }
         format.json { render json: @receivable.errors, status: :unprocessable_entity }
       end

@@ -8,9 +8,6 @@ class PayablesController < ApplicationController
   end
 
    def set_autocomplete_values
-    params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
-    params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
-
     params[:payable][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:payable][:po_header_id]
     params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
   end
@@ -81,8 +78,6 @@ class PayablesController < ApplicationController
         format.html { redirect_to edit_payable_path(@payable), notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
-        @payable.organization_id = ""
-        @payable.po_header_id = ""
         format.html { render action: "new" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end

@@ -1,5 +1,7 @@
 <div class="row-fluid">
-    <%= render :partial => 'po_headers/po_header_info' %>
+    <div class="span3 well item_detail_view">
+        <%= render :partial => 'po_headers/po_header_info' %>
+    </div>
 
     <div class="span9 well">
         <%= simple_form_for([@po_line.po_header, @po_line], :html => {:id => "form_for_po_line",:class => "form-horizontal"}) do |f| %>

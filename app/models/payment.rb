@@ -32,6 +32,11 @@ class Payment < ActiveRecord::Base
   validate :payment_total_amount
 
   def payment_total_amount
+      payable_ids = self.payment_lines.collect(&:payable_id)
+      if payable_ids.uniq != payable_ids 
+          errors.add(:organization_id, "have duplicate payable entries added!")
+      end
+
       total_amount = 0
       self.payment_lines.each{|b| total_amount += b.payment_line_amount.to_f }
 

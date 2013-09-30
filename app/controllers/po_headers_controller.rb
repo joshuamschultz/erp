@@ -141,5 +141,15 @@ class PoHeadersController < ApplicationController
       redirect_to @po_header
   end
 
+  def po_info
+      @po_header = PoHeader.find(params[:id])
+      @organization = @po_header.organization if @po_header
+      if @organization
+          render :layout => false
+      else
+          render :text => "" and return
+      end
+  end
+
 
 end

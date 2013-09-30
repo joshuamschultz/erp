@@ -19,6 +19,7 @@ class Receivable < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
+      self.organization = self.so_header.organization if self.so_header
       # self.receivable_total = self.update_receivable_total
   end
 

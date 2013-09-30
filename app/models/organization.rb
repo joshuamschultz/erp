@@ -163,4 +163,18 @@ class Organization < ActiveRecord::Base
  		MasterType.find_by_type_category(type_category)
  	end
 
+ 	def self.find_organization(params)
+		if params[:po_id].present?
+	        po_header = PoHeader.find(params[:po_id])
+	        po_header.organization if po_header
+        elsif params[:so_id].present?
+	        so_header = SoHeader.find(params[:so_id])
+	        so_header.organization if so_header
+	    elsif params[:object_id].present?
+	    	Organization.find(params[:object_id])
+	    else
+	    	nil
+	    end
+ 	end
+
 end

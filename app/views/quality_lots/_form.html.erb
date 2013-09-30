@@ -1,8 +1,3 @@
-<!-- <div class="row-fluid">
-  <%#= render :partial => 'po_headers/po_header_info' %>
-
-  <div class="span9 well"> -->
-
 <% if params[:lot_shelf] && @quality_lot.persisted? %>
     <%= simple_form_for(@quality_lot, :html => {:id => "form_for_lots", :class => "form-horizontal"}) do |f| %>
         <%= f.error_notification %>
@@ -111,9 +106,6 @@
           <%= link_to 'Back', quality_lots_path, :class => "btn" %>
       </div>
     <% end %>
-  <!--   </div>
-  </div> -->
-
 
   <script type="text/javascript">
     tab_field_forms["form_for_lots"] = ["quality_lot_po_header_id", "quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_lot_aql_no", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_lot_finalized_at", "quality_lot_lot_notes"];

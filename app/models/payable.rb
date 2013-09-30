@@ -21,6 +21,7 @@ class Payable < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
+      self.organization = self.po_header.organization if self.po_header
   		# self.payable_total = self.update_payable_total
   end
 

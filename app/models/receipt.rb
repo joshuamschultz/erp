@@ -31,6 +31,11 @@ class Receipt < ActiveRecord::Base
   validate :receipt_total_amount
   
   def receipt_total_amount
+      receivable_ids = self.receipt_lines.collect(&:receivable_id)
+      if receivable_ids.uniq != receivable_ids 
+          errors.add(:organization_id, "have duplicate receivable entries added!")
+      end
+
       total_amount = 0
       self.receipt_lines.each{|b| total_amount += b.receipt_line_amount.to_f }
 
