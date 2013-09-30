@@ -38,7 +38,7 @@ class Payable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.payable_identifier = "Invoice #{Payable.all.count + 1}"
+      self.payable_identifier =  "Invoice #{Payable.all.count + 1}"
       self.payable_status = "open"     
   end  
 
