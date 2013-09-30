@@ -1,16 +1,18 @@
 class Receivable < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+  
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
   belongs_to :so_header
   has_many :receivable_shipments, :dependent => :destroy
   has_many :receivable_lines, :dependent => :destroy
-  has_many :receipt_lines, :dependent => :destroy
-
-  
+  has_many :receipt_lines, :dependent => :destroy  
 
   attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
   :organization_id, :receivable_shipments_attributes
+
+  has_many :attachments, :as => :attachable, :dependent => :destroy
 
   accepts_nested_attributes_for :receivable_shipments
 
@@ -67,6 +69,10 @@ class Receivable < ActiveRecord::Base
 
   def receivable_current_balance
       self.receivable_total - self.receipt_lines.sum(:receipt_line_amount)
+  end
+
+  def redirect_path
+      receivable_path(self)
   end
 
 end

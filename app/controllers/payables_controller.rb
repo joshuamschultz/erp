@@ -44,6 +44,7 @@ class PayablesController < ApplicationController
   def show
     @payable = Payable.find(params[:id])
     @po_header = @payable.po_header
+    @attachable = @payable
 
     respond_to do |format|
       format.html # show.html.erb
