@@ -7,6 +7,8 @@ class ReceiptLine < ActiveRecord::Base
 
   validates_presence_of :receipt_line_amount, :receivable_id
 
+  validates_numericality_of :receipt_line_amount
+
   # validates :receivable_id, uniqueness: { scope: :receipt_id }
 
   validate :check_total_received

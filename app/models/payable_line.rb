@@ -6,6 +6,8 @@ class PayableLine < ActiveRecord::Base
 
     validates_presence_of :payable_line_description, :payable_line_cost
 
+    validates_numericality_of :payable_line_cost
+
     after_save :update_payable_total
     after_destroy :update_payable_total
 

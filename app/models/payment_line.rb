@@ -6,6 +6,8 @@ class PaymentLine < ActiveRecord::Base
 
   validates_presence_of :payment_line_amount, :payable_id
 
+  validates_numericality_of :payment_line_amount
+
   validate :check_total_received
 
   # validates :payable_id, uniqueness: { scope: :payment_id }

@@ -6,10 +6,14 @@ class ReceivableShipment < ActiveRecord::Base
   :receivable_shipment_created_id, :receivable_shipment_identifier, 
   :receivable_shipment_updated_id, :receivable_id, :so_line_id
 
+  validates_presence_of :receivable_shipment_count
+
+  validates_numericality_of :receivable_shipment_count
+
   before_save :process_before_save
 
   def process_before_save
-		self.receivable_shipment_cost = self.receivable_shipment_count * self.so_line.so_line_cost
+		self.receivable_shipment_cost = self.receivable_shipment_count.to_f * self.so_line.so_line_cost
   end
 
   after_destroy :process_after_destroy
@@ -21,7 +25,7 @@ class ReceivableShipment < ActiveRecord::Base
   validate :check_total_shipped, :on => :update
 
   def check_total_shipped
-  		total_shipped = self.so_line.receivable_shipments.where("id != ?", self.id).sum(:receivable_shipment_count) + self.receivable_shipment_count
+  		total_shipped = self.so_line.receivable_shipments.where("id != ?", self.id).sum(:receivable_shipment_count) + self.receivable_shipment_count.to_f
   		if total_shipped > self.so_line.so_line_quantity
   			errors.add(:receivable_shipment_count, "exceeded than ordered!")
   		end
