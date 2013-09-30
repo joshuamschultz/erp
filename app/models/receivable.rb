@@ -34,7 +34,7 @@ class Receivable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.receivable_identifier = "Receivable #{Receivable.all.count + 1}"
+      self.receivable_identifier = "Invoice #{Receivable.all.count + 1}"
       self.receivable_status = "open"     
   end  
 
