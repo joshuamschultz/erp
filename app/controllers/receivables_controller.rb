@@ -36,6 +36,7 @@ class ReceivablesController < ApplicationController
   def show
     @receivable = Receivable.find(params[:id])
     @so_header = @receivable.so_header
+    @attachable = @receivable
 
     respond_to do |format|
       format.html # show.html.erb

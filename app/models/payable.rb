@@ -1,4 +1,6 @@
 class Payable < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
   belongs_to :po_header  
 
@@ -13,6 +15,8 @@ class Payable < ActiveRecord::Base
   has_many :payable_lines, :dependent => :destroy
   has_many :payment_lines, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
+
+  has_many :attachments, :as => :attachable, :dependent => :destroy
 
   accepts_nested_attributes_for :payable_shipments
 
@@ -69,6 +73,10 @@ class Payable < ActiveRecord::Base
 
   def payable_current_balance
       self.payable_total - self.payment_lines.sum(:payment_line_amount)
+  end
+
+  def redirect_path
+      payable_path(self)
   end
 
 end
