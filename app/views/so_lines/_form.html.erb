@@ -86,9 +86,9 @@
     });    
 
     function calculate_line_item_total(){
-        var so_line_total = (parseFloat($("#so_line_so_line_cost").val(), 10) * parseFloat($("#so_line_so_line_quantity").val(), 10));
+        var so_line_total = parseFloat($("#so_line_so_line_cost").val()) * parseFloat($("#so_line_so_line_quantity").val());
         
-        // + parseFloat($("#so_line_so_line_freight").val(), 10);
+        so_line_total = Math.round(so_line_total * 10000000000) / 10000000000;
 
         if(isNaN(so_line_total) == false)
             $("#so_line_so_line_price").val(so_line_total); //.toFixed(10)

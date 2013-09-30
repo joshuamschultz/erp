@@ -127,9 +127,11 @@
     });
 
     function calculate_line_item_total(){
-        var po_line_total = parseFloat($("#po_line_po_line_cost").val(), 10) * parseFloat($("#po_line_po_line_quantity").val(), 10);
+        var po_line_total = parseFloat($("#po_line_po_line_cost").val()) * parseInt($("#po_line_po_line_quantity").val());
 
-        if(isNaN(po_line_total) == false)
+        po_line_total = Math.round(po_line_total * 10000000000) / 10000000000;
+
+         if(isNaN(po_line_total) == false)
             $("#po_line_po_line_total").val(po_line_total); //.toFixed(10)
         else
             $("#po_line_po_line_total").val("");
