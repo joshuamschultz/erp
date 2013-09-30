@@ -7,6 +7,8 @@ class ReceivableLine < ActiveRecord::Base
 
 	validates_presence_of :receivable_line_description, :receivable_line_cost
 
+	validates_numericality_of :receivable_line_cost
+
 	after_save :update_receivable_total
 	after_destroy :update_receivable_total
 

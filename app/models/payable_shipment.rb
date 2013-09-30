@@ -7,8 +7,12 @@ class PayableShipment < ActiveRecord::Base
 
   before_save :process_before_save
 
+  validates_presence_of :payable_shipment_count
+
+  validates_numericality_of :payable_shipment_count
+
   def process_before_save
-		  self.payable_shipment_cost = self.payable_shipment_count * self.po_line.po_line_cost
+		  self.payable_shipment_cost = self.payable_shipment_count.to_f * self.po_line.po_line_cost
   end
 
   after_destroy :process_after_destroy
@@ -20,7 +24,7 @@ class PayableShipment < ActiveRecord::Base
   validate :check_total_received, :on => :update
 
   def check_total_received
-  		total_received = self.po_line.payable_shipments.where("id != ?", self.id).sum(:payable_shipment_count) + self.payable_shipment_count
+  		total_received = self.po_line.payable_shipments.where("id != ?", self.id).sum(:payable_shipment_count) + self.payable_shipment_count.to_f
   		if total_received > self.po_line.po_line_quantity
   			 errors.add(:payable_shipment_count, "exceeded than ordered!")
   		end
