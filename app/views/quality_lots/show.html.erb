@@ -27,8 +27,13 @@
 
           <tr>
             <td>Part No:</td>
-            <td><%= link_to(@quality_lot.po_line.item_alt_name.item_alt_identifier + " (Revision: #{@quality_lot.item_revision.item_revision_name})", item_path(@quality_lot.item_revision.item, revision_id: @quality_lot.item_revision_id)) if @quality_lot.item_revision %></td>
-          </tr>      
+            <td><%= link_to(@quality_lot.po_line.item_alt_name.item_alt_identifier, item_path(@quality_lot.item_revision.item, revision_id: @quality_lot.item_revision_id)) if @quality_lot.item_revision %></td>
+          </tr>
+
+          <tr>
+            <td>Revision:</td>
+            <td><%= link_to(@quality_lot.item_revision.item_revision_name, item_path(@quality_lot.item_revision.item, revision_id: @quality_lot.item_revision_id)) if @quality_lot.item_revision %></td>
+          </tr>
 
           <tr>
             <td>Quantity:</td>

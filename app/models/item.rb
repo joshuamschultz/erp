@@ -8,7 +8,9 @@ class Item < ActiveRecord::Base
   has_many :item_part_dimensions, :through => :item_revisions
 
   has_many :po_lines, :dependent => :destroy
-  has_many :quality_lots, through: :po_lines
+  has_many :payable_shipments, :through => :po_lines
+
+  has_many :quality_lots, :through => :po_lines
 
   has_many :so_lines, :dependent => :destroy
 
@@ -58,5 +60,13 @@ class Item < ActiveRecord::Base
   def sales_orders
       SoHeader.joins(:so_lines).where("so_lines.item_id = ?", self.id)
   end 
+
+  def qty_on_order
+      self.po_lines.sum(:po_line_quantity) - self.payable_shipments.sum(:payable_shipment_count) 
+  end
+
+  def qty_on_hand
+      self.payable_shipments.sum(:payable_shipment_count) 
+  end
   
 end

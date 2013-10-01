@@ -14,6 +14,7 @@
               <tr>
                 <th>Control No</th>
                 <th>Part No</th>
+                <th>Revision</th>
                 <th>Quantity</th>
                 <th>Lots/PO</th>
                 <th>PO</th>
@@ -38,7 +39,8 @@
         :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
         :columns => '[
                         { "mData": "lot_control_no" },
-                        { "mData": "item_with_revision" },                        
+                        { "mData": "item_part_no" },
+                        { "mData": "item_revision_name" },                        
                         { "mData": "lot_quantity" },
                         { "mData": "total_lots", "bVisible": false },
                         { "mData": "po_identifier" },
