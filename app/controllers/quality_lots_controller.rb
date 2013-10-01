@@ -47,9 +47,15 @@ class QualityLotsController < ApplicationController
             quality_lot[:lot_control_no] = CommonActions.linkable(quality_lot_path(quality_lot), quality_lot.lot_control_no)
             # quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.po_line.item), quality_lot.po_line.item_alt_name.item_alt_identifier)
             
-            quality_lot[:item_with_revision] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
-            revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier + 
-            " (Revision: #{quality_lot.item_revision.item_revision_name})")
+            # quality_lot[:item_with_revision] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            # revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier + 
+            # " (Revision: #{quality_lot.item_revision.item_revision_name})")
+
+            quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
+
+            quality_lot[:item_revision_name] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)
 
             quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
             
