@@ -18,10 +18,10 @@ class QualityLotCapability < ActiveRecord::Base
 		dimension_max = self.all_lot_capabilities.maximum(:lot_dimension_value)
 		dimension_min = self.all_lot_capabilities.minimum(:lot_dimension_value)
 
-		if (neg_tolerance..pos_tolerance).include?(dimension_max) && (neg_tolerance..pos_tolerance).include?(dimension_min)
-			self.all_lot_capabilities.update_all(:lot_dimension_status => "accepted")
+		if dimension_max.between?(neg_tolerance, pos_tolerance) && dimension_min.between?(neg_tolerance, pos_tolerance)
+			 self.all_lot_capabilities.update_all(:lot_dimension_status => "accepted")
 		else
-			self.all_lot_capabilities.update_all(:lot_dimension_status => "rejected")
+			 self.all_lot_capabilities.update_all(:lot_dimension_status => "rejected")
 		end
 
 		QualityLotCapability.set_callback("save", :after, :process_after_save)

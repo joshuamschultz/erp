@@ -16,7 +16,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
 	dimension_max = self.all_lot_gauges.maximum(:lot_gauge_result_value)
 	dimension_min = self.all_lot_gauges.minimum(:lot_gauge_result_value)
 
-	if (neg_tolerance..pos_tolerance).include?(dimension_max) && (neg_tolerance..pos_tolerance).include?(dimension_min)
+	if dimension_max.between?(neg_tolerance, pos_tolerance) && dimension_min.between?(neg_tolerance, pos_tolerance)
 	  	self.all_lot_gauges.update_all(:lot_gauge_result_status => "accepted")
 	else
 	  	self.all_lot_gauges.update_all(:lot_gauge_result_status => "rejected")
