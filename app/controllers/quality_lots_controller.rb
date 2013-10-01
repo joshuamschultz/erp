@@ -27,9 +27,6 @@ class QualityLotsController < ApplicationController
   # GET po_headers/1/quality_lots
   # GET po_headers/1/quality_lots.json
   def index
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lots = @po_header.quality_lots
-
     if params[:item_id].present?
         @item = Item.find(params[:item_id])
         @quality_lots = @item.quality_lots
@@ -74,8 +71,6 @@ class QualityLotsController < ApplicationController
   # GET po_headers/1/quality_lots/1
   # GET po_headers/1/quality_lots/1.json
   def show
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.find(params[:id])
     @quality_lot = QualityLot.find(params[:id])
     @po_header = @quality_lot.po_header
     @notes = @quality_lot.present? ? @quality_lot.comments.where(:comment_type => "note").order("created_at desc") : [] 
@@ -89,8 +84,6 @@ class QualityLotsController < ApplicationController
   # GET po_headers/1/quality_lots/new
   # GET po_headers/1/quality_lots/new.json
   def new
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.build
     @quality_lot = QualityLot.new
 
     respond_to do |format|
@@ -101,16 +94,12 @@ class QualityLotsController < ApplicationController
 
   # GET po_headers/1/quality_lots/1/edit
   def edit
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.find(params[:id])
      @quality_lot = QualityLot.find(params[:id])
   end
 
   # POST po_headers/1/quality_lots
   # POST po_headers/1/quality_lots.json
   def create
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.build(params[:quality_lot])
     @quality_lot = QualityLot.new(params[:quality_lot])
     @quality_lot.lot_inspector = current_user
 
@@ -131,8 +120,6 @@ class QualityLotsController < ApplicationController
   # PUT po_headers/1/quality_lots/1
   # PUT po_headers/1/quality_lots/1.json
   def update
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.find(params[:id])
     @quality_lot = QualityLot.find(params[:id])
 
     respond_to do |format|
@@ -142,13 +129,18 @@ class QualityLotsController < ApplicationController
         @quality_lot.save(:validate => false)
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully updated.') }
         format.json { head :ok }
+
+      elsif params[:lot_material]
+        @quality_lot.quality_lot_materials_attributes = params[:quality_lot][:quality_lot_materials_attributes]
+        @quality_lot.save(:validate => false)
+        format.html { redirect_to(quality_lot_materials_path(quality_lot_id: @quality_lot.id), :notice => 'Material element test was successfully updated.') }
+        format.json { head :ok }
+
       elsif @quality_lot.update_attributes(params[:quality_lot])
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully updated.') }
         format.json { head :ok }
+
       else
-        # @quality_lot.process_flow_id = ""
-        # @quality_lot.fmea_type_id = ""
-        # @quality_lot.control_plan_id = ""
         format.html { render :action => "edit" }
         format.json { render :json => @quality_lot.errors, :status => :unprocessable_entity }
       end
@@ -158,8 +150,6 @@ class QualityLotsController < ApplicationController
   # DELETE po_headers/1/quality_lots/1
   # DELETE po_headers/1/quality_lots/1.json
   def destroy
-    # @po_header = PoHeader.find(params[:po_header_id])
-    # @quality_lot = @po_header.quality_lots.find(params[:id])
     @quality_lot = QualityLot.find(params[:id])
     @quality_lot.destroy
 
@@ -170,8 +160,6 @@ class QualityLotsController < ApplicationController
   end
 
   def populate
-      # @po_header = PoHeader.find(params[:po_header_id])
-      # @quality_lot = @po_header.quality_lots.find(params[:id])
       @quality_lot = QualityLot.find(params[:id])
 
       if params[:type] == "note"

@@ -1,102 +1,66 @@
-<%= simple_form_for(@quality_lot_material, :html => {:id => "form_for_material_elements", :class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<div class="row-fluid">
+  <%= render :partial => 'items/item_info' %>
 
-  <div class="form-inputs">
-    <%= f.association :quality_lot, label_method: :lot_with_part_no, label_value: :id, label: "Lot", :autofocus => true, :include_blank => false %>
+  <div class="span9">
+      <%= simple_form_for(@quality_lot, :html => {:id => "form_for_material_elements",:class => "form-horizontal"}) do |f| %>
 
-    <div class="control-group select required quality_lot_material_material_element">
-        <label for="quality_lot_material_material_element_id" class="select required control-label">
-            <abbr title="required">*</abbr> Material element
-        </label>
-        <div class="controls">
-            <select required="required" name="quality_lot_material[material_element_id]" id="quality_lot_material_material_element_id" class="select required">
+      <%= hidden_field_tag :lot_material, true %> 
 
-            </select>
+      <%= f.error_notification %>  
+
+        <div class="form-inputs">
+          <table class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+              <thead>
+                  <tr>
+                      <th>Element</th>
+                      <th>Allowed Low Range</th>
+                      <th>Allowed High Range</th>
+                      <th>Calculated Low Range</th>
+                      <th>Calculated High Range</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  <%= f.fields_for :quality_lot_materials, @material_elements do |element| %>
+                      <%= element.hidden_field :material_element_id %>
+                      <tr>
+                          <td><%= element.object.material_element.element.element_name.to_s + " (" + element.object.material_element.element.element_symbol.to_s + ")" %></td>
+                          <td><%= element.object.material_element.element_low_range %></td>
+                          <td><%= element.object.material_element.element_high_range %></td>
+                          <td><%= element.input :lot_element_low_range, label: false, input_html: { class: 'lot_element_low_range' } %></td>
+                          <td><%= element.input :lot_element_high_range, label: false, input_html: { class: 'lot_element_high_range' } %></td>
+                      </tr>
+                  <% end %>
+              </tbody>
+          </table>
         </div>
-    </div>
 
-    <!-- <div class="control-group select required quality_lot_material_material_element">
-        <label for="quality_lot_material_material_element_id" class="select required control-label">
-            Element
-        </label>
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
 
-        <div class="controls">
-            <select name="quality_lot_material[material_element_id]" id="quality_lot_material_material_element_id" class="select required">
-            </select>
+        <div class="form-actions">
+            <%= f.submit "Update", :class => "btn" %>
+            <%= link_to 'Back', quality_lot_materials_path(@quality_lot), :class => "btn" %>
         </div>
-    </div> -->
+      <% end %>
 
-    <%#= f.association :material_element %>
+      <div class="separator bottom"></div>
 
-    <%= f.input :lot_element_low_range, label: "Low Range" %>
-    <%= f.input :lot_element_high_range, label: "High Range" %>
-    <%= f.input :lot_material_tested, label: "Tested" %>
-    <%= f.input :lot_material_result, label: "Result" %>
-    <%#= f.input :lot_material_notes, label: "Notes" %>
-    <%#= f.input :lot_material_active %>
+      <%= render 'material_elements/material_elements' %>
   </div>
 
-  <div class="separator bottom"></div>
-
-  <div class="form-actions">
-      <%= f.submit "Save", :class => "btn" %>
-      <%= link_to 'Delete', quality_lot_material_path(@quality_lot_material), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_lot_material.new_record? %>
-      <%= link_to 'Back', quality_lot_materials_path, :class => "btn" %>
-  </div>
-
-<% end %>
-
+</div>
 
 <script type="text/javascript">
-  tab_field_forms["form_for_material_elements"] = ["quality_lot_material_quality_lot_id", "quality_lot_material_material_element_id", 
-  "quality_lot_material_lot_element_low_range", "quality_lot_material_lot_element_high_range", 
-  "quality_lot_material_lot_material_tested", "quality_lot_material_lot_material_result", 
-  "quality_lot_material_lot_material_notes"];
+    $(document).ready(function(){ 
+        $(document).on("keydown", ".lot_element_low_range", function(e){
+            var payable_fine_to_submit = table_row_next_focus(e, "#form_for_material_elements", $(this), ".lot_element_high_range", false);
+        });
 
-  var material_elements = [];
+        $(document).on("keydown", ".lot_element_high_range", function(e){
+            var payable_fine_to_submit = table_row_next_focus(e, "#form_for_material_elements", $(this), ".lot_element_low_range", true);
+        });
 
-  $(document).ready(function(){ 
-      $("#quality_lot_material_quality_lot_id").change(function(){
-          initiate_item_material_elements();
-      });
-
-      $("#quality_lot_material_material_element_id").change(function(){
-          initiate_material_element_range();
-      });      
-
-      initiate_item_material_elements();
-  });
-
-  function initiate_item_material_elements(){
-      if($("#quality_lot_material_quality_lot_id").val() != "" && $("#quality_lot_material_quality_lot_id").val() != null)
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "lot_item_material_elements", "id": $("#quality_lot_material_quality_lot_id").val()}}, "set_item_material_elements", {});
-      else{
-          $("#quality_lot_material_material_element_id").html("");
-          page_initial = false;
-      }
-  }  
-
-  function set_item_material_elements(response, callback_params, api_params){
-      material_elements = response.aaData;
-      var html = $.trim(Mustache.render($(".element-select-box-template").html(), response));
-      $("#quality_lot_material_material_element_id").html(html);
-      <% unless @quality_lot_material.new_record? %>
-          $("#quality_lot_material_material_element_id").val(<%= @quality_lot_material.material_element_id %>);
-      <% else %>
-          initiate_material_element_range();
-      <% end %>      
-  }
-
-  function initiate_material_element_range(){
-    for(i_int = 0; i_int < material_elements.length; i_int++){          
-        if($("#quality_lot_material_material_element_id").val() == material_elements[i_int].id)
-        {
-          $("#quality_lot_material_lot_element_low_range").val(material_elements[i_int].element_low_range);
-          $("#quality_lot_material_lot_element_high_range").val(material_elements[i_int].element_high_range);
-        }
-    }
-  }
-
+        $(".lot_element_low_range:first").focus();
+    });
 </script>
-
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "element-select-box"} %>
