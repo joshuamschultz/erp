@@ -10,13 +10,12 @@ class QualityLot < ActiveRecord::Base
 
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
-		# self.save(:validate => false)
 	end
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
   	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
-  	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number
+  	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number, :quality_lot_materials_attributes
 
    	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
 	:conditions => ['type_category = ?', 'inspection_level']
@@ -34,6 +33,8 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_dimensions, :dependent => :destroy
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauges, :dependent => :destroy
+
+	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? || b[:lot_element_high_range].blank? }
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
@@ -92,5 +93,18 @@ class QualityLot < ActiveRecord::Base
   			end
   		end
   	end
+
+
+  	def lot_material_elements
+  		lot_material_elements = []
+	    if self.present? 
+	        if self.quality_lot_materials.any?
+	            lot_material_elements = self.quality_lot_materials
+	        elsif self.item_revision.present? && self.item_revision.material.present? && self.item_revision.material.material_elements.any?
+	        	lot_material_elements = self.item_revision.material.material_elements.map {|element| element.quality_lot_materials.build }
+	        end
+	    end
+		lot_material_elements    	
+  end
   	
 end

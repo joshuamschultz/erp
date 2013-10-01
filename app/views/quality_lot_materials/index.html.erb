@@ -1,47 +1,51 @@
 <div class="widget">
+    <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
             <h4 class="span6 heading">Material Element Test</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Material Element Test', new_quality_lot_material_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Update', new_quality_lot_material_path(quality_lot_id: @quality_lot.id), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Lot Info', quality_lot_path(@quality_lot), :class => "btn btn-mini btn-info" %>
             </span>
         </div> 
     </div>
-
-    <div class="widget-body">
-        <table id="table_report_lots" class="dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Lot</th>
-                    <th>Element</th>
-                    <th>Low Range</th>
-                    <th>High Range</th>
-                    <th>Tested</th>
-                    <th>Result</th>
-                    <th>Created</th>
-                    <th></th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
 </div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report_lots", :path => quality_lot_materials_path, :extras => {:slno => false},
-        :columns => '[
-                        { "mData": "lot_control_no" },
-                        { "mData": "lot_element_name" },
-                        { "mData": "lot_element_low_range" },
-                        { "mData": "lot_element_high_range" },
-                        { "mData": "lot_material_tested" },
-                        { "mData": "lot_material_result" },
-                        { "mData": "created_date" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
+<div class="row-fluid">
+    <%= render :partial => 'items/item_info' %>
+
+    <div class="span9">
+        <table class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+          <thead>
+              <tr>
+                  <th>Element</th>
+                  <th>Allowed Low Range</th>
+                  <th>Allowed High Range</th>
+                  <th>Calculated Low Range</th>
+                  <th>Calculated High Range</th>
+                  <th>Result</th>
+              </tr>
+          </thead>
+
+          <tbody>
+                <% @quality_lot.quality_lot_materials.each do |element| %>
+                  <tr>
+                      <td><%= element.material_element.element.element_name.to_s + " (" + element.material_element.element.element_symbol.to_s + ")" %></td>
+                      <td><%= element.material_element.element_low_range %></td>
+                      <td><%= element.material_element.element_high_range %></td>
+                      <td><%= element.lot_element_low_range %></td>
+                      <td><%= element.lot_element_high_range %></td>
+                      <th><%= element.lot_material_result %></th>
+                  </tr>
+              <% end %>
+          </tbody>
+        </table>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <%= render 'material_elements/material_elements' %>
+    </div>
+</div>
