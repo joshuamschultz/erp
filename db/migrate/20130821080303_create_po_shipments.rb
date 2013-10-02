@@ -1,10 +1,11 @@
 class CreatePoShipments < ActiveRecord::Migration
   def change
     create_table :po_shipments do |t|
-      t.references :payable
       t.references :po_line
-      t.integer :shipped_item_count
-      t.integer :shipped_item_cost
+      t.integer :po_shipped_count, :default => 0
+      t.decimal :po_shipped_cost, :decimal, :precision => 25, :scale => 10, :default => 0
+      t.string :po_shipped_shelf
+      t.string :po_shipped_unit
       t.integer :po_shipment_created_id
       t.integer :po_shipment_updated_id
 
