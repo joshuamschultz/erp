@@ -1,4 +1,7 @@
 AllianceFasteners::Application.routes.draw do
+  resources :so_shipments
+
+
   resources :quality_lot_gauges do
     resources :quality_lot_gauge_results
   end
