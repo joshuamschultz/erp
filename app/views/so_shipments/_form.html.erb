@@ -1,0 +1,20 @@
+<%= simple_form_for(@so_shipment, :html => {:id => "form_for_so_shipments", :class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :so_line, :label => "SO", :autofocus => true %>
+    <%= f.input :so_shipped_count, :label => "Received" %>
+    <%= f.input :so_shipped_shelf, :label => "Shelf" %>
+    <%= f.input :so_shipped_unit, :label => "Unit" %>
+  </div>
+
+  <div class="separator bottom"></div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_so_shipments"] = [];
+</script>
