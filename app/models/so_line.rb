@@ -9,7 +9,7 @@ class SoLine < ActiveRecord::Base
 
   attr_accessible :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity, 
   :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
-  :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id
+  :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped
 
   validates_presence_of :so_header, :organization, :item_alt_name, :so_line_cost, :so_line_quantity, :customer_quality
 
@@ -37,6 +37,10 @@ class SoLine < ActiveRecord::Base
 
   def update_so_total
       self.so_header.update_attributes(:so_total => self.so_header.so_lines.sum(:so_line_price))
+  end
+
+  def so_line_item_name
+      self.item_alt_name.alt_item_name
   end
 
 

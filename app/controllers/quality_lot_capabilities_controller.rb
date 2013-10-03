@@ -25,10 +25,10 @@ class QualityLotCapabilitiesController < ApplicationController
               lot_capability[:lot_control_no] = CommonActions.linkable(quality_lot_path(lot_capability.quality_lot), lot_capability.quality_lot.lot_control_no)
               lot_capability[:item_part_letter] = CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_capability.item_part_dimension.item_revision.item, lot_capability.item_part_dimension.item_revision, lot_capability.item_part_dimension), lot_capability.item_part_dimension.item_part_letter)
               lot_capability[:item_part_dimensions] = lot_capability.item_part_dimension.item_part_dimension.round(4) #CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_capability.item_part_dimension.item_revision.item, lot_capability.item_part_dimension.item_revision, lot_capability.item_part_dimension), lot_capability.item_part_dimension.item_part_letter)
-              lot_capability[:item_part_pos_tolerance] = (lot_capability.item_part_dimension.item_part_dimension + lot_capability.item_part_dimension.item_part_pos_tolerance).round(4)
-              lot_capability[:item_part_neg_tolerance] = (lot_capability.item_part_dimension.item_part_dimension - lot_capability.item_part_dimension.item_part_neg_tolerance).round(4)
+              lot_capability[:item_part_pos_tolerance] = (lot_capability.item_part_dimension.item_part_dimension + lot_capability.item_part_dimension.item_part_pos_tolerance).to_f.round(4)
+              lot_capability[:item_part_neg_tolerance] = (lot_capability.item_part_dimension.item_part_dimension - lot_capability.item_part_dimension.item_part_neg_tolerance).to_f.round(4)
 
-              lot_capability[:lot_dimension_avg] = (lot_capability.all_lot_capabilities.sum(:lot_dimension_value)/lot_capability.all_lot_capabilities.count).round(4)
+              lot_capability[:lot_dimension_avg] = (lot_capability.all_lot_capabilities.sum(:lot_dimension_value)/lot_capability.all_lot_capabilities.count).to_f.round(4)
               
               lot_capability_values = []
               lot_capability.all_lot_capabilities.collect(&:lot_dimension_value).each do |value|
@@ -36,8 +36,8 @@ class QualityLotCapabilitiesController < ApplicationController
               end
 
               lot_capability[:lot_dimension_std] = lot_capability_values.stdev.round(4) rescue 0
-              lot_capability[:lot_dimension_max] = lot_capability.all_lot_capabilities.maximum(:lot_dimension_value).round(4)
-              lot_capability[:lot_dimension_min] = lot_capability.all_lot_capabilities.minimum(:lot_dimension_value).round(4)
+              lot_capability[:lot_dimension_max] = lot_capability.all_lot_capabilities.maximum(:lot_dimension_value).to_f.round(4)
+              lot_capability[:lot_dimension_min] = lot_capability.all_lot_capabilities.minimum(:lot_dimension_value).to_f.round(4)
           end
           render json: { :aaData => @quality_lot_capabilities } 
       }

@@ -5,6 +5,7 @@
 <% extras[:grouping] = false if extras[:grouping].nil? %>
 <% extras[:sorted] = 0 if extras[:sorted].nil? %>
 <% extras[:order] = "asc" if extras[:order].nil? %>
+<%# extras[:fnDrawCallback] ||= nil %>
 
 <script type="text/javascript">
     var data_<%= name %>;
@@ -24,11 +25,16 @@
                     }
                 },
             <% end %>
+            <% if extras[:fnDrawCallback].present? %>
+                "fnDrawCallback": function( oSettings ) {
+                    <%= extras[:fnDrawCallback] %>(oSettings);
+                },
+            <% end %>
             "bAutoWidth": false,
             "bProcessing": true,
             "sAjaxSource": '<%= path %>',
             "aaSorting": [[<%= extras[:sorted] %>, "<%= extras[:order] %>"]],
-            "aoColumns": <%= columns.html_safe %>        
+            "aoColumns": <%= columns.html_safe %>
         });
 
         <% if extras[:grouping] %>

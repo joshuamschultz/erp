@@ -22,9 +22,9 @@ class QualityLotGaugeResultsController < ApplicationController
         lot_gauge[:lot_gauge_appraisor] = "Appraisor" + lot_gauge.lot_gauge_result_appraiser
         lot_gauge[:item_part_letter] = CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_gauge.item_part_dimension.item_revision.item, lot_gauge.item_part_dimension.item_revision, lot_gauge.item_part_dimension), lot_gauge.item_part_dimension.item_part_letter)
         lot_gauge[:item_part_dimensions] = lot_gauge.item_part_dimension.item_part_dimension.round(4)
-        lot_gauge[:item_part_pos_tolerance] = (lot_gauge.item_part_dimension.item_part_dimension + lot_gauge.item_part_dimension.item_part_pos_tolerance).round(4)
-        lot_gauge[:item_part_neg_tolerance] = (lot_gauge.item_part_dimension.item_part_dimension - lot_gauge.item_part_dimension.item_part_neg_tolerance).round(4)
-        lot_gauge[:lot_gauge_avg] = (lot_gauge.all_lot_gauges.sum(:lot_gauge_result_value)/lot_gauge.all_lot_gauges.count).round(4) rescue 0
+        lot_gauge[:item_part_pos_tolerance] = (lot_gauge.item_part_dimension.item_part_dimension + lot_gauge.item_part_dimension.item_part_pos_tolerance).to_f.round(4)
+        lot_gauge[:item_part_neg_tolerance] = (lot_gauge.item_part_dimension.item_part_dimension - lot_gauge.item_part_dimension.item_part_neg_tolerance).to_f.round(4)
+        lot_gauge[:lot_gauge_avg] = (lot_gauge.all_lot_gauges.sum(:lot_gauge_result_value)/lot_gauge.all_lot_gauges.count).to_f.round(4) rescue 0
         
         lot_gauge_values = []
         lot_gauge.all_lot_gauges.collect(&:lot_gauge_result_value).each do |value|
@@ -32,8 +32,8 @@ class QualityLotGaugeResultsController < ApplicationController
         end
 
         lot_gauge[:lot_gauge_std] = lot_gauge_values.stdev.round(4) rescue 0
-        lot_gauge[:lot_gauge_max] = lot_gauge.all_lot_gauges.maximum(:lot_gauge_result_value).round(4)
-        lot_gauge[:lot_gauge_min] = lot_gauge.all_lot_gauges.minimum(:lot_gauge_result_value).round(4)
+        lot_gauge[:lot_gauge_max] = lot_gauge.all_lot_gauges.maximum(:lot_gauge_result_value).to_f.round(4)
+        lot_gauge[:lot_gauge_min] = lot_gauge.all_lot_gauges.minimum(:lot_gauge_result_value).to_f.round(4)
         lot_gauge[:lot_gauge_status] = ""
       end
   end
