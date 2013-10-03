@@ -12,13 +12,18 @@
     <!-- // Widget heading END -->
 
     <div class="widget-body">
-        <table id="so_shipmenst_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+        <table id="so_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Received</th>
+                <th>SO</th>
+                <th>Part No</th>
+                <th>Vendor</th>
+                <th>Quantity Ordered</th>
+                <th>Quantity Shipped</th>
+                <th>Shipping</th>
                 <th>Shelf</th>
                 <th>Unit</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -31,12 +36,17 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "so_shipmenst_table_report", :path => so_shipments_path,
+        :name => "so_shipment_table_report", :path => so_shipments_path, :extras => {:slno => false}, 
         :columns => '[
-                        { "mData": "id" },
+                        { "mData": "so_identifier" },
+                        { "mData": "item_part_no" },
+                        { "mData": "vendor_name" },
+                        { "mData": "so_line_quantity" },
+                        { "mData": "so_line_quantity_shipped" },
                         { "mData": "so_shipped_count" },
                         { "mData": "so_shipped_shelf" },
-                        { "mData": "so_shipped_unit" }
+                        { "mData": "so_shipped_unit" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }  
                     ]'
     } 
 %>

@@ -2,8 +2,8 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :so_line, :label => "SO", :autofocus => true %>
-    <%= f.input :so_shipped_count, :label => "Received" %>
+    <%= f.association :so_line, :label => "Item", label_method: "so_line_item_name", :disabled => true, input_html: { class: 'special_font' }  %>
+    <%= f.input :so_shipped_count, :label => "Shipping", :autofocus => true %>
     <%= f.input :so_shipped_shelf, :label => "Shelf" %>
     <%= f.input :so_shipped_unit, :label => "Unit" %>
   </div>
@@ -12,9 +12,11 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Delete', so_shipment_path(@so_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_shipment.new_record? %>
+    <%= link_to 'Back', so_shipments_path, :class => "btn" %>
   </div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_shipments"] = [];
+    tab_field_forms["form_for_so_shipments"] = ["so_shipment_so_shipped_count", "so_shipment_so_shipped_shelf", "so_shipment_so_shipped_unit"];
 </script>

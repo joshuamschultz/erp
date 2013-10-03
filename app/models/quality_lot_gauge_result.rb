@@ -11,10 +11,10 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
   def process_after_save
   	# QualityLotGaugeResult.skip_callback("save", :after, :process_after_save)
-	pos_tolerance = self.item_part_dimension.item_part_dimension + self.item_part_dimension.item_part_pos_tolerance
-	neg_tolerance = self.item_part_dimension.item_part_dimension - self.item_part_dimension.item_part_neg_tolerance
-	dimension_max = self.all_lot_gauges.maximum(:lot_gauge_result_value)
-	dimension_min = self.all_lot_gauges.minimum(:lot_gauge_result_value)
+	pos_tolerance = self.item_part_dimension.item_part_dimension.to_f + self.item_part_dimension.item_part_pos_tolerance.to_f
+	neg_tolerance = self.item_part_dimension.item_part_dimension.to_f - self.item_part_dimension.item_part_neg_tolerance.to_f
+	dimension_max = self.all_lot_gauges.maximum(:lot_gauge_result_value).to_f
+	dimension_min = self.all_lot_gauges.minimum(:lot_gauge_result_value).to_f
 
 	if dimension_max.between?(neg_tolerance, pos_tolerance) && dimension_min.between?(neg_tolerance, pos_tolerance)
 	  	self.all_lot_gauges.update_all(:lot_gauge_result_status => "accepted")
