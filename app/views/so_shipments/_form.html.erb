@@ -4,8 +4,8 @@
   <div class="form-inputs">
     <%= f.association :so_line, :label => "Item", label_method: "so_line_item_name", :disabled => true, input_html: { class: 'special_font' }  %>
     <%= f.input :so_shipped_count, :label => "Shipping", :autofocus => true %>
-    <%= f.input :so_shipped_shelf, :label => "Shelf" %>
-    <%= f.input :so_shipped_unit, :label => "Unit" %>
+    <%#= f.input :so_shipped_shelf, :label => "Shelf" %>
+    <%#= f.input :so_shipped_unit, :label => "Unit" %>
   </div>
 
   <div class="separator bottom"></div>
@@ -18,5 +18,5 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_shipments"] = ["so_shipment_so_shipped_count", "so_shipment_so_shipped_shelf", "so_shipment_so_shipped_unit"];
+    tab_field_forms["form_for_so_shipments"] = ["so_shipment_so_shipped_count"];
 </script>

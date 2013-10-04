@@ -21,8 +21,8 @@
                 <th>Quantity Ordered</th>
                 <th>Quantity Shipped</th>
                 <th>Shipping</th>
-                <th>Shelf</th>
-                <th>Unit</th>
+                <!-- <th>Shelf</th>
+                <th>Unit</th> -->
                 <th></th>
               </tr>
             </thead>
@@ -41,12 +41,13 @@
                         { "mData": "vendor_name" },
                         { "mData": "so_line_quantity" },
                         { "mData": "so_line_quantity_shipped" },
-                        { "mData": "so_line_shipping" },
-                        { "mData": "so_line_shelf" },
-                        { "mData": "so_line_unit" },
+                        { "mData": "so_line_shipping" },                        
                         { "mData": "links", "bSortable": false, "bSearchable": false }                        
                     ]'
     } 
 %>
 
 <%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "so"} %>
+
+<!-- { "mData": "so_line_shelf" },
+{ "mData": "so_line_unit" }, -->

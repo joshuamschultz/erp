@@ -44,17 +44,26 @@
 	$(document).ready(function(){ 
 
 	});
-	    
-	$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shelf_input input[type=text]", false);
-	});
 
-	$(document).on("keydown", ".<%= type %>_line_shelf_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_unit_input input[type=text]", false);
-	});
+	<% if type == "po" %>	    
+		$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shelf_input input[type=text]", false);
+		});
 
-	$(document).on("keydown", ".<%= type %>_line_unit_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
-	});
+		$(document).on("keydown", ".<%= type %>_line_shelf_input input[type=text]", function(e){
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_unit_input input[type=text]", false);
+		});
+
+		$(document).on("keydown", ".<%= type %>_line_unit_input input[type=text]", function(e){
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
+		});
+
+	<% else %>
+
+		$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
+		});
+
+	<% end %>
 
 </script>
