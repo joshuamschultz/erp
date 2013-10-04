@@ -1,35 +1,56 @@
-<h1>Listing po_shipments</h1>
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
 
-<table>
-  <tr>
-    <th>Po line</th>
-    <th>Shipped item identifier</th>
-    <th>Shipped item count</th>
-    <th>Shipped item description</th>
-    <th>Po shipment active</th>
-    <th>Po shipment created</th>
-    <th>Po shipment updated</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">PO Received</h4>
+            <span class="span6 heading right">
+                <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<% @po_shipments.each do |po_shipment| %>
-  <tr>
-    <td><%= po_shipment.po_line %></td>
-    <td><%= po_shipment.shipped_item_identifier %></td>
-    <td><%= po_shipment.shipped_item_count %></td>
-    <td><%= po_shipment.shipped_item_description %></td>
-    <td><%= po_shipment.po_shipment_active %></td>
-    <td><%= po_shipment.po_shipment_created_id %></td>
-    <td><%= po_shipment.po_shipment_updated_id %></td>
-    <td><%= link_to 'Show', po_shipment %></td>
-    <td><%= link_to 'Edit', edit_po_shipment_path(po_shipment) %></td>
-    <td><%= link_to 'Destroy', po_shipment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+    <div class="widget-body">
+        <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>PO</th>
+                <th>Part No</th>
+                <th>Vendor</th>
+                <th>Quantity Ordered</th>
+                <th>Total Received</th>
+                <th>Received</th>
+                <th>Shelf</th>
+                <th>Unit</th>
+                <th>Received At</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<br />
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'New Po shipment', new_po_shipment_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "po_shipment_table_report", :path => po_shipments_path, :extras => {:slno => false}, 
+        :columns => '[
+                        { "mData": "po_identifier" },
+                        { "mData": "item_part_no" },
+                        { "mData": "vendor_name" },
+                        { "mData": "po_line_quantity" },
+                        { "mData": "po_line_quantity_shipped" },
+                        { "mData": "po_shipped_count" },
+                        { "mData": "po_shipped_shelf" },
+                        { "mData": "po_shipped_unit" },
+                        { "mData": "po_shipped_date" },
+                        { "mData": "links", "bportable": false, "bSearchable": false }  
+                    ]'
+    } 
+%>

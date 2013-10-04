@@ -19,9 +19,10 @@ class SoShipmentsController < ApplicationController
         else            
             @so_shipments = SoShipment.order(:so_line_id).select{|so_shipment|
                 so_shipment = so_line_data_list(so_shipment, true)   
-                so_shipment[:links] = CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)           
+                so_shipment[:links] = CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
+                so_shipment[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
             }
-            render json: {:aaData => @so_shipments}          
+            render json: {:aaData => @so_shipments}
         end
       }
     end
@@ -33,9 +34,9 @@ class SoShipmentsController < ApplicationController
     object[:item_part_no] = CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)
     object[:customer_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.so_header.organization.organization_name)
     object[:vendor_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name)
-    object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
+    # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
     object[:so_line_quantity] = so_line.so_line_quantity
-    object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"
+    object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"    
     object
   end
 

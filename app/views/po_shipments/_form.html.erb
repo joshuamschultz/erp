@@ -1,17 +1,22 @@
-<%= simple_form_for(@po_shipment) do |f| %>
+<%= simple_form_for(@po_shipment, :html => {:id => "form_for_po_shipments", :class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.association :po_line %>
-    <%= f.input :shipped_item_identifier %>
-    <%= f.input :shipped_item_count %>
-    <%= f.input :shipped_item_description %>
-    <%= f.input :po_shipment_active %>
-    <%= f.input :po_shipment_created_id %>
-    <%= f.input :po_shipment_updated_id %>
+    <%= f.association :po_line, :label => "Item", label_method: "po_line_item_name", :disabled => true, input_html: { class: 'special_font' }  %>
+    <%= f.input :po_shipped_count, :label => "Shipping", :autofocus => true %>
+    <%= f.input :po_shipped_shelf, :label => "Shelf" %>
+    <%= f.input :po_shipped_unit, :label => "Unit" %>
   </div>
+
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= link_to 'Delete', po_shipment_path(@po_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_shipment.new_record? %>
+    <%= link_to 'Back', po_shipments_path, :class => "btn" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_po_shipments"] = ["po_shipment_po_shipped_count", "po_shipment_po_shipped_shelf", "po_shipment_po_shipped_unit"];
+</script>

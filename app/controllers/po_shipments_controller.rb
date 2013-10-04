@@ -1,13 +1,43 @@
 class PoShipmentsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :only => :create
+
   # GET /po_shipments
   # GET /po_shipments.json
   def index
-    @po_shipments = PoShipment.all
-
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @po_shipments }
+      format.json { 
+        if(params[:type] == "shipping")
+            @po_lines = PoLine.where(:po_line_status => "open").select{|po_line|
+                po_line = po_line_data_list(po_line, false)
+                po_line[:po_line_shipping] = "<div class='po_line_shipping_input'><input type='text' value='0'></div>"
+                po_line[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
+                po_line[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
+                po_line[:links] = "<a po_line_id='#{po_line.id}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
+            }
+            render json: {:aaData => @po_lines}
+        else            
+            @po_shipments = PoShipment.order(:po_line_id).select{|po_shipment|
+                po_shipment = po_line_data_list(po_shipment, true)   
+                po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+            }
+            render json: {:aaData => @po_shipments}
+        end
+      }
     end
+  end
+
+  def po_line_data_list(object, shipment)
+      po_line = shipment ? object.po_line : object
+      object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
+      object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+      object[:vendor_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.po_header.organization.organization_name)
+      object[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)
+      # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name)
+      object[:po_line_quantity] = po_line.po_line_quantity
+      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"    
+      object
   end
 
   # GET /po_shipments/1
@@ -42,15 +72,28 @@ class PoShipmentsController < ApplicationController
   def create
     @po_shipment = PoShipment.new(params[:po_shipment])
 
+    # respond_to do |format|
+    #   if @po_shipment.save
+    #     format.html { redirect_to @po_shipment, notice: 'Po shipment was successfully created.' }
+    #     format.json { render json: @po_shipment, status: :created, location: @po_shipment }
+    #   else
+    #     format.html { render action: "new" }
+    #     format.json { render json: @po_shipment.errors, status: :unprocessable_entity }
+    #   end
+    # end
+
     respond_to do |format|
       if @po_shipment.save
-        format.html { redirect_to @po_shipment, notice: 'Po shipment was successfully created.' }
+        @po_shipment["shipped_total"] = @po_shipment.po_line.po_line_shipped
+        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status
+        format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }
       else
         format.html { render action: "new" }
-        format.json { render json: @po_shipment.errors, status: :unprocessable_entity }
+        format.json { render json: {errors:  @po_shipment.errors.first} }
       end
     end
+
   end
 
   # PUT /po_shipments/1

@@ -1,3 +1,5 @@
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -5,7 +7,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">SO Shipments</h4>
             <span class="span6 heading right">
-                <%= link_to 'New SO Shipment', new_so_shipment_path, :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'New Shipment', new_so_shipment_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -19,10 +21,11 @@
                 <th>Part No</th>
                 <th>Vendor</th>
                 <th>Quantity Ordered</th>
-                <th>Quantity Shipped</th>
-                <th>Shipping</th>
+                <th>Total Shipped</th>
+                <th>Shipped</th>
                 <th>Shelf</th>
                 <th>Unit</th>
+                <th>Shipped At</th>
                 <th></th>
               </tr>
             </thead>
@@ -46,6 +49,7 @@
                         { "mData": "so_shipped_count" },
                         { "mData": "so_shipped_shelf" },
                         { "mData": "so_shipped_unit" },
+                        { "mData": "so_shipped_date" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }  
                     ]'
     } 
