@@ -47,7 +47,7 @@ class Payable < ActiveRecord::Base
   def process_after_create
       if self.po_header
           self.po_header.po_lines.each do |po_line|
-            if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_quantity
+            if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped #po_line.po_line_quantity
                 payable_shipment = self.payable_shipments.build
                 payable_shipment.po_line = po_line
                 payable_shipment.save  

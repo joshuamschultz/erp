@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody id="receivable_shipments_table_table_body">
-                    <% @receivable.receivable_shipments.each do |receivable_shipment| %>
+                    <% @receivable.receivable_shipments.where("receivable_shipment_count > 0").each do |receivable_shipment| %>
                         <tr>
                             <td><%= link_to receivable_shipment.so_line.item_alt_name.item_alt_identifier, item_path(receivable_shipment.so_line.item) %></td>
                             <td><%= receivable_shipment.so_line.so_line_quantity %></td>

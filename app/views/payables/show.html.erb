@@ -18,9 +18,9 @@
                     <tr>
                         <th>Part No</th>
                         <th>Quantity Ordered</th>
-                        <th>Quantity Received</th>
+                        <th>Total Received</th>
                         <th>Cost</th>
-                        <th>Received</th>
+                        <th>Payable For</th>
                         <th>Amount</th>
                     </tr>
                 </thead>
@@ -29,7 +29,8 @@
                         <tr>
                             <td><%= link_to payable_shipment.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.po_line.item) %></td>
                             <td><%= payable_shipment.po_line.po_line_quantity %></td>
-                            <td><%= payable_shipment.po_line.payable_shipments.sum(:payable_shipment_count) %></td>
+                            <td><%= payable_shipment.po_line.po_line_shipped %></td>
+                            <!-- <td><%#= payable_shipment.po_line.payable_shipments.sum(:payable_shipment_count) %></td> -->
                             <td><%= payable_shipment.po_line.po_line_cost %></td>
                             <td><%= payable_shipment.payable_shipment_count %></td>
                             <td><%= payable_shipment.payable_shipment_count * payable_shipment.po_line.po_line_cost %></td>

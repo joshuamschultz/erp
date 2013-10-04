@@ -65,9 +65,10 @@
                 <tr>
                     <th>Part No</th>
                     <th>Quantity Ordered</th>
-                    <th>Quantity Received</th>
+                    <th>Total Received</th>                    
+                    <th>Added For</th>
                     <th>Cost</th>
-                    <th>Received</th>
+                    <th>Payable For</th>
                 </tr>
             </thead>
             <tbody id="payable_shipments_table_table_body">
@@ -75,6 +76,7 @@
                     <tr>
                         <td><%= link_to payable_shipment.object.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.object.po_line.item) %></td>
                         <td><%= payable_shipment.object.po_line.po_line_quantity %></td>
+                        <td><%= payable_shipment.object.po_line.po_line_shipped %></td>                        
                         <td><%= payable_shipment.object.po_line.payable_shipments.sum(:payable_shipment_count) %></td>
                         <td><%= payable_shipment.object.po_line.po_line_cost %></td>
                         <td><%= payable_shipment.input :payable_shipment_count, label: false, input_html: { class: 'payable_shipment_count' } %></td>
