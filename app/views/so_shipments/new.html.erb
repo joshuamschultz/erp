@@ -1,10 +1,12 @@
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+
 <div class="widget">
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Shipping</h4>
+            <h4 class="span6 heading">SO Shipping</h4>
             <span class="span6 heading right">
-
+            	<%#= link_to 'Back to Shipped', so_shipments_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -47,72 +49,4 @@
     } 
 %>
 
-<script type="text/javascript">
-	function shipping_fnDrawCallback(dt_settings){
-		
-	}
-
-	function shipment_row_callback(response, callback_params, api_params){
-		var so_line_row = callback_params.so_line_row;	
-		if(response.errors && response.errors[1]){
-			so_line_row.find(".shipping_status").addClass("error");
-			so_line_row.find(".shipping_status").html(response.errors[1]);
-		}
-		else if(response.shipped_status == "closed"){
-			so_line_row.find(".shipping_status").addClass("success");
-			so_line_row.find(".shipping_status").html("Saved and closed successfully!");
-			so_line_row.hide(2000, arguments.callee);
-		}
-		else{
-			so_line_row.find(".shipping_status").addClass("success");
-			so_line_row.find(".shipping_status").html("Saved successfully!");
-			so_line_row.find(".so_line_shipping_total").html(response.shipped_total);			
-			so_line_row.find(".so_line_shipping_input input[type=text]").val("0");
-			so_line_row.find(".so_line_shelf_input input[type=text]").val("");
-			so_line_row.find(".so_line_unit_input input[type=text]").val("");
-		}
-	}
-
-	$(document).on("click", ".btn_save_shipped", function(){
-		$(".shipping_status").html("");
-		$(".shipping_status").removeClass("success");
-		$(".shipping_status").removeClass("error");
-		var so_line_row = $(this).closest("tr");
-		var so_line_id = $(this).attr("so_line_id");
-		var so_line_shipping = so_line_row.find(".so_line_shipping_input input[type=text]").val();
-		var so_line_shelf = so_line_row.find(".so_line_shelf_input input[type=text]").val();
-		var so_line_unit = so_line_row.find(".so_line_unit_input input[type=text]").val();
-		if(parseFloat(so_line_shipping) > 0)
-			initialize_api_call({"url": "/so_shipments", "type": "POST", "data_type": "json", "params": {"so_shipment":{"so_line_id":so_line_id, "so_shipped_count":so_line_shipping, "so_shipped_shelf":so_line_shelf, "so_shipped_unit":so_line_unit}}}, "shipment_row_callback", {"so_line_row":so_line_row});
-		else{
-			so_line_row.find(".shipping_status").addClass("error");
-			so_line_row.find(".shipping_status").html("Item count is invalid!");
-		}
-	});
-
-	$(document).ready(function(){ 
-
-	});
-	    
-	$(document).on("keydown", ".so_line_shipping_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".so_line_shelf_input input[type=text]", false);
-	});
-
-	$(document).on("keydown", ".so_line_shelf_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".so_line_unit_input input[type=text]", false);
-	});
-
-	$(document).on("keydown", ".so_line_unit_input input[type=text]", function(e){
-	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".so_line_shipping_input input[type=text]", true);
-	});       
-
-</script>
-
-
-
-
-
-
-
-<!-- <h4 class="heading">New Shipment</h4> -->
-<%#= render 'form' %>
+<%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "so"} %>

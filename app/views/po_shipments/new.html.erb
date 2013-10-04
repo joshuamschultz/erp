@@ -1,5 +1,52 @@
-<h1>New po_shipment</h1>
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
 
-<%= render 'form' %>
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">PO Receiving</h4>
+            <span class="span6 heading right">
+            	<%#= link_to 'Back to Received', po_shipments_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_shipping_items" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+              	<th>PO</th>
+                <th>Part No</th>
+                <th>Vendor</th>
+                <th>Quantity Ordered</th>
+                <th>Total Received</th>
+                <th>Receiving</th>
+                <th>Shelf</th>
+                <th>Unit</th>
+                <th></th>
+              </tr>
+            </thead>
+            <body>
+                
+            </body>
+        </table>
+    </div>
+</div>
 
-<%= link_to 'Back', po_shipments_path %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_shipping_items", :path => po_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback", :grouping => true, :column_index => 0},
+        :columns => '[
+        				{ "mData": "po_identifier" },
+                        { "mData": "item_part_no" },
+                        { "mData": "vendor_name" },
+                        { "mData": "po_line_quantity" },
+                        { "mData": "po_line_quantity_shipped" },
+                        { "mData": "po_line_shipping" },
+                        { "mData": "po_line_shelf" },
+                        { "mData": "po_line_unit" },
+                        { "mData": "links", "bportable": false, "bSearchable": false }                        
+                    ]'
+    } 
+%>
+
+<%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "po"} %>

@@ -165,7 +165,7 @@ module CommonActions
 											{:path => dimensions_path, :name => "Dimension Types"}
 										]
 		
-		menus[:shipments] = {:class => "glyphicons boat", :path => "#", :name => "Shipments", :type => "single"}
+		menus[:shipments] = {:class => "glyphicons boat", :path => so_shipments_path, :name => "Shipments", :type => "single"}
 
 		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
 

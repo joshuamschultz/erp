@@ -1,0 +1,60 @@
+<script type="text/javascript">
+	function shipping_fnDrawCallback(dt_settings){
+		
+	}
+
+	function shipment_row_callback(response, callback_params, api_params){
+		var <%= type %>_line_row = callback_params.<%= type %>_line_row;	
+		if(response.errors && response.errors[1]){
+			<%= type %>_line_row.find(".shipping_status").addClass("error");
+			<%= type %>_line_row.find(".shipping_status").html(response.errors[1]);
+		}
+		else if(response.shipped_status == "closed"){
+			<%= type %>_line_row.find(".shipping_status").addClass("success");
+			<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
+			<%= type %>_line_row.hide(2000, arguments.callee);
+		}
+		else{
+			<%= type %>_line_row.find(".shipping_status").addClass("success");
+			<%= type %>_line_row.find(".shipping_status").html("Saved successfully!");
+			<%= type %>_line_row.find(".<%= type %>_line_shipping_total").html(response.shipped_total);			
+			<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
+			<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
+			<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
+		}
+	}
+
+	$(document).on("click", ".btn_save_shipped", function(){
+		$(".shipping_status").html("");
+		$(".shipping_status").removeClass("success");
+		$(".shipping_status").removeClass("error");
+		var <%= type %>_line_row = $(this).closest("tr");
+		var <%= type %>_line_id = $(this).attr("<%= type %>_line_id");
+		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
+		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
+		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
+		if(parseFloat(<%= type %>_line_shipping) > 0)
+			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+		else{
+			<%= type %>_line_row.find(".shipping_status").addClass("error");
+			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
+		}
+	});
+
+	$(document).ready(function(){ 
+
+	});
+	    
+	$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
+	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shelf_input input[type=text]", false);
+	});
+
+	$(document).on("keydown", ".<%= type %>_line_shelf_input input[type=text]", function(e){
+	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_unit_input input[type=text]", false);
+	});
+
+	$(document).on("keydown", ".<%= type %>_line_unit_input input[type=text]", function(e){
+	    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
+	});
+
+</script>

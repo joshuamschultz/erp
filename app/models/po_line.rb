@@ -12,7 +12,7 @@ class PoLine < ActiveRecord::Base
   attr_accessible :po_line_active, :po_line_cost, :po_line_created_id, :po_line_customer_po, 
   :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
-  :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id
+  :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id, :po_line_shipped
 
   has_many :quality_lots, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
