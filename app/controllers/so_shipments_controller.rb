@@ -76,7 +76,7 @@ class SoShipmentsController < ApplicationController
       if @so_shipment.save
         @so_shipment["shipped_total"] = @so_shipment.so_line.so_line_shipped
         @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
-        format.html { redirect_to @so_shipment, notice: 'So shipment was successfully created.' }
+        format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
         format.json { render json: @so_shipment, status: :created, location: @so_shipment }
       else
         format.html { render action: "new" }
@@ -93,7 +93,7 @@ class SoShipmentsController < ApplicationController
     respond_to do |format|
       if @so_shipment.update_attributes(params[:so_shipment])
         # format.html { redirect_to @so_shipment, notice: 'So shipment was successfully updated.' }
-        format.html { redirect_to so_shipments_path, notice: 'So shipment was successfully updated.' }
+        format.html { redirect_to so_shipments_path, notice: 'SO shipment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

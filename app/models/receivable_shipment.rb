@@ -24,11 +24,22 @@ class ReceivableShipment < ActiveRecord::Base
 
   validate :check_total_shipped, :on => :update
 
+  # def check_total_shipped
+  # 		total_shipped = self.so_line.receivable_shipments.where("id != ?", self.id).sum(:receivable_shipment_count) + self.receivable_shipment_count.to_f
+  # 		if total_shipped > self.so_line.so_line_quantity
+  # 			errors.add(:receivable_shipment_count, "exceeded than ordered!")
+  # 		end
+  # end
+
   def check_total_shipped
-  		total_shipped = self.so_line.receivable_shipments.where("id != ?", self.id).sum(:receivable_shipment_count) + self.receivable_shipment_count.to_f
-  		if total_shipped > self.so_line.so_line_quantity
-  			errors.add(:receivable_shipment_count, "exceeded than ordered!")
-  		end
+      total_shipped = self.other_receivable_shipments.sum(:receivable_shipment_count) + self.receivable_shipment_count.to_f
+      if total_shipped > self.so_line.so_line_shipped
+          errors.add(:receivable_shipment_count, "exceeded than total shipped!")
+      end
+  end
+
+  def other_receivable_shipments
+      self.so_line.receivable_shipments.where("id != ?", self.id)
   end
 
 end

@@ -43,7 +43,7 @@ class Receivable < ActiveRecord::Base
   def process_after_create
       if self.so_header
           self.so_header.so_lines.each do |so_line|
-            if so_line.receivable_shipments.sum(:receivable_shipment_count) < so_line.so_line_quantity
+            if so_line.receivable_shipments.sum(:receivable_shipment_count) < so_line.so_line_shipped #so_line.so_line_quantity
                 receivable_shipment = self.receivable_shipments.build
                 receivable_shipment.so_line = so_line
                 receivable_shipment.save  

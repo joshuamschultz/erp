@@ -103,7 +103,7 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.update_attributes(params[:po_shipment])
-        format.html { redirect_to @po_shipment, notice: 'Po shipment was successfully updated.' }
+        format.html { redirect_to po_shipments_path, notice: 'PO shipment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
