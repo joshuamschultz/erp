@@ -23,9 +23,42 @@
 
             <%= hidden_field_tag :org_organization_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>        
 
-            <div class="separator bottom"></div>
+            <div id="add_ship_to">
+                <%= f.association :customer, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#customer_id', required: true, :label => "Customer" %>
 
-            <%#= f.input :po_notes, :label => "Notes" %>
+                <%= hidden_field_tag :customer_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>
+
+                <%= hidden_field_tag :org_customer_id, (@po_header.organization.id unless @po_header.new_record? && @po_header.organization.nil?) %>
+
+                <div class="control-group select required po_header_bill_to_address">
+                    <label for="po_header_po_bill_to_id" class="select required control-label">
+                        <abbr title="required"></abbr> Bill To
+                    </label>
+                    <div class="controls">
+                        <select name="po_header[po_bill_to_id]" id="po_header_po_bill_to_id" class="select required">
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group select required po_header_ship_to_address">
+                    <label for="po_header_po_ship_to_id" class="select required control-label">
+                        <abbr title="required"></abbr> Ship To
+                    </label>            
+                    <div class="controls">
+                        <select name="po_header[po_ship_to_id]" id="po_header_po_ship_to_id" class="select required">
+
+                        </select>
+                    </div>
+                </div>                
+                <div class="control-group">
+                    <div class="controls">
+                        * If addresses are blank will be using profile address.
+                    </div>
+                </div>
+                <div class="separator bottom"></div>
+            </div>
+
         </div>
 
         <div class="form-actions">
@@ -44,8 +77,14 @@
 <% end %>
 
 
-<script type="text/javascript">    
+<script type="text/javascript"> 
+        tab_field_forms["form_for_po_header"] = [];
+
+        var direct_select = ["po_header_po_type_id_308", "po_header_po_type_id_309", "po_header_po_type_id_310", "po_header_organization_id", "po_header_customer_id", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
+        
+        var others_select = ["po_header_po_type_id_308", "po_header_po_type_id_309", "po_header_po_type_id_310","po_header_organization_id"]; 
     $(document).ready(function(){ 
+        
         $("#po_header_organization_id").on("change", function(){
             if($("#organization_id").val() != "")
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
@@ -55,20 +94,49 @@
             }
         });
 
+
+        $("#po_header_customer_id").on("focusout", function(){
+            if($("#customer_id").val() != ""){
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#customer_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});               
+            }
+            else{
+                $("#po_header_organization_id").val("");
+                $("#po_header_po_bill_to_id").html("");
+                $("#po_header_po_ship_to_id").html("");
+            }
+        });
+
+
+
+        $(".po_types").on("change", function(){
+            po_type_changed($('.po_types:checked').parent().text(), true);
+        });
+
+        $(".po_types").on("keydown", function(){
+            po_type_changed($('.po_types:checked').parent().text(), true);
+            return false;
+        });
+
+        po_type_changed($('.po_types:checked').parent().text(), false);
+
+
         <% unless @po_header.new_record? %>
             $("#po_header_organization_id").val("<%= @po_header.organization.organization_name if @po_header.organization %>");
+            $("#po_header_customer_id").val("<%= @po_header.customer.organization_name if @po_header.customer %>");
+
+            initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#customer_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});                    
         <% end %>
 
         if($("#organization_id").val() != "")
-            initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});        
+            initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});       
+        
 
-        tab_field_forms["form_for_po_header"] = [];
+        // tab_field_forms["form_for_po_header"] = [];
 
-        $(".po_types").each(function(){
-            tab_field_forms["form_for_po_header"].push($(this).attr('id'));
-        });
+        // $(".po_types").each(function(){
+        //     tab_field_forms["form_for_po_header"].push($(this).attr('id'));
+        // });
 
-        tab_field_forms["form_for_po_header"] = tab_field_forms["form_for_po_header"].concat(["po_header_organization_id"]);
     });
 
 
@@ -76,4 +144,40 @@
         $("#po_header_vendor_info").html(response);
         return false;
     }
+
+    function set_customer_addresses(response, callback_params, api_params){        
+        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        $("#po_header_po_bill_to_id").html(html);
+        $("#po_header_po_ship_to_id").html(html);
+
+        <% unless @po_header.new_record? %>
+            if($("#customer_id").val() == '<%= @po_header.customer.id %>'){
+                $("#po_header_po_bill_to_id").val('<%= @po_header.po_bill_to_id %>');
+                $("#po_header_po_ship_to_id").val('<%= @po_header.po_ship_to_id %>');
+            }
+        <% end %>        
+
+        return false;
+    }
+
+    function po_type_changed(receipt_type, change_focus){
+        
+         if(receipt_type == "Direct"){
+            $('#add_ship_to').show();
+            if(change_focus)
+                $('#po_header_organization_id').focus();
+                tab_field_forms["form_for_po_header"] = direct_select;
+        }
+        else{
+            $('#add_ship_to').hide();
+            $('#po_header_customer_id').val("");
+            $('#po_header_po_bill_to_id').val("");
+            $('#po_header_po_ship_to_id').val("");
+            $('#po_header_organization_id').val("");
+            if(change_focus)
+                $('#po_header_organization_id').focus();   
+                tab_field_forms["form_for_po_header"] = others_select;
+        }       
+    }
 </script>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
