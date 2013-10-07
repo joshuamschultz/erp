@@ -14,7 +14,8 @@
         <table id="table_report_quote_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Vendor</th>
+                    <th>Quote Send ID</th>
+                    <th>Vendors</th>
                     <th>Description</th>
                     <th></th>
                 </tr>
@@ -28,6 +29,7 @@
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {:name => "table_report_quote_list", :path => quotes_path, :extras => {:slno => false},
         :columns => '[
+                        { "mData": "quote_group_id" },
                         { "mData": "vendor_name" },
                         { "mData": "quote_description" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }

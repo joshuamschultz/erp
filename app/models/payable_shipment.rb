@@ -16,10 +16,10 @@ class PayableShipment < ActiveRecord::Base
 		  self.payable_shipment_cost = self.payable_shipment_count.to_f * self.po_line.po_line_cost
   end
 
-  after_destroy :process_after_destroy
+  # after_destroy :process_after_destroy
 
   def process_after_destroy
-  		self.payable.process_payable_total
+  		self.payable.process_payable_total if self.payable
   end
 
   validate :check_total_received, :on => :update

@@ -46,10 +46,12 @@ class Receivable < ActiveRecord::Base
             if so_line.receivable_shipments.sum(:receivable_shipment_count) < so_line.so_line_shipped #so_line.so_line_quantity
                 receivable_shipment = self.receivable_shipments.build
                 receivable_shipment.so_line = so_line
+                receivable_shipment.receivable_shipment_count = so_line.so_line_shipped - so_line.receivable_shipments.sum(:receivable_shipment_count)
                 receivable_shipment.save  
             end
           end
       end
+      self.process_receivable_total
   end
 
   def process_receivable_total

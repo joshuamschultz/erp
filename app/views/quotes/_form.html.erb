@@ -1,7 +1,8 @@
 <div class="row-fluid">
-  <div class="span4 well item_detail_view">
+  <!-- <div class="span4 well item_detail_view">
       <div id="quote_item_info"></div>
-  </div>
+  </div> -->
+  <%= render :partial => 'quotes/quote_info' unless @quote.new_record? %>
 
   <div class="span8 well item_detail_view">
       <%= simple_form_for(@quote, :html => {:id => "form_for_quote",:class => "form-horizontal"}) do |f| %>

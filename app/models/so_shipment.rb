@@ -22,13 +22,14 @@ class SoShipment < ActiveRecord::Base
   end
 
   def so_total_shipped
-  		self.so_line.so_shipments.sum(:so_shipped_count)
+  		self.so_line.present? ? self.so_line.so_shipments.sum(:so_shipped_count) : 0
   end
 
   after_save :set_so_line_status
   after_destroy :set_so_line_status
 
   def set_so_line_status
+    if self.so_line
       SoLine.skip_callback("save", :before, :update_item_total)
       SoLine.skip_callback("save", :after, :update_so_total)
       so_shipped = self.so_total_shipped
@@ -36,6 +37,7 @@ class SoShipment < ActiveRecord::Base
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
+    end
   end
 
 end

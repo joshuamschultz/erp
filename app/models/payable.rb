@@ -15,7 +15,6 @@ class Payable < ActiveRecord::Base
   has_many :payable_lines, :dependent => :destroy
   has_many :payment_lines, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
-
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
   accepts_nested_attributes_for :payable_shipments
@@ -50,10 +49,12 @@ class Payable < ActiveRecord::Base
             if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped #po_line.po_line_quantity
                 payable_shipment = self.payable_shipments.build
                 payable_shipment.po_line = po_line
+                payable_shipment.payable_shipment_count = po_line.po_line_shipped - po_line.payable_shipments.sum(:payable_shipment_count)
                 payable_shipment.save  
             end
           end
       end
+      self.process_payable_total
   end
 
   def process_payable_total
