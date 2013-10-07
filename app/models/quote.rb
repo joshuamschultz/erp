@@ -5,6 +5,8 @@ class Quote < ActiveRecord::Base
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
   :quote_notes, :quote_status, :quote_total, :quote_updated_id
 
+ 
+
 
  def self.process_quote_associations(quote, params)
  	if quote

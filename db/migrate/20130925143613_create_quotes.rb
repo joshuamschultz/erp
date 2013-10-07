@@ -3,7 +3,7 @@ class CreateQuotes < ActiveRecord::Migration
     create_table :quotes do |t|
       t.string :quote_identifier
       t.string :quote_description
-      t.decimal :quote_total
+      t.decimal :quote_total, :precision => 25, :scale => 10, :default => 0
       t.string :quote_status
       t.text :quote_notes
       t.boolean :quote_active

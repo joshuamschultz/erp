@@ -6,7 +6,12 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @quotes }
+      format.json {  @quotes = @quotes.select{|quote|
+              quote[:vendor_name] = quote.quote_vendors.collect{ |vendor| CommonActions.linkable(organization_path(vendor.organization),vendor.organization.organization_name) }.join(",  ").html_safe
+              quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+          }
+          render json: {:aaData => @quotes}
+        }
     end
   end
 
@@ -62,7 +67,7 @@ class QuotesController < ApplicationController
     respond_to do |format|
       if @quote.update_attributes(params[:quote])
         Quote.process_quote_associations(@quote, params)
-        format.html { redirect_to @quote, notice: 'Quote was successfully updated.' }
+        format.html { redirect_to new_quote_quote_line_path(@quote), notice: 'Quote was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

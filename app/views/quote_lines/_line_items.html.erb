@@ -1,0 +1,39 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Quote Line Items</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Line Item', new_quote_quote_line_path(@quote), :class => "btn btn-mini btn-success"  %>  
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_quote_line_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>                   
+                    <th>Part No</th>
+                    <th>Quantity</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report_quote_line_list", :path => quote_quote_lines_path(@quote), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "item_part_no" },
+                        { "mData": "quote_line_quantity" },
+                        { "mData": "quote_line_notes" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

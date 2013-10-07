@@ -7,8 +7,8 @@ class CreateQuoteLines < ActiveRecord::Migration
       t.references :item_alt_name
       t.string :quote_line_identifier
       t.integer :quote_line_quantity
-      t.decimal :quote_line_cost
-      t.decimal :quote_line_total
+      t.decimal :quote_line_cost, :precision => 25, :scale => 10, :default => 0
+      t.decimal :quote_line_total, :precision => 25, :scale => 10, :default => 0
       t.string :quote_line_status
       t.text :quote_line_notes
       t.boolean :quote_line_active
