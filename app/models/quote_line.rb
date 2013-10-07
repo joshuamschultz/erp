@@ -8,7 +8,9 @@ class QuoteLine < ActiveRecord::Base
   :quote_line_notes, :quote_line_quantity, :quote_line_status, :quote_line_total, :quote_line_updated_id,
   :quote_id, :item_id, :item_revision_id, :item_alt_name_id
 
+  validates_numericality_of :quote_line_quantity
   validates_presence_of :quote, :item_alt_name
+  validates :item_alt_name_id, :uniqueness => { :scope => :quote_id, :message => "duplicate item entry!" }
 
   before_create :create_level_default
   before_save :process_before_create
@@ -16,6 +18,7 @@ class QuoteLine < ActiveRecord::Base
 
   def create_level_default
     self.quote_line_status = "open"
+    # self.quote_line_identifier
   end
 
   def process_before_create

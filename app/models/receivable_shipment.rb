@@ -19,7 +19,7 @@ class ReceivableShipment < ActiveRecord::Base
   after_destroy :process_after_destroy
 
   def process_after_destroy
-  		self.receivable.process_receivable_total
+  		self.receivable.process_receivable_total if self.receivable
   end
 
   validate :check_total_shipped, :on => :update

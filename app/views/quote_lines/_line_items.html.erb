@@ -13,7 +13,8 @@
     <div class="widget-body">
         <table id="table_report_quote_line_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
-                <tr>                   
+                <tr>     
+                    <th>Quote ID</th>              
                     <th>Part No</th>
                     <th>Quantity</th>
                     <th>Note</th>
@@ -30,6 +31,7 @@
     {
         :name => "table_report_quote_line_list", :path => quote_quote_lines_path(@quote), :extras => {:slno => false},
         :columns => '[
+                        { "mData": "id" },
                         { "mData": "item_part_no" },
                         { "mData": "quote_line_quantity" },
                         { "mData": "quote_line_notes" },

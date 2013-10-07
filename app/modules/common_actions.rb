@@ -100,11 +100,11 @@ module CommonActions
 											
 										]
 
-		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => "#", :name => "Quotes", :type => "multiple"}
-		menus[:quotes][:sub_menu] = 	[
-											{:path => "#", :name => "Vendor"}, 
-											{:path => "#", :name => "Customer"}
-										]
+		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => quotes_path, :name => "Quotes", :type => "single"}
+		# menus[:quotes][:sub_menu] = 	[
+		# 									{:path => "#", :name => "Vendor"}, 
+		# 									{:path => "#", :name => "Customer"}
+		# 								]
 
 		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
 		menus[:purchases][:sub_menu] = 	[

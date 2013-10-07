@@ -46,7 +46,7 @@
                     <th>Part No</th>
                     <th>Quantity Ordered</th>
                     <th>Quantity Shipped</th>
-                    <th>Added For</th>
+                    <!-- <th>Added For</th> -->
                     <th>Cost</th>
                     <th>Shipped</th>
                 </tr>
@@ -57,7 +57,7 @@
                         <td><%= link_to receivable_shipment.object.so_line.item_alt_name.item_alt_identifier, item_path(receivable_shipment.object.so_line.item) %></td>
                         <td><%= receivable_shipment.object.so_line.so_line_quantity %></td>
                         <td><%= receivable_shipment.object.so_line.so_line_shipped %></td>
-                        <td><%= receivable_shipment.object.so_line.receivable_shipments.sum(:receivable_shipment_count) %></td>
+                        <!-- <td><%#= receivable_shipment.object.so_line.receivable_shipments.sum(:receivable_shipment_count) %></td> -->
                         <td><%= receivable_shipment.object.so_line.so_line_cost %></td>
                         <td><%= receivable_shipment.input :receivable_shipment_count, label: false, input_html: { class: 'receivable_shipment_count' } %></td>
                     </tr>

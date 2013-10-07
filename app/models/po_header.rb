@@ -24,10 +24,10 @@ class PoHeader < ActiveRecord::Base
   belongs_to :customer, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id], 
         :foreign_key => "customer_id", :class_name => "Organization"
 
-  belongs_to :bill_to_address, :class_name => "Contact", :foreign_key => "so_bill_to_id", 
+  belongs_to :bill_to_address, :class_name => "Contact", :foreign_key => "po_bill_to_id", 
   :conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
-  belongs_to :ship_to_address, :class_name => "Contact", :foreign_key => "so_ship_to_id", 
+  belongs_to :ship_to_address, :class_name => "Contact", :foreign_key => "po_ship_to_id", 
   :conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
   belongs_to :po_type, :class_name => "MasterType", :foreign_key => "po_type_id", 

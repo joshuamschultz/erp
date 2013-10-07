@@ -29,6 +29,7 @@ class PoShipment < ActiveRecord::Base
   after_destroy :set_po_line_status
 
   def set_po_line_status
+    if self.po_line
       PoLine.skip_callback("save", :before, :update_item_total)
       PoLine.skip_callback("save", :after, :update_po_total)
       po_shipped = self.po_total_shipped
@@ -36,5 +37,6 @@ class PoShipment < ActiveRecord::Base
       self.po_line.update_attributes(:po_line_shipped => po_shipped, :po_line_status => po_status)
       PoLine.set_callback("save", :before, :update_item_total)
       PoLine.set_callback("save", :after, :update_po_total)
+    end
   end
 end
