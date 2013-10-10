@@ -27,7 +27,7 @@ class PoLinesController < ApplicationController
       format.json { 
           @po_lines = @po_lines.select{|po_line|
               po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-              po_line[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)              
+              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : ""           
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
           }
           render json: {:aaData => @po_lines}

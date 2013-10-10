@@ -66,13 +66,19 @@ class QuotesController < ApplicationController
     @quote = Quote.find(params[:id])
 
     respond_to do |format|
-      if @quote.update_attributes(params[:quote])
-        Quote.process_quote_associations(@quote, params)
-        format.html { redirect_to new_quote_quote_line_path(@quote), notice: 'Quote was successfully updated.' }
-        format.json { head :no_content }
+      if params[:quote_po_type].present? 
+          if @quote.update_attributes(quote_po_type: params[:quote_po_type], organization_id: params[:quote][:organization_id], po_header_id: params[:quote][:po_header_id])
+            format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
+          else
+            format.html { render action: "show" }
+          end          
+      elsif params[:quote_po_type].nil? && @quote.update_attributes(params[:quote])
+          Quote.process_quote_associations(@quote, params)
+          format.html { redirect_to new_quote_quote_line_path(@quote), notice: 'Quote was successfully updated.' }
+          format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @quote.errors, status: :unprocessable_entity }
+          format.html { render action: "edit" }
+          format.json { render json: @quote.errors, status: :unprocessable_entity }
       end
     end
   end

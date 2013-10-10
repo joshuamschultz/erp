@@ -38,6 +38,7 @@ class PoHeader < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :payables, :dependent => :destroy
+  has_many :quotes
 
   def redirect_path
     po_header_path(self)

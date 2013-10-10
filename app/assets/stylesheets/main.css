@@ -52,3 +52,5 @@
 
 .shipping_status.error{color: #B94A48;font-size: 9pt;}
 .shipping_status.success{color: #8EC657;font-size: 9pt;}
+
+input[type="radio"], input[type="checkbox"]{margin: 0px !important;}

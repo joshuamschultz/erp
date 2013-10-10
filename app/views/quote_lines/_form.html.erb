@@ -13,6 +13,7 @@
             <%= hidden_field_tag :org_alt_name_id, (@quote_line.item_alt_name.id if @quote_line.present? && @quote_line.item_alt_name.present?) %>
 
             <%= f.input :quote_line_quantity, :label => "Quantity" %>
+            <%= f.input :quote_line_cost, :label => "Quantity" %>
             <%= f.input :quote_line_notes, :label => "Notes" %>
         </div>
 
@@ -32,7 +33,7 @@
 <%= render :partial => 'quote_lines/line_items' %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];
+    tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_quantity", "quote_line_quote_line_cost", "quote_line_quote_line_notes"];
 
     <% if @quote_line.present? && @quote_line.item_alt_name.present? %>
         $("#quote_line_item_alt_name_id").val("<%= @quote_line.item_alt_name.alt_item_name %>");
