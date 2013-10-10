@@ -41,6 +41,10 @@ class CommonActionsController < ApplicationController
           receivable["receivable_balance"] = receivable.receivable_current_balance
           result = receivable
 
+        when "organization_open_pos"
+          organization = Organization.find(params[:id])
+          result = organization.present? ? organization.purchase_orders.where(:po_status => "open") : []
+
   		end
   		render json: {:aaData => result}
   end

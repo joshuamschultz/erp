@@ -144,7 +144,7 @@
         $("#po_header_po_ship_to_id").html(html);
 
         <% unless @po_header.new_record? %>
-            if($("#customer_id").val() == '<%= @po_header.customer.id %>'){
+            if($("#customer_id").val() == '<%= @po_header.customer.present? ? @po_header.customer.id : 0 %>'){
                 $("#po_header_po_bill_to_id").val('<%= @po_header.po_bill_to_id %>');
                 $("#po_header_po_ship_to_id").val('<%= @po_header.po_ship_to_id %>');
             }
