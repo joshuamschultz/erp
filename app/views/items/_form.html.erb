@@ -3,6 +3,7 @@
 
   <div class="form-inputs">
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
+
     <% unless @item.persisted? %>
     <%= f.simple_fields_for :item_revisions do |g| %>
             <%#= g.input :item_name, :label => "Name" %>
@@ -26,9 +27,9 @@
 
             <%= g.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-            <%= hidden_field_tag :organization_id %>
+            <%= hidden_field_tag :organization_id, (g.object.organization.id if g.object && g.object.organization) %>
 
-            <%#= hidden_field_tag :org_organization_id %>
+            <%= hidden_field_tag :org_organization_id, (g.object.organization.id if g.object && g.object.organization) %>
 
             <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
             <%= g.input :item_cost, :label => "Cost" %>
@@ -48,7 +49,8 @@
                 <div class="controls"> <%= link_to 'New Print', new_print_path, :class => "btn btn-small", :target => "_blank" %> </div>
             </div>
 
-            <%= hidden_field_tag :print_id %>            
+            <%= hidden_field_tag :print_id, (g.object.print.id if g.object && g.object.print) %>
+            <%= hidden_field_tag :org_print_id, (g.object.print.id if g.object && g.object.print) %>
 
             <!-- <div class="control-group">
                 <label for="item_materials" class="optional control-label">Materials</label>
@@ -59,7 +61,8 @@
 
             <%= g.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
 
-            <%= hidden_field_tag :material_id %>            
+            <%= hidden_field_tag :material_id, (g.object.material.id if g.object && g.object.material) %>
+            <%= hidden_field_tag :org_material_id, (g.object.material.id if g.object && g.object.material) %>
 
             <div class="control-group">
                 <label for="item_processes" class="optional control-label">Processes</label>
@@ -76,8 +79,17 @@
             </div>
 
             <%= g.input :item_notes, :label => "Notes" %> 
+
+            <script type="text/javascript">
+                $(document).ready(function(){ 
+                    $("#item_item_revisions_attributes_0_organization_id").val("<%= g.object.organization.organization_name if g.object && g.object.organization %>");
+                    $("#item_item_revisions_attributes_0_print_id").val("<%= g.object.print.print_identifier if g.object && g.object.print %>");
+                    $("#item_item_revisions_attributes_0_material_id").val("<%= g.object.material.material_short_name if g.object && g.object.material %>");
+                });
+            </script>
     <% end %>
     <% end %>
+    
     <%#= f.input :item_quantity_on_order, :label => "Quantity On Order" %>
     <%#= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>   
 
@@ -100,14 +112,6 @@
         <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 
         date_box_fields = date_box_fields.concat([{"name":"item_item_revisions_attributes_0_item_revision_date", "value":"<%= date_box_date %>"}]);
-
-        $(document).ready(function(){ 
-                // $("#item_names").select2({tags:<%#= ItemAltName.all.collect(&:item_alt_identifier).to_s.html_safe %>});
-                // $("#s2id_item_names").css("width", "220px");
-                // "s2id_item_names .select2-input",
-
-        });
-
     <% else %>
         tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_active"];
     <% end %>

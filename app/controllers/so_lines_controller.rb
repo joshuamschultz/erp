@@ -72,8 +72,6 @@ class SoLinesController < ApplicationController
         format.html { redirect_to new_so_header_so_line_path(@so_header), :notice => 'So line was successfully created.' }
         format.json { render :json => @so_line, :status => :created, :location => [@so_line.so_header, @so_line] }
       else
-        @so_line.organization_id = ""
-        @so_line.item_alt_name_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @so_line.errors, :status => :unprocessable_entity }
       end
@@ -91,8 +89,6 @@ class SoLinesController < ApplicationController
         format.html { redirect_to(new_so_header_so_line_path(@so_header), :notice => 'So line was successfully updated.') }
         format.json { head :ok }
       else
-        @so_line.organization_id = ""
-        @so_line.item_alt_name_id = ""
         format.html { render :action => "edit" }
         format.json { render :json => @so_line.errors, :status => :unprocessable_entity }
       end

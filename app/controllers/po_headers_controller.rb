@@ -98,7 +98,6 @@ class PoHeadersController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
       else        
-        @po_header.organization_id = params[:organization_id]
         format.html { render action: "new" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end
@@ -115,7 +114,6 @@ class PoHeadersController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully updated.' }
         format.json { head :no_content }
       else
-        @po_header.organization_id = params[:organization_id]
         format.html { render action: "edit" }
         format.json { render json: @po_header.errors, status: :unprocessable_entity }
       end

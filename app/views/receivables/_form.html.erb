@@ -15,9 +15,9 @@
         <%= f.association :so_header, :url => autocomplete_so_header_so_identifier_so_headers_path, :as => :autocomplete, :id_element => '#so_header_id', :label => "SO" %>
     <% end %>
 
-    <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.so_header.present?) %>
+    <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
 
-    <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.so_header.present?) %>
+    <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
 
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>

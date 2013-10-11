@@ -10,9 +10,9 @@
       <div class="form-inputs">
         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
 
-        <%= hidden_field_tag :organization_id, (@so_header.organization.id unless @so_header.new_record? && @so_header.organization.nil?) %>
+        <%= hidden_field_tag :organization_id, (@so_header.organization.id if @so_header.organization) %>
 
-        <%= hidden_field_tag :org_organization_id, (@so_header.organization.id unless @so_header.new_record? && @so_header.organization.nil?) %>
+        <%= hidden_field_tag :org_organization_id, (@so_header.organization.id if @so_header.organization) %>
 
         <div class="control-group select required so_header_bill_to_address">
             <label for="so_header_so_bill_to_id" class="select required control-label">
@@ -91,9 +91,9 @@
             }
         });
 
-        <% unless @so_header.new_record? %>
-            $("#so_header_organization_id").val("<%= @so_header.organization.organization_name if @so_header.organization %>");
+        $("#so_header_organization_id").val("<%= @so_header.organization.organization_name if @so_header.organization %>");
 
+        <% unless @so_header.new_record? %>
             initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
 
             initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});            

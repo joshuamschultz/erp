@@ -15,9 +15,9 @@
         <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', :label => "PO" %>
     <% end %>
 
-    <%= hidden_field_tag :po_header_id, (@payable.po_header.id if @payable.po_header.present?) %>
+    <%= hidden_field_tag :po_header_id, (@payable.po_header.id if @payable.po_header) %>
 
-    <%= hidden_field_tag :org_po_header_id, (@payable.po_header.id if @payable.po_header.present?) %>
+    <%= hidden_field_tag :org_po_header_id, (@payable.po_header.id if @payable.po_header) %>
 
     <%#= f.association :po_header %>
     <%#= f.association :payable_to_address %>

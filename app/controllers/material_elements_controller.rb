@@ -76,7 +76,6 @@ class MaterialElementsController < ApplicationController
         # material_material_element_path(@material, @material_element)
         format.json { render json: @material_element, status: :created, location: @material_element }
       else
-        @material_element.element_id = ""
         format.html { render action: "new" }
         format.json { render json: @material_element.errors, status: :unprocessable_entity }
       end
@@ -95,7 +94,6 @@ class MaterialElementsController < ApplicationController
         # material_material_element_path(@material, @material_element)
         format.json { head :no_content }
       else
-        @material_element.element_id = ""
         format.html { render action: "edit" }
         format.json { render json: @material_element.errors, status: :unprocessable_entity }
       end
