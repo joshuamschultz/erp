@@ -78,9 +78,6 @@ class ItemRevisionsController < ApplicationController
         format.html { redirect_to(@item, :notice => 'Item revision was successfully created.') }
         format.json { render :json => @item_revision, :status => :created, :location => [@item_revision.item, @item_revision] }
       else
-        @item_revision.print_id = ""
-        @item_revision.material_id = ""
-        @item_revision.organization_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @item_revision.errors, :status => :unprocessable_entity }
       end

@@ -10,7 +10,7 @@ class Quote < ActiveRecord::Base
   belongs_to :organization
   belongs_to :po_header
 
-  # validates_presence_of :organization, on: :update
+  validates_presence_of :quote_description
 
  def self.process_quote_associations(quote, params)
    	if quote
@@ -64,6 +64,8 @@ class Quote < ActiveRecord::Base
                     po_line.item_alt_name = line.item_alt_name
                     po_line.po_line_quantity = line.quote_line_quantity
                     po_line.po_line_cost = line.quote_line_cost
+                    po_line.organization = line.organization
+                    po_line.po_line_customer_po = line.quote_line_description
                     if po_line.save
                         line.update_attributes(po_line_id: po_line.id)
                     else

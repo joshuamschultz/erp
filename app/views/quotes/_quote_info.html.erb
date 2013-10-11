@@ -14,6 +14,11 @@
           </tr>
 
           <tr>
+            <td class="span2">Total:</td>
+            <td class="span5"><strong>$<%= @quote.quote_total %></strong></td>
+          </tr>
+
+          <tr>
             <td class="span3">Notes:</td>
             <td class="span5"><strong><%= @quote.quote_notes %></strong></td>
           </tr>
@@ -25,12 +30,12 @@
 
           <tr>
             <td class="span3">Quote Vendor:</td>
-            <td class="span5"><strong><%= link_to @quote.organization.organization_name, @quote.organization if @quote.quote_active %></strong></td>
+            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : "Not yet" %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Quote PO:</td>
-            <td class="span5"><strong><%= link_to @quote.po_header.po_identifier, @quote.po_header if @quote.quote_active %></strong></td>
+            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : "Not yet"  %></strong></td>
           </tr>
 
       </tbody>

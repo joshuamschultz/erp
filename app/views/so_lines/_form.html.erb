@@ -8,9 +8,9 @@
 
             <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
-            <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.persisted? && @so_line.item_alt_name) %>
+            <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.persisted? && @so_line.item_alt_name) %>            
+            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>           
 
             <%= f.input :so_line_cost, :label => "Cost" %>            
 
@@ -20,15 +20,15 @@
 
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-            <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.persisted? && @so_line.organization) %>
+            <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.organization) %>
 
-            <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.persisted? && @so_line.organization) %>
+            <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.organization) %>
 
             <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
 
             <%= f.input :so_line_notes, :label => "Notes" %>
 
-            <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' } %>
+            <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
 
             <div class="separator bottom"></div>
       
@@ -48,18 +48,7 @@
 <script type="text/javascript">
     tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_organization_id", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
-    $(document).ready(function(){ 
-        $("#so_line_item_alt_name_id").on("focusout", function(){
-            if($("#alt_name_id").val() != "")
-                initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
-            else if($("#org_alt_name_id").val() != "")
-                initialize_api_call({"url": "/item_alt_names/" + $("#org_alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
-            else{
-                $("#so_line_so_line_cost").val("");
-                calculate_line_item_total();
-            }
-        });
-
+    $(document).ready(function(){
         $("#so_line_so_line_cost").change(function(){
             calculate_line_item_total();
         });
@@ -76,11 +65,22 @@
             calculate_line_item_total();
         });
 
-        <% unless @so_line.new_record? %>
-            $("#so_line_organization_id").val("<%= @so_line.organization.organization_name if @so_line.organization %>");
-
-            $("#so_line_item_alt_name_id").val("<%= @so_line.item_alt_name.alt_item_name if @so_line.item_alt_name %>");
+        <% if @so_line.new_record? %>
+            $("#so_line_item_alt_name_id").on("focusout", function(){
+                if($("#alt_name_id").val() != "")
+                    initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+                else if($("#org_alt_name_id").val() != "")
+                    initialize_api_call({"url": "/item_alt_names/" + $("#org_alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+                else{
+                    $("#so_line_so_line_cost").val("");
+                    calculate_line_item_total();
+                }
+            });            
         <% end %>
+
+        $("#so_line_organization_id").val("<%= @so_line.organization.organization_name if @so_line.organization %>");
+
+        $("#so_line_item_alt_name_id").val("<%= @so_line.item_alt_name.alt_item_name if @so_line.item_alt_name %>");
 
         $("#so_line_item_alt_name_id").focus();
     });    

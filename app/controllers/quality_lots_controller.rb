@@ -108,9 +108,6 @@ class QualityLotsController < ApplicationController
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully created.') }
         format.json { render :json => @quality_lot, :status => :created }
       else
-        @quality_lot.process_flow_id = ""
-        @quality_lot.fmea_type_id = ""
-        @quality_lot.control_plan_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @quality_lot.errors, :status => :unprocessable_entity }
       end

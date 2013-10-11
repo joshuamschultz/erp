@@ -13,7 +13,6 @@ class PoLinesController < ApplicationController
 
     params[:po_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:po_line][:item_alt_name_id]
     params[:po_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:po_line][:item_alt_name_id] == "" || params[:po_line][:item_alt_name_id].nil?
-  
   end
   
   # GET po_headers/1/po_lines
@@ -27,7 +26,7 @@ class PoLinesController < ApplicationController
       format.json { 
           @po_lines = @po_lines.select{|po_line|
               po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : ""           
+              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : ""
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
           }
           render json: {:aaData => @po_lines}
@@ -77,8 +76,6 @@ class PoLinesController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
-        @po_line.organization_id = ""
-        @po_line.item_alt_name_id = ""
         format.html { render :action => "new" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end
@@ -96,8 +93,6 @@ class PoLinesController < ApplicationController
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
-        @po_line.organization_id = ""
-        @po_line.item_alt_name_id = ""
         format.html { render :action => "edit" }
         format.json { render :json => @po_line.errors, :status => :unprocessable_entity }
       end

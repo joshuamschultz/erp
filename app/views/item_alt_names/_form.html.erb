@@ -4,15 +4,15 @@
   <div class="form-inputs">
     <%= f.association :item, :url => autocomplete_item_item_part_no_items_path, :as => :autocomplete, :id_element => '#item_id', required: true, :label => "Item" + (params[:new_item].nil? ? "" : "" ) %>
 
-  <%= hidden_field_tag :item_id, (@item_alt_name.item.id if @item_alt_name.persisted? && @item_alt_name.item) %>
+  <%= hidden_field_tag :item_id, (@item_alt_name.item.id if @item_alt_name.item) %>
 
-  <%= hidden_field_tag :org_item_id, (@item_alt_name.item.id if @item_alt_name.persisted? && @item_alt_name.item) %>
+  <%= hidden_field_tag :org_item_id, (@item_alt_name.item.id if @item_alt_name.item) %>
 
     <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
 
-  <%= hidden_field_tag :organization_id, (@item_alt_name.organization.id if @item_alt_name.persisted? && @item_alt_name.organization) %>
+  <%= hidden_field_tag :organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>
 
-  <%= hidden_field_tag :org_organization_id, (@item_alt_name.organization.id if @item_alt_name.persisted? && @item_alt_name.organization) %>    
+  <%= hidden_field_tag :org_organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>    
 
   <%= f.input :item_alt_identifier, label: "Alt Name" %>
 
@@ -41,15 +41,11 @@
         tab_field_forms["form_for_item_alt_name"] = ["item_alt_name_item_id", "item_alt_name_organization_id", "item_alt_name_item_alt_identifier"];
     <% end %>
 
-    $(document).ready(function(){ 
+    $(document).ready(function(){
+        $("#item_alt_name_organization_id").val("<%= @item_alt_name.organization.organization_name if @item_alt_name.organization %>");
 
-      <% unless @item_alt_name.new_record? %>
-            $("#item_alt_name_organization_id").val("<%= @item_alt_name.organization.organization_name if @item_alt_name.organization %>");
+        $("#item_alt_name_item_id").val("<%= @item_alt_name.item.item_part_no if @item_alt_name.item %>");
 
-            $("#item_alt_name_item_id").val("<%= @item_alt_name.item.item_part_no if @item_alt_name.item %>");
-      <% end %>
-        
-      $("#item_alt_name_item_id").focus();
-            
+        $("#item_alt_name_item_id").focus();            
     });
 </script>

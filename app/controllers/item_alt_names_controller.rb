@@ -83,9 +83,6 @@ class ItemAltNamesController < ApplicationController
             format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully created.' }
             format.json { render json: @item_alt_name, status: :created, location: @item_alt_name }
         else
-            @item_alt_name.valid?
-            @item_alt_name.item_id = ""
-            @item_alt_name.organization_id = ""
             format.html { render action: "new" }
             format.json { render json: @item_alt_name.errors, status: :unprocessable_entity }
         end
@@ -102,8 +99,6 @@ class ItemAltNamesController < ApplicationController
         format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully updated.' }
         format.json { head :no_content }
       else
-        @item_alt_name.item_id = ""
-        @item_alt_name.organization_id = ""
         format.html { render action: "edit" }
         format.json { render json: @item_alt_name.errors, status: :unprocessable_entity }
       end

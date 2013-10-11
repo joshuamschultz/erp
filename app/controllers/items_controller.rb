@@ -5,8 +5,13 @@ class ItemsController < ApplicationController
 
   def set_autocomplete_values
       params[:item][:item_revisions_attributes]["0"][:print_id], params[:print_id] = params[:print_id], params[:item][:item_revisions_attributes]["0"][:print_id]
+      params[:item][:item_revisions_attributes]["0"][:print_id] = params[:org_print_id] if params[:item][:print_id] == ""
+
       params[:item][:item_revisions_attributes]["0"][:material_id], params[:material_id] = params[:material_id], params[:item][:item_revisions_attributes]["0"][:material_id]  
+      params[:item][:item_revisions_attributes]["0"][:material_id] = params[:org_material_id] if params[:item][:material_id] == ""
+      
       params[:item][:item_revisions_attributes]["0"][:organization_id], params[:organization_id] = params[:organization_id], params[:item][:item_revisions_attributes]["0"][:organization_id]
+      params[:item][:item_revisions_attributes]["0"][:organization_id] = params[:org_organization_id] if params[:item][:organization_id] == ""
   end
 
   def set_page_info
@@ -103,9 +108,6 @@ class ItemsController < ApplicationController
         format.html { redirect_to item_path(@item), notice: 'Item was successfully created.' }
         format.json { render json: @item, status: :created, location: @item }
       else
-        @item.item_revisions[0].print_id = ""
-        @item.item_revisions[0].material_id = ""
-        @item.item_revisions[0].organization_id = ""
         format.html { render action: "new" }
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end

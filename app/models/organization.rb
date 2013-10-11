@@ -110,6 +110,7 @@ class Organization < ActiveRecord::Base
     has_many :receivables, :dependent => :destroy
     has_many :quote_vendors, :dependent => :destroy
     has_many :quotes
+    has_many :quote_lines
 
 	def redirect_path
       	organization_path(self)
