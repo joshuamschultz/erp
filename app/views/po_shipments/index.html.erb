@@ -17,15 +17,15 @@
         <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>PO</th>
                 <th>Part No</th>
-                <th>Customer</th>
+                <th>PO</th>
+                <!-- <th>Customer</th> -->
+                <th>Quality ID</th>
                 <th>Quantity Ordered</th>
-                <th>Total Received</th>
-                <th>Received</th>
-                <th>Shelf</th>
+                <th>Quantity Received</th>
+                <th>Date Received</th>
                 <th>Unit</th>
-                <th>Received At</th>
+                <th>Shelf</th>
                 <th></th>
               </tr>
             </thead>
@@ -41,15 +41,14 @@
     {
         :name => "po_shipment_table_report", :path => po_shipments_path, :extras => {:slno => false}, 
         :columns => '[
-                        { "mData": "po_identifier" },
                         { "mData": "item_part_no" },
-                        { "mData": "customer_name" },
+                        { "mData": "po_identifier" },
+                        { "mData": "quality_id_name" },
                         { "mData": "po_line_quantity" },
-                        { "mData": "po_line_quantity_shipped" },
                         { "mData": "po_shipped_count" },
-                        { "mData": "po_shipped_shelf" },
-                        { "mData": "po_shipped_unit" },
                         { "mData": "po_shipped_date" },
+                        { "mData": "po_shipped_unit" },
+                        { "mData": "po_shipped_shelf" },
                         { "mData": "links", "bportable": false, "bSearchable": false }  
                     ]'
     } 

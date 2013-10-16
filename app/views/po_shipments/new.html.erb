@@ -18,8 +18,9 @@
               	<th>PO</th>
                 <th>Part No</th>
                 <th>Customer</th>
+                <th>Quality ID</th>
                 <th>Quantity Ordered</th>
-                <th>Total Received</th>
+                <th>Quantity Open</th>
                 <th>Receiving</th>
                 <th>Shelf</th>
                 <th>Unit</th>
@@ -39,8 +40,9 @@
         				{ "mData": "po_identifier" },
                         { "mData": "item_part_no" },
                         { "mData": "customer_name" },
+                        { "mData": "quality_id_name" },
                         { "mData": "po_line_quantity" },
-                        { "mData": "po_line_quantity_shipped" },
+                        { "mData": "po_line_quantity_open" },
                         { "mData": "po_line_shipping" },
                         { "mData": "po_line_shelf" },
                         { "mData": "po_line_unit" },
@@ -50,3 +52,6 @@
 %>
 
 <%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "po"} %>
+
+<!-- <th>Total Received</th> -->
+<!-- { "mData": "po_line_quantity_shipped" }, -->

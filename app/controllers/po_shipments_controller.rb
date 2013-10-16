@@ -32,11 +32,13 @@ class PoShipmentsController < ApplicationController
       po_line = shipment ? object.po_line : object
       object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
       object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-      object[:vendor_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.po_header.organization.organization_name)
-      object[:customer_name] = CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name)
-      # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name)
-      object[:po_line_quantity] = po_line.po_line_quantity
-      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"    
+      object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
+      object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
+      object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.organization.customer_quality), po_line.organization.customer_quality.quality_name) if po_line.organization && po_line.organization.customer_quality) || ""
+      object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
+      object[:po_line_quantity] = po_line.po_line_quantity      
+      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
+      object[:po_line_quantity_open] = po_line.po_line_quantity - po_line.po_line_shipped
       object
   end
 
