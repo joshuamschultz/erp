@@ -8,9 +8,9 @@ class QualityLotMaterial < ActiveRecord::Base
 
   validates :quality_lot_id, :uniqueness => { :scope => :material_element_id, :message => "have test for the element already!" }
 
-  validates_presence_of :lot_element_low_range, :lot_element_high_range
+  validates_presence_of :lot_element_low_range #, :lot_element_high_range
 
-  validates_numericality_of :lot_element_low_range, :lot_element_high_range
+  validates_numericality_of :lot_element_low_range #, :lot_element_high_range
 
   before_save :process_before_save
 
@@ -18,7 +18,7 @@ class QualityLotMaterial < ActiveRecord::Base
 		low_range = self.material_element.element_low_range.to_f
 		high_range = self.material_element.element_high_range.to_f
 
-		if (self.lot_element_low_range.to_f).between?(low_range, high_range) && (self.lot_element_high_range.to_f).between?(low_range, high_range)
+		if (self.lot_element_low_range.to_f).between?(low_range, high_range) #&& (self.lot_element_high_range.to_f).between?(low_range, high_range)
 			self.lot_material_result = "accepted"
 		else
 			self.lot_material_result = "rejected"

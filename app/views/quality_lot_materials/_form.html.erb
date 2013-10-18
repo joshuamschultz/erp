@@ -15,8 +15,8 @@
                       <th>Element</th>
                       <th>Allowed Low Range</th>
                       <th>Allowed High Range</th>
-                      <th>Calculated Low Range</th>
-                      <th>Calculated High Range</th>
+                      <th>Calculated Value</th>
+                      <!-- <th>Calculated High Range</th> -->
                   </tr>
               </thead>
 
@@ -28,7 +28,8 @@
                           <td><%= element.object.material_element.element_low_range %></td>
                           <td><%= element.object.material_element.element_high_range %></td>
                           <td><%= element.input :lot_element_low_range, label: false, input_html: { class: 'lot_element_low_range' } %></td>
-                          <td><%= element.input :lot_element_high_range, label: false, input_html: { class: 'lot_element_high_range' } %></td>
+
+                          <!-- <td><%#= element.input :lot_element_high_range, label: false, input_html: { class: 'lot_element_high_range' } %></td> -->
                       </tr>
                   <% end %>
               </tbody>
@@ -40,7 +41,7 @@
 
         <div class="form-actions">
             <%= f.submit "Update", :class => "btn" %>
-            <%= link_to 'Back', quality_lot_materials_path(@quality_lot), :class => "btn" %>
+            <%= link_to 'Back', quality_lot_materials_path(quality_lot_id: @quality_lot.id), :class => "btn" %>
         </div>
       <% end %>
 
@@ -54,12 +55,12 @@
 <script type="text/javascript">
     $(document).ready(function(){ 
         $(document).on("keydown", ".lot_element_low_range", function(e){
-            var payable_fine_to_submit = table_row_next_focus(e, "#form_for_material_elements", $(this), ".lot_element_high_range", false);
-        });
-
-        $(document).on("keydown", ".lot_element_high_range", function(e){
             var payable_fine_to_submit = table_row_next_focus(e, "#form_for_material_elements", $(this), ".lot_element_low_range", true);
         });
+
+        // $(document).on("keydown", ".lot_element_high_range", function(e){
+        //     var payable_fine_to_submit = table_row_next_focus(e, "#form_for_material_elements", $(this), ".lot_element_low_range", true);
+        // });
 
         $(".lot_element_low_range:first").focus();
     });

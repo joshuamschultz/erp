@@ -21,8 +21,8 @@
                   <th>Element</th>
                   <th>Allowed Low Range</th>
                   <th>Allowed High Range</th>
-                  <th>Calculated Low Range</th>
-                  <th>Calculated High Range</th>
+                  <th>Calculated Value</th>
+                  <!-- <th>Calculated High Range</th> -->
                   <th>Result</th>
               </tr>
           </thead>
@@ -34,7 +34,7 @@
                       <td><%= element.material_element.element_low_range %></td>
                       <td><%= element.material_element.element_high_range %></td>
                       <td><%= element.lot_element_low_range %></td>
-                      <td><%= element.lot_element_high_range %></td>
+                      <!-- <td><%#= element.lot_element_high_range %></td> -->
                       <th><%= element.lot_material_result %></th>
                   </tr>
               <% end %>
