@@ -3,8 +3,6 @@ class AccountController < ApplicationController
   def dashboard
 	@menus[:dashboard][:active] = "active"
 
-
-
 	# @name = "Sree"
 	# html = render_to_string(:action => "tester", :layout => false)
 	# kit = PDFKit.new(html)

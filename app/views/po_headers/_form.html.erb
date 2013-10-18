@@ -125,10 +125,10 @@
 
         po_type_changed($('.po_types:checked').parent().text(), false);
 
-        $("#po_header_organization_id").on("keydown", function(){
-            if($('.po_types:checked').parent().text() != "Direct")
-                $("#form_for_po_header").submit();
-        });
+        // $("#po_header_organization_id").on("keydown", function(){
+        //     if($('.po_types:checked').parent().text() != "Direct")
+        //         $("#form_for_po_header").submit();
+        // });
     });
 
     function set_vendor_info(response, callback_params, api_params){

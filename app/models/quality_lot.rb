@@ -34,7 +34,7 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauges, :dependent => :destroy
 
-	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? || b[:lot_element_high_range].blank? }
+	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
