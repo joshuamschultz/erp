@@ -32,11 +32,41 @@ class QualityLotGauge < ActiveRecord::Base
   				puts params[:gauge_header_data][field_index]
   				puts field_data
   				puts params["appraiser"]
-  				QualityLotGaugeResult.create(quality_lot_gauge_id: self.id, 
-				item_part_dimension_id: params[:gauge_header_data][field_index], 
-				lot_gauge_result_value: field_data, lot_gauge_result_appraiser: params["appraiser"])
+
+          trials = field_data.split(",")
+
+          QualityLotGaugeResult.create(quality_lot_gauge_id: self.id, 
+          item_part_dimension_id: params[:gauge_header_data][field_index], 
+          lot_gauge_result_value: trials[0].to_f, lot_gauge_result_trial: row_index, 
+          lot_gauge_result_appraiser: params["appraiser"])
+
+          QualityLotGaugeResult.create(quality_lot_gauge_id: self.id, 
+          item_part_dimension_id: params[:gauge_header_data][field_index], 
+          lot_gauge_result_value: trials[1].to_f, lot_gauge_result_trial: row_index, 
+          lot_gauge_result_appraiser: params["appraiser"])
+
+          QualityLotGaugeResult.create(quality_lot_gauge_id: self.id, 
+          item_part_dimension_id: params[:gauge_header_data][field_index], 
+          lot_gauge_result_value: trials[2].to_f, lot_gauge_result_trial: row_index, 
+          lot_gauge_result_appraiser: params["appraiser"])
   			end
   		end
-  	end
+  end
+
+
+  # def get_calculated_values
+  #     @gauge_results = self.quality_lot_gauge_results.order(:item_part_dimension_id)
+  #     values = {}
+
+  #     rbar = 0
+
+  #     @gauge_results.each do |result|
+  #       dimension_max = result.all_lot_gauges.maximum(:lot_gauge_result_value).to_f
+  #       dimension_min = result.all_lot_gauges.minimum(:lot_gauge_result_value).to_f
+  #       rbar += dimension_max - dimension_min        
+  #     end
+
+  #     rbar /= 3
+  # end
 
 end
