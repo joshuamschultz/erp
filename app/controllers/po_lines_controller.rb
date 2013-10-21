@@ -52,6 +52,7 @@ class PoLinesController < ApplicationController
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.build
     @po_line[:organization_org_id] = @po_line.organization_id
+    @po_line.organization = @po_header.customer
 
     respond_to do |format|
       format.html # new.html.erb
