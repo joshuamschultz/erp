@@ -19,7 +19,8 @@
               <tr>
                 <th>Part No</th>
                 <th>PO</th>
-                <!-- <th>Customer</th> -->
+                <th>Vendor</th>
+                <th>Customer</th>
                 <th>Quality ID</th>
                 <th>Quantity Ordered</th>
                 <th>Quantity Received</th>
@@ -43,6 +44,8 @@
         :columns => '[
                         { "mData": "item_part_no" },
                         { "mData": "po_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "customer_name" },
                         { "mData": "quality_id_name" },
                         { "mData": "po_line_quantity" },
                         { "mData": "po_shipped_count" },

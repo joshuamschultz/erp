@@ -11,13 +11,16 @@
         <table id="table_report_gauge_analysis" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
+                    <th>Appraisor</th>
                     <th>Letter</th>
-                    <th>GV</th>
-                    <th>OV</th>
-                    <th>R&R</th>
-                    <th>PV</th>
-                    <th>TV</th>
-                    <th>% R&R</th>
+                    <th>Dimension</th>
+                    <th>+ Tol</th>
+                    <th>- Tol</th>
+                    <th>Avg</th>
+                    <th>STD</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Status</th>
                 </tr>
             </thead>
 
@@ -34,13 +37,16 @@
     {
         :name => "table_report_gauge_analysis", :path => quality_lot_gauge_quality_lot_gauge_results_path(@quality_lot_gauge), :extras => {:slno => false},
         :columns => '[
+                        { "mData": "lot_gauge_appraisor" },
                         { "mData": "item_part_letter" },
-                        { "mData": "gv" },
-                        { "mData": "ov" },
-                        { "mData": "rr" },
-                        { "mData": "pv" },
-                        { "mData": "tv" },
-                        { "mData": "prr" }
+                        { "mData": "item_part_dimensions" },
+                        { "mData": "item_part_pos_tolerance" },
+                        { "mData": "item_part_neg_tolerance" },
+                        { "mData": "lot_gauge_avg" },
+                        { "mData": "lot_gauge_std" },
+                        { "mData": "lot_gauge_max" },
+                        { "mData": "lot_gauge_min" },
+                        { "mData": "lot_gauge_result_status" }
                     ]'
     } 
 %>

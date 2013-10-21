@@ -2,25 +2,9 @@
 	<% when "shipment_header" %>
 			<div class="row-fluid">
 			    <div class="span3 well">
-			        <a class="widget-stats" href="<%= po_shipments_path %>" id="alt_address_btn">
-			            <span class="glyphicons inbox_plus"><i></i></span>
-			            <span class="txt">PO Received</span>
-			            <div class="clearfix"></div>
-			        </a>
-			    </div>
-
-			    <div class="span3 well">
 			        <a class="widget-stats" href="<%= new_po_shipment_path %>" id="contacts_btn">
 			            <span class="glyphicons inbox_in"><i></i></span>
 			            <span class="txt">PO Receiving</span>
-			            <div class="clearfix"></div>
-			        </a>
-			    </div>			    
-
-			    <div class="span3 well">
-			        <a class="widget-stats" href="<%= so_shipments_path %>" id="contacts_btn">
-			            <span class="glyphicons inbox_minus"><i></i></span>
-			            <span class="txt">SO Shipments</span>
 			            <div class="clearfix"></div>
 			        </a>
 			    </div>
@@ -32,6 +16,22 @@
 			            <div class="clearfix"></div>
 			        </a>
 			    </div>
+
+			    <div class="span3 well">
+			        <a class="widget-stats" href="<%= po_shipments_path %>" id="alt_address_btn">
+			            <span class="glyphicons inbox_plus"><i></i></span>
+			            <span class="txt">PO Received</span>
+			            <div class="clearfix"></div>
+			        </a>
+			    </div>    
+
+			    <div class="span3 well">
+			        <a class="widget-stats" href="<%= so_shipments_path %>" id="contacts_btn">
+			            <span class="glyphicons inbox_minus"><i></i></span>
+			            <span class="txt">SO Shipped</span>
+			            <div class="clearfix"></div>
+			        </a>
+			    </div>			    
 			</div>
 	<% else %>	
 

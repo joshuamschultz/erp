@@ -17,7 +17,7 @@
 		else{
 			<%= type %>_line_row.find(".shipping_status").addClass("success");
 			<%= type %>_line_row.find(".shipping_status").html("Saved successfully!");
-			<%= type %>_line_row.find(".<%= type %>_line_shipping_total").html(response.shipped_total);			
+			<%= type %>_line_row.find(".<%= type %>_line_quantity_open").html(response.quantity_open);			
 			<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
 			<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
 			<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
@@ -39,25 +39,27 @@
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
 			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
 		}
+		return false;
 	});
 
 	$(document).ready(function(){ 
 
 	});
 
-	<% if type == "po" %>	    
-		$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
-		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shelf_input input[type=text]", false);
-		});
+	<% if type == "po" %>
 
-		$(document).on("keydown", ".<%= type %>_line_shelf_input input[type=text]", function(e){
+		$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
 		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_unit_input input[type=text]", false);
 		});
 
 		$(document).on("keydown", ".<%= type %>_line_unit_input input[type=text]", function(e){
-		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shelf_input input[type=text]", false);
 		});
 
+		$(document).on("keydown", ".<%= type %>_line_shelf_input input[type=text]", function(e){
+		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
+		});
+		
 	<% else %>
 		$(document).on("keydown", ".<%= type %>_line_shipping_input input[type=text]", function(e){
 		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
