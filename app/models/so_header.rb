@@ -22,9 +22,11 @@ class SoHeader < ActiveRecord::Base
 
   def before_create_level_defaults
   		self.so_status = "open"
-    	self.so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
-    	self.so_identifier.slice!(2)
-      self.so_identifier = "S" + self.so_identifier
+      self.so_identifier = "Unassigned"
+
+    	# self.so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+    	# self.so_identifier.slice!(2)
+      # self.so_identifier = "S" + self.so_identifier
   end
 
   def redirect_path
@@ -32,5 +34,11 @@ class SoHeader < ActiveRecord::Base
   end
 
   scope :status_based_sos, lambda{|status| where(:so_status => status) }
+
+  def self.new_so_identifier
+      so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+      so_identifier.slice!(2)
+      "S" + so_identifier
+  end
   
 end

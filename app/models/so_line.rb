@@ -36,7 +36,8 @@ class SoLine < ActiveRecord::Base
   after_destroy :update_so_total
 
   def update_so_total
-      self.so_header.update_attributes(:so_total => self.so_header.so_lines.sum(:so_line_price))
+      so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier : self.so_header.so_identifier
+      self.so_header.update_attributes(so_identifier: so_identifier, so_total: self.so_header.so_lines.sum(:so_line_price))
   end
 
   def so_line_item_name

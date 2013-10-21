@@ -41,7 +41,8 @@ class PoLine < ActiveRecord::Base
   after_destroy :update_po_total
 
   def update_po_total
-    self.po_header.update_attributes(:po_total => self.po_header.po_lines.sum(:po_line_total))
+    po_identifier = (self.po_header.po_identifier == "Unassigned") ? PoHeader.new_po_identifier : self.po_header.po_identifier
+    self.po_header.update_attributes(po_identifier: po_identifier, po_total: self.po_header.po_lines.sum(:po_line_total))
   end
 
   def po_line_item_name
