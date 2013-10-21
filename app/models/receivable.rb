@@ -16,7 +16,9 @@ class Receivable < ActiveRecord::Base
 
   accepts_nested_attributes_for :receivable_shipments
 
-  validates_presence_of :receivable_description
+  validates_presence_of :receivable_description, :receivable_identifier
+
+  validates_uniqueness_of :receivable_identifier
 
   before_save :process_before_save
 
@@ -34,7 +36,7 @@ class Receivable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.receivable_identifier = "Invoice #{Receivable.all.count + 1}"
+      # self.receivable_identifier = "Invoice #{Receivable.all.count + 1}"
       self.receivable_status = "open"     
   end  
 

@@ -17,10 +17,13 @@ class PoShipmentsController < ApplicationController
             }
             render json: {:aaData => @po_lines}
         else            
-            @po_shipments = PoShipment.order(:po_line_id).select{|po_shipment|
-                po_shipment = po_line_data_list(po_shipment, true)   
-                po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
-                po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+            @po_shipments = PoShipment.includes(:po_line).order(:po_line_id).select{|po_shipment|
+              po_line = po_shipment.po_line
+              if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped
+                  po_shipment = po_line_data_list(po_shipment, true)   
+                  po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                  po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+              end
             }
             render json: {:aaData => @po_shipments}
         end
@@ -38,7 +41,7 @@ class PoShipmentsController < ApplicationController
       object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
       object[:po_line_quantity] = po_line.po_line_quantity      
       object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
-      object[:po_line_quantity_open] = po_line.po_line_quantity - po_line.po_line_shipped
+      object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
       object
   end
 
@@ -86,7 +89,7 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.save
-        @po_shipment["shipped_total"] = @po_shipment.po_line.po_line_shipped
+        @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
         @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }

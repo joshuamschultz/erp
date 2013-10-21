@@ -38,6 +38,15 @@ class QualityLotCapabilitiesController < ApplicationController
               lot_capability[:lot_dimension_std] = lot_capability_values.stdev.round(4) rescue 0
               lot_capability[:lot_dimension_max] = lot_capability.all_lot_capabilities.maximum(:lot_dimension_value).to_f.round(4)
               lot_capability[:lot_dimension_min] = lot_capability.all_lot_capabilities.minimum(:lot_dimension_value).to_f.round(4)
+          
+              lot_capability[:lot_dimension_cpk] = 0
+              lot_capability_3std = 3 * lot_capability[:lot_dimension_std]
+
+              if lot_capability_3std > 0
+                lot_capability_v1 = (lot_capability[:lot_dimension_avg] - lot_capability[:item_part_neg_tolerance]) / lot_capability_3std
+                lot_capability_v2 = (lot_capability[:item_part_pos_tolerance] - lot_capability[:lot_dimension_avg]) / lot_capability_3std
+                lot_capability[:lot_dimension_cpk] = [lot_capability_v1, lot_capability_v2].min.round(5)
+              end              
           end
           render json: { :aaData => @quality_lot_capabilities } 
       }

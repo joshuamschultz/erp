@@ -37,6 +37,7 @@ class SoShipmentsController < ApplicationController
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
     object[:so_line_quantity] = so_line.so_line_quantity
     object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"    
+    object[:so_line_quantity_open] = "<div class='so_line_quantity_open'>#{so_line.so_line_quantity - so_line.so_line_shipped}</div>" 
     object
   end
 
@@ -74,7 +75,7 @@ class SoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @so_shipment.save
-        @so_shipment["shipped_total"] = @so_shipment.so_line.so_line_shipped
+        @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
         @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
         format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
         format.json { render json: @so_shipment, status: :created, location: @so_shipment }

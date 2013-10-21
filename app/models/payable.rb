@@ -19,7 +19,9 @@ class Payable < ActiveRecord::Base
 
   accepts_nested_attributes_for :payable_shipments
 
-  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_description
+  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_description, :payable_identifier
+
+  validates_uniqueness_of :payable_identifier
 
   before_save :process_before_save
 
@@ -37,7 +39,7 @@ class Payable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.payable_identifier =  "Invoice #{Payable.all.count + 1}"
+      # self.payable_identifier =  "Invoice #{Payable.all.count + 1}"
       self.payable_status = "open"     
   end  
 

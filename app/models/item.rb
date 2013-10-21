@@ -62,11 +62,13 @@ class Item < ActiveRecord::Base
   end 
 
   def qty_on_order
-      self.po_lines.sum(:po_line_quantity) - self.payable_shipments.sum(:payable_shipment_count) 
+      # self.po_lines.sum(:po_line_quantity) - self.payable_shipments.sum(:payable_shipment_count) 
+      self.po_lines.sum(:po_line_quantity) - self.po_lines.sum(:po_line_shipped)
   end
 
   def qty_on_hand
-      self.payable_shipments.sum(:payable_shipment_count) 
+      # self.payable_shipments.sum(:payable_shipment_count)
+      self.po_lines.sum(:po_line_shipped) - self.so_lines.sum(:so_line_shipped)
   end
   
 end
