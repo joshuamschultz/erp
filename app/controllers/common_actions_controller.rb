@@ -1,10 +1,12 @@
 class CommonActionsController < ApplicationController
   def get_info
-  		result = []
+  		# result = []
   		case(params[:mode])
   			when "po_line_revisions"
   				po_line = PoLine.find(params[:id])
-  				result = po_line.present? ? po_line.item.item_revisions : []
+          result = {}
+  				result[:aaData] = po_line.present? ? po_line.item.item_revisions : []
+          result[:default] = (po_line.present? && po_line.item.current_revision.present?) ? po_line.item.current_revision.id : 0
 
   			when "po_header_items"
   				po_header = PoHeader.find(params[:id])
