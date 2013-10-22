@@ -13,6 +13,9 @@ class PoLinesController < ApplicationController
 
     params[:po_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:po_line][:item_alt_name_id]
     params[:po_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:po_line][:item_alt_name_id] == "" || params[:po_line][:item_alt_name_id].nil?
+
+    params[:po_line][:alt_name_transfer_id], params[:item_transfer_name_id] = params[:item_transfer_name_id], params[:po_line][:alt_name_transfer_id]
+    params[:po_line][:alt_name_transfer_id] = params[:org_item_transfer_name_id] if params[:po_line][:alt_name_transfer_id] == "" || params[:po_line][:alt_name_transfer_id].nil?
   end
   
   # GET po_headers/1/po_lines
@@ -26,6 +29,7 @@ class PoLinesController < ApplicationController
       format.json { 
           @po_lines = @po_lines.select{|po_line|
               po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+              po_line[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
               po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : ""
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
           }
