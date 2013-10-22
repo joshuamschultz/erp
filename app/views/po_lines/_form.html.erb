@@ -28,12 +28,19 @@
 
             <%= hidden_field_tag :org_alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
 
+
+            <%= f.association :item_transfer_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#item_transfer_name_id', :label => "Final P/N" if @po_header.po_type.type_value == "transer" %>
+
+            <%= (hidden_field_tag :item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if @po_header.po_type.type_value == "transer" %>
+
+            <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if @po_header.po_type.type_value == "transer" %>
+
             <!-- <div class="control-group">
                 <label for="item_processes" class="optional control-label"></label>
                 <div class="controls"> <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn btn-small", :target => "_blank" %> </div>
             </div> -->
 
-            <%= f.input :po_line_quantity, :label => "Quantity" %>                       
+            <%= f.input :po_line_quantity, :label => "Quantity" %>
 
             <%= f.input :po_line_cost, :label => "Cost" %>
 
@@ -74,7 +81,7 @@
 <script type="text/javascript">
     // tab_field_forms["form_for_po_line"] = ["po_line_organization_id", "po_line_po_line_customer_po", "po_line_item_alt_name_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_po_line_notes"];
 
-    tab_field_forms["form_for_po_line"] = ["po_line_item_alt_name_id", "po_line_po_line_quantity", "po_line_po_line_cost", <%= '"po_line_organization_id",'.html_safe if @po_header.customer.nil? %> "po_line_po_line_customer_po", "po_line_po_line_notes"];
+    tab_field_forms["form_for_po_line"] = ["po_line_item_alt_name_id", <%= '"po_line_alt_name_transfer_id",'.html_safe if @po_header.po_type.type_value == "transer" %> "po_line_po_line_quantity", "po_line_po_line_cost", <%= '"po_line_organization_id",'.html_safe if @po_header.customer.nil? %> "po_line_po_line_customer_po", "po_line_po_line_notes"];
 
     var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
 
@@ -108,6 +115,8 @@
         $("#po_line_organization_id").val("<%= @po_line.organization.organization_name if @po_line.organization %>");
 
         $("#po_line_item_alt_name_id").val("<%= @po_line.item_alt_name.alt_item_name if @po_line.item_alt_name %>");
+
+        $("#po_line_alt_name_transfer_id").val("<%= @po_line.item_transfer_name.alt_item_name if @po_line.item_transfer_name %>");
 
         // $("#po_line_item_alt_name_id").attr("data-autocomplete", alt_name_path + "?organization_id=" + $("#org_organization_id").val());
 

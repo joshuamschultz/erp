@@ -23,6 +23,8 @@ class ItemAltName < ActiveRecord::Base
   has_many :so_lines
   has_many :quote_lines
 
+  has_many :transferring_po_lines, :foreign_key => "alt_name_transfer_id", :class_name => "PoLine"
+
   def alt_item_name
   		self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
   end

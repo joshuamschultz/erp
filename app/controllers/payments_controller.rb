@@ -45,6 +45,10 @@ class PaymentsController < ApplicationController
   # GET /payments/new.json
   def new
     @payment = Payment.new
+    @payable = Payable.find(params[:payable_id]) if params[:payable_id].present?
+    if @payable
+        @payment.organization = @payable.organization
+    end
 
     respond_to do |format|
       format.html # new.html.erb
