@@ -45,6 +45,8 @@ class ItemsController < ApplicationController
               item[:item_cost] = item_revision.item_cost
               item[:item_notes] = item_revision.item_notes
               item[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
+              item[:item_quantity_in_hand] = item.qty_on_hand
+              item[:item_quantity_on_order] = item.qty_on_order
             else
               item[:owner_name] = ""
               item[:item_name] = ""
