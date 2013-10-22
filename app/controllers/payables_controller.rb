@@ -31,7 +31,9 @@ class PayablesController < ApplicationController
               else
                 payable[:payable_to_name] = "-"
               end              
-              payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil)
+              payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
+                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
+              )
           }
           render json: {:aaData => @payables}
 
