@@ -66,7 +66,7 @@ class QuotesController < ApplicationController
     @quote = Quote.find(params[:id])
 
     respond_to do |format|
-      if params[:quote_po_type].present? 
+      if params[:quote_po_type].present? && params[:quote].present?
           if @quote.update_attributes(quote_po_type: params[:quote_po_type], organization_id: params[:quote][:organization_id], po_header_id: params[:quote][:po_header_id])
             format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
           else
