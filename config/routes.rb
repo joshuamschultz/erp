@@ -1,4 +1,7 @@
 AllianceFasteners::Application.routes.draw do
+  resources :quote_line_costs
+
+
   resources :so_shipments
 
 
