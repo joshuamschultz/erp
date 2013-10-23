@@ -5,6 +5,8 @@ class QuoteLine < ActiveRecord::Base
   belongs_to :item_alt_name
   belongs_to :po_line
   belongs_to :organization
+
+  has_many :quote_line_costs, :dependent => :destroy
   
   attr_accessible :quote_line_active, :quote_line_cost, :quote_line_created_id, :quote_line_identifier, 
   :quote_line_notes, :quote_line_quantity, :quote_line_status, :quote_line_total, :quote_line_updated_id,
@@ -12,8 +14,13 @@ class QuoteLine < ActiveRecord::Base
   :quote_line_description
 
   validates_numericality_of :quote_line_quantity
-  validates_presence_of :quote, :item_alt_name, :quote_line_cost, :quote_line_quantity, :organization
+  validates_presence_of :quote, :item_alt_name, :quote_line_quantity, :organization
   validates :item_alt_name_id, :uniqueness => { :scope => :quote_id, :message => "duplicate item entry!" }
+
+  # validate :check_quote_line
+  # def check_quote_line
+  #     errors.add(:item_id, "can add only after vendors selected!") unless self.quote.quote_vendors.any?
+  # end
 
   before_create :process_before_create
 

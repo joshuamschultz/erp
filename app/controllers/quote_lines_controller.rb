@@ -64,11 +64,26 @@ before_filter :set_autocomplete_values, only: [:create, :update]
 
     respond_to do |format|
       if @quote_line.save
-        format.html { redirect_to new_quote_quote_line_path(@quote), :notice => 'Quote line was successfully created.' }
-        format.json { render :json => @quote_line, :status => :created, :location => [@quote_line.quote, @quote_line] }
+          @quote.quote_vendors.each do |quote_vendor|
+              QuoteLineCost.create(quote_vendor_id: quote_vendor.id, quote_line_id: @quote_line.id)
+          end
+          
+          format.html { redirect_to new_quote_quote_line_path(@quote), :notice => 'Quote line was successfully created.' }
+          format.json { render :json => @quote_line, :status => :created, :location => [@quote_line.quote, @quote_line] }
+          # if @quote.quote_vendors.count > 0
+          #     @quote.quote_vendors.each do |quote_vendor|
+          #         @dup_quote_line = @quote_line.clone
+          #         @dup_quote_line.vendor_id = quote_vendor.organization_id
+          #         @dup_quote_line.save
+          #     end
+          #     format.html { redirect_to new_quote_quote_line_path(@quote), :notice => 'Quote line was successfully created.' }
+          #     format.json { render :json => @quote_line, :status => :created, :location => [@quote_line.quote, @quote_line] }
+          # else
+          #     format.html { redirect_to new_quote_quote_line_path(@quote), :notice => 'Please select vendors to add quote items.' }
+          # end
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @quote_line.errors, :status => :unprocessable_entity }
+          format.html { render :action => "new" }
+          format.json { render :json => @quote_line.errors, :status => :unprocessable_entity }
       end
     end
   end

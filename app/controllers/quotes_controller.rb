@@ -74,7 +74,7 @@ class QuotesController < ApplicationController
           end          
       elsif params[:quote_po_type].nil? && @quote.update_attributes(params[:quote])
           Quote.process_quote_associations(@quote, params)
-          format.html { redirect_to new_quote_quote_line_path(@quote), notice: 'Quote was successfully updated.' }
+          format.html { redirect_to @quote, notice: 'Quote was successfully updated.' }
           format.json { head :no_content }
       else
           format.html { render action: "edit" }

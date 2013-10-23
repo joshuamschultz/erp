@@ -1,0 +1,16 @@
+<%= simple_form_for(@quote_line_cost) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :quote_vendor %>
+    <%= f.association :quote_line %>
+    <%= f.input :quote_line_cost %>
+    <%= f.input :quote_line_cost_notes %>
+    <%= f.input :quote_line_cost_created_id %>
+    <%= f.input :quote_line_cost_updated_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

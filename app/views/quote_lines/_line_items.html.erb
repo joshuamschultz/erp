@@ -1,3 +1,5 @@
+<% show_buttons = true if show_buttons.nil? %>
+
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -5,7 +7,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Quote Line Items</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Line Item', new_quote_quote_line_path(@quote), :class => "btn btn-mini btn-success"  %>  
+                <%= link_to 'New Line Item', new_quote_quote_line_path(@quote), :class => "btn btn-mini btn-success" if show_buttons %>  
             </span>
         </div> 
     </div>
@@ -17,8 +19,8 @@
                     <th>Quote ID</th>              
                     <th>Part No</th>
                     <th>Quantity</th>
-                    <th>Cost</th>
-                    <th>Total</th>
+                    <!-- <th>Cost</th> -->
+                    <!-- <th>Total</th> -->
                     <th>Customer</th>
                     <th>Customer PO</th>
                     <th></th>
@@ -37,11 +39,9 @@
                         { "mData": "id" },
                         { "mData": "item_part_no" },
                         { "mData": "quote_line_quantity" },
-                        { "mData": "quote_line_cost" },
-                        { "mData": "quote_line_total" },
                         { "mData": "customer_name" },
                         { "mData": "quote_line_description" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        { "mData": "links", "bSortable": false, "bSearchable": false, "bVisible": '+show_buttons.to_s+' }
                     ]'
     } 
 %>

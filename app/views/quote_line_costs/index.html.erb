@@ -1,0 +1,33 @@
+<h1>Listing quote_line_costs</h1>
+
+<table>
+  <tr>
+    <th>Quote vendor</th>
+    <th>Quote line</th>
+    <th>Quote line cost</th>
+    <th>Quote line cost notes</th>
+    <th>Quote line cost created</th>
+    <th>Quote line cost updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @quote_line_costs.each do |quote_line_cost| %>
+  <tr>
+    <td><%= quote_line_cost.quote_vendor %></td>
+    <td><%= quote_line_cost.quote_line %></td>
+    <td><%= quote_line_cost.quote_line_cost %></td>
+    <td><%= quote_line_cost.quote_line_cost_notes %></td>
+    <td><%= quote_line_cost.quote_line_cost_created_id %></td>
+    <td><%= quote_line_cost.quote_line_cost_updated_id %></td>
+    <td><%= link_to 'Show', quote_line_cost %></td>
+    <td><%= link_to 'Edit', edit_quote_line_cost_path(quote_line_cost) %></td>
+    <td><%= link_to 'Destroy', quote_line_cost, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Quote line cost', new_quote_line_cost_path %>
