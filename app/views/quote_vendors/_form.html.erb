@@ -1,37 +1,7 @@
-<%= form_for([@quote_vendor.quote, @quote_vendor]) do |f| %>
-  <% if @quote_vendor.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@quote_vendor.errors.count, "error") %> prohibited this quote_vendor from being saved:</h2>
+<div class="row-fluid">
+    <%= render :partial => 'quotes/quote_info' %>
 
-      <ul>
-      <% @quote_vendor.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+    <div class="span8 well item_detail_view">
+        <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: @quote_vendor, quote: @quote, edit_page: true} %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :quote %><br />
-    <%= f.text_field :quote %>
-  </div>
-  <div class="field">
-    <%= f.label :organization %><br />
-    <%= f.text_field :organization %>
-  </div>
-  <div class="field">
-    <%= f.label :quote_vendor_status %><br />
-    <%= f.text_field :quote_vendor_status %>
-  </div>
-  <div class="field">
-    <%= f.label :quote_vendor_created_id %><br />
-    <%= f.number_field :quote_vendor_created_id %>
-  </div>
-  <div class="field">
-    <%= f.label :quote_vendor_updated_id %><br />
-    <%= f.number_field :quote_vendor_updated_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

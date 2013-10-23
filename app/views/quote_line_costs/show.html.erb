@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quote vendor:</b>
+  <%= @quote_line_cost.quote_vendor %>
+</p>
+
+<p>
+  <b>Quote line:</b>
+  <%= @quote_line_cost.quote_line %>
+</p>
+
+<p>
+  <b>Quote line cost:</b>
+  <%= @quote_line_cost.quote_line_cost %>
+</p>
+
+<p>
+  <b>Quote line cost notes:</b>
+  <%= @quote_line_cost.quote_line_cost_notes %>
+</p>
+
+<p>
+  <b>Quote line cost created:</b>
+  <%= @quote_line_cost.quote_line_cost_created_id %>
+</p>
+
+<p>
+  <b>Quote line cost updated:</b>
+  <%= @quote_line_cost.quote_line_cost_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_quote_line_cost_path(@quote_line_cost) %> |
+<%= link_to 'Back', quote_line_costs_path %>

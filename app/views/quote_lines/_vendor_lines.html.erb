@@ -1,0 +1,56 @@
+<%= simple_form_for([quote, quote_vendor], :html => {:id => "form_for_quality_line_cost"}) do |f| %>
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Quotes from <%= link_to quote_vendor.organization.organization_name, quote_vendor.organization %></h4>
+            <span class="span6 heading right">
+                <%= link_to 'Update', edit_quote_quote_vendor_path(quote, quote_vendor), :class => "btn btn-mini btn-success" if !edit_page && !quote.organization.present? %>
+                <%= f.submit "Update", :class => "btn btn-success" if edit_page %>  
+            </span>
+        </div> 
+    </div>
+
+    <table id="vendor_lines_table_<%= quote_vendor.organization_id %>" class="dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Part No</th>
+                <th>Quntity</th>
+                <th>Quoted Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if edit_page %>                
+                    <%= f.fields_for :quote_line_costs, quote_vendor.quote_line_costs.where(quote_line_id: quote.quote_lines.collect(&:id)) do |quote_line_cost| %>
+                        <tr>
+                            <td><%= link_to quote_line_cost.object.quote_line.item_alt_name.item_alt_identifier, item_path(quote_line_cost.object.quote_line.item) %></td>
+                            <td><%= quote_line_cost.object.quote_line.quote_line_quantity %></td>
+                            <td><%= quote_line_cost.input :quote_line_cost, label: false, input_html: { class: 'quote_line_cost_input' } %></td>
+                        </tr>
+                    <% end %>
+                
+            <% else %>
+                <% quote.quote_lines.each do |quote_line| %>
+                    <% quote_line_cost = quote_line.quote_line_costs.find_by_quote_vendor_id(quote_vendor.id) %>
+                    <tr>
+                        <td><%= link_to quote_line.item_alt_name.item_alt_identifier, item_path(quote_line.item) %></td>
+                        <td><%= quote_line.quote_line_quantity %></td>
+                        <td><%= quote_line_cost.present? ? quote_line_cost.quote_line_cost : "" %></td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+<% end %>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on("keydown", ".quote_line_cost_input", function(e){
+            payment_fine_to_submit = true;
+            payment_fine_to_submit = table_row_next_focus(e, "#form_for_quality_line_cost", $(this), ".quote_line_cost_input", true);
+        });
+
+        <%= '$(".quote_line_cost_input:first").focus();'.html_safe if edit_page %>
+    });    
+</script>

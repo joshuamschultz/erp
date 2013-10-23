@@ -39,6 +39,8 @@ class QuoteVendorsController < ApplicationController
   def edit
     @quote = Quote.find(params[:quote_id])
     @quote_vendor = @quote.quote_vendors.find(params[:id])
+
+    @quote_vendor.process_quote_line_costs
   end
 
   # POST quotes/1/quote_vendors
@@ -49,7 +51,7 @@ class QuoteVendorsController < ApplicationController
 
     respond_to do |format|
       if @quote_vendor.save
-        format.html { redirect_to([@quote_vendor.quote, @quote_vendor], :notice => 'Quote vendor was successfully created.') }
+        format.html { redirect_to(@quote, :notice => 'Vendor quote details was successfully created.') }
         format.json { render :json => @quote_vendor, :status => :created, :location => [@quote_vendor.quote, @quote_vendor] }
       else
         format.html { render :action => "new" }
@@ -66,7 +68,7 @@ class QuoteVendorsController < ApplicationController
 
     respond_to do |format|
       if @quote_vendor.update_attributes(params[:quote_vendor])
-        format.html { redirect_to([@quote_vendor.quote, @quote_vendor], :notice => 'Quote vendor was successfully updated.') }
+        format.html { redirect_to(@quote, :notice => 'Quote vendor was successfully updated.') }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }

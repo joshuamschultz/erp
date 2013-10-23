@@ -19,9 +19,12 @@ class Quote < ActiveRecord::Base
 
     		if vendors
   	      	vendors.each do |vendor_id|
-  				unless quote.quote_vendors.find_by_organization_id(vendor_id)
-  					  quote.quote_vendors.new(:organization_id => vendor_id).save
-  				end
+        				unless quote.quote_vendors.find_by_organization_id(vendor_id)
+        					  quote_vendor = quote.quote_vendors.new(:organization_id => vendor_id)
+                    if quote_vendor.save
+                        quote_vendor.process_quote_line_costs
+                    end
+        				end
   	      	end
   	    end
    	end
@@ -59,11 +62,13 @@ class Quote < ActiveRecord::Base
 
         if po_header.present?
             self.quote_lines.each do |line|
-                if line.po_line.nil?
+                quote_vendor = self.quote_vendors.find_by_organization_id(self.organization_id)
+                if line.po_line.nil? && quote_vendor.present?
+                    quote_line_cost = quote_vendor.quote_line_costs.find_by_quote_line_id(line.id)
                     po_line = po_header.po_lines.new
                     po_line.item_alt_name = line.item_alt_name
                     po_line.po_line_quantity = line.quote_line_quantity
-                    po_line.po_line_cost = line.quote_line_cost
+                    po_line.po_line_cost = quote_line_cost.present? ? quote_line_cost.quote_line_cost : 0
                     po_line.organization = line.organization
                     po_line.po_line_customer_po = line.quote_line_description
                     if po_line.save
