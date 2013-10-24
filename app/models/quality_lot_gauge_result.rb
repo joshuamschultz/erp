@@ -5,6 +5,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
   attr_accessible :lot_gauge_result_appraiser, :lot_gauge_result_value, :quality_lot_gauge_id, 
   :item_part_dimension_id, :lot_gauge_result_status, :lot_gauge_result_trial, :lot_gauge_result_row
 
+  @@gauge_app = 3
   @@gauge_trails = 3
   @@gauge_k1 = 3.05
   @@gauge_k2 = 2.7
@@ -47,17 +48,35 @@ class QualityLotGaugeResult < ActiveRecord::Base
           appraisor3_results = QualityLotGaugeResult.process_gauge_results(gauge_results.where(lot_gauge_result_appraiser: 3))
 
           gauge_rbars = [appraisor1_results[:rbar], appraisor2_results[:rbar], appraisor3_results[:rbar]]
-          gauge_xbars = [appraisor1_results[:xbar], appraisor2_results[:xbar], appraisor3_results[:xbar]]
-          gauge_rp_values = appraisor1_results[:rps] + appraisor2_results[:rps] + appraisor3_results[:rps]
+          gauge_rbars = gauge_rbars.collect{|p| p.to_f.round(3) }
 
-          gauge_rp = gauge_rp_values.max - gauge_rp_values.min
-          gauge_rbar1 = gauge_rbars.sum / @@gauge_trails
-          gauge_rbar2 = gauge_xbars.max - gauge_xbars.min
+          gauge_xbars = [appraisor1_results[:xbar], appraisor2_results[:xbar], appraisor3_results[:xbar]]
+          gauge_xbars = gauge_xbars.collect{|p| p.to_f.round(3) }
+
+          gauge_rp_values = [appraisor1_results[:rps], appraisor2_results[:rps], appraisor3_results[:rps]].transpose.map {|x| x.reduce(:+)}
+          gauge_rp_values = gauge_rp_values.collect{|p| (p.to_f/9).round(3) }
+
+          gauge_rp = (gauge_rp_values.max - gauge_rp_values.min).round(3)
+          # puts gauge_rp
+
+          gauge_rbar1 = (gauge_rbars.sum / @@gauge_app).round(3)
+          # puts gauge_rbar1
+
+          gauge_rbar2 = (gauge_xbars.max - gauge_xbars.min).round(3)
+          # puts gauge_rbar2
 
           gauge_gv = gauge_rbar1 * @@gauge_k1
+          puts gauge_gv
+
           gauge_ov = ((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails))
+          puts gauge_ov
+
           gauge_rr = (gauge_ov**2) + (gauge_gv**2)
-          gauge_pv = Math.sqrt(gauge_rp * @@gauge_k3)
+          puts gauge_rr
+
+          gauge_pv = gauge_rp * @@gauge_k3 # Math.sqrt(gauge_rp * @@gauge_k3)
+          puts gauge_pv
+
           gauge_tv = Math.sqrt((gauge_rr**2) + (gauge_pv**2))
           gauge_prr = (gauge_tv != 0) ? Math.sqrt(gauge_rr/gauge_tv) : 0
           
@@ -71,6 +90,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
   def self.process_gauge_results(gauge_results)
       row_gauge_results = gauge_results.order(:lot_gauge_result_row,:lot_gauge_result_trial).group(:lot_gauge_result_row)
+      row_gauge_trail_sum = row_gauge_results.sum(:lot_gauge_result_value)
       row_gauge_ranges = []
       maximum_results = row_gauge_results.maximum(:lot_gauge_result_value)
       minimum_results = row_gauge_results.minimum(:lot_gauge_result_value)
@@ -83,7 +103,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
       column_gauge_average  = column_gauge_results.average(:lot_gauge_result_value)
       column_gauge_xbar = column_gauge_average.values.sum / @@gauge_trails
 
-      {rbar: row_gauge_rbar, xbar: column_gauge_xbar, rps: column_gauge_average.values}
+      {rbar: row_gauge_rbar, xbar: column_gauge_xbar, rps: row_gauge_trail_sum.values}
   end
 
   

@@ -1,36 +1,7 @@
 <% @quality_lot = @quality_lot_gauge.quality_lot %>
 <% @item_revision = @quality_lot.item_revision %>
 <% @item = @item_revision.item %>
-
-<% values = [] %>
-<% objects = @quality_lot.lot_item_dimensions.where(:id => @quality_lot_gauge.quality_lot_gauge_dimensions.collect(&:item_part_dimension_id)).order(:id) %>
-
-<% objects.each do |object| %>
-    <% gauge_trials = object.quality_lot_gauge_results.where("quality_lot_gauge_id = ? and lot_gauge_result_appraiser = ?", @quality_lot_gauge.id, params[:appraisor]).order(:item_part_dimension_id, :lot_gauge_result_row, :lot_gauge_result_trial).all %>
-
-    <%  
-        trail_values = []
-        trail_value = "" 
-    %>
-
-    <% gauge_trials.each_with_index do |gauge_trial, index| %>
-        <% 
-        gauge_next_trial = gauge_trials[index + 1]
-
-        gauge_next_same = (gauge_next_trial.present? && (gauge_trial.lot_gauge_result_row == gauge_next_trial.lot_gauge_result_row)) 
-
-        trail_value += gauge_trial.lot_gauge_result_value.to_s + (gauge_next_same ? ",  " : "")
-
-        unless gauge_next_same
-            gauge_trial[:lot_gauge_trial_values] = trail_value
-            trail_values << gauge_trial
-            trail_value = ""
-        end
-        %>
-    <% end %>
-
-    <% values << trail_values %>
-<% end %>
+<% gauge_dimensions = @quality_lot_gauge.quality_lot_gauge_dimensions.order(:item_part_dimension_id) %>
 
 <div class="separator bottom"></div>
 
@@ -52,9 +23,73 @@
 <div class="separator bottom"></div>
 
 <%= form_for([@quality_lot_gauge, @quality_lot_gauge_result], :html => {:id => "form_for_lot_gauge_results"} ) do |f| %>
-  <%= hidden_field_tag :appraiser, params[:appraisor] %>
-  <%= f.hidden_field :lot_gauge_result_appraiser, value: params[:appraisor] %>
-  <%= render :partial => 'layouts/app_layouts/editable_rows', locals: {f: f, form: "form_for_lot_gauge_results", name: "gauge", title_field: :item_part_letter, value_field: :lot_gauge_trial_values, objects: objects, values: values, back: edit_quality_lot_gauge_path(@quality_lot_gauge, quality_lot_id: @quality_lot.id), default_rows: 10, add_row: false } %>
+<%= hidden_field_tag :appraiser, params[:appraisor] %>  
+
+<div class="row-fluid">
+  <div class="span12 editable_table_container">
+    <table id="" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
+      <thead>
+          <tr>
+              <th>Sl No</th>
+              <% gauge_dimensions.each do |gauge_dimension| %>
+                    <th><%= gauge_dimension.item_part_dimension.item_part_letter %></th>
+              <% end %>
+          </tr>
+      </thead>
+
+      <tbody id="">
+          <% for i_int in 0..9 %>
+            <% j_int = 0 %>
+            <tr id="gauge_editable_tr_id_<%= i_int %>">
+                <%# gauge_results = @quality_lot_gauge.quality_lot_gauge_results.group(:item_part_dimension_id, :lot_gauge_result_trial).where(lot_gauge_result_row: i_int, lot_gauge_result_appraiser: params[:appraisor]) %>
+
+                <td class="editable_rows_slno"><%= i_int + 1 %></td>                
+
+                <% gauge_dimensions.each do |gauge_dimension| %>
+                  <% gauge_results = @quality_lot_gauge.quality_lot_gauge_results.where(lot_gauge_result_row: i_int, lot_gauge_result_appraiser: params[:appraisor], item_part_dimension_id: gauge_dimension.item_part_dimension_id).order(:lot_gauge_result_trial) %>
+
+                  <td>
+                      <%= text_field_tag "gauge_field_data[#{gauge_dimension.item_part_dimension_id}][#{i_int}][1]", (gauge_results[0].lot_gauge_result_value if gauge_results[0]), class: "row#{i_int}#{j_int}", next_element: (i_int < 9 ? ".row#{i_int+1}#{j_int}" : ".row0#{j_int+1}") %>
+                      <% j_int += 1 %>
+                      <%= text_field_tag "gauge_field_data[#{gauge_dimension.item_part_dimension_id}][#{i_int}][2]", (gauge_results[1].lot_gauge_result_value if gauge_results[1]), class: "row#{i_int}#{j_int}", next_element: (i_int < 9 ? ".row#{i_int+1}#{j_int}" : ".row0#{j_int+1}") %>
+                      <% j_int += 1 %>
+                      <%= text_field_tag "gauge_field_data[#{gauge_dimension.item_part_dimension_id}][#{i_int}][3]", (gauge_results[2].lot_gauge_result_value if gauge_results[2]), class: "row#{i_int}#{j_int}", next_element: (i_int < 9 ? ".row#{i_int+1}#{j_int}" : ".row0#{j_int+1}") %>
+                      <% j_int += 1 %>
+                  </td>                  
+                <% end %>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+  </div>  
+</div> 
+
+<div class="separator bottom" id="last_element" last-element="<%= "row#{i_int}#{j_int-1}" %>"></div>
+
+<div class="row-fluid">
+    <div class="span12 right">
+        <%= f.submit "Save", class: "btn", onclick: "$('#form_for_lot_gauge_results').submit()" %>
+        <%= link_to "Back", edit_quality_lot_gauge_path(@quality_lot_gauge, quality_lot_id: @quality_lot.id), class: "btn" %>
+    </div>
+</div>
+
 <% end %>
 
 <%= render :partial => 'item_part_dimensions/item_dimensions', locals: {item_page: false} %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+      $(".row00").focus();
+  });
+
+ $(document).on("keydown", "#form_for_lot_gauge_results input[type=text]", function(e){
+      var keyCode = e.keyCode || e.which;
+      if(keyCode == 13){
+        e.preventDefault();
+        $($(this).attr("next_element")).focus();
+        if($(this).attr("class") == $("#last_element").attr("last-element"))
+            $("#form_for_lot_gauge_results").submit();
+      }
+  });
+</script>
