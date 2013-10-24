@@ -39,7 +39,7 @@
 .btn-file > input{opacity: 0.05; z-index: 999;}
 
 .editable_table input[type=text] {width: 60px;}
-#form_for_lot_gauge_results .editable_table input[type=text] {width: 120px;}
+/*#form_for_lot_gauge_results .editable_table input[type=text] {width: 120px;}*/
 .editable_table_container{width: 100%; overflow: hidden;-ms-overflow-x: auto; /* IE8 */ 
 	overflow-x: auto;
 }
