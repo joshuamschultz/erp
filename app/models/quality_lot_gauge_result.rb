@@ -56,7 +56,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_rp_values = [appraisor1_results[:rps], appraisor2_results[:rps], appraisor3_results[:rps]].transpose.map {|x| x.reduce(:+)}
           gauge_rp_values = gauge_rp_values.collect{|p| (p.to_f/9).round(3) }
 
-          gauge_rp = (gauge_rp_values.max - gauge_rp_values.min).round(3)
+          gauge_rp = (gauge_rp_values.max.present? && gauge_rp_values.min.present?) ? (gauge_rp_values.max - gauge_rp_values.min).round(3) : 0
           # puts gauge_rp
 
           gauge_rbar1 = (gauge_rbars.sum / @@gauge_app).round(3)
