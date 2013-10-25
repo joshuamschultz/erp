@@ -174,10 +174,12 @@
     function set_po_line_revisions(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".revision-select-box-template").html(), response["aaData"]));
         $("#quality_lot_item_revision_id").html(html);
-        $("#quality_lot_item_revision_id").val(response["aaData"]["default"]);
+        $("#quality_lot_item_revision_id").val(response["aaData"]["default"]);        
         <% unless @quality_lot.new_record? %>
-          if(page_initial == true)  
-              $("#quality_lot_item_revision_id").val("<%= @quality_lot.item_revision_id %>");
+            if(page_initial == true)  
+                $("#quality_lot_item_revision_id").val("<%= @quality_lot.item_revision_id %>");
+        <% else %>
+            $("#quality_lot_lot_quantity").val(response["aaData"]["latest_received_count"]);
         <% end %>
 
         page_initial = false;
