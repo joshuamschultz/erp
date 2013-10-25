@@ -7,6 +7,8 @@ class CommonActionsController < ApplicationController
           result = {}
   				result[:aaData] = po_line.present? ? po_line.item.item_revisions : []
           result[:default] = (po_line.present? && po_line.item.current_revision.present?) ? po_line.item.current_revision.id : 0
+          latest_received = po_line.po_shipments.order(:created_at).last
+          result[:latest_received_count] = latest_received.present? ? latest_received.po_shipped_count : ""
 
   			when "po_header_items"
   				po_header = PoHeader.find(params[:id])
