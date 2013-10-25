@@ -5,7 +5,7 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">PO Received</h4>
+            <h4 class="span6 heading">Received</h4>
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
             </span>
@@ -21,7 +21,7 @@
                 <th>PO</th>
                 <th>Vendor</th>
                 <th>Customer</th>
-                <th>Quality ID</th>
+                <th>Quality Level</th>
                 <th>Quantity Ordered</th>
                 <th>Quantity Received</th>
                 <th>Date Received</th>
@@ -46,7 +46,7 @@
                         { "mData": "po_identifier" },
                         { "mData": "vendor_name" },
                         { "mData": "customer_name" },
-                        { "mData": "quality_id_name" },
+                        { "mData": "quality_level_name" },
                         { "mData": "po_line_quantity" },
                         { "mData": "po_shipped_count" },
                         { "mData": "po_shipped_date" },
