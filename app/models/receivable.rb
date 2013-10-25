@@ -16,7 +16,7 @@ class Receivable < ActiveRecord::Base
 
   accepts_nested_attributes_for :receivable_shipments
 
-  validates_presence_of :receivable_description, :receivable_identifier
+  validates_presence_of :receivable_identifier
 
   validates_uniqueness_of :receivable_identifier
 

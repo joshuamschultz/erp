@@ -25,11 +25,15 @@
 	}
 
 	$(document).on("click", ".btn_save_shipped", function(){
+		process_shipping_inputs($(this));
+	});
+
+	function process_shipping_inputs(current_field){
 		$(".shipping_status").html("");
 		$(".shipping_status").removeClass("success");
 		$(".shipping_status").removeClass("error");
-		var <%= type %>_line_row = $(this).closest("tr");
-		var <%= type %>_line_id = $(this).attr("<%= type %>_line_id");
+		var <%= type %>_line_row = current_field.closest("tr");
+		var <%= type %>_line_id = current_field.attr("<%= type %>_line_id");
 		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
 		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
 		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
@@ -40,9 +44,9 @@
 			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
 		}
 		return false;
-	});
+	}
 
-	$(document).ready(function(){ 
+	$(document).ready(function(){
 
 	});
 
@@ -65,5 +69,17 @@
 		    table_row_next_focus(e, "#table_report_shipping_items", $(this), ".<%= type %>_line_shipping_input input[type=text]", true);
 		});
 	<% end %>
+
+	function initiate_shipping_inputs(){
+		$(".shipping_status").html("");
+		$(".shipping_status").removeClass("success");
+		$(".shipping_status").removeClass("error");
+		
+		$(".shipping_input_field").each(function(){
+			if(parseFloat($(this).val()) > 0){
+				process_shipping_inputs($(this));
+			}				
+		});
+	}
 
 </script>

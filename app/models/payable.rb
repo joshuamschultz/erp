@@ -19,7 +19,7 @@ class Payable < ActiveRecord::Base
 
   accepts_nested_attributes_for :payable_shipments
 
-  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_description, :payable_identifier
+  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_identifier
 
   validates_uniqueness_of :payable_identifier
 

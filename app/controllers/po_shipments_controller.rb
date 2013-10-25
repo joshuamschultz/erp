@@ -10,7 +10,7 @@ class PoShipmentsController < ApplicationController
         if(params[:type] == "shipping")
             @po_lines = PoLine.where(:po_line_status => "open").select{|po_line|
                 po_line = po_line_data_list(po_line, false)
-                po_line[:po_line_shipping] = "<div class='po_line_shipping_input'><input type='text' value='0'></div>"
+                po_line[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' class='shipping_input_field' type='text' value='0'></div>"
                 po_line[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
                 po_line[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
                 po_line[:links] = "<a po_line_id='#{po_line.id}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
