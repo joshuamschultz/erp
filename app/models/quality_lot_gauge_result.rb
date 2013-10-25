@@ -66,23 +66,20 @@ class QualityLotGaugeResult < ActiveRecord::Base
           # puts gauge_rbar2
 
           gauge_gv = gauge_rbar1 * @@gauge_k1
-          puts gauge_gv
 
           gauge_ov = ((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails))
-          puts gauge_ov
 
           gauge_rr = (gauge_ov**2) + (gauge_gv**2)
-          puts gauge_rr
 
-          gauge_pv = gauge_rp * @@gauge_k3 # Math.sqrt(gauge_rp * @@gauge_k3)
-          puts gauge_pv
+          gauge_pv = Math.sqrt(gauge_rp * @@gauge_k3)
 
           gauge_tv = Math.sqrt((gauge_rr**2) + (gauge_pv**2))
           gauge_prr = (gauge_tv != 0) ? Math.sqrt(gauge_rr/gauge_tv) : 0
           
           dimension_results << { item_part_letter: gauge_dimension.item_part_dimension.item_part_letter, 
-            gv: gauge_gv.round(5), ov: gauge_ov.round(5), rr: gauge_rr.round(5), pv: gauge_pv.round(5), 
-            tv: gauge_tv.round(5), prr: gauge_prr.round(5) }
+            gv: "%0.3f" % gauge_gv.round(3), ov: "%0.3f" % gauge_ov.round(3), rr: "%0.3f" % gauge_rr.round(3), 
+            pv: "%0.3f" % gauge_pv.round(3), tv: "%0.3f" % gauge_tv.round(3), prr: "%0.3f" % gauge_prr.round(3), 
+            rbar1: "%0.3f" % gauge_rbar1, rbar2: "%0.3f" % gauge_rbar2, rp: "%0.3f" % gauge_rp }
       end
       dimension_results
   end
