@@ -23,7 +23,7 @@
 </head>
 <body class="<%= yield :page_level_body_class %>">
     <% if current_user && params[:layout] %>
-        <%= render :partial => 'layouts/app_layouts/main_layout' %>           
+        <%= render :partial => 'layouts/app_layouts/main_layout' %>
     <% else %>
         <%= yield %>
     <% end %>
