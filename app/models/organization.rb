@@ -1,13 +1,13 @@
 class Organization < ActiveRecord::Base
 	include Rails.application.routes.url_helpers
 
-	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id, :organization_active, 
+	attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id, 
 	:organization_address_1, :organization_address_2, :organization_city, :organization_country, 
 	:organization_created_id, :organization_description, :organization_email, :organization_fax, 
 	:organization_name, :organization_notes, :organization_short_name, :organization_state, 
 	:organization_telephone, :organization_type_id, :organization_updated_id, :organization_website, 
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
-	:vendor_quality_id, :organization_complete
+	:vendor_quality_id, :organization_complete, :organization_active
 
 	scope :organizations, lambda{|type| 
 		case(type)
@@ -65,7 +65,7 @@ class Organization < ActiveRecord::Base
 
 	validates_presence_of :organization_type
 
-	validates_presence_of :contact_type
+	# validates_presence_of :contact_type
 
 	(validates_uniqueness_of :organization_name if validates_length_of :organization_name, :minimum => 2, :maximum => 50) if validates_presence_of :organization_name
 
@@ -75,9 +75,9 @@ class Organization < ActiveRecord::Base
 
 	# validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
 
-	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| o.contact_type.type_value == "email" }
+	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| o.contact_type.present? && o.contact_type.type_value == "email" }
 
-	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| o.contact_type.type_value == "fax" }
+	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| o.contact_type.present? && o.contact_type.type_value == "fax" }
 
 	belongs_to :user
 	belongs_to :territory
@@ -179,5 +179,7 @@ class Organization < ActiveRecord::Base
 	    	nil
 	    end
  	end
+
+
 
 end
