@@ -20,6 +20,7 @@ class Ability
         elsif user.has_role? :vendor
 
         elsif user.has_role? :customer
+            can :manage, :all
     end
     #
     # The first argument to `can` is the action you are giving the user 

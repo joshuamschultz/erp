@@ -55,3 +55,6 @@
 .shipping_status.success{color: #8EC657;font-size: 9pt;}
 
 input[type="radio"], input[type="checkbox"]{margin: 0px !important;}
+
+#form_for_registration .control-label {width: 150px;}
+#form_for_registration .controls {margin-left: 160px;}
