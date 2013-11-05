@@ -169,5 +169,10 @@
 
 </div>
 
+<div class="separator bottom"></div> 
+
+<!-- Attachments -->
+<%= render 'attachments/attachments' %>
+
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>

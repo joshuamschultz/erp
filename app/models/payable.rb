@@ -7,7 +7,7 @@ class Payable < ActiveRecord::Base
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date, 
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
-  :organization_id, :po_header_id, :payable_shipments_attributes
+  :organization_id, :po_header_id, :payable_shipments_attributes, :payable_freight
 
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
@@ -19,9 +19,9 @@ class Payable < ActiveRecord::Base
 
   accepts_nested_attributes_for :payable_shipments
 
-  validates_presence_of :payable_invoice_date, :payable_due_date, :payable_identifier
+  validates_presence_of :payable_invoice_date, :payable_due_date, :po_header #, :payable_identifier
 
-  validates_uniqueness_of :payable_identifier
+  # validates_uniqueness_of :payable_identifier
 
   before_save :process_before_save
 

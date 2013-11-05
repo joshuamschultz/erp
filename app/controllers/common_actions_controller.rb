@@ -49,6 +49,10 @@ class CommonActionsController < ApplicationController
           organization = Organization.find(params[:id])
           result = organization.present? ? organization.purchase_orders.where(:po_status => "open") : []
 
+        when "create_payable"
+          # po_lines = params[:po_lines].collect(&:value)
+          puts params[:po_lines].values
+
   		end
   		render json: {:aaData => result}
   end
