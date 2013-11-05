@@ -8,6 +8,7 @@
             <h4 class="span6 heading">Received</h4>
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
             </span>
         </div> 
     </div>
@@ -56,3 +57,44 @@
                     ]'
     } 
 %>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+    });
+
+    $(document).on("change", ".payable_po_lines", function(){
+        if(this.checked){
+            disable_other_po_items($(this).attr("class"));
+        }
+    });
+
+    function disable_other_po_items(except_po_class){
+        $(".payable_po_lines").each(function(){
+            if($(this).attr("class") != except_po_class){
+                $(this).attr("checked", false);
+            }
+        });
+    }
+
+    function create_payable_for_items(){
+        var selected_payable_po_lines = $(".payable_po_lines:checked");
+        if(selected_payable_po_lines.length == 0)
+            alert("Please select items in any PO.")
+        else{
+            // console.log($(".payable_po_lines:checked").serializeArray());
+
+            var searchIDs = $(".payable_po_lines:checked").map(function(){
+                return $(this).val();
+            }).get();
+            
+            console.log(searchIDs);
+
+            // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_payable", "po_lines": $(".payable_po_lines:checked").serializeArray()}}, "redirect_to_payable", {});
+        }
+    }
+
+    function redirect_to_payable(){
+        alert("success");
+    }
+</script>

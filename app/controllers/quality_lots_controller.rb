@@ -74,6 +74,7 @@ class QualityLotsController < ApplicationController
     @quality_lot = QualityLot.find(params[:id])
     @po_header = @quality_lot.po_header
     @notes = @quality_lot.present? ? @quality_lot.comments.where(:comment_type => "note").order("created_at desc") : [] 
+    @attachable = @quality_lot
 
     respond_to do |format|
       format.html # show.html.erb

@@ -21,8 +21,10 @@ class PoShipmentsController < ApplicationController
               po_line = po_shipment.po_line
               if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped
                   po_shipment = po_line_data_list(po_shipment, true)   
-                  po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                   po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+                  po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                  # po_shipment[:links] += '<input type="checkbox" class="payable_po_lines" name="payable_po_lines" value="#{po_line.id}">'
+                  # po_shipment[:item_part_no] = "<input type='checkbox' class='payable_po_lines payable_po_lines_#{po_line.po_header_id}' name='payable_po_lines' value='#{po_shipment.id}'>  " + po_shipment[:item_part_no]
               end
             }
             render json: {:aaData => @po_shipments}
