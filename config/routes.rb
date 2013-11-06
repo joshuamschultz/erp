@@ -1,9 +1,10 @@
 AllianceFasteners::Application.routes.draw do
+
   resources :quote_line_costs
 
+  resources :payable_po_shipments
 
   resources :so_shipments
-
 
   resources :quality_lot_gauges do
     resources :quality_lot_gauge_results
