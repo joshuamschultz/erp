@@ -5,10 +5,13 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Received</h4>
+            <h4 class="span6 heading">Received<%= " - History" if (params[:type] == "history") %></h4>
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
+                <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
+                <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
+                <%= link_to 'Open', po_shipments_path(type: "shipped"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', po_shipments_path(type: "history"), :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -41,7 +44,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "po_shipment_table_report", :path => po_shipments_path, :extras => {:slno => false}, 
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: params[:type]), :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "item_part_no" },
                         { "mData": "po_identifier" },
@@ -82,15 +85,17 @@
         if(selected_payable_po_lines.length == 0)
             alert("Please select items in any PO.")
         else{
-            var payable_shipments = $(".payable_po_lines:checked").map(function(){
+            var selected_shipments = $(".payable_po_lines:checked").map(function(){
                 return $(this).val();
             }).get();
 
-            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_payable", "shipments": payable_shipments}}, "redirect_to_payable", {});
+            initialize_api_call({"url": "/payables", "type": "POST", "data_type": "json", "params": {"mode": "create_payable", "shipments": selected_shipments}}, "redirect_to_payable", {});
         }
     }
 
-    function redirect_to_payable(){
-        alert("success");
+    function redirect_to_payable(response, callback_params, api_params){
+        if(response.id){
+            window.location = "/payables/" + response.id + "/edit";
+        }
     }
 </script>

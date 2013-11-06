@@ -8,7 +8,6 @@ class Item < ActiveRecord::Base
   has_many :item_part_dimensions, :through => :item_revisions
 
   has_many :po_lines, :dependent => :destroy
-  has_many :payable_shipments, :through => :po_lines
 
   has_many :quality_lots, :through => :po_lines
 
@@ -62,12 +61,10 @@ class Item < ActiveRecord::Base
   end 
 
   def qty_on_order
-      # self.po_lines.sum(:po_line_quantity) - self.payable_shipments.sum(:payable_shipment_count) 
       self.po_lines.sum(:po_line_quantity) - self.po_lines.sum(:po_line_shipped)
   end
 
   def qty_on_hand
-      # self.payable_shipments.sum(:payable_shipment_count)
       self.po_lines.sum(:po_line_shipped) - self.so_lines.sum(:so_line_shipped)
   end
   

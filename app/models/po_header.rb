@@ -59,16 +59,17 @@ class PoHeader < ActiveRecord::Base
       po_header = po_shipment.po_line.po_header if po_shipment && po_shipment.po_line
       if po_header
           payable = po_header.payables.build
+          payable.payable_identifier = "Invoice"
           payable.payable_invoice_date = Date.today
           payable.payable_due_date = Date.today
           params[:shipments].each{|shipment_id| 
-              po_shipment = PoShipment.find_by_id(shipment_id); 
-              payable.po_shipments << po_shipment if po_shipment && po_shipment.po_line.po_header == po_header
+              po_shipment = PoShipment.find_by_id(shipment_id);
+              payable.po_shipments << po_shipment if po_shipment && po_shipment.po_line && po_shipment.po_line.po_header == po_header
           }
-          payable.save
+          payable
       else
-          nil
-      end            
+          Payable.new
+      end
   end
 
 end

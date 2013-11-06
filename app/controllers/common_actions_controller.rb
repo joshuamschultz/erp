@@ -50,9 +50,8 @@ class CommonActionsController < ApplicationController
           result = organization.present? ? organization.purchase_orders.where(:po_status => "open") : []
 
         when "create_payable"
-          puts params[:shipments].to_s
-          PoHeader.process_payable_po_lines(params)
-
+          # puts params[:shipments].to_s
+          # PoHeader.process_payable_po_lines(params)
   		end
   		render json: {:aaData => result}
   end

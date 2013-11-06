@@ -7,7 +7,7 @@ class PoShipmentsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        if(params[:type] == "shipping")
+        if params[:type] == "shipping"
             @po_lines = PoLine.where(:po_line_status => "open").select{|po_line|
                 po_line = po_line_data_list(po_line, false)
                 po_line[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' class='shipping_input_field' type='text' value='0'></div>"
@@ -16,16 +16,15 @@ class PoShipmentsController < ApplicationController
                 po_line[:links] = "<a po_line_id='#{po_line.id}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
             }
             render json: {:aaData => @po_lines}
-        else            
-            @po_shipments = PoShipment.includes(:po_line).order(:po_line_id).select{|po_shipment|
-              po_line = po_shipment.po_line
-              if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped
-                  po_shipment = po_line_data_list(po_shipment, true)   
-                  po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
-                  po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
-                  # po_shipment[:links] += '<input type="checkbox" class="payable_po_lines" name="payable_po_lines" value="#{po_line.id}">'
-                  po_shipment[:item_part_no] = "<input type='checkbox' class='payable_po_lines payable_po_lines_#{po_line.po_header_id}' name='payable_po_lines' value='#{po_shipment.id}'>  " + po_shipment[:item_part_no]
-              end
+        else
+            @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments : PoShipment.open_shipments
+            @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
+                po_line = po_shipment.po_line;
+                po_shipment = po_line_data_list(po_shipment, true);
+                po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p");
+                po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil);
+                checkbox = (params[:type] == "history") ? "" : "<input type='checkbox' class='payable_po_lines payable_po_lines_#{po_line.po_header_id}' name='payable_po_lines' value='#{po_shipment.id}'>  ";
+                po_shipment[:item_part_no] = checkbox + po_shipment[:item_part_no]
             }
             render json: {:aaData => @po_shipments}
         end

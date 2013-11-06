@@ -56,42 +56,9 @@
 
 </div>
 </div>
-
-<% if @payable.persisted? && @payable.po_header.present? %>
-    <div class="separator bottom"></div>
-    <div class="form-inputs">
-    <div class="row-fluid">
-    <div class="span12">
-        <table id="payable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Part No</th>
-                    <th>Quantity Ordered</th>
-                    <th>Total Received</th>                    
-                    <!-- <th>Added For</th> -->
-                    <th>Cost</th>
-                    <th>Payable For</th>
-                </tr>
-            </thead>
-            <tbody id="payable_shipments_table_table_body">
-                <%= f.fields_for :payable_shipments, @payable.payable_shipments do |payable_shipment| %>
-                    <tr>
-                        <td><%= link_to payable_shipment.object.po_line.item_alt_name.item_alt_identifier, item_path(payable_shipment.object.po_line.item) %></td>
-                        <td><%= payable_shipment.object.po_line.po_line_quantity %></td>
-                        <td><%= payable_shipment.object.po_line.po_line_shipped %></td>                        
-                        <!-- <td><%#= payable_shipment.object.po_line.payable_shipments.sum(:payable_shipment_count) %></td> -->
-                        <td><%= payable_shipment.object.po_line.po_line_cost %></td>
-                        <td><%= payable_shipment.input :payable_shipment_count, label: false, input_html: { class: 'payable_shipment_count' } %></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-    </div>
-    </div>
-    </div>
 <% end %>
 
-<% end %>
+<%= render :partial => 'payables/po_shipments' if @po_header %>
 
 <%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.organization.nil? %>
 
@@ -133,7 +100,7 @@
             <% unless @payable.persisted? %>
                     $("#payable_po_header_id").focus();
             <% else %>
-                    $("#payable_payable_description").focus();
+                    $("#payable_payable_identifier").focus();
             <% end %>
 
             // tab_field_forms["form_for_paybles"].push("payable_payable_discount");
