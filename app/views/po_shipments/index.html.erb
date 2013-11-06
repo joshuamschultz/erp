@@ -82,15 +82,11 @@
         if(selected_payable_po_lines.length == 0)
             alert("Please select items in any PO.")
         else{
-            // console.log($(".payable_po_lines:checked").serializeArray());
-
-            var searchIDs = $(".payable_po_lines:checked").map(function(){
+            var payable_shipments = $(".payable_po_lines:checked").map(function(){
                 return $(this).val();
             }).get();
-            
-            console.log(searchIDs);
 
-            // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_payable", "po_lines": $(".payable_po_lines:checked").serializeArray()}}, "redirect_to_payable", {});
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_payable", "shipments": payable_shipments}}, "redirect_to_payable", {});
         }
     }
 
