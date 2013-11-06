@@ -7,7 +7,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Received<%= " - History" if (params[:type] == "history") %></h4>
             <span class="span6 heading right">
-                <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>                
                 <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
                 <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
                 <%= link_to 'Open', po_shipments_path(type: "shipped"), :class => "btn btn-mini btn-success" %>
