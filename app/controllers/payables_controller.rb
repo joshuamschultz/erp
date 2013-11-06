@@ -1,5 +1,6 @@
 class PayablesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update] 
+  skip_before_filter :verify_authenticity_token, :only => :create
 
   before_filter :set_page_info  
 
@@ -8,8 +9,10 @@ class PayablesController < ApplicationController
   end
 
    def set_autocomplete_values
-    params[:payable][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:payable][:po_header_id]
-    params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
+    if params[:payable].present?
+      params[:payable][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:payable][:po_header_id]
+      params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
+    end
   end
 
   # GET /payables
@@ -74,7 +77,11 @@ class PayablesController < ApplicationController
   # POST /payables
   # POST /payables.json
   def create
-    @payable = Payable.new(params[:payable])
+    if params[:shipments].present?
+        @payable = PoHeader.process_payable_po_lines(params)
+    else
+        @payable = Payable.new(params[:payable])
+    end
 
     respond_to do |format|
       if @payable.save

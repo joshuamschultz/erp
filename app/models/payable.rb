@@ -7,20 +7,18 @@ class Payable < ActiveRecord::Base
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date, 
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
-  :organization_id, :po_header_id, :payable_shipments_attributes, :payable_freight, :po_shipments_attributes
+  :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes
 
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
   has_many :payable_lines, :dependent => :destroy
   has_many :payment_lines, :dependent => :destroy
-  has_many :payable_shipments, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
-  has_many :payable_po_shipments
+  has_many :payable_po_shipments, :dependent => :destroy
   has_many :po_shipments, through: :payable_po_shipments
 
-  accepts_nested_attributes_for :payable_shipments
   accepts_nested_attributes_for :po_shipments
 
   validates_presence_of :payable_invoice_date, :payable_due_date, :po_header #, :payable_identifier
@@ -47,22 +45,6 @@ class Payable < ActiveRecord::Base
       self.payable_status = "open"     
   end  
 
-  after_create :process_after_create
-
-  def process_after_create
-      if self.po_header
-          self.po_header.po_lines.each do |po_line|
-            if po_line.payable_shipments.sum(:payable_shipment_count) < po_line.po_line_shipped #po_line.po_line_quantity
-                payable_shipment = self.payable_shipments.build
-                payable_shipment.po_line = po_line
-                payable_shipment.payable_shipment_count = po_line.po_line_shipped - po_line.payable_shipments.sum(:payable_shipment_count)
-                payable_shipment.save  
-            end
-          end
-      end
-      self.process_payable_total
-  end
-
   def process_payable_total
       Payable.skip_callback("save", :before, :process_before_save)
       Payable.skip_callback("save", :after, :process_after_save)
@@ -73,8 +55,8 @@ class Payable < ActiveRecord::Base
   end
 
   def update_payable_total
-      payable_total = self.payable_lines.sum(:payable_line_cost) - self.payable_discount
-      payable_total += self.payable_shipments.sum(:payable_shipment_cost) if self.po_header
+      payable_total = self.payable_lines.sum(:payable_line_cost) - self.payable_discount      
+      payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
       payable_total
   end
 

@@ -1,0 +1,2 @@
+module PayablePoShipmentsHelper
+end
