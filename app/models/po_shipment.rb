@@ -5,8 +5,7 @@ class PoShipment < ActiveRecord::Base
   has_one :payable, through: :payable_po_shipment
   
   attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
-  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, 
-  :po_shipped_status
+  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit
 
   scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
 
@@ -16,6 +15,10 @@ class PoShipment < ActiveRecord::Base
 
   def process_before_save
       self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
+  end
+
+  def payable_checkbox(mode)
+    (mode == "history") ? "" : "<input type='checkbox' class='payable_po_lines payable_po_lines_#{self.po_line.po_header_id}' name='payable_po_lines' value='#{self.id}'>  "
   end
 
   validate :check_total_shipped
