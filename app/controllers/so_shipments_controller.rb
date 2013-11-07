@@ -16,8 +16,10 @@ class SoShipmentsController < ApplicationController
                 so_line[:links] = "<a so_line_id='#{so_line.id}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
             }
             render json: {:aaData => @so_lines}
-        else            
-            @so_shipments = SoShipment.order(:so_line_id).select{|so_shipment|
+        else
+            @item = Item.find(params[:item_id]) if params[:item_id].present?
+            @so_shipments = @item.present? ? @item.so_shipments : SoShipment.order(:so_line_id)
+            @so_shipments = @so_shipments.select{|so_shipment|
                 so_shipment = so_line_data_list(so_shipment, true)   
                 so_shipment[:links] = CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 so_shipment[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")

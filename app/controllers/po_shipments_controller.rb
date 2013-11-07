@@ -18,7 +18,12 @@ class PoShipmentsController < ApplicationController
             }
             render json: {:aaData => @po_lines}
         else
-            @po_shipments = (params[:type] == "history") ? PoShipment.where(:id => PayablePoShipment.all.collect(&:po_shipment_id)) : PoShipment.where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+            @item = Item.find(params[:item_id]) if params[:item_id].present?
+            if @item
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments) : PoShipment.open_shipments(@item.po_shipments)
+            else
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil) : PoShipment.open_shipments(nil)
+            end
             @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
                 po_line = po_shipment.po_line
                 po_shipment = po_line_data_list(po_shipment, true)
