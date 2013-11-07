@@ -8,6 +8,7 @@ class Item < ActiveRecord::Base
   has_many :item_part_dimensions, :through => :item_revisions
 
   has_many :po_lines, :dependent => :destroy
+  has_many :po_shipments, :through => :po_lines
 
   has_many :quality_lots, :through => :po_lines
 
@@ -66,6 +67,11 @@ class Item < ActiveRecord::Base
 
   def qty_on_hand
       self.po_lines.sum(:po_line_shipped) - self.so_lines.sum(:so_line_shipped)
+  end
+
+  def current_location
+      po_shipment = self.po_shipments.order(:created_at).last
+      po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
   end
   
 end
