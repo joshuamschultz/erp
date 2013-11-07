@@ -4,23 +4,25 @@
 	}
 
 	function shipment_row_callback(response, callback_params, api_params){
-		var <%= type %>_line_row = callback_params.<%= type %>_line_row;	
-		if(response.errors && response.errors[1]){
-			<%= type %>_line_row.find(".shipping_status").addClass("error");
-			<%= type %>_line_row.find(".shipping_status").html(response.errors[1]);
-		}
-		else if(response.shipped_status == "closed"){
-			<%= type %>_line_row.find(".shipping_status").addClass("success");
-			<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
-			<%= type %>_line_row.hide(2000, arguments.callee);
-		}
-		else{
-			<%= type %>_line_row.find(".shipping_status").addClass("success");
-			<%= type %>_line_row.find(".shipping_status").html("Saved successfully!");
-			<%= type %>_line_row.find(".<%= type %>_line_quantity_open").html(response.quantity_open);			
-			<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
-			<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
-			<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
+		if(callback_params){
+			var <%= type %>_line_row = callback_params.<%= type %>_line_row;	
+			if(response.errors && response.errors[1]){
+				<%= type %>_line_row.find(".shipping_status").addClass("error");
+				<%= type %>_line_row.find(".shipping_status").html(response.errors[1]);
+			}
+			else if(response.shipped_status == "closed"){
+				<%= type %>_line_row.find(".shipping_status").addClass("success");
+				<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
+				<%= type %>_line_row.hide(1000, arguments.callee);
+			}
+			else{
+				<%= type %>_line_row.find(".shipping_status").addClass("success");
+				<%= type %>_line_row.find(".shipping_status").html("Saved successfully!");
+				<%= type %>_line_row.find(".<%= type %>_line_quantity_open").html(response.quantity_open);			
+				<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
+				<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
+				<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
+			}
 		}
 	}
 
@@ -81,5 +83,14 @@
 			}				
 		});
 	}
+
+	function process_all_open(shipping_id, current_element){
+        if(confirm("Are you sure?")){
+        	$(".shipping_input_po_" + shipping_id).each(function(){
+        		$(this).val($(this).closest("tr").find(".po_line_quantity_open").html());
+        	});
+        	initiate_shipping_inputs();
+        }
+    }
 
 </script>
