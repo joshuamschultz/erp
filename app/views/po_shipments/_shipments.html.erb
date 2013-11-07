@@ -1,0 +1,96 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Received<%= " - History" if (shipment_type == "history") %></h4>
+            <span class="span6 heading right">
+                <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>                
+                <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
+                <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
+                <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+
+    <div class="widget-body">
+        <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Part No</th>
+                <th>PO</th>
+                <th>Vendor</th>
+                <th>Customer</th>
+                <th>Quality Level</th>
+                <th>Quantity Ordered</th>
+                <th>Quantity Received</th>
+                <th>Date Received</th>
+                <th>Unit</th>
+                <th>Shelf</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item)), :extras => {:slno => false}, 
+        :columns => '[
+                        { "mData": "item_part_no" },
+                        { "mData": "po_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "customer_name" },
+                        { "mData": "quality_level_name" },
+                        { "mData": "po_line_quantity" },
+                        { "mData": "po_shipped_count" },
+                        { "mData": "po_shipped_date" },
+                        { "mData": "po_shipped_unit" },
+                        { "mData": "po_shipped_shelf" },
+                        { "mData": "links", "bportable": false, "bSearchable": false }  
+                    ]'
+    } 
+%>
+
+<script type="text/javascript">
+
+    $(document).on("change", ".payable_po_lines", function(){
+        if(this.checked){
+            disable_other_po_items($(this).attr("class"));
+        }
+    });
+
+    function disable_other_po_items(except_po_class){
+        $(".payable_po_lines").each(function(){
+            if($(this).attr("class") != except_po_class){
+                $(this).attr("checked", false);
+            }
+        });
+    }
+
+    function create_payable_for_items(){
+        var selected_payable_po_lines = $(".payable_po_lines:checked");
+        if(selected_payable_po_lines.length == 0)
+            alert("Please select items in any PO.")
+        else{
+            var selected_shipments = $(".payable_po_lines:checked").map(function(){
+                return $(this).val();
+            }).get();
+
+            initialize_api_call({"url": "/payables", "type": "POST", "data_type": "json", "params": {"mode": "create_payable", "shipments": selected_shipments}}, "redirect_to_payable", {});
+        }
+    }
+
+    function redirect_to_payable(response, callback_params, api_params){
+        if(response.id){
+            window.location = "/payables/" + response.id + "/edit";
+        }
+    }
+</script>

@@ -56,4 +56,16 @@ class PoShipment < ActiveRecord::Base
       PoLine.set_callback("save", :after, :update_po_total)
     end
   end
+
+
+  def self.open_shipments(po_shipments)
+      po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+  end
+
+  def self.closed_shipments(po_shipments)
+      po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+  end
+
 end

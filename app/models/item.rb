@@ -13,6 +13,7 @@ class Item < ActiveRecord::Base
   has_many :quality_lots, :through => :po_lines
 
   has_many :so_lines, :dependent => :destroy
+  has_many :so_shipments, :through => :so_lines
 
   has_many :item_alt_names, :dependent => :destroy
 
