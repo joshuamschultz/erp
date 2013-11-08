@@ -66,7 +66,7 @@ class PoLine < ActiveRecord::Base
     object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
     object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
     unless shipment
-      object[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
+      object[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
       object[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
       object[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
       object[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"

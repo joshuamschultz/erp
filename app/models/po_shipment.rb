@@ -15,6 +15,10 @@ class PoShipment < ActiveRecord::Base
 
   def process_before_save
       self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
+
+      unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
+          self.po_shipped_status = "received"
+      end
   end
 
   def payable_checkbox(mode)

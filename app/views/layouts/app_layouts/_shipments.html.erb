@@ -14,6 +14,7 @@
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
 				<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
 				<%= type %>_line_row.hide(1000, arguments.callee);
+				setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
 			}
 			else{
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
