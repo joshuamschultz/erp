@@ -7,7 +7,7 @@
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>                
                 <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
-                <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" %>
+                <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" if create_payable %>
                 <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
             </span>
@@ -29,6 +29,7 @@
                 <th>Date Received</th>
                 <th>Unit</th>
                 <th>Shelf</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>
@@ -42,7 +43,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item)), :extras => {:slno => false}, 
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "item_part_no" },
                         { "mData": "po_identifier" },
@@ -54,6 +55,7 @@
                         { "mData": "po_shipped_date" },
                         { "mData": "po_shipped_unit" },
                         { "mData": "po_shipped_shelf" },
+                        { "mData": "po_shipped_status" },
                         { "mData": "links", "bportable": false, "bSearchable": false }  
                     ]'
     } 

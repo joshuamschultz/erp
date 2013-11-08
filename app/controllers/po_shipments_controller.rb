@@ -9,13 +9,8 @@ class PoShipmentsController < ApplicationController
       format.json { 
         if params[:type] == "shipping"
             @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
-                po_line = po_line_data_list(po_line, false)
-                po_line[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
-                po_line[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
-                po_line[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
-                po_line[:links] = "<a po_line_id='#{po_line.id}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
-                po_line[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
-            }
+                po_line = po_line.po_line_data_list(po_line, false)
+             }
             render json: {:aaData => @po_lines}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
@@ -25,30 +20,15 @@ class PoShipmentsController < ApplicationController
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil) : PoShipment.open_shipments(nil)
             end
             @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
-                po_line = po_shipment.po_line
-                po_shipment = po_line_data_list(po_shipment, true)
+                po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
-                po_shipment[:item_part_no] = po_shipment.payable_checkbox(params[:type]) + po_shipment[:item_part_no]
+                po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
             }
             render json: {:aaData => @po_shipments}
         end
       }
     end
-  end
-
-  def po_line_data_list(object, shipment)
-      po_line = shipment ? object.po_line : object
-      object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
-      object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-      object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
-      object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
-      object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.organization.customer_quality), po_line.organization.customer_quality.quality_name) if po_line.organization && po_line.organization.customer_quality) || ""
-      object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-      object[:po_line_quantity] = po_line.po_line_quantity      
-      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
-      object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
-      object
   end
 
   # GET /po_shipments/1
@@ -82,16 +62,6 @@ class PoShipmentsController < ApplicationController
   # POST /po_shipments.json
   def create
     @po_shipment = PoShipment.new(params[:po_shipment])
-
-    # respond_to do |format|
-    #   if @po_shipment.save
-    #     format.html { redirect_to @po_shipment, notice: 'Po shipment was successfully created.' }
-    #     format.json { render json: @po_shipment, status: :created, location: @po_shipment }
-    #   else
-    #     format.html { render action: "new" }
-    #     format.json { render json: @po_shipment.errors, status: :unprocessable_entity }
-    #   end
-    # end
 
     respond_to do |format|
       if @po_shipment.save

@@ -1,3 +1,3 @@
 <%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
 
-<%= render :partial => 'po_shipments/shipments', :locals => {open_path: po_shipments_path(type: "shipped"), closed_path: po_shipments_path(type: "history"), shipment_type: params[:type]} %>
+<%= render :partial => 'po_shipments/shipments', :locals => {open_path: po_shipments_path(type: "shipped"), closed_path: po_shipments_path(type: "history"), shipment_type: params[:type], create_payable: true} %>

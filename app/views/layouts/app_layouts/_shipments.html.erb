@@ -36,11 +36,13 @@
 		$(".shipping_status").removeClass("error");
 		var <%= type %>_line_row = current_field.closest("tr");
 		var <%= type %>_line_id = current_field.attr("<%= type %>_line_id");
+		var <%= type %>_shipped_status = current_field.attr("<%= type %>_shipped_status");
+
 		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
 		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
 		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
 		if(parseFloat(<%= type %>_line_shipping) > 0)
-			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
 		else{
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
 			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");

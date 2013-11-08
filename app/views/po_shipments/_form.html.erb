@@ -6,6 +6,7 @@
     <%= f.input :po_shipped_count, :label => "Shipping", :autofocus => true %>
     <%= f.input :po_shipped_shelf, :label => "Shelf" %>
     <%= f.input :po_shipped_unit, :label => "Unit" %>
+    <%= f.input :po_shipped_status, :label => "Status", collection: ["received", "on hold", "rejected"], include_blank: false %>
   </div>
 
   <div class="separator bottom"></div>
