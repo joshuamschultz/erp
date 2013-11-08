@@ -1,11 +1,11 @@
 class PoShipment < ActiveRecord::Base
   belongs_to :po_line
 
-  has_one :payable_po_shipment
+  has_one :payable_po_shipment, :dependent => :destroy
   has_one :payable, through: :payable_po_shipment
   
   attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
-  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit
+  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status
 
   scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
 
@@ -56,7 +56,6 @@ class PoShipment < ActiveRecord::Base
       PoLine.set_callback("save", :after, :update_po_total)
     end
   end
-
 
   def self.open_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
