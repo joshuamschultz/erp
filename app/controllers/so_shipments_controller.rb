@@ -10,7 +10,7 @@ class SoShipmentsController < ApplicationController
         if(params[:type] == "shipping")
             @so_lines = SoLine.where(:so_line_status => "open").select{|so_line|
                 so_line = so_line_data_list(so_line, false)
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' class='shipping_input_field' type='text' value='0'></div>"
+                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='received' class='shipping_input_field' type='text' value='0'></div>"
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
                 so_line[:links] = "<a so_line_id='#{so_line.id}' so_shipped_status='received' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
