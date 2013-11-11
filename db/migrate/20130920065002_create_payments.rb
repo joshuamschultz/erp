@@ -4,7 +4,7 @@ class CreatePayments < ActiveRecord::Migration
       t.references :organization
       t.integer :payment_type_id
       t.string :payment_check_code
-      t.decimal :payment_check_amount, :decimal, :precision => 25, :scale => 10, :default => 0  
+      t.decimal :payment_check_amount, :precision => 25, :scale => 10, :default => 0  
       t.string :payment_check_no
       t.string :payment_identifier
       t.string :payment_description

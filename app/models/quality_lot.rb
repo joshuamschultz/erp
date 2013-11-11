@@ -57,7 +57,7 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def set_lot_control_no
-		currnt_month_count = QualityLot.where("month(created_at) = ?", Date.today.month).count
+		currnt_month_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (currnt_month_count + 1).to_s

@@ -7,6 +7,10 @@ class PoShipment < ActiveRecord::Base
   attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
   :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status
 
+  # validates_presence_of :po_shipped_shelf, message: "Shelf can't be blank!"
+  # validates_presence_of :po_shipped_unit, message: "Unit can't be blank!"
+  # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!"
+
   scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
 
   scope :closed_shipments, where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
