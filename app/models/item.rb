@@ -9,6 +9,7 @@ class Item < ActiveRecord::Base
 
   has_many :po_lines, :dependent => :destroy
   has_many :po_shipments, :through => :po_lines
+  has_many :quality_lots, :through => :po_lines
 
   has_many :quality_lots, :through => :po_lines
 

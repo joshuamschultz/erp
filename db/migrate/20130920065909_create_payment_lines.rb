@@ -3,7 +3,7 @@ class CreatePaymentLines < ActiveRecord::Migration
     create_table :payment_lines do |t|
       t.references :payment
       t.references :payable
-      t.decimal :payment_line_amount, :decimal, :precision => 25, :scale => 10, :default => 0  
+      t.decimal :payment_line_amount, :precision => 25, :scale => 10, :default => 0  
       t.integer :payment_line_created_id
       t.integer :payment_line_updated_id
 

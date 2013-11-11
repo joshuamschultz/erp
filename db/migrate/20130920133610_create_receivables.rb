@@ -5,9 +5,9 @@ class CreateReceivables < ActiveRecord::Migration
       t.references :so_header
       t.string :receivable_identifier
       t.string :receivable_description
-      t.decimal :receivable_cost, :decimal, :precision => 25, :scale => 10, :default => 0
-      t.decimal :receivable_discount, :decimal, :precision => 25, :scale => 10, :default => 0
-      t.decimal :receivable_total, :decimal, :precision => 25, :scale => 10, :default => 0
+      t.decimal :receivable_cost, :precision => 25, :scale => 10, :default => 0
+      t.decimal :receivable_discount, :precision => 25, :scale => 10, :default => 0
+      t.decimal :receivable_total, :precision => 25, :scale => 10, :default => 0
       t.text :receivable_notes
       t.string :receivable_status
       t.boolean :receivable_active

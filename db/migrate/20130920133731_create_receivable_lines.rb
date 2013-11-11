@@ -4,7 +4,7 @@ class CreateReceivableLines < ActiveRecord::Migration
       t.references :receivable
       t.string :receivable_line_identifier
       t.string :receivable_line_description
-      t.decimal :receivable_line_cost, :decimal, :precision => 25, :scale => 10, :default => 0
+      t.decimal :receivable_line_cost, :precision => 25, :scale => 10, :default => 0
       t.text :receivable_line_notes
       t.string :receivable_line_status
       t.boolean :receivable_line_active
