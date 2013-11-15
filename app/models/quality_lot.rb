@@ -57,10 +57,12 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def set_lot_control_no
-		currnt_month_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
+		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
+		maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
+		current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (currnt_month_count + 1).to_s
+		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (current_count + 1).to_s
 	end
 
 	def lot_with_part_no
@@ -74,7 +76,6 @@ class QualityLot < ActiveRecord::Base
 	def lot_item_dimensions
 		self.item_revision.present? ? self.item_revision.item_part_dimensions.order(:item_part_letter) : []
 	end
-
 
   	def process_quality_lot_dimensions(params)
   		self.quality_lot_dimensions.destroy_all
