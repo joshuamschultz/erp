@@ -51,7 +51,11 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_rbars = gauge_rbars.collect{|p| p.to_f.round(3) }
 
           gauge_xbars = [appraisor1_results[:xbar], appraisor2_results[:xbar], appraisor3_results[:xbar]]
-          gauge_xbars = gauge_xbars.collect{|p| p.to_f.round(3) }
+          gauge_xbars = gauge_xbars.collect{|p| p.to_f.round(3) }          
+
+          appraisor1_results[:rps] = Array.new(10, 0) unless appraisor1_results[:rps].any?
+          appraisor2_results[:rps] = Array.new(10, 0) unless appraisor2_results[:rps].any?
+          appraisor3_results[:rps] = Array.new(10, 0) unless appraisor3_results[:rps].any?
 
           gauge_rp_values = [appraisor1_results[:rps], appraisor2_results[:rps], appraisor3_results[:rps]].transpose.map {|x| x.reduce(:+)}
           gauge_rp_values = gauge_rp_values.collect{|p| (p.to_f/9).round(3) }
