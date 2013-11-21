@@ -91,18 +91,25 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
   def self.process_gauge_results(gauge_results)
       row_gauge_results = gauge_results.order(:lot_gauge_result_row,:lot_gauge_result_trial).group(:lot_gauge_result_row)
+
       row_gauge_trail_sum = row_gauge_results.sum(:lot_gauge_result_value)
       row_gauge_ranges = []
       maximum_results = row_gauge_results.maximum(:lot_gauge_result_value)
       minimum_results = row_gauge_results.minimum(:lot_gauge_result_value)
+
       maximum_results.each do |key, max_value|
+        p "#{max_value} ------ #{minimum_results[key]}"
         row_gauge_ranges << max_value - minimum_results[key]
       end
+
       row_gauge_rbar = (row_gauge_results.length > 0) ? (row_gauge_ranges.sum / row_gauge_results.length) : 0
 
       column_gauge_results = gauge_results.order(:lot_gauge_result_row,:lot_gauge_result_trial).group(:lot_gauge_result_trial)
       column_gauge_average  = column_gauge_results.average(:lot_gauge_result_value)
       column_gauge_xbar = column_gauge_average.values.sum / @@gauge_trails
+
+      p "----------------------------------------------------------"
+      p "----------------------------------------------------------"
 
       {rbar: row_gauge_rbar, xbar: column_gauge_xbar, rps: row_gauge_trail_sum.values}
   end

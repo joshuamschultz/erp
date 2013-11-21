@@ -21,11 +21,11 @@
 
         <%#= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
 
-        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
+        <%#= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-        <%= hidden_field_tag :organization_id, (@item_revision.organization.id if @item_revision.organization) %>
+        <%#= hidden_field_tag :organization_id, (@item_revision.organization.id if @item_revision.organization) %>
 
-        <%= hidden_field_tag :org_organization_id, (@item_revision.organization.id if @item_revision.organization) %>
+        <%#= hidden_field_tag :org_organization_id, (@item_revision.organization.id if @item_revision.organization) %>
 
         <%#= f.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
         <%= f.input :item_cost, :label => "Cost" %>
@@ -38,7 +38,7 @@
             </div>
         </div> -->
 
-        <%= f.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>
+        <%= f.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', :label => "Print" %>
 
         <%= hidden_field_tag :print_id, (@item_revision.print.id if @item_revision.print) %>
 
@@ -51,7 +51,7 @@
             </div>
         </div> -->
 
-        <%= f.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
+        <%= f.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', :label => "Material" %>
 
         <%= hidden_field_tag :material_id, (@item_revision.material.id if @item_revision.material) %>
 
@@ -85,7 +85,7 @@
 <% end %>
 
 <script type="text/javascript">
-  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "item_revision_owner_id", "item_revision_organization_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_print_id", "item_revision_material_id", "item_revision_item_notes"];
+  tab_field_forms["form_for_items"] = ["item_revision_item_revision_name", "item_revision_item_revision_date", "item_revision_item_name", "item_revision_item_description", "item_revision_owner_id", "item_revision_item_cost", "item_revision_item_tooling", "item_revision_print_id", "item_revision_material_id", "item_revision_item_notes"];
 
   <% date_box_date = @item_revision.new_record? ? Date.today : @item_revision.item_revision_date %> 
 
@@ -96,6 +96,6 @@
 
     $("#item_revision_material_id").val("<%= @item_revision.material.material_short_name if @item_revision.material %>");
 
-    $("#item_revision_organization_id").val("<%= @item_revision.organization.organization_name if @item_revision.organization %>");
+    // $("#item_revision_organization_id").val("<%#= @item_revision.organization.organization_name if @item_revision.organization %>");
   });
 </script>

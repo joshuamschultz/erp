@@ -76,10 +76,6 @@
 <script type="text/javascript"> 
     tab_field_forms["form_for_po_header"] = ["po_header_organization_id", "po_header_customer_id", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
 
-    // var direct_select = ["po_header_organization_id", "po_header_customer_id", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
-    
-    // var others_select = ["po_header_organization_id"];
-
     $(document).ready(function(){        
         $("#po_header_organization_id").on("change", function(){
             if($("#organization_id").val() != "")
@@ -88,6 +84,12 @@
                 $("#po_header_vendor_info").html("");
                 $("#po_header_organization_id").val("");
             }
+        });
+
+        $("#po_header_organization_id").on("keyup", function(e){
+            var keyCode = e.keyCode || e.which;
+            if(keyCode == 13 && $("#po_header_customer_id").is(":visible") == false)
+                $("#form_for_po_header").submit();
         });
 
         $("#po_header_customer_id").on("focusout", function(){

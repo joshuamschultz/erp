@@ -25,11 +25,11 @@
 
             <%#= g.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
 
-            <%= g.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
+            <%#= g.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
 
-            <%= hidden_field_tag :organization_id, (g.object.organization.id if g.object && g.object.organization) %>
+            <%#= hidden_field_tag :organization_id, (g.object.organization.id if g.object && g.object.organization) %>
 
-            <%= hidden_field_tag :org_organization_id, (g.object.organization.id if g.object && g.object.organization) %>
+            <%#= hidden_field_tag :org_organization_id, (g.object.organization.id if g.object && g.object.organization) %>
 
             <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
             <%= g.input :item_cost, :label => "Cost" %>
@@ -42,7 +42,7 @@
                 </div>
             </div> -->
 
-            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', required: true, :label => "Print" %>             
+            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', :label => "Print" %>             
 
             <div class="control-group">
                 <label for="item_processes" class="optional control-label"></label>
@@ -59,7 +59,7 @@
                 </div>
             </div> -->
 
-            <%= g.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', required: true, :label => "Material" %>
+            <%= g.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', :label => "Material" %>
 
             <%= hidden_field_tag :material_id, (g.object.material.id if g.object && g.object.material) %>
             <%= hidden_field_tag :org_material_id, (g.object.material.id if g.object && g.object.material) %>
@@ -82,7 +82,7 @@
 
             <script type="text/javascript">
                 $(document).ready(function(){ 
-                    $("#item_item_revisions_attributes_0_organization_id").val("<%= g.object.organization.organization_name if g.object && g.object.organization %>");
+                    // $("#item_item_revisions_attributes_0_organization_id").val("<%#= g.object.organization.organization_name if g.object && g.object.organization %>");
                     $("#item_item_revisions_attributes_0_print_id").val("<%= g.object.print.print_identifier if g.object && g.object.print %>");
                     $("#item_item_revisions_attributes_0_material_id").val("<%= g.object.material.material_short_name if g.object && g.object.material %>");
                 });
@@ -107,7 +107,7 @@
 
 <script type="text/javascript">
     <% unless @item.persisted? %>
-        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_description", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_organization_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
+        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_description", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
 
         <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 

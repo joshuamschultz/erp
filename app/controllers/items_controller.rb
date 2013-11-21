@@ -10,8 +10,8 @@ class ItemsController < ApplicationController
       params[:item][:item_revisions_attributes]["0"][:material_id], params[:material_id] = params[:material_id], params[:item][:item_revisions_attributes]["0"][:material_id]  
       params[:item][:item_revisions_attributes]["0"][:material_id] = params[:org_material_id] if params[:item][:material_id] == ""
       
-      params[:item][:item_revisions_attributes]["0"][:organization_id], params[:organization_id] = params[:organization_id], params[:item][:item_revisions_attributes]["0"][:organization_id]
-      params[:item][:item_revisions_attributes]["0"][:organization_id] = params[:org_organization_id] if params[:item][:organization_id] == ""
+      # params[:item][:item_revisions_attributes]["0"][:organization_id], params[:organization_id] = params[:organization_id], params[:item][:item_revisions_attributes]["0"][:organization_id]
+      # params[:item][:item_revisions_attributes]["0"][:organization_id] = params[:org_organization_id] if params[:item][:organization_id] == ""
   end
 
   def set_page_info

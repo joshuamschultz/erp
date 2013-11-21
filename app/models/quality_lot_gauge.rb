@@ -8,19 +8,19 @@ class QualityLotGauge < ActiveRecord::Base
   :lot_gauge_updated_id, :quality_lot_id
 
   def self.process_gauge_dimensions(gauge, params)
- 	if gauge
- 		dimensions = params[:dimensions] || []
-  		gauge.quality_lot_gauge_dimensions.where("item_part_dimension_id not in (?)", dimensions).destroy_all
-  		gauge.quality_lot_gauge_results.where("item_part_dimension_id not in (?)", dimensions).destroy_all
+     	if gauge
+          dimensions = params[:dimensions] || []
+      		gauge.quality_lot_gauge_dimensions.where("item_part_dimension_id not in (?)", dimensions).destroy_all
+      		gauge.quality_lot_gauge_results.where("item_part_dimension_id not in (?)", dimensions).destroy_all
 
-  		if dimensions
-	      	dimensions.each do |dimension_id|
-				unless gauge.quality_lot_gauge_dimensions.find_by_item_part_dimension_id(dimension_id)
-				  	gauge.quality_lot_gauge_dimensions.new(:item_part_dimension_id => dimension_id).save
-				end
-	      	end
-	    end
- 	end
+      		if dimensions
+            	dimensions.each do |dimension_id|
+          				unless gauge.quality_lot_gauge_dimensions.find_by_item_part_dimension_id(dimension_id)
+          				  	gauge.quality_lot_gauge_dimensions.new(:item_part_dimension_id => dimension_id).save
+          				end
+            	end
+    	    end
+     	end
   end
 
   # def process_quality_lot_gauges(params)

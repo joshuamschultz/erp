@@ -32,6 +32,17 @@ class Organization < ActiveRecord::Base
 		self.organization_active = true if self.attributes.has_key?("organization_active") && self.organization_active.nil?
 	end
 
+	after_create :process_after_create
+
+	def process_after_create
+		contact = self.contacts.build(contact_address_1: self.organization_address_1, contact_address_2: self.organization_address_2, 
+		contact_city: self.organization_city, contact_country: self.organization_country, contact_description: self.organization_description,
+		contact_email: self.organization_email, contact_fax: self.organization_fax, contact_notes: self.organization_notes,
+		contact_state: self.organization_state, contact_telephone: self.organization_telephone, contact_title: self.organization_name,
+		contact_website: self.organization_website, contact_zipcode: self.organization_zipcode, contact_type: "address")
+		contact.save
+	end
+
 	before_save :process_before_save
 
 	def process_before_save
@@ -75,9 +86,9 @@ class Organization < ActiveRecord::Base
 
 	# validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
 
-	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| o.contact_type.present? && o.contact_type.type_value == "email" }
+	validates_formatting_of :organization_email, :using => :email, :if => Proc.new { |o| (o.contact_type.present? && o.contact_type.type_value == "email") || o.organization_email.present? }
 
-	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| o.contact_type.present? && o.contact_type.type_value == "fax" }
+	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| (o.contact_type.present? && o.contact_type.type_value == "fax") || o.organization_fax.present? }
 
 	belongs_to :user
 	belongs_to :territory
