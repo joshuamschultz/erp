@@ -31,7 +31,7 @@ class ItemRevision < ActiveRecord::Base
       return true
   end
 
-  validates_presence_of :owner, :organization, :print, :material, :item_revision_date
+  validates_presence_of :owner, :item_revision_date
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
   validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
   validates_numericality_of :item_cost if validates_presence_of :item_cost
