@@ -27,6 +27,8 @@
 
                 <%= hidden_field_tag :org_customer_id, (@po_header.customer.id if @po_header.customer), class: "po_customer_fields" %>
 
+                <%= f.input :cusotmer_po, :label => "Cutomer PO" %>
+
                 <div class="control-group select required po_header_bill_to_address">
                     <label for="po_header_po_bill_to_id" class="select required control-label">
                         <abbr title="required"></abbr> Bill To
@@ -74,7 +76,7 @@
 
 
 <script type="text/javascript"> 
-    tab_field_forms["form_for_po_header"] = ["po_header_organization_id", "po_header_customer_id", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
+    tab_field_forms["form_for_po_header"] = ["po_header_organization_id", "po_header_customer_id", "po_header_cusotmer_po", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
 
     $(document).ready(function(){        
         $("#po_header_organization_id").on("change", function(){

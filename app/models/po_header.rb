@@ -3,7 +3,7 @@ class PoHeader < ActiveRecord::Base
 
   attr_accessible :po_active, :po_created_id, :po_description, :po_identifier, :po_notes, 
   :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id, :customer_id,
-  :po_bill_to_id, :po_ship_to_id, :cusotmer_po
+  :po_bill_to_id, :po_ship_to_id, :cusotmer_po, :so_header_id
 
   validates_presence_of :organization
   validates_presence_of :po_type
@@ -20,6 +20,8 @@ class PoHeader < ActiveRecord::Base
     # self.po_identifier.slice!(2)
     # self.po_identifier = "P" + self.po_identifier
   end
+
+  belongs_to :so_header
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
