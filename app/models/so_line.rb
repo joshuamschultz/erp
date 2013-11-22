@@ -5,7 +5,7 @@ class SoLine < ActiveRecord::Base
   belongs_to :item_revision
   belongs_to :item_alt_name
   belongs_to :vendor_quality
-  belongs_to :customer_quality
+  belongs_to :customer_quality  
 
   attr_accessible :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity, 
   :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
@@ -15,6 +15,7 @@ class SoLine < ActiveRecord::Base
 
   validates_numericality_of :so_line_cost, :so_line_quantity
 
+  has_one :po_line
   has_many :receivable_shipments, :dependent => :destroy
   has_many :so_shipments, :dependent => :destroy  
 

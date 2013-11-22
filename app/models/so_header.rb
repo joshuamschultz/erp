@@ -13,6 +13,7 @@ class SoHeader < ActiveRecord::Base
   belongs_to :ship_to_address, :class_name => "Contact", :foreign_key => "so_ship_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
+  has_one :po_header
 	has_many :attachments, :as => :attachable, :dependent => :destroy  
 	has_many :comments, :as => :commentable, :dependent => :destroy
 	has_many :so_lines, :dependent => :destroy

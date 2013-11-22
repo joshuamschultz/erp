@@ -17,6 +17,11 @@
             </tr>
 
             <tr>
+              <td class="span2">Customer PO:</td>
+              <td class="span5"><strong><%= @po_header.cusotmer_po %></strong></td>
+            </tr>
+
+            <tr>
               <td class="span2">Bill To:</td>
               <td class="span5"><strong><%= @po_header.bill_to_address ? link_to(@po_header.bill_to_address.contact_title, @po_header.bill_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
             </tr>
