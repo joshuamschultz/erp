@@ -9,11 +9,11 @@ class SoLine < ActiveRecord::Base
 
   attr_accessible :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity, 
   :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
-  :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped
+  :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped, :so_line_sell
 
   validates_presence_of :so_header, :organization, :item_alt_name, :so_line_cost, :so_line_quantity, :customer_quality
 
-  validates_numericality_of :so_line_cost, :so_line_quantity
+  validates_numericality_of :so_line_cost, :so_line_quantity, :so_line_sell
 
   has_one :po_line
   has_many :receivable_shipments, :dependent => :destroy
@@ -28,7 +28,7 @@ class SoLine < ActiveRecord::Base
   before_save :update_item_total
 
   def update_item_total
-      self.so_line_price = (self.so_line_cost.round(10) * self.so_line_quantity.round(10)) #+ self.so_line_freight.round(10)
+      self.so_line_price = (self.so_line_sell.round(10) * self.so_line_quantity.round(10)) #+ self.so_line_freight.round(10)
       self.item = self.item_alt_name.item
       self.item_revision = self.item_alt_name.item.current_revision
   end

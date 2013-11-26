@@ -10,9 +10,11 @@
 
             <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>           
+            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-            <%= f.input :so_line_cost, :label => "Cost" %>            
+            <%= f.input :so_line_cost, :label => "Cost" %>     
+
+            <%= f.input :so_line_sell, :label => "Sell" %>        
 
             <%= f.input :so_line_quantity, :label => "Quantity" %>
             
@@ -46,7 +48,7 @@
 <%= render :partial => 'so_lines/line_items' %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_quantity", "so_line_organization_id", "so_line_customer_quality_id", "so_line_so_line_notes"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
     $(document).ready(function(){
         $("#so_line_so_line_cost").change(function(){

@@ -90,8 +90,8 @@ class PoLine < ActiveRecord::Base
   def process_after_create
     if self.po_header.po_type.type_value == "direct" && self.po_header.so_header && self.po_header.customer
       so_line = SoLine.new(so_header_id: self.po_header.so_header_id,  item_alt_name_id: self.item_alt_name_id, 
-        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_sell, 
-        so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost, 
+        so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
 
       self.update_attributes(so_line_id: so_line.id) if so_line.save(validate: false)
     end
