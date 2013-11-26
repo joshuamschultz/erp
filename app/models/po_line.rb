@@ -15,7 +15,7 @@ class PoLine < ActiveRecord::Base
   :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
   :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id, :po_line_shipped,
-  :alt_name_transfer_id
+  :alt_name_transfer_id, :po_line_sell
 
   has_many :quality_lots, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
@@ -27,6 +27,8 @@ class PoLine < ActiveRecord::Base
   validates_presence_of :item_alt_name_id
   validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity
   validates_numericality_of :po_line_cost, :po_line_quantity
+
+  validates_numericality_of :po_line_sell, :if => Proc.new { |o| o.po_header.present? && o.po_header.customer.present? }
 
   before_create :create_level_default
 
@@ -88,7 +90,7 @@ class PoLine < ActiveRecord::Base
   def process_after_create
     if self.po_header.po_type.type_value == "direct" && self.po_header.so_header && self.po_header.customer
       so_line = SoLine.new(so_header_id: self.po_header.so_header_id,  item_alt_name_id: self.item_alt_name_id, 
-        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost, 
+        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_sell, 
         so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
 
       self.update_attributes(so_line_id: so_line.id) if so_line.save(validate: false)

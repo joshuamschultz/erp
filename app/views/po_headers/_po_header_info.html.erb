@@ -23,7 +23,7 @@
 
             <tr>
               <td class="span2">SO ID:</td>
-              <td class="span5"><strong><%= link_to(@po_header.so_header.so_identifier, @po_header.so_header) %></strong></td>
+              <td class="span5"><strong><%= link_to(@po_header.so_header.so_identifier, @po_header.so_header) if @po_header.so_header %></strong></td>
             </tr>
 
             <tr>
