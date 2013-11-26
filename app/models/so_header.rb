@@ -2,7 +2,7 @@ class SoHeader < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   
 	attr_accessible :so_bill_to_id, :so_cofc, :so_comments, :so_identifier, :so_notes, 
-	:so_ship_to_id, :so_squality, :so_status, :so_total, :organization_id
+	:so_ship_to_id, :so_squality, :so_status, :so_total, :organization_id, :so_header_customer_po
   
   validates_presence_of :organization
   

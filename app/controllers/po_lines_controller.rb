@@ -30,7 +30,8 @@ class PoLinesController < ApplicationController
           @po_lines = @po_lines.select{|po_line|
               po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
               po_line[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
-              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : ""
+              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "House"
+              po_line[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"              
               po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
           }
           render json: {:aaData => @po_lines}

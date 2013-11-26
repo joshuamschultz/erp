@@ -14,6 +14,8 @@
 
         <%= hidden_field_tag :org_organization_id, (@so_header.organization.id if @so_header.organization) %>
 
+        <%= f.input :so_header_customer_po, :label => "Customer PO" %>
+
         <div class="control-group select required so_header_bill_to_address">
             <label for="so_header_so_bill_to_id" class="select required control-label">
                 <abbr title="required"></abbr> Bill To
@@ -74,7 +76,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_bill_to_id", "so_header_so_ship_to_id"];
+    tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_header_customer_po", "so_header_so_bill_to_id", "so_header_so_ship_to_id"];
       
     $(document).ready(function(){ 
         $("#so_header_organization_id").on("focusout", function(){
