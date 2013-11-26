@@ -22,6 +22,11 @@
             </tr>
 
             <tr>
+              <td class="span2">SO ID:</td>
+              <td class="span5"><strong><%= link_to(@po_header.so_header.so_identifier, @po_header.so_header) %></strong></td>
+            </tr>
+
+            <tr>
               <td class="span2">Bill To:</td>
               <td class="span5"><strong><%= @po_header.bill_to_address ? link_to(@po_header.bill_to_address.contact_title, @po_header.bill_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
             </tr>

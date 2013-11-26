@@ -32,6 +32,10 @@ class PoLine < ActiveRecord::Base
 
   def create_level_default
     self.po_line_status = "open"
+    if self.po_header.po_type.type_value == "direct"
+        self.organization = self.po_header.customer
+        self.po_line_customer_po = self.po_header.cusotmer_po
+    end
   end
 
   before_save :update_item_total
@@ -77,6 +81,18 @@ class PoLine < ActiveRecord::Base
       object[:links] += " <div class='pull-right shipping_status'></div>"
     end
     object
+  end
+
+  after_create :process_after_create
+
+  def process_after_create
+    if self.po_header.po_type.type_value == "direct" && self.po_header.so_header && self.po_header.customer
+      so_line = SoLine.new(so_header_id: self.po_header.so_header_id,  item_alt_name_id: self.item_alt_name_id, 
+        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost, 
+        so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+
+      self.update_attributes(so_line_id: so_line.id) if so_line.save(validate: false)
+    end
   end
 
 end
