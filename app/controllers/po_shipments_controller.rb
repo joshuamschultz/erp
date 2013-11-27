@@ -1,5 +1,10 @@
 class PoShipmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:logistics][:active] = "active"
+  end
 
   # GET /po_shipments
   # GET /po_shipments.json
