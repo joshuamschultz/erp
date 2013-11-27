@@ -61,34 +61,22 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
           gauge_rp_values = [appraisor1_results[:rps], appraisor2_results[:rps], appraisor3_results[:rps]].transpose.map {|x| x.reduce(:+)}
           gauge_rp_values = gauge_rp_values.collect{|p| (p.to_f/9) }
-          # p gauge_rp_values.to_s
 
           gauge_rp = (gauge_rp_values.max.present? && gauge_rp_values.min.present?) ? (gauge_rp_values.max - gauge_rp_values.min) : 0
-          # puts gauge_rp
 
           gauge_rbar1 = (gauge_rbars.sum / @@gauge_app)
-          # puts gauge_rbar1
 
           gauge_rbar2 = (gauge_xbars.max - gauge_xbars.min)
-          # puts gauge_rbar2
 
           gauge_uclr = @@gauge_d4 * gauge_rbar1
-          # p gauge_uclr.to_f
 
           gauge_gv = gauge_rbar1 * @@gauge_k1
-          # p gauge_gv.to_f
 
           gauge_ov = ((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails))
-          p gauge_ov.to_f
-
-          # p gauge_rbar2
-          # p @@gauge_k2
-          # p (gauge_rbar2 * @@gauge_k2)**2
-
-          #((gauge_rbar2 * @@gauge_k2)**2).to_f
-          # p ((gauge_gv**2) / (@@gauge_n * @@gauge_trails)).to_f
+          # gauge_ov = (gauge_rbar2 * @@gauge_k2) - (gauge_gv / (@@gauge_n * @@gauge_trails))
 
           gauge_rr = (gauge_ov**2) + (gauge_gv**2)
+          # gauge_rr = gauge_ov + gauge_gv
 
           gauge_pv = Math.sqrt(gauge_rp * @@gauge_k3)
 
@@ -96,8 +84,8 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_prr = (gauge_tv != 0) ? Math.sqrt(gauge_rr/gauge_tv) : 0
           
           dimension_results << { item_part_letter: gauge_dimension.item_part_dimension.item_part_letter, 
-          gv: gauge_gv.round(6), ov: gauge_ov.round(6), rr: gauge_rr.round(6), pv: gauge_pv.round(6), 
-          tv: gauge_tv.round(6), prr: gauge_prr.round(6), rbar1: gauge_rbar1, rbar2: gauge_rbar2, rp: gauge_rp }
+          gv: gauge_gv.round(6), ov: "%0.10f" % gauge_ov, rr: gauge_rr.round(6), pv: gauge_pv.round(6), 
+          tv: gauge_tv.round(6), prr: gauge_prr.round(6), rbar1: gauge_rbar1.round(6), rbar2: gauge_rbar2.round(6), rp: gauge_rp.round(6) }
       end
       p "-----------------------"
       dimension_results

@@ -1,3 +1,7 @@
-<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+<%#= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
 
-<%= render :partial => 'po_shipments/shipments', :locals => {open_path: po_shipments_path(type: "shipped"), closed_path: po_shipments_path(type: "history"), shipment_type: params[:type], create_payable: true} %>
+<%#= render :partial => 'po_shipments/shipments', :locals => {open_path: po_shipments_path(type: "shipped"), closed_path: po_shipments_path(type: "history"), shipment_type: params[:type], create_payable: true} %>
+
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} unless params[:type].eql?("history") %>
+
+<%= render :partial => 'po_shipments/shipments', :locals => {shipment_type: params[:type], create_payable: !params[:type].eql?("history")} %>

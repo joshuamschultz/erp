@@ -167,7 +167,13 @@ module CommonActions
 											{:path => dimensions_path, :name => "Dimension Types"}
 										]
 		
-		menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
+		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
+		
+		menus[:logistics] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Logistics", :type => "multiple"}
+		menus[:logistics][:sub_menu] = 	[
+											{:path => new_po_shipment_path, :name => "Shipments"}, 
+											{:path => po_shipments_path(type: "history"), :name => "History"}
+										]
 
 		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
 
