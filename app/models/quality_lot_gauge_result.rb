@@ -72,20 +72,30 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
           gauge_gv = gauge_rbar1 * @@gauge_k1
 
-          gauge_ov = ((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails))
+          gauge_ov = Math.sqrt(((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails)))
           # gauge_ov = (gauge_rbar2 * @@gauge_k2) - (gauge_gv / (@@gauge_n * @@gauge_trails))
 
-          gauge_rr = (gauge_ov**2) + (gauge_gv**2)
+          gauge_rr = Math.sqrt((gauge_ov**2) + (gauge_gv**2))
           # gauge_rr = gauge_ov + gauge_gv
 
-          gauge_pv = Math.sqrt(gauge_rp * @@gauge_k3)
+          gauge_pv = gauge_rp * @@gauge_k3
 
           gauge_tv = Math.sqrt((gauge_rr**2) + (gauge_pv**2))
-          gauge_prr = (gauge_tv != 0) ? Math.sqrt(gauge_rr/gauge_tv) : 0
+          gauge_rrvp = (gauge_tv == 0) ? 0 : (gauge_rr / gauge_tv * 100)
+
+          gauge_dev = gauge_dimension.item_part_dimension.item_part_pos_tolerance - gauge_dimension.item_part_dimension.item_part_neg_tolerance
+
+          gauge_gvp = gauge_gv / gauge_dev * 100
+          gauge_ovp = gauge_ov / gauge_dev * 100
+          gauge_pvp = gauge_pv / gauge_dev * 100
+          gauge_tvp = gauge_tv / gauge_dev * 100
+          gauge_rrtp = gauge_rr / gauge_dev * 100
           
           dimension_results << { item_part_letter: gauge_dimension.item_part_dimension.item_part_letter, 
-          gv: gauge_gv.round(6), ov: "%0.10f" % gauge_ov, rr: gauge_rr.round(6), pv: gauge_pv.round(6), 
-          tv: gauge_tv.round(6), prr: gauge_prr.round(6), rbar1: gauge_rbar1.round(6), rbar2: gauge_rbar2.round(6), rp: gauge_rp.round(6) }
+          gv: gauge_gv.round(6), ov: gauge_ov.round(6), rr: gauge_rr.round(6), pv: gauge_pv.round(6), 
+          tv: gauge_tv.round(6), rrvp: gauge_rrvp.round(2), rbar1: gauge_rbar1.round(6), rbar2: gauge_rbar2.round(6), 
+          rp: gauge_rp.round(6), gvp: gauge_gvp.round(2), ovp: gauge_ovp.round(2), pvp: gauge_pvp.round(2), 
+          tvp: gauge_tvp.round(2), rrtp: gauge_rrtp.round(2) }
       end
       p "-----------------------"
       dimension_results
