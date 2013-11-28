@@ -93,9 +93,9 @@ class QualityLotGaugeResult < ActiveRecord::Base
           
           dimension_results << { item_part_letter: gauge_dimension.item_part_dimension.item_part_letter, 
           gv: gauge_gv.round(6), ov: gauge_ov.round(6), rr: gauge_rr.round(6), pv: gauge_pv.round(6), 
-          tv: gauge_tv.round(6), rrvp: gauge_rrvp.round(2), rbar1: gauge_rbar1.round(6), rbar2: gauge_rbar2.round(6), 
-          rp: gauge_rp.round(6), gvp: gauge_gvp.round(2), ovp: gauge_ovp.round(2), pvp: gauge_pvp.round(2), 
-          tvp: gauge_tvp.round(2), rrtp: gauge_rrtp.round(2) }
+          tv: gauge_tv.round(6), rrvp: gauge_rrvp.round(2).to_s, rbar1: gauge_rbar1.round(6), rbar2: gauge_rbar2.round(6), 
+          rp: gauge_rp.round(6), gvp: gauge_gvp.round(2).to_s, ovp: gauge_ovp.round(2).to_s, pvp: gauge_pvp.round(2).to_s, 
+          tvp: gauge_tvp.round(2).to_s, rrtp: gauge_rrtp.round(2).to_s }
       end
       p "-----------------------"
       dimension_results
