@@ -12,15 +12,20 @@
             <thead>
                 <tr>
                     <th>Letter</th>
-                    <th>Rbar1</th>
-                    <th>Rbar2</th>
+                    <!-- <th>Rbar1</th>
+                    <th>Rbar2</th> -->
                     <th>Rp</th>
                     <th><span data-toggle="tooltip" title="Gage Variation" data-placement="top">GV</span></th>
+                    <th><span data-toggle="tooltip" title="Gage Variation As % Of Tolerance" data-placement="top">GV%</span></th>
                     <th><span data-toggle="tooltip" title="Operator Variation" data-placement="top">OV</span></th>
+                    <th><span data-toggle="tooltip" title="Operator Variation As % Of Tolerance" data-placement="top">OV%</span></th>
                     <th><span data-toggle="tooltip" title="Repeatability & Reproduceability" data-placement="top">R&R</span></th>
+                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Tolerance)" data-placement="top">R&R% Tol</span></th>
                     <th><span data-toggle="tooltip" title="Part Variation" data-placement="top">PV</span></th>
+                    <th><span data-toggle="tooltip" title="Part Variation As % Of Tolerance" data-placement="top">PV%</span></th>
                     <th><span data-toggle="tooltip" title="Total Variation" data-placement="top">TV</span></th>
-                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Tolerance)" data-placement="top">% R&R</span></th>
+                    <th><span data-toggle="tooltip" title="Total Variation As % Of Tolerance" data-placement="top">TV%</span></th>
+                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Total Variation)" data-placement="top">R&R% Var</span></th>
                 </tr>
             </thead>
 
@@ -37,16 +42,23 @@
     {
         :name => "table_report_gauge_analysis", :path => quality_lot_gauge_quality_lot_gauge_results_path(@quality_lot_gauge), :extras => {:slno => false},
         :columns => '[
-                        { "mData": "item_part_letter" },
-                        { "mData": "rbar1" },
-                        { "mData": "rbar2" },
+                        { "mData": "item_part_letter" },                        
                         { "mData": "rp" },
                         { "mData": "gv" },
+                        { "mData": "gvp" },
                         { "mData": "ov" },
+                        { "mData": "ovp" },
                         { "mData": "rr" },
+                        { "mData": "rrtp" },
                         { "mData": "pv" },
+                        { "mData": "pvp" },
                         { "mData": "tv" },
-                        { "mData": "prr" }
+                        { "mData": "tvp" },
+                        { "mData": "rrvp" }
                     ]'
     } 
 %>
+
+
+<!-- { "mData": "rbar1" },
+{ "mData": "rbar2" }, -->

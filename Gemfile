@@ -32,7 +32,7 @@ gem 'rails3-jquery-autocomplete'
 # gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+# gem 'capistrano', '~> 3.0.1'
 
 # To use debugger
 # gem 'debugger'
