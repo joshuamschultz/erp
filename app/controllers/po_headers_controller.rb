@@ -124,7 +124,7 @@ class PoHeadersController < ApplicationController
   # DELETE /po_headers/1.json
   def destroy
     @po_header = PoHeader.find(params[:id])
-    @po_header.destroy
+    @po_header.so_header.destroy if @po_header.destroy && @po_header.so_header
 
     respond_to do |format|
       format.html { redirect_to po_headers_url }
