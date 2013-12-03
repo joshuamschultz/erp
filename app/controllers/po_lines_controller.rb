@@ -110,7 +110,7 @@ class PoLinesController < ApplicationController
   def destroy
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.find(params[:id])
-    @po_line.destroy
+    @po_line.so_line.destroy if @po_line.destroy && @po_line.so_line
 
     respond_to do |format|
       format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully deleted.' }

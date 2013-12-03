@@ -24,12 +24,14 @@ class PoHeader < ActiveRecord::Base
     # self.po_identifier = "P" + self.po_identifier
   end
 
-  after_create :process_after_create
+  before_save :process_before_save
 
-  def process_after_create
-      if self.po_type.type_value == "direct" && self.customer
-          so_header = SoHeader.new(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id)
-          self.update_attributes(so_header_id: so_header.id) if so_header.save
+  def process_before_save
+      if (self.po_type_value == "direct")          
+          self.po_lines.update_all(organization_id: self.customer_id)
+          so_header = self.so_header.present? ? self.so_header : SoHeader.new
+          so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po)
+          self.so_header_id = so_header.id
       end
   end
 
@@ -85,5 +87,10 @@ class PoHeader < ActiveRecord::Base
           Payable.new
       end
   end
+
+  def po_type_value
+      self.po_type.type_value
+  end
+
 
 end

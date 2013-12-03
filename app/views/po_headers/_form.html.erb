@@ -10,7 +10,9 @@
         <%= f.error_notification %>
         
         <div class="form-inputs">
-            <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :autofocus => true, input_html: {class: "po_types"}, :checked => (MasterType.po_types.first.id if @po_header.po_type.nil?) %>
+            <%= f.association :po_type, :label => "Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :autofocus => true, input_html: {class: "po_types"}, :checked => (MasterType.po_types.first.id if @po_header.po_type.nil?) unless @po_header.persisted? %>
+
+            <%= hidden_field_tag :po_type_id, @po_header.po_type_value.titlecase if @po_header.persisted? %>
 
             <%#= f.association :organization, :label => "Vendor", :label_method => 'organization_short_name', :label_value => "id", :include_blank => false %>
 
@@ -127,7 +129,11 @@
         if($("#organization_id").val() != "")
             initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
 
-        po_type_changed($('.po_types:checked').parent().text(), false);
+        <% unless @po_header.new_record? %>
+            po_type_changed($('#po_type_id').val(), false);
+        <% else %>
+            po_type_changed($('.po_types:checked').parent().text(), false);
+        <% end %>
 
         // $("#po_header_organization_id").on("keydown", function(){
         //     if($('.po_types:checked').parent().text() != "Direct")
