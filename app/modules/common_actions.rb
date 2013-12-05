@@ -1,6 +1,11 @@
 module CommonActions
 	include Rails.application.routes.url_helpers
 
+	def self.clear_temp_objects(params = {})
+		PoHeader.where(po_identifier: UNASSIGNED).destroy_all
+		SoHeader.where(so_identifier: UNASSIGNED).destroy_all
+	end
+
 	def self.object_crud_paths(show_path, edit_path, delete_path, others = [])
 		paths = ""
 		paths += "<a href='#{show_path}' class='btn-action glyphicons eye_open btn-default'><i></i></a> " if show_path
@@ -110,14 +115,12 @@ module CommonActions
 
 		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
 		menus[:purchases][:sub_menu] = 	[
-											{:path => po_headers_path, :name => "Purchase Orders"}, 
-											{:path => "#", :name => "PO Information"}
+											{:path => po_headers_path, :name => "Purchase Orders"}
 										]		
 
 		menus[:sales] = {:class => "hasSubmenu glyphicons stats", :path => "#", :name => "Sales", :type => "multiple"}
 		menus[:sales][:sub_menu] = 		[
-											{:path => so_headers_path, :name => "Sales Orders"}, 
-											{:path => "#", :name => "SO Information"}
+											{:path => so_headers_path, :name => "Sales Orders"}
 										]
 
 		menus[:inventory] = {:class => "hasSubmenu glyphicons cargo", :path => "#", :name => "Inventory", :type => "multiple"}
