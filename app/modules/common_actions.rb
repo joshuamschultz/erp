@@ -107,7 +107,7 @@ module CommonActions
 											
 										]
 
-		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => quotes_path, :name => "Quotes", :type => "single"}
+		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => "#", :name => "Quotes", :type => "single"}
 		# menus[:quotes][:sub_menu] = 	[
 		# 									{:path => "#", :name => "Vendor"}, 
 		# 									{:path => "#", :name => "Customer"}
@@ -138,8 +138,8 @@ module CommonActions
 		menus[:accounts][:sub_menu] = 	[											
 											{:path => payables_path, :name => "Payables"},
 											{:path => payments_path, :name => "Payments"},
-											{:path => receivables_path, :name => "Receivables"},
-											{:path => receipts_path, :name => "Receipts"}
+											{:path => "#", :name => "Receivables"},
+											{:path => "#", :name => "Receipts"}
 										]
 		
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
