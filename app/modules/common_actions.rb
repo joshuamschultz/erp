@@ -172,7 +172,7 @@ module CommonActions
 		
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
 		
-		menus[:logistics] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Logistics", :type => "multiple"}
+		menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
 		menus[:logistics][:sub_menu] = 	[
 											{:path => new_po_shipment_path, :name => "Shipments"}, 
 											{:path => po_shipments_path(type: "history"), :name => "History"}
