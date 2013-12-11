@@ -9,11 +9,7 @@ class PoShipment < ActiveRecord::Base
 
   # validates_presence_of :po_shipped_shelf, message: "Shelf can't be blank!"
   # validates_presence_of :po_shipped_unit, message: "Unit can't be blank!"
-  # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!"
-
-  scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
-
-  scope :closed_shipments, where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
+  # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!" 
 
   before_save :process_before_save
 
@@ -73,6 +69,19 @@ class PoShipment < ActiveRecord::Base
   def self.closed_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
       po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+  end
+
+  # scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+  # scope :closed_shipments, where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
+
+  def self.open_shipments(shipments)
+      shipments ||= PoShipment
+      shipments.where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+  end
+
+  def self.closed_shipments(shipments)
+      shipments ||= PoShipment
+      shipments.where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
   end
 
 end

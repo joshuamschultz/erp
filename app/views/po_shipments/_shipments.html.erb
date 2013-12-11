@@ -11,6 +11,8 @@
                 <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" if create_payable %>
                 <%#= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%#= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
+
+                <%= link_to 'Shipped - History', so_shipments_path(type: "history"), class: "btn btn-mini btn-success" if (shipment_type == "history") %>
             </span>
         </div> 
     </div>
@@ -61,6 +63,8 @@
                     ]'
     } 
 %>
+
+<!-- { "mData": "po_line_quantity_shipped" }, -->
 
 <script type="text/javascript">
 

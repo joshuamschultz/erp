@@ -12,20 +12,21 @@
             <thead>
                 <tr>
                     <th>Letter</th>
-                    <!-- <th>Rbar1</th>
-                    <th>Rbar2</th> -->
-                    <th>Rp</th>
+                    <!-- <th>Rbar1</th> -->
+                    <!-- <th>Rbar2</th> -->
+                    <!-- <th>Rp</th> -->
                     <th><span data-toggle="tooltip" title="Gage Variation" data-placement="top">GV</span></th>
                     <th><span data-toggle="tooltip" title="Gage Variation As % Of Tolerance" data-placement="top">GV%</span></th>
                     <th><span data-toggle="tooltip" title="Operator Variation" data-placement="top">OV</span></th>
                     <th><span data-toggle="tooltip" title="Operator Variation As % Of Tolerance" data-placement="top">OV%</span></th>
-                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability" data-placement="top">R&R</span></th>
-                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Tolerance)" data-placement="top">R&R% Tol</span></th>
                     <th><span data-toggle="tooltip" title="Part Variation" data-placement="top">PV</span></th>
                     <th><span data-toggle="tooltip" title="Part Variation As % Of Tolerance" data-placement="top">PV%</span></th>
                     <th><span data-toggle="tooltip" title="Total Variation" data-placement="top">TV</span></th>
                     <th><span data-toggle="tooltip" title="Total Variation As % Of Tolerance" data-placement="top">TV%</span></th>
-                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Total Variation)" data-placement="top">R&R% Var</span></th>
+                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability" data-placement="top">R&R</span></th>
+                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Tolerance" data-placement="top">R&R% Tol</span></th>
+                    <th><span data-toggle="tooltip" title="Repeatability & Reproduceability As % Of Total Variation" data-placement="top">R&R% Var</span></th>
+                    <th><span data-toggle="tooltip" title="Accepted(<= 10%), Marginal(>10 & <= 30%), Reject(> 30%) for R&R% Tol" data-placement="top">Status</span></th>
                 </tr>
             </thead>
 
@@ -42,23 +43,24 @@
     {
         :name => "table_report_gauge_analysis", :path => quality_lot_gauge_quality_lot_gauge_results_path(@quality_lot_gauge), :extras => {:slno => false},
         :columns => '[
-                        { "mData": "item_part_letter" },                        
-                        { "mData": "rp" },
+                        { "mData": "item_part_letter" },
                         { "mData": "gv" },
                         { "mData": "gvp" },
                         { "mData": "ov" },
                         { "mData": "ovp" },
-                        { "mData": "rr" },
-                        { "mData": "rrtp" },
                         { "mData": "pv" },
                         { "mData": "pvp" },
                         { "mData": "tv" },
                         { "mData": "tvp" },
-                        { "mData": "rrvp" }
+                        { "mData": "rr" },
+                        { "mData": "rrtp" },
+                        { "mData": "rrvp" },
+                        { "mData": "g_status" }
                     ]'
     } 
 %>
 
 
-<!-- { "mData": "rbar1" },
-{ "mData": "rbar2" }, -->
+<!-- { "mData": "rbar1" }, -->
+<!-- { "mData": "rbar2" },  -->
+<!-- { "mData": "rp" }, -->
