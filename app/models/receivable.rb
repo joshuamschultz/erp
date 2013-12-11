@@ -7,6 +7,9 @@ class Receivable < ActiveRecord::Base
   has_many :receivable_lines, :dependent => :destroy
   has_many :receipt_lines, :dependent => :destroy  
 
+  has_many :receivable_so_shipments, :dependent => :destroy
+  has_many :so_shipments, through: :receivable_so_shipments
+
   attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
@@ -16,9 +19,9 @@ class Receivable < ActiveRecord::Base
 
   accepts_nested_attributes_for :receivable_shipments
 
-  validates_presence_of :receivable_identifier
-
-  validates_uniqueness_of :receivable_identifier
+  validates_presence_of :receivable_identifier, on: :update
+  validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
+  # validates_uniqueness_of :receivable_identifier
 
   before_save :process_before_save
 
@@ -67,7 +70,7 @@ class Receivable < ActiveRecord::Base
 
   def update_receivable_total
       receivable_total = self.receivable_lines.sum(:receivable_line_cost) - self.receivable_discount
-      receivable_total += self.receivable_shipments.sum(:receivable_shipment_cost) if self.so_header
+      receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       receivable_total
   end
 

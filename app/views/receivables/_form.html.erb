@@ -9,17 +9,18 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <% unless @receivable.new_record? %>
-        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" if @receivable.so_header.present? %>
-    <% else %>
-        <%= f.association :so_header, :url => autocomplete_so_header_so_identifier_so_headers_path, :as => :autocomplete, :id_element => '#so_header_id', :label => "SO" %>
+    <% if @receivable.so_header %>
+        <% unless @receivable.new_record? %>
+            <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" if @receivable.so_header.present? %>
+        <% else %>
+            <%= f.association :so_header, :url => autocomplete_so_header_so_identifier_so_headers_path, :as => :autocomplete, :id_element => '#so_header_id', :label => "SO" %>
+        <% end %>
+
+        <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
+        <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
     <% end %>
-
-    <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
-
-    <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
-
-    <%= f.input :receivable_identifier, :label => "Invoice ID" %> 
+    
+    <%= f.input :receivable_identifier, :label => "Invoice ID", required: true %> 
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>
     <%= f.input :receivable_discount, :label => "Discount" %>   
@@ -34,43 +35,9 @@
   </div>
 </div>
 </div>
-
-
-<% if @receivable.persisted? && @receivable.so_header.present? %>
-    <div class="separator bottom"></div>
-    <div class="form-inputs">
-    <div class="row-fluid">
-    <div class="span12">
-        <table id="receivable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-                <tr>
-                    <th>Part No</th>
-                    <th>Quantity Ordered</th>
-                    <th>Quantity Shipped</th>
-                    <!-- <th>Added For</th> -->
-                    <th>Cost</th>
-                    <th>Shipped</th>
-                </tr>
-            </thead>
-            <tbody id="receivable_shipments_table_table_body">
-                <%= f.fields_for :receivable_shipments, @receivable.receivable_shipments do |receivable_shipment| %>
-                    <tr>
-                        <td><%= link_to receivable_shipment.object.so_line.item_alt_name.item_alt_identifier, item_path(receivable_shipment.object.so_line.item) %></td>
-                        <td><%= receivable_shipment.object.so_line.so_line_quantity %></td>
-                        <td><%= receivable_shipment.object.so_line.so_line_shipped %></td>
-                        <!-- <td><%#= receivable_shipment.object.so_line.receivable_shipments.sum(:receivable_shipment_count) %></td> -->
-                        <td><%= receivable_shipment.object.so_line.so_line_cost %></td>
-                        <td><%= receivable_shipment.input :receivable_shipment_count, label: false, input_html: { class: 'receivable_shipment_count' } %></td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-    </div>
-    </div>
-    </div>
 <% end %>
 
-<% end %>
+<%= render :partial => 'receivables/so_shipments' if @so_header %>
 
 <%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? && @receivable.so_header.nil? %>
 

@@ -34,7 +34,7 @@ class PoLine < ActiveRecord::Base
 
   def create_level_default
     self.po_line_status = "open"
-    if self.po_header.po_type.type_value == "direct"
+    if self.po_header.po_is?("direct")
         self.organization = self.po_header.customer
         self.po_line_customer_po = self.po_header.cusotmer_po
     end
@@ -52,7 +52,7 @@ class PoLine < ActiveRecord::Base
   after_destroy :update_po_total
 
   def update_po_total
-    po_identifier = (self.po_header.po_identifier == "Unassigned") ? PoHeader.new_po_identifier : self.po_header.po_identifier
+    po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier : self.po_header.po_identifier
     self.po_header.update_attributes(po_identifier: po_identifier, po_total: self.po_header.po_lines.sum(:po_line_total))
   end
 
@@ -88,7 +88,7 @@ class PoLine < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
-      if self.po_header.po_type_value == "direct"
+      if self.po_header.po_is?("direct")
           so_line = self.so_line.present? ? self.so_line : SoLine.new
           so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id, 
             customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost, 
@@ -99,7 +99,7 @@ class PoLine < ActiveRecord::Base
 
 
   def po_customer
-      (self.po_header.po_type_value == "direct") ? self.po_header.customer : self.organization
+      self.po_header.po_is?("direct") ? self.po_header.customer : self.organization
   end
 
 end

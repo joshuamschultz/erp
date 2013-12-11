@@ -1,5 +1,6 @@
 class ReceivablesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]
+  skip_before_filter :verify_authenticity_token, :only => :create
 
   before_filter :set_page_info
 
@@ -8,8 +9,10 @@ class ReceivablesController < ApplicationController
   end
 
   def set_autocomplete_values
-    params[:receivable][:so_header_id], params[:so_header_id] = params[:so_header_id], params[:receivable][:so_header_id]
-    params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
+    if params[:receivable].present?
+      params[:receivable][:so_header_id], params[:so_header_id] = params[:so_header_id], params[:receivable][:so_header_id]
+      params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
+    end
   end
 
   # GET /receivables
@@ -64,7 +67,11 @@ class ReceivablesController < ApplicationController
   # POST /receivables
   # POST /receivables.json
   def create
-    @receivable = Receivable.new(params[:receivable])
+    if params[:shipments].present?
+        @receivable = SoHeader.process_receivable_so_lines(params)
+    else
+        @receivable = Receivable.new(params[:receivable])
+    end
 
     respond_to do |format|
       if @receivable.save

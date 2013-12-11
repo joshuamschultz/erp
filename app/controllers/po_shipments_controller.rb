@@ -27,7 +27,7 @@ class PoShipmentsController < ApplicationController
             @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
-                po_shipment[:links] = CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
             }
             render json: {:aaData => @po_shipments}

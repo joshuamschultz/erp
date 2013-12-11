@@ -1,47 +1,54 @@
 <%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
 <div class="row-fluid">
-  <div class="span4 well item_detail_view">
-      <div id="payable_po_header_info"></div>
-  </div>
+  <% if @payable.persisted? && @payable.po_header.nil? %>
+        <%= render :partial => 'payables/payable_info' %>
+  <% else %>
+        <div class="span4 well item_detail_view">
+            <div id="payable_po_header_info"></div>
+        </div>
+  <% end %>
+  
 
   <div class="span8 well item_detail_view">
 
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <% unless @payable.new_record? %>
-        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" if @payable.po_header.present? %>
-    <% else %>
-        <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', :label => "PO" %>
-    <% end %>
+    <% if @payable.po_header %>
+        <% unless @payable.new_record? %>
+            <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" if @payable.po_header.present? %>
+        <% else %>
+            <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', :label => "PO" %>
+        <% end %>
 
-    <%= hidden_field_tag :po_header_id, (@payable.po_header.id if @payable.po_header) %>
+        <%= hidden_field_tag :po_header_id, (@payable.po_header.id if @payable.po_header) %>
 
-    <%= hidden_field_tag :org_po_header_id, (@payable.po_header.id if @payable.po_header) %>
+        <%= hidden_field_tag :org_po_header_id, (@payable.po_header.id if @payable.po_header) %>    
 
-    <%#= f.association :po_header %>
-    <%#= f.association :payable_to_address %>
-    <%#= f.input :payable_active %>
-    <%#= f.input :payable_identifier %>
+        <%#= f.association :po_header %>
+        <%#= f.association :payable_to_address %>
+        <%#= f.input :payable_active %>
+        <%#= f.input :payable_identifier %>
 
-    <% if @payable.new_record? || (@payable.persisted? && @payable.po_header.present?) %>
-        <div class="control-group select optional payable_payable_to_address">
-            <label for="payable_payable_to_id" class="select optional control-label">Payable To</label>
-            <div class="controls">
-                <select name="payable[payable_to_id]" id="payable_payable_to_id" class="select optional">
+        <% if @payable.new_record? || (@payable.persisted? && @payable.po_header.present?) %>
+            <div class="control-group select optional payable_payable_to_address">
+                <label for="payable_payable_to_id" class="select optional control-label">Payable To</label>
+                <div class="controls">
+                    <select name="payable[payable_to_id]" id="payable_payable_to_id" class="select optional">
 
-                </select>
+                    </select>
+                </div>
             </div>
-        </div>
+        <% end %>
     <% end %>
 
-    <%= f.input :payable_identifier, :label => "Invoice ID" %>
+    <%= f.input :payable_identifier, :label => "Invoice ID", required: true %>
     <%= f.input :payable_description, :label => "Description" %>        
     <%= f.input :payable_invoice_date, :as => :string, :label => "Invoice date" %>
     <%= f.input :payable_due_date, :as => :string, :label => "Due Date" %>
-    <%= f.input :payable_freight, :label => "Freight" %>
     <%= f.input :payable_notes, :label => "Notes" %>
     <%= f.input :payable_discount, :label => "Discount" %>
+    <%#= f.input :payable_freight, :label => "Freight" %>    
     <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
     <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
   </div>
@@ -60,10 +67,10 @@
 
 <%= render :partial => 'payables/po_shipments' if @po_header %>
 
-<%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.organization.nil? %>
+<%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.po_header.nil? %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_paybles"] = ["payable_po_header_id", "payable_payable_to_id", "payable_payable_identifier", "payable_payable_description", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_freight", "payable_payable_notes", "payable_payable_discount"];
+    tab_field_forms["form_for_paybles"] = ["payable_po_header_id", "payable_payable_to_id", "payable_payable_identifier", "payable_payable_description", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_notes", "payable_payable_discount"];
 
     <% date_box_date1 = @payable.new_record? ? Date.today : @payable.payable_invoice_date %>
     <% date_box_date2 = @payable.new_record? ? Date.today : @payable.payable_due_date %>

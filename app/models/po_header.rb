@@ -8,8 +8,8 @@ class PoHeader < ActiveRecord::Base
   validates_presence_of :organization
   validates_presence_of :po_type
 
-  validates_presence_of :customer, :if => Proc.new { |o| o.po_type.present? && o.po_type.type_value == "direct" }
-  validates_presence_of :cusotmer_po, :if => Proc.new { |o| o.po_type.present? && o.po_type.type_value == "direct" }
+  validates_presence_of :customer, :if => Proc.new { |o| o.po_is?("direct") }
+  validates_presence_of :cusotmer_po, :if => Proc.new { |o| o.po_is?("direct") }
 
   # (validates_uniqueness_of :po_identifier if validates_length_of :po_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :po_identifier
 
@@ -17,7 +17,7 @@ class PoHeader < ActiveRecord::Base
 
   def before_create_level_defaults
 		self.po_status = "open"
-    self.po_identifier = "Unassigned"
+    self.po_identifier = UNASSIGNED
 
     # self.po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
     # self.po_identifier.slice!(2)
@@ -27,7 +27,7 @@ class PoHeader < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
-      if (self.po_type_value == "direct")          
+      if self.po_is?("direct")
           self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
           so_header = self.so_header.present? ? self.so_header : SoHeader.new
           so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po)
@@ -93,5 +93,8 @@ class PoHeader < ActiveRecord::Base
       self.po_type.type_value
   end
 
+  def po_is?(po_type)
+      self.po_type.present? && self.po_type_value == po_type
+  end
 
 end

@@ -6,6 +6,9 @@ class SoShipment < ActiveRecord::Base
 
   validate :check_total_shipped
 
+  has_one :receivable_so_shipment, :dependent => :destroy
+  has_one :receivable, through: :receivable_so_shipment
+
   def check_total_shipped
 		total_shipped = self.other_so_shipments.sum(:so_shipped_count) + self.so_shipped_count
 
@@ -25,6 +28,16 @@ class SoShipment < ActiveRecord::Base
   		self.so_line.present? ? self.so_line.so_shipments.sum(:so_shipped_count) : 0
   end
 
+  before_save :process_before_save
+
+  def process_before_save
+      self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
+
+      unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
+          self.so_shipped_status = "shipped"
+      end
+  end
+
   after_save :set_so_line_status
   after_destroy :set_so_line_status
 
@@ -38,6 +51,23 @@ class SoShipment < ActiveRecord::Base
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
     end
+  end
+
+  def receivable_checkbox(mode)
+    (mode == "history") ? "" : "<input type='checkbox' class='receivable_so_lines receivable_so_lines_#{self.so_line.so_header_id}' name='receivable_so_lines' value='#{self.id}'>  "
+  end
+
+  # scope :open_shipments, where("id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id))
+  # scope :closed_shipments, where(:id => ReceivableSoShipment.all.collect(&:so_shipment_id))
+
+  def self.open_shipments(shipments)
+      shipments ||= SoShipment
+      shipments.where("id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id))
+  end
+
+  def self.closed_shipments(shipments)
+      shipments ||= SoShipment
+      shipments.where(:id => ReceivableSoShipment.all.collect(&:so_shipment_id))
   end
 
 end
