@@ -25,11 +25,13 @@ class SoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
 
-            if @item
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments) : SoShipment.open_shipments(@item.so_shipments)
-            else
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil) : SoShipment.open_shipments(nil)
-            end
+            # if @item
+            #     @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments) : SoShipment.open_shipments(@item.so_shipments)
+            # else
+            #     @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil) : SoShipment.open_shipments(nil)
+            # end
+
+            @so_shipments = SoShipment.where(:id => [0])
 
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipment = so_line_data_list(so_shipment, true)   
