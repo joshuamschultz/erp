@@ -31,7 +31,7 @@ class SoShipmentsController < ApplicationController
             #     @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil) : SoShipment.open_shipments(nil)
             # end
 
-            @so_shipments = SoShipment.all
+            @so_shipments = SoShipment.order(:id)
 
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipment = so_line_data_list(so_shipment, true)   
