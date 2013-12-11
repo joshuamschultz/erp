@@ -90,7 +90,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
 
           if gauge_rrtp <= 10
               gauge_status = "Acceped"
-          elsif gauge_rrtp.between?(10, 30)
+          elsif gauge_rrtp.to_f.between?(10, 30)
               gauge_status = "Marginal"
           elsif gauge_rrtp > 30
               gauge_status = "Rejected"
