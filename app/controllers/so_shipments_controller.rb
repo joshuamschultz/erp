@@ -15,19 +15,27 @@ class SoShipmentsController < ApplicationController
         if(params[:type] == "shipping")
             @so_lines = SoLine.where(:so_line_status => "open").select{|so_line|
                 so_line = so_line_data_list(so_line, false)
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field' type='text' value='0'></div>"
+                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
+                so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                 so_line[:links] = "<a so_line_id='#{so_line.id}' so_shipped_status='shipped' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
             }
             render json: {:aaData => @so_lines}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
-            @so_shipments = @item.present? ? @item.so_shipments : SoShipment.order(:so_line_id)
-            @so_shipments = @so_shipments.select{|so_shipment|
+
+            if @item
+                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments) : SoShipment.open_shipments(@item.so_shipments)
+            else
+                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil) : SoShipment.open_shipments(nil)
+            end
+
+            @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipment = so_line_data_list(so_shipment, true)   
-                so_shipment[:links] = CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
+                so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 so_shipment[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+                so_shipment[:item_part_no] = so_shipment.receivable_checkbox(params[:type]) + so_shipment[:item_part_no]
             }
             render json: {:aaData => @so_shipments}
         end
@@ -37,10 +45,10 @@ class SoShipmentsController < ApplicationController
 
   def so_line_data_list(object, shipment)
     so_line = shipment ? object.so_line : object
-    object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)
+    object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)    
     object[:item_part_no] = CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)
-    object[:customer_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.so_header.organization.organization_name)
-    object[:vendor_name] = CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name)
+    object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
+    object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "House"
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
     object[:so_line_quantity] = so_line.so_line_quantity
     object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"    
