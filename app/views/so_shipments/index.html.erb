@@ -1,3 +1,7 @@
-<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+<%#= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
 
-<%= render :partial => 'so_shipments/shipments' %>
+<%#= render :partial => 'so_shipments/shipments' %>
+
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} unless params[:type].eql?("history") %>
+
+<%= render :partial => 'so_shipments/shipments', :locals => {shipment_type: params[:type], create_receivable: !params[:type].eql?("history")} %>

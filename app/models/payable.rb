@@ -21,8 +21,9 @@ class Payable < ActiveRecord::Base
 
   accepts_nested_attributes_for :po_shipments
 
-  validates_presence_of :payable_invoice_date, :payable_due_date, :po_header #, :payable_identifier
-
+  validates_presence_of :payable_invoice_date, :payable_due_date #, :po_header, :payable_identifier
+  validates_presence_of :payable_identifier, on: :update
+  validates_presence_of :payable_identifier, :if => Proc.new { |o| o.po_header.nil? }
   # validates_uniqueness_of :payable_identifier
 
   before_save :process_before_save

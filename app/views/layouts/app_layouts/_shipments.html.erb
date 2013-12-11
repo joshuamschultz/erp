@@ -89,8 +89,8 @@
 
 	function process_all_open(shipping_id, current_element){
         if(confirm("Are you sure?")){
-        	$(".shipping_input_po_" + shipping_id).each(function(){
-        		$(this).val($(this).closest("tr").find(".po_line_quantity_open").html());
+        	$(".shipping_input_<%= type %>_" + shipping_id).each(function(){
+        		$(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());
         	});
         	initiate_shipping_inputs();
         }

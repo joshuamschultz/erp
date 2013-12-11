@@ -4,6 +4,8 @@ AllianceFasteners::Application.routes.draw do
 
   resources :payable_po_shipments
 
+  resources :receivable_so_shipments
+
   resources :so_shipments
 
   resources :quality_lot_gauges do

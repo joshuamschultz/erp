@@ -41,5 +41,24 @@ class SoHeader < ActiveRecord::Base
       so_identifier.slice!(2)
       "S" + so_identifier
   end
+
+
+  def self.process_receivable_so_lines(params)
+      so_shipment = SoShipment.find_by_id(params[:shipments][0]) if params[:shipments].present? && params[:shipments].any?
+      so_header = so_shipment.so_line.so_header if so_shipment && so_shipment.so_line
+      if so_header
+          receivable = so_header.receivables.build
+          receivable.receivable_identifier = "Invoice"
+          # receivable.receivable_invoice_date = Date.today
+          # receivable.receivable_due_date = Date.today
+          params[:shipments].each{|shipment_id| 
+              so_shipment = SoShipment.find_by_id(shipment_id);
+              receivable.so_shipments << so_shipment if so_shipment && so_shipment.so_line && so_shipment.so_line.so_header == so_header
+          }
+          receivable
+      else
+          Receivable.new
+      end
+  end
   
 end

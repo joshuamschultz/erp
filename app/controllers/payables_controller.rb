@@ -85,7 +85,7 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.save
-        format.html { redirect_to edit_payable_path(@payable), notice: 'Payable was successfully created.' }
+        format.html { redirect_to @payable, notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
         format.html { render action: "new" }

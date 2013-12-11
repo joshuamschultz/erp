@@ -12,33 +12,7 @@
     <div class="span9">
         <%= render :partial => 'receivable_lines/line_items' unless @so_header %>
 
-        <%#= render :partial => 'so_lines/line_items' if @so_header %>
-        <% if @so_header %>
-            <table id="receivable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th>Part No</th>
-                        <th>Quantity Ordered</th>
-                        <th>Quantity Shipped</th>
-                        <th>Cost</th>
-                        <th>Shipped</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody id="receivable_shipments_table_table_body">
-                    <% @receivable.receivable_shipments.where("receivable_shipment_count > 0").each do |receivable_shipment| %>
-                        <tr>
-                            <td><%= link_to receivable_shipment.so_line.item_alt_name.item_alt_identifier, item_path(receivable_shipment.so_line.item) %></td>
-                            <td><%= receivable_shipment.so_line.so_line_quantity %></td>
-                            <td><%= receivable_shipment.so_line.receivable_shipments.sum(:receivable_shipment_count) %></td>
-                            <td><%= receivable_shipment.so_line.so_line_cost %></td>
-                            <td><%= receivable_shipment.receivable_shipment_count %></td>
-                            <td><%= receivable_shipment.receivable_shipment_count * receivable_shipment.so_line.so_line_cost %></td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        <% end %>
+        <%= render :partial => 'receivables/so_shipments' if @so_header %>        
 
         <div class="separator bottom"></div>
         <div class="separator bottom"></div>

@@ -1,0 +1,26 @@
+<table id="receivable_shipments_table" class="data_lines_table dynamicTable table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Part No</th>
+            <th>Quantity Ordered</th>
+            <th>Quantity Shipped</th>
+            <th>Cost</th>
+            <th>Sell</th>
+            <th>Amount</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="receivable_shipments_table_table_body">
+        <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
+            <tr>
+                <td><%= link_to so_shipment.so_line.item_alt_name.item_alt_identifier, item_path(so_shipment.so_line.item) %></td>
+                <td><%= so_shipment.so_line.so_line_quantity %></td>
+                <td><%= so_shipment.so_shipped_count %></td>
+                <td><%= so_shipment.so_line.so_line_cost %></td>
+                <td><%= so_shipment.so_line.so_line_sell %></td>
+                <td><%= so_shipment.so_shipped_cost %></td>
+                <td><%= link_to "<i></i>".html_safe, receivable_so_shipment_path(so_shipment.receivable_so_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn-action btn glyphicons remove_2 btn-danger" %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
