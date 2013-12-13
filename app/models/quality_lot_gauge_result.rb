@@ -80,7 +80,9 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_tv = Math.sqrt((gauge_rr**2) + (gauge_pv**2))
           gauge_rrvp = (gauge_tv == 0) ? 0 : (gauge_rr / gauge_tv * 100)
 
-          gauge_dev = gauge_dimension.item_part_dimension.item_part_pos_tolerance - gauge_dimension.item_part_dimension.item_part_neg_tolerance
+          pos_tolerance = gauge_dimension.item_part_dimension.item_part_dimension.to_f + gauge_dimension.item_part_dimension.item_part_pos_tolerance.to_f
+          neg_tolerance = gauge_dimension.item_part_dimension.item_part_dimension.to_f - gauge_dimension.item_part_dimension.item_part_neg_tolerance.to_f
+          gauge_dev = pos_tolerance - neg_tolerance
 
           gauge_gvp = gauge_gv / gauge_dev * 100
           gauge_ovp = gauge_ov / gauge_dev * 100
