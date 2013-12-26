@@ -70,10 +70,8 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_gv = gauge_rbar1 * @@gauge_k1
 
           gauge_ov = Math.sqrt(((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails)))
-          # gauge_ov = (gauge_rbar2 * @@gauge_k2) - (gauge_gv / (@@gauge_n * @@gauge_trails))
 
           gauge_rr = Math.sqrt((gauge_ov**2) + (gauge_gv**2))
-          # gauge_rr = gauge_ov + gauge_gv
 
           gauge_pv = gauge_rp * @@gauge_k3
 
@@ -90,10 +88,6 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_tvp = gauge_tv / gauge_dev * 100
           gauge_rrtp = gauge_rr / gauge_dev * 100
 
-          p "-------------------------------"
-          p gauge_rrtp
-          p "-------------------------------"
-
           if gauge_rrtp <= 10
               gauge_status = "Acceped"
           elsif gauge_rrtp.to_f.between?(10, 30)
@@ -109,6 +103,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           ovp: gauge_ovp.round(2).to_s, pvp: gauge_pvp.round(2).to_s, tvp: gauge_tvp.round(2).to_s, 
           rrtp: gauge_rrtp.round(2).to_s, g_status: gauge_status }
       end
+      
       dimension_results
   end
 

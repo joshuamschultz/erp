@@ -12,6 +12,8 @@ class PayablesController < ApplicationController
     if params[:payable].present?
       params[:payable][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:payable][:po_header_id]
       params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
+      params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
+      params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
     end
   end
 
@@ -85,9 +87,10 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.save
-        format.html { redirect_to @payable, notice: 'Payable was successfully created.' }
+        format.html { redirect_to new_payable_payable_line_path(@payable), notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
+        p @payable.errors.to_yaml
         format.html { render action: "new" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end
@@ -104,6 +107,7 @@ class PayablesController < ApplicationController
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }
         format.json { head :no_content }
       else
+        p @payable.errors.to_yaml
         format.html { render action: "edit" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end

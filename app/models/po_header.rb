@@ -76,7 +76,8 @@ class PoHeader < ActiveRecord::Base
       po_header = po_shipment.po_line.po_header if po_shipment && po_shipment.po_line
       if po_header
           payable = po_header.payables.build
-          payable.payable_identifier = "Invoice"
+          payable.organization = po_header.organization
+          payable.payable_invoice = "Invoice"
           payable.payable_invoice_date = Date.today
           payable.payable_due_date = Date.today
           params[:shipments].each{|shipment_id| 
