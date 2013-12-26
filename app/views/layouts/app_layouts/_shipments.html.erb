@@ -96,4 +96,10 @@
         }
     }
 
+    function fill_po_items(header_id){
+        $(".shipping_input_<%= type %>_" + header_id).each(function(){
+            $(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());
+        });
+    }
+
 </script>

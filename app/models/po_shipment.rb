@@ -76,12 +76,12 @@ class PoShipment < ActiveRecord::Base
 
   def self.open_shipments(shipments)
       shipments ||= PoShipment
-      shipments.where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+      shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
   end
 
   def self.closed_shipments(shipments)
       shipments ||= PoShipment
-      shipments.where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
+      shipments.where("po_shipments.id in (?)", PayablePoShipment.all.collect(&:po_shipment_id))
   end
 
 end

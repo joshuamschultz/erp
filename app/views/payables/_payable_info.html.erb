@@ -12,10 +12,12 @@
             <td class="span5"><strong><%= link_to @payable.organization.organization_name, @payable.organization if @payable.organization %></strong></td>
           </tr>
 
-          <tr>
-            <td class="span2">PO:</td>
-            <td class="span5"><strong><%= link_to @payable.po_header.po_identifier, @payable.po_header if @payable.po_header %></strong></td>
-          </tr>
+          <%# if @payable.po_header %>
+            <!-- <tr>
+              <td class="span2">PO:</td>
+              <td class="span5"><strong><%#= link_to @payable.po_header.po_identifier, @payable.po_header %></strong></td>
+            </tr> -->
+          <%# end %>
 
           <tr>
             <td class="span2">Payable To:</td>
