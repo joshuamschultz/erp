@@ -60,14 +60,14 @@
         <div class="control-group">
             <label for="item_processes" class="optional control-label">Processes</label>
             <div class="controls">
-                <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @item_revision.persisted? ? (@item_revision.item_processes.empty? ? [] : @item_revision.item_processes.collect(&:process_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_processes" %>
+                <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @item_revision.present? ? (@item_revision.item_processes.empty? ? [] : @item_revision.item_processes.collect(&:process_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_processes" %>
             </div>
         </div>
 
         <div class="control-group">
             <label for="item_specifications" class="optional control-label">Specifications</label>
             <div class="controls">
-                <%= select_tag "specs[]", options_for_select(Specification.all.map {|spec| [spec.specification_identifier, spec.id]}, @item_revision.persisted? ? (@item_revision.item_specifications.empty? ? [] : @item_revision.item_specifications.collect(&:specification_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_specifications" %>
+                <%= select_tag "specs[]", options_for_select(Specification.all.map {|spec| [spec.specification_identifier, spec.id]}, @item_revision.present? ? (@item_revision.item_specifications.empty? ? [] : @item_revision.item_specifications.collect(&:specification_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_specifications" %>
             </div>
         </div>
 

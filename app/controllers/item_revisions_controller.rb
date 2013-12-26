@@ -51,9 +51,16 @@ class ItemRevisionsController < ApplicationController
   # GET items/1/item_revisions/new.json
   def new
     @item = Item.find(params[:item_id])
-    # @item_revision = @item.item_revisions.build
-    @item_revision = @item.current_revision.present? ? @item.current_revision.dup : @item.item_revisions.build
-
+    
+    # @item_revision = @item.current_revision.present? ? @item.current_revision.dup : @item.item_revisions.build
+    
+    if @item.current_revision
+        @item_revision = @item.current_revision.dup
+        @item_revision.item_processes = @item.current_revision.item_processes
+        @item_revision.item_specifications = @item.current_revision.item_specifications
+    else
+        @item_revision = @item.item_revisions.build
+    end
 
     respond_to do |format|
       format.html # new.html.erb
