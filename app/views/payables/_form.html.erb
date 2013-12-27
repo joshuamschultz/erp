@@ -23,7 +23,7 @@
     <%= hidden_field_tag :org_organization_id, (@payable.organization.id if @payable.organization) %>
 
     <% if @payable.po_header %>
-        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" if @payable.po_header.present? %>   
+        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" %>   
         <%= hidden_field_tag :po_header_id, @payable.po_header.id %>
         <%= hidden_field_tag :org_po_header_id, @payable.po_header.id %>
     <% end %>
@@ -42,7 +42,7 @@
     <%= f.input :payable_due_date, :as => :string, :label => "Due Date" %>
     <%= f.input :payable_description, :label => "Description" %>
     <%= f.input :payable_notes, :label => "Notes" %>
-    <%= f.input :payable_discount, :label => "Discount" %>
+    <%= f.input :payable_discount, :label => "Discount (%)" %>
     <%#= f.input :payable_freight, :label => "Freight" %>    
     <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
     <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
@@ -131,6 +131,6 @@
 
 <div class="separator bottom"></div>
 
-<% @po_header = @payable.po_header if @payable.persisted? %>
+<%# @po_header = @payable.po_header if @payable.persisted? %>
 
-<%= render :partial => 'po_lines/line_items' if @po_header %>
+<%#= render :partial => 'po_lines/line_items' if @po_header %>

@@ -1,6 +1,7 @@
 class Quote < ActiveRecord::Base
   has_many :quote_vendors, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
+  has_many :quote_line_costs, :through => :quote_lines
 
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
   :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id, :quote_po_type
@@ -46,6 +47,12 @@ class Quote < ActiveRecord::Base
 
  def vendors
     Organization.where(:id => self.quote_vendors.map(&:organization_id))
+ end
+
+ before_create :process_before_create
+
+ def process_before_create
+    self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
  end
 
  before_save :process_before_save

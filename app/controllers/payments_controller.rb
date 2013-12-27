@@ -20,7 +20,7 @@ class PaymentsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @payments = @payments.select{|payment|
-              payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.id)              
+              payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.payment_identifier)              
               payment[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
               payment[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
               payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
@@ -46,9 +46,7 @@ class PaymentsController < ApplicationController
   def new
     @payment = Payment.new
     @payable = Payable.find(params[:payable_id]) if params[:payable_id].present?
-    if @payable
-        @payment.organization = @payable.organization
-    end
+    @payment.organization = @payable.organization if @payable
 
     respond_to do |format|
       format.html # new.html.erb

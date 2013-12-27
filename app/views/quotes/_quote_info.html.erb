@@ -5,7 +5,7 @@
       <tbody>
           <tr>
             <td class="span2">Quote Send ID:</td>
-            <td class="span5"><strong><%= link_to @quote.id, @quote %></strong></td>
+            <td class="span5"><strong><%= link_to @quote.quote_identifier, @quote %></strong></td>
           </tr>
 
           <tr>
@@ -30,12 +30,12 @@
 
           <tr>
             <td class="span3">Quote Vendor:</td>
-            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : "Not yet" %></strong></td>
+            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Quote PO:</td>
-            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : "Not yet"  %></strong></td>
+            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
           </tr>
 
       </tbody>

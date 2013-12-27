@@ -1,29 +1,37 @@
 <%= simple_form_for(@receivable, :html => {:id => "form_for_receivables",:class => "form-horizontal"}) do |f| %>
 <div class="row-fluid">
-  <div class="span4 well item_detail_view">
-      <div id="receivable_so_header_info"></div>
-  </div>
+  <% if @receivable.persisted? %>
+        <%= render :partial => 'receivables/receivable_info' %>
+  <% else %>
+        <div class="span4 well item_detail_view">
+            <div id="receivable_customer_info"></div>
+        </div>
+  <% end %>  
 
   <div class="span8 well item_detail_view">
 
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <% if @receivable.so_header %>
-        <% unless @receivable.new_record? %>
-            <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" if @receivable.so_header.present? %>
-        <% else %>
-            <%= f.association :so_header, :url => autocomplete_so_header_so_identifier_so_headers_path, :as => :autocomplete, :id_element => '#so_header_id', :label => "SO" %>
-        <% end %>
+    <% if @receivable.persisted? %>
+        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" %>
+    <% else %>
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>        
+    <% end %>
 
-        <%= hidden_field_tag :so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
-        <%= hidden_field_tag :org_so_header_id, (@receivable.so_header.id if @receivable.so_header) %>
+    <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.organization) %>
+    <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.organization) %>
+
+    <% if @receivable.so_header %>
+        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" %>   
+        <%= hidden_field_tag :so_header_id, @receivable.so_header.id %>
+        <%= hidden_field_tag :org_so_header_id, @receivable.so_header.id %>
     <% end %>
     
-    <%= f.input :receivable_identifier, :label => "Invoice ID", required: true %> 
+    <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %> 
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>
-    <%= f.input :receivable_discount, :label => "Discount" %>   
+    <%= f.input :receivable_discount, :label => "Discount (%)" %>   
   </div>
 
   <div class="separator bottom"></div>
@@ -42,39 +50,24 @@
 <%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? && @receivable.so_header.nil? %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_receivables"] = ["receivable_so_header_id", "receivable_receivable_identifier", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];
+    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];
 
     var receivable_fine_to_submit = true;
 
     $(document).ready(function(){ 
-        $("#receivable_so_header_id").on("focusout", function(){
-            if($("#so_header_id").val() == ""){
-                $("#so_header_id").val($("#org_so_header_id").val());
-            }
-
-            if($("#so_header_id").val() != ""){
-                initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val() + "/so_info", "type": "GET", "params": {}}, "set_so_header_info", {});
+        $("#receivable_organization_id").on("focusout", function(){
+            if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
             }
             else{
-                $("#receivable_so_header_info").html("");
+                $("#receivable_customer_info").html("");
             }
         });
 
         <% unless @receivable.nil? %>
             $("#receivable_so_header_id").val("<%= @receivable.so_header.so_identifier if @receivable.so_header %>");
 
-            if($("#so_header_id").val() != "")
-                initialize_api_call({"url": "/so_headers/" + $("#so_header_id").val() + "/so_info", "type": "GET", "params": {}}, "set_so_header_info", {});
-
-            <% unless @receivable.persisted? %>
-                    $("#receivable_so_header_id").focus();
-            <% else %>
-                    $("#receivable_receivable_description").focus();
-            <% end %>
-
-            // tab_field_forms["form_for_receivables"].push("receivable_receivable_discount");
-        <% else %>
-            $("#receivable_so_header_id").focus();
+            $("#receivable_organization_id").val("<%= @receivable.organization.organization_name if @receivable.organization %>");
         <% end %>
 
         $(document).on("keydown", ".receivable_shipment_count", function(e){
@@ -90,8 +83,8 @@
         });
     });
 
-    function set_so_header_info(response, callback_params, api_params){
-        $("#receivable_so_header_info").html(response);
+    function set_customer_info(response, callback_params, api_params){
+        $("#receivable_customer_info").html(response);
         return false;
     }
 
@@ -101,6 +94,6 @@
 
 <div class="separator bottom"></div>
 
-<% @so_header = @receivable.so_header if @receivable.persisted? %>
+<%# @so_header = @receivable.so_header if @receivable.persisted? %>
 
-<%= render :partial => 'so_lines/line_items' if @so_header %>
+<%#= render :partial => 'so_lines/line_items' if @so_header %>

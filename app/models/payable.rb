@@ -42,17 +42,7 @@ class Payable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      # self.payable_identifier =  "Invoice #{Payable.all.count + 1}"
-
-      max_identifier = Payable.maximum(:payable_identifier)
-      if max_identifier.nil?
-          self.payable_identifier = "A0001"
-      elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
-          self.payable_identifier = max_identifier[0].next + "0001"
-      else
-          self.payable_identifier = max_identifier[0] + "%04d" % cur_identifier
-      end
-
+      self.payable_identifier = CommonActions.get_new_identifier(Payable, :payable_identifier)
       self.payable_status = "open"     
   end  
 
@@ -67,9 +57,10 @@ class Payable < ActiveRecord::Base
   end
 
   def update_payable_total
-      payable_total = self.payable_lines.sum(:payable_line_cost) - self.payable_discount      
+      payable_total = self.payable_lines.sum(:payable_line_cost)
       payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
-      payable_total
+      payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
+      payable_total - payable_discount_val
   end
 
   def payable_current_balance

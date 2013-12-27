@@ -3,7 +3,7 @@
       <tbody>
           <tr>
             <td class="span2">ID:</td>
-            <td class="span5"><strong><%= link_to @receipt.id, @receipt %></strong></td>
+            <td class="span5"><strong><%= link_to @receipt.receipt_identifier, @receipt %></strong></td>
           </tr>
 
         <% if @receipt.organization %>

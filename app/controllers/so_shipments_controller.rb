@@ -19,6 +19,7 @@ class SoShipmentsController < ApplicationController
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
                 so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
+                so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
                 so_line[:links] = "<a so_line_id='#{so_line.id}' so_shipped_status='shipped' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
             }
             render json: {:aaData => @so_lines}

@@ -19,6 +19,7 @@ class PaymentLine < ActiveRecord::Base
 
   def check_total_received
   		total_received = self.other_payment_lines.sum(:payment_line_amount) + self.payment_line_amount
+
   		if total_received > self.payable.payable_total
   			 errors.add(:payment_line_amount, "exceeded than payable total!")
   		end
@@ -30,6 +31,7 @@ class PaymentLine < ActiveRecord::Base
   end
 
   after_save :process_after_save
+  after_destroy :process_after_save
 
   def process_after_save
       Payable.skip_callback("save", :before, :process_before_save)

@@ -218,6 +218,22 @@ module CommonActions
 		]		
 	end
 
+
+	def self.get_new_identifier(model, field)
+		max_identifier = model.maximum(field)
+		if max_identifier.nil?
+  			"A0001"
+		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
+  			max_identifier[0].next + "0001"
+		else
+	  		max_identifier[0] + "%04d" % cur_identifier
+		end
+	end
+
+	def self.highlighted_text(string)
+		"<div style='color:red'>#{string}</div>".html_safe
+	end
+
 	
 
 end

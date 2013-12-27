@@ -48,6 +48,12 @@ class Payment < ActiveRecord::Base
       end
   end
 
+  before_create :process_before_create
+
+  def process_before_create
+      self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier)
+  end
+
   private
 
   def set_payment(line)
