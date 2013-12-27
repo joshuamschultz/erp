@@ -7,7 +7,7 @@ class QuotesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {  @quotes = @quotes.select{|quote|
-              quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.id)
+              quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
               quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
               quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
           }

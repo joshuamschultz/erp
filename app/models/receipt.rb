@@ -47,6 +47,12 @@ class Receipt < ActiveRecord::Base
       end
   end
 
+  before_create :process_before_create
+
+  def process_before_create
+      self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier)
+  end
+
   private
 
   def set_receipt(line)

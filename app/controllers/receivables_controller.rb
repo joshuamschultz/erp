@@ -12,6 +12,8 @@ class ReceivablesController < ApplicationController
     if params[:receivable].present?
       params[:receivable][:so_header_id], params[:so_header_id] = params[:so_header_id], params[:receivable][:so_header_id]
       params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
+      params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
+      params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
     end
   end
 
@@ -75,7 +77,7 @@ class ReceivablesController < ApplicationController
 
     respond_to do |format|
       if @receivable.save
-        format.html { redirect_to edit_receivable_path(@receivable), notice: 'Receivable was successfully created.' }
+        format.html { redirect_to new_receivable_receivable_line_path(@receivable), notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
         format.html { render action: "new" }

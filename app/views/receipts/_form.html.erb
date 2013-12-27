@@ -149,6 +149,17 @@
         });
 
         set_all_receipt_receivable_info("all");
+
+        <% if @receivable %>
+            add_receipt_line_row();
+            $("#receipt_lines_table_body").hide();
+            setTimeout(function(){
+                $("#receipt_receipt_lines_attributes_0_receivable_id").val("<%= @receivable.id %>");
+                call_receipt_receivable_info($("#receipt_receipt_lines_attributes_0_receivable_id"));
+                $("#receipt_lines_table_body").show();
+                $("#receipt_receipt_check_amount").focus();
+            },2000);
+        <% end %>
     });
 
     function set_customer_info(response, callback_params, api_params){

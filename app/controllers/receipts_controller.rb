@@ -21,7 +21,7 @@ class ReceiptsController < ApplicationController
       format.html # index.html.erb
       format.json {
         @receipts = @receipts.select{|receipt|
-              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.id)              
+              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)              
               receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
               receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
               receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
@@ -46,6 +46,8 @@ class ReceiptsController < ApplicationController
   # GET /receipts/new.json
   def new
     @receipt = Receipt.new
+    @receivable = Receivable.find(params[:receivable_id]) if params[:receivable_id].present?
+    @receipt.organization = @receivable.organization if @receivable
 
     respond_to do |format|
       format.html # new.html.erb

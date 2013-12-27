@@ -13,14 +13,14 @@ class Receivable < ActiveRecord::Base
   attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
-  :organization_id, :receivable_shipments_attributes
+  :organization_id, :receivable_shipments_attributes, :receivable_invoice
 
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
   accepts_nested_attributes_for :receivable_shipments
 
-  validates_presence_of :receivable_identifier, on: :update
-  validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
+  validates_presence_of :receivable_invoice, :organization
+  # validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
   # validates_uniqueness_of :receivable_identifier
 
   before_save :process_before_save
@@ -39,7 +39,7 @@ class Receivable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      # self.receivable_identifier = "Invoice #{Receivable.all.count + 1}"
+      self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier)
       self.receivable_status = "open"     
   end  
 
@@ -69,9 +69,10 @@ class Receivable < ActiveRecord::Base
   end
 
   def update_receivable_total
-      receivable_total = self.receivable_lines.sum(:receivable_line_cost) - self.receivable_discount
+      receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
-      receivable_total
+      receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
+      receivable_total - receivable_discount_val
   end
 
   def receivable_current_balance

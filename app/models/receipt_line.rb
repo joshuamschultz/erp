@@ -30,6 +30,7 @@ class ReceiptLine < ActiveRecord::Base
   end
 
   after_save :process_after_save
+  after_destroy :process_after_save
 
   def process_after_save
       Receivable.skip_callback("save", :before, :process_before_save)
