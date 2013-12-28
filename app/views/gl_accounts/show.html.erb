@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Gl type:</b>
+  <%= @gl_account.gl_type %>
+</p>
+
+<p>
+  <b>Gl title:</b>
+  <%= @gl_account.gl_title %>
+</p>
+
+<p>
+  <b>Gl description:</b>
+  <%= @gl_account.gl_description %>
+</p>
+
+<p>
+  <b>Gl active:</b>
+  <%= @gl_account.gl_active %>
+</p>
+
+
+<%= link_to 'Edit', edit_gl_account_path(@gl_account) %> |
+<%= link_to 'Back', gl_accounts_path %>

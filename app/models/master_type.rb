@@ -9,6 +9,11 @@ class MasterType < ActiveRecord::Base
 
   scope :payment_types, where(:type_category => 'payment_type')
 
+  scope :gl_modes, where(:type_category => 'gl_mode')
+
+  scope :gl_categories, where(:type_category => 'gl_category')
+  
+
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
@@ -23,6 +28,8 @@ class MasterType < ActiveRecord::Base
 
   has_many :type_based_payments, :class_name => "Payment", :foreign_key => "payment_type_id"
 
+  has_many :type_based_gl_accounts, :class_name => "GlAccount", :foreign_key => "gl_type_id"
+
   has_many :customer_quality_levels, :dependent => :destroy
   has_many :customer_qualities, :through => :customer_quality_levels
 
@@ -32,4 +39,10 @@ class MasterType < ActiveRecord::Base
   # customer quality level / forms -> 
   # organization -> type - customer, vendor, support
   # po -> type - 
+
+  # before_save :process_before_save
+  # def process_before_save
+  #     self.type_value = self.type_name.urlize
+  # end
+
 end

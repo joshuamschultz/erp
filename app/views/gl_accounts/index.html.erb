@@ -1,0 +1,50 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">GL Accounts</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New GL Account', new_gl_account_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>SLNO</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Mode</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => gl_accounts_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "gl_title" },
+                        { "mData": "gl_type_name" },
+                        { "mData": "gl_mode" },
+                        { "mData": "gl_category" },
+                        { "mData": "gl_description"},
+                        { "mData": "gl_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
