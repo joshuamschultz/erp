@@ -1,5 +1,7 @@
 AllianceFasteners::Application.routes.draw do  
 
+  resources :gl_accounts
+
   resources :payable_po_shipments
 
   resources :receivable_so_shipments
