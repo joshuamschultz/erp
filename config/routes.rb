@@ -1,6 +1,4 @@
-AllianceFasteners::Application.routes.draw do
-
-  resources :quote_line_costs
+AllianceFasteners::Application.routes.draw do  
 
   resources :payable_po_shipments
 
@@ -19,34 +17,32 @@ AllianceFasteners::Application.routes.draw do
   resources :quality_lot_gauges
 
 
-  resources :quotes do
-    resources :quote_vendors
-  end
+  # resources :quotes do
+  #   resources :quote_vendors
+  # end
 
-  resources :quotes do
-    resources :quote_lines
-  end
+  # resources :quotes do
+  #   resources :quote_lines
+  # end
 
-  resources :quotes
+  # resources :quotes
 
+  # resources :quote_line_costs  
 
-  resources :receivables do
-    resources :receivable_shipments
-  end
+  # resources :receipts do
+  #   resources :receipt_lines
+  # end
 
-  resources :payables do
-    resources :payable_shipments
-  end
+  # resources :receivables do
+  #   resources :receivable_lines
+  # end
 
-  resources :receipts do
-    resources :receipt_lines
-  end
+  # resources :receivables do
+  #   resources :receivable_shipments
+  # end
 
-  resources :receivables do
-    resources :receivable_lines
-  end
-
-  resources :receivables
+  # resources :receivables
+  
 
   resources :payments do
     resources :payment_lines
@@ -56,6 +52,10 @@ AllianceFasteners::Application.routes.draw do
 
   resources :payables do
     resources :payable_lines
+  end
+
+  resources :payables do
+    resources :payable_shipments
   end
 
   resources :quality_lot_capabilities
