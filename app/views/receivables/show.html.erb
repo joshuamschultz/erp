@@ -2,7 +2,7 @@
     <h4 class="span3 left">Receivable Info</h4>
     <span class="span9 right">
         <%= link_to 'Edit', edit_receivable_path(@receivable), :class => "btn btn-small" %>
-        <%= link_to 'Pay', new_receipt_path(receivable_id: @receivable.id), :class => "btn btn-small" if @receivable.receivable_status == "open" %>
+        <%#= link_to 'Pay', new_receipt_path(receivable_id: @receivable.id), :class => "btn btn-small" if @receivable.receivable_status == "open" %>
         <%= link_to 'Back', receivables_path, :class => "btn btn-small" %>
     </span>
 </div>
