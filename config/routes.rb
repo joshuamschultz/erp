@@ -35,16 +35,15 @@ AllianceFasteners::Application.routes.draw do
   #   resources :receipt_lines
   # end
 
-  # resources :receivables do
-  #   resources :receivable_lines
-  # end
+  resources :receivables do
+    resources :receivable_lines
+  end
 
-  # resources :receivables do
-  #   resources :receivable_shipments
-  # end
+  resources :receivables do
+    resources :receivable_shipments
+  end
 
-  # resources :receivables
-  
+  resources :receivables  
 
   resources :payments do
     resources :payment_lines
