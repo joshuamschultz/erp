@@ -139,7 +139,7 @@ module CommonActions
 											{:path => payables_path, :name => "Payables"},
 											{:path => payments_path, :name => "Payments"},
 											{:path => receivables_path, :name => "Receivables"},
-											{:path => "#", :name => "Receipts"}
+											{:path => receipts_path, :name => "Receipts"}
 										]
 		
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}

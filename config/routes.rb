@@ -1,5 +1,7 @@
 AllianceFasteners::Application.routes.draw do  
 
+  resources :gl_types
+
   resources :gl_accounts
 
   resources :payable_po_shipments
@@ -17,7 +19,7 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :quality_lot_gauges
-
+  
 
   # resources :quotes do
   #   resources :quote_vendors
@@ -25,15 +27,19 @@ AllianceFasteners::Application.routes.draw do
 
   # resources :quotes do
   #   resources :quote_lines
+  #   member do
+  #       post 'populate'
+  #   end
   # end
 
   # resources :quotes
 
-  # resources :quote_line_costs  
+  # resources :quote_line_costs 
 
-  # resources :receipts do
-  #   resources :receipt_lines
-  # end
+
+  resources :receipts do
+    resources :receipt_lines
+  end
 
   resources :receivables do
     resources :receivable_lines
