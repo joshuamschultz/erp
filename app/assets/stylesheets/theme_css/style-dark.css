@@ -2712,7 +2712,7 @@ body > .container-fluid.fixed #content {
   max-width: 75%;
 }
 .widget-timeline ul.list-timeline li span.date {
-  width: 70px;
+  /*width: 70px;*/
   text-align: center;
 }
 .widget-timeline ul.list-timeline li .activity-icon {

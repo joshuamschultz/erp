@@ -1,7 +1,11 @@
 class Quote < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+  
   has_many :quote_vendors, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
   has_many :quote_line_costs, :through => :quote_lines
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :comments, :as => :commentable, :dependent => :destroy
 
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
   :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id, :quote_po_type
@@ -88,6 +92,10 @@ class Quote < ActiveRecord::Base
             self.quote_active = true
         end
     end    
+ end
+
+ def redirect_path
+    quote_path(self)
  end
 
 end

@@ -10,12 +10,15 @@
         </div> 
     </div>
 
-    <table id="vendor_lines_table_<%= quote_vendor.organization_id %>" class="dynamicTable table table-striped table-bordered table-condensed">
+    <table id="vendor_lines_table_<%= quote_vendor.organization_id %>" class="dynamicTable table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Part No</th>
                 <th>Quntity</th>
-                <th>Quoted Price</th>
+                <th>Price</th>
+                <th>Tooling</th>
+                <th>Lead Time</th>
+                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +27,10 @@
                         <tr>
                             <td><%= link_to quote_line_cost.object.quote_line.item_alt_name.item_alt_identifier, item_path(quote_line_cost.object.quote_line.item) %></td>
                             <td><%= quote_line_cost.object.quote_line.quote_line_quantity %></td>
-                            <td><%= quote_line_cost.input :quote_line_cost, label: false, input_html: { class: 'quote_line_cost_input' } %></td>
+                            <td><%= quote_line_cost.input :quote_line_cost, label: false, input_html: { class: 'quote_line_small_input quote_line_cost_input' } %></td>
+                            <td><%= quote_line_cost.input :quote_line_cost_tooling, label: false, input_html: { class: 'quote_line_small_input quote_line_cost_input' } %></td>
+                            <td><%= quote_line_cost.input :quote_line_cost_lead, label: false, input_html: { class: 'quote_line_small_input quote_line_cost_input' } %></td>
+                            <td><%= quote_line_cost.input :quote_line_cost_description, label: false, input_html: { class: 'quote_line_cost_input' } %></td>
                         </tr>
                     <% end %>
                 
@@ -35,6 +41,10 @@
                         <td><%= link_to quote_line.item_alt_name.item_alt_identifier, item_path(quote_line.item) %></td>
                         <td><%= quote_line.quote_line_quantity %></td>
                         <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost > 0) ? quote_line_cost.quote_line_cost : CommonActions.highlighted_text("Not Given") %></td>
+                        
+                        <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost_tooling > 0) ? quote_line_cost.quote_line_cost_tooling : CommonActions.highlighted_text("Not Given") %></td>
+                        <td><%= quote_line_cost.quote_line_cost_lead %></td>
+                        <td><%= quote_line_cost.quote_line_cost_description %></td>
                     </tr>
                 <% end %>
             <% end %>

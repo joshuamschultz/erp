@@ -21,6 +21,9 @@ class QuotesController < ApplicationController
   def show
     @quote = Quote.find(params[:id])
 
+    @attachable = @quote
+    @notes = @quote.comments.where(:comment_type => "note").order("created_at desc") if @quote 
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @quote }
@@ -94,4 +97,15 @@ class QuotesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def populate
+      @quote = Quote.find(params[:id])
+
+      if params[:type] == "note"
+          Comment.process_comments(current_user, @quote, [params[:comment]], params[:type])
+      end
+
+      redirect_to @quote
+  end
+
 end

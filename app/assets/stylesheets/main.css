@@ -58,3 +58,5 @@ input[type="radio"], input[type="checkbox"]{margin: 0px !important;}
 
 #form_for_registration .control-label {width: 150px;}
 #form_for_registration .controls {margin-left: 160px;}
+
+.quote_line_small_input {width:60px !important;}

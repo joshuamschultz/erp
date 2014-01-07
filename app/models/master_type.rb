@@ -11,8 +11,7 @@ class MasterType < ActiveRecord::Base
 
   scope :gl_modes, where(:type_category => 'gl_mode')
 
-  scope :gl_categories, where(:type_category => 'gl_category')
-  
+  scope :gl_categories, where(:type_category => 'gl_category')  
 
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 

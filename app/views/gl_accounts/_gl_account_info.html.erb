@@ -1,0 +1,25 @@
+<table class="table">
+  <tbody>
+      <tr>
+        <td class="span3">Title:</td>
+        <td class="span5"><strong><%= @gl_account.gl_account_title %></strong></td>
+      </tr>
+
+      <tr>
+        <td class="span3">GL Type:</td>
+        <td class="span5"><strong><%= link_to(@gl_account.gl_type.gl_name, @gl_account.gl_type) if @gl_account.gl_type %></strong></td>
+      </tr>
+
+      <tr>
+        <td class="span3">Description:</td>
+        <td class="span5"><strong><%= @gl_account.gl_account_description %></strong></td>
+      </tr>
+
+      <tr>
+        <td class="span3">Active:</td>
+        <td class="span5"><strong><%= @gl_account.gl_account_active %></strong></td>
+      </tr>
+  </tbody>
+</table>
+
+<div class="separator bottom"></div>

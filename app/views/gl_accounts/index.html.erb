@@ -5,6 +5,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">GL Accounts</h4>
             <span class="span6 heading right">
+                <%= link_to 'GL Types', gl_types_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'New GL Account', new_gl_account_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
@@ -15,12 +16,11 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>SLNO</th>
                 <th>Title</th>
-                <th>Type</th>
-                <th>Mode</th>
-                <th>Category</th>
                 <th>Description</th>
+                <th>Type</th>
+                <th>Side</th>
+                <th>Report</th>                
                 <th>Active</th>
                 <th></th>
               </tr>
@@ -35,15 +35,14 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_accounts_path,
+        :name => "table_report", :path => gl_accounts_path, :extras => {:slno => false},
         :columns => '[
-                        { "mData": "id" },
-                        { "mData": "gl_title" },
+                        { "mData": "gl_account_title" },
+                        { "mData": "gl_account_description"},
                         { "mData": "gl_type_name" },
-                        { "mData": "gl_mode" },
-                        { "mData": "gl_category" },
-                        { "mData": "gl_description"},
-                        { "mData": "gl_active" },
+                        { "mData": "gl_type_side" },
+                        { "mData": "gl_type_report" },                        
+                        { "mData": "gl_account_active" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 

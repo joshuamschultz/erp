@@ -1,25 +1,33 @@
-<p id="notice"><%= notice %></p>
+<div class="row-fluid span8">
+  <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>GL Account Info</h4>
+  </div>
+    <table class="table table-striped table-bordered">
+      <tbody>
+        <tr>
+          <td>Gl Account Title:</td>
+          <td><%= @gl_account.gl_account_title %></td>
+        </tr>
 
-<p>
-  <b>Gl type:</b>
-  <%= @gl_account.gl_type %>
-</p>
+        <tr>
+          <td>Description:</td>
+          <td><%= @gl_account.gl_account_description %></td>
+        </tr>
 
-<p>
-  <b>Gl title:</b>
-  <%= @gl_account.gl_title %>
-</p>
+        <tr>
+          <td>GL Type:</td>
+          <td><%= link_to(@gl_account.gl_type.gl_name, @gl_account.gl_type) if @gl_account.gl_type %></td>
+        </tr>
 
-<p>
-  <b>Gl description:</b>
-  <%= @gl_account.gl_description %>
-</p>
+        <tr>
+          <td>Active:</td>
+          <td><%= @gl_account.gl_account_active %></td>
+        </tr>
+      </tbody>
+    </table>
 
-<p>
-  <b>Gl active:</b>
-  <%= @gl_account.gl_active %>
-</p>
-
-
-<%= link_to 'Edit', edit_gl_account_path(@gl_account) %> |
-<%= link_to 'Back', gl_accounts_path %>
+   <div class="form-actions">
+    <%= link_to 'Edit', edit_gl_account_path(@gl_account), :class => "btn"%>    
+    <%= link_to 'GL Accounts', gl_accounts_path, :class =>"btn" %>
+  </div>
+</div>

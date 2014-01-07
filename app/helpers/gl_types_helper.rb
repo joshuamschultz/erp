@@ -1,0 +1,2 @@
+module GlTypesHelper
+end

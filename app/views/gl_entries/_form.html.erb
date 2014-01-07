@@ -1,0 +1,63 @@
+<%= simple_form_for(@gl_entry, :html => {:id => "form_for_gl_entries",:class => "form-horizontal"}) do |f| %>
+<div class="row-fluid">
+    <div id="gl_entry_gl_account_info" class="span4 well item_detail_view">
+        <% if @gl_entry.persisted? %>            
+                <%= render :partial => 'gl_accounts/gl_account_info' %>
+        <% end %>
+    </div>
+
+    <div class="span8 well item_detail_view">
+        <%= f.error_notification %>
+
+        <div class="form-inputs">
+          <%= f.association :gl_account, :url => autocomplete_gl_account_gl_account_title_gl_accounts_path, :as => :autocomplete, :id_element => '#gl_account_id', :label => "GL Account" %>
+          <%= hidden_field_tag :gl_account_id, (@gl_entry.gl_account_id if @gl_entry.gl_account) %>
+          <%= hidden_field_tag :org_gl_account_id, (@gl_entry.gl_account_id if @gl_entry.gl_account) %>
+
+          <%= f.input :gl_entry_description, label: "Description" %>
+          <%= f.input :gl_entry_credit, label: "Credit" %>
+          <%= f.input :gl_entry_debit, label: "Debit" %>
+          <%= f.input :gl_entry_date, :as => :string, label: "Date" %>
+          <%= f.input :gl_entry_notes, label: "Notes" %>    
+          <%= f.input :gl_entry_active, label: "Active" %>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <div class="form-actions">
+          <%= f.button :submit %>
+          <%= link_to 'Delete', gl_entry_path(@gl_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_entry.new_record? %>
+          <%= link_to 'Back to Journal Entries', gl_entries_path, :class => "btn" %>
+        </div>
+    </div>
+</div>
+<% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_gl_entries"] = ["gl_entry_gl_account_id", "gl_entry_gl_entry_description", "gl_entry_gl_entry_credit", "gl_entry_gl_entry_debit", "gl_entry_gl_entry_date", "gl_entry_gl_entry_notes", "gl_entry_gl_entry_active"];
+
+    <% date_box_date1 = @gl_entry.new_record? ? Date.today : @gl_entry.gl_entry_date %>
+
+    date_box_fields = date_box_fields.concat([{"name":"gl_entry_gl_entry_date", "value":"<%= date_box_date1 %>"}]);
+
+    $(document).ready(function(){ 
+        $(document).on("focusout", "#gl_entry_gl_account_id", function(){
+            if($("#gl_account_id").val() != "" && $("#gl_account_id").val() != undefined){
+                initialize_api_call({"url": "/gl_accounts/" + $("#gl_account_id").val() + "/gl_account_info", "type": "GET", "params": {}}, "set_gl_account_info", {});
+            }
+            else{
+                $("#gl_entry_gl_account_info").html("");
+            }
+        });
+
+        <% unless @gl_entry.nil? %>
+            $("#gl_entry_gl_account_id").val("<%= @gl_entry.gl_account.gl_account_title if @gl_entry.gl_account %>");
+        <% end %>
+    });
+
+    function set_gl_account_info(response, callback_params, api_params){
+      $("#gl_entry_gl_account_info").html(response);
+      return false;
+    }
+</script>

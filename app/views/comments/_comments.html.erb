@@ -17,10 +17,10 @@
         <div class="organization_comments widget-timeline span12">
             <ul class="list-timeline">
                 <% @notes.each do |note| %>
-                    <li>
-                        <span class="date timeline_comment_date"><%= note.created_at.strftime("%m/%d/%Y") %></span>
+                    <li style="height: auto !important;">
+                        <span class="date timeline_comment_date"><%#= note.created_at.strftime("%m/%d/%Y") %><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
                         <span class="glyphicons activity-icon user"><i></i></span>
-                        <span class="ellipsis"><a href="#"><%= note.created_by.name %></a> : <%= note.comment %></span>
+                        <span class="ellipsis" style="height: auto !important; white-space: normal !important;"><a href="#"><%= note.created_by.name %></a> : <%= note.comment %></span>
                     </li>
                 <% end %>
             </ul>

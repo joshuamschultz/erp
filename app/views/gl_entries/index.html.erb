@@ -1,0 +1,51 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Journal Entries</h4>
+            <span class="span6 heading right">
+                <%= link_to 'GL Accounts', gl_accounts_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Journal Entry', new_gl_entry_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>GL Account</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Credit</th>
+                <th>Debit</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "gl_entry_identifier" },
+                        { "mData": "gl_account_name" },
+                        { "mData": "gl_entry_description" },
+                        { "mData": "gl_entry_date" },
+                        { "mData": "gl_entry_credit"},
+                        { "mData": "gl_entry_debit"},
+                        { "mData": "gl_entry_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>

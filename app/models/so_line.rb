@@ -14,7 +14,9 @@ class SoLine < ActiveRecord::Base
 
   validates_presence_of :so_header, :item_alt_name, :so_line_cost, :so_line_quantity, :customer_quality
 
-  validates_numericality_of :so_line_cost, :so_line_quantity, :so_line_sell
+  validates_numericality_of :so_line_cost, :so_line_sell
+
+  validates_numericality_of :so_line_quantity, greater_than: 0
 
   has_one :po_line
   has_many :receivable_shipments, :dependent => :destroy

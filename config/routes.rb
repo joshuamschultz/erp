@@ -1,8 +1,19 @@
 AllianceFasteners::Application.routes.draw do  
 
+  resources :gl_entries do
+      member do
+          post 'populate'
+      end
+  end
+
   resources :gl_types
 
-  resources :gl_accounts
+  resources :gl_accounts do
+      get :autocomplete_gl_account_gl_account_title, :on => :collection
+      member do
+          get 'gl_account_info'
+      end
+  end
 
   resources :payable_po_shipments
 
@@ -18,8 +29,7 @@ AllianceFasteners::Application.routes.draw do
     resources :quality_lot_gauge_dimensions
   end
 
-  resources :quality_lot_gauges
-  
+  resources :quality_lot_gauges  
 
   # resources :quotes do
   #   resources :quote_vendors

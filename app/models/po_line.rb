@@ -26,7 +26,9 @@ class PoLine < ActiveRecord::Base
 
   validates_presence_of :item_alt_name_id
   validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity
-  validates_numericality_of :po_line_cost, :po_line_quantity
+  validates_numericality_of :po_line_cost
+
+  validates_numericality_of :po_line_quantity, greater_than: 0
 
   validates_numericality_of :po_line_sell, :if => Proc.new { |o| o.po_header.present? && o.po_header.customer.present? }
 
