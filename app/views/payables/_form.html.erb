@@ -40,6 +40,11 @@
     <%= f.input :payable_invoice, :label => "Vendor Invoice" %> 
     <%= f.input :payable_invoice_date, :as => :string, :label => "Invoice date" %>    
     <%= f.input :payable_due_date, :as => :string, :label => "Due Date" %>
+
+    <%= f.association :gl_account, :url => autocomplete_gl_account_gl_account_title_gl_accounts_path, :as => :autocomplete, :id_element => '#gl_account_id', :label => "GL Account" %>
+    <%= hidden_field_tag :gl_account_id, (@payable.gl_account_id if @payable.gl_account) %>
+    <%= hidden_field_tag :org_gl_account_id, (@payable.gl_account_id if @payable.gl_account) %>
+
     <%= f.input :payable_description, :label => "Description" %>
     <%= f.input :payable_notes, :label => "Notes" %>
     <%= f.input :payable_discount, :label => "Discount (%)" %>
@@ -65,7 +70,7 @@
 <%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.po_header.nil? %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_description", "payable_payable_notes", "payable_payable_discount"];
+    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_gl_account_id", "payable_payable_description", "payable_payable_notes", "payable_payable_discount"];
 
     <% date_box_date1 = @payable.new_record? ? Date.today : @payable.payable_invoice_date %>
     <% date_box_date2 = @payable.new_record? ? Date.today : @payable.payable_due_date %>
@@ -91,6 +96,8 @@
             $("#payable_po_header_id").val("<%= @payable.po_header.po_identifier if @payable.po_header %>");
 
             $("#payable_organization_id").val("<%= @payable.organization.organization_name if @payable.organization %>");
+
+            $("#payable_gl_account_id").val("<%= @payable.gl_account.gl_account_title if @payable.gl_account %>");
 
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined)
                 initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});

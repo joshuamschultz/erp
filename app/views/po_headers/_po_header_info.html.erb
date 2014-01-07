@@ -28,12 +28,12 @@
 
             <tr>
               <td class="span2">Bill To:</td>
-              <td class="span5"><strong><%= @po_header.bill_to_address ? link_to(@po_header.bill_to_address.contact_title, @po_header.bill_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
+              <td class="span5"><strong><%= @po_header.bill_to_address ? link_to(@po_header.bill_to_address.contact_description, @po_header.bill_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
             </tr>
 
             <tr>
               <td class="span3">Ship To:</td>
-              <td class="span5"><strong><%= @po_header.ship_to_address ? link_to(@po_header.ship_to_address.contact_title, @po_header.ship_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
+              <td class="span5"><strong><%= @po_header.ship_to_address ? link_to(@po_header.ship_to_address.contact_description, @po_header.ship_to_address) : link_to(@po_header.customer.organization_name, organization_main_address_path(@po_header.customer)) %></strong></td>
             </tr>
         <% end %>
 

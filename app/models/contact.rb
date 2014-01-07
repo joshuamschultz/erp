@@ -13,7 +13,9 @@ class Contact < ActiveRecord::Base
 
 	validates_presence_of :contactable
 
-	validates_length_of :contact_title, :minimum => 2, :maximum => 20 if validates_presence_of :contact_title	
+	validates_length_of :contact_title, :minimum => 2, :maximum => 20 if validates_presence_of :contact_title
+
+	validates_length_of :contact_description, :minimum => 2, :maximum => 100 if validates_presence_of :contact_description
 
 	# validates_formatting_of :contact_telephone, :using => :us_phone if validates_presence_of :contact_telephone
 

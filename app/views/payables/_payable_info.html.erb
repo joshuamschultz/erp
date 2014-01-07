@@ -31,6 +31,11 @@
       <% end %>
 
           <tr>
+            <td class="span3">GL Account:</td>
+            <td class="span5"><strong><%= link_to @payable.gl_account.gl_account_title, @payable.gl_account %></strong></td>
+          </tr>
+
+          <tr>
             <td class="span3">Description:</td>
             <td class="span5"><strong><%= @payable.payable_description %></strong></td>
           </tr>

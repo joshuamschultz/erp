@@ -17,6 +17,8 @@ class ItemRevision < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
+      self.item_revision_name ||= "0"
+
       unless CommonActions.nil_or_blank(self.item_name) || 
         CommonActions.nil_or_blank(self.item_description) || 
         CommonActions.nil_or_blank(self.item_revision_name) || 

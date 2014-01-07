@@ -1,4 +1,11 @@
 class GlAccountsController < ApplicationController
+  before_filter :set_page_info  
+  autocomplete :gl_account, :gl_account_title, :full => true
+
+  def set_page_info
+    @menus[:general_ledger][:active] = "active"
+  end
+
   # GET /gl_accounts
   # GET /gl_accounts.json
   def index
@@ -9,7 +16,9 @@ class GlAccountsController < ApplicationController
       format.json { 
           @gl_accounts = @gl_accounts.select{|gl_account| 
             gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account), gl_account_path(gl_account))
-            gl_account[:gl_type_name] = gl_account.gl_type.type_name
+            gl_account[:gl_type_name] = gl_account.gl_type.gl_name
+            gl_account[:gl_type_side] = gl_account.gl_type.gl_side
+            gl_account[:gl_type_report] = gl_account.gl_type.gl_report
           }
           render json: {:aaData => @gl_accounts} 
       }
@@ -50,7 +59,7 @@ class GlAccountsController < ApplicationController
 
     respond_to do |format|
       if @gl_account.save
-        format.html { redirect_to new_gl_account_path, notice: 'Gl account was successfully created.' }
+        format.html { redirect_to gl_accounts_path, notice: 'Gl account was successfully created.' }
         format.json { render json: @gl_account, status: :created, location: @gl_account }
       else
         format.html { render action: "new" }
@@ -86,4 +95,17 @@ class GlAccountsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def gl_account_info
+      @gl_account = GlAccount.find(params[:id])
+      if @gl_account
+        render :layout => false
+      else
+        render :text => "" and return
+      end
+  end
+
+
+
 end

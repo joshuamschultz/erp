@@ -28,7 +28,12 @@
         <%= hidden_field_tag :org_so_header_id, @receivable.so_header.id %>
     <% end %>
     
-    <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %> 
+    <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %>
+
+    <%= f.association :gl_account, :url => autocomplete_gl_account_gl_account_title_gl_accounts_path, :as => :autocomplete, :id_element => '#gl_account_id', :label => "GL Account" %>
+    <%= hidden_field_tag :gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
+    <%= hidden_field_tag :org_gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
+
     <%= f.input :receivable_description, :label => "Description" %>        
     <%= f.input :receivable_notes, :label => "Notes" %>
     <%= f.input :receivable_discount, :label => "Discount (%)" %>   
@@ -50,7 +55,7 @@
 <%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? && @receivable.so_header.nil? %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];
+    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_gl_account_id", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];
 
     var receivable_fine_to_submit = true;
 
@@ -68,6 +73,8 @@
             $("#receivable_so_header_id").val("<%= @receivable.so_header.so_identifier if @receivable.so_header %>");
 
             $("#receivable_organization_id").val("<%= @receivable.organization.organization_name if @receivable.organization %>");
+
+            $("#receivable_gl_account_id").val("<%= @receivable.gl_account.gl_account_title if @receivable.gl_account %>");
         <% end %>
 
         $(document).on("keydown", ".receivable_shipment_count", function(e){

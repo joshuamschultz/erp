@@ -1,20 +1,20 @@
 class Receivable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   
-  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
-  belongs_to :so_header
-  has_many :receivable_shipments, :dependent => :destroy
-  has_many :receivable_lines, :dependent => :destroy
-  has_many :receipt_lines, :dependent => :destroy  
-
-  has_many :receivable_so_shipments, :dependent => :destroy
-  has_many :so_shipments, through: :receivable_so_shipments
-
   attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
-  :organization_id, :receivable_shipments_attributes, :receivable_invoice
+  :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id
 
+  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
+  belongs_to :so_header
+  belongs_to :gl_account
+
+  has_many :receivable_shipments, :dependent => :destroy
+  has_many :receivable_lines, :dependent => :destroy
+  has_many :receipt_lines, :dependent => :destroy
+  has_many :receivable_so_shipments, :dependent => :destroy
+  has_many :so_shipments, through: :receivable_so_shipments
   has_many :attachments, :as => :attachable, :dependent => :destroy
 
   accepts_nested_attributes_for :receivable_shipments

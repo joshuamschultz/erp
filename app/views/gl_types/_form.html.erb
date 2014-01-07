@@ -1,0 +1,23 @@
+<%= simple_form_for(@gl_type, :html => {:id => "form_for_gl_types",:class => "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">    
+    <%= f.input :gl_name, label: "Title", :autofocus => true %>
+    <%= f.input :gl_side, label: "Mode", collection: MasterType.gl_modes.collect(&:type_name), include_blank: false %>
+    <%= f.input :gl_report, label: "Category", collection: MasterType.gl_categories.collect(&:type_name), include_blank: false %>
+    <%= f.input :gl_description, label: "Description" %>
+    <%= f.input :gl_active, label: "Active" %>
+  </div>
+
+  <div class="separator bottom"></div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to 'Delete', gl_type_path(@gl_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_type.new_record? %>
+    <%= link_to 'Back to GL Types', gl_types_path, :class => "btn" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_gl_types"] = ["gl_type_gl_name", "gl_type_gl_side", "gl_type_gl_report", "gl_type_gl_description", "gl_type_gl_active"];
+</script>
