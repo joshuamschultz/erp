@@ -145,7 +145,8 @@ module CommonActions
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
 		menus[:general_ledger][:sub_menu] = 	[
 											{:path => "#", :name => "Journal Entries"}, 
-											{:path => gl_accounts_path, :name => "Chart of Accounts"},
+											{:path => gl_types_path, :name => "GL Types"},
+											{:path => gl_accounts_path, :name => "GL Accounts"},
 											{:path => "#", :name => "Reconcile"}
 										]		
 

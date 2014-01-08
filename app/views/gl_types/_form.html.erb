@@ -1,10 +1,10 @@
 <%= simple_form_for(@gl_type, :html => {:id => "form_for_gl_types",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">    
+  <div class="form-inputs">
     <%= f.input :gl_name, label: "Title", :autofocus => true %>
-    <%= f.input :gl_side, label: "Mode", collection: MasterType.gl_modes.collect(&:type_name), include_blank: false %>
-    <%= f.input :gl_report, label: "Category", collection: MasterType.gl_categories.collect(&:type_name), include_blank: false %>
+    <%= f.input :gl_side, label: "Side", collection: MasterType.gl_modes.collect(&:type_name), include_blank: false %>
+    <%= f.input :gl_report, label: "Report", collection: MasterType.gl_categories.collect(&:type_name), include_blank: false %>
     <%= f.input :gl_description, label: "Description" %>
     <%= f.input :gl_active, label: "Active" %>
   </div>
