@@ -14,6 +14,7 @@ class GlAccount < ActiveRecord::Base
     self.gl_account_active = true if self.attributes.has_key?("gl_account_active") && self.gl_account_active.nil?
   end
 
+  (validates_uniqueness_of :gl_account_identifier if validates_length_of :gl_account_identifier, :minimum => 2, :maximum => 20) if validates_numericality_of(:gl_account_identifier) && validates_presence_of(:gl_account_identifier)
   (validates_uniqueness_of :gl_account_title if validates_length_of :gl_account_title, :minimum => 2, :maximum => 20) if validates_presence_of :gl_account_title
-  validates_presence_of :gl_type, :gl_account_title
+  validates_presence_of :gl_type
 end

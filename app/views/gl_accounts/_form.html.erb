@@ -1,8 +1,9 @@
 <%= simple_form_for(@gl_account, :html => {:id => "form_for_gl_accounts",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">    
-    <%= f.input :gl_account_title, label: "Title", :autofocus => true %>        
+  <div class="form-inputs">
+    <%= f.input :gl_account_identifier, label: "ID", :autofocus => true %>
+    <%= f.input :gl_account_title, label: "Title" %>
     <%= f.input :gl_account_description, label: "Description" %>
     <%= f.association :gl_type, :label_method => "gl_name", :label_value => "id", :include_blank => false, :label => "Type" %>
     <%= f.input :gl_account_active, label: "Active" %>
@@ -18,5 +19,5 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_gl_accounts"] = ["gl_account_gl_account_title", "gl_account_gl_account_description", "gl_account_gl_type_id", "gl_account_gl_account_active"];
+    tab_field_forms["form_for_gl_accounts"] = ["gl_account_gl_account_identifier", "gl_account_gl_account_title", "gl_account_gl_account_description", "gl_account_gl_type_id", "gl_account_gl_account_active"];
 </script>
