@@ -26,13 +26,13 @@
 
           <tr>
             <td class="span2">Payable To:</td>
-            <td class="span5"><strong><%= @payable.payable_to_address ? link_to(@payable.payable_to_address.contact_title, @payable.payable_to_address) : (link_to(@payable.organization.organization_name, organization_main_address_path(@payable.organization)) if @payable.organization) %></strong></td>
+            <td class="span5"><strong><%= @payable.payable_to_address ? link_to(@payable.payable_to_address.contact_description, @payable.payable_to_address) : (link_to(@payable.organization.organization_name, organization_main_address_path(@payable.organization)) if @payable.organization) %></strong></td>
           </tr>
       <% end %>
 
           <tr>
             <td class="span3">GL Account:</td>
-            <td class="span5"><strong><%= link_to @payable.gl_account.gl_account_title, @payable.gl_account %></strong></td>
+            <td class="span5"><strong><%= link_to @payable.gl_account.gl_account_title, @payable.gl_account if @payable.gl_account %></strong></td>
           </tr>
 
           <tr>
