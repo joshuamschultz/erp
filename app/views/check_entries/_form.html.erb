@@ -1,0 +1,32 @@
+<% if @check_entry.persisted? %>
+	<%= simple_form_for(@check_entry, :html => {:id => "form_for_check_entries",:class => "form-horizontal"}) do |f| %>
+	  <%= f.error_notification %>
+
+	  <div class="form-inputs">
+	    <%= f.input :check_identifier, label: "Identifier", :autofocus => true %>
+	    <%= f.input :check_code, label: "Code" %>
+	    <%= f.input :check_active, label: "Active" %>
+	  </div>
+
+	  <div class="separator bottom"></div>
+
+	  <div class="form-actions">
+	    <%= f.button :submit %>
+	    <%= link_to 'Delete', check_entry_path(@check_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @check_entry.new_record? %>
+	    <%= link_to 'Back to GL Types', check_entries_path, :class => "btn" %>
+	  </div>
+	<% end %>
+
+	<script type="text/javascript">
+	    tab_field_forms["form_for_check_entries"] = ["check_entry_check_identifier", "check_entry_check_code", "check_entry_check_active"];
+	</script>
+
+<% else %>
+	<%= form_tag(generate_check_entry_check_entries_path) do %>
+			<%= label_tag :serial_no, "Serial Start" %>
+			<%= text_field_tag :serial_no %>
+			<%= label_tag :serial_count, "Sree" %>
+			<%= text_field_tag :serial_count %><br />
+			<%= button_tag :submit, :class => "btn" %>
+	<% end %>
+<% end %>

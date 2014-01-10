@@ -18,9 +18,25 @@
 
         <%= hidden_field_tag :org_organization_id, (@payment.organization.id if @payment.organization) %>
 
-        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.first.id if @payment.new_record?) %>
+        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.first.id if @payment.payment_type.nil?) %>
 
-        <%= f.input :payment_check_code, :label => "Check Code" %>
+        <!-- <div id="payment_check_div" style="padding-bottom: 20px;">
+            <%#= f.input :payment_check_code, :label => "Check Code" %>
+            <%#= radio_button_tag :payment_check_mode, :manual %>Manual
+            <%#= radio_button_tag :payment_check_mode, :automatic %>Automatic
+        </div> -->
+
+        <div style="padding-bottom: 20px;" id="payment_check_div">
+            <div class="control-group string optional payment_payment_check_code">
+                <label for="payment_payment_check_code" class="string optional control-label">Check Code</label>
+                <div class="controls">
+                    <input type="text" size="50" name="payment[payment_check_code]" id="payment_payment_check_code" class="string optional">
+                    <input type="radio" value="manual" class="payment_check_mode" name="payment_check_mode" id="payment_check_mode_manual" checked=true>Manual
+                    <input type="radio" value="automatic" class="payment_check_mode" name="payment_check_mode" id="payment_check_mode_automatic">Automatic
+                </div>
+            </div>            
+        </div>
+
         <%= f.input :payment_check_amount, :label => "Amount" %>
         <%= f.input :payment_description, :label => "Description" %>
         <%= f.input :payment_notes, :label => "Notes" %>
@@ -84,6 +100,14 @@
 
     var payment_fine_to_submit = true;
 
+    $(document).on("change", ".payment_check_mode", function(){
+        if($(".payment_check_mode:checked").val() == "automatic"){
+            $("#payment_payment_check_code").val("automatic");
+        }
+        else
+            $("#payment_payment_check_code").val("");
+    });
+
     $(document).ready(function(){ 
         $("#payment_organization_id").on("focusout", function(){
 
@@ -144,7 +168,7 @@
                 e.preventDefault();
                 $('#payment_payment_check_amount').focus();
             }
-        });
+        });        
 
         $("#form_for_payments").submit(function(e){
             if(payment_fine_to_submit == false)
@@ -209,13 +233,15 @@
 
     function payment_type_changed(payment_type, change_focus){
         if(payment_type == "Check"){
-            $('.payment_payment_check_code').show();
+            // $('.payment_payment_check_code').show();
+            $('#payment_check_div').show();
             if(change_focus)
                 $('#payment_payment_check_code').focus();
             tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_code", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
         }
         else{
-            $('.payment_payment_check_code').hide();
+            // $('.payment_payment_check_code').hide();
+            $('#payment_check_div').hide();
             $('#payment_payment_check_code').val("");
             if(change_focus)
                 $('#payment_payment_check_amount').focus();

@@ -73,11 +73,11 @@ mastertypes = [
          ["Credit", "", "credit", "payment_type", "true"],
          ["ACH", "", "ach", "payment_type", "true"],         
          # GL Modes
-         ["C", "Credit", "c", "gl_mode", "true"], 
-         ["D", "Debit", "d", "gl_mode", "true"],
+         ["Credit", "Credit", "C", "gl_mode", "true"], 
+         ["Debit", "Debit", "D", "gl_mode", "true"],
          # GL Categories
-         ["B", "Balance", "b", "gl_category", "true"],
-         ["T", "Trial", "t", "gl_category", "true"]         
+         ["Balance", "Balance", "B", "gl_category", "true"],
+         ["Trial", "Trial", "T", "gl_category", "true"]         
 ]
 
 mastertypes.each do |master|
