@@ -1,5 +1,12 @@
 AllianceFasteners::Application.routes.draw do  
 
+  resources :check_entries do
+      collection do
+          post 'generate_check_entry'
+      end
+  end
+
+
   resources :gl_entries do
       member do
           post 'populate'

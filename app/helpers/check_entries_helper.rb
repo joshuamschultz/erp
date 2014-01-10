@@ -1,0 +1,2 @@
+module CheckEntriesHelper
+end
