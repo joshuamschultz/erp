@@ -1,4 +1,5 @@
 class Payable < ActiveRecord::Base
+  
   include Rails.application.routes.url_helpers  
 
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 
@@ -17,6 +18,7 @@ class Payable < ActiveRecord::Base
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :payable_po_shipments, :dependent => :destroy
   has_many :po_shipments, through: :payable_po_shipments
+  has_many :payable_accounts, :dependent => :destroy
 
   accepts_nested_attributes_for :po_shipments
 
@@ -68,6 +70,10 @@ class Payable < ActiveRecord::Base
 
   def redirect_path
       payable_path(self)
+  end
+
+  def check_payable_account_total
+      (self.payable_accounts.sum(:payable_account_amount) == self.payable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Payable and Account Total)</strong>)".html_safe
   end
 
 end

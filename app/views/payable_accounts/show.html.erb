@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Payable:</b>
+  <%= @payable_account.payable %>
+</p>
+
+<p>
+  <b>Gl account:</b>
+  <%= @payable_account.gl_account %>
+</p>
+
+<p>
+  <b>Payable account description:</b>
+  <%= @payable_account.payable_account_description %>
+</p>
+
+<p>
+  <b>Payable account amount:</b>
+  <%= @payable_account.payable_account_amount %>
+</p>
+
+<p>
+  <b>Payable account created:</b>
+  <%= @payable_account.payable_account_created_id %>
+</p>
+
+<p>
+  <b>Payable account updated:</b>
+  <%= @payable_account.payable_account_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_payable_payable_account_path(@payable_account.payable, @payable_account) %> |
+<%= link_to 'Back', payable_payable_accounts_path(@payable_account.payable) %>

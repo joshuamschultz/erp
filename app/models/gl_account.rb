@@ -7,6 +7,7 @@ class GlAccount < ActiveRecord::Base
   has_many :payables, dependent: :destroy
   has_many :receivables, dependent: :destroy
   has_many :gl_entries, dependent: :destroy
+  has_many :payable_accounts, :dependent => :destroy
 
   after_initialize :default_values
 

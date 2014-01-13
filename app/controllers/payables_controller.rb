@@ -14,8 +14,8 @@ class PayablesController < ApplicationController
       params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
       params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
       params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
-      params[:payable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:payable][:gl_account_id]
-      params[:payable][:gl_account_id] = params[:org_gl_account_id] if params[:payable][:gl_account_id] == ""
+      # params[:payable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:payable][:gl_account_id]
+      # params[:payable][:gl_account_id] = params[:org_gl_account_id] if params[:payable][:gl_account_id] == ""
     end
   end
 

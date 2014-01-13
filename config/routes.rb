@@ -1,5 +1,9 @@
 AllianceFasteners::Application.routes.draw do  
 
+  resources :payables do
+    resources :payable_accounts
+  end
+
   resources :check_entries do
       collection do
           post 'generate_check_entry'
