@@ -16,6 +16,9 @@
         <%= render :partial => 'payables/po_shipments' if @po_header %>  
 
         <div class="separator bottom"></div>
+
+        <%= render :partial => "payable_accounts/payable_accounts" %>
+        
         <div class="separator bottom"></div>
 
         <%= render 'attachments/attachments' %>

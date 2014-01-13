@@ -30,10 +30,10 @@
           </tr>
       <% end %>
 
-          <tr>
+          <!-- <tr>
             <td class="span3">GL Account:</td>
-            <td class="span5"><strong><%= link_to @payable.gl_account.gl_account_title, @payable.gl_account if @payable.gl_account %></strong></td>
-          </tr>
+            <td class="span5"><strong><%#= link_to @payable.gl_account.gl_account_title, @payable.gl_account if @payable.gl_account %></strong></td>
+          </tr> -->
 
           <tr>
             <td class="span3">Description:</td>
@@ -54,6 +54,11 @@
             <td class="span3">Total:</td>
             <td class="span5"><strong><h4>$<%= @payable.payable_total %></h4></strong></td>
           </tr>
+
+          <tr>
+            <td class="span3">Account Total:</td>
+            <td class="span5"><strong><h4>$<%= @payable.payable_accounts.sum(:payable_account_amount) %></h4></strong></td>
+          </tr> 
 
           <tr>
             <td class="span3">Invoice Date:</td>
@@ -78,7 +83,7 @@
           <tr>
             <td class="span3">Notes:</td>
             <td class="span5"><strong><%= @payable.payable_notes %></strong></td>
-          </tr>          
+          </tr>
 
           <!-- "%0.5f" %  -->
 
