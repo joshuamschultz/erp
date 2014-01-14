@@ -13,7 +13,7 @@
 	  <div class="form-actions">
 	    <%= f.button :submit %>
 	    <%= link_to 'Delete', check_entry_path(@check_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @check_entry.new_record? %>
-	    <%= link_to 'Back to GL Types', check_entries_path, :class => "btn" %>
+	    <%= link_to 'Back to Checks', check_entries_path, :class => "btn" %>
 	  </div>
 	<% end %>
 
@@ -25,8 +25,8 @@
 	<%= form_tag(generate_check_entry_check_entries_path) do %>
 			<%= label_tag :serial_no, "Serial Start" %>
 			<%= text_field_tag :serial_no %>
-			<%= label_tag :serial_count, "Sree" %>
-			<%= text_field_tag :serial_count %><br />
+			<%= label_tag :serial_end, "Serial End" %>
+			<%= text_field_tag :serial_end %><br />
 			<%= button_tag :submit, :class => "btn" %>
 	<% end %>
 <% end %>

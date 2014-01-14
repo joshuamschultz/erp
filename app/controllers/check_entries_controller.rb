@@ -85,7 +85,13 @@ class CheckEntriesController < ApplicationController
   end
 
   def generate_check_entry
-      redirect_to check_entries_url
+    if params[:serial_no].present? && params[:serial_end].present?
+        for serial in params[:serial_no].to_i..params[:serial_end].to_i
+            @check_entry = CheckEntry.new(check_active: true, check_code: serial, check_identifier: serial)
+            @check_entry.save
+        end
+    end
+    redirect_to check_entries_url
   end
 
 end

@@ -103,13 +103,14 @@ class PayablesController < ApplicationController
   # PUT /payables/1.json
   def update
     @payable = Payable.find(params[:id])
+    params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }
         format.json { head :no_content }
       else
-        p @payable.errors.to_yaml
+        p @payable.errors.to_json
         format.html { render action: "edit" }
         format.json { render json: @payable.errors, status: :unprocessable_entity }
       end
