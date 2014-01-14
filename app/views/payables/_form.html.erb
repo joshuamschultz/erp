@@ -63,11 +63,22 @@
 
 </div>
 </div>
-<% end %>
+
 
 <%= render :partial => 'payables/po_shipments' if @po_header %>
 
 <%= render :partial => 'payable_lines/line_items' if @payable.persisted? && @payable.po_header.nil? %>
+
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<% if @payable.persisted? %>
+    <% payable_accounts = @payable.payable_accounts.any? ? @payable.payable_accounts : [PayableAccount.new]*0 %>
+    <% gl_accounts = GlAccount.all %>
+    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, attribute_name: "payable_payable_accounts_attributes", form_name: "form_for_paybles"} %>
+<% end %>
+<% end %>
+
 
 <script type="text/javascript">
     tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_description", "payable_payable_notes", "payable_payable_discount"];
@@ -139,5 +150,4 @@
 <div class="separator bottom"></div>
 
 <%# @po_header = @payable.po_header if @payable.persisted? %>
-
 <%#= render :partial => 'po_lines/line_items' if @po_header %>

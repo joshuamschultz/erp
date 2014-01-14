@@ -9,7 +9,7 @@ class PayableAccountsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @payable_accounts = @payable_accounts.includes(:gl_account).select{|payable_account| 
-            payable_account[:links] = CommonActions.object_crud_paths(nil, edit_payable_payable_account_path(@payable, payable_account), payable_payable_account_path(@payable, payable_account))
+            payable_account[:links] = CommonActions.object_crud_paths(nil, nil, payable_payable_account_path(@payable, payable_account))
             payable_account[:payable_account_name] = payable_account.gl_account ? CommonActions.linkable(gl_account_path(payable_account.gl_account), payable_account.gl_account.gl_account_title) : ""
           }
           render json: {:aaData => @payable_accounts} 

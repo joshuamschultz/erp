@@ -5,7 +5,8 @@ class Payable < ActiveRecord::Base
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date, 
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
-  :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, :gl_account_id
+  :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, 
+  :gl_account_id, :payable_accounts_attributes
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
   belongs_to :po_header
@@ -21,11 +22,41 @@ class Payable < ActiveRecord::Base
   has_many :payable_accounts, :dependent => :destroy
 
   accepts_nested_attributes_for :po_shipments
+  accepts_nested_attributes_for :payable_accounts
 
   validates_presence_of :payable_invoice_date, :payable_due_date, :organization, :payable_invoice
   # validates_presence_of :payable_invoice, on: :update
   # validates_presence_of :payable_identifier, :if => Proc.new { |o| o.po_header.nil? }
   # validates_uniqueness_of :payable_identifier
+
+  validate :validate_payable_account_total, on: :update
+
+  def validate_payable_account_total
+      gl_account_ids = self.payable_accounts.collect(&:gl_account_id)
+      if gl_account_ids.uniq != gl_account_ids 
+          errors.add(:payable_invoice, "have duplicate account entries added!")
+      end
+
+      total_amount = 0
+      self.payable_accounts.each{|b| total_amount += b.payable_account_amount.to_f }
+
+      errors.add(:payable_invoice, "total (#{self.payable_total}) < dispersed account total (#{total_amount})") if total_amount > self.payable_total
+  end
+
+  def process_removed_accounts(payable_accounts)
+      if payable_accounts && payable_accounts.any?
+          payable_accounts.each do |key, payable_account|
+              if payable_account["gl_account_id"].nil?
+                account = PayableAccount.find(payable_account["id"])
+                account.destroy
+                payable_accounts.delete(key)
+              end
+          end
+      else
+          payable_accounts = []
+      end
+      payable_accounts
+  end
 
   before_save :process_before_save
 
