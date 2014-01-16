@@ -6,6 +6,7 @@
             <h4 class="span6 heading">Checks</h4>
             <span class="span6 heading right">
                 <%= link_to 'New Check', new_check_entry_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Payments', payments_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -15,9 +16,9 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>Identifier</th>
+                <th>Title</th>
                 <th>Code</th>
-                <th>Active</th>
+                <th>Used</th>
                 <th></th>
               </tr>
             </thead>
@@ -35,7 +36,7 @@
         :columns => '[
                         { "mData": "check_identifier" },
                         { "mData": "check_code" },
-                        { "mData": "check_active" },
+                        { "mData": "check_used" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 

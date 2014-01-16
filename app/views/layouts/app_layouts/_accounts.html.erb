@@ -40,6 +40,7 @@
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html);
         $("#<%= attribute_name %>_"+account_row_count+"_<%= fields[1].to_s %>_id").html(account_select_html);
+        $("#<%= attribute_name %>_"+account_row_count+"_<%= fields[1].to_s %>_id").val(<%= default_account.id %>);
     }
 
     $(document).on("keydown", ".gl_account", function(e){

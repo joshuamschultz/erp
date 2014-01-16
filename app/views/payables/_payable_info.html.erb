@@ -2,7 +2,7 @@
   <table class="table">
       <tbody>
           <tr>
-            <td class="span2">Invoice ID:</td>
+            <td class="span2">No:</td>
             <td class="span5"><strong><%= link_to @payable.payable_identifier, @payable %></strong></td>
           </tr>
 
@@ -48,6 +48,11 @@
           <tr>
             <td class="span3">Discount:</td>
             <td class="span5"><strong><%= @payable.payable_discount %>%</strong></td>
+          </tr>
+
+          <tr>
+            <td class="span3">Freight:</td>
+            <td class="span5"><strong><%= @payable.payable_freight %></strong></td>
           </tr>
 
           <tr>

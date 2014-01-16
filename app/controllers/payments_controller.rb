@@ -69,6 +69,7 @@ class PaymentsController < ApplicationController
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render json: @payment, status: :created, location: @payment }
       else
+        p @payment.errors.to_yaml
         format.html { render action: "new" }
         format.json { render json: @payment.errors, status: :unprocessable_entity }
       end

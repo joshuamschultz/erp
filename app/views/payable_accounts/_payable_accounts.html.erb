@@ -21,7 +21,16 @@
                 <th></th>
               </tr>
             </thead>
-
+                <% @payable.payable_accounts.includes(:gl_account).each do |account| %>
+                    <tr>
+                        <td><%= account.gl_account.gl_account_title if account.gl_account %></td>
+                        <td><%= account.payable_account_description %></td>
+                        <td><%= account.payable_account_amount %></td>
+                        <td>
+                            <a rel="nofollow" data-method="delete" data-confirm="Are you sure?" class="btn-action btn glyphicons remove_2 btn-danger" href="<%= payable_payable_account_path(@payable, account) %>"><i></i></a>
+                        </td>
+                    </tr>
+                <% end %>
             <tbody>
                 
             </tbody>
@@ -29,7 +38,7 @@
     </div>
 </div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+<%#= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
         :name => "payable_account_table_report", :path => payable_payable_accounts_path(@payable), :extras => {:slno => false},
         :columns => '[

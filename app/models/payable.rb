@@ -83,7 +83,6 @@ class Payable < ActiveRecord::Base
       Payable.skip_callback("save", :after, :process_after_save)
       self.payable_total = self.update_payable_total
       self.save(validate: false)
-      # self.update_attributes(:payable_total => payable_total)
       Payable.set_callback("save", :before, :process_before_save)
       Payable.set_callback("save", :after, :process_after_save)
   end
@@ -92,7 +91,7 @@ class Payable < ActiveRecord::Base
       payable_total = self.payable_lines.sum(:payable_line_cost)
       payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
       payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
-      payable_total - payable_discount_val
+      payable_total - payable_discount_val + payable_freight
   end
 
   def payable_current_balance
@@ -105,6 +104,21 @@ class Payable < ActiveRecord::Base
 
   def check_payable_account_total
       (self.payable_accounts.sum(:payable_account_amount) == self.payable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Payable and Account Total)</strong>)".html_safe
+  end
+
+  def update_payable_status
+      Payable.skip_callback("save", :before, :process_before_save)
+      Payable.skip_callback("save", :after, :process_after_save)
+
+      payable_balance = self.payable_current_balance
+      if payable_balance > 0
+          self.update_attributes(:payable_status => "open")
+      else
+          self.update_attributes(:payable_status => "closed")
+      end
+
+      Payable.set_callback("save", :before, :process_before_save)
+      Payable.set_callback("save", :after, :process_after_save)
   end
 
 end
