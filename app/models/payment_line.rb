@@ -34,18 +34,7 @@ class PaymentLine < ActiveRecord::Base
   after_destroy :process_after_save
 
   def process_after_save
-      Payable.skip_callback("save", :before, :process_before_save)
-      Payable.skip_callback("save", :after, :process_after_save)
-
-      payable_balance = self.payable.payable_current_balance
-      if payable_balance > 0
-          self.payable.update_attributes(:payable_status => "open")
-      else
-          self.payable.update_attributes(:payable_status => "closed")
-      end
-
-      Payable.set_callback("save", :before, :process_before_save)
-      Payable.set_callback("save", :after, :process_after_save)
+      self.payable.update_payable_status
   end
 
 end

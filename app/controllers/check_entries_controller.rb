@@ -7,6 +7,7 @@ class CheckEntriesController < ApplicationController
       format.json { 
           @check_entries = CheckEntry.all.select{|check_entry| 
             check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
+            check_entry[:check_used] = check_entry.check_used? ? "Yes" : "No"
           }
           render json: {:aaData => @check_entries}
       }

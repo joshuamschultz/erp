@@ -48,7 +48,7 @@
     <%= f.input :payable_description, :label => "Description" %>
     <%= f.input :payable_notes, :label => "Notes" %>
     <%= f.input :payable_discount, :label => "Discount (%)" %>
-    <%#= f.input :payable_freight, :label => "Freight" %>    
+    <%= f.input :payable_freight, :label => "Freight" %>    
     <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
     <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
   </div>
@@ -74,14 +74,14 @@
 
 <% if @payable.persisted? %>
     <% payable_accounts = @payable.payable_accounts.any? ? @payable.payable_accounts : [PayableAccount.new]*0 %>
-    <% gl_accounts = GlAccount.all %>
-    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, attribute_name: "payable_payable_accounts_attributes", form_name: "form_for_paybles"} %>
+    <% gl_accounts = GlAccount.order(:gl_account_title) %>
+    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, attribute_name: "payable_payable_accounts_attributes", form_name: "form_for_paybles", default_account: (GlAccount.find_by_gl_account_identifier("11050") rescue GlAccount.first)} %>
 <% end %>
 <% end %>
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_description", "payable_payable_notes", "payable_payable_discount"];
+    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_description", "payable_payable_notes", "payable_payable_discount", "payable_payable_freight"];
 
     <% date_box_date1 = @payable.new_record? ? Date.today : @payable.payable_invoice_date %>
     <% date_box_date2 = @payable.new_record? ? Date.today : @payable.payable_due_date %>

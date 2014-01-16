@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  has_many :payment_lines, :dependent => :destroy, :before_add => :set_payment
+  has_many :payment_lines, :dependent => :destroy, :before_add => :set_payment  
 
   belongs_to :organization
 
@@ -12,7 +12,21 @@ class Payment < ActiveRecord::Base
   belongs_to :payment_type, :class_name => "MasterType", :foreign_key => "payment_type_id", 
   	:conditions => ['type_category = ?', 'payment_type']
 
+  belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
+
   validates_presence_of :organization, :payment_check_amount
+
+  # validate :validate_payment_check_code
+
+  # def validate_payment_check_code
+  #     if self.payment_type.present? && self.payment_type.type_value == "check"
+  #         validates_presence_of :payment_check_code
+  #         validates_uniqueness_of :payment_check_code
+  #     end
+  # end
+
+  validates_presence_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
+  validates_uniqueness_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
 
   def process_removed_lines(payment_lines)
       if payment_lines && payment_lines.any?
@@ -52,6 +66,14 @@ class Payment < ActiveRecord::Base
 
   def process_before_create
       self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier)
+  end
+
+  after_save :process_after_save
+
+  def process_after_save
+      if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"
+          CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+      end
   end
 
   private

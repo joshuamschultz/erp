@@ -1,11 +1,11 @@
-<% if @check_entry.persisted? %>
+<%# if @check_entry.persisted? %>
 	<%= simple_form_for(@check_entry, :html => {:id => "form_for_check_entries",:class => "form-horizontal"}) do |f| %>
 	  <%= f.error_notification %>
 
 	  <div class="form-inputs">
-	    <%= f.input :check_identifier, label: "Identifier", :autofocus => true %>
+	    <%= f.input :check_identifier, label: "Title", :autofocus => true %>
 	    <%= f.input :check_code, label: "Code" %>
-	    <%= f.input :check_active, label: "Active" %>
+	    <%#= f.input :check_active, label: "Active" %>
 	  </div>
 
 	  <div class="separator bottom"></div>
@@ -18,15 +18,15 @@
 	<% end %>
 
 	<script type="text/javascript">
-	    tab_field_forms["form_for_check_entries"] = ["check_entry_check_identifier", "check_entry_check_code", "check_entry_check_active"];
+	    tab_field_forms["form_for_check_entries"] = ["check_entry_check_identifier", "check_entry_check_code"];
 	</script>
 
-<% else %>
-	<%= form_tag(generate_check_entry_check_entries_path) do %>
-			<%= label_tag :serial_no, "Serial Start" %>
-			<%= text_field_tag :serial_no %>
-			<%= label_tag :serial_end, "Serial End" %>
-			<%= text_field_tag :serial_end %><br />
-			<%= button_tag :submit, :class => "btn" %>
-	<% end %>
-<% end %>
+<%# else %>
+	<%#= form_tag(generate_check_entry_check_entries_path) do %>
+			<%#= label_tag :serial_no, "Serial Start" %>
+			<%#= text_field_tag :serial_no %>
+			<%#= label_tag :serial_end, "Serial End" %>
+			<%#= text_field_tag :serial_end %><br />
+			<%#= button_tag :submit, :class => "btn" %>
+	<%# end %>
+<%# end %>
