@@ -1,4 +1,6 @@
 class Payment < ActiveRecord::Base
+  include Rails.application.routes.url_helpers 
+
   has_many :payment_lines, :dependent => :destroy, :before_add => :set_payment  
 
   belongs_to :organization
@@ -74,6 +76,10 @@ class Payment < ActiveRecord::Base
       if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"
           CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
       end
+  end
+
+  def redirect_path
+      payment_path(self)
   end
 
   private

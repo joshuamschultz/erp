@@ -15,8 +15,9 @@
           </tr>
 
           <tr>
-            <td>Active:</td>
-            <td><%= @check_entry.check_active %></td>
+            <td>Used:</td>
+            <% check_data = @check_entry.check_belongs_to %>
+            <td><%= check_data.nil? ? "No" : CommonActions.linkable(check_data[:object].redirect_path, check_data[:type] + " : " + check_data[:name]).html_safe %></td>
           </tr>
       </tbody>
     </table>
