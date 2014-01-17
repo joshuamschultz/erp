@@ -1,4 +1,6 @@
 class Receipt < ActiveRecord::Base
+  include Rails.application.routes.url_helpers 
+
   has_many :receipt_lines, :dependent => :destroy, :before_add => :set_receipt
   belongs_to :organization
 
@@ -10,6 +12,8 @@ class Receipt < ActiveRecord::Base
 
   belongs_to :receipt_type, :class_name => "MasterType", :foreign_key => "receipt_type_id", 
   	:conditions => ['type_category = ?', 'payment_type']
+
+  belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 
   validates_presence_of :organization, :receipt_check_amount
 
@@ -51,6 +55,10 @@ class Receipt < ActiveRecord::Base
 
   def process_before_create
       self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier)
+  end
+
+  def redirect_path
+      receipt_path(self)
   end
 
   private
