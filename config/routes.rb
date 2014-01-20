@@ -42,21 +42,20 @@ AllianceFasteners::Application.routes.draw do
 
   resources :quality_lot_gauges  
 
-  # resources :quotes do
-  #   resources :quote_vendors
-  # end
+  resources :quotes do
+    resources :quote_vendors
+  end
 
-  # resources :quotes do
-  #   resources :quote_lines
-  #   member do
-  #       post 'populate'
-  #   end
-  # end
+  resources :quotes do
+    resources :quote_lines
+    member do
+        post 'populate'
+    end
+  end
 
-  # resources :quotes
+  resources :quotes
 
-  # resources :quote_line_costs 
-
+  resources :quote_line_costs
 
   resources :receipts do
     resources :receipt_lines
