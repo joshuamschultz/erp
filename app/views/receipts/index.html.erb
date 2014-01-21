@@ -4,6 +4,8 @@
             <h4 class="span6 heading">Receipts</h4>
             <span class="span6 heading right">
                 <%= link_to 'New Receipt', new_receipt_path, :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'Open', receipts_path(receipt_status: "open"), :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'Closed', receipts_path(receipt_status: "closed"), :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -28,7 +30,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_receipt_list", :path => receipts_path, :extras => {:slno => false},
+    {:name => "table_report_receipt_list", :path => receipts_path(receipt_status: params[:receipt_status]), :extras => {:slno => false},
         :columns => '[
                         { "mData": "receipt_identifier" },
                         { "mData": "customer_name" },

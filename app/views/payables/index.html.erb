@@ -5,6 +5,8 @@
             <span class="span6 heading right">
                 <%= link_to 'New Payable From Received', po_shipments_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'New Payable', new_payable_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Open', payables_path(payable_status: "open"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', payables_path(payable_status: "closed"), :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -31,7 +33,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_payable_list", :path => payables_path, :extras => {:slno => false},
+    {:name => "table_report_payable_list", :path => payables_path(payable_status: params[:payable_status]), :extras => {:slno => false},
         :columns => '[
                         { "mData": "payable_identifier" },
                         { "mData": "vendor_name" },

@@ -20,27 +20,17 @@
 
         <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.first.id if @payment.payment_type.nil?) %>
 
-        <div id="payment_check_div" style="padding-bottom: 20px;">
-            <%= f.input :payment_check_code, :label => "Check Code" %>
-            <% if @payment.new_record? || !@payment.payment_check_code.present? %>
-                <div style="padding-left: 49px;">
-                    <%= radio_button_tag :payment_check_mode, :automatic, true, class: "payment_check_mode" %>Automatic
-                    <%= radio_button_tag :payment_check_mode, :manual, false, class: "payment_check_mode" %>Manual  
-                </div>
+        <div id="payment_check_div" style="padding-bottom:20px;">
+            <%= f.fields_for :check_entry do |payment_check| %>
+                <%= payment_check.input :check_code, required: false %>
             <% end %>
-        </div>
-
-        <!-- <div style="padding-bottom: 20px;" id="payment_check_div">
-            <div class="control-group string optional payment_payment_check_code">
-                <label for="payment_payment_check_code" class="string optional control-label">Check Code</label>
-                <div class="controls">
-                    <input type="text" size="50" name="payment[payment_check_code]" id="payment_payment_check_code" class="string optional" value=""><br>
-                    <input type="radio" value="automatic" class="payment_check_mode" name="payment_check_mode" id="payment_check_mode_automatic" checked=true>Automatic
-                    <input type="radio" value="manual" class="payment_check_mode" name="payment_check_mode" id="payment_check_mode_manual">Manual
-                    &nbsp;&nbsp;<a href="/check_entries" target="_blank">Checks</a>
-                </div>
+            <div style="padding-left: 49px;">
+                <%= radio_button_tag :payment_check_mode, :automatic, @payment.new_record?, class: "payment_check_mode" %>Automatic
+                <%= radio_button_tag :payment_check_mode, :manual, @payment.persisted?, class: "payment_check_mode" %>Manual
+                &nbsp;&nbsp;&nbsp;
+                <%= link_to 'Checks', check_entries_path, :class => "btn btn-mini btn-success", target: "_blank" %>
             </div>
-        </div> -->
+        </div>
 
         <%= f.input :payment_check_amount, :label => "Amount" %>
         <%= f.input :payment_description, :label => "Description" %>
@@ -106,16 +96,6 @@
     var payment_fine_to_submit = true;
 
     $(document).ready(function(){
-        $(document).on("change", ".payment_check_mode", function(){           
-            if($(".payment_check_mode:checked").val() == "automatic"){
-                $("#payment_payment_check_code").val("<%= CheckEntry.get_next_check_code %>");
-            }
-            else
-                $("#payment_payment_check_code").val("");
-
-            $("#payment_payment_check_code").focus();
-        });
-
         $("#payment_organization_id").on("focusout", function(){
 
             if($("#organization_id").val() == ""){
@@ -134,7 +114,6 @@
                 $(".payment_payable_new").html("");
                 $("#payment_lines_table_body").html("");
                 payable_select_html = "";
-
             }
         });
 
@@ -146,7 +125,11 @@
 
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_payables", "id": $("#organization_id").val()}}, "set_payment_payables", {});
             }
-        <% end %>        
+
+            <% unless @payment.persisted? %>
+                $("#payment_check_entry_attributes_check_code").val("<%= CheckEntry.get_next_check_code %>");
+            <% end %>
+        <% end %>
 
         $(".payment_type_option").on("change", function(){
             payment_type_changed($('.payment_type_option:checked').parent().text(), true);
@@ -169,7 +152,7 @@
             call_payment_payable_info($(this));
         });
 
-        $(document).on("keydown", "#payment_payment_check_code", function(e){
+        $(document).on("keydown", "#payment_check_entry_attributes_check_code", function(e){
             var keyCode = e.keyCode || e.which;
             if(keyCode == 13){
                 e.preventDefault();
@@ -211,6 +194,16 @@
                 $("#payment_payment_check_amount").focus();
             },2000);
         <% end %>
+
+        $(document).on("change", ".payment_check_mode", function(){
+            if($(".payment_check_mode:checked").val() == "automatic"){
+                $("#payment_check_entry_attributes_check_code").val("<%= CheckEntry.get_next_check_code %>");
+            }
+            else
+                $("#payment_check_entry_attributes_check_code").val("<%= @payment.check_entry.check_code if @payment.check_entry %>");
+
+            $("#payment_check_entry_attributes_check_code").focus();
+        });
     });
 
     function set_vendor_info(response, callback_params, api_params){
@@ -236,25 +229,7 @@
       <% if @payment.persisted? %>
           initialize_api_call({"url": "/payments/<%= @payment.id %>/payment_lines/"+ payment_line_id, "type": "DELETE", "data_type": "json", "params": {}}, "", {});
       <% end %>
-    }
-
-    function payment_type_changed(payment_type, change_focus){        
-        if(payment_type == "Check"){            
-            $("#payment_payment_check_code").val("<%= CheckEntry.get_next_check_code %>");
-            $('#payment_check_div').show();
-            if(change_focus)
-                $('#payment_payment_check_code').focus();
-            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_code", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
-        }
-        else{
-            // $('.payment_payment_check_code').hide();
-            $('#payment_check_div').hide();
-            $('#payment_payment_check_code').val("");
-            if(change_focus)
-                $('#payment_payment_check_amount').focus();
-            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
-        }
-    }
+    }    
 
     function call_payment_payable_info(selected_payable){
         if(selected_payable.val() != "" && selected_payable.val() != null)
@@ -282,6 +257,22 @@
             });
         }
     }
+
+    function payment_type_changed(payment_type, change_focus){        
+        if(payment_type == "Check"){
+            $('#payment_check_div').show();
+            if(change_focus)
+                $('#payment_check_entry_attributes_check_code').focus();
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_check_entry_attributes_check_code", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+        }
+        else{
+            $('#payment_check_div').hide();
+            if(change_focus)
+                $('#payment_payment_check_amount').focus();
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+        }
+    }
+
 
 </script>
 

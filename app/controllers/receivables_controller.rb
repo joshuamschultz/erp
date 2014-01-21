@@ -22,7 +22,7 @@ class ReceivablesController < ApplicationController
   # GET /receivables
   # GET /receivables.json
   def index
-    @receivables = Receivable.all
+    @receivables = Receivable.status_based_receivables(params[:receivable_status] || "open")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,8 +32,8 @@ class ReceivablesController < ApplicationController
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
               receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil)
-          }
-          render json: {:aaData => @receivables}
+        }
+        render json: {:aaData => @receivables}
       }
     end
   end

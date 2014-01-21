@@ -6,6 +6,8 @@ class Receivable < ActiveRecord::Base
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
   :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id
 
+  scope :status_based_receivables, lambda{|status| where(:receivable_status => status) }
+
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
   belongs_to :so_header
   belongs_to :gl_account

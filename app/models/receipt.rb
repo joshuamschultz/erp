@@ -8,6 +8,8 @@ class Receipt < ActiveRecord::Base
   :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status, 
   :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes
 
+  scope :status_based_receipts, lambda{|status| where(:receipt_status => status) }
+
   accepts_nested_attributes_for :receipt_lines, :reject_if => lambda { |b| b[:receipt_line_amount].blank? || b[:receivable_id].blank? }
 
   belongs_to :receipt_type, :class_name => "MasterType", :foreign_key => "receipt_type_id", 

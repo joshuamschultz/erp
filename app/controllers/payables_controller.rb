@@ -22,7 +22,7 @@ class PayablesController < ApplicationController
   # GET /payables
   # GET /payables.json
   def index
-    @payables = Payable.all
+    @payables = Payable.status_based_payables(params[:payable_status] || "open")
 
     respond_to do |format|
       format.html # index.html.erb
