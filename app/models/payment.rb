@@ -7,28 +7,33 @@ class Payment < ActiveRecord::Base
 
   attr_accessible :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no, 
   :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status, 
-  :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes
+  :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
+  :check_entry_attributes
 
   accepts_nested_attributes_for :payment_lines, :reject_if => lambda { |b| b[:payment_line_amount].blank? || b[:payable_id].blank? }
 
   belongs_to :payment_type, :class_name => "MasterType", :foreign_key => "payment_type_id", 
   	:conditions => ['type_category = ?', 'payment_type']
 
-  belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
+  belongs_to :check_entry #, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
 
   validates_presence_of :organization, :payment_check_amount
 
-  # validate :validate_payment_check_code
+  scope :status_based_payments, lambda{|status| where(:payment_status => status) }
 
-  # def validate_payment_check_code
-  #     if self.payment_type.present? && self.payment_type.type_value == "check"
-  #         validates_presence_of :payment_check_code
-  #         validates_uniqueness_of :payment_check_code
-  #     end
-  # end
+  before_validation :process_before_validation
 
-  validates_presence_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
-  validates_uniqueness_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
+  def process_before_validation
+      if self.payment_type.present? && self.payment_type.type_value != "check"
+        self.check_entry_id = nil
+        self.check_entry_attributes = {}
+      end
+  end
+
+  accepts_nested_attributes_for :check_entry, update_only: true, allow_destroy: true, :reject_if => lambda { |b| b[:check_code].nil? || b[:check_code].blank? }
+
+  # validates_presence_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
+  # validates_uniqueness_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
 
   def process_removed_lines(payment_lines)
       if payment_lines && payment_lines.any?

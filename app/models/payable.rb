@@ -14,6 +14,8 @@ class Payable < ActiveRecord::Base
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
 	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
+  scope :status_based_payables, lambda{|status| where(:payable_status => status) }
+
   has_many :payable_lines, :dependent => :destroy
   has_many :payment_lines, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy

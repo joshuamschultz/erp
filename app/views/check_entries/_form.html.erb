@@ -3,7 +3,7 @@
 	  <%= f.error_notification %>
 
 	  <div class="form-inputs">
-	    <%= f.input :check_identifier, label: "Title", :autofocus => true %>
+	    <%#= f.input :check_identifier, label: "Title", :autofocus => true %>
 	    <%= f.input :check_code, label: "Code" %>
 	    <%#= f.input :check_active, label: "Active" %>
 	  </div>
@@ -18,7 +18,7 @@
 	<% end %>
 
 	<script type="text/javascript">
-	    tab_field_forms["form_for_check_entries"] = ["check_entry_check_identifier", "check_entry_check_code"];
+	    tab_field_forms["form_for_check_entries"] = ["check_entry_check_code"];
 	</script>
 
 <%# else %>

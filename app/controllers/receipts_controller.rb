@@ -12,21 +12,22 @@ class ReceiptsController < ApplicationController
     params[:receipt][:organization_id], params[:organization_id] = params[:organization_id], params[:receipt][:organization_id]
     params[:receipt][:organization_id] = params[:org_organization_id] if params[:receipt][:organization_id] == ""
   end
+
   # GET /receipts
   # GET /receipts.json
   def index
-    @receipts = Receipt.all
+    @receipts = Receipt.all #.status_based_receipts(params[:receipt_status] || "open")
 
     respond_to do |format|
       format.html # index.html.erb
       format.json {
         @receipts = @receipts.select{|receipt|
-              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)              
+              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
               receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
               receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
               receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
       }
-       render json: {:aaData => @receipts}
+      render json: {:aaData => @receipts}
     }
     end
   end
