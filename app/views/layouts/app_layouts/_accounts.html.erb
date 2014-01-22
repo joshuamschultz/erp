@@ -39,23 +39,23 @@
         var account_row_count = $(".account_new").length + $(".account_edit").length;
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html);
-        $("#<%= attribute_name %>_"+account_row_count+"_<%= fields[1].to_s %>_id").html(account_select_html);
-        $("#<%= attribute_name %>_"+account_row_count+"_<%= fields[1].to_s %>_id").val(<%= default_account.id %>);
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(<%= default_account.id %>);
     }
 
     $(document).on("keydown", ".gl_account", function(e){
-        table_row_next_focus(e, "#<%= form_name %>", $(this), ".payable_account_description", false);
+        table_row_next_focus(e, "#<%= form_name %>", $(this), ".<%= account_type %>_account_description", false);
     });
 
-    $(document).on("keydown", ".payable_account_description", function(e){
-        table_row_next_focus(e, "#<%= form_name %>", $(this), ".payable_account_amount", false);
+    $(document).on("keydown", ".<%= account_type %>_account_description", function(e){
+        table_row_next_focus(e, "#<%= form_name %>", $(this), ".<%= account_type %>_account_amount", false);
     });
 
-    $(document).on("keydown", ".payable_account_amount", function(e){
+    $(document).on("keydown", ".<%= account_type %>_account_amount", function(e){
         table_row_next_focus(e, "#<%= form_name %>", $(this), ".gl_account", true);
     });
 
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "account-select-box"} %>
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "account-row-html"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "account-row-html", account_type: account_type} %>

@@ -48,11 +48,20 @@
   </div>
 </div>
 </div>
-<% end %>
 
 <%= render :partial => 'receivables/so_shipments' if @so_header %>
 
 <%= render :partial => 'receivable_lines/line_items' if @receivable.persisted? && @receivable.so_header.nil? %>
+
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<% if @receivable.persisted? %>
+    <% receivable_accounts = @receivable.receivable_accounts.any? ? @receivable.receivable_accounts : [ReceivableAccount.new]*2 %>
+    <% gl_accounts = GlAccount.order(:gl_account_title) %>
+    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @receivable, fields: [:receivable_accounts, :gl_account, :receivable_account_description, :receivable_account_amount], accounts: receivable_accounts, gl_accounts: gl_accounts, form_name: "form_for_receivables", default_account: (GlAccount.find_by_gl_account_identifier("11050") rescue GlAccount.first), account_type: "receivable"} %>
+<% end %>
+<% end %>
 
 <script type="text/javascript">
     tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_gl_account_id", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];

@@ -13,9 +13,12 @@
     <div class="span9">
         <%= render :partial => 'receivable_lines/line_items' unless @so_header %>
 
-        <%= render :partial => 'receivables/so_shipments' if @so_header %>        
+        <%= render :partial => 'receivables/so_shipments' if @so_header %> 
 
         <div class="separator bottom"></div>
+
+        <%= render :partial => "receivable_accounts/receivable_accounts" %>       
+
         <div class="separator bottom"></div>
 
         <%= render 'attachments/attachments' %>

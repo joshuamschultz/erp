@@ -14,8 +14,8 @@ class ReceivablesController < ApplicationController
       params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
       params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
       params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
-      params[:receivable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:receivable][:gl_account_id]
-      params[:receivable][:gl_account_id] = params[:org_gl_account_id] if params[:receivable][:gl_account_id] == ""
+      # params[:receivable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:receivable][:gl_account_id]
+      # params[:receivable][:gl_account_id] = params[:org_gl_account_id] if params[:receivable][:gl_account_id] == ""
     end
   end
 

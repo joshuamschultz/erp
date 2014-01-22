@@ -75,7 +75,7 @@
 <% if @payable.persisted? %>
     <% payable_accounts = @payable.payable_accounts.any? ? @payable.payable_accounts : [PayableAccount.new]*0 %>
     <% gl_accounts = GlAccount.order(:gl_account_title) %>
-    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, attribute_name: "payable_payable_accounts_attributes", form_name: "form_for_paybles", default_account: (GlAccount.find_by_gl_account_identifier("11050") rescue GlAccount.first)} %>
+    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, form_name: "form_for_paybles", default_account: (GlAccount.find_by_gl_account_identifier("11050") rescue GlAccount.first), account_type: "payable"} %>
 <% end %>
 <% end %>
 

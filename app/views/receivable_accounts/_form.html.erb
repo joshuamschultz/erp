@@ -1,0 +1,41 @@
+<%= form_for([@receivable_account.receivable, @receivable_account]) do |f| %>
+  <% if @receivable_account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@receivable_account.errors.count, "error") %> prohibited this receivable_account from being saved:</h2>
+
+      <ul>
+      <% @receivable_account.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :receivable %><br />
+    <%= f.text_field :receivable %>
+  </div>
+  <div class="field">
+    <%= f.label :gl_account %><br />
+    <%= f.text_field :gl_account %>
+  </div>
+  <div class="field">
+    <%= f.label :receivable_account_description %><br />
+    <%= f.text_field :receivable_account_description %>
+  </div>
+  <div class="field">
+    <%= f.label :receivable_account_amount %><br />
+    <%= f.text_field :receivable_account_amount %>
+  </div>
+  <div class="field">
+    <%= f.label :receivable_account_created_id %><br />
+    <%= f.number_field :receivable_account_created_id %>
+  </div>
+  <div class="field">
+    <%= f.label :receivable_account_updated_id %><br />
+    <%= f.number_field :receivable_account_updated_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

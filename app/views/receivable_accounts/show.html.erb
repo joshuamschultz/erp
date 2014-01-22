@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Receivable:</b>
+  <%= @receivable_account.receivable %>
+</p>
+
+<p>
+  <b>Gl account:</b>
+  <%= @receivable_account.gl_account %>
+</p>
+
+<p>
+  <b>Receivable account description:</b>
+  <%= @receivable_account.receivable_account_description %>
+</p>
+
+<p>
+  <b>Receivable account amount:</b>
+  <%= @receivable_account.receivable_account_amount %>
+</p>
+
+<p>
+  <b>Receivable account created:</b>
+  <%= @receivable_account.receivable_account_created_id %>
+</p>
+
+<p>
+  <b>Receivable account updated:</b>
+  <%= @receivable_account.receivable_account_updated_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_receivable_receivable_account_path(@receivable_account.receivable, @receivable_account) %> |
+<%= link_to 'Back', receivable_receivable_accounts_path(@receivable_account.receivable) %>

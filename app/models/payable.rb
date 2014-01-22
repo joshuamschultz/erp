@@ -1,5 +1,4 @@
-class Payable < ActiveRecord::Base
-  
+class Payable < ActiveRecord::Base  
   include Rails.application.routes.url_helpers  
 
   attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description, 

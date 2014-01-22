@@ -20,24 +20,24 @@
 	<% when "account-row-html" %>
 			<tr>
                 <td>
-                	<div class="control-group select required payable_payable_accounts_gl_account">
+                	<div class="control-group select required <%= account_type %>_<%= account_type %>_accounts_gl_account">
                 		<div class="controls">
-                			<select name="payable[payable_accounts_attributes][{{row_count}}][gl_account_id]" id="payable_payable_accounts_attributes_{{row_count}}_gl_account_id" class="select required account_new gl_account">
+                			<select name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][gl_account_id]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_gl_account_id" class="select required account_new gl_account">
 							</select>
 						</div>
 					</div>
 				</td>
                 <td>
-                	<div class="control-group string optional payable_payable_accounts_payable_account_description">
+                	<div class="control-group string optional <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_description">
                 		<div class="controls">
-                			<input type="text" value="" size="50" name="payable[payable_accounts_attributes][{{row_count}}][payable_account_description]" id="payable_payable_accounts_attributes_{{row_count}}_payable_account_description" class="string optional payable_account_description">
+                			<input type="text" value="" size="50" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_description]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_description" class="string optional <%= account_type %>_account_description">
                 		</div>
                 	</div>
                 </td>
                 <td>
-                	<div class="control-group decimal required payable_payable_accounts_payable_account_amount">
+                	<div class="control-group decimal required <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_amount">
                 		<div class="controls">
-                			<input type="number" value="" step="any" required="required" name="payable[payable_accounts_attributes][{{row_count}}][payable_account_amount]" id="payable_payable_accounts_attributes_{{row_count}}_payable_account_amount" class="numeric decimal required payable_account_amount">
+                			<input type="number" value="" step="any" required="required" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_amount]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_amount" class="numeric decimal required <%= account_type %>_account_amount">
         				</div>
     				</div>
                 </td>
