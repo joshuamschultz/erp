@@ -1,10 +1,11 @@
-class Receivable < ActiveRecord::Base
+class Receivable < ActiveRecord::Base  
   include Rails.application.routes.url_helpers
   
   attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
-  :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id
+  :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id,
+  :receivable_accounts_attributes
 
   scope :status_based_receivables, lambda{|status| where(:receivable_status => status) }
 
@@ -18,12 +19,28 @@ class Receivable < ActiveRecord::Base
   has_many :receivable_so_shipments, :dependent => :destroy
   has_many :so_shipments, through: :receivable_so_shipments
   has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :receivable_accounts, :dependent => :destroy
 
   accepts_nested_attributes_for :receivable_shipments
+  accepts_nested_attributes_for :receivable_accounts
 
   validates_presence_of :receivable_invoice, :organization
   # validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
   # validates_uniqueness_of :receivable_identifier
+
+  validate :validate_receivable_account_total, on: :update
+
+  def validate_receivable_account_total
+      gl_account_ids = self.receivable_accounts.collect(&:gl_account_id)
+      if gl_account_ids.uniq != gl_account_ids 
+          errors.add(:receivable_invoice, "have duplicate account entries added!")
+      end
+
+      total_amount = 0
+      self.receivable_accounts.each{|b| total_amount += b.receivable_account_amount.to_f }
+
+      errors.add(:receivable_invoice, "total (#{self.receivable_total}) < dispersed account total (#{total_amount})") if total_amount > self.receivable_total
+  end
 
   before_save :process_before_save
 
@@ -83,6 +100,10 @@ class Receivable < ActiveRecord::Base
 
   def redirect_path
       receivable_path(self)
+  end
+
+  def check_receivable_account_total
+      (self.receivable_accounts.sum(:receivable_account_amount) == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
 
 end

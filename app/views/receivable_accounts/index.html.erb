@@ -1,0 +1,33 @@
+<h1>Listing receivable_accounts</h1>
+
+<table>
+  <tr>
+    <th>Receivable</th>
+    <th>Gl account</th>
+    <th>Receivable account description</th>
+    <th>Receivable account amount</th>
+    <th>Receivable account created</th>
+    <th>Receivable account updated</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @receivable_accounts.each do |receivable_account| %>
+  <tr>
+    <td><%= receivable_account.receivable %></td>
+    <td><%= receivable_account.gl_account %></td>
+    <td><%= receivable_account.receivable_account_description %></td>
+    <td><%= receivable_account.receivable_account_amount %></td>
+    <td><%= receivable_account.receivable_account_created_id %></td>
+    <td><%= receivable_account.receivable_account_updated_id %></td>
+    <td><%= link_to 'Show', [receivable_account.receivable, receivable_account] %></td>
+    <td><%= link_to 'Edit', edit_receivable_receivable_account_path(receivable_account.receivable, receivable_account) %></td>
+    <td><%= link_to 'Destroy', [receivable_account.receivable, receivable_account], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Receivable account', new_receivable_receivable_account_path(params[:receivable_id]) %>

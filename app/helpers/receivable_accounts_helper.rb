@@ -1,0 +1,2 @@
+module ReceivableAccountsHelper
+end

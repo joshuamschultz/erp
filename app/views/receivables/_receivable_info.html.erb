@@ -53,7 +53,12 @@
           <tr>
             <td class="span3">Total:</td>
             <td class="span5"><strong><h4>$<%= @receivable.receivable_total %></h4></strong></td>
-          </tr>          
+          </tr>
+
+          <tr>
+            <td class="span3">Account Total:</td>
+            <td class="span5"><strong><h4>$<%= @receivable.receivable_accounts.sum(:receivable_account_amount) %></h4></strong></td>
+          </tr> 
 
           <tr>
             <td class="span3">Status:</td>
