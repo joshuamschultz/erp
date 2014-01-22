@@ -5,7 +5,7 @@ class Receivable < ActiveRecord::Base
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status, 
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description, 
   :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id,
-  :receivable_accounts_attributes
+  :receivable_accounts_attributes, :receivable_freight
 
   scope :status_based_receivables, lambda{|status| where(:receivable_status => status) }
 
@@ -91,7 +91,7 @@ class Receivable < ActiveRecord::Base
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total - receivable_discount_val
+      receivable_total - receivable_discount_val + receivable_freight
   end
 
   def receivable_current_balance

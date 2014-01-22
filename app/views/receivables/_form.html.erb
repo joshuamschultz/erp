@@ -34,9 +34,10 @@
     <%#= hidden_field_tag :gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
     <%#= hidden_field_tag :org_gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
 
-    <%= f.input :receivable_description, :label => "Description" %>        
+    <%= f.input :receivable_description, :label => "Description" %>
     <%= f.input :receivable_notes, :label => "Notes" %>
-    <%= f.input :receivable_discount, :label => "Discount (%)" %>   
+    <%= f.input :receivable_discount, :label => "Discount (%)" %>
+    <%= f.input :receivable_freight, :label => "Freight" %>
   </div>
 
   <div class="separator bottom"></div>
@@ -64,7 +65,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount"];
+    tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_invoice", "receivable_receivable_description", "receivable_receivable_notes", "receivable_receivable_discount", "receivable_receivable_freight"];
 
     var receivable_fine_to_submit = true;
 
