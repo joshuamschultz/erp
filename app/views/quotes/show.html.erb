@@ -10,16 +10,16 @@
     <%= render :partial => 'quotes/quote_info', locals: {show_quote_to: !@quote.quote_active } %>
 
     <div class="span8">
-        <%= render :partial => 'quote_lines/line_items', locals: {show_buttons: !@quote.organization.present? } %>
-
-        <div class="separator bottom"></div>
-
-        <% @quote.quote_vendors.each do |quote_vendor| %>        	
-        	<div class="separator bottom"></div>
-        	<%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
-        <% end %>
+        <%= render :partial => 'quote_lines/line_items', locals: {show_buttons: !@quote.organization.present? } %>        
     </div>
 </div>
+
+<div class="separator bottom"></div>
+
+<% @quote.quote_vendors.each do |quote_vendor| %>
+    <div class="separator bottom"></div>
+    <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
+<% end %>
 
  <!-- unless @quote.organization -->
 <!-- , locals: {show_buttons: !@quote.organization.present? } -->

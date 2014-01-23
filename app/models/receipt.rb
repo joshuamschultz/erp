@@ -12,10 +12,9 @@ class Receipt < ActiveRecord::Base
 
   accepts_nested_attributes_for :receipt_lines, :reject_if => lambda { |b| b[:receipt_line_amount].blank? || b[:receivable_id].blank? }
 
-  belongs_to :receipt_type, :class_name => "MasterType", :foreign_key => "receipt_type_id", 
-  	:conditions => ['type_category = ?', 'payment_type']
+  belongs_to :receipt_type, :class_name => "MasterType", :foreign_key => "receipt_type_id", :conditions => ['type_category = ?', 'payment_type']
 
-  belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
+  # belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 
   validates_presence_of :organization, :receipt_check_amount
 

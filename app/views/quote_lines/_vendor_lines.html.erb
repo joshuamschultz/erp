@@ -6,6 +6,7 @@
             <span class="span6 heading right">
                 <%= link_to 'Update', edit_quote_quote_vendor_path(quote, quote_vendor), :class => "btn btn-mini btn-success" if !edit_page && !quote.organization.present? %>
                 <%= f.submit "Update", :class => "btn btn-success" if edit_page %>  
+                <%= link_to "Back", quote, class: "btn btn-success" if edit_page %> 
             </span>
         </div> 
     </div>
@@ -17,6 +18,7 @@
                 <th>Quntity</th>
                 <th>Price</th>
                 <th>Tooling</th>
+                <%= "<th>Total</th>".html_safe unless edit_page %> 
                 <th>Lead Time</th>
                 <th>Notes</th>
             </tr>
@@ -43,6 +45,7 @@
                         <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost > 0) ? quote_line_cost.quote_line_cost : CommonActions.highlighted_text("Not Given") %></td>
                         
                         <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost_tooling > 0) ? quote_line_cost.quote_line_cost_tooling : CommonActions.highlighted_text("Not Given") %></td>
+                        <%= "<td>#{(quote_line.quote_line_quantity.to_f * quote_line_cost.quote_line_cost.to_f) + quote_line_cost.quote_line_cost_tooling.to_f}</td>".html_safe unless edit_page %> 
                         <td><%= quote_line_cost.quote_line_cost_lead %></td>
                         <td><%= quote_line_cost.quote_line_cost_description %></td>
                     </tr>
