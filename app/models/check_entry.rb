@@ -26,8 +26,8 @@ class CheckEntry < ActiveRecord::Base
   def check_belongs_to
   		if self.payment
   			{type: "Payment", name: self.payment.payment_identifier, object: self.payment}
-  		elsif self.receipt
-  			{type: "Receipt", name: self.receipt.receipt_identifier, object: self.receipt}
+  		# elsif self.receipt
+  		# 	{type: "Receipt", name: self.receipt.receipt_identifier, object: self.receipt}
   		end
   end
 
