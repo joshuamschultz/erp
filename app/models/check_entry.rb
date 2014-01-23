@@ -9,8 +9,7 @@ class CheckEntry < ActiveRecord::Base
 
   def self.get_next_check_code
       Payment.joins(:check_entry)
-  		next_check = CheckEntry.where("id not in (?)", [0] + Payment.joins(:check_entry).collect(&:check_entry_id) + 
-        Receipt.joins(:check_entry).collect(&:check_entry_id)).order(:id).first
+  		next_check = CheckEntry.where("id not in (?)", [0] + Payment.joins(:check_entry).collect(&:check_entry_id)).order(:id).first
 
   		if next_check
   			 next_check.check_code
@@ -33,7 +32,7 @@ class CheckEntry < ActiveRecord::Base
   end
 
   has_one :payment 
-  
+
   #, :class_name => "Payment", :foreign_key => "payment_check_code", :primary_key => 'check_code'
   # has_one :receipt, :class_name => "Receipt", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 end
