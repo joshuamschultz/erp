@@ -32,6 +32,8 @@ class CheckEntry < ActiveRecord::Base
   		end
   end
 
-  has_one :payment #, :class_name => "Payment", :foreign_key => "payment_check_code", :primary_key => 'check_code'
-  has_one :receipt, :class_name => "Receipt", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
+  has_one :payment 
+  
+  #, :class_name => "Payment", :foreign_key => "payment_check_code", :primary_key => 'check_code'
+  # has_one :receipt, :class_name => "Receipt", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 end

@@ -31,7 +31,9 @@ class ReceivablesController < ApplicationController
               receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
-              receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil)
+              receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
+                [ ({:name => "Pay", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
+              )
         }
         render json: {:aaData => @receivables}
       }
