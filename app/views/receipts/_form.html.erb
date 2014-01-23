@@ -213,6 +213,7 @@
         callback_params["object"].closest("tr").find("#invoice_due_date").val(response.aaData.receivable_due_date);
         callback_params["object"].closest("tr").find("#invoice_amount").val(response.aaData.receivable_total);
         callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.receivable_balance);
+        callback_params["object"].closest("tr").find(".receipt_receivable_amount").val(response.aaData.receivable_balance);
         callback_params["object"].closest("tr").find(".receipt_receivable_amount").focus();
     }
 

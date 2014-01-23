@@ -240,7 +240,8 @@
         callback_params["object"].closest("tr").find("#invoice_date").val(response.aaData.payable_invoice_date);
         callback_params["object"].closest("tr").find("#invoice_due_date").val(response.aaData.payable_due_date);
         callback_params["object"].closest("tr").find("#invoice_amount").val(response.aaData.payable_total);
-        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.payable_balance);
+        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.payable_balance);  
+        callback_params["object"].closest("tr").find(".payment_payable_amount").val(response.aaData.payable_balance);
         callback_params["object"].closest("tr").find(".payment_payable_amount").focus();
     }
 
