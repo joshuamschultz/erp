@@ -24,15 +24,15 @@
             <%= f.fields_for :check_entry do |payment_check| %>
                 <%= payment_check.input :check_code, required: false %>
             <% end %>
-            <div style="padding-left: 49px;">
-                <%= radio_button_tag :payment_check_mode, :automatic, @payment.new_record?, class: "payment_check_mode" %>Automatic
-                <%= radio_button_tag :payment_check_mode, :manual, @payment.persisted?, class: "payment_check_mode" %>Manual
+            <!-- <div style="padding-left: 49px;">
+                <%#= radio_button_tag :payment_check_mode, :automatic, @payment.new_record?, class: "payment_check_mode" %>Automatic
+                <%#= radio_button_tag :payment_check_mode, :manual, @payment.persisted?, class: "payment_check_mode" %>Manual
                 &nbsp;&nbsp;&nbsp;
-                <%= link_to 'Checks', check_entries_path, :class => "btn btn-mini btn-success", target: "_blank" %>
-            </div>
+                <%#= link_to 'Checks', check_entries_path, :class => "btn btn-mini btn-success", target: "_blank" %>
+            </div> -->
         </div>
 
-        <%= f.input :payment_check_amount, :label => "Amount" %>
+        <%#= f.input :payment_check_amount, :label => "Amount" %>
         <%= f.input :payment_description, :label => "Description" %>
         <%= f.input :payment_notes, :label => "Notes" %>
       </div>
@@ -156,7 +156,7 @@
             var keyCode = e.keyCode || e.which;
             if(keyCode == 13){
                 e.preventDefault();
-                $('#payment_payment_check_amount').focus();
+                $('#payment_payment_description').focus();
             }
         });        
 
@@ -191,7 +191,7 @@
                 $("#payment_payment_lines_attributes_0_payable_id").val("<%= @payable.id %>");
                 call_payment_payable_info($("#payment_payment_lines_attributes_0_payable_id"));
                 $("#payment_lines_table_body").show();
-                $("#payment_payment_check_amount").focus();
+                $("#payment_payment_description").focus();
             },2000);
         <% end %>
 
@@ -264,13 +264,13 @@
             $('#payment_check_div').show();
             if(change_focus)
                 $('#payment_check_entry_attributes_check_code').focus();
-            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_check_entry_attributes_check_code", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_check_entry_attributes_check_code", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
         }
         else{
             $('#payment_check_div').hide();
             if(change_focus)
-                $('#payment_payment_check_amount').focus();
-            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_amount", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+                $('#payment_payment_description').focus();
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
         }
     }
 

@@ -21,7 +21,7 @@
         <%= f.association :receipt_type, :label => "Receipt Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "receipt_type_option"}, :checked => (MasterType.payment_types.first.id if @receipt.new_record?) %>
 
         <%= f.input :receipt_check_code, :label => "Check Code" %>
-        <%= f.input :receipt_check_amount, :label => "Amount" %>
+        <%#= f.input :receipt_check_amount, :label => "Amount" %>
         <%= f.input :receipt_description, :label => "Description" %>
         <%= f.input :receipt_notes, :label => "Notes" %>
       </div>
@@ -144,7 +144,7 @@
             var keyCode = e.keyCode || e.which;
             if(keyCode == 13){
                 e.preventDefault();
-                $('#receipt_receipt_check_amount').focus();
+                $('#receipt_receipt_description').focus();
             }
         });
 
@@ -157,7 +157,7 @@
                 $("#receipt_receipt_lines_attributes_0_receivable_id").val("<%= @receivable.id %>");
                 call_receipt_receivable_info($("#receipt_receipt_lines_attributes_0_receivable_id"));
                 $("#receipt_lines_table_body").show();
-                $("#receipt_receipt_check_amount").focus();
+                $("#receipt_receipt_description").focus();
             },2000);
         <% end %>
     });
@@ -192,14 +192,14 @@
             $('.receipt_receipt_check_code').show();
             if(change_focus)
                 $('#receipt_receipt_check_code').focus();
-            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_check_code", "receipt_receipt_check_amount", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
+            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_check_code", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
         }
         else{
             $('.receipt_receipt_check_code').hide();
             $('#receipt_receipt_check_code').val("");
             if(change_focus)
-                $('#receipt_receipt_check_amount').focus();
-            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_check_amount", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
+                $('#receipt_receipt_description').focus();
+            tab_field_forms["form_for_receipts"] = ["receipt_organization_id", "receipt_receipt_description", "receipt_receipt_notes", "receipt_receipt_lines_attributes_0_receivable_id"];
         }
     }
 
