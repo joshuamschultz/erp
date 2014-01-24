@@ -8,19 +8,28 @@ class CheckEntry < ActiveRecord::Base
   validates_uniqueness_of :check_code
 
   def self.get_next_check_code
-      Payment.joins(:check_entry)
-  		next_check = CheckEntry.where("id not in (?)", [0] + Payment.joins(:check_entry).collect(&:check_entry_id)).order(:id).first
+      #   Payment.joins(:check_entry)
+  		# next_check = CheckEntry.where("id not in (?)", [0] + Payment.joins(:check_entry).collect(&:check_entry_id)).order(:id).first
 
-  		if next_check
-  			 next_check.check_code
-  		else
-          last_check = CheckEntry.order(:id).last
-    			if last_check
-    				  last_check.check_code.next
-    			else
-    				  ""
-    			end
-  		end
+      # if next_check
+      # 	 next_check.check_code
+      # else
+      #       last_check = CheckEntry.order(:id).last
+      # 			if last_check
+      # 				  last_check.check_code.next
+      # 			else
+      # 				  ""
+      # 			end
+      # end
+
+      last_check = CheckEntry.order(:id).last
+      if last_check && last_check.payment.nil?
+          last_check.check_code
+      elsif last_check
+          last_check.check_code.next
+      else
+          ""
+      end
   end
 
   def check_belongs_to

@@ -17,7 +17,7 @@ class Payment < ActiveRecord::Base
 
   belongs_to :check_entry #, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
 
-  validates_presence_of :organization, :payment_check_amount
+  validates_presence_of :organization
 
   scope :status_based_payments, lambda{|status| where(:payment_status => status) }
 
@@ -60,12 +60,12 @@ class Payment < ActiveRecord::Base
 
       total_amount = 0
       self.payment_lines.each{|b| total_amount += b.payment_line_amount.to_f }
+      self.payment_check_amount = total_amount
 
       if self.payment_lines.empty?
         errors.add(:payment_check_amount, "is not assigned to any PO!")
-
-      elsif total_amount > self.payment_check_amount
-        errors.add(:payment_check_amount, "is not sufficient!  Total lines amount needed: #{total_amount}")
+        # elsif total_amount > self.payment_check_amount
+        #   errors.add(:payment_check_amount, "is not sufficient!  Total lines amount needed: #{total_amount}")
       end
   end
 

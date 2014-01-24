@@ -16,7 +16,7 @@
     <% if @receivable.persisted? %>
         <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" %>
     <% else %>
-        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>        
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
     <% end %>
 
     <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.organization) %>

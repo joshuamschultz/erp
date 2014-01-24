@@ -16,7 +16,7 @@ class Receipt < ActiveRecord::Base
 
   # belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 
-  validates_presence_of :organization, :receipt_check_amount
+  validates_presence_of :organization
 
   def process_removed_lines(receipt_lines)
       if receipt_lines && receipt_lines.any?
@@ -43,12 +43,13 @@ class Receipt < ActiveRecord::Base
 
       total_amount = 0
       self.receipt_lines.each{|b| total_amount += b.receipt_line_amount.to_f }
+      self.receipt_check_amount = total_amount
 
       if self.receipt_lines.empty?
         errors.add(:receipt_check_amount, "is not assigned to any SO!")
 
-      elsif total_amount > self.receipt_check_amount
-        errors.add(:receipt_check_amount, "is not sufficient!  Total line amount needed: #{total_amount}")
+      # elsif total_amount > self.receipt_check_amount
+      #   errors.add(:receipt_check_amount, "is not sufficient!  Total line amount needed: #{total_amount}")
       end
   end
 
