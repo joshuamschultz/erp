@@ -43,9 +43,9 @@ gem 'execjs', '1.4.0'
 gem 'bootstrap-sass', '~> 2.3.1.0'
 gem 'kaminari'
 
-group :production do
-  	gem 'pg', '0.14.1'
-end
+#group :production do
+#  	gem 'pg', '0.14.1'
+#end
 
 gem 'simple_form'
 gem 'countries'
@@ -54,7 +54,8 @@ gem 'validates_formatting_of'
 gem 'bootstrap-datetimepicker-rails'
 
 gem 'paperclip', '3.4.1'
-gem 'rmagick', '2.13.2'
+#gem 'rmagick', '2.13.2'
+gem 'rmagick' 
 gem 'aws-sdk', '1.8.5'
 
 gem 'nested_scaffold'

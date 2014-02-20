@@ -2,7 +2,7 @@
     <h4><a href="<%= organization_path(organization) %>"><strong><%= organization.organization_name %></strong></a> <%= "(" + organization.organization_short_name + ")" if organization.organization_short_name.present? %></h4>
 
     <strong>
-        <%= ("<p>" + organization.organization_description + "</p>").html_safe %>
+        <%= ("<p>" + organization.organization_description.to_s + "</p>").html_safe %>
     </strong>
 
     <%= organization.organization_address_1.present? ? (organization.organization_address_1 + "<br />").html_safe : "" %>

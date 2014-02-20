@@ -1,4 +1,10 @@
 class ItemPartDimensionsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:inventory][:active] = "active"
+  end
+
   # GET /item_part_dimensions
   # GET /item_part_dimensions.json
   def index
