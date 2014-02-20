@@ -9,13 +9,7 @@ class PaymentLine < ActiveRecord::Base
   validates_numericality_of :payment_line_amount
 
   validate :check_total_received
-
-  before_destroy :before_destory_processes
-
-  def before_destory_processes
-    self.payable.update_attributes(:payable_status => "open")   
-  end
-
+ 
   # validates :payable_id, uniqueness: { scope: :payment_id }
   # validates :payment_id, :uniqueness => { :scope => :payable_id, :message => "duplicate entry!" }
 
