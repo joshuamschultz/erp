@@ -10,18 +10,18 @@ class PaymentsController < ApplicationController
     params[:payment][:organization_id], params[:organization_id] = params[:organization_id], params[:payment][:organization_id]
     params[:payment][:organization_id] = params[:org_organization_id] if params[:payment][:organization_id] == ""
   
-    if params[:payment][:check_entry_attributes][:check_code].nil? || params[:payment][:check_entry_attributes][:check_code].blank?
-        params[:payment][:check_entry_attributes] = {}
-        params[:payment][:check_entry_id] = nil
-    else
-        check_entry = CheckEntry.find_by_check_code(params[:payment][:check_entry_attributes][:check_code])
-        if check_entry.nil?
-            params[:payment][:check_entry_attributes] = {check_code: params[:payment][:check_entry_attributes][:check_code]}
-        else
-            params[:payment][:check_entry_id] = check_entry.id
-            params[:payment][:check_entry_attributes] = {check_code: check_entry.check_code, id: check_entry.id}
-        end
-    end
+    # if params[:payment][:check_entry_attributes][:check_code].nil? || params[:payment][:check_entry_attributes][:check_code].blank?
+    #     params[:payment][:check_entry_attributes] = {}
+    #     params[:payment][:check_entry_id] = nil
+    # else
+    #     check_entry = CheckEntry.find_by_check_code(params[:payment][:check_entry_attributes][:check_code])
+    #     if check_entry.nil?
+    #         params[:payment][:check_entry_attributes] = {check_code: params[:payment][:check_entry_attributes][:check_code]}
+    #     else
+    #         params[:payment][:check_entry_id] = check_entry.id
+    #         params[:payment][:check_entry_attributes] = {check_code: check_entry.check_code, id: check_entry.id}
+    #     end
+    # end
   end
 
   # GET /payments
