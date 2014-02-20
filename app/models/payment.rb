@@ -87,6 +87,11 @@ class Payment < ActiveRecord::Base
       payment_path(self)
   end
 
+  def self.last_payment_check_code
+      payment = Payment.joins(:payment_type).where("type_value = 'check'").order(:id).last
+      (payment.present? && payment.payment_check_code.present?) ? payment.payment_check_code.next : ""
+  end
+
   private
 
   def set_payment(line)
