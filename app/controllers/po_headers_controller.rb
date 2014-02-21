@@ -95,7 +95,7 @@ class PoHeadersController < ApplicationController
 
     respond_to do |format|
       if @po_header.save
-        format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
+        format.html { redirect_to  edit_po_header_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
       else        
         format.html { render action: "new" }
