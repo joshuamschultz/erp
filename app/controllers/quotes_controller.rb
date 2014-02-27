@@ -2,7 +2,12 @@ class QuotesController < ApplicationController
   # GET /quotes
   # GET /quotes.json
   def index
-    @quotes = Quote.all
+    if params[:item_id]
+      item = Item.find(params[:item_id])
+      @quotes = item.quotes
+    else
+      @quotes = Quote.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -10,6 +15,7 @@ class QuotesController < ApplicationController
               quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
               quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
               quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+              quote[:created] = quote.created_at.strftime("%d %b %Y")
           }
           render json: {:aaData => @quotes}
         }

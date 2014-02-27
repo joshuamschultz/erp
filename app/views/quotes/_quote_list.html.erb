@@ -17,6 +17,9 @@
                     <th>Quote Send ID</th>
                     <th>Vendors</th>
                     <th>Description</th>
+                    <% if @item.present? %>
+                        <th>Created at</th>
+                    <% end %>
                     <th></th>
                 </tr>
             </thead>
@@ -25,14 +28,31 @@
         </table>
     </div>
 </div>
-
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_quote_list", :path => quotes_path, :extras => {:slno => false},
-        :columns => '[
+<% if @item.present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_quote_list", 
+            :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
+            :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "quote_group_id" },
+                            { "mData": "vendor_name" },
+                            { "mData": "quote_description" },
+                            { "mData": "created" },
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]' 
+        }
+    %>
+<% else %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_quote_list", 
+            :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
+            :extras => {:slno => false},
+            :columns => '[
                         { "mData": "quote_group_id" },
                         { "mData": "vendor_name" },
                         { "mData": "quote_description" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
-    } 
-%>
+        }    
+    %>
+<% end %>

@@ -4,6 +4,7 @@ class Item < ActiveRecord::Base
 
   has_many :item_revisions, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
+  has_many :quotes , :through => :quote_lines
 
   has_many :item_part_dimensions, :through => :item_revisions
 
