@@ -22,6 +22,7 @@
 
         <div id="payment_check_div" style="padding-bottom:20px;">
             <%= f.input :payment_check_code, :label => "Check Code" %>
+            <%= f.input :next_check_code %>
             <%#= f.fields_for :check_entry do |payment_check| %>
                 <%#= payment_check.input :check_code, required: false, input_html: {value: (@payment.new_record? ? Payment.last_payment_check_code : )} %>
             <%# end %>
@@ -167,9 +168,18 @@
             var keyCode = e.keyCode || e.which;
             if(keyCode == 13){
                 e.preventDefault();
+                $('#payment_next_check_code').focus();
+            }
+        });
+
+        $(document).on("keydown", "#payment_next_check_code", function(e){
+            var keyCode = e.keyCode || e.which;
+            if(keyCode == 13){
+                e.preventDefault();
                 $('#payment_payment_description').focus();
             }
         });
+
 
         $("#form_for_payments").submit(function(e){
             if(payment_fine_to_submit == false)
@@ -275,7 +285,7 @@
             $('#payment_check_div').show();
             if(change_focus)
                 $('#payment_payment_check_code').focus();
-            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_code", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
+            tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_check_code", "payment_next_check_code","payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
 
             //     $('#payment_check_entry_attributes_check_code').focus();
             // tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_check_entry_attributes_check_code", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
