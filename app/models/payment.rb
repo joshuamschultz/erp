@@ -80,20 +80,12 @@ class Payment < ActiveRecord::Base
     def process_after_save
         if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"
             CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+            CheckCode.get_next_check_code
         end
     end
 
     def redirect_path
         payment_path(self)
-    end
-
-    def self.last_payment_check_code
-        payment = Payment.joins(:payment_type).where("type_value = 'check'").order(:id).last
-        if payment.present? && payment.next_check_code.present?
-            payment.next_check_code
-        else
-            (payment.present? && payment.payment_check_code.present?) ? payment.payment_check_code.next : ""
-        end
     end
 
     private

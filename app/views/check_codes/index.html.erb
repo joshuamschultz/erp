@@ -1,0 +1,23 @@
+<h1>Listing check_codes</h1>
+
+<table>
+  <tr>
+    <th>Next check code</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @check_codes.each do |check_code| %>
+  <tr>
+    <td><%= check_code.next_check_code %></td>
+    <td><%= link_to 'Show', check_code %></td>
+    <td><%= link_to 'Edit', edit_check_code_path(check_code) %></td>
+    <td><%= link_to 'Destroy', check_code, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Check code', new_check_code_path %>

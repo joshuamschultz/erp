@@ -1,4 +1,6 @@
-AllianceFasteners::Application.routes.draw do  
+AllianceFasteners::Application.routes.draw do
+
+  resources :check_codes
 
   resources :receivables do
     resources :receivable_accounts
@@ -9,25 +11,25 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :check_entries do
-      collection do
-          post 'generate_check_entry'
-      end
+    collection do
+      post 'generate_check_entry'
+    end
   end
 
 
   resources :gl_entries do
-      member do
-          post 'populate'
-      end
+    member do
+      post 'populate'
+    end
   end
 
   resources :gl_types
 
   resources :gl_accounts do
-      get :autocomplete_gl_account_gl_account_title, :on => :collection
-      member do
-          get 'gl_account_info'
-      end
+    get :autocomplete_gl_account_gl_account_title, :on => :collection
+    member do
+      get 'gl_account_info'
+    end
   end
 
   resources :payable_po_shipments
@@ -44,7 +46,7 @@ AllianceFasteners::Application.routes.draw do
     resources :quality_lot_gauge_dimensions
   end
 
-  resources :quality_lot_gauges  
+  resources :quality_lot_gauges
 
   resources :quotes do
     resources :quote_vendors
@@ -53,7 +55,7 @@ AllianceFasteners::Application.routes.draw do
   resources :quotes do
     resources :quote_lines
     member do
-        post 'populate'
+      post 'populate'
     end
   end
 
@@ -73,7 +75,7 @@ AllianceFasteners::Application.routes.draw do
     resources :receivable_shipments
   end
 
-  resources :receivables  
+  resources :receivables
 
   resources :payments do
     resources :payment_lines
@@ -120,8 +122,8 @@ AllianceFasteners::Application.routes.draw do
   resources :so_headers do
     resources :so_lines
     member do
-        post 'populate'
-        get 'so_info'
+      post 'populate'
+      get 'so_info'
     end
     get :autocomplete_so_header_so_identifier, :on => :collection
   end
@@ -131,16 +133,16 @@ AllianceFasteners::Application.routes.draw do
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
   devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
-      root :to => 'devise/sessions#new'
-  end  
-  
+    root :to => 'devise/sessions#new'
+  end
+
   resources :customer_quality_levels
 
-  resources :po_headers do    
+  resources :po_headers do
     resources :po_lines
     member do
-        post 'populate'
-        get 'po_info'
+      post 'populate'
+      get 'po_info'
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
   end
@@ -153,7 +155,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :items do
     resources :item_revisions do
-        resources :item_part_dimensions
+      resources :item_part_dimensions
     end
     get :autocomplete_item_item_part_no, :on => :collection
   end
@@ -161,7 +163,7 @@ AllianceFasteners::Application.routes.draw do
   resources :privileges
 
   resources :item_selected_names do
-      get :autocomplete_item_selected_name_item_name, :on => :collection
+    get :autocomplete_item_selected_name_item_name, :on => :collection
   end
 
   resources :item_processes
@@ -177,7 +179,7 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :item_alt_names do
-      get :autocomplete_item_alt_name_item_alt_identifier, :on => :collection
+    get :autocomplete_item_alt_name_item_alt_identifier, :on => :collection
   end
 
   resources :gauges
@@ -191,18 +193,18 @@ AllianceFasteners::Application.routes.draw do
   resources :organization_processes
 
   resources :contacts do
-      get 'set_default'
+    get 'set_default'
   end
 
   resources :comments
 
   resources :organizations do
-      get 'main_address'
-      member do
-          post 'populate'
-          get 'organization_info'
-      end
-      get :autocomplete_organization_organization_name, :on => :collection
+    get 'main_address'
+    member do
+      post 'populate'
+      get 'organization_info'
+    end
+    get :autocomplete_organization_organization_name, :on => :collection
   end
 
   get "static_pages/landing"
@@ -220,7 +222,7 @@ AllianceFasteners::Application.routes.draw do
 
 
   resources :commodities do
-      get :autocomplete_commodity_commodity_identifier, :on => :collection
+    get :autocomplete_commodity_commodity_identifier, :on => :collection
   end
 
 
@@ -228,14 +230,14 @@ AllianceFasteners::Application.routes.draw do
 
 
   resources :customer_qualities do
-      get 'set_default'
+    get 'set_default'
   end
 
 
   resources :vendor_qualities do
-      get 'set_default'
+    get 'set_default'
   end
-  
+
 
   resources :owners
 
@@ -256,7 +258,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :test_packages
 
-  match "/tester" => "account#tester", via: [:get, :post] 
+  match "/tester" => "account#tester", via: [:get, :post]
 
 
   get "account/dashboard"

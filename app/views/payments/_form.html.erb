@@ -22,7 +22,6 @@
 
         <div id="payment_check_div" style="padding-bottom:20px;">
             <%= f.input :payment_check_code, :label => "Check Code" %>
-            <%= f.input :next_check_code %>
             <%#= f.fields_for :check_entry do |payment_check| %>
                 <%#= payment_check.input :check_code, required: false, input_html: {value: (@payment.new_record? ? Payment.last_payment_check_code : )} %>
             <%# end %>
@@ -130,7 +129,8 @@
             }
 
             <% unless @payment.persisted? %>
-                $("#payment_payment_check_code").val("<%= Payment.last_payment_check_code %>");
+                $("#payment_payment_check_code").val("<%= CheckCode.first.next_check_code
+                 %>");
                 // $("#payment_check_entry_attributes_check_code").val("<%#= CheckEntry.get_next_check_code %>");
             <% end %>
         <% end %>
@@ -168,18 +168,9 @@
             var keyCode = e.keyCode || e.which;
             if(keyCode == 13){
                 e.preventDefault();
-                $('#payment_next_check_code').focus();
-            }
-        });
-
-        $(document).on("keydown", "#payment_next_check_code", function(e){
-            var keyCode = e.keyCode || e.which;
-            if(keyCode == 13){
-                e.preventDefault();
                 $('#payment_payment_description').focus();
             }
         });
-
 
         $("#form_for_payments").submit(function(e){
             if(payment_fine_to_submit == false)
