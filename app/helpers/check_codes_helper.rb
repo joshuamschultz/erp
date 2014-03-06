@@ -1,0 +1,2 @@
+module CheckCodesHelper
+end
