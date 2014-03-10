@@ -1,11 +1,11 @@
 class ReceiptsController < ApplicationController
- 
-  before_filter :set_autocomplete_values, only: [:create, :update] 
 
-  before_filter :set_page_info  
+  before_filter :set_autocomplete_values, only: [:create, :update]
+
+  before_filter :set_page_info
 
   def set_page_info
-      @menus[:accounts][:active] = "active"
+    @menus[:accounts][:active] = "active"
   end
 
   def set_autocomplete_values
@@ -16,19 +16,19 @@ class ReceiptsController < ApplicationController
   # GET /receipts
   # GET /receipts.json
   def index
-    @receipts = Receipt.all #.status_based_receipts(params[:receipt_status] || "open")
+    @receipts = Receipt.status_based_receipts(params[:receipt_status] || "open")
 
     respond_to do |format|
       format.html # index.html.erb
       format.json {
         @receipts = @receipts.select{|receipt|
-              receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
-              receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
-              receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
-              receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
+          receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
+          receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
+          receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+        }
+        render json: {:aaData => @receipts}
       }
-      render json: {:aaData => @receipts}
-    }
     end
   end
 

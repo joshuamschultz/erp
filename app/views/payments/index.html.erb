@@ -5,8 +5,8 @@
             <span class="span6 heading right">
                 <%= link_to 'New Payment', new_payment_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Checks', check_entries_path, :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'Open', payments_path(payment_status: "open"), :class => "btn btn-mini btn-success" %>
-                <%#= link_to 'Closed', payments_path(payment_status: "closed"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Open', payments_path(payment_status: "open"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', payments_path(payment_status: "closed"), :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
