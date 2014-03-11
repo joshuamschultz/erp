@@ -30,12 +30,19 @@
 
           <tr>
             <td class="span3">Quote Vendor:</td>
-            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
+            <td class="span5"><strong>
+            <%#= @quote.organizations.present? ? @quote.organizations.collect{|organization| link_to(organization.organization_name, organization_path(organization)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
+
+            <%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
           </tr>
 
           <tr>
             <td class="span3">Quote PO:</td>
-            <td class="span5"><strong><%= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
+            <td class="span5"><strong>
+            <%= @quote.po_headers.present? ? @quote.po_headers.collect{|po_header| link_to(po_header.po_identifier, po_header_path(po_header)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
+
+
+            <%#= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
           </tr>
 
       </tbody>
@@ -58,8 +65,15 @@
                   <%= f.association :organization, label_method: :organization_name, label_value: :id, :label => "Organization", :include_blank => false, collection: @quote.vendors %>
 
                   <%= f.association :po_header, label_method: :po_identifier, label_value: :id, :label => "PO", :include_blank => false, collection: [], wrapper_html: { id: 'quote_org_po_header' } %>
+                  
+                  <%= f.association :quote_lines, label_method: :id, label_value: :id, include_blank: false, :label => "Quote Item", collection: @quote.quote_lines, :selected => @quote.quote_lines.first, :as => :select %>
+
+                  <%= label_tag :no_of_item %>
+
+                  <%= text_field_tag :item_quantity %>
 
                   <%= f.submit "Submit", :class =>"btn" %>
+
               </div>
           </div>
       </div>
@@ -82,6 +96,10 @@
         });
 
         $(document).on("change", "#quote_organization_id", function(){
+            $('#vendor_lines_table_ *').prop('disabled', true);
+        }); 
+
+        $(document).on("change", "#quote_organization_id", function(){
           if($(".quote_po_type_option:checked").val() == "existing_po")
               initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_open_pos", "id": $("#quote_organization_id").val()}}, "set_organization_open_pos", {});
         });
@@ -100,6 +118,13 @@
             var html = $.trim(Mustache.render($(".po-select-box-template").html(), response));
             $("#quote_po_header_id").html(html);
         }  
+
+        // Appending the data
+        $("#form_for_quote").submit( function(eventObj){
+            $(this).append('<input type="hidden" name="field_name" value="value" /> ');               
+            return true;
+        });
+
     </script>
 
     <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "po-select-box"} %>

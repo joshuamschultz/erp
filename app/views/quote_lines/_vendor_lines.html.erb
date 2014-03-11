@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>Part No</th>
-                <th>Quntity</th>
+                <th>Quantity</th>
                 <th>Price</th>
                 <th>Tooling</th>
                 <%= "<th>Total</th>".html_safe unless edit_page %> 
@@ -39,16 +39,16 @@
             <% else %>
                 <% quote.quote_lines.each do |quote_line| %>
                     <% quote_line_cost = quote_line.quote_line_costs.find_by_quote_vendor_id(quote_vendor.id) %>
-                    <tr>
-                        <td><%= link_to quote_line.item_alt_name.item_alt_identifier, item_path(quote_line.item) %></td>
-                        <td><%= quote_line.quote_line_quantity %></td>
-                        <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost > 0) ? quote_line_cost.quote_line_cost : CommonActions.highlighted_text("Not Given") %></td>
-                        
-                        <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost_tooling > 0) ? quote_line_cost.quote_line_cost_tooling : CommonActions.highlighted_text("Not Given") %></td>
-                        <%= "<td>#{(quote_line.quote_line_quantity.to_f * quote_line_cost.quote_line_cost.to_f) + quote_line_cost.quote_line_cost_tooling.to_f}</td>".html_safe unless edit_page %> 
-                        <td><%= quote_line_cost.quote_line_cost_lead %></td>
-                        <td><%= quote_line_cost.quote_line_cost_description %></td>
-                    </tr>
+                        <tr>
+                            <td><%= link_to quote_line.item_alt_name.item_alt_identifier, item_path(quote_line.item) %></td>
+                            <td><%= quote_line.quote_line_quantity %></td>
+                            <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost > 0) ? quote_line_cost.quote_line_cost : CommonActions.highlighted_text("Not Given") %></td>
+                            
+                            <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost_tooling > 0) ? quote_line_cost.quote_line_cost_tooling : CommonActions.highlighted_text("Not Given") %></td>
+                            <%= "<td>#{(quote_line.quote_line_quantity.to_f * quote_line_cost.quote_line_cost.to_f) + quote_line_cost.quote_line_cost_tooling.to_f}</td>".html_safe unless edit_page %> 
+                            <td><%= quote_line_cost.quote_line_cost_lead %></td>
+                            <td><%= quote_line_cost.quote_line_cost_description %></td>                   
+                        </tr>
                 <% end %>
             <% end %>
         </tbody>
@@ -65,5 +65,5 @@
         });
 
         <%= '$(".quote_line_cost_input:first").focus();'.html_safe if edit_page %>
-    });    
+    });  
 </script>

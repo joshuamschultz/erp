@@ -48,9 +48,13 @@ AllianceFasteners::Application.routes.draw do
 
   resources :quality_lot_gauges
 
+  get "quotes/quotes-history" => 'quotes#history', as: :quotes_history
+
   resources :quotes do
     resources :quote_vendors
   end
+
+
 
   resources :quotes do
     resources :quote_lines
@@ -58,6 +62,7 @@ AllianceFasteners::Application.routes.draw do
       post 'populate'
     end
   end
+
 
   resources :quotes
 

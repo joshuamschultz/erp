@@ -8,12 +8,18 @@ class Quote < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :destroy
 
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
-  :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id, :quote_po_type
+  :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
+  :quote_po_type, :item_quantity
 
   attr_accessor :quote_po_type
 
   belongs_to :organization
+  has_many :organizations, :through => :quotes_organizations
+  has_many :quotes_organizations
+
   belongs_to :po_header
+  has_many :po_headers, :through => :quotes_po_headers
+  has_many :quotes_po_headers
 
   validates_presence_of :quote_description
 
@@ -43,7 +49,7 @@ class Quote < ActiveRecord::Base
 
         if self.quote_po_type == "existing_po"
             errors.add(:po_header_id, "can't be blank") unless self.po_header
-        else
+        else            
             self.po_header = nil
         end
     end
@@ -92,6 +98,65 @@ class Quote < ActiveRecord::Base
             self.quote_active = true
         end
     end    
+ end
+
+ def process_quotes(quote_po_type, organization_id, po_header_id, item_quantity)
+    self.quote_po_type = quote_po_type
+    self.organization_id = organization_id
+    self.po_header_id = po_header_id
+    unless self.quote_po_type.nil?
+        errors.add(:organization_id, "can't be blank") unless self.organization
+
+        if self.quote_po_type == "existing_po"
+            errors.add(:po_header_id, "can't be blank") unless self.po_header
+        else            
+            self.po_header = nil
+        end
+        return false
+    end
+
+    if self.quote_lines.first.quote_line_quantity >= item_quantity  && item_quantity.present? 
+        p "test==========" 
+        if self.organization.present?
+            po_header = self.po_header
+            unless po_header.present?
+                po_header = PoHeader.new(po_type_id: MasterType.po_types.first.id, organization_id: organization_id)
+                if po_header.save
+                    self.po_header = po_header
+                end
+                self << po_header
+            end
+
+            if po_header.present?
+                self.quote_lines.each do |line|
+                    quote_vendor = self.quote_vendors.find_by_organization_id(self.organization_id)
+                    if line.po_line.nil? && quote_vendor.present?
+                        quote_line_cost = quote_vendor.quote_line_costs.find_by_quote_line_id(line.id)
+                        po_line = po_header.po_lines.new
+                        po_line.item_alt_name = line.item_alt_name
+                        po_line.po_line_quantity = item_quantity
+                        po_line.po_line_cost = quote_line_cost.present? ? quote_line_cost.quote_line_cost : 0
+                        po_line.organization = line.organization
+                        po_line.po_line_customer_po = line.quote_line_description
+                        if po_line.save
+                            line.update_attributes(po_line_id: po_line.id)
+                        else
+                            puts po_line.errors.to_yaml
+                        end
+                    end
+                    line.quote_line_quantity = line.quote_line_quantity - item_quantity
+                    line.save(:validate => false)
+                end
+                
+            end
+        end
+    else
+        p "fffffffffffffff"
+        errors.add(:item_quantity, "can't be blank")
+        return false
+    end
+
+    self.save
  end
 
  def redirect_path
