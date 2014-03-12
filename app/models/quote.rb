@@ -30,12 +30,12 @@ class Quote < ActiveRecord::Base
 
     		if vendors
   	      	vendors.each do |vendor_id|
-        				unless quote.quote_vendors.find_by_organization_id(vendor_id)
-        					  quote_vendor = quote.quote_vendors.new(:organization_id => vendor_id)
+        			unless quote.quote_vendors.find_by_organization_id(vendor_id)
+        				quote_vendor = quote.quote_vendors.new(:organization_id => vendor_id)
                     if quote_vendor.save
                         quote_vendor.process_quote_line_costs
                     end
-        				end
+        			end
   	      	end
   	    end
    	end
@@ -95,7 +95,7 @@ class Quote < ActiveRecord::Base
                     end
                 end
             end
-            self.quote_active = true
+            # self.quote_active = true
         end
     end    
  end
@@ -109,22 +109,21 @@ class Quote < ActiveRecord::Base
 
         if self.quote_po_type == "existing_po"
             errors.add(:po_header_id, "can't be blank") unless self.po_header
+            return false
         else            
             self.po_header = nil
-        end
-        return false
+        end            
     end
 
-    if self.quote_lines.first.quote_line_quantity >= item_quantity  && item_quantity.present? 
-        p "test==========" 
+    if (self.quote_lines.first.quote_line_quantity.to_i >= item_quantity.to_i)  && item_quantity.present? 
         if self.organization.present?
             po_header = self.po_header
             unless po_header.present?
-                po_header = PoHeader.new(po_type_id: MasterType.po_types.first.id, organization_id: organization_id)
+                po_header = PoHeader.new(po_type_id: MasterType.po_types.first.id, organization_id: self.organization_id)
                 if po_header.save
                     self.po_header = po_header
-                end
-                self << po_header
+                    QuotesPoHeader.create(:quote_id => self.id, :po_header_id => po_header.id)
+                end                 
             end
 
             if po_header.present?
@@ -144,19 +143,17 @@ class Quote < ActiveRecord::Base
                             puts po_line.errors.to_yaml
                         end
                     end
-                    line.quote_line_quantity = line.quote_line_quantity - item_quantity
+                    line.quote_line_quantity = (line.quote_line_quantity.to_i - item_quantity.to_i)
                     line.save(:validate => false)
                 end
                 
             end
         end
     else
-        p "fffffffffffffff"
         errors.add(:item_quantity, "can't be blank")
         return false
     end
-
-    self.save
+    self.save(:validate => false)
  end
 
  def redirect_path

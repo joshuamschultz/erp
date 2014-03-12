@@ -7,7 +7,7 @@
 </div>
 
 <div class="row-fluid">
-    <%= render :partial => 'quotes/quote_info', locals: {show_quote_to: !@quote.quote_active } %>
+    <%= render :partial => 'quotes/quote_info', locals: {show_quote_to: true } %>
 
     <div class="span8">
         <%= render :partial => 'quote_lines/line_items', locals: {show_buttons: !@quote.organization.present? } %>        
