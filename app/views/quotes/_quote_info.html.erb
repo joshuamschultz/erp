@@ -64,10 +64,7 @@
               <div class="form-inputs">
                   <%= f.association :organization, label_method: :organization_name, label_value: :id, :label => "Organization", :include_blank => false, collection: @quote.vendors %>
 
-                  <%= f.association :po_header, label_method: :po_identifier, label_value: :id, :label => "PO", :include_blank => false, collection: [], wrapper_html: { id: 'quote_org_po_header' } %>
-                  
-                  <%= f.association :quote_lines, label_method: :id, label_value: :id, include_blank: false, :label => "Quote Item", collection: @quote.quote_lines, :selected => @quote.quote_lines.first, :as => :select %>
-
+                  <%= f.association :po_header, label_method: :po_identifier, label_value: :id, :label => "PO", :include_blank => false, collection: [], wrapper_html: { id: 'quote_org_po_header' } %>         
                   <%= label_tag :no_of_item %>
 
                   <%= text_field_tag :item_quantity %>

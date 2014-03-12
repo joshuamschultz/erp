@@ -57,7 +57,7 @@ class PoHeader < ActiveRecord::Base
   has_many :comments, :as => :commentable, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :payables, :dependent => :destroy
-  # has_many :quotes
+  has_many :quotes
   has_many :quotes, :through => :quotes_po_headers
   has_many :quotes_po_headers
 
