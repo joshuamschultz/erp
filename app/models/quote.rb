@@ -137,7 +137,7 @@ class Quote < ActiveRecord::Base
                         po_line.po_line_cost = quote_line_cost.present? ? quote_line_cost.quote_line_cost : 0
                         po_line.organization = line.organization
                         po_line.po_line_customer_po = line.quote_line_description
-                        if po_line.save
+                        if po_line.save                            
                             line.update_attributes(po_line_id: po_line.id)
                         else
                             puts po_line.errors.to_yaml

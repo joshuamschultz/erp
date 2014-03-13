@@ -3,5 +3,13 @@
 
     <div class="span8 well item_detail_view">
         <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: @quote_vendor, quote: @quote, edit_page: true} %>
-    </div>
+    </div>    
+
+</div>
+
+<div class="row-fluid">
+	<%= render :partial => 'attachments/droppable_form_plup' %>
+</div>
+<div class="row-fluid">
+	<%= render 'attachments/attachments' %>
 </div>
