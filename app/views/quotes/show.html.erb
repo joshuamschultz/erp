@@ -7,7 +7,7 @@
 </div>
 
 <div class="row-fluid">
-    <% a = (@quote.quote_lines.first.quote_line_quantity.to_i != 0) ? true : false%>
+    <% a = @quote.quote_lines.present? ? ((@quote.quote_lines.first.quote_line_quantity.to_i != 0) ? true : false) : false%>
     <%= render :partial => 'quotes/quote_info', locals: {show_quote_to: a} %>
 
     <div class="span8">

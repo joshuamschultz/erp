@@ -4,7 +4,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Quotes from <%= link_to quote_vendor.organization.organization_name, quote_vendor.organization %></h4>
             <span class="span6 heading right">
-                <%= link_to 'Update', edit_quote_quote_vendor_path(quote, quote_vendor), :class => "btn btn-mini btn-success" if !edit_page && quote.quote_lines.first.quote_line_quantity.to_i != 0 %>
+                <% if quote.quote_lines.present? %>
+                    <%= link_to 'Update', edit_quote_quote_vendor_path(quote, quote_vendor), :class => "btn btn-mini btn-success" if !edit_page && quote.quote_lines.first.quote_line_quantity.to_i != 0  %>
+                <% end %>
                 <%= f.submit "Update", :class => "btn btn-success" if edit_page %>  
                 <%= link_to "Back", quote, class: "btn btn-success" if edit_page %> 
             </span>
