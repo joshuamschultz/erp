@@ -39,6 +39,7 @@ class QuoteVendorsController < ApplicationController
   def edit
     @quote = Quote.find(params[:quote_id])
     @quote_vendor = @quote.quote_vendors.find(params[:id])
+    @attachable = @quote_vendor
 
     @quote_vendor.process_quote_line_costs
   end
