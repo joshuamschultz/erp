@@ -10,6 +10,8 @@
         <%= f.error_notification %>
         
         <div class="form-inputs">
+           <%= f.association :customer, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
+
             <%= f.input :quote_description, :label => "Description" %>
             <%#= f.input :quote_notes, :label => "Notes" %>
 
@@ -38,6 +40,6 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_quote"] = ["quote_quote_description", "quote_quote_notes" ];
-    $("#quote_quote_description").focus();
+    tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description" ];
+    // $("#quote_customer_id").focus();
 </script>

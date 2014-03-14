@@ -9,13 +9,17 @@ class Quote < ActiveRecord::Base
 
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
   :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
-  :quote_po_type, :item_quantity
+  :quote_po_type, :item_quantity, :customer_id
 
   attr_accessor :quote_po_type
 
   belongs_to :organization
   has_many :organizations, :through => :quotes_organizations
   has_many :quotes_organizations
+
+  belongs_to :customer, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id], 
+        :foreign_key => "customer_id", :class_name => "Organization"
+
 
   belongs_to :po_header
   has_many :po_headers, :through => :quotes_po_headers
