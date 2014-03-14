@@ -62,7 +62,22 @@ class Quote < ActiveRecord::Base
  before_create :process_before_create
 
  def process_before_create
-    self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
+    # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
+    self.quote_identifier =  new_quote_identifier
+ end
+
+
+ def new_quote_identifier
+  quote_identifier = Time.now.strftime("%m%y") + ("%03d" % (Quote.where("month(created_at) = ?", Date.today.month).count + 1))
+  quote_identifier.slice!(2)
+  "Q" + quote_identifier
+ end
+
+ after_create :after_create_process
+
+ def after_create_process
+    self.quote_identifier = new_quote_identifier
+    self.save
  end
 
  before_save :process_before_save
