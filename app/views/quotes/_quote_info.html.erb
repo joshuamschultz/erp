@@ -18,32 +18,32 @@
             <td class="span5"><strong>$<%#= @quote.quote_total %></strong></td>
           </tr> -->
 
-          <tr>
+          <!-- <tr>
             <td class="span3">Notes:</td>
-            <td class="span5"><strong><%= @quote.quote_notes %></strong></td>
-          </tr>
+            <td class="span5"><strong><%#= @quote.quote_notes %></strong></td>
+          </tr> -->
 
           <tr>
             <td class="span3">Vendors:</td>
             <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",  ").html_safe %></strong></td>
           </tr>
-
+<!-- 
           <tr>
             <td class="span3">Quote Vendor:</td>
             <td class="span5"><strong>
             <%#= @quote.organizations.present? ? @quote.organizations.collect{|organization| link_to(organization.organization_name, organization_path(organization)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
 
-            <%= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
-          </tr>
+            <%#= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
+          </tr> -->
 
-          <tr>
+      <!--     <tr>
             <td class="span3">Quote PO:</td>
             <td class="span5"><strong>
-            <%= @quote.po_headers.present? ? @quote.po_headers.collect{|po_header| link_to(po_header.po_identifier, po_header_path(po_header)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
+            <%#= @quote.po_headers.present? ? @quote.po_headers.collect{|po_header| link_to(po_header.po_identifier, po_header_path(po_header)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
 
 
             <%#= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
-          </tr>
+          </tr> -->
 
       </tbody>
   </table>

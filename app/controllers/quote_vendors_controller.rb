@@ -16,6 +16,7 @@ class QuoteVendorsController < ApplicationController
   def show
     @quote = Quote.find(params[:quote_id])
     @quote_vendor = @quote.quote_vendors.find(params[:id])
+    @attachable = @quote_vendor
 
     respond_to do |format|
       format.html # show.html.erb
