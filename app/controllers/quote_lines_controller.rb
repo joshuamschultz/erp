@@ -18,7 +18,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
       format.json { 
         @quote_lines = @quote_lines.select{|quote_line|
               quote_line[:item_part_no] = CommonActions.linkable(item_path(quote_line.item), quote_line.item_alt_name.item_alt_identifier)
-              quote_line[:customer_name] = quote_line.organization ? CommonActions.linkable(organization_path(quote_line.organization), quote_line.organization.organization_name) : ""
+              # quote_line[:customer_name] = quote_line.organization ? CommonActions.linkable(organization_path(quote_line.organization), quote_line.organization.organization_name) : ""
               quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), nil)
           }
           render json: {:aaData => @quote_lines}

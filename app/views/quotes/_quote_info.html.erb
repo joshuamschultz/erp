@@ -27,7 +27,16 @@
             <td class="span3">Vendors:</td>
             <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",  ").html_safe %></strong></td>
           </tr>
+
+
+          <tr>
+            <td class="span3">Customer</td>
+            <td class="span5"><strong><%= @quote.organization.present? ? link_to(@quote.organization.organization_name, organization_path(@quote.organization)) : "" %>
+            </strong></td>
+          </tr>
 <!-- 
+
+
           <tr>
             <td class="span3">Quote Vendor:</td>
             <td class="span5"><strong>

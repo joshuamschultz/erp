@@ -5,6 +5,9 @@
 <% extras[:grouping] = false if extras[:grouping].nil? %>
 <% extras[:sorted] = 0 if extras[:sorted].nil? %>
 <% extras[:order] = "asc" if extras[:order].nil? %>
+<% extras[:bfilter] = true if extras[:bfilter].nil? %>
+<% extras[:blenghchange] = true if extras[:blenghchange].nil? %>
+
 <%# extras[:fnDrawCallback] ||= nil %>
 
 <script type="text/javascript">
@@ -34,7 +37,9 @@
             "bProcessing": true,
             "sAjaxSource": '<%= path %>',
             "aaSorting": [[<%= extras[:sorted] %>, "<%= extras[:order] %>"]],
-            "aoColumns": <%= columns.html_safe %>
+            "aoColumns": <%= columns.html_safe %>,
+            "bFilter": <%= extras[:bfilter] %>,
+            "bLengthChange": <%= extras[:blenghchange] %>
         });
 
         <% if extras[:grouping] %>

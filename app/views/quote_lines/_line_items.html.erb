@@ -21,7 +21,7 @@
                     <th>Quantity</th>
                     <!-- <th>Cost</th> -->
                     <!-- <th>Total</th> -->
-                    <th>Customer</th>
+                    <!-- <th>Customer</th> -->
                     <!-- <th>Customer PO</th> -->
                     <th></th>
                 </tr>
@@ -34,12 +34,11 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report_quote_line_list", :path => quote_quote_lines_path(@quote), :extras => {:slno => false},
+        :name => "table_report_quote_line_list", :path => quote_quote_lines_path(@quote), :extras => {:slno => false, :bfilter => bfilter, :blenghchange => drop_down },
         :columns => '[
                         { "mData": "id" },
                         { "mData": "item_part_no" },
                         { "mData": "quote_line_quantity" },
-                        { "mData": "customer_name" },
                     
                         { "mData": "links", "bSortable": false, "bSearchable": false, "bVisible": '+show_buttons.to_s+' }
                     ]'

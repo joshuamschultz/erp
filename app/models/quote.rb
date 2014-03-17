@@ -14,8 +14,8 @@ class Quote < ActiveRecord::Base
   attr_accessor :quote_po_type
 
   belongs_to :organization
-  has_many :organizations, :through => :quotes_organizations
-  has_many :quotes_organizations
+  # has_many :organizations, :through => :quotes_organizations
+  # has_many :quotes_organizations
 
   belongs_to :customer, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id], 
         :foreign_key => "customer_id", :class_name => "Organization"
@@ -25,7 +25,7 @@ class Quote < ActiveRecord::Base
   has_many :po_headers, :through => :quotes_po_headers
   has_many :quotes_po_headers
 
-  validates_presence_of :quote_description
+  validates_presence_of :quote_description, :organization
 
  def self.process_quote_associations(quote, params)
    	if quote
