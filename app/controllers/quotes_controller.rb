@@ -1,4 +1,10 @@
 class QuotesController < ApplicationController
+    before_filter :set_autocomplete_values, only: [:create, :update]
+
+    def set_autocomplete_values    
+        params[:quote][:organization_id], params[:organization_id] = params[:organization_id], params[:quote][:organization_id]
+        params[:quote][:organization_id] = params[:org_organization_id] if params[:quote][:organization_id] == ""
+    end
     # GET /quotes
     # GET /quotes.json
     def index
