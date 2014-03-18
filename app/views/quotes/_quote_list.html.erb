@@ -16,11 +16,18 @@
                 <tr>
                     <th>Quote Send ID</th>
                     <th>Vendors</th>
+                    <% if @item.present? %>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    <% end %>
                     <th>Description</th>
                     <% if @item.present? %>
+                        <th>Notes</th>
                         <th>Created at</th>
                     <% end %>
-                    <th></th>
+                    <% if !@item.present? %>
+                        <th></th>
+                    <% end %>
                 </tr>
             </thead>
             <tbody>                
@@ -36,9 +43,11 @@
             :columns => '[
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
+                            { "mData": "price" },
+                            { "mData": "quantity"},
                             { "mData": "quote_description" },
-                            { "mData": "created" },
-                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                            { "mData": "notes"},
+                            { "mData": "created" },                           
                         ]' 
         }
     %>
