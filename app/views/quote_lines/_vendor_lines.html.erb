@@ -38,8 +38,7 @@
                             <td><%= quote_line_cost.input :quote_line_cost_lead, label: false, input_html: { class: 'quote_line_small_input quote_line_cost_input' } %></td>
                             <td><%= quote_line_cost.input :quote_line_cost_description, label: false, input_html: { class: 'quote_line_cost_input' } %></td>
                         </tr>
-                    <% end %>
-                
+                    <% end %>                
             <% else %>
                 <% quote.quote_lines.each do |quote_line| %>
                     <% quote_line_cost = quote_line.quote_line_costs.find_by_quote_vendor_id(quote_vendor.id) %>
