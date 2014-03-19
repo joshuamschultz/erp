@@ -1,0 +1,25 @@
+<%= simple_form_for(@group_organization, :html => {:id => "form_for_group_origanization",:class => "form-horizontal"}) do |f| %>
+	<%= f.error_notification %>
+
+	<div class="separator bottom"></div>
+	<div class="form-inputs">
+		<%= f.hidden_field :group_id, :value => @group.id %>
+		<%#= f.association :organization %>
+
+		<div class="control-group">
+                <label for="quote_vendors" class="optional control-label">Choose Vendors</label>
+                <div class="controls">
+                    <%= select_tag "organizations[]", options_for_select(Organization.organizations("vendor").map {|org| [org.organization_name, org.id]}, @quote.persisted? ? (@quote.quote_vendors.empty? ? [] : @quote.quote_vendors.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "quote_organizations" %>
+                </div>
+            </div>
+		</div>
+
+	<div class="separator bottom"></div>
+
+	<div class="form-actions">
+		<%= f.button :submit, "Submit", :class => "btn" %>		
+	</div>
+
+
+<% end %>
+

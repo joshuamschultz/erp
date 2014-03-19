@@ -1,0 +1,27 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Group Members of <a href="#"><%= @group.group_name %></a></h4>
+            <span class="span6 heading right">                
+                    <a class="btn btn-mini btn-success" href="<%= edit_group_path(@group) %>">Update</a>
+                 
+            </span>
+        </div> 
+    </div>
+    <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+        <thead>
+            <tr>
+                <th>Vendor Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<% if @group.organizations %>
+	        	<% @group.organizations.each do |organization| %>
+		            <tr>
+		            	<td><%= organization.organization_name %><td>
+		            </tr>
+	            <% end%>
+	        <% end %>
+        </tbody>
+    </table>
+</div>

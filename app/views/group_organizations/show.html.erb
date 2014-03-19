@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Organization:</b>
+  <%= @group_organization.organization %>
+</p>
+
+<p>
+  <b>Group:</b>
+  <%= @group_organization.group %>
+</p>
+
+
+<%= link_to 'Edit', edit_group_organization_path(@group_organization) %> |
+<%= link_to 'Back', group_organizations_path %>
