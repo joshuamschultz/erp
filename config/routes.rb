@@ -1,5 +1,11 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :group_organizations
+
+
+  resources :groups
+
+
   resources :check_codes
 
   resources :receivables do

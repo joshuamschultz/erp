@@ -103,7 +103,8 @@ module CommonActions
 			{:path => organizations_path, :name => "Organizations"},
 			{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
 			{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
-			{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"}
+			{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
+			{:path => "#", :name => "Group"},
 
 		]
 

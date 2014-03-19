@@ -1,0 +1,28 @@
+<div class="span8 well item_detail_view">
+	<%= simple_form_for(@group, :html => {:id => "form_for_groups",:class => "form-horizontal"}) do |f| %>
+		<%= f.error_notification %>
+
+		<div class="form-inputs">
+			<%= f.input :group_name %>
+			<%#= f.input :group_type %>
+			<div class="control-group">
+                <label for="quote_vendors" class="optional control-label">Vendors</label>
+                <div class="controls">
+                    <%= select_tag "vendors[]", options_for_select(Organization.organizations("vendor").map {|org| [org.organization_name, org.id]}, @group.persisted? ? (@group.group_organizations.empty? ? [] : @group.group_organizations.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "group_organizations" %>
+                </div>
+	        </div>
+		</div>
+		
+		<div class="separator bottom"></div>
+
+
+		<div class="form-actions">
+			<%= f.button :submit, "Submit", :class => "btn" %>
+			<%= link_to 'Delete', groups_path(@gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @group.new_record? %>
+		</div>
+	<% end %>
+</div>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_groups"] = ["group_group_name"];     
+</script>

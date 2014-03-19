@@ -1,7 +1,7 @@
 class QuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
 
-    def set_autocomplete_values    
+    def set_autocomplete_values
         params[:quote][:organization_id], params[:organization_id] = params[:organization_id], params[:quote][:organization_id]
         params[:quote][:organization_id] = params[:org_organization_id] if params[:quote][:organization_id] == ""
     end
@@ -17,17 +17,30 @@ class QuotesController < ApplicationController
 
         respond_to do |format|
             format.html # index.html.erb
-            format.json {  @quotes = @quotes.select{|quote|
-                                             quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
-                                             quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                                             quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
-                                             quote[:created] = quote.created_at.strftime("%d %b %Y")
-                                             quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
-                                             quote[:price] = "1,2,25"
-                                             quote[:notes] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_notes
-                                         }
-                                         render json: {:aaData => @quotes}
-                                         }
+            if item
+                format.json {  @quotes = @quotes.select{|quote|
+                                                 quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                                 quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                                 quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                                 quote[:created] = quote.created_at.strftime("%d %b %Y")
+                                                 quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
+                                                 quote[:price] = "1,2,25"
+                                                 quote[:notes] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_notes
+
+                                             }
+                                             render json: {:aaData => @quotes}
+                                             }
+            else
+                format.json {  @quotes = @quotes.select{|quote|
+                                                 quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                                 quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                                 quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                                 quote[:created] = quote.created_at.strftime("%d %b %Y")
+
+                                             }
+                                             render json: {:aaData => @quotes}
+                                             }
+            end
         end
     end
 
@@ -86,7 +99,7 @@ class QuotesController < ApplicationController
         respond_to do |format|
             if params[:quote_po_type].present? && params[:quote].present?
                 if @quote.process_quotes(params[:quote_po_type], params[:quote][:organization_id], params[:quote][:po_header_id], params[:item_quantity])
-                # if @quote.update_attributes(quote_po_type: params[:quote_po_type], organization_id: params[:quote][:organization_id], po_header_id: params[:quote][:po_header_id])
+                    # if @quote.update_attributes(quote_po_type: params[:quote_po_type], organization_id: params[:quote][:organization_id], po_header_id: params[:quote][:po_header_id])
 
                     format.html { redirect_to quote_path(@quote), notice: 'Quote was successfully updated.' }
                 else

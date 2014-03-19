@@ -1,0 +1,2 @@
+module GroupOrganizationsHelper
+end
