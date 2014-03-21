@@ -17,13 +17,34 @@
 
             <%= f.input :quote_description, :label => "Description" %>
             <%#= f.input :quote_notes, :label => "Notes" %>
-
-            <div class="control-group">
-                <label for="quote_vendors" class="optional control-label">Vendors</label>
+            <div class="control-group radio_buttons required quote_vendor_types_check" id="radio_button_val">
+                <label class="radio_buttons required control-label"> Choose Vendor by</label>
                 <div class="controls">
-                    <%= select_tag "vendors[]", options_for_select(Organization.organizations("vendor").map {|org| [org.organization_name, org.id]}, @quote.persisted? ? (@quote.quote_vendors.empty? ? [] : @quote.quote_vendors.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "quote_organizations" %>
+                    <label class="radio radio">
+                        <%= radio_button_tag('vendor_type',"Vendor", :checked => true) %> Vendor
+                    </label>
+                    <label class="radio radio">
+                         <%= radio_button_tag('vendor_type',"Group") %>Groups       
+                    </label>                   
                 </div>
             </div>
+            <div id="vendor_div" style="padding-bottom:20px;">
+                <div class="control-group">
+                    <label for="quote_vendors" class="optional control-label">Vendors</label>
+                    <div class="controls">
+                        <%= select_tag "vendors[]", options_for_select(Organization.organizations("vendor").map {|org| [org.organization_name, org.id]}, @quote.persisted? ? (@quote.quote_vendors.empty? ? [] : @quote.quote_vendors.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "quote_organizations" %>
+                    </div>
+                </div>
+            </div>
+            <div id="group_div" style="padding-bottom:20px;">
+                <div class="control-group">
+                    <label for="quote_vendors" class="optional control-label">Groups</label>
+                    <div class="controls">
+                        <%= f.select :group_id, options_for_select(Group.all.map{ |group| [ group.group_name, group.id ] })%>
+                        <%#= f.select :person_type, Person::PERSON_TYPES.map { |s| [I18n.t("person_types.#{s}"), s] } %>
+                    </div>
+                </div>
+            </div>            
         </div>
 
         <div class="separator bottom"></div>
@@ -49,7 +70,24 @@
         $("#quote_line_organization_id").val("<%= @quote.organization.organization_name if @quote.organization %>");
 
         $("#quote_line_item_alt_name_id").focus();
+
+        vendor_type_changed();
     });
 
-    // $("#quote_customer_id").focus();
+    $(document).on("change", "#radio_button_val", function(){
+        vendor_type_changed();
+    });
+
+    function vendor_type_changed(){
+        var vendor_type = $('input[name=vendor_type]:checked').val();
+
+        if(vendor_type == "Vendor")
+        {
+            $("#vendor_div").show();
+            $("#group_div").hide();
+        }else{
+            $("#vendor_div").hide();
+            $("#group_div").show();
+        }
+    }
 </script>

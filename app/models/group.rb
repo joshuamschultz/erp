@@ -3,6 +3,7 @@ class Group < ActiveRecord::Base
 
 	has_many :organizations, :through => :group_organizations
 	has_many :group_organizations, :dependent => :destroy
+	has_many :quotes
 
 
 	def self.process_group_associations(group, params)
