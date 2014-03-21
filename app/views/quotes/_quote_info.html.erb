@@ -34,6 +34,15 @@
             <td class="span5"><strong><%= @quote.organization.present? ? link_to(@quote.organization.organization_name, organization_path(@quote.organization)) : "" %>
             </strong></td>
           </tr>
+
+
+          <% if @quote.group.present? %>
+            <tr>
+              <td class="span3">Group Name</td>
+              <td class="span5"><strong><%= link_to(@quote.group.group_name, group_path(@quote.group))  %>
+              </strong></td>
+            </tr>
+          <% end %>
 <!-- 
 
 

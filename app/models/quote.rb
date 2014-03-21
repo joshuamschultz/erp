@@ -9,10 +9,11 @@ class Quote < ActiveRecord::Base
 
   attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
   :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
-  :quote_po_type, :item_quantity, :customer_id
+  :quote_po_type, :item_quantity, :customer_id, :group_id
 
   attr_accessor :quote_po_type
 
+  belongs_to :group
   belongs_to :organization
   # has_many :organizations, :through => :quotes_organizations
   # has_many :quotes_organizations
@@ -28,21 +29,30 @@ class Quote < ActiveRecord::Base
   validates_presence_of :quote_description, :organization
 
  def self.process_quote_associations(quote, params)
-   	if quote
-   		vendors = params[:vendors] || []
-    		quote.quote_vendors.where(:organization_id != vendors).destroy_all
+    if quote
+        if params[:vendor_type] == "Group"
+            quote.group.organizations.each do |vendor|
+                quote_vendor = quote.quote_vendors.new(:organization_id => vendor.id)
+                if quote_vendor.save
+                    quote_vendor.process_quote_line_costs
+                end
+            end
+        else
+            vendors = params[:vendors] || []
+            quote.quote_vendors.where(:organization_id != vendors).destroy_all
 
-    		if vendors
-  	      	vendors.each do |vendor_id|
-        			unless quote.quote_vendors.find_by_organization_id(vendor_id)
-        				quote_vendor = quote.quote_vendors.new(:organization_id => vendor_id)
-                    if quote_vendor.save
-                        quote_vendor.process_quote_line_costs
-                    end
-        			end
-  	      	end
-  	    end
-   	end
+            if vendors
+                vendors.each do |vendor_id|
+                  unless quote.quote_vendors.find_by_organization_id(vendor_id)
+                    quote_vendor = quote.quote_vendors.new(:organization_id => vendor_id)
+                        if quote_vendor.save
+                            quote_vendor.process_quote_line_costs
+                        end
+                  end
+                end
+            end
+        end
+    end
  end
 
  validate :check_quote_vendor, on: :update

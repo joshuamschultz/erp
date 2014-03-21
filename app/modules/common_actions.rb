@@ -104,14 +104,14 @@ module CommonActions
 			{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
 			{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
 			{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
-			{:path => "#", :name => "Group"},
+			{:path => groups_path, :name => "Group"},
 
 		]
 
 		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => '#' , :name => "Quotes", :type => "multiple"}
 		menus[:quotes][:sub_menu] = 	[
 			{:path => quotes_path, :name => "Vendor Quotes"},
-			{:path => quotes_history_path, :name => "Customer Quotes"}
+			{:path => quotes_history_path, :name => "Customerdddd Quotes"}
 		]
 
 		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
