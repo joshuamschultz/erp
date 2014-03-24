@@ -43,6 +43,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
   def new
     @quote = Quote.find(params[:quote_id])
     @quote_line = @quote.quote_lines.build
+    @attachable = @quote
 
     respond_to do |format|
       format.html # new.html.erb
