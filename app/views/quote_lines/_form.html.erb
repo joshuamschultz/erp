@@ -30,6 +30,7 @@
         <div class="separator bottom"></div>
         <div class="separator bottom"></div>
 
+
         <div class="form-actions">
             <%= f.submit "Submit", :class =>"btn" %>
             <%= link_to 'Delete', quote_quote_line_path(@quote, @quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quote_line.new_record? %>
@@ -44,6 +45,11 @@
 <div class="separator bottom"></div>
 
 <%= render :partial => 'quote_lines/line_items', locals: { bfilter: false, show_buttons: false, drop_down: false }%>
+
+<%= render :partial => 'attachments/droppable_form_plup' %>
+
+<%= render 'attachments/attachments' %>
+
 
 <script type="text/javascript">
     tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];    
