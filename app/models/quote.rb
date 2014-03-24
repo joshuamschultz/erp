@@ -1,34 +1,34 @@
 class Quote < ActiveRecord::Base
-  include Rails.application.routes.url_helpers
-  
-  has_many :quote_vendors, :dependent => :destroy
-  has_many :quote_lines, :dependent => :destroy
-  has_many :quote_line_costs, :through => :quote_lines
-  has_many :attachments, :as => :attachable, :dependent => :destroy
-  has_many :comments, :as => :commentable, :dependent => :destroy
+    include Rails.application.routes.url_helpers
 
-  attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
-  :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
-  :quote_po_type, :item_quantity, :customer_id, :group_id
+    has_many :quote_vendors, :dependent => :destroy
+    has_many :quote_lines, :dependent => :destroy
+    has_many :quote_line_costs, :through => :quote_lines
+    has_many :attachments, :as => :attachable, :dependent => :destroy
+    has_many :comments, :as => :commentable, :dependent => :destroy
 
-  attr_accessor :quote_po_type
+    attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
+    :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
+    :quote_po_type, :item_quantity, :customer_id, :group_id
 
-  belongs_to :group
-  belongs_to :organization
-  # has_many :organizations, :through => :quotes_organizations
-  # has_many :quotes_organizations
+    attr_accessor :quote_po_type
 
-  belongs_to :customer, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id], 
+    belongs_to :group
+    belongs_to :organization
+    # has_many :organizations, :through => :quotes_organizations
+    # has_many :quotes_organizations
+
+    belongs_to :customer, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id], 
         :foreign_key => "customer_id", :class_name => "Organization"
 
 
-  belongs_to :po_header
-  has_many :po_headers, :through => :quotes_po_headers
-  has_many :quotes_po_headers
+    belongs_to :po_header
+    has_many :po_headers, :through => :quotes_po_headers
+    has_many :quotes_po_headers
 
-  validates_presence_of :quote_description, :organization
+    validates_presence_of :quote_description, :organization
 
- def self.process_quote_associations(quote, params)
+    def self.process_quote_associations(quote, params)
     if quote
         if params[:vendor_type] == "Group"
             quote.group.organizations.each do |vendor|
@@ -53,11 +53,11 @@ class Quote < ActiveRecord::Base
             end
         end
     end
- end
+    end
 
- validate :check_quote_vendor, on: :update
+    validate :check_quote_vendor, on: :update
 
- def check_quote_vendor
+    def check_quote_vendor
     unless self.quote_po_type.nil?
         errors.add(:organization_id, "can't be blank") unless self.organization
 
@@ -67,36 +67,36 @@ class Quote < ActiveRecord::Base
             self.po_header = nil
         end
     end
- end
+    end
 
- def vendors
+    def vendors
     Organization.where(:id => self.quote_vendors.map(&:organization_id))
- end
+    end
 
- before_create :process_before_create
+    before_create :process_before_create
 
- def process_before_create
+    def process_before_create
     # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
     self.quote_identifier =  new_quote_identifier
- end
+    end
 
 
- def new_quote_identifier
-  quote_identifier = Time.now.strftime("%m%y") + ("%03d" % (Quote.where("month(created_at) = ?", Date.today.month).count + 1))
-  quote_identifier.slice!(2)
-  "Q" + quote_identifier
- end
+    def new_quote_identifier
+    quote_identifier = Time.now.strftime("%m%y") + ("%03d" % (Quote.where("month(created_at) = ?", Date.today.month).count + 1))
+    quote_identifier.slice!(2)
+    "Q" + quote_identifier
+    end
 
- after_create :after_create_process
+    after_create :after_create_process
 
- def after_create_process
+    def after_create_process
     self.quote_identifier = new_quote_identifier
     self.save
- end
+    end
 
- before_save :process_before_save
+    before_save :process_before_save
 
- def process_before_save
+    def process_before_save
     if self.organization.present?
         po_header = self.po_header
         unless po_header.present?
@@ -127,9 +127,9 @@ class Quote < ActiveRecord::Base
             # self.quote_active = true
         end
     end    
- end
+    end
 
- def process_quotes(quote_po_type, organization_id, po_header_id, item_quantity)
+    def process_quotes(quote_po_type, organization_id, po_header_id, item_quantity)
     self.quote_po_type = quote_po_type
     self.organization_id = organization_id
     self.po_header_id = po_header_id
@@ -183,10 +183,19 @@ class Quote < ActiveRecord::Base
         return false
     end
     self.save(:validate => false)
- end
+    end
 
- def redirect_path
-    quote_path(self)
- end
+    def redirect_path
+        quote_path(self)
+    end
+
+    def self.get_quote_item_prices(quote, item_id)
+        line_vendor_cost = []
+        quote_costs = quote.quote_lines.where("item_id = ?", item_id)
+        quote_costs.each do |quote_cost|
+            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')            
+        end
+        line_vendor_cost.join(",")
+    end
 
 end
