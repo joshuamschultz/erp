@@ -9,7 +9,7 @@ class Quote < ActiveRecord::Base
 
     attr_accessible :quote_active, :quote_created_id, :quote_description, :quote_identifier, 
     :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
-    :quote_po_type, :item_quantity, :customer_id, :group_id
+    :quote_po_type, :item_quantity, :customer_id, :group_id, :attachment_public
 
     attr_accessor :quote_po_type
 
