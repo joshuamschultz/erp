@@ -14,6 +14,8 @@ class QuotesController < ApplicationController
         elsif params[:organization_id]
             organization = Organization.find(params[:organization_id])
             @quotes = organization.quotes
+        else
+            @quotes = Quote.all
         end
 
         respond_to do |format|

@@ -14,20 +14,19 @@
         <table id="table_report_quote_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th>Quote Send ID</th>
-                    <th>Vendors</th>
                     <% if @item.present? || @organization.present? %>
+                        <th>Quote</th>
+                        <th>Vendors</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                    <% end %>
-                    <th>Description</th>
-                    <% if @item.present? || @organization.present? %>
                         <th>Notes</th>
                         <th>Created at</th>
-                    <% end %>
-                    <% if !@item.present? || !@organization.present? %>
-                        <th></th>
-                    <% end %>
+                    <% else %>             
+                        <th>Quote Send Id</th>
+                        <th>Vendors</th>                  
+                        <th>Description</th>                      
+                        <th></th>         
+                    <% end %>                    
                 </tr>
             </thead>
             <tbody>                
@@ -45,7 +44,6 @@
                             { "mData": "vendor_name" },
                             { "mData": "price" },
                             { "mData": "quantity"},
-                            { "mData": "quote_description" },
                             { "mData": "notes"},
                             { "mData": "created" },                           
                         ]' 
@@ -61,7 +59,6 @@
                             { "mData": "vendor_name" },
                             { "mData": "price" },
                             { "mData": "quantity"},
-                            { "mData": "quote_description" },
                             { "mData": "notes"},
                             { "mData": "created" },                           
                         ]' 
