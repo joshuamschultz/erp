@@ -1,5 +1,5 @@
 <% show_quote_to ||= false %>
-
+<% show_vendor_single ||= nil %>
 <div class="span4 well item_detail_view">
   <table class="table">
       <tbody>
@@ -23,10 +23,17 @@
             <td class="span5"><strong><%#= @quote.quote_notes %></strong></td>
           </tr> -->
 
-          <tr>
-            <td class="span3">Vendors:</td>
-            <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",  ").html_safe %></strong></td>
-          </tr>
+          <% if show_vendor_single %>
+            <tr>
+              <td class="span3">Vendors:</td>
+              <td class="span5"><strong><%= link_to(show_vendor_single.organization_name, organization_path(show_vendor_single)) %></strong></td>
+            </tr>
+          <% else %>
+            <tr>
+              <td class="span3">Vendors:</td>
+              <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",  ").html_safe %></strong></td>
+            </tr>
+          <% end %>
 
 
           <tr>

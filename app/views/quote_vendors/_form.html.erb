@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <%= render :partial => 'quotes/quote_info' %>
+    <%= render :partial => 'quotes/quote_info', locals: { show_vendor_single: @quote_vendor.organization } %>
 
     <div class="span8 well item_detail_view">
         <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: @quote_vendor, quote: @quote, edit_page: true} %>

@@ -51,9 +51,7 @@
                                 <td><%= link_to quote_line.item_alt_name.item_alt_identifier, item_path(quote_line.item) %></td>
                             <% else %>
                                 <td><%= quote_line.item_name_sub %></td>
-                            <% end %>
-
-                            
+                            <% end %>                            
                             <td><%= quote_line.quote_line_quantity %></td>
                             <td><%= (quote_line_cost.present? && quote_line_cost.quote_line_cost > 0) ? quote_line_cost.quote_line_cost : CommonActions.highlighted_text("Not Given") %></td>
                             
