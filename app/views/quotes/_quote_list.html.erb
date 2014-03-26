@@ -16,16 +16,16 @@
                 <tr>
                     <th>Quote Send ID</th>
                     <th>Vendors</th>
-                    <% if @item.present? %>
+                    <% if @item.present? || @organization.present? %>
                         <th>Price</th>
                         <th>Quantity</th>
                     <% end %>
                     <th>Description</th>
-                    <% if @item.present? %>
+                    <% if @item.present? || @organization.present? %>
                         <th>Notes</th>
                         <th>Created at</th>
                     <% end %>
-                    <% if !@item.present? %>
+                    <% if !@item.present? || !@organization.present? %>
                         <th></th>
                     <% end %>
                 </tr>
@@ -39,6 +39,22 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
+            :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "quote_group_id" },
+                            { "mData": "vendor_name" },
+                            { "mData": "price" },
+                            { "mData": "quantity"},
+                            { "mData": "quote_description" },
+                            { "mData": "notes"},
+                            { "mData": "created" },                           
+                        ]' 
+        }
+    %>
+<% elsif @organization.present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_quote_list", 
+            :path => quotes_path(:organization_id => (@organization.present? ? @organization.id : nil)), 
             :extras => {:slno => false},
             :columns => '[
                             { "mData": "quote_group_id" },
