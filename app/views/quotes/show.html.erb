@@ -8,20 +8,24 @@
 
 <div class="row-fluid">
 
-    <%= render :partial => 'quotes/quote_info', locals: {show_quote_to: false} %>
-
+    <%= render :partial => 'quotes/quote_info', locals: { show_quote_to: false, show_send: true } %>
     <div class="span8">
-        <%= render :partial => 'quote_lines/line_items', locals: {show_buttons: !@quote.organization.present? } %>   
+        <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>   
     </div>
 </div>
 
 <div class="separator bottom"></div>
 
 <% @quote.quote_vendors.each do |quote_vendor| %>
+    <div class="well">
+        <div class="separator bottom"></div>
+        <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
+        <%= render :partial => 'attachments/attachement_without_instance', locals: { attachable: quote_vendor }%>
+        
+    </div>
     <div class="separator bottom"></div>
-    <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
-    <%#= render 'attachments/attachments', locals: { attachment: quote_vendor.attachments} %>
-
+    <div class="separator bottom"></div>
+    <br>
 <% end %>
 
  <!-- unless @quote.organization -->

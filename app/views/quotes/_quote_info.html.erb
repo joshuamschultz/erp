@@ -1,5 +1,6 @@
 <% show_quote_to ||= false %>
 <% show_vendor_single ||= nil %>
+<% show_send ||= false %>
 <div class="span4 well item_detail_view">
   <table class="table">
       <tbody>
@@ -50,6 +51,8 @@
               </strong></td>
             </tr>
           <% end %>
+          <tr></tr>
+          <tr></tr>
 <!-- 
 
 
@@ -72,7 +75,9 @@
 
       </tbody>
   </table>
-
+    <% if show_send %>                
+      <%= link_to 'Send', "#", :class => "btn btn-small btn-success" %>  
+    <% end %>
 <% if show_quote_to == true %>
     <div class="separator bottom"></div><div class="separator bottom"></div>
 
@@ -103,7 +108,6 @@
 <% end %>
 
 </div>
-
 
 <% if show_quote_to == true %>
     <script type="text/javascript">

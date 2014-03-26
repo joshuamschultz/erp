@@ -16,7 +16,6 @@
             <%= hidden_field_tag :org_organization_id, (@quote.organization.id if @quote.organization) %>
 
             <%= f.input :quote_description, :label => "Description" %>
-            <%= f.input :attachment_public, :label => "Make attachment as Public" %>
             <%#= f.input :quote_notes, :label => "Notes" %>
             <div class="control-group radio_buttons required quote_vendor_types_check" id="radio_button_val">
                 <label class="radio_buttons required control-label"> Choose Vendor by</label>
