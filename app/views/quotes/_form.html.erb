@@ -10,10 +10,11 @@
         <%= f.error_notification %>
         
         <div class="form-inputs">
-           <%= f.association :customer, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
-            <%= hidden_field_tag :organization_id, (@quote.organization.id if @quote.organization) %>
+               <%= f.association :customer, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#customer_id', :label => "Customer"%>
 
-            <%= hidden_field_tag :org_organization_id, (@quote.organization.id if @quote.organization) %>
+                <%= hidden_field_tag :customer_id, (@quote.customer.id if @quote.customer) %>
+
+                <%= hidden_field_tag :org_customer_id, (@quote.customer.id if @quote.customer) %>        
 
             <%= f.input :quote_description, :label => "Description" %>
             <%#= f.input :quote_notes, :label => "Notes" %>
@@ -66,8 +67,7 @@
 <script type="text/javascript">
     tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description" ];
     $(document).ready(function(){ 
-        
-        $("#quote_line_organization_id").val("<%= @quote.organization.organization_name if @quote.organization %>");
+        $("#quote_customer_id").val("<%= @quote.customer.organization_name if @quote.customer %>");       
 
         $("#quote_customer_id").focus();
 

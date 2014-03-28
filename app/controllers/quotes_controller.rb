@@ -2,8 +2,12 @@ class QuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
 
     def set_autocomplete_values
-        params[:quote][:organization_id], params[:organization_id] = params[:organization_id], params[:quote][:organization_id]
-        params[:quote][:organization_id] = params[:org_organization_id] if params[:quote][:organization_id] == ""
+        # params[:quote][:customer_id], params[:customer_id] = params[:customer_id], params[:quote][:customer_id]
+        # params[:quote][:customer_id] = params[:org_customer_id] if params[:quote][:customer_id] == ""
+
+
+        params[:quote][:customer_id], params[:customer_id] = params[:customer_id], params[:quote][:customer_id]
+        params[:quote][:customer_id] = params[:org_customer_id] if params[:quote][:customer_id] == ""
     end
     # GET /quotes
     # GET /quotes.json
@@ -94,6 +98,8 @@ class QuotesController < ApplicationController
     # POST /quotes
     # POST /quotes.json
     def create
+        p params[:quote].to_json
+        
         @quote = Quote.new(params[:quote])
 
         respond_to do |format|

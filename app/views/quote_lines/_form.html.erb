@@ -12,6 +12,7 @@
 
             <%= hidden_field_tag :org_alt_name_id, (@quote_line.item_alt_name.id if @quote_line.present? && @quote_line.item_alt_name.present?) %>
 
+            <%= f.input :quote_line_description, :label => "Description" %>
             <%#= f.input :quote_line_cost, :label => "Cost" %>
 
             <%= f.input :quote_line_quantity, :label => "Quantity" %>
@@ -22,7 +23,7 @@
 
             <%#= hidden_field_tag :org_organization_id, (@quote_line.organization.id if @quote_line.organization) %>
 
-            <%#= f.input :quote_line_description, :label => "Customer PO" %>
+            
 
             <%= f.input :quote_line_notes, :label => "Notes" %>
         </div>
@@ -32,7 +33,7 @@
 
 
         <div class="form-actions">
-            <%= f.submit "GOD", :class =>"btn" %>
+            <%= f.submit "Add", :class =>"btn" %>
             <%= link_to 'Delete', quote_quote_line_path(@quote, @quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quote_line.new_record? %>
             <%= link_to 'Submit', quote_path(@quote), :class =>"btn" %>
             <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>
@@ -53,13 +54,26 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];    
+    tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_description", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];    
 
     $(document).ready(function(){ 
-        // $("#quote_line_item_alt_name_id").val("<%#= @quote_line.item_alt_name.alt_item_name if @quote_line.item_alt_name %>");
+        $("#quote_line_item_alt_name_id").val("<%#= @quote_line.item_alt_name.alt_item_name if @quote_line.item_alt_name %>");
         
         // $("#quote_line_organization_id").val("<%#= @quote_line.organization.organization_name if @quote_line.organization %>");
 
         $("#quote_line_item_alt_name_id").focus();
     });
+
+    $("#quote_line_item_alt_name_id").blur(function(){
+      var a = $("#alt_name_id").val()
+       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a}, item_id: a }, "after_get_desc", {});
+    });
+    function after_get_desc(response, callback_params, api_params){
+        if(response["aaData"] ==  "fail"){
+            
+        }else{
+            $("#quote_line_quote_line_description").val(response["aaData"]);
+        }
+
+    }
 </script>
