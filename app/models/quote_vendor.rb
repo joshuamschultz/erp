@@ -1,4 +1,6 @@
 class QuoteVendor < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   belongs_to :quote
   belongs_to :organization
 
@@ -11,9 +13,13 @@ class QuoteVendor < ActiveRecord::Base
   accepts_nested_attributes_for :quote_line_costs
 
   def process_quote_line_costs
-  		self.quote.quote_lines.each do |quote_line|
+      self.quote.quote_lines.each do |quote_line|
             QuoteLineCost.create(quote_vendor_id: self.id, quote_line_id: quote_line.id)
         end
+  end
+
+  def redirect_path
+      quote_vendor_path(self)      
   end
 
 end

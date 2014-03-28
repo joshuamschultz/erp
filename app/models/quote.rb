@@ -26,7 +26,7 @@ class Quote < ActiveRecord::Base
     has_many :po_headers, :through => :quotes_po_headers
     has_many :quotes_po_headers
 
-    validates_presence_of :quote_description, :organization
+    validates_presence_of :quote_description, :customer_id
 
     def self.process_quote_associations(quote, params)
     if quote

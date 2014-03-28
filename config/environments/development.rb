@@ -36,16 +36,32 @@ AllianceFasteners::Application.configure do
   config.assets.debug = false
 
   #Mail configuration for the development
-  config.action_mailer.delivery_method = :smtp 
-  config.action_mailer.default_url_options = { :host => '192.168.1.31:3000' }  
-  config.action_mailer.smtp_settings = {
-    :address =>'smtp.gmail.com',
-    :port => 587,
-    :domain => "192.168.1.31:80",
-    :user_name => 'eventsparks@gmail.com',
-    :password => 'agile123456',
-    :authentication => 'plain',
-    :enable_starttls_auto => true  
-  }
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.default_url_options = { :host => '192.168.1.31:3000' }  
+  # config.action_mailer.smtp_settings = {
+  #   :address =>'smtp.gmail.com',
+  #   :port => 587,
+  #   :domain => "192.168.1.31:80",
+  #   :user_name => 'eventsparks@gmail.com',
+  #   :password => 'agile123456',
+  #   :authentication => 'plain',
+  #   :enable_starttls_auto => true  
+  # }
   # config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025} #the port is used by mailcatcher gem
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_url_options = { :host => "localhost:3002" }
+
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+       :address              => "smtp.gmail.com",
+       :port                 => 587,
+       :user_name            => 'testagile00@gmail.com',
+       :password             => 'praveenkannan',
+       :authentication       => 'plain',
+       :enable_starttls_auto => true  }
+
 end
