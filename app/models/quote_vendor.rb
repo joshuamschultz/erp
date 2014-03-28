@@ -19,7 +19,7 @@ class QuoteVendor < ActiveRecord::Base
   end
 
   def redirect_path
-      quote_vendor_path(self)      
+      edit_quote_quote_vendor_path(self.quote_id, self.id)      
   end
 
 end
