@@ -22,7 +22,7 @@
     <div class="well">
         <div class="separator bottom"></div>
         <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
-        <%= render :partial => 'attachments/attachement_without_instance', locals: { attachable: quote_vendor }%>        
+        <%= render :partial => 'attachments/attachment_list', locals: { attachable: quote_vendor }%>        
     </div>
     <div class="separator bottom"></div>
     <div class="separator bottom"></div>

@@ -1,0 +1,43 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Attachments</h4>
+            <span class="span6 heading right"> 
+            </span>
+        </div> 
+    </div>
+    <% attachments_items =  attachable.attachments.order("attachment_revision_date desc") %>
+
+    <table id="vendor_lines_table" class="dynamicTable table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>File ID</th>
+                <th>Name</th>
+                <th>Revision</th>
+                <th>Effective Date</th>
+                <th>Public</th>
+                <th>Uploaded Date</th>
+                <th>Uploaded By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>           
+            <% attachments_items.each do |attachment| %>
+             <tr>
+                <td><%= attachment.id %></td>                
+                <td><%= CommonActions.linkable(attachment_path(attachment), attachment.attachment_name).html_safe %> </td>      
+                <td><%= attachment.attachment_revision_title %> </td>          
+                <td><%= attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : "" %></td>
+                <td><%= attachment.attachment_public %></td>
+                <td><%= attachment.created_at.strftime("%m-%d-%Y") %></td>
+                <td><%= attachment.created_by ? attachment.created_by.name : "" %></td>
+                <% if attachment.attachment %>
+                    <td><a href='<%=attachment.attachment.url(:original) %>' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a></td>
+                <% else %>
+                 <td></td>
+                <% end %>
+            </tr>
+            <% end %>            
+        </tbody>
+    </table>
+</div>
