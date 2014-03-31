@@ -1,5 +1,10 @@
 class QuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
+    before_filter :set_page_info
+
+    def set_page_info
+        @menus[:quotes][:active] = "active"
+    end
 
     def set_autocomplete_values
         # params[:quote][:customer_id], params[:customer_id] = params[:customer_id], params[:quote][:customer_id]

@@ -9,7 +9,7 @@
     </div>
 
     <div class="widget-body">
-        <table id="table_report_payable_list" class="dynamicTable table table-striped table-bordered table-condensed">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
                     <th>Group Name</th>
@@ -31,42 +31,3 @@
                     ]'
     } 
 %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h1>Listing groups</h1>
-
-<table>
-  <tr>
-    <th>Group name</th>
-    <th>Group type</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @groups.each do |group| %>
-  <tr>
-    <td><%= group.group_name %></td>
-    <td><%= group.group_type %></td>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Group', new_group_path %>

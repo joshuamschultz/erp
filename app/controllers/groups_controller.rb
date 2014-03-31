@@ -1,19 +1,18 @@
 class GroupsController < ApplicationController
-    # GET /groups
-    # GET /groups.json
+
     before_filter :set_page_info
 
     def set_page_info
-        # @menus[:groups][:active] = "active"
+        @menus[:contacts][:active] = "active"
     end
 
     def index
         @groups = Group.all
         respond_to do |format|
-            p "dfsdfsdf"
             format.html # index.html.erb
             format.json {
                 @groups = @groups.select{|group|
+                    group[:group_name] = CommonActions.linkable(group_path(group), group.group_name)
                     group[:links] = CommonActions.object_crud_paths(nil, edit_group_path(group),nil)
                 }
                 render json: {:aaData => @groups}

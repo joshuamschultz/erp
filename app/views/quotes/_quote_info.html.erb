@@ -31,26 +31,25 @@
               <td class="span5"><strong><%= link_to(show_vendor_single.organization_name, organization_path(show_vendor_single)) %></strong></td>
             </tr>
           <% else %>
-            <tr>
-              <td class="span3">Vendors:</td>
-              <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",  ").html_safe %></strong></td>
-            </tr>
-          <% end %>
-
-
+            
+          <% end %>          
           <tr>
-            <td class="span3">Customer</td>
-            <td class="span5"><strong><%= @quote.organization.present? ? link_to(@quote.organization.organization_name, organization_path(@quote.organization)) : "" %>
-            </strong></td>
-          </tr>
-
+              <td class="span3">Customer</td>
+              <td class="span5"><strong><%= @quote.customer.present? ? link_to(@quote.customer.organization_name, organization_path(@quote.customer)) : "" %>
+              </strong></td>
+           </tr>
 
           <% if @quote.group.present? %>
             <tr>
               <td class="span3">Group Name</td>
               <td class="span5"><strong><%= link_to(@quote.group.group_name, group_path(@quote.group))  %>
               </strong></td>
-            </tr>
+            </tr> 
+          <% else %>
+            <tr>
+              <td class="span3">Vendors:</td>
+              <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",").html_safe %></strong></td>
+            </tr>           
           <% end %>
           <tr></tr>
           <tr></tr>
@@ -111,10 +110,11 @@
 <% end %>
 
 </div>
-
+  <% if show_send %>
     <div class="button1">
-        <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>  
+          <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>  
     </div>
+  <% end %>
  </div>
 <% if show_quote_to == true %>
     <script type="text/javascript">

@@ -1,6 +1,12 @@
 class QuoteLinesController < ApplicationController
 before_filter :set_autocomplete_values, only: [:create, :update]
+  
+  before_filter :set_page_info
 
+  def set_page_info
+      @menus[:quotes][:active] = "active"
+  end
+  
   def set_autocomplete_values    
     params[:quote_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:quote_line][:item_alt_name_id]
     params[:quote_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:quote_line][:item_alt_name_id] == "" || params[:quote_line][:item_alt_name_id].nil?
