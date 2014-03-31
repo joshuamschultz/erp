@@ -59,7 +59,7 @@
     tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_description", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];    
 
     $(document).ready(function(){ 
-        $("#quote_line_item_alt_name_id").val("<%#= @quote_line.item_alt_name.alt_item_name if @quote_line.item_alt_name %>");
+        $("#quote_line_item_alt_name_id").val("<%= @quote_line.item_alt_name.alt_item_name if @quote_line.item_alt_name %>");
         
         // $("#quote_line_organization_id").val("<%#= @quote_line.organization.organization_name if @quote_line.organization %>");
 

@@ -62,6 +62,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
   def edit
     @quote = Quote.find(params[:quote_id])
     @quote_line = @quote.quote_lines.find(params[:id])
+    @attachable = @quote
   end
 
   # POST quotes/1/quote_lines
