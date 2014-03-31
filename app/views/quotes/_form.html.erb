@@ -42,7 +42,6 @@
                     <label for="quote_vendors" class="optional control-label">Groups</label>
                     <div class="controls">
                         <%= f.select :group_id, options_for_select(Group.all.map{ |group| [ group.group_name, group.id ] })%>
-                        <%#= f.select :person_type, Person::PERSON_TYPES.map { |s| [I18n.t("person_types.#{s}"), s] } %>
                     </div>
                 </div>
             </div>            

@@ -97,11 +97,11 @@ class QuotesController < ApplicationController
 
     # POST /quotes
     # POST /quotes.json
-    def create
-        p params[:quote].to_json
-        
+    def create        
         @quote = Quote.new(params[:quote])
-
+        if params[:vendor_type] == 'Vendor'
+            @quote.group_id = ''
+        end
         respond_to do |format|
             if @quote.save
                 Quote.process_quote_associations(@quote, params)
