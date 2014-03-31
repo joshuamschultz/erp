@@ -35,7 +35,7 @@
         <div class="form-actions">
             <%= f.submit "Add", :class =>"btn" %>
             <%= link_to 'Delete', quote_quote_line_path(@quote, @quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quote_line.new_record? %>
-            <%= link_to 'Submit', quote_path(@quote), :class =>"btn" %>
+            <%= link_to 'Submit', quote_path(@quote), :class =>"btn btn-small btn-success", :id => "move-submit" %>
             <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>
             <%#= link_to 'Back To Quotes', quotes_path, :class =>"btn" %>
 
@@ -43,7 +43,9 @@
       <% end %>
   </div>
 </div>
-
+<style type="text/css">
+    #move-submit{ margin-left: -408px; margin-top: -234px; }
+</style>
 <div class="separator bottom"></div>
 
 <%= render :partial => 'quote_lines/line_items', locals: { bfilter: false, show_buttons: false, drop_down: false }%>
@@ -73,6 +75,7 @@
             
         }else{
             $("#quote_line_quote_line_description").val(response["aaData"]);
+            $("#quote_line_quote_line_description").select();
         }
 
     }

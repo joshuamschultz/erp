@@ -64,7 +64,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description" ];
+    tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description","vendor_type_Vendor","vendor_type_Group","quote_organizations" ];
     $(document).ready(function(){ 
         $("#quote_customer_id").val("<%= @quote.customer.organization_name if @quote.customer %>");       
 
@@ -84,9 +84,12 @@
         {
             $("#vendor_div").show();
             $("#group_div").hide();
+            tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description","vendor_type_Vendor","vendor_type_Group", "quote_organizations" ];
+            
         }else{
             $("#vendor_div").hide();
             $("#group_div").show();
+            tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description","vendor_type_Vendor", "quote_group_id"];
         }
     }
 </script>

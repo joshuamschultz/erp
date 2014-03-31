@@ -62,11 +62,13 @@ class CommonActionsController < ApplicationController
           end
           result = "success"
         when "get_item_description"
-          p params[:item_id]
-          if params[:item_id].strip
+          params[:item_id] =  params[:item_id].strip
+          if params[:item_id].present?
             item = Item.find(params[:item_id]).item_revisions.where(organization_id: nil).first
             result = item.item_description if item
             result = "fail" if !item
+          else
+            result = "fail"
           end            
       end
       render json: {:aaData => result}
