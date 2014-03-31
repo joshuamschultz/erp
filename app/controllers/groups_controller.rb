@@ -4,7 +4,7 @@ class GroupsController < ApplicationController
     before_filter :set_page_info
 
     def set_page_info
-        @menus[:contacts][:active] = "active"
+        # @menus[:groups][:active] = "active"
     end
 
     def index
