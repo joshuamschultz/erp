@@ -1,6 +1,7 @@
 <% show_quote_to ||= false %>
 <% show_vendor_single ||= nil %>
 <% show_send ||= false %>
+<div class="god">
 <div class="span4 well item_detail_view">
   <table class="table">
       <tbody>
@@ -75,6 +76,9 @@
 
       </tbody>
   </table>
+
+
+
 <% if show_quote_to == true %>
     <div class="separator bottom"></div><div class="separator bottom"></div>
 
@@ -84,6 +88,8 @@
           <div class="span4"><%= radio_button_tag 'quote_po_type', "existing_po", (@quote.quote_po_type == "existing_po"), class: "quote_po_type_option" %>Existing PO</div>
           <div class="span4"></div>
       </div>
+
+
 
       <div class="row-fluid">
           <div class="span12 well">
@@ -97,7 +103,7 @@
                   <%= text_field_tag :item_quantity %>
 
                   <%= f.submit "Submit", :class =>"btn" %>
-
+ </div>
               </div>
           </div>
       </div>
@@ -106,6 +112,10 @@
 
 </div>
 
+    <div class="button1">
+        <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>  
+    </div>
+ </div>
 <% if show_quote_to == true %>
     <script type="text/javascript">
         tab_field_forms["form_for_lots"] = ["quote_organization_id", "quote_po_header_id"];
@@ -152,3 +162,16 @@
 
     <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "po-select-box"} %>
 <% end %>
+
+
+<style>
+.god {
+    float: left;
+    width: 326px;
+}
+.row-fluid .span4{width: 95%;}
+.button1 {
+    float: left;
+    width: 100px;
+}
+</style>
