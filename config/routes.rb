@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :customer_quotes
+
+
   resources :group_organizations
 
 

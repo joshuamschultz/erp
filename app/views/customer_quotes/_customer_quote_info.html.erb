@@ -1,0 +1,23 @@
+<div class="span3 well item_detail_view">
+  <table class="table">
+        <tbody>
+            <tr>
+                <td class="span2">Quote Send Id</td>
+                <td class="span5"><strong><%= CommonActions.linkable(customer_quote_path(@customer_quote), @customer_quote.customer_quote_identifier).html_safe %></strong></td>
+            </tr>
+
+            <tr>
+                <td class="span2">Customer</td>
+                <td class="span5"><strong><%= CommonActions.linkable(organization_path(@customer_quote), @customer_quote.organization.organization_name).html_safe %></strong></td>
+            </tr>
+
+            <tr>
+                <td class="span2">Description</td>
+                <td class="span5"><strong><%= @customer_quote.customer_quote_description%></strong></td>
+            </tr>
+        </tbody>
+  </table>
+
+  <div class="separator bottom"></div>
+  <div class="separator bottom"></div>
+</div>

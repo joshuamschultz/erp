@@ -1,0 +1,13 @@
+<div class="row-fluid">
+    <h4 class="span3 left">Customer Quote Info<span></span></h4>
+    <span class="span9 right">
+        <%#= link_to 'Edit', edit_quote_path(@quote), :class => "btn btn-small" unless @quote.organization %>    
+        <%= link_to 'Back', quotes_path, :class => "btn btn-small" %>
+    </span>    
+</div>
+<div class="row-fluid">
+    <%= render :partial => 'customer_quotes/customer_quote_info' %>
+ 
+    <div class="span8">
+    </div>
+</div>
