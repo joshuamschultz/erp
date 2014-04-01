@@ -1,0 +1,40 @@
+<div class="row-fluid">
+  <%= render :partial => 'customer_quotes/customer_quote_info' unless @customer_quote.new_record? %>
+
+    <div class="span8 well item_detail_view">
+      <%= simple_form_for(@customer_quote, :html => {:id => "form_for_customer_quote",:class => "form-horizontal"}) do |f| %>
+        <%= f.error_notification %>
+
+        <div class="form-inputs">
+            <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
+           
+            <%= hidden_field_tag :organization_id, (@customer_quote.organization.id if @customer_quote.organization) %>
+
+            <%= hidden_field_tag :org_organization, (@customer_quote.organization.id if @customer_quote.organization) %> 
+
+            <%= f.input :customer_quote_description, :label => "Description" %>
+            <%= f.input :customer_quote_notes, :label => "Notes" %>
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+        <div class="form-actions">
+            <%= f.submit "Submit", :class =>"btn" %>
+            <%= link_to 'Delete', customer_quote_path(@customer_quote), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @customer_quote.new_record? %>
+            <%= link_to 'Back', customer_quotes_path, :class =>"btn" %>
+        </div>
+        <% end %>
+    </div>
+</div>
+
+<% unless @customer_quote.new_record? %>
+    <%#= render :partial => 'quote_lines/line_items' %>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_customer_quote"] = ["customer_quote_organization_id","customer_quote_customer_quote_description","customer_quote_customer_quote_notes"];
+    $(document).ready(function(){ 
+      $("#customer_quote_organization_id").val("<%= @customer_quote.organization.organization_name if @customer_quote.organization %>");
+        $("#customer_quote_organization_id").focus();
+    });
+
+</script>
