@@ -1,6 +1,13 @@
 AllianceFasteners::Application.routes.draw do
 
-  resources :customer_quotes
+  resources :run_at_rates
+
+
+  resources :customer_quotes do
+    resources :customer_quote_lines
+  end
+
+  #resources :customer_quotes
 
 
   resources :group_organizations
