@@ -1,0 +1,10 @@
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_run_at_rate_path(@run_at_rate), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', run_at_rate_path(@run_at_rate), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', run_at_rates_path, :class => "btn btn-small" %>
+  </div>
+</div>
+
