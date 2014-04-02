@@ -157,7 +157,7 @@ module CommonActions
 			{:path => quality_lots_path, :name => "Lot Info"},
 			# {:path => quality_lot_materials_path, :name => "Material"},
 			# {:path => quality_lot_dimensions_path, :name => "Dimensions"},
-			{:path => "#", :name => "Run at Rate"},
+			{:path => run_at_rates_path, :name => "Run at Rate"},
 			{:path => "#", :name => "Part Submission Warrant"},
 			{:path => "#", :name => "Packaging"},
 			{:path => gauges_path, :name => "Instruments"},
