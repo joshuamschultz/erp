@@ -1,0 +1,9 @@
+<div class="row-fluid span8">
+  <%= render 'attachments/attachment_info' %>
+  <div class="form-actions">
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+      <%= link_to 'Edit', edit_capacity_planning_path(@capacity_planning), :class => "btn btn-small"%> 
+      <%= link_to 'Delete', capacity_planning_path(@capacity_planning), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      <%= link_to 'Back', capacity_plannings_path, :class => "btn btn-small" %>
+  </div>
+</div>
