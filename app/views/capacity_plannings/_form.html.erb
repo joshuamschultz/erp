@@ -1,0 +1,28 @@
+<%= simple_form_for(@capacity_planning, :html => {:id => "form_for_capacity_plannings",:class => "form-horizontal", :multipart => true}) do |g| %>
+  <%= g.error_notification %>
+
+  <%= g.simple_fields_for :attachment do |f| %>
+    <div class="form-inputs">        
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
+    </div>
+  <% end %>
+
+  <div class="separator bottom"></div> 
+
+  <div class="form-actions">
+    <%= g.button :submit, :class => "btn" %>
+
+    <%= link_to 'Delete', capacity_planning_path(@capacity_planning), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @capacity_planning.new_record? %>
+    
+    <%= link_to 'Back to capacity planning', capacity_plannings_path, :class => "btn" %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_capacity_plannings"] = ["capacity_planning_attachment_attributes_attachment_name", "capacity_planning_attachment_attributes_attachment_revision_title", "capacity_planning_attachment_attributes_attachment_revision_date", "capacity_planning_attachment_attributes_attachment_description", "capacity_planning_attachment_attributes_attachment_public", "capacity_planning_attachment_attributes_attachment_active", "capacity_planning_attachment_attributes_attachment"];
+
+  <% date_box_date = @capacity_planning.new_record? ? Date.today : @capacity_planning.attachment.attachment_revision_date %> 
+
+  date_box_fields = date_box_fields.concat([{"name":"capacity_planning_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
+</script>
+
