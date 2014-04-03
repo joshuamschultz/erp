@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :capacity_plannings
+
+
   resources :run_at_rates
 
 
