@@ -119,8 +119,9 @@ class Organization < ActiveRecord::Base
     has_many :so_lines
     has_many :payables, :dependent => :destroy
     has_many :receivables, :dependent => :destroy
-    has_many :quote_vendors, :dependent => :destroy   
-    has_many :quotes
+    has_many :quote_vendors, :dependent => :destroy
+    has_many :quotes, :dependent => :destroy
+    has_many :quote_lines
     has_many :groups, :through => :group_organizations
   	has_many :group_organizations, :dependent => :destroy
   	has_many :customer_quotes

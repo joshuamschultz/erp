@@ -4,7 +4,7 @@ class QuoteLine < ActiveRecord::Base
   belongs_to :item_revision
   belongs_to :item_alt_name
   belongs_to :po_line
-  # belongs_to :organization
+  belongs_to :organization
 
   has_many :quote_line_costs, :dependent => :destroy
   
@@ -32,7 +32,8 @@ class QuoteLine < ActiveRecord::Base
       self.quote_line_active = false
       self.quote_line_status = "open"
       self.item = self.item_alt_name.item
-      self.item_revision = self.item_alt_name.item.current_revision      
+      self.item_revision = self.item_alt_name.item.current_revision
+      self.organization_id = self.quote.customer_id  
     else
       self.quote_line_active = false
       self.quote_line_status = "open"

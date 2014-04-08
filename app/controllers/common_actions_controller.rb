@@ -69,7 +69,37 @@ class CommonActionsController < ApplicationController
             result = "fail" if !item
           else
             result = "fail"
-          end            
+          end
+        when "get_quote_info"
+            if params[:quote_id]
+              quote = Quote.find(params[:quote_id])
+              result = CustomerQuoteLine.get_line_items(quote)
+            else
+              result = "fail"
+            end
+            # if params[:quote]
+            #   prices = Quote.get_item_prices(params[:item_id], params[:org_id])
+            #   p prices
+            #   temp[:prices] = prices
+            #   item = Item.find(params[:item_id]).item_revisions.where(organization_id: nil).first
+            #   unless item
+            #     item = Item.find(params[:item_id]).item_revisions.where("organization_id = ?",params[:org_id]).last
+            #   end 
+            #     result_info = item.item_description if item
+            #     result_info = "fail" if !item
+            # else
+            #     result_info = "fail"
+            # end
+            # temp[:result] = result
+
+            # result = temp
+        when "get_item_info"
+          if params[:quote_id] && params[:item_id]
+            result = Quote.get_item_prices(params[:quote_id], params[:item_id])
+          else
+            result = "fail"
+          end
+
       end
       render json: {:aaData => result}
   end

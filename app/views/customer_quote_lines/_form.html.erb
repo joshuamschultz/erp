@@ -1,0 +1,133 @@
+<div class="row-fluid">
+  <%= render :partial => 'customer_quotes/customer_quote_info', :locals => { show_item_info: true } %>
+
+  <div class="span8 well item_detail_view">
+    <%= simple_form_for([@customer_quote_line.customer_quote, @customer_quote_line], :html => {:id => "form_for_customer_quote_line",:class => "form-horizontal"}) do |f| %>
+        <%= f.error_notification %>
+        
+          <div class="form-inputs">          
+              <div class="field">         
+
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Quote</label>
+                        <div class="controls">
+                            <%= select_tag :quote_id, options_for_select(@customer_quote.organization.quotes.map{ |quote| [ quote.quote_identifier, quote.id ] })%>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Choose Item</label>
+                        <div class="controls">
+                            <select name="quote_item" id="quote_item">
+                                <option value=""></option>
+                            </select>
+                            <%#= select_tag :quote_item, options_for_select([[ , ""] ])%>
+                        </div>
+                    </div>
+                </div>
+
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+
+                <%= hidden_field_tag :alt_name_id, (@customer_quote_line.item_alt_name.id if @customer_quote_line.present? && @customer_quote_line.item_alt_name.present?) %>
+
+                <%= hidden_field_tag :org_alt_name_id, (@customer_quote_line.item_alt_name.id if @customer_quote_line.present? && @customer_quote_line.item_alt_name.present?) %>
+
+                <%= f.input :customer_quote_line_description, :label => "Description" %>      
+
+                <%= f.input :customer_quote_line_quantity, :label => "Quantity"  %>
+
+                <%= f.input :customer_quote_line_cost, :label => "Cost"  %>
+
+                <%= f.input :customer_quote_line_tooling_cost, :label => "Tooling" %>
+
+                <%= f.input :customer_quote_line_notes, :label => "Notes" %>
+              </div>  
+        </div>
+
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+
+
+        <div class="form-actions">
+            <%= f.submit "Add", :class =>"btn" %>
+            <%= link_to 'Delete', customer_quote_customer_quote_line_path(@customer_quote, @customer_quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @customer_quote_line.new_record? %>
+            <%= link_to 'Submit', customer_quote_path(@customer_quote), :class =>"btn btn-small btn-success", :id => "move-submit" %>
+            <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>
+            <%#= link_to 'Back To Quotes', quotes_path, :class =>"btn" %>
+
+        </div>
+      <% end %>
+  </div>
+</div>
+<style type="text/css">
+    #move-submit{ margin-top: -266px; margin-left: -340px; }
+</style>
+<div class="separator bottom"></div>
+
+<%= render :partial => 'customer_quote_lines/customer_quote_line_list' %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_customer_quote_line"] = ["quote_id","quote_item","customer_quote_line_item_alt_name_id","customer_quote_line_customer_quote_line_description","customer_quote_line_customer_quote_line_quantity","customer_quote_line_customer_quote_line_cost", "customer_quote_line_customer_quote_line_tooling_cost","customer_quote_line_customer_quote_line_notes"];
+
+    $(document).ready(function(){
+        get_quote_info();
+        $("#quote_line_item_alt_name_id").val("<%= @customer_quote_line.item_alt_name.alt_item_name if @customer_quote_line.item_alt_name %>");
+    });
+
+    $(document).on("change", "#quote_id", function(){         
+        get_quote_info();
+    });
+    function get_quote_info(){
+        var quote_id = $("#quote_id").val();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quote_info", "quote_id": quote_id }}, "set_quote_info", {});
+    }
+    function set_quote_info(response, callback_params, api_params){
+        
+        var dataArr = response["aaData"];
+
+        $('#quote_item option').remove();   
+
+        $.each(dataArr, function(i){
+            $('#quote_item').append($("<option></option>")
+                            .attr("value",dataArr[i]['value'])
+                            .text(dataArr[i]['text']));
+        });
+        get_item_info()
+    }
+
+    $(document).on("change", "#quote_item", function(){ 
+        get_item_info();        
+    });
+
+    function get_item_info(){
+        var item_id = $("#quote_item").val();
+        var quote_id = $("#quote_id").val();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_info", "item_id": item_id, "quote_id": quote_id }}, "set_item_info", {});
+    }
+    function set_item_info(response, callback_params, api_params){
+        $("#customer_quote_line_item_alt_name_id").val(response["aaData"]["alt_name"]);
+        $("#customer_quote_line_customer_quote_line_description").val(response["aaData"]["description"]);
+        $("#customer_quote_line_customer_quote_line_quantity").val(response["aaData"]["quantity"]);
+        $("#alt_name_id").val(response["aaData"]["alt_name_id"]);
+        $("#org_alt_name_id").val(response["aaData"]["alt_name_id"]);
+        // $("#").val(response["aaData"][""]);
+
+        $("#vendor_price").html(" ");
+        $("#vendor_price").html(response["aaData"]["price"]);
+    }
+
+    $(document).on("change", "#customer_quote_line_item_alt_name_id", function(){ 
+        // $("#customer_quote_line_item_alt_name_id").val('');
+        $("#customer_quote_line_customer_quote_line_description").val('');
+        $("#customer_quote_line_customer_quote_line_quantity").val('');
+        // $("#alt_name_id").val('');
+        // $("#org_alt_name_id").val('');      
+    });
+
+    // $("#customer_quote_line_customer_quote_line_description").val(response["aaData"]["result"])
+
+</script>
