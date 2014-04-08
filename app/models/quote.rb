@@ -70,7 +70,7 @@ class Quote < ActiveRecord::Base
     end
 
     def vendors
-    Organization.where(:id => self.quote_vendors.map(&:organization_id))
+        Organization.where(:id => self.quote_vendors.map(&:organization_id))
     end
 
     before_create :process_before_create
@@ -189,13 +189,37 @@ class Quote < ActiveRecord::Base
         quote_path(self)
     end
 
-    def self.get_quote_item_prices(quote, item_id)
+    def self.get_quote_item_prices(quote, item_id)        
         line_vendor_cost = []
         quote_costs = quote.quote_lines.where("item_id = ?", item_id)
         quote_costs.each do |quote_cost|
             line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')            
         end
-        line_vendor_cost.join(",")
+        line_vendor_cost.join(",")        
     end
 
+    def self.get_item_prices(quote_id, item_id)
+        item_detail = Hash.new
+        quote = Quote.find(quote_id)
+        quote_line = quote.quote_lines.find_by_item_id(item_id)
+        price = quote_line.quote_line_costs.collect{ |quote_line_cost_item| quote_line_cost_item.quote_line_cost.to_f }
+        price.delete(0.0)
+        price = price.join(' ,')
+        item_detail["price"] = price
+        item_detail["alt_name"] = quote_line.item_alt_name.present? ? quote_line.item_alt_name.item_alt_identifier : "" 
+        item_detail["item_id"] = item_id
+        item_detail["alt_name_id"] = quote_line.item_alt_name.id
+        item_detail["quantity"] = quote_line.quote_line_quantity
+        item_detail["description"] = quote_line.quote_line_description
+        item_detail["revision"] = ""
+
+        item_detail
+
+        # a = QuoteLine.where("item_id = ? and organization_id = ?", item_id, org_id).collect(&:id)
+        # tes = QuoteLineCost.where("quote_line_id in (?)",a).collect{|quote_line| quote_line.quote_line_cost.to_f}
+        # tes.delete(0.0)
+        # # tes = tes.split(',')
+        # # tes.delete("0.0")
+        # tes.join(',')
+    end
 end

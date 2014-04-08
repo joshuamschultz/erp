@@ -38,12 +38,13 @@ class CustomerQuotesController < ApplicationController
     # GET /customer_quotes/1
     # GET /customer_quotes/1.json
     def show
-    @customer_quote = CustomerQuote.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @customer_quote }
-    end
+      @customer_quote = CustomerQuote.find(params[:id])
+      @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []  
+   
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json { render json: @customer_quote }
+      end
     end
 
     # GET /customer_quotes/new
@@ -69,7 +70,7 @@ class CustomerQuotesController < ApplicationController
 
     respond_to do |format|
       if @customer_quote.save
-        format.html { redirect_to @customer_quote, notice: 'Customer quote was successfully created.' }
+        format.html { redirect_to new_customer_quote_customer_quote_line_path(@customer_quote), notice: 'Customer quote was successfully created.' }
         format.json { render json: @customer_quote, status: :created, location: @customer_quote }
       else
         format.html { render action: "new" }

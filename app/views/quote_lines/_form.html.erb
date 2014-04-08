@@ -67,8 +67,8 @@
     });
 
     $("#quote_line_item_alt_name_id").blur(function(){
-      var a = $("#alt_name_id").val()
-       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a}, item_id: a }, "after_get_desc", {});
+        var a = $("#alt_name_id").val()
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a}}, "after_get_desc", {});
     });
     function after_get_desc(response, callback_params, api_params){
         if(response["aaData"] ==  "fail"){
@@ -77,6 +77,24 @@
             $("#quote_line_quote_line_description").val(response["aaData"]);
             $("#quote_line_quote_line_description").select();
         }
+
+        // var dataArr = [{'value':'val1','text':'text1'},
+        //        {'value':'val2','text':'text2'},
+        //        {'value':'val3','text':'text3'},
+        //        {'value':'val4','text':'text4'},
+        //        {'value':'val5','text':'text5'},
+        //        {'value':'val6','text':'text6'},
+        //        {'value':'val7','text':'text7'}];
+ 
+        // // Removes all options for the select box
+        // $('#optExample option').remove();
+         
+        // // .each loops through the array
+        // $.each(dataArr, function(i){
+        //     $('#optExample').append($("<option></option>")
+        //                     .attr("value",dataArr[i]['value'])
+        //                     .text(dataArr[i]['text']));
+        // });
 
     }
 </script>

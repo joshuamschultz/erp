@@ -1,4 +1,5 @@
 class CustomerQuote < ActiveRecord::Base
+  has_many :customer_quote_lines
 	belongs_to :organization
 	attr_accessible :organization_id,:customer_quote_active, :customer_quote_created_id, :customer_quote_description, :customer_quote_identifier, :customer_quote_notes, :customer_quote_status, :customer_quote_updated_id
 
@@ -6,6 +7,9 @@ class CustomerQuote < ActiveRecord::Base
 	validates_presence_of :organization
 
 	before_create :process_before_create
+
+	has_many :customer_quote_lines, :dependent => :destroy
+	has_many :comments, :as => :commentable, :dependent => :destroy
 
     def process_before_create
 	    # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)

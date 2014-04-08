@@ -1,0 +1,2 @@
+module CustomerQuoteLinesHelper
+end

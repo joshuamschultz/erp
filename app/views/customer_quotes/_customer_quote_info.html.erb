@@ -1,5 +1,6 @@
+<% show_item_info ||=  false%>
 <div class="span3 well item_detail_view">
-  <table class="table">
+    <table class="table">
         <tbody>
             <tr>
                 <td class="span2">Quote Send Id</td>
@@ -16,8 +17,21 @@
                 <td class="span5"><strong><%= @customer_quote.customer_quote_description%></strong></td>
             </tr>
         </tbody>
-  </table>
+    </table>
+    <% if show_item_info %>
+        <div class="separator bottom"></div>
+        <h4 class="center">Item Info</h4>
+        <div class="separator bottom"></div>
+        <table>
+            <tbody>
+              <tr>
+                  <td class="span2">Vendor quoted price</td>
+                  <td class="span5" id= "vendor_price"></td>
+              </tr>    
+            </tbody>
+        </table>
+    <% end %>
 
-  <div class="separator bottom"></div>
-  <div class="separator bottom"></div>
+    <div class="separator bottom"></div>
+    <div class="separator bottom"></div>
 </div>
