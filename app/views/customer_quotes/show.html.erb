@@ -14,5 +14,8 @@
 </div>
 <div class="separator bottom"></div>
 
+<!-- Attachments -->
+<%= render 'attachments/attachments' %>
+
 <!-- Comments -->
 <%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_quote_path(type: "note")}} %>

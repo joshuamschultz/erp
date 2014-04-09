@@ -1,5 +1,6 @@
 class CustomerQuote < ActiveRecord::Base
-  has_many :customer_quote_lines
+	include Rails.application.routes.url_helpers
+  	has_many :customer_quote_lines
 	belongs_to :organization
 	attr_accessible :organization_id,:customer_quote_active, :customer_quote_created_id, :customer_quote_description, :customer_quote_identifier, :customer_quote_notes, :customer_quote_status, :customer_quote_updated_id
 
@@ -10,6 +11,7 @@ class CustomerQuote < ActiveRecord::Base
 
 	has_many :customer_quote_lines, :dependent => :destroy
 	has_many :comments, :as => :commentable, :dependent => :destroy
+	has_many :attachments, :as => :attachable, :dependent => :destroy
 
     def process_before_create
 	    # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
@@ -21,5 +23,9 @@ class CustomerQuote < ActiveRecord::Base
 	    customer_quote_identifier = Time.now.strftime("%m%y") + ("%03d" % (Quote.where("month(created_at) = ?", Date.today.month).count + 1))
 	    customer_quote_identifier.slice!(2)
 	    "Q" + customer_quote_identifier
+    end
+
+    def redirect_path
+        customer_quote_path(self)
     end
 end
