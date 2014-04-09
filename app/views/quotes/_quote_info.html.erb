@@ -2,113 +2,112 @@
 <% show_vendor_single ||= nil %>
 <% show_send ||= false %>
 <div class="god">
-<div class="span4 well item_detail_view">
-  <table class="table">
-      <tbody>
-          <tr>
-            <td class="span2">Quote Send ID:</td>
-            <td class="span5"><strong><%= link_to @quote.quote_identifier, @quote %></strong></td>
-          </tr>
-
-          <tr>
-            <td class="span2">Description:</td>
-            <td class="span5"><strong><%= @quote.quote_description %></strong></td>
-          </tr>
-
-          <!-- <tr>
-            <td class="span2">Total:</td>
-            <td class="span5"><strong>$<%#= @quote.quote_total %></strong></td>
-          </tr> -->
-
-          <!-- <tr>
-            <td class="span3">Notes:</td>
-            <td class="span5"><strong><%#= @quote.quote_notes %></strong></td>
-          </tr> -->
-
-          <% if show_vendor_single %>
+  <div class="span4 well item_detail_view">
+    <table class="table">
+        <tbody>
             <tr>
-              <td class="span3">Vendors:</td>
-              <td class="span5"><strong><%= link_to(show_vendor_single.organization_name, organization_path(show_vendor_single)) %></strong></td>
+              <td class="span2">Quote Send ID:</td>
+              <td class="span5"><strong><%= link_to @quote.quote_identifier, @quote %></strong></td>
             </tr>
-          <% else %>
-            
-          <% end %>          
-          <tr>
-              <td class="span3">Customer</td>
-              <td class="span5"><strong><%= @quote.customer.present? ? link_to(@quote.customer.organization_name, organization_path(@quote.customer)) : "" %>
-              </strong></td>
-           </tr>
 
-          <% if @quote.group.present? %>
             <tr>
-              <td class="span3">Group Name</td>
-              <td class="span5"><strong><%= link_to(@quote.group.group_name, group_path(@quote.group))  %>
-              </strong></td>
-            </tr> 
-          <% else %>
+              <td class="span2">Description:</td>
+              <td class="span5"><strong><%= @quote.quote_description %></strong></td>
+            </tr>
+
+            <!-- <tr>
+              <td class="span2">Total:</td>
+              <td class="span5"><strong>$<%#= @quote.quote_total %></strong></td>
+            </tr> -->
+
+            <!-- <tr>
+              <td class="span3">Notes:</td>
+              <td class="span5"><strong><%#= @quote.quote_notes %></strong></td>
+            </tr> -->
+
+            <% if show_vendor_single %>
+              <tr>
+                <td class="span3">Vendors:</td>
+                <td class="span5"><strong><%= link_to(show_vendor_single.organization_name, organization_path(show_vendor_single)) %></strong></td>
+              </tr>
+            <% else %>
+              
+            <% end %>          
             <tr>
-              <td class="span3">Vendors:</td>
-              <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",").html_safe %></strong></td>
-            </tr>           
-          <% end %>
-          <tr></tr>
-          <tr></tr>
-<!-- 
+                <td class="span3">Customer</td>
+                <td class="span5"><strong><%= @quote.customer.present? ? link_to(@quote.customer.organization_name, organization_path(@quote.customer)) : "" %>
+                </strong></td>
+            </tr>
+
+            <% if @quote.group.present? %>
+              <tr>
+                <td class="span3">Group Name</td>
+                <td class="span5"><strong><%= link_to(@quote.group.group_name, group_path(@quote.group))  %>
+                </strong></td>
+              </tr> 
+            <% else %>
+              <tr>
+                <td class="span3">Vendors:</td>
+                <td class="span5"><strong><%= @quote.quote_vendors.collect{|vendor| link_to(vendor.organization.organization_name, vendor.organization) }.join(",").html_safe %></strong></td>
+              </tr>           
+            <% end %>
+            <tr></tr>
+            <tr></tr>
+  <!-- 
 
 
-          <tr>
-            <td class="span3">Quote Vendor:</td>
-            <td class="span5"><strong>
-            <%#= @quote.organizations.present? ? @quote.organizations.collect{|organization| link_to(organization.organization_name, organization_path(organization)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
+            <tr>
+              <td class="span3">Quote Vendor:</td>
+              <td class="span5"><strong>
+              <%#= @quote.organizations.present? ? @quote.organizations.collect{|organization| link_to(organization.organization_name, organization_path(organization)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
 
-            <%#= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
-          </tr> -->
+              <%#= @quote.quote_active ? link_to(@quote.organization.organization_name, @quote.organization) : CommonActions.highlighted_text("Not yet") %></strong></td>
+            </tr> -->
 
-      <!--     <tr>
-            <td class="span3">Quote PO:</td>
-            <td class="span5"><strong>
-            <%#= @quote.po_headers.present? ? @quote.po_headers.collect{|po_header| link_to(po_header.po_identifier, po_header_path(po_header)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
-
-
-            <%#= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
-          </tr> -->
-
-      </tbody>
-  </table>
+        <!--     <tr>
+              <td class="span3">Quote PO:</td>
+              <td class="span5"><strong>
+              <%#= @quote.po_headers.present? ? @quote.po_headers.collect{|po_header| link_to(po_header.po_identifier, po_header_path(po_header)) }.join(",  ").html_safe : CommonActions.highlighted_text("Not yet") %>
 
 
+              <%#= @quote.quote_active ? link_to(@quote.po_header.po_identifier, @quote.po_header) : CommonActions.highlighted_text("Not yet")  %></strong></td>
+            </tr> -->
 
-<% if show_quote_to == true %>
-    <div class="separator bottom"></div><div class="separator bottom"></div>
-
-    <%= simple_form_for(@quote, :html => {:id => "form_for_quote"}) do |f| %>
-      <div class="row-fluid">
-          <div class="span4"><%= radio_button_tag 'quote_po_type', "create_po", (@quote.quote_po_type != "existing_po"), class: "quote_po_type_option" %>Create PO</div>
-          <div class="span4"><%= radio_button_tag 'quote_po_type', "existing_po", (@quote.quote_po_type == "existing_po"), class: "quote_po_type_option" %>Existing PO</div>
-          <div class="span4"></div>
-      </div>
+        </tbody>
+    </table>
 
 
 
-      <div class="row-fluid">
-          <div class="span12 well">
-              <%= f.error_notification %>
-              <div class="form-inputs">
-                  <%= f.association :organization, label_method: :organization_name, label_value: :id, :label => "Organization", :include_blank => false, collection: @quote.vendors %>
+    <% if show_quote_to == true %>
+        <div class="separator bottom"></div><div class="separator bottom"></div>
 
-                  <%= f.association :po_header, label_method: :po_identifier, label_value: :id, :label => "PO", :include_blank => false, collection: [], wrapper_html: { id: 'quote_org_po_header' } %>         
-                  <%= label_tag :no_of_item %>
+        <%= simple_form_for(@quote, :html => {:id => "form_for_quote"}) do |f| %>
+          <div class="row-fluid">
+              <div class="span4"><%= radio_button_tag 'quote_po_type', "create_po", (@quote.quote_po_type != "existing_po"), class: "quote_po_type_option" %>Create PO</div>
+              <div class="span4"><%= radio_button_tag 'quote_po_type', "existing_po", (@quote.quote_po_type == "existing_po"), class: "quote_po_type_option" %>Existing PO</div>
+              <div class="span4"></div>
+          </div>
 
-                  <%= text_field_tag :item_quantity %>
 
-                  <%= f.submit "Submit", :class =>"btn" %>
- </div>
+
+          <div class="row-fluid">
+              <div class="span12 well">
+                  <%= f.error_notification %>
+                    <div class="form-inputs">
+                        <%= f.association :organization, label_method: :organization_name, label_value: :id, :label => "Organization", :include_blank => false, collection: @quote.vendors %>
+
+                        <%= f.association :po_header, label_method: :po_identifier, label_value: :id, :label => "PO", :include_blank => false, collection: [], wrapper_html: { id: 'quote_org_po_header' } %>         
+                        <%= label_tag :no_of_item %>
+
+                        <%= text_field_tag :item_quantity %>
+
+                        <%= f.submit "Submit", :class =>"btn" %>
+                    </div>
+                  </div>
               </div>
           </div>
-      </div>
+        <% end %>
     <% end %>
-<% end %>
-
 </div>
   <% if show_send %>
     <div class="button1">
@@ -165,13 +164,13 @@
 
 
 <style>
-.god {
-    float: left;
-    width: 326px;
-}
-.row-fluid .span4{width: 95%;}
-.button1 {
-    float: left;
-    width: 100px;
-}
+  .god {
+      float: left;
+      width: 326px;
+  }
+  .row-fluid .span4{width: 95%;}
+  .button1 {
+      float: left;
+      width: 100px;
+  }
 </style>

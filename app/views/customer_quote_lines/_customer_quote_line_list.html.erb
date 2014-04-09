@@ -1,4 +1,5 @@
 <% show_edit ||= false %>
+<% show_new ||=false %>
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -6,7 +7,8 @@
         <div class="row-fluid">
             <h4 class="span6 heading"> Customer Quote Line Items</h4>
             <span class="span6 heading right">
-                <%= link_to 'Edit', new_customer_quote_customer_quote_line_path(@customer_quote, @customer_quote_line), :class => "btn btn-mini btn-success" if show_edit %>         
+                <%= link_to 'Edit', new_customer_quote_customer_quote_line_path(@customer_quote, @customer_quote_line), :class => "btn btn-mini btn-success" if show_edit %>
+                <%= link_to 'New Customer Quote Line', new_customer_quote_customer_quote_line_path(@customer_quote, @customer_quote_line), :class => "btn btn-mini btn-success" if show_new %>        
             </span>
         </div> 
     </div>
@@ -21,6 +23,7 @@
                     <th>Description</th>
                     <th>Tooling</th>
                     <th>Total</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>                
@@ -38,7 +41,8 @@
                         { "mData": "customer_quote_line_cost"},
                         { "mData": "customer_quote_line_description"},
                         { "mData": "customer_quote_line_tooling_cost"},
-                        { "mData": "customer_quote_line_total" },                       
+                        { "mData": "customer_quote_line_total" },
+                        { "mData": "links" }                       
                     ]'
     } 
 %>

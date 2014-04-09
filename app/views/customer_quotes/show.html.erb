@@ -6,7 +6,7 @@
     </span>    
 </div>
 <div class="row-fluid">
-    <%= render :partial => 'customer_quotes/customer_quote_info' %>
+    <%= render :partial => 'customer_quotes/customer_quote_info', :locals => { show_edit: true , show_send: true }  %>
  
     <div class="span8">
     	<%= render :partial => 'customer_quote_lines/customer_quote_line_list', :locals => { show_edit: true } %> 
@@ -19,3 +19,13 @@
 
 <!-- Comments -->
 <%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_quote_path(type: "note")}} %>
+
+<script type="text/javascript">
+    function send_customer_quote(){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_customer_quotes_mail", "customer_quote_id": <%= @customer_quote.id %>}}, "after_send", {});
+    }
+    
+    function after_send(response, callback_params, api_params){
+        alert("sucess")
+    }
+</script>

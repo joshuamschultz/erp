@@ -52,7 +52,8 @@
 
 
         <div class="form-actions">
-            <%= f.submit "Add", :class =>"btn" %>
+            <%= f.submit "Add", :class =>"btn" if @customer_quote_line.new_record? %>
+            <%= f.submit "Update", :class =>"btn" unless @customer_quote_line.new_record? %>
             <%= link_to 'Delete', customer_quote_customer_quote_line_path(@customer_quote, @customer_quote_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @customer_quote_line.new_record? %>
             <%= link_to 'Submit', customer_quote_path(@customer_quote), :class =>"btn btn-small btn-success", :id => "move-submit" %>
             <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>

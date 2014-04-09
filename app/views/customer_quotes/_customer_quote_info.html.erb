@@ -1,37 +1,58 @@
 <% show_item_info ||=  false%>
-<div class="span3 well item_detail_view">
-    <table class="table">
-        <tbody>
-            <tr>
-                <td class="span2">Quote Send Id</td>
-                <td class="span5"><strong><%= CommonActions.linkable(customer_quote_path(@customer_quote), @customer_quote.customer_quote_identifier).html_safe %></strong></td>
-            </tr>
-
-            <tr>
-                <td class="span2">Customer</td>
-                <td class="span5"><strong><%= CommonActions.linkable(organization_path(@customer_quote), @customer_quote.organization.organization_name).html_safe %></strong></td>
-            </tr>
-
-            <tr>
-                <td class="span2">Description</td>
-                <td class="span5"><strong><%= @customer_quote.customer_quote_description%></strong></td>
-            </tr>
-        </tbody>
-    </table>
-    <% if show_item_info %>
-        <div class="separator bottom"></div>
-        <h4 class="center">Item Info</h4>
-        <div class="separator bottom"></div>
-        <table>
+<% show_send ||= false %>
+<div class="god">
+    <div class="span4 well item_detail_view">
+        <table class="table">
             <tbody>
-              <tr>
-                  <td class="span2">Vendor quoted price</td>
-                  <td class="span5" id= "vendor_price"></td>
-              </tr>    
+                <tr>
+                    <td class="span2">Quote Send Id</td>
+                    <td class="span5"><strong><%= CommonActions.linkable(customer_quote_path(@customer_quote), @customer_quote.customer_quote_identifier).html_safe %></strong></td>
+                </tr>
+
+                <tr>
+                    <td class="span2">Customer</td>
+                    <td class="span5"><strong><%= CommonActions.linkable(organization_path(@customer_quote), @customer_quote.organization.organization_name).html_safe %></strong></td>
+                </tr>
+
+                <tr>
+                    <td class="span2">Description</td>
+                    <td class="span5"><strong><%= @customer_quote.customer_quote_description%></strong></td>
+                </tr>
             </tbody>
         </table>
-    <% end %>
+        <% if show_item_info %>
+            <div class="separator bottom"></div>
+            <h4 class="center">Item Info</h4>
+            <div class="separator bottom"></div>
+            <table>
+                <tbody>
+                  <tr>
+                      <td class="span2">Vendor quoted price</td>
+                      <td class="span5" id= "vendor_price"></td>
+                  </tr>    
+                </tbody>
+            </table>
+        <% end %>
 
-    <div class="separator bottom"></div>
-    <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+        <div class="separator bottom"></div>
+    </div>
+
+    <% if show_send %>
+        <div class="button1">
+              <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "send_customer_quote()" %>  
+        </div>
+    <% end %>
 </div>
+
+<style>
+    .god {
+        float: left;
+        width: 326px;
+    }
+    .row-fluid .span4{width: 95%;}
+    .button1 {
+        float: left;
+        width: 100px;
+    }
+</style>
