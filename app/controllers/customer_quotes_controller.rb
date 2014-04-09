@@ -7,8 +7,8 @@ class CustomerQuotesController < ApplicationController
     end
 
     def set_autocomplete_values
-        params[:customer_quote][:organization_id], params[:organization_id] = params[:organization_id], params[:customer_quote][:organization_id]
-        params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
+      params[:customer_quote][:organization_id], params[:organization_id] = params[:organization_id], params[:customer_quote][:organization_id]
+      params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
     end
 
     def index
@@ -83,7 +83,9 @@ class CustomerQuotesController < ApplicationController
     # PUT /customer_quotes/1
     # PUT /customer_quotes/1.json
     def update
+
     @customer_quote = CustomerQuote.find(params[:id])
+    p params[:customer_quote]
 
     respond_to do |format|
       if @customer_quote.update_attributes(params[:customer_quote])

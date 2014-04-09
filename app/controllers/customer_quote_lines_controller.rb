@@ -20,6 +20,7 @@ class CustomerQuoteLinesController < ApplicationController
             format.json { 
                 @customer_quote_lines = @customer_quote_lines.select{|customer_quote_line|
                     customer_quote_line[:item_part_no] = CommonActions.linkable(item_path(customer_quote_line.item), customer_quote_line.item_alt_name.item_alt_identifier) if customer_quote_line.item && customer_quote_line.item_alt_name
+                    customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), nil)
                 }
                 render json: {:aaData => @customer_quote_lines}
             }
@@ -81,7 +82,7 @@ class CustomerQuoteLinesController < ApplicationController
 
         respond_to do |format|
           if @customer_quote_line.update_attributes(params[:customer_quote_line])
-            format.html { redirect_to([@customer_quote_line.customer_quote, @customer_quote_line], :notice => 'Customer quote line was successfully updated.') }
+            format.html { redirect_to customer_quote_path(@customer_quote), :notice => 'Customer quote line was successfully updated.' }
             format.json { head :ok }
           else
             format.html { render :action => "edit" }
@@ -98,7 +99,7 @@ class CustomerQuoteLinesController < ApplicationController
         @customer_quote_line.destroy
 
         respond_to do |format|
-          format.html { redirect_to customer_quote_customer_quote_lines_url(customer_quote) }
+          format.html { redirect_to customer_quote_path(@customer_quote), :notice => 'Customer quote line was deleted updated.' }
           format.json { head :ok }
         end
     end

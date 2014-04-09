@@ -10,7 +10,7 @@
            
             <%= hidden_field_tag :organization_id, (@customer_quote.organization.id if @customer_quote.organization) %>
 
-            <%= hidden_field_tag :org_organization, (@customer_quote.organization.id if @customer_quote.organization) %> 
+            <%= hidden_field_tag :org_organization_id, (@customer_quote.organization.id if @customer_quote.organization) %> 
 
             <%= f.input :customer_quote_description, :label => "Description" %>
             <%= f.input :customer_quote_notes, :label => "Notes" %>
