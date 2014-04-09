@@ -39,6 +39,7 @@ class CustomerQuotesController < ApplicationController
     # GET /customer_quotes/1.json
     def show
       @customer_quote = CustomerQuote.find(params[:id])
+      @attachable = @customer_quote
       @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []  
    
       respond_to do |format|
