@@ -46,6 +46,7 @@
 <%= render 'attachments/attachments' %>
 
 <%= render :partial => 'items/items' if @organization.type_name == "vendor" %>
+<%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
 
 <%  if ["customer", "vendor"].include?(@organization.type_name) %>
 
@@ -83,7 +84,9 @@
 
     <!-- if @organization.organization_type.type_value == "vendor" -->
 <% end %>
-<%= render 'quotes/quote_list' %>
+<%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
+
+
 
 <div class="separator bottom"></div>
 

@@ -12,26 +12,47 @@ class CustomerQuotesController < ApplicationController
     end
 
     def index
-    # if params[:item_id]
-    #     # item = Item.find(params[:item_id])
-    #     # @quotes = item.quotes
-    # elsif params[:organization_id]
-    #     # organization = Organization.find(params[:organization_id])
-    #     # @quotes = organization.quotes
-    # else
-        
-    # end
-    @customer_quotes = CustomerQuote.all
-    respond_to do |format|
-        format.html 
-        format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
-                 customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
-                 customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
-                 #customer_quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                 customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
-             }
-             render json: {:aaData => @customer_quotes}
-             }
+      if params[:item_id]
+        item = Item.find(params[:item_id])
+        @customer_quotes = item.customer_quotes
+      elsif params[:organization_id]
+        organization = Organization.find(params[:organization_id])
+        @customer_quotes = organization.customer_quotes
+      else
+          @customer_quotes = CustomerQuote.all
+      end
+      
+      respond_to do |format|
+          format.html
+           if item
+              format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
+                    customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
+                    customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
+                    customer_quote[:created] = customer_quote.created_at.strftime("%d %b %Y")
+                    customer_quote[:price] = customer_quote.customer_quote_lines.find_by_item_id(params[:item_id]).customer_quote_line_cost
+                    customer_quote[:quantity] = customer_quote.customer_quote_lines.find_by_item_id(params[:item_id]).customer_quote_line_quantity
+                 }
+                 render json: {:aaData => @customer_quotes}
+                 }
+          elsif organization
+              format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
+                    customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
+                    customer_quote[:created] = customer_quote.created_at.strftime("%d %b %Y")
+                    customer_quote[:items] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.item_alt_name.item_alt_identifier }.join(", ").html_safe
+                    customer_quote[:price] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_cost }.join(", ").html_safe
+                    customer_quote[:quantity] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_quantity }.join(", ").html_safe
+                }
+                 render json: {:aaData => @customer_quotes}
+                }
+          else
+            format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
+                     customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
+                     customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
+                     customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
+                 }
+                 render json: {:aaData => @customer_quotes}
+                 }
+          end
         end
     end
 
@@ -85,7 +106,6 @@ class CustomerQuotesController < ApplicationController
     def update
 
     @customer_quote = CustomerQuote.find(params[:id])
-    p params[:customer_quote]
 
     respond_to do |format|
       if @customer_quote.update_attributes(params[:customer_quote])

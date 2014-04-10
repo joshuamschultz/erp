@@ -63,7 +63,11 @@
     </div>
 </div>
 
-<%= render 'quotes/quote_list' %>
+<% if @quote_type_item == "vendor" %>
+    <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+<% else %>
+    <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+<% end %>
 
 <!-- Attachments -->
 <%= render 'attachments/attachments' if @item_revision %>

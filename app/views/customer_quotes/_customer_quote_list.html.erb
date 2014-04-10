@@ -1,3 +1,4 @@
+<% show_quote_types ||= false %>
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -5,7 +6,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Customer Quotes</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Customer Quote', new_customer_quote_path, :class => "btn btn-mini btn-success" %>
+                <%#= link_to 'New Customer Quote', new_customer_quote_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Customer', item_path(@item, type: "customer"), :class => "btn btn-mini btn-success" if show_quote_types %>
+                <%= link_to 'Vendor', item_path(@item, type: "vendor"), :class => "btn btn-mini btn-success" if show_quote_types %>   
             </span>
         </div> 
     </div>
@@ -13,12 +16,32 @@
     <div class="widget-body">
         <table id="table_report_customer_quote_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
-                <tr>                
-                    <th>Quote Send Id</th>
-                    <th>Customers</th>                  
-                    <th>Description</th>                      
-                    <th></th>         
-                </tr>
+                <% if @item.present? %>
+                    <tr>                
+                        <th>Quote Send Id</th>
+                        <th>Customer</th>
+                        <th>Prices</th>
+                        <th>Quantity</th>           
+                        <th>Description</th>
+                        <th>Created at</th>                    
+                    </tr>
+                <% elsif @organization.present?%>
+                    <tr>                
+                        <th>Quote Send Id</th>
+                        <th>item</th>
+                        <th>Prices</th>
+                        <th>Quantity</th>           
+                        <th>Description</th>
+                        <th>Created at</th>                     
+                    </tr>
+                <% else %>
+                    <tr>
+                        <th>Quote Send Id</th>
+                        <th>Customer</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                <% end %>
             </thead>
             <tbody>                
             </tbody>
@@ -31,12 +54,12 @@
             :path => customer_quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
             :extras => {:slno => false},
             :columns => '[
-                            { "mData": "quote_group_id" },
-                            { "mData": "vendor_name" },
+                            { "mData": "customer_quote_identifier" },
+                            { "mData": "customer_name" },
                             { "mData": "price" },
                             { "mData": "quantity"},
-                            { "mData": "notes"},
-                            { "mData": "created" },                           
+                            { "mData": "customer_quote_description" },
+                            { "mData": "created" }                          
                         ]' 
         }
     %>
@@ -46,12 +69,12 @@
             :path => customer_quotes_path(:organization_id => (@organization.present? ? @organization.id : nil)), 
             :extras => {:slno => false},
             :columns => '[
-                            { "mData": "quote_group_id" },
-                            { "mData": "vendor_name" },
+                            { "mData": "customer_quote_identifier" },
+                            { "mData": "items" },
                             { "mData": "price" },
                             { "mData": "quantity"},
-                            { "mData": "notes"},
-                            { "mData": "created" },                           
+                            { "mData": "customer_quote_description" },
+                            { "mData": "created" }                             
                         ]' 
         }
     %>
