@@ -22,7 +22,7 @@ class CustomerQuote < ActiveRecord::Base
 	def new_customer_quote_identifier
 	    customer_quote_identifier = Time.now.strftime("%m%y") + ("%03d" % (Quote.where("month(created_at) = ?", Date.today.month).count + 1))
 	    customer_quote_identifier.slice!(2)
-	    "Q" + customer_quote_identifier
+	    "B" + customer_quote_identifier
     end
 
     def redirect_path
