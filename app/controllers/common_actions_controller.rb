@@ -62,29 +62,28 @@ class CommonActionsController < ApplicationController
           end
           result = "success"
         when "get_item_description"
-          params[:item_id] =  params[:item_id].strip
           if params[:item_id].present?
-            item = Item.find(params[:item_id]).item_revisions.where(organization_id: nil).first
-            result = item.item_description if item
-            result = "fail" if !item
+            description = ItemAltName.find(params[:item_id]).item.current_revision.item_description
+            result = description if description
+            result = "fail" if !description
           else
             result = "fail"
           end
         when "get_quote_info"
-            if params[:quote_id]
+            if params[:quote_id].present?
               quote = Quote.find(params[:quote_id])
               result = CustomerQuoteLine.get_line_items(quote)
             else
               result = "fail"
             end
         when "get_item_info"
-          if params[:quote_id] && params[:item_id]
+          if params[:quote_id] && params[:item_id].present?
             result = Quote.get_item_prices(params[:quote_id], params[:item_id])
           else
             result = "fail"
           end
         when "send_customer_quotes_mail"
-          if params[:customer_quote_id]
+          if params[:customer_quote_id].present?
             UserMailer.send_customer_quote(params[:customer_quote_id])
           end
       end

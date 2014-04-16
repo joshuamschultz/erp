@@ -5,7 +5,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 	belongs_to :item_alt_name
 
 	attr_accessible :customer_quote_line_active, :customer_quote_line_cost, :customer_quote_line_created_id,
-	:customer_quote_line_description, :customer_quote_line_identifier, :customer_quote_line_notes, 
+	:customer_quote_line_description, :customer_quote_line_identifier, :customer_quote_line_notes, :lead_time,
 	:customer_quote_line_quantity, :customer_quote_line_status, :customer_quote_line_updated_id, :customer_quote_id,
 	:item_id, :item_revision, :item_alt_name_id, :customer_quote_line_tooling_cost, :customer_quote_line_total
 
@@ -27,7 +27,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 		quotes.quote_lines.each do |quote_line|
 			option = Hash.new
 			if quote_line.item_alt_name && 	quote_line.item_alt_name.item_id
-				option["text"] = quote_line.item_alt_name.item_alt_identifier
+				option["text"] = quote_line.item_alt_name.item_alt_identifier+"("+quote_line.quote_line_quantity.to_s+")"
 				option["value"] = quote_line.item_alt_name.item_id
 				item_id << option
 			end

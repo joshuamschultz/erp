@@ -43,6 +43,8 @@
 
                 <%= f.input :customer_quote_line_tooling_cost, :label => "Tooling" %>
 
+                <%= f.input :lead_time, :label => "Lead Time" %>
+
                 <%= f.input :customer_quote_line_notes, :label => "Notes" %>
               </div>  
         </div>
@@ -115,7 +117,7 @@
         $("#customer_quote_line_customer_quote_line_quantity").val(response["aaData"]["quantity"]);
         $("#alt_name_id").val(response["aaData"]["alt_name_id"]);
         $("#org_alt_name_id").val(response["aaData"]["alt_name_id"]);
-        // $("#").val(response["aaData"][""]);
+        $("#customer_quote_line_lead_time").val(response["aaData"][""]);
 
         $("#vendor_price").html(" ");
         $("#vendor_price").html(response["aaData"]["price"]);

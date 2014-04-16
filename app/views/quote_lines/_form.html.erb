@@ -68,7 +68,7 @@
 
     $("#quote_line_item_alt_name_id").blur(function(){
         var a = $("#alt_name_id").val()
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a}}, "after_get_desc", {});
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a, "organization_id": <%= @quote.customer.id %> }}, "after_get_desc", {});
     });
     function after_get_desc(response, callback_params, api_params){
         if(response["aaData"] ==  "fail"){
