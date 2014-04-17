@@ -41,7 +41,7 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
-            :extras => {:slno => false},
+            :extras => {:slno => false, :order => 'desc'},
             :columns => '[
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
@@ -56,7 +56,7 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:organization_id => (@organization.present? ? @organization.id : nil)), 
-            :extras => {:slno => false},
+            :extras => {:slno => false, :order => 'desc'},
             :columns => '[
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
@@ -71,7 +71,7 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
-            :extras => {:slno => false},
+            :extras => {:slno => false, :order => 'desc'},
             :columns => '[
                         { "mData": "quote_group_id" },
                         { "mData": "vendor_name" },

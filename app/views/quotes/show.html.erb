@@ -35,7 +35,14 @@
 <div class="separator bottom"></div>
 
 <!-- Attachments -->
-<%= render 'attachments/attachments' %>
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
+</div>
 
 <div class="separator bottom"></div>
 
@@ -52,3 +59,24 @@
         // alert("sucess")
     }
 </script>
+<style type="text/css">
+    #move-submit {
+        margin-left: -411px;
+        margin-top: -521px;
+        position: relative;
+    } 
+    .attachment-pulp {
+        float: left;
+        width: 32%;
+    }
+    .dropzone .default.message {
+
+        background-size: cover;
+        height: 86px;
+        left: 50%;
+        margin-left: -169px;
+        margin-top: -46.5px;
+        width: 314px;
+    }
+
+</style>

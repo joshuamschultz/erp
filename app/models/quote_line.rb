@@ -15,7 +15,7 @@ class QuoteLine < ActiveRecord::Base
 
   validates_numericality_of :quote_line_quantity
   validates_presence_of :quote, :quote_line_quantity#, :item_alt_name
-  validates :item_alt_name_id, :uniqueness => { :scope => :quote_id, :message => "duplicate item entry!" }, :if => :item_alt_name_id?
+  # validates :item_alt_name_id, :uniqueness => { :scope => :quote_id, :message => "duplicate item entry!" }, :if => :item_alt_name_id?
 
 
 
