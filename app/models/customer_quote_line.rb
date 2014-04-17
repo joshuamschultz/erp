@@ -28,7 +28,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 			option = Hash.new
 			if quote_line.item_alt_name && 	quote_line.item_alt_name.item_id
 				option["text"] = quote_line.item_alt_name.item_alt_identifier+" ("+quote_line.quote_line_quantity.to_s+")"
-				option["value"] = quote_line.item_alt_name.item_id
+				option["value"] = quote_line.id
 				item_id << option
 			end
 		end

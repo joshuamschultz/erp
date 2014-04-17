@@ -201,7 +201,7 @@ class Quote < ActiveRecord::Base
     def self.get_item_prices(quote_id, item_id)
         item_detail = Hash.new
         quote = Quote.find(quote_id)
-        quote_line = quote.quote_lines.find_by_item_id(item_id)
+        quote_line = quote.quote_lines.find(item_id)
         price = quote_line.quote_line_costs.collect{ |quote_line_cost_item| quote_line_cost_item.quote_line_cost.to_f }
         price.delete(0.0)
         price = price.join(' ,')
