@@ -9,7 +9,19 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
+        if params[:hide_info].present?
+          @attachments = @attachments.select{|attachment|
+              attachment[:attachment_name] = "<a href='#{attachment.attachment.url(:original)}' target='_blank'><i>#{attachment.attachment_name}</i></a> " if attachment.attachment
+              attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
+              attachment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
+              attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
+              attachment[:approved_by] = ""
+              attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
+              attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
+            }
+          render json: {:aaData => @attachments}
+        else
           @attachments = @attachments.select{|attachment|
               attachment[:attachment_name] = CommonActions.linkable(attachment_path(attachment), attachment.attachment_name)
               attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
@@ -19,7 +31,8 @@ class AttachmentsController < ApplicationController
               attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
               attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
             }
-          render json: {:aaData => @attachments} 
+          render json: {:aaData => @attachments}
+        end
       }
     end
   end

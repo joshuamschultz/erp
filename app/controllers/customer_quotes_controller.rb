@@ -14,12 +14,12 @@ class CustomerQuotesController < ApplicationController
     def index
       if params[:item_id]
         item = Item.find(params[:item_id])
-        @customer_quotes = item.customer_quotes
+        @customer_quotes = item.customer_quotes.order('created_at desc')
       elsif params[:organization_id]
         organization = Organization.find(params[:organization_id])
-        @customer_quotes = organization.customer_quotes
+        @customer_quotes = organization.customer_quotes.order('created_at desc')
       else
-          @customer_quotes = CustomerQuote.all
+          @customer_quotes = CustomerQuote.order('created_at desc')
       end
       
       respond_to do |format|
@@ -73,7 +73,7 @@ class CustomerQuotesController < ApplicationController
     # GET /customer_quotes/new.json
     def new
     @customer_quote = CustomerQuote.new
-
+    @attachable = @customer_quote
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @customer_quote }

@@ -44,16 +44,36 @@
   </div>
 </div>
 <style type="text/css">
-    #move-submit{ margin-left: -408px; margin-top: -234px; }
+    #move-submit {
+        margin-left: -411px;
+        position: relative;
+    } 
+    .attachment-pulp {
+        float: left;
+        width: 32%;
+    }
+    .dropzone .default.message {
+
+        background-size: cover;
+        height: 86px;
+        left: 50%;
+        margin-left: -169px;
+        margin-top: -46.5px;
+        width: 314px;
+    }
+
 </style>
 <div class="separator bottom"></div>
 
 <%= render :partial => 'quote_lines/line_items', locals: { bfilter: false, show_buttons: false, drop_down: false }%>
-
-<%= render :partial => 'attachments/droppable_form_plup' %>
-
-<%= render 'attachments/attachments' %>
-
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
+</div>
 
 <script type="text/javascript">
     tab_field_forms["form_for_quote_line"] = ["quote_line_item_alt_name_id", "quote_line_quote_line_description", "quote_line_quote_line_quantity", "quote_line_quote_line_notes"];    

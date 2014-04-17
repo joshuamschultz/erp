@@ -19,12 +19,12 @@ class QuotesController < ApplicationController
     def index
         if params[:item_id]
             item = Item.find(params[:item_id])
-            @quotes = item.quotes
+            @quotes = item.quotes.order('created_at desc')
         elsif params[:organization_id]
             organization = Organization.find(params[:organization_id])
-            @quotes = organization.quotes
+            @quotes = organization.quotes.order('created_at desc')
         else
-            @quotes = Quote.all
+            @quotes = Quote.order('created_at desc')
         end
 
         respond_to do |format|

@@ -11,7 +11,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 
 	validates_numericality_of :customer_quote_line_quantity
 	validates_presence_of :customer_quote_line_quantity, :customer_quote_line_cost
-	validates :item_alt_name_id, :uniqueness => { :scope => :customer_quote_id, :message => "duplicate item entry!" }, :if => :item_alt_name_id?
+	#validates :item_alt_name_id, :uniqueness => { :scope => :customer_quote_id, :message => "duplicate item entry!" }, :if => :item_alt_name_id?
 
 	before_create :process_before_create
 	def process_before_create
@@ -27,7 +27,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 		quotes.quote_lines.each do |quote_line|
 			option = Hash.new
 			if quote_line.item_alt_name && 	quote_line.item_alt_name.item_id
-				option["text"] = quote_line.item_alt_name.item_alt_identifier+"("+quote_line.quote_line_quantity.to_s+")"
+				option["text"] = quote_line.item_alt_name.item_alt_identifier+" ("+quote_line.quote_line_quantity.to_s+")"
 				option["value"] = quote_line.item_alt_name.item_id
 				item_id << option
 			end

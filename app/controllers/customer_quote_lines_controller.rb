@@ -44,7 +44,7 @@ class CustomerQuoteLinesController < ApplicationController
     def new
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
         @customer_quote_line = @customer_quote.customer_quote_lines.build
-
+        @attachable = @customer_quote
         respond_to do |format|
           format.html # new.html.erb
           format.json { render :json => @customer_quote_line }
@@ -55,6 +55,7 @@ class CustomerQuoteLinesController < ApplicationController
     def edit
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
         @customer_quote_line = @customer_quote.customer_quote_lines.find(params[:id])
+        @attachable = @customer_quote_line
     end
 
     # POST customer_quotes/1/customer_quote_lines
@@ -62,6 +63,7 @@ class CustomerQuoteLinesController < ApplicationController
     def create
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
         @customer_quote_line = @customer_quote.customer_quote_lines.build(params[:customer_quote_line])
+        @attachable = @customer_quote
 
         respond_to do |format|
           if @customer_quote_line.save
@@ -79,6 +81,7 @@ class CustomerQuoteLinesController < ApplicationController
     def update
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
         @customer_quote_line = @customer_quote.customer_quote_lines.find(params[:id])
+        @attachable = @customer_quote
 
         respond_to do |format|
           if @customer_quote_line.update_attributes(params[:customer_quote_line])

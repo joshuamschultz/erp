@@ -12,7 +12,7 @@
                     <div class="control-group">
                         <label for="quote_vendors" class="optional control-label">Quote</label>
                         <div class="controls">
-                            <%= select_tag :quote_id, options_for_select(@customer_quote.organization.quotes.map{ |quote| [ quote.quote_identifier, quote.id ] })%>
+                            <%= select_tag :quote_id, options_for_select(@customer_quote.organization.quotes.order('created_at desc').map{ |quote| [ quote.quote_identifier, quote.id ] })%>
                         </div>
                     </div>
                 </div>
@@ -29,6 +29,8 @@
                     </div>
                 </div>
 
+
+
                 <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
                 <%= hidden_field_tag :alt_name_id, (@customer_quote_line.item_alt_name.id if @customer_quote_line.present? && @customer_quote_line.item_alt_name.present?) %>
@@ -39,7 +41,7 @@
 
                 <%= f.input :customer_quote_line_quantity, :label => "Quantity"  %>
 
-                <%= f.input :customer_quote_line_cost, :label => "Cost"  %>
+                <%= f.input :customer_quote_line_cost, :label => "Sell"  %>
 
                 <%= f.input :customer_quote_line_tooling_cost, :label => "Tooling" %>
 
@@ -64,13 +66,51 @@
         </div>
       <% end %>
   </div>
+    <div class="row-fluid">
+        <div class="span4">
+            <%#= render :partial => 'attachments/droppable_form_plup' %>
+        </div>
+        <div class="span8">
+            <%#= render 'attachments/attachments' %>
+        </div>
+    </div>
+
 </div>
 <style type="text/css">
-    #move-submit{ margin-top: -266px; margin-left: -340px; }
+    #move-submit {
+        margin-left: -411px;
+        margin-top: -521px;
+        position: relative;
+    }
+
+    .attachment-pulp {
+        float: left;
+        width: 32%;
+    }
+    .dropzone .default.message {
+
+        background-size: cover;
+        height: 86px;
+        left: 50%;
+        margin-left: -169px;
+        margin-top: -46.5px;
+        width: 314px;
+    } 
+    
 </style>
 <div class="separator bottom"></div>
 
 <%= render :partial => 'customer_quote_lines/customer_quote_line_list' %>
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
+</div>
 
 
 <script type="text/javascript">

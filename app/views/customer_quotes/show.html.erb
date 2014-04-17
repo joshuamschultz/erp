@@ -9,13 +9,22 @@
     <%= render :partial => 'customer_quotes/customer_quote_info', :locals => { show_edit: true , show_send: true }  %>
  
     <div class="span8">
-    	<%= render :partial => 'customer_quote_lines/customer_quote_line_list', :locals => { show_edit: true } %> 
+        <%= render :partial => 'customer_quote_lines/customer_quote_line_list', :locals => { show_edit: true } %> 
     </div>
 </div>
 <div class="separator bottom"></div>
 
 <!-- Attachments -->
-<%= render 'attachments/attachments' %>
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
+</div>
 
 <!-- Comments -->
 <%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_quote_path(type: "note")}} %>
@@ -29,3 +38,18 @@
         alert("sucess")
     }
 </script>
+<style type="text/css">
+    .attachment-pulp {
+        float: left;
+        width: 32%;
+    }
+    .dropzone .default.message {
+        background-size: cover;
+        height: 86px;
+        left: 50%;
+        margin-left: -169px;
+        margin-top: -46.5px;
+        width: 314px;
+    } 
+    
+</style>
