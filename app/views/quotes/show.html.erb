@@ -37,7 +37,7 @@
 <!-- Attachments -->
 <div class="row-fluid">
     <div class="attachment-pulp">
-        <%= render :partial => 'attachments/droppable_form_plup' %>
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
     </div>
     <div class="span8">
         <%= render 'attachments/attachments_less' %>
@@ -48,7 +48,7 @@
 
 <!-- Comments -->
 <%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_quote_path(type: "note")}} %>
+:locals => {:extras => {:link => populate_quote_path(type: "note", id: @quote)}} %>
 
 <script type="text/javascript">
     function onclick_send(){

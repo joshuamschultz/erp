@@ -1,0 +1,50 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="span6">
+            <h4 class="heading glyphicons file_import"><i></i>Dropzone For Attachments</h4>
+        </div>
+        <div class="span6 right">
+            <%= link_to "Clear", "#", onclick: "plupupload_clear_queue(); return false", class: "btn btn-small btn-success" %>
+        </div>
+    </div>
+    <!-- // Widget heading END -->
+    
+    <div class="widget-body"> 
+        <!-- Dropzone -->
+        <div id="dropzone">
+            <form action="/attachments?attachment_process_type=droppable&attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>" class="dropzone" method="post" id="attachment_dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+            </form>
+        </div>
+        <div class="separator bottom"></div>      
+    </div>
+</div>
+<!-- // Widget END -->
+
+<script type="text/javascript">
+    function plupupload_complete_callback(response){        
+        data_table_report_attachments.fnDestroy();
+
+        data_table_report_attachments = $('#table_report_attachments').dataTable({
+            "bAutoWidth": false,
+            "bProcessing": true,
+            "sAjaxSource": '/attachments?attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>&hide_info=true',
+            "aoColumns": [
+                        { "mData": "attachment_name" },
+                        { "mData": "attachment_public" },
+                        { "mData": "uploaded_date", "bVisible": false },
+                        { "mData": "uploaded_by" },
+                        { "mData": "links" }
+                    ]        
+        });
+    }
+
+    function plupupload_clear_queue(){
+        $("#attachment_dropzone").html('<div class="default message"><span>Drop files here to upload</span></div>');
+        $("#attachment_dropzone").removeClass("started");
+    }
+</script>

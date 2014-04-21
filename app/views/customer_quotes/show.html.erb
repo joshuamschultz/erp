@@ -19,7 +19,7 @@
 
 <div class="row-fluid">
     <div class="attachment-pulp">
-        <%= render :partial => 'attachments/droppable_form_plup' %>
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
     </div>
     <div class="span8">
         <%= render 'attachments/attachments_less' %>
@@ -27,7 +27,8 @@
 </div>
 
 <!-- Comments -->
-<%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_quote_path(type: "note")}} %>
+<%= render :partial => 'comments/comments', 
+:locals => {:extras => {:link => populate_customer_quote_path(type: "note", id: @customer_quote.id)}} %>
 
 <script type="text/javascript">
     function send_customer_quote(){

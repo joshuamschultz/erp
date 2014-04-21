@@ -61,6 +61,7 @@ class QuotesController < ApplicationController
                                  quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
                                  quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
                                  quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                 quote[:links] = CommonActions.object_crud_paths(nil, quote_path(quote), quote_path(quote))
                                  quote[:created] = quote.created_at.strftime("%d %b %Y")
 
                              }
@@ -159,11 +160,18 @@ class QuotesController < ApplicationController
     def populate
         @quote = Quote.find(params[:id])
 
-        if params[:type] == "note"
+        if params[:type] == "note" && params[:comment].present?
             Comment.process_comments(current_user, @quote, [params[:comment]], params[:type])
+            note = @quote.comments.where(:comment_type => "note").order("created_at desc").first if @quote
+            note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+            note["created_user"] = note.created_by.name
+            note["status"] = "success"
+        else
+            note = Hash.new
+            note["status"] = "fail"
         end
 
-        redirect_to @quote
+        render json: {:result => note}
     end
 
     def history

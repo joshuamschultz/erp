@@ -8,8 +8,26 @@
 </div>
 
 <div class="row-fluid">
-	<%= render :partial => 'attachments/droppable_form_plup' %>
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
 </div>
-<div class="row-fluid">
-	<%= render 'attachments/attachments' %>
-</div>
+
+<style type="text/css">
+    .attachment-pulp {
+        float: left;
+        width: 32%;
+    }
+    .dropzone .default.message {
+        background-size: cover;
+        height: 86px;
+        left: 50%;
+        margin-left: -169px;
+        margin-top: -46.5px;
+        width: 314px;
+    } 
+    
+</style>

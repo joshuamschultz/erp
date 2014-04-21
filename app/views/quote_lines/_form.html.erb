@@ -65,10 +65,10 @@
 </style>
 <div class="separator bottom"></div>
 
-<%= render :partial => 'quote_lines/line_items', locals: { bfilter: false, show_buttons: false, drop_down: false }%>
+<%= render :partial => 'quote_lines/line_items', locals: { bfilter: false, show_buttons: true, drop_down: false }%>
 <div class="row-fluid">
     <div class="attachment-pulp">
-        <%= render :partial => 'attachments/droppable_form_plup' %>
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
     </div>
     <div class="span8">
         <%= render 'attachments/attachments_less' %>

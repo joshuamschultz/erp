@@ -17,7 +17,7 @@ class AttachmentsController < ApplicationController
               attachment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
               attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
               attachment[:approved_by] = ""
-              attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
+              attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), attachment_path(attachment))
               attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
             }
           render json: {:aaData => @attachments}
