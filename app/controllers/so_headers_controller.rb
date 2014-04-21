@@ -140,11 +140,18 @@ class SoHeadersController < ApplicationController
   def populate
       @so_header = SoHeader.find(params[:id])
 
-      if params[:type] == "note"
+      if params[:type] == "note" && params[:comment].present?
           Comment.process_comments(current_user, @so_header, [params[:comment]], params[:type])
+          note = @so_header.comments.where(:comment_type => "note").order("created_at desc").first if @so_header
+          note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+          note["created_user"] = note.created_by.name
+          note["status"] = "success"
+      else
+          note = Hash.new
+          note["status"] = "fail"
       end
 
-      redirect_to @so_header
+      render json: {:result => note}
   end
 
   def so_info

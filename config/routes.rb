@@ -39,7 +39,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :gl_entries do
     member do
-      post 'populate'
+      get 'populate'
     end
   end
 
@@ -145,7 +145,7 @@ AllianceFasteners::Application.routes.draw do
   resources :so_headers do
     resources :so_lines
     member do
-      post 'populate'
+      get 'populate'
       get 'so_info'
     end
     get :autocomplete_so_header_so_identifier, :on => :collection
@@ -164,7 +164,7 @@ AllianceFasteners::Application.routes.draw do
   resources :po_headers do
     resources :po_lines
     member do
-      post 'populate'
+      get 'populate'
       get 'po_info'
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
@@ -172,7 +172,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :quality_lots do
     member do
-      post 'populate'
+      get 'populate'
     end
   end
 
@@ -225,6 +225,7 @@ AllianceFasteners::Application.routes.draw do
     get 'main_address'
     member do
       post 'populate'
+      get 'add_comment'
       get 'organization_info'
     end
     get :autocomplete_organization_organization_name, :on => :collection

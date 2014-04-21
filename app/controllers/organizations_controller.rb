@@ -129,16 +129,27 @@ class OrganizationsController < ApplicationController
 
       if params[:type] == "tag"
           tags = params[:tags].split(",")
-          Comment.process_comments(current_user, @organization, tags, params[:type])
-          
-      elsif params[:type] == "note"
-          Comment.process_comments(current_user, @organization, [params[:comment]], params[:type])
-
+          Comment.process_comments(current_user, @organization, tags, params[:type])          
       elsif params[:type] == "process"
-          OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])
+          OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])          
+      end
+      redirect_to @organization
+  end
+
+  def add_comment
+      @organization = Organization.find(params[:id])
+      if params[:comment].present? &&  params[:type] == "note"
+          Comment.process_comments(current_user, @organization, [params[:comment]], params[:type])
+          note = @organization.comments.where(:comment_type => "note").order("created_at desc").first if @organization
+          note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+          note["created_user"] = note.created_by.name
+          note["status"] = "success"
+      else
+          note = Hash.new
+          note["status"] = "fail"
       end
 
-      redirect_to @organization
+      render json: {:result => note }
   end
 
 

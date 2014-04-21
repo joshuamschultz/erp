@@ -21,4 +21,4 @@
 <div class="separator bottom"></div>
 
 <!-- Comments -->
-<%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_gl_entry_path(type: "note")}} %>  
+<%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_gl_entry_path(type: "note", id: @gl_entry.id)}} %>  

@@ -68,5 +68,5 @@
 <div class="separator bottom"></div>
 
 <%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_po_header_path(type: "note")}} %>
+:locals => {:extras => {:link => populate_po_header_path(type: "note", id: @po_header.id)}} %>
 

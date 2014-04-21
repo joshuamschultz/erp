@@ -122,7 +122,7 @@
 <div class="separator bottom"></div>
 
 <%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_organization_path(type: "note")}} %>
+:locals => {:extras => {:link => add_comment_organization_path(type: "note", id: @organization.id)}} %>
 
 
 <script type="text/javascript">
