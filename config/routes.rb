@@ -8,6 +8,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :customer_quotes do
     resources :customer_quote_lines
+         get 'populate', on: :member
   end
 
   #resources :customer_quotes
@@ -77,9 +78,7 @@ AllianceFasteners::Application.routes.draw do
 
   resources :quotes do
     resources :quote_lines
-    member do
-      post 'populate'
-    end
+      get 'populate', on: :member
   end
 
 

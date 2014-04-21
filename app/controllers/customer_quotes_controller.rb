@@ -49,6 +49,7 @@ class CustomerQuotesController < ApplicationController
                      customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
                      customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
+                     customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), customer_quote_path(customer_quote))
                  }
                  render json: {:aaData => @customer_quotes}
                  }
@@ -61,8 +62,9 @@ class CustomerQuotesController < ApplicationController
     def show
       @customer_quote = CustomerQuote.find(params[:id])
       @attachable = @customer_quote
-      @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []  
-   
+      # @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []  
+      @notes = @customer_quote.comments.where(:comment_type => "note").order("created_at desc") if @customer_quote
+
       respond_to do |format|
         format.html # show.html.erb
         format.json { render json: @customer_quote }
@@ -121,12 +123,31 @@ class CustomerQuotesController < ApplicationController
     # DELETE /customer_quotes/1
     # DELETE /customer_quotes/1.json
     def destroy
-    @customer_quote = CustomerQuote.find(params[:id])
-    @customer_quote.destroy
+      @customer_quote = CustomerQuote.find(params[:id])
+      @customer_quote.destroy
 
-    respond_to do |format|
-      format.html { redirect_to customer_quotes_url }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to customer_quotes_url }
+        format.json { head :no_content }
+      end
     end
+
+    
+    def populate
+        @customer_quote = CustomerQuote.find(params[:id])
+
+        if params[:type] == "note" && params[:comment].present?
+            Comment.process_comments(current_user, @customer_quote, [params[:comment]], params[:type])
+            note = @customer_quote.comments.where(:comment_type => "note").order("created_at desc").first if @customer_quote
+            note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+            note["created_user"] = note.created_by.name
+            note["status"] = "success"
+        else
+            note = Hash.new
+            note["status"] = "fail"
+        end
+
+        render json: {:result => note} 
+        
     end
 end

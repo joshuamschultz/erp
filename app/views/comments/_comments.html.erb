@@ -2,12 +2,12 @@
 <div class="well"> 
     <div class="row-fluid">    
         <div class="span12">
-            <%= form_tag(extras[:link], method: "post") do %>
+            <%#= form_tag(extras[:link], method: "post") do %>
                 <div class="input-append span11">
-                    <input name="comment" class="span11" type="text" placeholder="Add a note..." />
-                    <button class="btn btn-default" type="submit">Save</button>
+                    <input name="comment" class="span11" type="text" placeholder="Add a note..." id="comment-text"/>
+                    <button class="btn btn-default" type="submit" onclick="setcomment();">Save</button>
                 </div>
-            <% end %>
+            <%# end %>
         </div>
     </div>
 
@@ -15,7 +15,7 @@
 
     <div class="row-fluid">
         <div class="organization_comments widget-timeline span12">
-            <ul class="list-timeline">
+            <ul class="list-timeline" id="comment_list">
                 <% @notes.each do |note| %>
                     <li style="height: auto !important;">
                         <span class="date timeline_comment_date"><%#= note.created_at.strftime("%m/%d/%Y") %><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
@@ -27,3 +27,21 @@
         </div>   
     </div>
 </div>
+
+<script type="text/javascript">
+    function setcomment(){
+        var comment = $("#comment-text").val();
+        initialize_api_call({"url": "<%= extras[:link].html_safe %>", "type": "GET", "data_type": "json", "params": {"comment": comment }}, "set_comment_list", {});
+    }
+    function set_comment_list(response, callback_params, api_params){
+        $("#comment-text").val("");
+        if(response["result"]["status"] ==  "success"){
+            var a = '<li style="height: auto !important;"><span class="date timeline_comment_date">'+response["result"]["time"];
+            a += '</span><span class="glyphicons activity-icon user"><i></i></span><span style="height: auto !important; white-space: normal !important;" class="ellipsis"><a href="#">'+response["result"]["created_user"];        
+            a += '</a> : '+response["result"]["comment"];
+            a += '</span></li>'
+            $("#comment_list").prepend(a).show('normal'); 
+        }
+             
+    }
+</script>

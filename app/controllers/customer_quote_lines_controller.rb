@@ -20,7 +20,7 @@ class CustomerQuoteLinesController < ApplicationController
             format.json { 
                 @customer_quote_lines = @customer_quote_lines.select{|customer_quote_line|
                     customer_quote_line[:item_part_no] = CommonActions.linkable(item_path(customer_quote_line.item), customer_quote_line.item_alt_name.item_alt_identifier) if customer_quote_line.item && customer_quote_line.item_alt_name
-                    customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), nil)
+                    customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line))
                 }
                 render json: {:aaData => @customer_quote_lines}
             }
