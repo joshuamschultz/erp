@@ -102,13 +102,19 @@ class GlEntriesController < ApplicationController
   end
 
   def populate
-      @gl_entry = GlEntry.find(params[:id])
+     @gl_entry = GlEntry.find(params[:id])
 
-      if params[:type] == "note"
-          Comment.process_comments(current_user, @gl_entry, [params[:comment]], params[:type])
-      end
+        if params[:type] == "note" && params[:comment].present?
+            Comment.process_comments(current_user, @gl_entry, [params[:comment]], params[:type])
+            note = @gl_entry.comments.where(:comment_type => "note").order("created_at desc").first if @gl_entry
+            note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+            note["created_user"] = note.created_by.name
+            note["status"] = "success"
+        else
+            note = Hash.new
+            note["status"] = "fail"
+        end
 
-      redirect_to @gl_entry
+        render json: {:result => note}
   end
-
 end

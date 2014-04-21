@@ -158,13 +158,20 @@ class QualityLotsController < ApplicationController
   end
 
   def populate
-      @quality_lot = QualityLot.find(params[:id])
+    @quality_lot = QualityLot.find(params[:id])
 
-      if params[:type] == "note"
-          Comment.process_comments(current_user, @quality_lot, [params[:comment]], params[:type])
-      end
+    if params[:type] == "note" && params[:comment].present?
+        Comment.process_comments(current_user, @quality_lot, [params[:comment]], params[:type])
+        note = @quality_lot.comments.where(:comment_type => "note").order("created_at desc").first if @quality_lot
+        note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+        note["created_user"] = note.created_by.name
+        note["status"] = "success"
+    else
+        note = Hash.new
+        note["status"] = "fail"
+    end
 
-      redirect_to(@quality_lot, :notice => 'Comment added successfully.')
+    render json: {:result => note} 
   end
 
 end

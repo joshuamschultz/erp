@@ -135,11 +135,18 @@ class PoHeadersController < ApplicationController
   def populate
       @po_header = PoHeader.find(params[:id])
 
-      if params[:type] == "note"
+      if params[:type] == "note" && params[:comment].present?
           Comment.process_comments(current_user, @po_header, [params[:comment]], params[:type])
+          note = @po_header.comments.where(:comment_type => "note").order("created_at desc").first if @po_header
+          note["time"] = note.created_at.strftime("%m/%d/%Y %H:%M")
+          note["created_user"] = note.created_by.name
+          note["status"] = "success"
+      else
+          note = Hash.new
+          note["status"] = "fail"
       end
 
-      redirect_to @po_header
+      render json: {:result => note}
   end
 
   def po_info
