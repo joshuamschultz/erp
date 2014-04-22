@@ -206,9 +206,13 @@ class Quote < ActiveRecord::Base
         price.delete(0.0)
         price = price.join(' ,')
         item_detail["price"] = price
-        item_detail["alt_name"] = quote_line.item_alt_name.present? ? quote_line.item_alt_name.item_alt_identifier : "" 
-        item_detail["item_id"] = item_id
-        item_detail["alt_name_id"] = quote_line.item_alt_name.id
+        if quote_line.item_alt_name.present?
+            item_detail["alt_name"] = quote_line.item_alt_name.present? ? quote_line.item_alt_name.item_alt_identifier : "" 
+            item_detail["item_id"] = item_id
+            item_detail["alt_name_id"] = quote_line.item_alt_name.id
+        else
+            item_detail["alt_name"] = quote_line.item_name_sub
+        end
         item_detail["quantity"] = quote_line.quote_line_quantity
         item_detail["description"] = quote_line.quote_line_description
         item_detail["revision"] = ""
