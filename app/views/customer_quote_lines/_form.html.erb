@@ -78,8 +78,8 @@
 </div>
 <style type="text/css">
     #move-submit {
-        margin-left: -411px;
-        margin-top: -521px;
+        margin-left: -415px;
+        margin-top: -552px;
         position: relative;
     }
 
@@ -114,11 +114,19 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_customer_quote_line"] = ["quote_id","quote_item","customer_quote_line_item_alt_name_id","customer_quote_line_customer_quote_line_description","customer_quote_line_customer_quote_line_quantity","customer_quote_line_customer_quote_line_cost", "customer_quote_line_customer_quote_line_tooling_cost","customer_quote_line_customer_quote_line_notes"];
+    tab_field_forms["form_for_customer_quote_line"] = ["quote_id","quote_item","customer_quote_line_item_alt_name_id","customer_quote_line_customer_quote_line_description","customer_quote_line_customer_quote_line_quantity","customer_quote_line_customer_quote_line_cost", "customer_quote_line_customer_quote_line_tooling_cost", "customer_quote_line_lead_time","customer_quote_line_customer_quote_line_notes"];
 
     $(document).ready(function(){
         get_quote_info();
         $("#quote_line_item_alt_name_id").val("<%= @customer_quote_line.item_alt_name.alt_item_name if @customer_quote_line.item_alt_name %>");
+
+        $("#customer_quote_line_customer_quote_line_quantity").focusin(function(){
+            $("#customer_quote_line_customer_quote_line_quantity").select();
+        });
+
+        $("#customer_quote_line_customer_quote_line_cost").focusin(function(){
+            $("#customer_quote_line_customer_quote_line_cost").select();
+        })
     });
 
     $(document).on("change", "#quote_id", function(){         
@@ -172,5 +180,6 @@
     });
 
     // $("#customer_quote_line_customer_quote_line_description").val(response["aaData"]["result"])
+    
 
 </script>
