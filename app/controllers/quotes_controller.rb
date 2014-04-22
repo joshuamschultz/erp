@@ -22,7 +22,7 @@ class QuotesController < ApplicationController
             @quotes = item.quotes.order('created_at desc')
         elsif params[:organization_id]
             organization = Organization.find(params[:organization_id])
-            @quotes = organization.quotes.order('created_at desc')
+            @quotes = organization.quote_vendors.joins(:quote).order('quotes.created_at desc').collect{ |quote_vendor| quote_vendor.quote}
         else
             @quotes = Quote.order('created_at desc')
         end

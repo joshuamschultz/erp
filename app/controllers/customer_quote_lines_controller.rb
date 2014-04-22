@@ -20,6 +20,7 @@ class CustomerQuoteLinesController < ApplicationController
             format.json { 
                 @customer_quote_lines = @customer_quote_lines.select{|customer_quote_line|
                     customer_quote_line[:item_part_no] = CommonActions.linkable(item_path(customer_quote_line.item), customer_quote_line.item_alt_name.item_alt_identifier) if customer_quote_line.item && customer_quote_line.item_alt_name
+                    customer_quote_line[:item_part_no] = customer_quote_line.item_name_sub unless customer_quote_line.item && customer_quote_line.item_alt_name
                     customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line))
                 }
                 render json: {:aaData => @customer_quote_lines}
@@ -62,11 +63,12 @@ class CustomerQuoteLinesController < ApplicationController
     # POST customer_quotes/1/customer_quote_lines.json
     def create
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
+        params[:customer_quote_line][:item_name_sub] = params[:alt_name_id]
         @customer_quote_line = @customer_quote.customer_quote_lines.build(params[:customer_quote_line])
         @attachable = @customer_quote
-
+      
         respond_to do |format|
-          if @customer_quote_line.save
+          if @customer_quote_line.save            
             format.html { redirect_to new_customer_quote_customer_quote_line_path(@customer_quote), :notice => 'Customer quote line was successfully created.' }
             format.json { render :json => @customer_quote_line, :status => :created, :location => [@customer_quote_line.customer_quote, @customer_quote_line] }
           else
