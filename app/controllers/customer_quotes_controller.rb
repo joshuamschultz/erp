@@ -27,7 +27,7 @@ class CustomerQuotesController < ApplicationController
            if item
               format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
                     customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
-                    customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
+                    customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name)
                     customer_quote[:created] = customer_quote.created_at.strftime("%d %b %Y")
                     customer_quote[:price] = customer_quote.customer_quote_lines.find_by_item_id(params[:item_id]).customer_quote_line_cost
                     customer_quote[:quantity] = customer_quote.customer_quote_lines.find_by_item_id(params[:item_id]).customer_quote_line_quantity
@@ -47,7 +47,7 @@ class CustomerQuotesController < ApplicationController
           else
             format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
                      customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
-                     customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote), customer_quote.organization.organization_name)
+                     customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name)
                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), customer_quote_path(customer_quote))
                  }
