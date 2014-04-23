@@ -238,6 +238,14 @@ module CommonActions
 		"<div style='color:red'>#{string}</div>".html_safe
 	end
 
-
-
+	def self.status_color(status)
+		if status == "won"
+			"<div style='color:green'>#{status.capitalize}</div>".html_safe
+		elsif status == "lost"
+			"<div style='color:red'>#{status.capitalize}</div>".html_safe
+		elsif status == "open"
+			"<div>#{status.capitalize}</div>".html_safe
+		end
+				
+	end
 end

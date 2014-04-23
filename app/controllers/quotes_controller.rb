@@ -63,6 +63,7 @@ class QuotesController < ApplicationController
                                  quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
                                  quote[:links] = CommonActions.object_crud_paths(nil, quote_path(quote), quote_path(quote))
                                  quote[:created] = quote.created_at.strftime("%d %b %Y")
+                                 quote[:quote_status] = CommonActions.status_color(quote.quote_status)
 
                              }
                              render json: {:aaData => @quotes}

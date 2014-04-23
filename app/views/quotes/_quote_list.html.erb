@@ -27,7 +27,8 @@
                     <% else %>             
                         <th>Quote Send Id</th>
                         <th>Vendors</th>                  
-                        <th>Description</th>                      
+                        <th>Description</th>
+                        <th>Status</th>
                         <th></th>         
                     <% end %>                    
                 </tr>
@@ -76,7 +77,8 @@
                         { "mData": "quote_group_id" },
                         { "mData": "vendor_name" },
                         { "mData": "quote_description" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        { "mData": "quote_status"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false },                       
                     ]'
         }    
     %>
