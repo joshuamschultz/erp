@@ -111,17 +111,34 @@
 </div>
   <% if show_send %>
     <div class="button1">
-          <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>  
-    </div>
+          <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>
+          <div class="separator bottom"></div>
+          <%#= label_tag "Set status" %>
+        <!--   <table>
+            <tr> -->
+              <!-- <td width="70%">Set Status</td> -->
+              <%= select_tag :status, options_for_select([["Open","open"], ["Won","won"], ["Lost","lost"]], :selected => @quote.quote_status), :class => "status-select", :id => "set_status" %>           
+          <!--   </tr>
+          </table> -->
+    </div> 
+    <script type="text/javascript">
+      $(document).on("change", "#set_status", function(){
+          set_quote_status();
+      });
+      function set_quote_status(){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_quote_status", "status_id": $("#set_status").val(), "quote_id": <%= @quote.id %>}}, "status_result", {});
+      }
+      function status_result(){
+
+      }    
+     </script>
   <% end %>
  </div>
 <% if show_quote_to == true %>
     <script type="text/javascript">
         tab_field_forms["form_for_lots"] = ["quote_organization_id", "quote_po_header_id"];
 
-        $(document).ready(function(){
-            change_po_type_field();
-        });
+       
 
         $(document).on("change", ".quote_po_type_option", function(){
             change_po_type_field();
@@ -157,6 +174,16 @@
             return true;
         });
 
+        function change_po_type_field(){
+          if($(".quote_po_type_option:checked").val() == "create_po")
+              $("#quote_org_po_header").hide();
+          else{
+              $("#quote_org_po_header").show();
+              initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_open_pos", "id": $("#quote_organization_id").val()}}, "set_organization_open_pos", {});
+          }
+          $("#quote_organization_id").focus();
+        }
+
     </script>
 
     <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "po-select-box"} %>
@@ -172,5 +199,8 @@
   .button1 {
       float: left;
       width: 100px;
+  }
+  .status-select{
+    width: 92px;
   }
 </style>

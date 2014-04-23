@@ -86,6 +86,16 @@ class CommonActionsController < ApplicationController
           if params[:customer_quote_id].present?
             UserMailer.send_customer_quote(params[:customer_quote_id])
           end
+        when "set_quote_status"
+          if params[:quote_id].present? && params[:status_id].present?
+            quote = Quote.find(params[:quote_id])
+            quote.quote_status = params[:status_id]
+            if quote.save
+              result = "success"
+            else
+              result = "fail"
+            end
+          end          
       end
       render json: {:aaData => result}
   end
