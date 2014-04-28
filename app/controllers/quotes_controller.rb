@@ -51,7 +51,7 @@ class QuotesController < ApplicationController
                                      quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
                                      quote[:created] = quote.created_at.strftime("%d %b %Y")
                                      quote[:quantity] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_quantity }.join(", ").html_safe
-                                     quote[:price] = Quote.get_quote_item_prices(quote, params[:item_id])
+                                     quote[:price] = Quote.get_quote_item_prices_org(quote, organization)
                                      quote[:notes] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_notes }.join(", ").html_safe
                                  }
                                  render json: {:aaData => @quotes}

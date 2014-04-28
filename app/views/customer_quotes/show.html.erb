@@ -32,11 +32,10 @@
 
 <script type="text/javascript">
     function send_customer_quote(){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_customer_quotes_mail", "customer_quote_id": <%= @customer_quote.id %>}}, "after_send", {});
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_customer_quotes_mail", "contact": $('#contact_id').val(), "customer_quote_id": <%= @customer_quote.id %> }}, "after_send", {});
     }
     
     function after_send(response, callback_params, api_params){
-        alert("sucess")
     }
 </script>
 <style type="text/css">
@@ -54,3 +53,32 @@
     } 
     
 </style>
+
+
+<div class="modal hide fade" id="modal-customer-quote">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3></h3>
+    </div>
+    <div class="modal-body">
+        <form id="send_mail">
+            <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Contacts</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                        <tr>
+                            <td><%= @customer_quote.organization.organization_name %></td>
+                            <td><%= select_tag "#{@customer_quote.organization.id}", options_for_select(@customer_quote.organization.contacts.map{ |contact| [ contact.contact_title, contact.id ] }), :class => "status-select", :id => "contact_id" %></td>
+                        </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_customer_quote();">Send</button>
+    </div>
+</div>
