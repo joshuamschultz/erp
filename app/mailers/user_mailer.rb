@@ -40,7 +40,7 @@ class UserMailer < ActionMailer::Base
     # to_address = quote_vendor.oraganzition.organization_email
     
     if organization.contact_type.type_value == 'email'
-       to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
+       # to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
       if @customer_quote.attachments
         @customer_quote.attachments.each do |attachmen|
           file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
