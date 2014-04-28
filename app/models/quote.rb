@@ -199,6 +199,15 @@ class Quote < ActiveRecord::Base
         line_vendor_cost.join(",")        
     end
 
+    def self.get_quote_item_prices_org(quote, item_id)        
+        line_vendor_cost = []
+        quote_costs = quote.quote_lines.where("item_id = ?", item_id)
+        quote_costs.each do |quote_cost|
+            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')            
+        end
+        line_vendor_cost.join(",")        
+    end
+
     def self.get_item_prices(quote_id, item_id)
         item_detail = Hash.new
         quote = Quote.find(quote_id)

@@ -51,12 +51,11 @@
 :locals => {:extras => {:link => populate_quote_path(type: "note", id: @quote)}} %>
 
 <script type="text/javascript">
-    function onclick_send(){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_quotes_mail", "quote_id": <%= @quote.id %>}}, "after_send", {});
-    }
-    
     function after_send(){
         // alert("sucess")
+    }
+    function send_mail_vendor(){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_quotes_mail", "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
     }
 </script>
 <style type="text/css">
@@ -80,3 +79,33 @@
     }
 
 </style>
+
+<div class="modal hide fade" id="modal-simple">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3></h3>
+    </div>
+    <div class="modal-body">
+        <form id="send_mail">
+            <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                <thead>
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Contacts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @quote.quote_vendors.includes(:organization).each do |quote_vendor| %>
+                        <tr>
+                            <td><%= quote_vendor.organization.organization_name %></td>
+                            <td><%= select_tag "#{quote_vendor.organization.id}", options_for_select(quote_vendor.organization.contacts.map{ |contact| [ contact.contact_title, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
+    </div>
+</div>

@@ -111,15 +111,14 @@
 </div>
   <% if show_send %>
     <div class="button1">
-          <%= link_to 'Send', "#", :class => "btn btn-small btn-success", :onclick => "onclick_send()" %>
+          <a class="btn btn-primary" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">Send</a>
           <div class="separator bottom"></div>
-          <%#= label_tag "Set status" %>
-        <!--   <table>
-            <tr> -->
-              <!-- <td width="70%">Set Status</td> -->
-              <%= select_tag :status, options_for_select([["Open","open"], ["Won","won"], ["Lost","lost"]], :selected => @quote.quote_status), :class => "status-select", :id => "set_status" %>           
-          <!--   </tr>
-          </table> -->
+          <table>
+            <tr>
+              <td class="quote">Quote Status</td>
+              <td> <%= select_tag :status, options_for_select([["Open","open"], ["Won","won"], ["Lost","lost"]], :selected => @quote.quote_status), :class => "status-select", :id => "set_status" %></td>        
+            </tr>
+          </table>
     </div> 
     <script type="text/javascript">
       $(document).on("change", "#set_status", function(){
@@ -202,5 +201,9 @@
   }
   .status-select{
     width: 92px;
+  }
+  .quote {
+    float: left;
+    width: 90px !important;
   }
 </style>

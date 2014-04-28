@@ -28,4 +28,16 @@ class CustomerQuote < ActiveRecord::Base
     def redirect_path
         customer_quote_path(self)
     end
+
+    def self.get_qoute_items(customer_quote)
+    	items = []
+    	customer_quote.customer_quote_lines.each do |customer_quote_line|
+    		if customer_quote_line.item_alt_name.present?
+    			items << customer_quote_line.item_alt_name.item_alt_identifier    			
+    		else
+    			items << customer_quote_line.item_name_sub
+    		end
+    	end
+    	items.join(", ").html_safe    	
+    end
 end

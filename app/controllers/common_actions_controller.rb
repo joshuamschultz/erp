@@ -54,12 +54,13 @@ class CommonActionsController < ApplicationController
           # PoHeader.process_payable_po_lines(params)
 
         when "send_quotes_mail"
-          quote = Quote.find(params[:quote_id])
-          quote.quote_vendors.each do |quote_vendor|
-            if quote_vendor.organization.contact_type.type_name == "Email"
-              UserMailer.send_quote(quote, quote_vendor).deliver
-            end
-          end
+          p params[:organizations].to_yaml
+          # quote = Quote.find(params[:quote_id])
+          # quote.quote_vendors.each do |quote_vendor|
+          #   if quote_vendor.organization.contact_type.type_name == "Email"
+          #     UserMailer.send_quote(quote, quote_vendor).deliver
+          #   end
+          # end
           result = "success"
         when "get_item_description"
           if params[:item_id].present?
@@ -84,7 +85,7 @@ class CommonActionsController < ApplicationController
           end
         when "send_customer_quotes_mail"
           if params[:customer_quote_id].present?
-            UserMailer.send_customer_quote(params[:customer_quote_id])
+            UserMailer.send_customer_quote(params[:customer_quote_id], params[:contact])
           end
         when "set_quote_status"
           if params[:quote_id].present? && params[:status_id].present?

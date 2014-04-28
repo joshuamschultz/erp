@@ -120,13 +120,13 @@
         get_quote_info();
         $("#quote_line_item_alt_name_id").val("<%= @customer_quote_line.item_alt_name.alt_item_name if @customer_quote_line.item_alt_name %>");
 
-        $("#customer_quote_line_customer_quote_line_quantity").focusin(function(){
-            $("#customer_quote_line_customer_quote_line_quantity").select();
-        });
+        // $("#customer_quote_line_customer_quote_line_quantity").focusin(function(){
+        //     $("#customer_quote_line_customer_quote_line_quantity").select();
+        // });
 
-        $("#customer_quote_line_customer_quote_line_cost").focusin(function(){
-            $("#customer_quote_line_customer_quote_line_cost").select();
-        })
+        // $("#customer_quote_line_customer_quote_line_cost").focusin(function(){
+        //     $("#customer_quote_line_customer_quote_line_cost").select();
+        // })
     });
 
     $(document).on("change", "#quote_id", function(){         
