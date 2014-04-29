@@ -39,7 +39,6 @@ class CustomerQuotesController < ApplicationController
                     customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
                     customer_quote[:created] = customer_quote.created_at.strftime("%d %b %Y")
                     customer_quote[:items] = CustomerQuote.get_qoute_items(customer_quote)
-                    customer_quote[:items] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.item_alt_name.item_alt_identifier }.join(", ").html_safe
                     customer_quote[:price] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_cost }.join(", ").html_safe
                     customer_quote[:quantity] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_quantity }.join(", ").html_safe
                 }
