@@ -11,7 +11,7 @@
 
                 <tr>
                     <td class="span2">Customer</td>
-                    <td class="span5"><strong><%= CommonActions.linkable(organization_path(@customer_quote), @customer_quote.organization.organization_name).html_safe %></strong></td>
+                    <td class="span5"><strong><%= CommonActions.linkable(organization_path(@customer_quote.organization), @customer_quote.organization.organization_name).html_safe %></strong></td>
                 </tr>
 
                 <tr>

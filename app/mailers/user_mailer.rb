@@ -35,10 +35,7 @@ class UserMailer < ActionMailer::Base
   def send_customer_quote(customer_quote_id, address)
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     @customer_quote = CustomerQuote.find(customer_quote_id)
-    organization = @customer_quote.organization
-
-    # to_address = quote_vendor.oraganzition.organization_email
-    
+    organization = @customer_quote.organization    
     if organization.contact_type.type_value == 'email'
        # to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
       if @customer_quote.attachments
