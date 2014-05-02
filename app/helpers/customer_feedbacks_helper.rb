@@ -1,0 +1,2 @@
+module CustomerFeedbacksHelper
+end
