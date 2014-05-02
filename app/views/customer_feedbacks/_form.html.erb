@@ -1,0 +1,80 @@
+<div class="separator bottom"></div>
+<%= simple_form_for(@customer_feedback, :html => {:id => "form_for_customer_feedback",:class => "form-horizontal"}) do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs">
+
+        <div class="control-group">
+                <label for="quote_vendors" class="optional control-label">Customer Type</label>
+                <div class="controls">
+                    <%= select_tag "organizations[]", options_for_select([["Customer", "customer"],["Vendor", "vendor"]]), :id => "organization_type" %>
+                </div>
+            </div>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <div id="customer_select">
+            <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', :label => "Organization" %>
+        </div>
+         <div id="vendor_select">
+            <%#= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', :label => "Vendor" %>
+        </div>
+
+        <div class="separator bottom"></div>
+
+        <%= hidden_field_tag :organization_id, (@customer_feedback.organization.id if @customer_feedback.organization) %>
+
+        <%= hidden_field_tag :org_organization_id, (@customer_feedback.organization.id if @customer_feedback.organization) %>
+
+        <%= f.input :title %>
+
+        <%= f.input :feedback %>
+
+        <%= f.input :quality_action_id %>
+
+    </div>
+
+
+    <div class="separator bottom"></div>
+    <div class="form-actions">
+        <%= f.submit "Submit", :class =>"btn" %>
+        <%= link_to 'Delete', customer_feedback_path(@customer_feedback), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @customer_feedback.new_record? %>
+        <%= link_to 'Back', customer_feedbacks_path, :class =>"btn" %>
+    </div>
+<% end %>
+
+<script type="text/javascript">    
+    $(document).ready(function(){ 
+      $("#customer_feedback_organization_id").val("<%= @customer_feedback.organization.organization_name if @customer_feedback.organization %>");
+        tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
+            // change_organization_type();
+    });
+
+    // $(document).on("keydown", "#organization_type", function(e){
+    //     var keyCode = e.keyCode || e.which;
+    //     if(keyCode == 13){
+    //         e.preventDefault();
+    //         $('#customer_feedback_organization_id').focus();
+    //     }
+    // });
+
+    $(document).on("change", "#organization_type", function(){         
+        // change_organization_type();
+    });
+    function change_organization_type(){
+        if($("#organization_type").val() == "vendor"){                     
+            $('#customer_select').hide();
+            $('#vendor_select').show();
+            tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
+            $("#customer_feedback_organization_id").val("");
+            $("#organization_id").val("");  
+        }
+        else{ 
+            $('#vendor_select').hide();
+            $('#customer_select').show();
+            tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
+            $("#customer_feedback_organization_id").val("");
+            $("#organization_id").val("");
+       }
+    }
+</script>
