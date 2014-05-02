@@ -3,7 +3,7 @@ class CustomerFeedbacksController < ApplicationController
     before_filter :set_page_info
 
     def set_page_info
-      @menus[:quotes][:active] = "active"
+      @menus[:quality][:active] = "active"
     end
 
     def set_autocomplete_values
