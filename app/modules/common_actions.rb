@@ -166,7 +166,7 @@ module CommonActions
 			{:path => process_flows_path, :name => "Process Flow"},
 			{:path => fmea_types_path, :name => "FMEA"},
 			{:path => control_plans_path, :name => "Control Plan"},
-			{:path => "#", :name => "Customer Response"},
+			{:path => customer_feedbacks_path, :name => "Customer Response"},
 			{:path => "#", :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
 			{:path => customer_qualities_path, :name => "Quality Level"},
