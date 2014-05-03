@@ -17,7 +17,15 @@
         <table id="table_report_quote_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
-                    <% if @item.present? || @organization.present? %>
+                    <% if @organization.present? %>
+                        <th>Quote</th>
+                        <th>Vendors</th>
+                        <th>Items</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Notes</th>
+                        <th>Created at</th>
+                    <% elsif @item.present? %>
                         <th>Quote</th>
                         <th>Vendors</th>
                         <th>Price</th>
@@ -61,6 +69,7 @@
             :columns => '[
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
+                            { "mData": "part_no"},
                             { "mData": "price" },
                             { "mData": "quantity"},
                             { "mData": "notes"},
