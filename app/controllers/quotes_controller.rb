@@ -52,6 +52,7 @@ class QuotesController < ApplicationController
                                      quote[:created] = quote.created_at.strftime("%d %b %Y")
                                      quote[:quantity] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_quantity }.join(", ").html_safe
                                      quote[:price] = Quote.get_quote_item_prices_org(quote, organization)
+                                     quote[:part_no] = Quote.item_list(quote)
                                      quote[:notes] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_notes }.join(", ").html_safe
                                  }
                                  render json: {:aaData => @quotes}

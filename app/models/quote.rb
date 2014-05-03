@@ -190,6 +190,16 @@ class Quote < ActiveRecord::Base
         quote_path(self)
     end
 
+    def self.item_list(quote)
+        part_nos = []
+        quote.quote_lines.each do |quote_line|
+            if quote_line.item
+                part_nos << "<a href='/items/#{quote_line.item.id}'>#{quote_line.item.item_part_no}</a>"
+            end
+        end
+        part_nos.join(",")
+    end
+
     def self.get_quote_item_prices(quote, item_id)        
         line_vendor_cost = []
         quote_costs = quote.quote_lines.where("item_id = ?", item_id)
@@ -236,4 +246,6 @@ class Quote < ActiveRecord::Base
         # # tes.delete("0.0")
         # tes.join(',')
     end
+
+
 end
