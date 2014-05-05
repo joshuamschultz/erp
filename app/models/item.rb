@@ -77,11 +77,11 @@ class Item < ActiveRecord::Base
   end
 
   def purchase_orders
-      PoHeader.joins(:po_lines).where("po_lines.item_id = ?", self.id)
+      PoHeader.joins(:po_lines).where("po_lines.item_id = ?", self.id).order('created_at desc')
   end
 
   def sales_orders
-      SoHeader.joins(:so_lines).where("so_lines.item_id = ?", self.id)
+      SoHeader.joins(:so_lines).where("so_lines.item_id = ?", self.id).order('created_at desc')
   end 
 
   def qty_on_order

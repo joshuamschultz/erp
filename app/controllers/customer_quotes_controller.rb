@@ -8,7 +8,7 @@ class CustomerQuotesController < ApplicationController
 
     def set_autocomplete_values
       params[:customer_quote][:organization_id], params[:organization_id] = params[:organization_id], params[:customer_quote][:organization_id]
-      params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
+      # params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
     end
 
     def index

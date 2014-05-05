@@ -29,7 +29,7 @@ class QualityLotsController < ApplicationController
   def index
     if params[:item_id].present?
         @item = Item.find(params[:item_id])
-        @quality_lots = @item.quality_lots
+        @quality_lots = @item.quality_lots.order('created_at desc')
     else
         @quality_lots = QualityLot.all
     end

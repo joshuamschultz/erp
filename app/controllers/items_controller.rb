@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
         @organization = Organization.find(params[:organization_id])
         @items = @organization.present? ? @organization.items_with_recent_revision : []
     else
-        @items = Item.all
+        @items = Item.order('item_part_no asc')
     end
 
     respond_to do |format|
