@@ -28,22 +28,22 @@ class PoShipment < ActiveRecord::Base
   validate :check_total_shipped
 
   def check_total_shipped
-		total_shipped = self.other_po_shipments.sum(:po_shipped_count) + self.po_shipped_count
+    total_shipped = self.other_po_shipments.sum(:po_shipped_count) + self.po_shipped_count
 
-		puts self.other_po_shipments.sum(:po_shipped_count)
-		puts self.po_shipped_count
+    puts self.other_po_shipments.sum(:po_shipped_count)
+    puts self.po_shipped_count
 
-		if total_shipped > self.po_line.po_line_quantity
-		 	errors.add(:po_shipped_count, "Exceeded than ordered!")
-		end
+    if total_shipped > self.po_line.po_line_quantity
+      errors.add(:po_shipped_count, "Exceeded than ordered!")
+    end
   end
 
   def other_po_shipments
-		self.new_record? ? self.po_line.po_shipments : self.po_line.po_shipments.where("id != ?", self.id)
+    self.new_record? ? self.po_line.po_shipments : self.po_line.po_shipments.where("id != ?", self.id)
   end
 
   def po_total_shipped
-  		self.po_line.po_shipments.sum(:po_shipped_count)
+      self.po_line.po_shipments.sum(:po_shipped_count)
   end
 
   after_save :set_po_line_status
@@ -63,12 +63,12 @@ class PoShipment < ActiveRecord::Base
 
   def self.open_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
   end
 
   def self.closed_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
   end
 
   # scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
@@ -76,12 +76,12 @@ class PoShipment < ActiveRecord::Base
 
   def self.open_shipments(shipments)
       shipments ||= PoShipment
-      shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
+      shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
   end
 
   def self.closed_shipments(shipments)
       shipments ||= PoShipment
-      shipments.where("po_shipments.id in (?)", PayablePoShipment.all.collect(&:po_shipment_id))
+      shipments.where("po_shipments.id in (?)", PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
   end
 
 end

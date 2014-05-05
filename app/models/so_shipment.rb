@@ -10,22 +10,22 @@ class SoShipment < ActiveRecord::Base
   has_one :receivable, through: :receivable_so_shipment
 
   def check_total_shipped
-		total_shipped = self.other_so_shipments.sum(:so_shipped_count) + self.so_shipped_count
+    total_shipped = self.other_so_shipments.sum(:so_shipped_count) + self.so_shipped_count
 
-		puts self.other_so_shipments.sum(:so_shipped_count)
-		puts self.so_shipped_count
+    puts self.other_so_shipments.sum(:so_shipped_count)
+    puts self.so_shipped_count
 
-		if total_shipped > self.so_line.so_line_quantity
-		 	errors.add(:so_shipped_count, "Exceeded than ordered!")
-		end
+    if total_shipped > self.so_line.so_line_quantity
+      errors.add(:so_shipped_count, "Exceeded than ordered!")
+    end
   end
 
   def other_so_shipments
-  		self.new_record? ? self.so_line.so_shipments : self.so_line.so_shipments.where("id != ?", self.id)
+      self.new_record? ? self.so_line.so_shipments : self.so_line.so_shipments.where("id != ?", self.id)
   end
 
   def so_total_shipped
-  		self.so_line.present? ? self.so_line.so_shipments.sum(:so_shipped_count) : 0
+      self.so_line.present? ? self.so_line.so_shipments.sum(:so_shipped_count) : 0
   end
 
   before_save :process_before_save
@@ -62,12 +62,12 @@ class SoShipment < ActiveRecord::Base
 
   def self.open_shipments(shipments)
       shipments ||= SoShipment
-      shipments.where("so_shipments.id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id))
+      shipments.where("so_shipments.id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end
 
   def self.closed_shipments(shipments)
       shipments ||= SoShipment
-      shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id))
+      shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end
 
 end

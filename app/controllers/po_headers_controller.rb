@@ -35,7 +35,7 @@ class PoHeadersController < ApplicationController
           @po_headers = @item_revision.present? ? @item_revision.purchase_orders : []
       elsif params[:item_id].present?
           @item = Item.find(params[:item_id])
-          @po_headers = @item.present? ? @item.purchase_orders : []
+          @po_headers = @item.present? ? @item.purchase_orders.order('created_at desc') : []
       else
           @po_headers = PoHeader.order(:created_at)
       end
