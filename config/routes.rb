@@ -74,7 +74,6 @@ AllianceFasteners::Application.routes.draw do
   get "quotes/quotes-history" => 'quotes#history', as: :quotes_history
 
   resources :quotes do
-    get 'ajax_load', on: :collection
     resources :quote_vendors
   end
 
