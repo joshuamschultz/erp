@@ -62,12 +62,16 @@
         <%= render 'item_part_dimensions/item_dimensions' %>
     </div>
 </div>
+<div id="send_quote">
+    <% if @quote_type_item == "vendor" %>
+        
+            <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+    <% else %>
+        <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+    <% end %>
+</div>
 
-<% if @quote_type_item == "vendor" %>
-    <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
-<% else %>
-    <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
-<% end %>
+
 
 <!-- Attachments -->
 <%= render 'attachments/attachments' if @item_revision %>
@@ -101,14 +105,55 @@
 <%= render 'item_revisions/item_revisions' %>
 
 
+<script type="text/javascript">
+// ajax load quote
+    function get_quote(){
+        $('#send_quote').html("");
+        var quote = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Quotes</h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_customer_quote(); return false">Customer</a><a href="#" class="btn btn-mini btn-success" onclick="get_quote(); return false">Vendor</a></span></div> </div><div class="widget-body"><table id="table_report_quote_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Quote</th><th>Vendors</th><th>Price</th><th>Quantity</th><th>Notes</th><th>Created at</th></tr></thead><tbody></tbody></table></div></div>'
+         $('#send_quote').html(quote);
 
+        var data_table_report_quote_list;
+         
+            data_table_report_quote_list = $('#table_report_quote_list').dataTable({
+                "bAutoWidth": false,
+                "bProcessing": true,
+                "sAjaxSource": '/quotes?item_id=<%=@item.id%>',
+                "aaSorting": [[0, "desc"]],
+                "aoColumns": [
+                                { "mData": "quote_group_id" },
+                                { "mData": "vendor_name" },
+                                { "mData": "price" },
+                                { "mData": "quantity"},
+                                { "mData": "notes"},
+                                { "mData": "created" },                           
+                            ],
+                "bFilter": true,
+                "bLengthChange": true
+            });
 
+    }
 
+// ajax load customer quote
+    function get_customer_quote(){
+        $('#send_quote').html("");
+        var customer_quote = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Customer Quotes</h4><span class="span6 heading right"><a href="/customer_quotes/new" class="btn btn-mini btn-success">New Customer Quote</a><a href="#" class="btn btn-mini btn-success" onclick="get_customer_quote(); return false">Customer</a><a href="#" class="btn btn-mini btn-success" onclick="get_quote(); return false">Vendor</a></span></div> </div><div class="widget-body"><table id="table_report_customer_quote_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Quote Send Id</th><th>Customer</th><th>Prices</th><th>Quantity</th><th>Description</th><th>Created at</th></tr></thead><tbody></tbody></table></div></div>'
+        $('#send_quote').html(customer_quote);
+        data_table_report_customer_quote_list = $('#table_report_customer_quote_list').dataTable({
+            "bAutoWidth": false,
+            "bProcessing": true,
+            "sAjaxSource": '/customer_quotes?item_id=<%=@item.id%>',
+            "aaSorting": [[0, "asc"]],
+            "aoColumns": [
+                            { "mData": "customer_quote_identifier" },
+                            { "mData": "customer_name" },
+                            { "mData": "price" },
+                            { "mData": "quantity"},
+                            { "mData": "customer_quote_description" },
+                            { "mData": "created" }                          
+                        ],
+            "bFilter": true,
+            "bLengthChange": true
+        });
 
-
-
-
-
-
-
-
+    }
+</script>
