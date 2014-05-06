@@ -8,7 +8,7 @@ class CustomerQuotesController < ApplicationController
 
     def set_autocomplete_values
       params[:customer_quote][:organization_id], params[:organization_id] = params[:organization_id], params[:customer_quote][:organization_id]
-      # params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
+      params[:customer_quote][:organization_id] = params[:org_organization_id] if params[:customer_quote][:organization_id] == ""
     end
 
     def index
@@ -17,7 +17,7 @@ class CustomerQuotesController < ApplicationController
         @customer_quotes = item.customer_quotes.order('created_at desc')
       elsif params[:organization_id]
         organization = Organization.find(params[:organization_id])
-        @customer_quotes = organization.customer_quotes.unscoped.order('created_at desc')
+        @customer_quotes = organization.customer_quotes.order('created_at desc')
       else
           @customer_quotes = CustomerQuote.order('created_at desc')
       end

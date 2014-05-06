@@ -196,4 +196,61 @@ class QuotesController < ApplicationController
 
     end
 
+    def ajax_load
+         if params[:item_id]
+            item = Item.find(params[:item_id])
+            @quotes = item.quotes.order('created_at desc')
+        elsif params[:organization_id]
+            organization = Organization.find(params[:organization_id])
+            @quotes = organization.quote_vendors.joins(:quote).order('quotes.created_at desc').collect{ |quote_vendor| quote_vendor.quote}
+        else
+            @quotes = Quote.order('created_at desc')
+        end
+
+        respond_to do |format|
+            format.html # index.html.erb
+            if item
+                format.json {  @quotes = @quotes.select{|quote|
+
+                                     quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                     quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                     quote[:created] = quote.created_at.strftime("%d %b %Y")
+                                     quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
+                                     quote[:price] = Quote.get_quote_item_prices(quote, params[:item_id])
+                                     quote[:notes] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_notes
+
+                                 }
+                                 render json: {:aaData => @quotes}
+                                 }
+            elsif organization
+                format.json {  @quotes = @quotes.select{|quote|
+
+                                     quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                     quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                     quote[:created] = quote.created_at.strftime("%d %b %Y")
+                                     quote[:quantity] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_quantity }.join(", ").html_safe
+                                     quote[:price] = Quote.get_quote_item_prices_org(quote, organization)
+                                     quote[:part_no] = Quote.item_list(quote)
+                                     quote[:notes] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_notes }.join(", ").html_safe
+                                 }
+                                 render json: {:aaData => @quotes}
+                                 }
+            else
+                format.json {  @quotes = @quotes.select{|quote|
+                                 quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                 quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                 quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                 quote[:links] = CommonActions.object_crud_paths(nil, quote_path(quote), quote_path(quote))
+                                 quote[:created] = quote.created_at.strftime("%d %b %Y")
+                                 quote[:quote_status] = CommonActions.status_color(quote.quote_status)
+
+                             }
+                             render json: {:aaData => @quotes}
+                             }
+            end
+        end   
+    end
+
 end
