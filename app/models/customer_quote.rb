@@ -13,6 +13,7 @@ class CustomerQuote < ActiveRecord::Base
     has_many :comments, :as => :commentable, :dependent => :destroy
     has_many :attachments, :as => :attachable, :dependent => :destroy
 
+
     def process_before_create
         # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
         self.customer_quote_identifier =  new_customer_quote_identifier
@@ -33,7 +34,7 @@ class CustomerQuote < ActiveRecord::Base
         items = []
         customer_quote.customer_quote_lines.each do |customer_quote_line|
             if customer_quote_line.item_alt_name.present?
-                items << '<a href="'+customer_quote_line.item.to_s+'">'+customer_quote_line.item_alt_name.item_alt_identifier+'</a>'
+                items << '<a href="/items/'+customer_quote_line.item.id.to_s+'">'+customer_quote_line.item_alt_name.item_alt_identifier+'</a>'
             else
                 items << customer_quote_line.item_name_sub
             end

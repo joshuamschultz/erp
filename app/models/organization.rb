@@ -138,22 +138,22 @@ class Organization < ActiveRecord::Base
   	def purchase_orders
   		case(self.organization_type.type_value)
           	when "customer"
-              	PoHeader.joins(:po_lines).where("po_lines.organization_id = ?", self.id)
+              	PoHeader.joins(:po_lines).where("po_lines.organization_id = ?", self.id).order('created_at desc')
           	when "vendor"
-              	PoHeader.where("organization_id = ?", self.id)
+              	PoHeader.where("organization_id = ?", self.id).order('created_at desc')
           	else
-              	PoHeader.where("organization_id = ?", 0)
+              	PoHeader.where("organization_id = ?", 0).order('created_at desc')
       	end
   	end
 
   	def sales_orders
   		case(self.organization_type.type_value)
           	when "customer"              	
-              	SoHeader.where("organization_id = ?", self.id)
+              	SoHeader.where("organization_id = ?", self.id).order('created_at desc')
           	when "vendor"
-              	SoHeader.joins(:so_lines).where("so_lines.organization_id = ?", self.id)
+              	SoHeader.joins(:so_lines).where("so_lines.organization_id = ?", self.id).order('created_at desc')
           	else
-              	SoHeader.where("organization_id = ?", 0)
+              	SoHeader.where("organization_id = ?", 0).order('created_at desc')
       	end
   	end 	
 
