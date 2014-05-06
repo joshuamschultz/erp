@@ -96,7 +96,13 @@ class CommonActionsController < ApplicationController
             else
               result = "fail"
             end
-          end          
+          end
+        when "get_vendor_po"
+          if params[:organization_id].present? && params[:alt_name_id]
+            # item_alt_name = ItemAltName.find(params[:alt_name_id])
+            # organization = Organization.find(params[:organization_id])
+            result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_alt_name_id = ?", params[:organization_id],params[:alt_name_id]).order("po_headers.created_at DESC")
+          end                          
       end
       render json: {:aaData => result}
   end

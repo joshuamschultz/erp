@@ -25,8 +25,29 @@
             <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.organization) %>
 
             <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.organization) %>
+<!-- 
+            <div id="group_div" style="padding-bottom:20px;">
+                <div class="control-group">
+                    <label for="quote_vendors" class="optional control-label">Choose Item</label>
+                    <div class="controls">
+                        <select name="quote_item" id="quote_item">
+                            <option value=""></option>
+                        </select>
+                        <%#= select_tag :quote_item, options_for_select([[ , ""] ])%>
+                    </div>
+                </div>
+            </div> -->
 
-            <%= f.input :so_line_vendor_po, :label => "Vendor PO" %>
+            <div id="group_div" style="padding-bottom:20px;">
+                <div class="control-group">
+                    <label for="quote_vendors" class="optional control-label">Vendor PO</label>
+                    <div class="controls">                        
+                        <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
+  
+                    </div>
+                </div>
+            </div>
+            
 
             <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
 
@@ -52,7 +73,8 @@
 <script type="text/javascript">
     tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_vendor_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
-    $(document).ready(function(){
+    $(document).ready(function(){       
+
         $("#so_line_so_line_cost").change(function(){
             calculate_line_item_total();
         });
@@ -87,6 +109,11 @@
         $("#so_line_item_alt_name_id").val("<%= @so_line.item_alt_name.alt_item_name if @so_line.item_alt_name %>");
 
         $("#so_line_item_alt_name_id").focus();
+
+        $("#so_line_organization_id").focusout(function(){
+            get_vendor_po();
+        });
+        get_vendor_po();
     });    
 
     function calculate_line_item_total(){
@@ -105,4 +132,20 @@
         calculate_line_item_total();
         return false;
     }
+
+    function get_vendor_po(){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_vendor_po", "organization_id": $('#organization_id').val(), "alt_name_id": $('#alt_name_id').val() }}, "set_vendor_po", {});
+    }
+    function set_vendor_po(response, callback_params, api_params){
+        var dataArr = response["aaData"];
+
+        $('#so_line_so_line_vendor_po option').remove();   
+
+        $.each(dataArr, function(i){
+            $('#so_line_so_line_vendor_po').append($("<option></option>")
+                            .attr("value",dataArr[i]['po_identifier'])
+                            .text(dataArr[i]['po_identifier']));
+        });        
+    }
+
 </script>
