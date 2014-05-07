@@ -16,7 +16,7 @@ class PoHeader < ActiveRecord::Base
   before_create :before_create_level_defaults
 
   def before_create_level_defaults
-		self.po_status = "open"
+    self.po_status = "open"
     self.po_identifier = UNASSIGNED
 
     # self.po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
@@ -50,7 +50,7 @@ class PoHeader < ActiveRecord::Base
   :conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
   belongs_to :po_type, :class_name => "MasterType", :foreign_key => "po_type_id", 
-  	:conditions => ['type_category = ?', 'po_type']
+    :conditions => ['type_category = ?', 'po_type']
 
   has_many :po_lines, :dependent => :destroy
   has_many :quality_lots, :dependent => :destroy

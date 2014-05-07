@@ -37,7 +37,7 @@ class PoHeadersController < ApplicationController
           @item = Item.find(params[:item_id])
           @po_headers = @item.present? ? @item.purchase_orders : []
       else
-          @po_headers = PoHeader.order("created_at DESC")
+          @po_headers = PoHeader.order("created_at desc")         
       end
 
       @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status].present? && @po_headers.any?
@@ -48,12 +48,15 @@ class PoHeadersController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json {           
+      format.json { 
+          i = 0
           @po_headers = @po_headers.select{|po_header|
+              po_header[:index] = i 
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
               po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
               po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+              i += 1
           }
           render json: {:aaData => @po_headers}
       }
