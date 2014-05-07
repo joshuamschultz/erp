@@ -37,7 +37,7 @@ class PoHeadersController < ApplicationController
           @item = Item.find(params[:item_id])
           @po_headers = @item.present? ? @item.purchase_orders : []
       else
-          @po_headers = PoHeader.order(:created_at)
+          @po_headers = PoHeader.order("created_at DESC")
       end
 
       @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status].present? && @po_headers.any?

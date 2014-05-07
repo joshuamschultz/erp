@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<%= render :partial => 'items/items' if @organization.type_name == "vendor" %>
+<%= render :partial => 'items/items' %>
 
 <%  if ["customer", "vendor"].include?(@organization.type_name) %>
 
