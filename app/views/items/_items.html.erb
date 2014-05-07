@@ -22,10 +22,13 @@
                 <th>Revision Date</th>
                 <th>Tooling</th>
                 <th>Cost</th>
+                <% if @organization.present? && @organization.type_name == "customer"%>
+                    <th> Sell </th>
+                <%  end %>                
                 <th>Notes</th>
                 <th>Active</th> 
                 <th>Quantity on Hand</th>  
-                <th>Quantity on Order</th>  
+                <th>Quantity on Order</th> 
                 <th>Alt Names</th>  
                 <!-- <th></th> -->
               </tr>
@@ -37,23 +40,48 @@
     </div>
 </div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
-        :columns => '[
-                        { "mData": "owner_name", "bVisible": false },                        
-                        { "mData": "item_part_no" },
-                        { "mData": "item_name", "bVisible": false },
-                        { "mData": "item_description", "bVisible": false },
-                        { "mData": "vendor_name", "bVisible": false },                       
-                        { "mData": "item_revision_name" },
-                        { "mData": "item_revision_date", "bVisible": false},
-                        { "mData": "item_tooling", "bVisible": false },
-                        { "mData": "item_cost" },                        
-                        { "mData": "item_notes", "bVisible": false},
-                        { "mData": "item_active", "bVisible": false },
-                        { "mData": "item_quantity_in_hand" },
-                        { "mData": "item_quantity_on_order" },
-                        { "mData": "item_alt_parts" }
-                    ]'
-    } 
-%>
+<% if @organization.present? && @organization.type_name == "customer" %> 
+
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
+            :columns => '[
+                            { "mData": "owner_name", "bVisible": false },                        
+                            { "mData": "item_part_no" },
+                            { "mData": "item_name", "bVisible": false },
+                            { "mData": "item_description", "bVisible": false },
+                            { "mData": "vendor_name", "bVisible": false },                       
+                            { "mData": "item_revision_name" },
+                            { "mData": "item_revision_date", "bVisible": false},
+                            { "mData": "item_tooling", "bVisible": false },
+                            { "mData": "item_cost" },
+                            { "mData": "item_sell" },                       
+                            { "mData": "item_notes", "bVisible": false},
+                            { "mData": "item_active", "bVisible": false },
+                            { "mData": "item_quantity_in_hand" },
+                            { "mData": "item_quantity_on_order" },
+                            { "mData": "item_alt_parts" }
+                        ]'
+        } 
+    %>
+<% else %>
+     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
+            :columns => '[
+                            { "mData": "owner_name", "bVisible": false },                        
+                            { "mData": "item_part_no" },
+                            { "mData": "item_name", "bVisible": false },
+                            { "mData": "item_description", "bVisible": false },
+                            { "mData": "vendor_name", "bVisible": false },                       
+                            { "mData": "item_revision_name" },
+                            { "mData": "item_revision_date", "bVisible": false},
+                            { "mData": "item_tooling", "bVisible": false },
+                            { "mData": "item_cost" },                        
+                            { "mData": "item_notes", "bVisible": false},
+                            { "mData": "item_active", "bVisible": false },
+                            { "mData": "item_quantity_in_hand" },
+                            { "mData": "item_quantity_on_order" },
+                            { "mData": "item_alt_parts" }
+                        ]'
+        } 
+    %>
+<% end %>

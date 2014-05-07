@@ -41,6 +41,8 @@ class CustomerQuotesController < ApplicationController
                     customer_quote[:items] = CustomerQuote.get_qoute_items(customer_quote)
                     customer_quote[:price] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_cost }.join(", ").html_safe
                     customer_quote[:quantity] = customer_quote.customer_quote_lines.collect{|customer_quote_line| customer_quote_line.customer_quote_line_quantity }.join(", ").html_safe
+                    # customer_quote[:status] =
+
                 }
                  render json: {:aaData => @customer_quotes}
                 }

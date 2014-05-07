@@ -132,6 +132,8 @@
 
     function set_item_revision_cost(response, callback_params, api_params){
         $("#so_line_so_line_cost").val(response.item_cost);
+        if(response.item_sell) 
+            $("#so_line_so_line_sell").val(response.item_sell);
         calculate_line_item_total();
         return false;
     }

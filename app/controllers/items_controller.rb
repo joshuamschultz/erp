@@ -23,7 +23,11 @@ class ItemsController < ApplicationController
   def index
     if params[:organization_id].present?
         @organization = Organization.find(params[:organization_id])
-        @items = @organization.present? ? @organization.items_with_recent_revision : []
+        if @organization.type_name == "vendor"
+          @items = @organization.present? ? @organization.po_items : []
+        elsif @organization.type_name == "customer"
+          @items = @organization.present? ? @organization.so_items : []
+        end
     else
         @items = Item.order('item_part_no asc')
     end
@@ -47,6 +51,7 @@ class ItemsController < ApplicationController
               item[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
               item[:item_quantity_in_hand] = item.qty_on_hand
               item[:item_quantity_on_order] = item.qty_on_order
+              item[:item_sell] = item_revision.item_sell.present? ? item_revision.item_sell : 0.0
             else
               item[:owner_name] = ""
               item[:item_name] = ""

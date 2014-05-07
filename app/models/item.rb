@@ -92,6 +92,10 @@ class Item < ActiveRecord::Base
       self.po_lines.sum(:po_line_shipped) - self.so_lines.sum(:so_line_shipped)
   end
 
+  def item_sell_price
+    
+  end
+
   def current_location
       po_shipment = self.po_shipments.order(:created_at).last
       po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
