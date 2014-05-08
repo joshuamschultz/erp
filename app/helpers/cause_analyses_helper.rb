@@ -1,0 +1,2 @@
+module CauseAnalysesHelper
+end

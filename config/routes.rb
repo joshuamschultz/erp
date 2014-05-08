@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :cause_analyses
+
+
   resources :customer_feedbacks
 
 
