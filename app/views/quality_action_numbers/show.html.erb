@@ -1,0 +1,16 @@
+<div class="row-fluid span8">
+    <div class="label label-large label-info arrowed-in arrowed-right">
+        <h4>Next Quality action no</h4>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tbody>
+            <tr>
+              <td class="span2">Next Quality Action No: :</td>
+              <td class="span5"><%= @quality_action_number.next_action_no %></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-actions">
+        <%= link_to 'Edit', edit_quality_action_number_path(@quality_action_number) , :class => "btn btn-small" %>
+    </div>
+</div>

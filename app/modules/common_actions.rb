@@ -199,7 +199,9 @@ module CommonActions
 			{:path => territories_path, :name => "Territories"},
 			{:path => "#", :name => "Documents"},
 			{:path => commodities_path, :name => "Commodities"},
-			{:path => check_code_path(CheckCode.first), :name => "Check Code"}
+			{:path => check_code_path(CheckCode.first), :name => "Counters"},
+			{:path => quality_action_number_path(QualityActionNumber.first), :name => "Quality Action Number"},
+			# {:path => }
 		]
 		menus
 	end

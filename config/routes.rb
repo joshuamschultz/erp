@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :quality_action_numbers, only: [ :update, :show, :edit]
+
+
   resources :cause_analyses
 
 
