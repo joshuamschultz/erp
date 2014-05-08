@@ -162,7 +162,7 @@ module CommonActions
 			{:path => "#", :name => "Part Submission Warrant"},
 			{:path => "#", :name => "Packaging"},
 			{:path => gauges_path, :name => "Instruments"},
-			{:path => "#", :name => " Cause Analysis"},
+			{:path => cause_analyses_path, :name => " Cause Analysis"},
 			{:path => process_flows_path, :name => "Process Flow"},
 			{:path => fmea_types_path, :name => "FMEA"},
 			{:path => control_plans_path, :name => "Control Plan"},
