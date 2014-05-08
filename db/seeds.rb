@@ -106,3 +106,7 @@ end
 unless CheckCode.first
    CheckCode.create(:next_check_code => "")
 end
+
+unless QualityActionNumber.first
+   QualityActionNumber.create(:next_action_no => 0)
+end
