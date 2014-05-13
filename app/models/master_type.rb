@@ -13,6 +13,10 @@ class MasterType < ActiveRecord::Base
 
   scope :gl_categories, where(:type_category => 'gl_category')  
 
+  scope :ic_actions, where(:type_category => 'icp_quallity_action')
+
+  scope :organization_quality_types, where(:type_category => 'organization_type_q_a')  
+
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
@@ -29,7 +33,12 @@ class MasterType < ActiveRecord::Base
 
   has_many :type_based_gl_accounts, :class_name => "GlAccount", :foreign_key => "gl_type_id"
 
+  has_many :type_based_quality_actions, :class_name => "QualityAction", :foreign_key=> "ic_action_id"
+
+  has_many :type_based_organization_quality_type, :class_name => "QualityAction", :foreign_key => "organization_quality_type_id"
+
   has_many :customer_quality_levels, :dependent => :destroy
+
   has_many :customer_qualities, :through => :customer_quality_levels
 
   validates_uniqueness_of :type_value

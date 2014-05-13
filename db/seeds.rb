@@ -77,7 +77,14 @@ mastertypes = [
    ["Debit", "Debit", "D", "gl_mode", "true"],
    # GL Categories
    ["Balance", "Balance", "B", "gl_category", "true"],
-   ["Trial", "Trial", "T", "gl_category", "true"]
+   ["Trial", "Trial", "T", "gl_category", "true"],
+   # Org Type for Quality Action
+   ["Customer", "", "customer_q_a", "organization_type_q_a", "true"],
+   ["Vendor", "", "vendor_q_a", "organization_type_q_a", "true"],
+   ["Internal", "", "internal_q_a", "organization_type_q_a", "true"],
+   # ICP For Quality Action
+   ["Corrective", "", "corrective", "icp_quallity_action", "true"],
+   ["Preventive", "", "preventive", "icp_quallity_action", "true"],
 ]
 
 mastertypes.each do |master|
@@ -103,10 +110,13 @@ glaccounts.each do |account|
    end
 end
 
-unless CheckCode.first
-   CheckCode.create(:next_check_code => "")
-end
+check_codes = [
+   ["", "check_code"],
+   ["", "quality_next"],
+]
 
-unless QualityActionNumber.first
-   QualityActionNumber.create(:next_action_no => 0)
+check_codes.each do |ch|
+   unless CheckCode.find_by_counter_type(ch[1])
+      CheckCode.create(:counter => ch[0], :counter_type => ch[1])
+   end
 end

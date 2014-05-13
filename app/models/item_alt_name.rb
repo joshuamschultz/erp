@@ -5,7 +5,7 @@ class ItemAltName < ActiveRecord::Base
   after_initialize :default_values
 
   def default_values
-		self.item_alt_active = true if self.item_alt_active.nil?
+    self.item_alt_active = true if self.item_alt_active.nil?
   end
 
   belongs_to :item
@@ -22,11 +22,12 @@ class ItemAltName < ActiveRecord::Base
   has_many :po_lines
   has_many :so_lines
   has_many :quote_lines
+  has_many :quality_actions
 
   has_many :transferring_po_lines, :foreign_key => "alt_name_transfer_id", :class_name => "PoLine"
 
   def alt_item_name
-  		self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
+      self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
   end
 
 end

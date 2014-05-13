@@ -1,4 +1,9 @@
 class CheckCodesController < ApplicationController
+  before_filter :set_page_info
+  def set_page_info
+    @menus[:system][:active] = "active"
+  end
+
   # GET /check_codes
   # GET /check_codes.json
   def index

@@ -2,7 +2,7 @@
 <%= simple_form_for(@check_code, :html => {:id => "form_for_next_check",:class => "form-horizontal", :multipart => true }) do |f| %>
 	<%= f.error_notification %>
 	<div class="form-inputs">
-	    <%= f.input :next_check_code, :label => "Next Check Code" %>
+	    <%= f.input :counter, :label => "Next Check Code" %>
 
 	</div>
 	<div class="separator bottom"></div>

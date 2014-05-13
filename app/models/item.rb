@@ -18,6 +18,7 @@ class Item < ActiveRecord::Base
   has_many :so_shipments, :through => :so_lines
 
   has_many :item_alt_names, :dependent => :destroy
+  has_many :quality_actions, :dependent => :destroy
 
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 

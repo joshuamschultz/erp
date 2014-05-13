@@ -167,7 +167,7 @@ module CommonActions
 			{:path => fmea_types_path, :name => "FMEA"},
 			{:path => control_plans_path, :name => "Control Plan"},
 			{:path => customer_feedbacks_path, :name => "Customer Response"},
-			{:path => "#", :name => "Quality Action"},
+			{:path => quality_actions_path, :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
 			{:path => customer_qualities_path, :name => "Quality Level"},
 			{:path => dimensions_path, :name => "Dimension Types"}
