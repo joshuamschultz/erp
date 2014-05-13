@@ -1,9 +1,14 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :quality_actions
+
+
   resources :quality_action_numbers, only: [ :update, :show, :edit]
 
 
-  resources :cause_analyses
+  resources :cause_analyses do
+    get :autocomplete_cause_analysis_name, :on => :collection
+  end
 
 
   resources :customer_feedbacks

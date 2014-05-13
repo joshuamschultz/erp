@@ -1,0 +1,2 @@
+module QualityActionsHelper
+end

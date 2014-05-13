@@ -1,0 +1,51 @@
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading"> Quality Actions </h4>
+            <span class="span6 heading right">
+                <%= link_to 'Open', '#', :class => "btn btn-mini btn-success" %>
+                <%= link_to 'finished', '#', :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Quality Actions', new_quality_action_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_quality_action_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                   <th>Quality action no</th>
+                   <th>Item</th>
+                   <th>Po header</th>
+                   <th>Quantity</th>
+                   <th>Cause analyasis</th>
+                   <th>Due date</th>
+                   <th>Created By</th>
+                   <th>status</th>
+                   <th></th>
+                </tr>
+            </thead>
+            <body>
+                
+            </body>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_quality_action_list", :path => quality_actions_path, :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "quality_action_no" },
+                        { "mData": "item_part_no"},
+                        { "mData": "po_header_name" },
+                        { "mData": "quantity" },
+                        { "mData": "cause_analysis_name" },                       
+                        { "mData": "due_date" },                       
+                        { "mData": "user"},
+                        { "mData": "quality_action_status"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        
+                    ]'
+    } 
+%>

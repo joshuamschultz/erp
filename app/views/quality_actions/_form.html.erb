@@ -1,0 +1,88 @@
+<div class="row-fluid">
+  <div class="span8  ">
+    <%= simple_form_for(@quality_action, :html => {:id => "form_for_quality_action",:class => "form-horizontal"}) do |f| %>
+      <%= f.error_notification %>
+
+      <div class="form-inputs">
+        <%= f.association :ic_action, :label => "Choose", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.ic_actions.first.id if @quality_action.ic_action.nil?) %>
+
+        <%= f.association :organization_quality_type, :label => "Choose Organization", :label_method => "type_name", :label_value => "id", :include_blank => false, as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.organization_quality_types.first.id if @quality_action.organization_quality_type.nil?) %>
+
+
+        <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+
+        <%= hidden_field_tag :alt_name_id, (@quality_action.item_alt_name.id if @quality_action.item_alt_name) %>
+
+        <%= hidden_field_tag :org_alt_name_id, (@quality_action.item_alt_name.id if @quality_action.item_alt_name) %>
+
+
+        <%= f.association :po_header, :url => autocomplete_po_header_po_identifier_po_headers_path, :as => :autocomplete, :id_element => '#po_header_id', required: true, :label => "PO" if @quality_action.new_record? %>
+
+        <%= hidden_field_tag :po_header_id, (@quality_action.po_header.id if @quality_action.po_header) %>
+
+        <%= hidden_field_tag :org_po_header_id, (@quality_action.po_header.id if @quality_action.po_header) %>
+
+
+        <%= f.input :quantity %>
+
+        <%= f.input :definition_of_issue %>
+
+        <%= f.input :short_term_fix %>
+
+
+        <%= f.association :cause_analysis, :url => autocomplete_cause_analysis_name_cause_analyses_path, :as => :autocomplete, :id_element => '#cause_analysis_id', required: true, :label => "Root Cause Analysis" if @quality_action.new_record? %>
+
+        <%= hidden_field_tag :cause_analysis_id, (@quality_action.cause_analysis.id if @quality_action.cause_analysis) %>
+
+        <%= hidden_field_tag :org_cause_analysis_id, (@quality_action.cause_analysis.id if @quality_action.cause_analysis) %>
+
+
+        <%= f.input :required_action %>
+
+        <%= f.input :due_date, as: :string %>
+
+        <div id="vendor_div" style="padding-bottom:20px;">
+            <div class="control-group">
+                <label for="quote_vendors" class="optional control-label">Responsible Party</label>
+                <div class="controls">
+                    <%= select_tag "users[]", options_for_select(User.all.map {|user| [user.name, user.id]}, @quality_action.persisted? ? (@quality_action.quality_actions_users.empty? ? [] : @quality_action.quality_actions_users.collect(&:user_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "responsible_party" %>
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="separator bottom"></div>
+
+      <div class="form-actions">
+ 
+        <%= f.button :submit, "Save & Exit", :class => 'btn', :name => 'save' %>
+        <%= f.button :submit, "Finish", :class => 'btn', :name => 'finish' %>
+
+        <%= link_to 'Delete', quality_action_path(@quality_action), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_action.new_record? %>
+
+        <%= link_to 'Back', quality_actions_path,:class =>"btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_quality_action"] = ["quality_action_ic_action_id_<%= MasterType.ic_actions.first.id %>", "quality_action_ic_action_id_<%= MasterType.ic_actions.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+2 %>", "quality_action_item_alt_name_id", "quality_action_po_header_id", "quality_action_quantity", "quality_action_definition_of_issue", "quality_action_short_term_fix", "quality_action_cause_analysis_id", "quality_action_required_action", "quality_action_due_date", "responsible_party"]
+    $(document).ready(function(){    
+        $("#quality_action_item_alt_name_id").val("<%= @quality_action.item_alt_name.alt_item_name if @quality_action.item_alt_name %>");
+
+        $("#quality_action_ic_action_id_<%= MasterType.ic_actions.first.id %>").focus();
+
+        $("#quality_action_po_header_id").val("<%= @quality_action.po_header.po_identifier if @quality_action.po_header %>");
+
+        
+
+
+    });
+
+    <% date_box_date = @quality_action.new_record? ? Date.today : @quality_action.due_date %> 
+
+    date_box_fields = date_box_fields.concat([{"name":"quality_action_due_date", "value":"<%= date_box_date %>"}]);
+
+</script>

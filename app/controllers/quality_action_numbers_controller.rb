@@ -1,4 +1,8 @@
 class QualityActionNumbersController < ApplicationController
+  before_filter :set_page_info
+  def set_page_info
+    @menus[:system][:active] = "active"
+  end
   # GET /quality_action_numbers
   # GET /quality_action_numbers.json
   def index

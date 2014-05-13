@@ -37,6 +37,11 @@ class User < ActiveRecord::Base
   has_many :created_attachments, :class_name => "Attachment", :foreign_key => "attachment_created_id"
   has_many :updated_attachments, :class_name => "Attachment", :foreign_key => "attachment_updated_id"
 
+  has_many :created_quality_actions, :class_name => "QualityAction", :foreign_key => "created_user_id"
+
+  has_many :quality_actions_users, :dependent => :destroy
+  has_many :quality_actions, :through => :quality_actions_users
+
   validates_presence_of :email, :name
 
   before_create :process_before_create

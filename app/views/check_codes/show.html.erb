@@ -1,16 +1,22 @@
 <div class="row-fluid span8">
     <div class="label label-large label-info arrowed-in arrowed-right">
-        <h4>Next Check Code</h4>
+        <h4>Counters</h4>
     </div>
+    <div class="separator bottom"></div>
     <table class="table table-striped table-bordered">
         <tbody>
             <tr>
-              <td class="span2">Next Check Code :</td>
-              <td class="span5"><%= @check_code.next_check_code %></td>
+              <td class="span2"><b>Next Check Code :</b></td>
+              <td class="span5"><%= CheckCode.find_by_counter_type("check_code").counter %></td>
+              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("check_code")) , :class => "btn btn-small" %></td>
+            </tr>
+            <tr>
+              <td class="span2"><b>Next Quality :</b></td>
+              <td class="span5"><%= CheckCode.find_by_counter_type("quality_next").counter %></td>
+              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("quality_next")) , :class => "btn btn-small" %></td>
             </tr>
         </tbody>
     </table>
     <div class="form-actions">
-        <%= link_to 'Edit', edit_check_code_path(@check_code) , :class => "btn btn-small" %>
     </div>
 </div>

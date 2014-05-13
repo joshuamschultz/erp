@@ -5,6 +5,8 @@ class CauseAnalysis < ActiveRecord::Base
 
 	after_initialize :default_values
 
+	has_many :quality_actions
+
 	def default_values
 		self.active = true if self.attributes.has_key?("active") && self.active.nil?
 	end
