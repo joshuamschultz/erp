@@ -31,6 +31,7 @@ class CheckCodesController < ApplicationController
   def new
     @check_code = CheckCode.new
 
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @check_code }
@@ -40,6 +41,7 @@ class CheckCodesController < ApplicationController
   # GET /check_codes/1/edit
   def edit
     @check_code = CheckCode.find(params[:id])
+    @text = params[:text]
   end
 
   # POST /check_codes

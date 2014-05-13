@@ -8,12 +8,12 @@
             <tr>
               <td class="span2"><b>Next Check Code :</b></td>
               <td class="span5"><%= CheckCode.find_by_counter_type("check_code").counter %></td>
-              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("check_code")) , :class => "btn btn-small" %></td>
+              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("check_code"), :text => "Next Check Code") , :class => "btn btn-small" %></td>
             </tr>
             <tr>
               <td class="span2"><b>Next Quality :</b></td>
               <td class="span5"><%= CheckCode.find_by_counter_type("quality_next").counter %></td>
-              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("quality_next")) , :class => "btn btn-small" %></td>
+              <td><%= link_to 'Edit', edit_check_code_path(CheckCode.find_by_counter_type("quality_next"), :text => "Next Quality") , :class => "btn btn-small" %></td>
             </tr>
         </tbody>
     </table>
