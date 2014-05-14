@@ -38,7 +38,8 @@ class QualityAction < ActiveRecord::Base
     belongs_to :created_user, :foreign_key => "created_user_id", :class_name => "User"
 
 
-    scope :status_based_quality, lambda{|status| where(:quality_action_status => status) }
+    scope :status_based_quality_action, lambda{|status| where(:quality_action_status => status)}
+
 
     def set_user(params)
     	users = params[:users] || []

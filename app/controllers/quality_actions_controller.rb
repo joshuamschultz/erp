@@ -24,7 +24,12 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions
   # GET /quality_actions.json
   def index
-    @quality_actions = QualityAction.all
+    if params[:status]
+      @quality_actions = QualityAction.status_based_quality_action(params[:status])
+      @status = params[:status]
+    else
+      @quality_actions = QualityAction.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,9 +37,6 @@ class QualityActionsController < ApplicationController
          @quality_actions = @quality_actions.select{|quality_action|
             quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:links] = CommonActions.object_crud_paths(nil, edit_quality_action_path(quality_action),nil)
-            quality_action[:item_part_no] = quality_action.item.present? ? CommonActions.linkable(item_path(quality_action.item), quality_action.item_alt_name.item_alt_identifier) : ""
-            quality_action[:po_header_name] = quality_action.po_header.present? ? CommonActions.linkable(po_header_path(quality_action.po_header), quality_action.po_header.po_identifier) : ""
-            quality_action[:cause_analysis_name] = quality_action.cause_analysis.present? ? CommonActions.linkable(cause_analyasis_path(quality_action.cause_analysis), quality_action.cause_analysis.name) : ""
             quality_action[:user] =  quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
             quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)

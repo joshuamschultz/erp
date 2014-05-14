@@ -4,9 +4,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading"> Quality Actions </h4>
             <span class="span6 heading right">
-                <%= link_to 'Open', '#', :class => "btn btn-mini btn-success" %>
-                <%= link_to 'finished', '#', :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Quality Actions', new_quality_action_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Open', quality_actions_path(:status => "open" ), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'finished', quality_actions_path(:status => "finished" ), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Quality Action', new_quality_action_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -16,9 +16,6 @@
             <thead>
                 <tr>
                    <th>Quality action no</th>
-                   <th>Item</th>
-                   <th>Po header</th>
-                   <th>Quantity</th>
                    <th>Cause analyasis</th>
                    <th>Due date</th>
                    <th>Created By</th>
@@ -34,13 +31,10 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_quality_action_list", :path => quality_actions_path, :extras => {:slno => false},
+    {:name => "table_report_quality_action_list", :path => quality_actions_path(:status => (@status.present? ? @status : nil)), :extras => {:slno => false},
         :columns => '[
                         { "mData": "action_no" },
-                        { "mData": "item_part_no"},
-                        { "mData": "po_header_name" },
                         { "mData": "quantity" },
-                        { "mData": "cause_analysis_name" },                       
                         { "mData": "due_date" },                       
                         { "mData": "user"},
                         { "mData": "status_action"},
