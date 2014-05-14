@@ -1,15 +1,15 @@
 <div class="row-fluid span8">
-  	<div class="label label-large label-info arrowed-in arrowed-right">
+    <div class="label label-large label-info arrowed-in arrowed-right">
         <h4>Feedback Info</h4>
-  	</div>
-  	<table class="table table-striped table-bordered">
+    </div>
+    <table class="table table-striped table-bordered">
         <tbody>
             <tr>
               <td class="span2">Organization :</td>
               <td class="span5"><%= @customer_feedback.organization.organization_name %></td>
             </tr> 
 
-			<tr>
+            <tr>
               <td class="span3">Title :</td>
               <td class="span5"><%= @customer_feedback.title %>%</td>
             </tr>
@@ -22,7 +22,7 @@
 
             <tr>
               <td class="span3">Quality Action :</td>
-              <td class="span5"><%= @customer_feedback.quality_action_id %></td>
+              <td class="span5"><%= @customer_feedback.quality_action.present? ? CommonActions.linkable(quality_action_path(@customer_feedback.quality_action), @customer_feedback.quality_action.quality_action_no).html_safe : "" %></td>
             </tr>
 
             <tr>
@@ -35,10 +35,10 @@
               <td class="span5"><%= @customer_feedback.created_at.strftime("%d %b %Y") %></td>
             </tr>
         </tbody>
-  	</table>
+    </table>
 
-	<div class="form-actions">
-		<%= link_to 'Edit', edit_customer_feedback_path(@customer_feedback), :class => "btn btn-small" %>
-		<%= link_to 'Back to Feedbacks', customer_feedbacks_path, :class => "btn btn-small" %>
-	</div>
+  <div class="form-actions">
+    <%= link_to 'Edit', edit_customer_feedback_path(@customer_feedback), :class => "btn btn-small" %>
+    <%= link_to 'Back to Feedbacks', customer_feedbacks_path, :class => "btn btn-small" %>
+  </div>
 </div>

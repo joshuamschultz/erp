@@ -1,0 +1,29 @@
+<div class="span3 well item_detail_view">
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Type:</td>
+                <td><strong><%= @quality_action.action_type.html_safe %></strong></td>
+            </tr>
+
+            <tr>
+                <td>Organization:</td>
+                <td><%= @quality_action.organization_type %></td>
+            </tr>
+
+            <% if @quality_action.item.present? %>
+                <tr>
+                    <td>Item:</td>
+                    <td><%= CommonActions.linkable(item_path(@quality_action.item), @quality_action.item_alt_name.item_alt_identifier).html_safe %></td>
+                </tr>
+            <% end %>
+
+            <% if @quality_action.po_header.present? %>
+                <tr>
+                    <td>PO</td>
+                    <td><%= CommonActions.linkable(po_header_path(@quality_action.po_header), @quality_action.po_header.po_identifier).html_safe %></td>
+                </tr>
+            <% end %>
+        </tbody>
+     </table>
+</div>
