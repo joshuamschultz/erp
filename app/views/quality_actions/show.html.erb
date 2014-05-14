@@ -5,7 +5,7 @@
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong><%= @quality_action.quality_action_no %></strong></h5>
-                    <span class="txt"><strong>Quantity On Hand</strong></span>
+                    <span class="txt"><strong>Quality Action No</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
@@ -41,6 +41,9 @@
             </div>
         </div>
     </div>
+    <% if @quality_action.cause_analysis.present? %>
+        <%= @quality_action.cause_analysis.attachment.attachment_url("link_action") %>
+    <% end %>
     <div class="separator bottom"></div>
 
     <h5>Required action :<span></span></h5>
@@ -67,8 +70,8 @@
         <tr>
             <td width="70%">
                 <table width="100%">
-                    <tr><td><h5>Date :<span></span> <%= @quality_action.created_at %></h5></td></tr>
                     <tr><td><h5>Created By :<span></span> <%= @quality_action.created_user.name %></h5></td></tr>
+                    <tr><td><h5>Date :<span></span> <%= @quality_action.created_at %></h5></td></tr>
                     <%= @quality_action.users.collect{|user| "<tr><td></br></td> </tr>" }.join.html_safe %>          
                 </table>
             </td>
