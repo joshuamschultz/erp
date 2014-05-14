@@ -37,6 +37,7 @@ class QualityActionsController < ApplicationController
             quality_action[:cause_analysis_name] = quality_action.cause_analysis.present? ? CommonActions.linkable(cause_analyasis_path(quality_action.cause_analysis), quality_action.cause_analysis.name) : ""
             quality_action[:user] =  quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
+            quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
 
         }
         render json: {:aaData => @quality_actions}
