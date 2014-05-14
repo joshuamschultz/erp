@@ -9,6 +9,9 @@ class CustomerFeedbacksController < ApplicationController
     def set_autocomplete_values
       params[:customer_feedback][:organization_id], params[:organization_id] = params[:organization_id], params[:customer_feedback][:organization_id]
       params[:customer_feedback][:organization_id] = params[:org_organization_id] if params[:customer_feedback][:organization_id] == ""
+
+      params[:customer_feedback][:quality_action_id], params[:quality_action_id] = params[:quality_action_id], params[:customer_feedback][:quality_action_id]
+      params[:customer_feedback][:quality_action_id] = params[:org_quality_action_id] if params[:customer_feedback][:quality_action_id] == ""
     end
   # GET /customer_feedbacks
   # GET /customer_feedbacks.json

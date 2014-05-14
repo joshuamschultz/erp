@@ -2,9 +2,12 @@ class QualityActionsController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  autocomplete :quality_action, :quality_action_no, :full => true
+
+
   def set_page_info
       @menus[:quality][:active] = "active"
-      simple_form_validation = true
+      simple_form_validation = false
   end
 
   def set_autocomplete_values
@@ -27,12 +30,13 @@ class QualityActionsController < ApplicationController
       format.html # index.html.erb
       format.json { 
          @quality_actions = @quality_actions.select{|quality_action|
-            quality_action[:created_user] = quality_action.created_user.name
+            quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:links] = CommonActions.object_crud_paths(nil, edit_quality_action_path(quality_action),nil)
-            quality_action[:item_part_no] = CommonActions.linkable(item_path(quality_action.item), quality_action.item_alt_name.item_alt_identifier)
-            quality_action[:po_header_name] = CommonActions.linkable(po_header_path(quality_action.po_header), quality_action.po_header.po_identifier)
-            quality_action[:cause_analysis_name] = CommonActions.linkable(cause_analyasis_path(quality_action.cause_analysis), quality_action.cause_analysis.name)
-            quality_action[:user] = quality_action.created_user.name
+            quality_action[:item_part_no] = quality_action.item.present? ? CommonActions.linkable(item_path(quality_action.item), quality_action.item_alt_name.item_alt_identifier) : ""
+            quality_action[:po_header_name] = quality_action.po_header.present? ? CommonActions.linkable(po_header_path(quality_action.po_header), quality_action.po_header.po_identifier) : ""
+            quality_action[:cause_analysis_name] = quality_action.cause_analysis.present? ? CommonActions.linkable(cause_analyasis_path(quality_action.cause_analysis), quality_action.cause_analysis.name) : ""
+            quality_action[:user] =  quality_action.created_user.present? ? quality_action.created_user.name : ""
+            quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
 
         }
         render json: {:aaData => @quality_actions}

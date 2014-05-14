@@ -6,10 +6,12 @@ class QualityAction < ActiveRecord::Base
 	belongs_to :cause_analysis
 	attr_accessible :definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
 				:quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
-				:item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, :created_user_id
+				:item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
+				:created_user_id, :root_cause
 
 	has_many :quality_actions_users, :dependent => :destroy
 	has_many :users, :through => :quality_actions_users
+	has_many :customer_feedbacks, :dependent => :destroy
 
 	before_save :before_save_process
 	before_validation :before_save_validate
@@ -19,14 +21,13 @@ class QualityAction < ActiveRecord::Base
 	end
 
 	def before_save_process
-		self.item = self.item_alt_name.item
-    	self.item_revision = self.item_alt_name.item.current_revision
+		if self.item_alt_name.present?
+			self.item = self.item_alt_name.item
+    		self.item_revision = self.item_alt_name.item.current_revision
+    	end
 	end
 
-	validates_presence_of :quality_action_no
-
-	validates_presence_of :item_alt_name_id, :item_alt_name, :quantity, :created_user_id
-
+	validates_presence_of :quality_action_no, :ic_action_id, :organization_quality_type_id
 
 	belongs_to :ic_action, :class_name => "MasterType", :foreign_key => "ic_action_id",
 	    :conditions => ['type_category = ?', 'icp_quallity_action']
@@ -50,6 +51,14 @@ class QualityAction < ActiveRecord::Base
               end
             end
         end    	
+    end
+
+    def action_type
+    	self.ic_action.type_name
+    end
+
+    def organization_type
+    	self.organization_quality_type.type_name    	
     end
 
 end
