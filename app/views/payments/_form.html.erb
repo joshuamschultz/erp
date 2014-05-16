@@ -129,8 +129,7 @@
             }
 
             <% unless @payment.persisted? %>
-                $("#payment_payment_check_code").val("<%= CheckCode.first.next_check_code
-                 %>");
+                $("#payment_payment_check_code").val("<%=CheckCode.find_by_counter_type('check_code')%>");
                 // $("#payment_check_entry_attributes_check_code").val("<%#= CheckEntry.get_next_check_code %>");
             <% end %>
         <% end %>
