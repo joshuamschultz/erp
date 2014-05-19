@@ -36,6 +36,7 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauges, :dependent => :destroy
 	has_many :attachments, :as => :attachable, :dependent => :destroy
+	has_one :package
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 

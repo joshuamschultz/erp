@@ -1,6 +1,7 @@
 class QualityLotsController < ApplicationController
   before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]  
+  before_filter :set_autocomplete_values, only: [:create, :update]
+  autocomplete :quality_lot, :lot_control_no, :full => true
 
   def set_page_info
       @menus[:quality][:active] = "active"
