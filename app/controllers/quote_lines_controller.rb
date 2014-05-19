@@ -1,6 +1,7 @@
 class QuoteLinesController < ApplicationController
 before_filter :set_autocomplete_values, only: [:create, :update]
   
+  
   before_filter :set_page_info
 
   def set_page_info

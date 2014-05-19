@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :packages
+
+
   resources :quality_actions do
     get :autocomplete_quality_action_quality_action_no, :on => :collection
   end
@@ -183,6 +186,7 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :quality_lots do
+    get :autocomplete_quality_lot_lot_control_no, :on => :collection
     member do
       get 'populate'
     end

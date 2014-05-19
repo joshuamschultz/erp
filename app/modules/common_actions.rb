@@ -160,7 +160,7 @@ module CommonActions
 			{:path => run_at_rates_path, :name => "Run at Rate"},
 			{:path => capacity_plannings_path, :name => "Capacity Planning"},
 			{:path => "#", :name => "Part Submission Warrant"},
-			{:path => "#", :name => "Packaging"},
+			{:path => packages_path, :name => "Packaging"},
 			{:path => gauges_path, :name => "Instruments"},
 			{:path => cause_analyses_path, :name => " Cause Analysis"},
 			{:path => process_flows_path, :name => "Process Flow"},

@@ -1,0 +1,417 @@
+<div class="row-fluid span12  ">
+    <%= render :partial => 'package_info' %>    
+</div>
+<div class="row-fluid span12 well packaging ">
+    <div class="span6  item_detail_view packaging">
+        <h5 style="text-align:center; font-size:20px">Package Form<span></span></h5><br>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr></tr>
+            <tr align="left" valign="top" class="color-02">
+                <td>Date</td>
+                <td>Packaging Contact</td>
+                <td>Part Number</td>
+                <td>Supplier Responsibilities Completed?</td>
+            </tr>
+            <tr align="left" valign="top">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><%= link_to(@package.quality_lot.po_line.item_alt_name.item_alt_identifier, item_path(@package.quality_lot.item_revision.item, revision_id: @package.quality_lot.item_revision_id)) if @package.quality_lot.item_revision %> </td>
+                <td rowspan="7">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr align="left" valign="top">
+                            <td width="21%">&nbsp;</td>
+                            <td width="79%">Packaging Design</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <p>Packaging that prevents 
+                                shipping and material 
+                                handling defects</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td height="19" class="color-02">Supplier Name</td>
+                <td class="color-02" >Phone Number</td>
+                <td class="color-02">Print Revision Level</td>
+            </tr>
+            <tr>
+                <td><%= CommonActions.linkable(organization_path(@package.quality_lot.po_header.organization), @package.quality_lot.po_header.organization.organization_name).html_safe %></td>
+                <td><%= @package.quality_lot.po_header.organization.organization_telephone %></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="color-02">Supplier Code</td>
+                <td class="color-02">Fax Number</td>
+                <td class="color-02">Part Description</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><%= @package.quality_lot.po_header.organization.organization_fax %></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="color-02">Supplier Production Facility</td>
+                <td class="color-02">E-Mail Address</td>
+                <td class="color-02"><%=@package.quality_lot.po_line.item_alt_name.item_alt_description if  @package.quality_lot.item_revision%></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><a href="mailto:#"><%= @package.quality_lot.po_header.organization.organization_email %></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="row-fluid span12 well ">
+    <div class="span6  item_detail_view packaging">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+                <td width="9%">DIGITAL IMAGES <br /></td>
+                <td width="43%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr align="left" valign="top">
+                            <td class="color-02 align-table"><h5>Part</h5></td>
+                            <td class="color-02 align-table"><i>In Packaging Position</i></td>
+                        </tr>
+                    </table>
+                    <h2 class="img-02"><img src="<%= @package.part %>" height="353" width="516"></h2>
+                </td>
+                <td width="48%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr align="left" valign="top">
+                            <td class="color-02 align-table"><h5>Container</h5></td>
+                            <td class="color-02 align-table"><i>With Label Shown</i></td>
+                        </tr>
+                    </table>
+                    <h2 class="img-02"><img src="<%= @package.container %>" height="353" width="516"></h2>
+                </td>
+            </tr>
+        </table>
+    </div>    
+</div>
+
+<div class="row-fluid span12 well ">
+    <div class="span6  item_detail_view packaging">
+        <h5>Container :<span></span></h5>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+                <td width="2%">d</td>
+                <td width="82%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr class="color-02 align-table">
+                            <td>Component</td>
+                            <td>L (mm)</td>
+                            <td>W (mm)</td>
+                            <td>H (mm)</td>
+                            <td>Component</td>
+                            <td>Wt (kg)</td>
+                            <td>Quantities</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="r-align">Part Size</td>
+                            <td><%= @package.part_size_length %></td>
+                            <td><%= @package.part_size_width %></td>
+                            <td><%= @package.part_size_width %></td>
+                            <td class="r-align">Part (Tare)</td>
+                            <td><%= @package.part_size_width %></td>
+                            <td class="r-align">Qty Parts per Container</td>
+                            <td><%= @package.quantity_per_container %></td>
+                        </tr>
+                        <tr>
+                            <td class="r-align">Container Only</td>
+                            <td><%= @package.container_length %></td>
+                            <td><%= @package.container_width %></td>
+                            <td><%= @package.container_height %></td>
+                            <td class="r-align">Dunnage (Tare)</td>
+                            <td><%= @package.dunnage_tare_Weight %></td>
+                            <td class="r-align">Container(s) per Layer on Pallet</td>
+                            <td><%= @package.container_per_layer_pallet %></td>
+                        </tr>
+                        <tr>
+                            <td class="r-align">Pallet Only</td>
+                            <td><%= @package.pallet_length %></td>
+                            <td><%= @package.pallet_width %></td>
+                            <td><%= @package.pallet_height %></td>
+                            <td class="r-align">Container (Tare)</td>
+                            <td><%= @package.container_tare_weight %></td>
+                            <td class="r-align">Layers per Pallet</td>
+                            <td><%= @package.layers_per_pallet %></td>
+                        </tr>
+                        <tr>
+                            <td class="r-align">Unit Load As Shipped</td>
+                            <td><%= @package.load_shipped_length %></td>
+                            <td><%= @package.load_shipped_width %></td>
+                            <td><%= @package.load_shipped_height %></td>
+                            <td class="r-align">Pallet Tare</td>
+                            <td><%= @package.pallet_tare_weight %></td>
+                            <td class="r-align">Container(s) per Pallet</td>                            
+                            <td><%= @package.container_per_pallet %></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="color-02">In to MM</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td colspan="2">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="color-02">Lbs to Kg</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td class="r-align">Container Gross (Inc Parts)</td>
+                            <td><%= @package.container_gross_inc_weight %></td>
+                            <td><%= @package.package_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="r-align">
+                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="color-02">&nbsp;</td>
+                                        <td class="color-02">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="r-align" colspan="2">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="color-02">&nbsp;</td>
+                                        <td class="color-02">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td class="r-align">Unit Load (Inc Parts)</td>
+                            <td><%= @package.layers_per_pallet %></td>
+                            <td><%= @package.quantity_per_container %></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div class="row-fluid span12 well ">
+    <div class="span6  item_detail_view packaging">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+                <td width="9%">DIGITAL IMAGES <br /></td>
+                <td width="43%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr align="left" valign="top">
+                            <td class="color-02 align-table"><h5>Dunnage</h5></td>
+                            <td class="color-02 align-table"><i>In Container Position</i></td>
+                        </tr>
+                    </table>
+                    <h2 class="img-02"><img src="<%= @package.dunnage %>" height="353" width="516"></h2>
+                </td>
+                <td width="48%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr align="left" valign="top">
+                            <td class="color-02 align-table"><h5>Unit Load</h5></td>
+                            <td class="color-02 align-table"><i>As Shipped With Label Shown</i></td>
+                        </tr>
+                    </table>
+                    <h2 class="img-02"><img src="<%= @package.unit_load %>" height="353" width="516"></h2>
+                </td>
+            </tr>
+        </table>
+    </div>    
+</div>
+
+
+
+<style type="text/css">
+    .packaging{width: 98% !important;}
+    .span6.item_detail_view.packaging tr {
+    border: 1px solid #FFFFFF;}
+    .span6.item_detail_view tr{    border: 1px solid #FFFFFF;}
+    .span6.item_detail_view.packaging tr{ border: 1px solid #FFFFFF;}
+    .span6.item_detail_view.packaging td{ border: 1px solid #FFFFFF;}
+    .img-02{height: 350px;}
+    .color-02{background-color:  #555; font-weight: bold; text-align: center; }
+    .align-table{}
+    .r-align{ text-align: right;}
+</style>
+
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+<p>
+    <b>Part size length:</b>
+    <%= @package.part_size_length %>
+</p>
+<p>
+    <b>Part size width:</b>
+    <%= @package.part_size_width %>
+</p>
+<p>
+    <b>Part size height:</b>
+    <%= @package.part_size_height %>
+</p>
+<p>
+    <b>Container length:</b>
+    <%= @package.container_length %>
+</p>
+<p>
+    <b>Container width:</b>
+    <%= @package.container_width %>
+</p>
+<p>
+    <b>Container height:</b>
+    <%= @package.container_height %>
+</p>
+<p>
+    <b>Pallet length:</b>
+    <%= @package.pallet_length %>
+</p>
+<p>
+    <b>Pallet width:</b>
+    <%= @package.pallet_width %>
+</p>
+<p>
+    <b>Pallet height:</b>
+    <%= @package.pallet_height %>
+</p>
+<p>
+    <b>Load shipped length:</b>
+    <%= @package.load_shipped_length %>
+</p>
+<p>
+    <b>Load shipped width:</b>
+    <%= @package.load_shipped_width %>
+</p>
+<p>
+    <b>Load shipped height:</b>
+    <%= @package.load_shipped_height %>
+</p>
+<p>
+    <b>Part weight:</b>
+    <%= @package.part_weight %>
+</p>
+<p>
+    <b>Dunnage tare weight:</b>
+    <%= @package.dunnage_tare_Weight %>
+</p>
+<p>
+    <b>Container tare weight:</b>
+    <%= @package.container_tare_weight %>
+</p>
+<p>
+    <b>Pallet tare weight:</b>
+    <%= @package.pallet_tare_weight %>
+</p>
+<p>
+    <b>Container gross inc weight:</b>
+    <%= @package.container_gross_inc_weight %>
+</p>
+<p>
+    <b>Unit load gross:</b>
+    <%= @package.unit_load_gross %>
+</p>
+<p>
+    <b>Quantity per container:</b>
+    <%= @package.quantity_per_container %>
+</p>
+<p>
+    <b>Container per layer pallet:</b>
+    <%= @package.container_per_layer_pallet %>
+</p>
+<p>
+    <b>Layers per pallet:</b>
+    <%= @package.layers_per_pallet %>
+</p>
+<p>
+    <b>Container per pallet:</b>
+    <%= @package.container_per_pallet %>
+</p>
+<p>
+    <b>Package comment:</b>
+    <%= @package.package_comment %>
+</p>
+<p>
+    <b>Part content type:</b>
+    <%= @package.part_content_type %>
+</p>
+<p>
+    <b>Part file size:</b>
+    <%= @package.part_file_size %>
+</p>
+<p>
+    <b>Part updated at:</b>
+    <%= @package.part_updated_at %>
+</p>
+<p>
+    <b>Part file name:</b>
+    <%= @package.part_file_name %>
+</p>
+<p>
+    <b>Container content type:</b>
+    <%= @package.container_content_type %>
+</p>
+<p>
+    <b>Container file size:</b>
+    <%= @package.container_file_size %>
+</p>
+<p>
+    <b>Container updated at:</b>
+    <%= @package.container_updated_at %>
+</p>
+<p>
+    <b>Container file name:</b>
+    <%= @package.container_file_name %>
+</p>
+<p>
+    <b>Dunnage content type:</b>
+    <%= @package.dunnage_content_type %>
+</p>
+<p>
+    <b>Dunnage file size:</b>
+    <%= @package.dunnage_file_size %>
+</p>
+<p>
+    <b>Dunnage updated at:</b>
+    <%= @package.dunnage_updated_at %>
+</p>
+<p>
+    <b>Dunnage file name:</b>
+    <%= @package.dunnage_file_name %>
+</p>
+<p>
+    <b>Unit load content type:</b>
+    <%= @package.unit_load_content_type %>
+</p>
+<p>
+    <b>Unit load file size:</b>
+    <%= @package.unit_load_file_size %>
+</p>
+<p>
+    <b>Unit load updated at:</b>
+    <%= @package.unit_load_updated_at %>
+</p>
+<p>
+    <b>Unit load file name:</b>
+    <%= @package.unit_load_file_name %>
+</p>
+<%= link_to 'Edit', edit_package_path(@package) %> |
+<%= link_to 'Back', packages_path %>
+

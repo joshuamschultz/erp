@@ -1,0 +1,93 @@
+<%= simple_form_for(@package, :html => {:id => "form_for_attachment", :class => "form-horizontal", :multipart => true}) do |f| %>
+  <%= f.error_notification %>
+
+    <div class="form-inputs">
+        
+        <%= f.association :quality_lot, :url => autocomplete_quality_lot_lot_control_no_quality_lots_path, :as => :autocomplete, :id_element => '#quality_lot_id', required: true, :label => "Quality Lot"  %>
+
+        <%= hidden_field_tag :quality_lot_id, (@package.quality_lot.id if @package.quality_lot) %>
+
+        <%= hidden_field_tag :org_quality_lot_id, (@package.quality_lot.id if @package.quality_lot) %>
+
+        <%= f.input :part_size_length %>
+        <%= f.input :part_size_width %>
+        <%= f.input :part_size_height %>
+
+        <%= f.input :container_length %>
+        <%= f.input :container_width %>
+        <%= f.input :container_height %>
+
+        <%= f.input :pallet_length %>
+        <%= f.input :pallet_width %>
+        <%= f.input :pallet_height %>
+
+        <%= f.input :load_shipped_length %>
+        <%= f.input :load_shipped_width %>
+        <%= f.input :load_shipped_height %>
+
+        <%= f.input :part_weight %>
+        <%= f.input :dunnage_tare_Weight %>
+        <%= f.input :container_tare_weight %>
+        <%= f.input :pallet_tare_weight %>
+        <%= f.input :container_gross_inc_weight %>
+        <%= f.input :unit_load_gross %>
+        <%= f.input :quantity_per_container %>
+        <%= f.input :container_per_layer_pallet %>
+        <%= f.input :layers_per_pallet %>
+        <%= f.input :container_per_pallet %>
+        <%= f.input :package_comment %>
+
+        <div class="control-group integer optional package_container_per_layer_pallet">
+            <label for="package_container_per_layer_pallet" class="integer optional control-label">Part</label>
+            <div class="controls">
+                <%= f.file_field :part %>
+            </div>
+        </div>
+
+        <div class="control-group integer optional package_container_per_layer_pallet">
+            <label for="package_container_per_layer_pallet" class="integer optional control-label">Container</label>
+            <div class="controls">
+                <%= f.file_field :container %>
+            </div>
+        </div>
+
+        <div class="control-group integer optional package_container_per_layer_pallet">
+            <label for="package_container_per_layer_pallet" class="integer optional control-label">Dunnage</label>
+            <div class="controls">
+                <%= f.file_field :dunnage %>
+            </div>
+        </div>
+
+        <div class="control-group integer optional package_container_per_layer_pallet">
+            <label for="package_container_per_layer_pallet" class="integer optional control-label">Unit Load</label>
+            <div class="controls">
+                <%= f.file_field :unit_load %>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <%= f.button :submit, :class => "btn" %>
+                 
+            <%= link_to 'Delete', package_path(@package), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @package.new_record? %>
+
+            <%= link_to 'Back to packages', packages_path, :class =>"btn" %>
+        </div>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+    tab_field_forms["form_for_attachment"] = ["package_quality_lot_id", "package_part_size_length", "package_part_size_width", "package_part_size_height", "package_container_length", "package_container_width", "package_container_height", "package_pallet_length", "package_pallet_width", "package_pallet_height", "package_load_shipped_length", "package_load_shipped_width", "package_load_shipped_height", "package_part_weight", "package_dunnage_tare_Weight", "package_container_tare_weight", "package_pallet_tare_weight", "package_container_gross_inc_weight", "package_unit_load_gross", "package_quantity_per_container","package_container_per_layer_pallet", "package_layers_per_pallet", "package_container_per_pallet", "package_package_comment", "package_part", "package_container", "package_dunnage", "package_unit_load"];
+
+ $(document).ready(function(){    
+
+
+
+        
+
+
+    });
+ </script>
+
+
+
+
