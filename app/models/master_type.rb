@@ -15,7 +15,9 @@ class MasterType < ActiveRecord::Base
 
   scope :ic_actions, where(:type_category => 'icp_quallity_action')
 
-  scope :organization_quality_types, where(:type_category => 'organization_type_q_a')  
+  scope :organization_quality_types, where(:type_category => 'organization_type_q_a')
+
+  scope :customer_feedback_types, where(:type_category => 'customer_response')
 
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
@@ -34,6 +36,8 @@ class MasterType < ActiveRecord::Base
   has_many :type_based_gl_accounts, :class_name => "GlAccount", :foreign_key => "gl_type_id"
 
   has_many :type_based_quality_actions, :class_name => "QualityAction", :foreign_key=> "ic_action_id"
+
+  has_many :feedback_types, :class_name => "CustomerFeedback", :foreign_key => "customer_feedback_type_id"
 
   has_many :type_based_organization_quality_type, :class_name => "QualityAction", :foreign_key => "organization_quality_type_id"
 

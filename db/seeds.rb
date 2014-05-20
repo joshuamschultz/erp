@@ -85,6 +85,10 @@ mastertypes = [
    # ICP For Quality Action
    ["Corrective", "", "corrective", "icp_quallity_action", "true"],
    ["Preventive", "", "preventive", "icp_quallity_action", "true"],
+   # Customer Response
+   ["Complaint", "", "complaint", "customer_response", "true"],
+   ["Suggestion", "", "suggestion", "customer_response", "true"],
+   ["Praise", "", "praise", "customer_response", "true"],
 ]
 
 mastertypes.each do |master|
