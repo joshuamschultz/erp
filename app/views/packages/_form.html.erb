@@ -63,7 +63,52 @@
             <div class="controls">
                 <%= f.file_field :unit_load %>
             </div>
-        </div>
+        </div>        
+
+        <%= f.input :dunnage_manufacturer %>      
+        <%= f.input :container_color_manufacturer %>         
+        <%= f.input :container_type_manufacturer %>    
+        <%= f.input :cover_cap_manufacturer %> 
+        <%= f.input :pallet_manufacturer %>  
+        <%= f.input :strech_shrink_manufacturer %> 
+        <%= f.input :banding_manufacturer %> 
+        <%= f.input :other_manufacturer %>   
+
+        <%= f.input :dunnage_material %>  
+        <%= f.input :container_color_material %>
+        <%= f.input :container_type_material %>      
+        <%= f.input :cover_cap_material %>
+        <%= f.input :pallet_material %>  
+        <%= f.input :strech_shrink_material %>     
+        <%= f.input :banding_material %>
+        <%= f.input :other_material %>   
+
+        <%= f.input :dunnage_lead_time %>        
+        <%= f.input :container_color_lead_time %>
+        <%= f.input :container_type_lead_time %>    
+        <%= f.input :cover_cap_lead_time %>
+        <%= f.input :pallet_lead_time %>  
+        <%= f.input :strech_shrink_lead_time %>
+        <%= f.input :banding_lead_time %>
+        <%= f.input :other_lead_time %>   
+
+        <%= f.input :dunnage_ret_exp %> 
+        <%= f.input :container_color_ret_exp %> 
+        <%= f.input :container_type_ret_exp %>    
+        <%= f.input :cover_cap_ret_exp %> 
+        <%= f.input :pallet_ret_exp %>  
+        <%= f.input :strech_shrink_ret_exp %> 
+        <%= f.input :banding_ret_exp %> 
+        <%= f.input :other_ret_exp %>   
+
+        <%= f.input :dunnage_comment %>       
+        <%= f.input :container_color_comment %> 
+        <%= f.input :container_type_comment %>    
+        <%= f.input :cover_cap_comment %> 
+        <%= f.input :pallet_comment %>  
+        <%= f.input :strech_shrink_comment %> 
+        <%= f.input :banding_comment %> 
+        <%= f.input :other_comment %>
 
         <div class="form-actions">
             <%= f.button :submit, :class => "btn" %>
@@ -72,6 +117,7 @@
 
             <%= link_to 'Back to packages', packages_path, :class =>"btn" %>
         </div>
+
     </div>
 <% end %>
 
