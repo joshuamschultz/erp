@@ -13,6 +13,10 @@
 
         <div class="separator bottom"></div>
 
+        <%= f.association :customer_feedback_type, :label => "Choose", :label_method => "type_name", :label_value => "id",  :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.customer_feedback_types.first.id if @customer_feedback.customer_feedback_type.nil?) %>
+
+        <div class="separator bottom"></div>
+
         <div id="customer_select">
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', :label => "Organization" %>
         </div>
@@ -50,11 +54,11 @@
 <script type="text/javascript">    
     $(document).ready(function(){ 
       $("#customer_feedback_organization_id").val("<%= @customer_feedback.organization.organization_name if @customer_feedback.organization %>");
-        tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
+        tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id %>", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id+1 %>", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id+2 %>","customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
        $("#customer_feedback_quality_action_id").val("<%= @customer_feedback.quality_action.quality_action_no if @customer_feedback.quality_action %>");
        $("#customer_feedback_organization_id").val("<%= @customer_feedback.organization.organization_name if @customer_feedback.organization %>");
 
-            // change_organization_type();
+       $("#organization_type").focus();     // change_organization_type();
     });
 
     // $(document).on("keydown", "#organization_type", function(e){
