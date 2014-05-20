@@ -7,7 +7,7 @@ class QualityActionsController < ApplicationController
 
   def set_page_info
       @menus[:quality][:active] = "active"
-      simple_form_validation = false
+      # simple_form_validation = false
   end
 
   def set_autocomplete_values

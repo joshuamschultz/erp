@@ -235,7 +235,92 @@
     </div>    
 </div>
 
-
+<div class="row-fluid span12 well ">
+    <div class="span6  item_detail_view packaging">
+        <h5>Container :<span></span></h5>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+                <td width="2%">d</td>
+                <td width="82%">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr class="color-02 align-table">
+                            <td>Description</td>
+                            <td>Manufacturer</td>
+                            <td>Material</td>
+                            <td>Lead Time</td>
+                            <td>RET/EXP</td>
+                            <td>COMMENTS</td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Dunnage</td>
+                            <td><%= @package.dunnage_manufacturer %></td>
+                            <td><%= @package.dunnage_material %></td>
+                            <td><%= @package.dunnage_lead_time %></td>
+                            <td><%= @package.dunnage_ret_exp %></td>
+                            <td><%= @package.dunnage_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Container Color</td>
+                            <td><%= @package.container_color_manufacturer %></td>
+                            <td><%= @package.container_color_material %></td>
+                            <td><%= @package.container_color_lead_time %></td>
+                            <td><%= @package.container_color_ret_exp %></td>
+                            <td><%= @package.container_color_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Container Type</td>
+                            <td><%= @package.container_type_manufacturer %></td>
+                            <td><%= @package.container_type_material %></td>
+                            <td><%= @package.container_type_lead_time %></td>
+                            <td><%= @package.container_type_ret_exp %></td>
+                            <td><%= @package.container_type_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Cover/Top Cap</td>
+                            <td><%= @package.cover_cap_manufacturer %></td>
+                            <td><%= @package.cover_cap_material %></td>
+                            <td><%= @package.cover_cap_lead_time %></td>
+                            <td><%= @package.cover_cap_ret_exp %></td>
+                            <td><%= @package.cover_cap_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Pallet</td>
+                            <td><%= @package.pallet_manufacturer %></td>
+                            <td><%= @package.pallet_material %></td>
+                            <td><%= @package.pallet_lead_time %></td>
+                            <td><%= @package.pallet_ret_exp %></td>
+                            <td><%= @package.pallet_comment %></td>                            
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Stretch/Shrink Film</td>
+                            <td><%= @package.strech_shrink_manufacturer %></td>
+                            <td><%= @package.strech_shrink_material %></td>
+                            <td><%= @package.strech_shrink_lead_time %></td>
+                            <td><%= @package.strech_shrink_ret_exp %></td>
+                            <td><%= @package.strech_shrink_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Banding</td>
+                            <td><%= @package.banding_manufacturer %></td>
+                            <td><%= @package.banding_material %></td>
+                            <td><%= @package.banding_lead_time %></td>
+                            <td><%= @package.banding_ret_exp %></td>
+                            <td><%= @package.banding_comment %></td>
+                        </tr>
+                        <tr>
+                            <td class="color-02 align-table">Other</td>
+                            <td><%= @package.other_manufacturer %></td>
+                            <td><%= @package.other_material %></td>
+                            <td><%= @package.other_lead_time %></td>
+                            <td><%= @package.other_ret_exp %></td>
+                            <td><%= @package.other_comment %></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 
 <style type="text/css">
     .packaging{width: 98% !important;}
@@ -249,169 +334,3 @@
     .align-table{}
     .r-align{ text-align: right;}
 </style>
-
-
-
-
-
-
-<p id="notice"><%= notice %></p>
-<p>
-    <b>Part size length:</b>
-    <%= @package.part_size_length %>
-</p>
-<p>
-    <b>Part size width:</b>
-    <%= @package.part_size_width %>
-</p>
-<p>
-    <b>Part size height:</b>
-    <%= @package.part_size_height %>
-</p>
-<p>
-    <b>Container length:</b>
-    <%= @package.container_length %>
-</p>
-<p>
-    <b>Container width:</b>
-    <%= @package.container_width %>
-</p>
-<p>
-    <b>Container height:</b>
-    <%= @package.container_height %>
-</p>
-<p>
-    <b>Pallet length:</b>
-    <%= @package.pallet_length %>
-</p>
-<p>
-    <b>Pallet width:</b>
-    <%= @package.pallet_width %>
-</p>
-<p>
-    <b>Pallet height:</b>
-    <%= @package.pallet_height %>
-</p>
-<p>
-    <b>Load shipped length:</b>
-    <%= @package.load_shipped_length %>
-</p>
-<p>
-    <b>Load shipped width:</b>
-    <%= @package.load_shipped_width %>
-</p>
-<p>
-    <b>Load shipped height:</b>
-    <%= @package.load_shipped_height %>
-</p>
-<p>
-    <b>Part weight:</b>
-    <%= @package.part_weight %>
-</p>
-<p>
-    <b>Dunnage tare weight:</b>
-    <%= @package.dunnage_tare_Weight %>
-</p>
-<p>
-    <b>Container tare weight:</b>
-    <%= @package.container_tare_weight %>
-</p>
-<p>
-    <b>Pallet tare weight:</b>
-    <%= @package.pallet_tare_weight %>
-</p>
-<p>
-    <b>Container gross inc weight:</b>
-    <%= @package.container_gross_inc_weight %>
-</p>
-<p>
-    <b>Unit load gross:</b>
-    <%= @package.unit_load_gross %>
-</p>
-<p>
-    <b>Quantity per container:</b>
-    <%= @package.quantity_per_container %>
-</p>
-<p>
-    <b>Container per layer pallet:</b>
-    <%= @package.container_per_layer_pallet %>
-</p>
-<p>
-    <b>Layers per pallet:</b>
-    <%= @package.layers_per_pallet %>
-</p>
-<p>
-    <b>Container per pallet:</b>
-    <%= @package.container_per_pallet %>
-</p>
-<p>
-    <b>Package comment:</b>
-    <%= @package.package_comment %>
-</p>
-<p>
-    <b>Part content type:</b>
-    <%= @package.part_content_type %>
-</p>
-<p>
-    <b>Part file size:</b>
-    <%= @package.part_file_size %>
-</p>
-<p>
-    <b>Part updated at:</b>
-    <%= @package.part_updated_at %>
-</p>
-<p>
-    <b>Part file name:</b>
-    <%= @package.part_file_name %>
-</p>
-<p>
-    <b>Container content type:</b>
-    <%= @package.container_content_type %>
-</p>
-<p>
-    <b>Container file size:</b>
-    <%= @package.container_file_size %>
-</p>
-<p>
-    <b>Container updated at:</b>
-    <%= @package.container_updated_at %>
-</p>
-<p>
-    <b>Container file name:</b>
-    <%= @package.container_file_name %>
-</p>
-<p>
-    <b>Dunnage content type:</b>
-    <%= @package.dunnage_content_type %>
-</p>
-<p>
-    <b>Dunnage file size:</b>
-    <%= @package.dunnage_file_size %>
-</p>
-<p>
-    <b>Dunnage updated at:</b>
-    <%= @package.dunnage_updated_at %>
-</p>
-<p>
-    <b>Dunnage file name:</b>
-    <%= @package.dunnage_file_name %>
-</p>
-<p>
-    <b>Unit load content type:</b>
-    <%= @package.unit_load_content_type %>
-</p>
-<p>
-    <b>Unit load file size:</b>
-    <%= @package.unit_load_file_size %>
-</p>
-<p>
-    <b>Unit load updated at:</b>
-    <%= @package.unit_load_updated_at %>
-</p>
-<p>
-    <b>Unit load file name:</b>
-    <%= @package.unit_load_file_name %>
-</p>
-<%= link_to 'Edit', edit_package_path(@package) %> |
-<%= link_to 'Back', packages_path %>
-
