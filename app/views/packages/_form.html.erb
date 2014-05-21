@@ -2,113 +2,530 @@
   <%= f.error_notification %>
 
     <div class="form-inputs">
-        
-        <%= f.association :quality_lot, :url => autocomplete_quality_lot_lot_control_no_quality_lots_path, :as => :autocomplete, :id_element => '#quality_lot_id', required: true, :label => "Quality Lot"  %>
+
+         <%= f.association :quality_lot, :url => autocomplete_quality_lot_lot_control_no_quality_lots_path, :as => :autocomplete, :id_element => '#quality_lot_id', required: true, :label => "Quality Lot"  %>
 
         <%= hidden_field_tag :quality_lot_id, (@package.quality_lot.id if @package.quality_lot) %>
 
         <%= hidden_field_tag :org_quality_lot_id, (@package.quality_lot.id if @package.quality_lot) %>
 
-        <%= f.input :part_size_length %>
-        <%= f.input :part_size_width %>
-        <%= f.input :part_size_height %>
 
-        <%= f.input :container_length %>
-        <%= f.input :container_width %>
-        <%= f.input :container_height %>
+        <table >
+            <tr>
+                <td>
+                    <h5> Part Size:<span></span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :part_size_length, :label => "L (mm)" %>
+                </td>
+                <td>
+                    <%= f.input :part_size_width,  :label => "W (mm)"  %>
+                </td>
+                <td>
+                    <%= f.input :part_size_height, :label => "H (mm)" %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
 
-        <%= f.input :pallet_length %>
-        <%= f.input :pallet_width %>
-        <%= f.input :pallet_height %>
 
-        <%= f.input :load_shipped_length %>
-        <%= f.input :load_shipped_width %>
-        <%= f.input :load_shipped_height %>
+            <tr>
+                <td>
+                    <h5> Container Only:<span></span></h5>
+                </td>
+            </tr>            
+            <tr>
+                <td>
+                    <%= f.input :container_length, :label => "L (mm)"  %>
+                </td>
+                <td>
+                    <%= f.input :container_width,  :label => "W (mm)" %>
+                </td>
+                <td>
+                    <%= f.input :container_height, :label => "H (mm)"  %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>  
 
-        <%= f.input :part_weight %>
-        <%= f.input :dunnage_tare_Weight %>
-        <%= f.input :container_tare_weight %>
-        <%= f.input :pallet_tare_weight %>
-        <%= f.input :container_gross_inc_weight %>
-        <%= f.input :unit_load_gross %>
-        <%= f.input :quantity_per_container %>
-        <%= f.input :container_per_layer_pallet %>
-        <%= f.input :layers_per_pallet %>
-        <%= f.input :container_per_pallet %>
-        <%= f.input :package_comment %>
 
-        <div class="control-group integer optional package_container_per_layer_pallet">
-            <label for="package_container_per_layer_pallet" class="integer optional control-label">Part</label>
-            <div class="controls">
-                <%= f.file_field :part %>
-            </div>
-        </div>
+             <tr>
+                <td>
+                    <h5> Pallet Only:<span></span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :pallet_length, :label => "L (mm)"  %>
+                </td>
+                <td>
+                    <%= f.input :pallet_width,  :label => "W (mm)" %>
+                </td>
+                <td>
+                    <%= f.input :pallet_height, :label => "H (mm)"  %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
 
-        <div class="control-group integer optional package_container_per_layer_pallet">
-            <label for="package_container_per_layer_pallet" class="integer optional control-label">Container</label>
-            <div class="controls">
-                <%= f.file_field :container %>
-            </div>
-        </div>
 
-        <div class="control-group integer optional package_container_per_layer_pallet">
-            <label for="package_container_per_layer_pallet" class="integer optional control-label">Dunnage</label>
-            <div class="controls">
-                <%= f.file_field :dunnage %>
-            </div>
-        </div>
+             <tr>
+                <td>
+                    <h5>Unit Load As Shipped:<span></span></h5>
+                </td>
+            </tr>
+            <tr>                
+                <td>
+                    <%= f.input :load_shipped_length, :label => "L (mm)"  %>
+                </td>
+                <td>
+                    <%= f.input :load_shipped_width,  :label => "W (mm)" %>
+                </td>
+                <td>
+                    <%= f.input :load_shipped_height, :label => "H (mm)"  %>
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
 
-        <div class="control-group integer optional package_container_per_layer_pallet">
-            <label for="package_container_per_layer_pallet" class="integer optional control-label">Unit Load</label>
-            <div class="controls">
-                <%= f.file_field :unit_load %>
-            </div>
-        </div>        
 
-        <%= f.input :dunnage_manufacturer %>      
-        <%= f.input :container_color_manufacturer %>         
-        <%= f.input :container_type_manufacturer %>    
-        <%= f.input :cover_cap_manufacturer %> 
-        <%= f.input :pallet_manufacturer %>  
-        <%= f.input :strech_shrink_manufacturer %> 
-        <%= f.input :banding_manufacturer %> 
-        <%= f.input :other_manufacturer %>   
+            <tr>
+                <td>
+                    <h5>Component:</span></h5>
+                </td>
+            </tr>           
+            <tr>
+                <td>
+                   <%= f.input :part_weight %>
+                </td>
+                <td>
+                   <%= f.input :dunnage_tare_Weight %>
+                </td>
+                <td>
+                    <%= f.input :container_tare_weight %>
+                </td>
+            </tr>           
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :pallet_tare_weight %>
+                </td>
+                <td>
+                   <%= f.input :container_gross_inc_weight %> 
+                </td>
+                <td>
+                    <%= f.input :unit_load_gross %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :quantity_per_container %>
+                </td>
+                <td>
+                    <%= f.input :container_per_layer_pallet %>
+                </td>
+                <td>
+                    <%= f.input :layers_per_pallet %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :container_per_pallet %>
+                </td>
+                <td>
+                    <%= f.input :package_comment %>
+                </td>
+                <td>                    
+                </td>
+            </tr>
 
-        <%= f.input :dunnage_material %>  
-        <%= f.input :container_color_material %>
-        <%= f.input :container_type_material %>      
-        <%= f.input :cover_cap_material %>
-        <%= f.input :pallet_material %>  
-        <%= f.input :strech_shrink_material %>     
-        <%= f.input :banding_material %>
-        <%= f.input :other_material %>   
+            <tr>
+                <td>
+                    <h5>Attachment:</span></h5>
+                </td>
+            </tr> 
 
-        <%= f.input :dunnage_lead_time %>        
-        <%= f.input :container_color_lead_time %>
-        <%= f.input :container_type_lead_time %>    
-        <%= f.input :cover_cap_lead_time %>
-        <%= f.input :pallet_lead_time %>  
-        <%= f.input :strech_shrink_lead_time %>
-        <%= f.input :banding_lead_time %>
-        <%= f.input :other_lead_time %>   
+             <tr>
+                <td>
+                    <div class="control-group integer optional package_container_per_layer_pallet">
+                        <label for="package_container_per_layer_pallet" class="integer optional control-label">Part</label>
+                        <div class="controls">
+                            <%= f.file_field :part %>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="control-group integer optional package_container_per_layer_pallet">
+                        <label for="package_container_per_layer_pallet" class="integer optional control-label">Container</label>
+                        <div class="controls">
+                            <%= f.file_field :container %>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                   <div class="control-group integer optional package_container_per_layer_pallet">
+                        <label for="package_container_per_layer_pallet" class="integer optional control-label">Dunnage</label>
+                        <div class="controls">
+                            <%= f.file_field :dunnage %>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group integer optional package_container_per_layer_pallet">
+                        <label for="package_container_per_layer_pallet" class="integer optional control-label">Unit Load</label>
+                        <div class="controls">
+                            <%= f.file_field :unit_load %>
+                        </div>
+                    </div>  
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
 
-        <%= f.input :dunnage_ret_exp %> 
-        <%= f.input :container_color_ret_exp %> 
-        <%= f.input :container_type_ret_exp %>    
-        <%= f.input :cover_cap_ret_exp %> 
-        <%= f.input :pallet_ret_exp %>  
-        <%= f.input :strech_shrink_ret_exp %> 
-        <%= f.input :banding_ret_exp %> 
-        <%= f.input :other_ret_exp %>   
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
 
-        <%= f.input :dunnage_comment %>       
-        <%= f.input :container_color_comment %> 
-        <%= f.input :container_type_comment %>    
-        <%= f.input :cover_cap_comment %> 
-        <%= f.input :pallet_comment %>  
-        <%= f.input :strech_shrink_comment %> 
-        <%= f.input :banding_comment %> 
-        <%= f.input :other_comment %>
+            <tr>
+                <td>
+                    <h5>PACKAGING MATERIALS:</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Manufacturer</span></h5>
+                </td>
+            </tr>            
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>         
+            <tr>
+                <td>
+                   <%= f.input :dunnage_manufacturer %>
+                </td>
+                <td>
+                   <%= f.input :container_color_manufacturer %> 
+                </td>
+                <td>
+                   <%= f.input :container_type_manufacturer %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <%= f.input :cover_cap_manufacturer %> 
+                </td>
+                <td>
+                    <%= f.input :pallet_manufacturer %>  
+                </td>
+                <td>
+                    <%= f.input :strech_shrink_manufacturer %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :banding_manufacturer %>
+                </td>
+                <td>
+                    <%= f.input :other_manufacturer %>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>      
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            
+            
+            <tr>
+                <td>
+                    <h5>Material</span></h5>
+                </td>
+            </tr>         
+            <tr>
+                <td>
+                    <%= f.input :dunnage_material %> 
+                </td>
+                <td>
+                    <%= f.input :container_color_material %>
+                </td>
+                <td>
+                    <%= f.input :container_type_material %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+             <tr>
+                <td>
+                   <%= f.input :cover_cap_material %>
+                </td>
+                <td>
+                   <%= f.input :pallet_material %>
+                </td>
+                <td>
+                   <%= f.input :strech_shrink_material %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+             <tr>
+                <td>
+                   <%= f.input :banding_material %> 
+                </td>
+                <td>
+                   <%= f.input :other_material %> 
+                </td>
+                <td>
+                    
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+            
+
+            <tr>
+                <td>
+                    <h5>Lead Time</h5>
+                </td>
+            </tr>
+
+             <tr>
+                <td>
+                    <%= f.input :dunnage_lead_time %>  
+                </td>
+                <td>
+                    <%= f.input :container_color_lead_time %>
+                </td>
+                <td>
+                    <%= f.input :container_type_lead_time %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+             <tr>
+                <td>
+                    <%= f.input :cover_cap_lead_time %>
+                </td>
+                <td>
+                    <%= f.input :pallet_lead_time %>
+                </td>
+                <td>
+                    <%= f.input :strech_shrink_lead_time %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :banding_lead_time %>
+                </td>
+                <td>
+                    <%= f.input :other_lead_time %> 
+                </td>
+                <td>
+                    
+                </td>
+            </tr> 
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>  
+            
+
+            <tr>
+                <td>
+                    <h5>RET/EXP</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :dunnage_ret_exp %>
+                </td>
+                <td>
+                    <%= f.input :container_color_ret_exp %> 
+                </td>
+                <td>
+                   <%= f.input :container_type_ret_exp %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :cover_cap_ret_exp %> 
+                </td>
+                <td>
+                    <%= f.input :pallet_ret_exp %> 
+                </td>
+                <td>
+                    <%= f.input :strech_shrink_ret_exp %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :banding_ret_exp %>
+                </td>
+                <td>
+                    <%= f.input :other_ret_exp %> 
+                </td>
+                <td>
+                    
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <h5>COMMENTS</h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :dunnage_comment %>
+                </td>
+                <td>
+                    <%= f.input :container_color_comment %>
+                </td>
+                <td>
+                    <%= f.input :container_type_comment %> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   <%= f.input :cover_cap_comment %>   
+                </td>
+                <td>
+                   <%= f.input :pallet_comment %> 
+                </td>
+                <td>
+                    <%= f.input :strech_shrink_comment %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= f.input :banding_comment %> 
+                </td>
+                <td>
+                    <%= f.input :other_comment %>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>&nbsp;</span></h5>
+                </td>
+            </tr>
+
+
+
+        </table>       
+       
+
 
         <div class="form-actions">
             <%= f.button :submit, :class => "btn" %>
@@ -122,15 +539,12 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_attachment"] = ["package_quality_lot_id", "package_part_size_length", "package_part_size_width", "package_part_size_height", "package_container_length", "package_container_width", "package_container_height", "package_pallet_length", "package_pallet_width", "package_pallet_height", "package_load_shipped_length", "package_load_shipped_width", "package_load_shipped_height", "package_part_weight", "package_dunnage_tare_Weight", "package_container_tare_weight", "package_pallet_tare_weight", "package_container_gross_inc_weight", "package_unit_load_gross", "package_quantity_per_container","package_container_per_layer_pallet", "package_layers_per_pallet", "package_container_per_pallet", "package_package_comment", "package_part", "package_container", "package_dunnage", "package_unit_load"];
+    tab_field_forms["form_for_attachment"] = ["package_quality_lot_id", "package_part_size_length", "package_part_size_width", "package_part_size_height", "package_container_length", "package_container_width", "package_container_height", "package_pallet_length", "package_pallet_width", "package_pallet_height", "package_load_shipped_length", "package_load_shipped_width", "package_load_shipped_height", "package_part_weight", "package_dunnage_tare_Weight", "package_container_tare_weight", "package_pallet_tare_weight", "package_container_gross_inc_weight", "package_unit_load_gross", "package_quantity_per_container","package_container_per_layer_pallet", "package_layers_per_pallet", "package_container_per_pallet", "package_package_comment", "package_part", "package_container", "package_dunnage", "package_unit_load",  "package_dunnage_manufacturer", "package_container_color_manufacturer", "package_container_type_manufacturer", "package_cover_cap_manufacturer", "package_pallet_manufacturer", "package_strech_shrink_manufacturer", "package_banding_manufacturer", "package_other_manufacturer", "package_dunnage_material", "package_container_color_material", "package_container_type_material",  "package_cover_cap_material", "package_pallet_material", "package_strech_shrink_material", "package_banding_material", "package_other_material", "package_dunnage_lead_time", "package_container_color_lead_time", "package_container_type_lead_time", "package_cover_cap_lead_time", "package_pallet_lead_time", "package_strech_shrink_lead_time", "package_banding_lead_time", "package_other_lead_time", "package_dunnage_ret_exp", "package_container_color_ret_exp", "package_container_type_ret_exp", "package_cover_cap_ret_exp", "package_pallet_ret_exp", "package_strech_shrink_ret_exp", "package_banding_ret_exp", "package_other_ret_exp", "package_dunnage_comment", "package_container_color_comment", "package_container_type_comment", "package_cover_cap_comment", "package_pallet_comment", "package_strech_shrink_comment", "package_banding_comment", "package_other_comment"
 
- $(document).ready(function(){    
+    ];
 
-
-
-        
-
-
+    $(document).ready(function(){    
+         $("#package_quality_lot_id").val("<%= @package.quality_lot.lot_control_no if @package.quality_lot %>");
     });
  </script>
 

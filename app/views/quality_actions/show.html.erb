@@ -41,9 +41,15 @@
             </div>
         </div>
     </div>
-    <% if @quality_action.cause_analysis.present? %>
-        <%= @quality_action.cause_analysis.attachment.attachment_url("link_action") %>
-    <% end %>
+   <!-- Attachments -->
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
+</div>
     <div class="separator bottom"></div>
 
     <h5>Required action :<span></span></h5>
