@@ -51,6 +51,7 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions/1.json
   def show
     @quality_action = QualityAction.find(params[:id])
+    @attachable = @quality_action
 
     respond_to do |format|
       format.html # show.html.erb

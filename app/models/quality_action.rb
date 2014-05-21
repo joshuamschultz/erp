@@ -1,4 +1,5 @@
 class QualityAction < ActiveRecord::Base
+	include Rails.application.routes.url_helpers
 	belongs_to :item
 	belongs_to :item_revision
 	belongs_to :item_alt_name
@@ -12,6 +13,7 @@ class QualityAction < ActiveRecord::Base
 	has_many :quality_actions_users, :dependent => :destroy
 	has_many :users, :through => :quality_actions_users
 	has_many :customer_feedbacks, :dependent => :destroy
+	has_many :attachments, :as => :attachable, :dependent => :destroy
 
 	before_save :before_save_process
 	before_validation :before_save_validate
@@ -60,6 +62,10 @@ class QualityAction < ActiveRecord::Base
 
     def organization_type
     	self.organization_quality_type.type_name    	
+    end
+
+    def redirect_path
+       quality_action_path(self)
     end
 
 end
