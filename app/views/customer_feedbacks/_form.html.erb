@@ -20,9 +20,6 @@
         <div id="customer_select">
             <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', :label => "Organization" %>
         </div>
-         <div id="vendor_select">
-            <%#= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', :label => "Vendor" %>
-        </div>
 
         <div class="separator bottom"></div>
 
@@ -34,7 +31,7 @@
 
         <%= f.input :feedback %>
 
-        <%= f.association :quality_action, :url => autocomplete_quality_action_quality_action_no_quality_actions_path, :as => :autocomplete, :id_element => '#quality_action_id', required: true, :label => "Quality Action" %>
+        <%= f.association :quality_action, :url => autocomplete_quality_action_quality_action_no_quality_actions_path, :as => :autocomplete, :id_element => '#quality_action_id', :label => "Quality Action" %>
 
         <%= hidden_field_tag :quality_action_id, (@customer_feedback.quality_action.id if @customer_feedback.quality_action) %>
 
@@ -59,33 +56,20 @@
        $("#customer_feedback_organization_id").val("<%= @customer_feedback.organization.organization_name if @customer_feedback.organization %>");
 
        $("#organization_type").focus();     // change_organization_type();
+       change_organization_type();
     });
 
-    // $(document).on("keydown", "#organization_type", function(e){
-    //     var keyCode = e.keyCode || e.which;
-    //     if(keyCode == 13){
-    //         e.preventDefault();
-    //         $('#customer_feedback_organization_id').focus();
-    //     }
-    // });
+ 
 
     $(document).on("change", "#organization_type", function(){         
-        // change_organization_type();
+        change_organization_type();
     });
-    function change_organization_type(){
-        if($("#organization_type").val() == "vendor"){                     
-            $('#customer_select').hide();
-            $('#vendor_select').show();
-            tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
-            $("#customer_feedback_organization_id").val("");
-            $("#organization_id").val("");  
+    function change_organization_type(){ 
+        if($("#organization_type").val() == "vendor"){   
+            $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=vendor" );
         }
         else{ 
-            $('#vendor_select').hide();
-            $('#customer_select').show();
-            tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
-            $("#customer_feedback_organization_id").val("");
-            $("#organization_id").val("");
+            $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=customer" );   
        }
     }
 </script>
