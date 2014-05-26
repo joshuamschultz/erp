@@ -74,7 +74,7 @@
     <div class="span6  item_detail_view packaging">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="9%">DIGITAL IMAGES <br /></td>
+                <td width="9%"><p style="margin-top: 166px; font-size: 13px; font-weight: bold;transform: rotate(-90deg);">DIGITAL IMAGES </p></td>
                 <td width="43%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr align="left" valign="top">
@@ -103,11 +103,11 @@
         <h5>Container :<span></span></h5>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="2%">d</td>
+                <td width="2%"><p style="margin-top: 75px; font-size: 10px; font-weight: bold;transform: rotate(-90deg);">PACKAGE DATA</p></td>
                 <td width="82%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr class="color-02 align-table">
-                            <td>Component</td>
+                            <td >Component</td>
                             <td>L (mm)</td>
                             <td>W (mm)</td>
                             <td>H (mm)</td>
@@ -121,9 +121,9 @@
                             <td><%= @package.part_size_length %></td>
                             <td><%= @package.part_size_width %></td>
                             <td><%= @package.part_size_width %></td>
-                            <td class="r-align">Part (Tare)</td>
+                            <td class="r-align r-alings">Part (Tare)</td>
                             <td><%= @package.part_size_width %></td>
-                            <td class="r-align">Qty Parts per Container</td>
+                            <td class="r-align r-alings">Qty Parts per Container</td>
                             <td><%= @package.quantity_per_container %></td>
                         </tr>
                         <tr>
@@ -137,7 +137,7 @@
                             <td><%= @package.container_per_layer_pallet %></td>
                         </tr>
                         <tr>
-                            <td class="r-align">Pallet Only</td>
+                            <td class="r-align" style="width:180px">Pallet Only</td>
                             <td><%= @package.pallet_length %></td>
                             <td><%= @package.pallet_width %></td>
                             <td><%= @package.pallet_height %></td>
@@ -174,7 +174,7 @@
                             <td>&nbsp;</td>
                             <td class="r-align">Container Gross (Inc Parts)</td>
                             <td><%= @package.container_gross_inc_weight %></td>
-                            <td><%= @package.package_comment %></td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td class="r-align">
@@ -196,7 +196,7 @@
                             <td>&nbsp;</td>
                             <td class="r-align">Unit Load (Inc Parts)</td>
                             <td><%= @package.layers_per_pallet %></td>
-                            <td><%= @package.quantity_per_container %></td>
+                            <td></td>
                             <td>&nbsp;</td>
                         </tr>
                     </table>
@@ -211,7 +211,7 @@
     <div class="span6  item_detail_view packaging">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="9%">DIGITAL IMAGES <br /></td>
+                <td width="9%"><p style="margin-top: 166px; font-size: 13px; font-weight: bold;transform: rotate(-90deg);">DIGITAL IMAGES </p></td>
                 <td width="43%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr align="left" valign="top">
@@ -240,7 +240,7 @@
         <h5>Container :<span></span></h5>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="2%">d</td>
+                <td width="2%"><p style="margin-top: 100px; font-size: 10px; font-weight: bold;transform: rotate(-90deg);">PACKAGING MATERIALS </p></td>
                 <td width="82%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr class="color-02 align-table">
@@ -333,4 +333,5 @@
     .color-02{background-color:  #555; font-weight: bold; text-align: center; }
     .align-table{}
     .r-align{ text-align: right;}
+    .r-aligns { text-align: right; width: 200px; }
 </style>
