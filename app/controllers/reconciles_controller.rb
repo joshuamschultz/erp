@@ -13,9 +13,9 @@ class ReconcilesController < ApplicationController
               reconcile[:tag] = reconcile.tag 
               reconcile[:reconcile_type] = reconcile.reconcile_type
               #reconcile[:payment_id] = reconcile.payment_id              
-              reconcile[:payment_id] = CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) if reconcile.payment_id
+              reconcile[:payment_id] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : "" 
               reconcile[:deposit_check_id] = reconcile.deposit_check_id
-              reconcile[:printing_screen_id] =reconcile.printing_screen_id
+              reconcile[:printing_screen_id] = reconcile.printing_screen_id
               reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
           }
           render json: {:aaData => @reconciles}
