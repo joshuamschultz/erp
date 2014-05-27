@@ -1,0 +1,12 @@
+<%= simple_form_for(@printing_screen) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :status %>
+    <%= f.association :payment %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

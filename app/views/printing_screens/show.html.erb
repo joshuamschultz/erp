@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Status:</b>
+  <%= @printing_screen.status %>
+</p>
+
+<p>
+  <b>Payment:</b>
+  <%= @printing_screen.payment %>
+</p>
+
+
+<%= link_to 'Edit', edit_printing_screen_path(@printing_screen) %> |
+<%= link_to 'Back', printing_screens_path %>

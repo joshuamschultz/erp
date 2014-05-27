@@ -1,5 +1,14 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :printing_screens
+
+
+  resources :deposit_checks
+
+
+  resources :reconciles
+
+
   resources :packages
 
 

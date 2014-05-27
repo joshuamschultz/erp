@@ -41,15 +41,18 @@
             </div>
         </div>
     </div>
-   <!-- Attachments -->
-<div class="row-fluid">
-    <div class="attachment-pulp">
-        <%= render :partial => 'attachments/droppable_form_plup_less' %>
+
+    <!-- Attachments -->
+    <div class="row-fluid">
+        <div class="attachment-pulp">
+            <%= render :partial => 'attachments/attachment_pulp_less_no_instance',:locals => {:attachable => @root_cause_attachment} %>
+        </div>
+        <div class="span8">            
+            <%= render :partial => 'attachments/attachment_less_with_no_instance', :locals => {:attachable => @root_cause_attachment} %>
+        </div>
     </div>
-    <div class="span8">
-        <%= render 'attachments/attachments_less' %>
-    </div>
-</div>
+
+   
     <div class="separator bottom"></div>
 
     <h5>Required action :<span></span></h5>
@@ -68,7 +71,6 @@
 <div class="separator bottom"></div>
 
 <div class="separator bottom"></div>
-
 
 
 <div class="row-fluid">
@@ -98,4 +100,14 @@
         </tr>
     </table> 
     
+</div>
+
+<!-- Attachments -->
+<div class="row-fluid">
+    <div class="attachment-pulp">
+        <%= render :partial => 'attachments/droppable_form_plup_less' %>
+    </div>
+    <div class="span8">
+        <%= render 'attachments/attachments_less' %>
+    </div>
 </div>

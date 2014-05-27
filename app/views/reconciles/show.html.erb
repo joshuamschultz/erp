@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Reconcile type:</b>
+  <%= @reconcile.reconcile_type %>
+</p>
+
+<p>
+  <b>Payment:</b>
+  <%= @reconcile.payment %>
+</p>
+
+<p>
+  <b>Tag:</b>
+  <%= @reconcile.tag %>
+</p>
+
+<p>
+  <b>Deposit check:</b>
+  <%= @reconcile.deposit_check %>
+</p>
+
+<p>
+  <b>Printing screen:</b>
+  <%= @reconcile.printing_screen %>
+</p>
+
+<p>
+  <b>Reconcile status:</b>
+  <%= @reconcile.reconcile_status %>
+</p>
+
+
+<%= link_to 'Edit', edit_reconcile_path(@reconcile) %> |
+<%= link_to 'Back', reconciles_path %>

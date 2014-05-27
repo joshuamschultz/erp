@@ -52,6 +52,7 @@ class QualityActionsController < ApplicationController
   def show
     @quality_action = QualityAction.find(params[:id])
     @attachable = @quality_action
+    @root_cause_attachment =  @quality_action.cause_analysis
 
     respond_to do |format|
       format.html # show.html.erb

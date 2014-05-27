@@ -2,6 +2,10 @@ class Payment < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 
     has_many :payment_lines, :dependent => :destroy, :before_add => :set_payment
+    has_one :reconcile
+    has_one :deposit_check
+    has_one :printing_screen
+
 
     belongs_to :organization
 
@@ -83,6 +87,13 @@ class Payment < ActiveRecord::Base
             CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
             CheckCode.get_next_check_code
         end
+        if self.payment_type.present? && self.payment_type.type_value == "credit"
+            Reconcile.create(tag: "not reconciled", reconcile_type: "credit", payment_id: self.id)
+        end
+        if self.payment_type.present? && self.payment_type.type_value == "check" 
+            printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")
+            Reconcile.create(reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)
+        end    
     end
 
     def redirect_path
