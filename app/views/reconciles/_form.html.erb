@@ -1,0 +1,16 @@
+<%= simple_form_for(@reconcile) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :reconcile_type %>
+    <%= f.association :payment %>
+    <%= f.input :tag %>
+    <%= f.association :deposit_check %>
+    <%= f.association :printing_screen %>
+    <%= f.input :reconcile_status %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

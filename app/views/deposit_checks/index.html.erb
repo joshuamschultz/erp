@@ -1,0 +1,25 @@
+<h1>Listing deposit_checks</h1>
+
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Payment</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @deposit_checks.each do |deposit_check| %>
+  <tr>
+    <td><%= deposit_check.status %></td>
+    <td><%= deposit_check.payment %></td>
+    <td><%= link_to 'Show', deposit_check %></td>
+    <td><%= link_to 'Edit', edit_deposit_check_path(deposit_check) %></td>
+    <td><%= link_to 'Destroy', deposit_check, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Deposit check', new_deposit_check_path %>

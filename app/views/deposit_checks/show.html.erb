@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Status:</b>
+  <%= @deposit_check.status %>
+</p>
+
+<p>
+  <b>Payment:</b>
+  <%= @deposit_check.payment %>
+</p>
+
+
+<%= link_to 'Edit', edit_deposit_check_path(@deposit_check) %> |
+<%= link_to 'Back', deposit_checks_path %>
