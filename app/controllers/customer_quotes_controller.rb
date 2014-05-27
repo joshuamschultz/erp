@@ -52,6 +52,7 @@ class CustomerQuotesController < ApplicationController
                      customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name)
                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), customer_quote_path(customer_quote))
+                     customer_quote[:quote_status] = CommonActions.status_color(customer_quote.customer_quote_status)
                  }
                  render json: {:aaData => @customer_quotes}
                  }
