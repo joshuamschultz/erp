@@ -17,6 +17,7 @@ class CustomerQuote < ActiveRecord::Base
     def process_before_create
         # self.quote_identifier = CommonActions.get_new_identifier(Quote, :quote_identifier)
         self.customer_quote_identifier =  new_customer_quote_identifier
+        self.customer_quote_status = "open"
     end
 
 

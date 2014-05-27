@@ -9,13 +9,12 @@ class ReconcilesController < ApplicationController
       #format.json { render json: @reconciles }
         format.json { 
            @reconciles = @reconciles.select{|reconcile|
-              reconcile[:id] = CommonActions.linkable(reconcile_path(reconcile.id), reconcile.id)
+              reconcile[:ids] = CommonActions.linkable(reconcile_path(reconcile), reconcile.id)
               reconcile[:tag] = reconcile.tag 
               reconcile[:reconcile_type] = reconcile.reconcile_type
-              #reconcile[:payment_id] = reconcile.payment_id              
-              reconcile[:payment_id] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : "" 
-              reconcile[:deposit_check_id] = reconcile.deposit_check_id
-              reconcile[:printing_screen_id] = reconcile.printing_screen_id
+              reconcile[:payment_name] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : ""
+              reconcile[:deposit_check_name] = reconcile.deposit_check.present? ? CommonActions.linkable(deposit_check_path(reconcile.deposit_check_id), reconcile.deposit_check.id) : ""
+              reconcile[:printing_screen_name] = reconcile.printing_screen.present? ? CommonActions.linkable(printing_screen_path(reconcile.printing_screen_id), reconcile.printing_screen.id) : ""
               reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
           }
           render json: {:aaData => @reconciles}

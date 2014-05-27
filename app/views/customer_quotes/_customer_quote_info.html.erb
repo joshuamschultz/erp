@@ -38,10 +38,28 @@
         <div class="separator bottom"></div>
     </div>
 
-    <% if show_send %>
+    <% if show_send %>   
         <div class="button1">
             <a class="btn btn-primary" data-toggle="modal" href="#modal-customer-quote" class="btn btn-small btn-success">Send</a>
-        </div>
+            <div class="separator bottom"></div>
+            <table>
+                <tr>
+                    <td class="quote">Quote Status</td>
+                    <td> <%= select_tag :status, options_for_select([["Open","open"], ["Won","won"], ["Lost","lost"]], :selected => @customer_quote.customer_quote_status), :class => "status-select", :id => "set_status" %></td>        
+                </tr>
+            </table>
+        </div> 
+        <script type="text/javascript">
+          $(document).on("change", "#set_status", function(){
+              set_quote_status();
+          });
+          function set_quote_status(){
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_customer_quote_status", "status_id": $("#set_status").val(), "customer_quote_id": <%= @customer_quote.id %>}}, "status_result", {});
+          }
+          function status_result(){
+
+          }    
+         </script>
     <% end %>
 </div>
 
@@ -55,4 +73,11 @@
         float: left;
         width: 100px;
     }
+   .status-select{
+        width: 92px;
+      }
+      .quote {
+        float: left;
+        width: 90px !important;
+      }
 </style>

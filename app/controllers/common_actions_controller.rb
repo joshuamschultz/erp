@@ -102,7 +102,17 @@ class CommonActionsController < ApplicationController
             item_id = ItemAltName.find(params[:alt_name_id]).item.id
             # organization = Organization.find(params[:organization_id])
             result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_id = ?", params[:organization_id], item_id).order("po_headers.created_at DESC")
-          end                          
+          end
+        when "set_customer_quote_status"
+          if params[:customer_quote_id].present? && params[:status_id].present?
+            customer_quote = CustomerQuote.find(params[:customer_quote_id])
+            customer_quote.customer_quote_status = params[:status_id]
+            if customer_quote.save
+              result = "success"
+            else
+              result = "fail"
+            end
+          end                        
       end
       render json: {:aaData => result}
   end
