@@ -27,16 +27,18 @@ class SoShipmentsController < ApplicationController
             @item = Item.find(params[:item_id]) if params[:item_id].present?
 
             if @item
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments) : SoShipment.open_shipments(@item.so_shipments)
+                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
             else
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil) : SoShipment.open_shipments(nil)
+                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc")
             end
-
+            i = 0
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
+                so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true)   
                 so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 so_shipment[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 so_shipment[:item_part_no] = params[:create_receivable] ? so_shipment.receivable_checkbox(params[:type]) + so_shipment[:item_part_no] : so_shipment[:item_part_no]
+                i += 1
             }
             render json: {:aaData => @so_shipments}
         end
