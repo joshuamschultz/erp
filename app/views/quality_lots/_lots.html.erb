@@ -12,6 +12,7 @@
         <table id="table_report_lots" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
+                <th>index</th>
                 <th>Control No</th>
                 <th>Part No</th>
                 <th>Revision</th>
@@ -38,6 +39,7 @@
     {
         :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
         :columns => '[
+                        { "mData": "index","bVisible": false },
                         { "mData": "lot_control_no" },
                         { "mData": "item_part_no" },
                         { "mData": "item_revision_name" },                        

@@ -20,15 +20,18 @@ class PoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             if @item
-                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments) : PoShipment.open_shipments(@item.po_shipments)
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
             else
-                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil) : PoShipment.open_shipments(nil)
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
             end
+            i = 0
             @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
+                po_shipment[:index] =  i
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
+                i += 1
             }
             render json: {:aaData => @po_shipments}
         end

@@ -32,14 +32,15 @@ class QualityLotsController < ApplicationController
         @item = Item.find(params[:item_id])
         @quality_lots = @item.quality_lots.order('created_at desc')
     else
-        @quality_lots = QualityLot.all
+        @quality_lots = QualityLot.order('created_at desc')
     end
     
-
+    i = 0
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-          @quality_lots = @quality_lots.select{|quality_lot| 
+          @quality_lots = @quality_lots.select{|quality_lot|
+            quality_lot[:index] = i
             quality_lot[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_path(quality_lot), nil)
             
             quality_lot[:lot_control_no] = CommonActions.linkable(quality_lot_path(quality_lot), quality_lot.lot_control_no)
@@ -63,6 +64,7 @@ class QualityLotsController < ApplicationController
             quality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
             quality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y")
             quality_lot[:total_lots] = quality_lot.po_line.quality_lots.count
+            i += 1
           }
           render json: {:aaData => @quality_lots}
       }

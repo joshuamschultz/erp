@@ -29,18 +29,18 @@ class PoHeadersController < ApplicationController
 
       if params[:organization_id].present?
           @organization = Organization.find(params[:organization_id])
-          @po_headers = @organization.present? ? @organization.purchase_orders : []
+          @po_headers = @organization.present? ? @organization.purchase_orders.order("created_at desc")  : []
       elsif params[:item_revision_id].present?
           @item_revision = ItemRevision.find(params[:item_revision_id])
-          @po_headers = @item_revision.present? ? @item_revision.purchase_orders : []
+          @po_headers = @item_revision.present? ? @item_revision.purchase_orders.order("created_at desc")  : []
       elsif params[:item_id].present?
           @item = Item.find(params[:item_id])
-          @po_headers = @item.present? ? @item.purchase_orders : []
+          @po_headers = @item.present? ? @item.purchase_orders.order("created_at desc")  : []
       else
           @po_headers = PoHeader.order("created_at desc")         
       end
 
-      @po_headers = @po_headers.status_based_pos(params[:po_status]) if params[:po_status].present? && @po_headers.any?
+      @po_headers = @po_headers.status_based_pos(params[:po_status]).order("created_at desc")  if params[:po_status].present? && @po_headers.any?
   end
 
   # GET /po_headers
@@ -98,7 +98,7 @@ class PoHeadersController < ApplicationController
 
     respond_to do |format|
       if @po_header.save
-        format.html { redirect_to  edit_po_header_path(@po_header), notice: 'Po header was successfully created.' }
+        format.html { redirect_to  new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
       else        
         format.html { render action: "new" }

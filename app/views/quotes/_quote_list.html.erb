@@ -18,6 +18,7 @@
             <thead>
                 <tr>
                     <% if @organization.present? %>
+                        <th>Index</th>
                         <th>Quote</th>
                         <th>Vendors</th>
                         <th>Items</th>
@@ -26,13 +27,15 @@
                         <th>Notes</th>
                         <th>Created at</th>
                     <% elsif @item.present? %>
+                        <th>Index</th>
                         <th>Quote</th>
                         <th>Vendors</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Notes</th>
                         <th>Created at</th>
-                    <% else %>             
+                    <% else %>
+                        <th>Index</th>            
                         <th>Quote Send Id</th>
                         <th>Vendors</th>                  
                         <th>Description</th>
@@ -50,8 +53,9 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
-            :extras => {:slno => false, :order => 'desc'},
+            :extras => {:slno => false},
             :columns => '[
+                            { "mData": "index","bVisible": false},
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
                             { "mData": "price" },
@@ -65,8 +69,9 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:organization_id => (@organization.present? ? @organization.id : nil)), 
-            :extras => {:slno => false, :order => 'desc'},
+            :extras => {:slno => false},
             :columns => '[
+                            { "mData": "index", "bVisible": false},
                             { "mData": "quote_group_id" },
                             { "mData": "vendor_name" },
                             { "mData": "part_no"},
@@ -81,8 +86,9 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
             :path => quotes_path(:item_id => (@item.present? ? @item.id : nil)), 
-            :extras => {:slno => false, :order => 'desc'},
+            :extras => {:slno => false},
             :columns => '[
+                        { "mData": "index","bVisible": false},
                         { "mData": "quote_group_id" },
                         { "mData": "vendor_name" },
                         { "mData": "quote_description" },

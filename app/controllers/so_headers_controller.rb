@@ -34,17 +34,20 @@ class SoHeadersController < ApplicationController
           @item = Item.find(params[:item_id])
           @so_headers = @item.present? ? @item.sales_orders : []
       else
-          @so_headers = SoHeader.order(:created_at)
+          @so_headers = SoHeader.order("created_at desc")
       end
 
       @so_headers = @so_headers.status_based_sos(params[:so_status]) if params[:so_status].present? && @so_headers.any?
   end
 
   def index
+    p @so_headers.to_yaml
     respond_to do |format|
       format.html # index.html.erb
-      format.json {         
-        @so_headers = @so_headers.select{|so_header|
+      format.json {     
+        i = 0    
+        @so_headers = @so_headers.select{|so_header|          
+          so_header[:index] = i
           so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
           so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
           if so_header.bill_to_address
@@ -58,6 +61,7 @@ class SoHeadersController < ApplicationController
               so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
           end
           so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
+           i += 1
          }
          render json: {:aaData => @so_headers} 
       }
