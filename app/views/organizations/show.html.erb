@@ -16,7 +16,7 @@
     <div class="span9">
         <div class="row-fluid">
             <div class="span6 well">
-                <a class="widget-stats" href="<%= organization_path(@organization, :contact_type => 'address') %>" id="alt_address_btn">
+                <a class="widget-stats" onclick="get_address('address');" id="alt_address_btn">
                     <span class="glyphicons pin_flag"><i></i></span>
                     <span class="txt">Alternate Addresses</span>
                     <div class="clearfix"></div>
@@ -24,7 +24,7 @@
             </div>
 
             <div class="span6 well">
-                <a class="widget-stats" href="<%= organization_path(@organization, :contact_type => 'contact') %>" id="contacts_btn">
+                <a class="widget-stats"  onclick="get_address('contact');" id="contacts_btn">
                     <span class="glyphicons adress_book"><i></i></span>
                     <span class="txt">Contacts</span>
                     <div class="clearfix"></div>
@@ -34,7 +34,9 @@
 
         <div class="row-fluid">
             <div id="organization_table_data" class="span12 well">
-                <%= render 'contacts/org_contacts' %>
+                <div id="org_contact">
+                    <%= render 'contacts/org_contacts' %>
+                </div>
             </div>
         </div>
     </div>
@@ -143,6 +145,32 @@
 
     function callback_for_contacts(response, callback_params, api_params){
         $("#organization_table_data").html(response);
+    }
+
+    function get_address(type){
+        $('#org_contact').html("");
+        var adress = '<div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>escription</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
+        $('#org_contact').html(adress);
+
+       
+            data_table_report_contacts = $('#table_report_contacts').dataTable({
+                "bAutoWidth": false,
+                "bProcessing": true,
+                "sAjaxSource": '/contacts?contact_type='+type+'&amp;object_id=<%= @organization.id %>',
+                "aaSorting": [[0, "asc"]],
+                "aoColumns": [ 
+                            { "mData": "contact_title" },
+                            {"mData": "contact_description"}, 
+                            {"mData": "contact_city"},
+                            { "mData": "contact_telephone" },
+                            { "mData": "contact_email" },
+                            { "mData": "contact_fax" },
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ],
+                "bFilter": true,
+                "bLengthChange": true
+        });
+
     }
 </script>
 
