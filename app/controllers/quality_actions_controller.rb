@@ -36,8 +36,8 @@ class QualityActionsController < ApplicationController
       format.json { 
          @quality_actions = @quality_actions.select{|quality_action|
             quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
-            quality_action[:links] = CommonActions.object_crud_paths(nil, edit_quality_action_path(quality_action),nil)
-            quality_action[:user] =  quality_action.created_user.present? ? quality_action.created_user.name : ""
+            quality_action[:links] = quality_action.quality_action_status == "finished" ? "" : CommonActions.object_crud_paths(nil, edit_quality_action_path(quality_action),nil) 
+            quality_action[:user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
             quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
 
@@ -52,7 +52,6 @@ class QualityActionsController < ApplicationController
   def show
     @quality_action = QualityAction.find(params[:id])
     @attachable = @quality_action
-    @root_cause_attachment =  @quality_action.cause_analysis
 
     respond_to do |format|
       format.html # show.html.erb
@@ -74,6 +73,7 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions/1/edit
   def edit
     @quality_action = QualityAction.find(params[:id])
+    redirect_to quality_actions_path if @quality_action.quality_action_status == "finished"
   end
 
   # POST /quality_actions
@@ -86,7 +86,7 @@ class QualityActionsController < ApplicationController
 
     elsif params[:save]
       @quality_action = QualityAction.new(params[:quality_action])
-      @quality_action[:quality_action_status] = "open"
+      @quality_action[:quality_action_status] = "un_finished"
     end
       @quality_action[:created_user_id] = current_user.id
 

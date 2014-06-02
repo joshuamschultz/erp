@@ -43,14 +43,9 @@
     </div>
 
     <!-- Attachments -->
-    <div class="row-fluid">
-        <div class="attachment-pulp">
-            <%= render :partial => 'attachments/attachment_pulp_less_no_instance',:locals => {:attachable => @root_cause_attachment} %>
-        </div>
-        <div class="span8">            
-            <%= render :partial => 'attachments/attachment_less_with_no_instance', :locals => {:attachable => @root_cause_attachment} %>
-        </div>
-    </div>
+   <% if @quality_action.cause_analysis.present? %>
+        <%= @quality_action.cause_analysis.attachment.attachment_url("link_action") %>
+   <% end %>
 
    
     <div class="separator bottom"></div>
@@ -101,6 +96,10 @@
     </table> 
     
 </div>
+
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
 
 <!-- Attachments -->
 <div class="row-fluid">
