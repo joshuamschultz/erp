@@ -93,7 +93,7 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.save
         @quality_action.set_user(params)
-        format.html { redirect_to quality_actions_url, notice: 'Quality action was successfully created.' }
+        format.html { redirect_to quality_action_path(@quality_action), notice: 'Quality action was successfully created.' }
         format.json { render json: @quality_action, status: :created, location: @quality_action }
       else
         p @quality_action.errors
