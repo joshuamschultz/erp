@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :checklists
+
+
   resources :printing_screens
 
 
