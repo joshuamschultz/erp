@@ -19,6 +19,10 @@ module CommonActions
 		end
 		paths
 	end
+  
+    def self.check_boxes(val, chkId, funct)
+   		"<input type='checkbox' id='#{chkId}'  value='#{val}' onclick='#{funct}' >"
+    end	
 
 
 	def self.linkable(path, title, extras = {})
@@ -148,7 +152,7 @@ module CommonActions
 			{:path => "#", :name => "Journal Entries"},
 			{:path => gl_accounts_path, :name => "Accounts"},
 			{:path => gl_types_path, :name => "Types"},
-			{:path => "#", :name => "Reconcile"}
+			{:path => reconciles_path, :name => "Reconcile"}
 		]
 
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
