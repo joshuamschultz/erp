@@ -21,7 +21,7 @@ class ReconcilesController < ApplicationController
               reconcile[:printing_screen_name] = reconcile.printing_screen.present? ? CommonActions.linkable(printing_screen_path(reconcile.printing_screen_id), reconcile.printing_screen.id) : ""
               reconcile[:payment_amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount : 0
               reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
-              reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:payment_amt],i ,'calcBalance(' + i.to_s + ',"' + operation + '");' )
+              reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:payment_amt],i ,'calcBalance(' + i.to_s + ',"' + operation + '","'+reconcile.reconcile_type+'");' )
              
           }
           render json: {:aaData => @reconciles}

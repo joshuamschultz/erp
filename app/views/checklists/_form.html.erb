@@ -1,0 +1,13 @@
+<%= simple_form_for(@checklist) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.association :quality_lot %>
+    <%= f.input :checklist_status %>
+    <%= f.association :item %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -43,6 +43,8 @@ class MasterType < ActiveRecord::Base
 
   has_many :customer_quality_levels, :dependent => :destroy
 
+  has_many :check_list_line, :dependent => :destroy
+
   has_many :customer_qualities, :through => :customer_quality_levels
 
   validates_uniqueness_of :type_value

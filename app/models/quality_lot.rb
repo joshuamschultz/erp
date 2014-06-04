@@ -37,11 +37,24 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_gauges, :dependent => :destroy
 	has_many :attachments, :as => :attachable, :dependent => :destroy
 	has_one :package
+	has_many :checklist
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
 	validates_presence_of :po_header, :po_line, :item_revision, :lot_quantity, :item_revision_id, :po_line_id
 	#, :fmea_type, :control_plan, :process_flow, 
+
+	after_save :create_checklist
+
+	def create_checklist
+		checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => po_line.organization.customer_quality.id)
+		if checklist
+			checklist.po_line.organization.customer_quality.customer_quality_levels.each do |quality_level|
+				checklist.check_list_lines.build(:master_type_id => quality_level.master_type_id)
+				checklist.save
+			end
+		end
+	end
 
 	def redirect_path
       	quality_lot_path(self)
@@ -114,6 +127,6 @@ class QualityLot < ActiveRecord::Base
 	        end
 	    end
 		lot_material_elements    	
-  end
+ 	end
   	
 end

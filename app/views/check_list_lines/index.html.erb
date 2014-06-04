@@ -1,0 +1,29 @@
+<h1>Listing check_list_lines</h1>
+
+<table>
+  <tr>
+    <th>Checklist</th>
+    <th>Quality level</th>
+    <th>Mater type</th>
+    <th>Check list status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @check_list_lines.each do |check_list_line| %>
+  <tr>
+    <td><%= check_list_line.checklist %></td>
+    <td><%= check_list_line.quality_level %></td>
+    <td><%= check_list_line.mater_type %></td>
+    <td><%= check_list_line.check_list_status %></td>
+    <td><%= link_to 'Show', check_list_line %></td>
+    <td><%= link_to 'Edit', edit_check_list_line_path(check_list_line) %></td>
+    <td><%= link_to 'Destroy', check_list_line, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Check list line', new_check_list_line_path %>

@@ -25,7 +25,9 @@
             <tbody>                
             </tbody>
         </table>
+        <% if @reconciles.length > 0 %>
         <input type="button" value="Reconcile" onclick="set_quote_status();"></input>
+        <% end %>
     </div>
 </div>
 
@@ -47,33 +49,38 @@
 
 
 <script type="text/javascript">
-    function calcBalance(i, op){
-       
+    function calcBalance(i, op, type){
+
         var x=document.getElementById(i).value;
 
         var y=document.getElementById("balance").innerHTML;
 
-        if(document.getElementById(i).checked ){
-        tot = parseInt(y)+parseInt(x);
-        document.getElementById("balance").innerHTML = tot;
-        }
-        else{
-        tot = parseInt(y)-parseInt(x);
-        document.getElementById("balance").innerHTML = tot;
-        }      
+        if((document.getElementById(i).checked && (type == "credit" || type == "check")) || (!(document.getElementById(i).checked) &&(type == "deposit_check")))
+        {
+                tot = parseInt(y)+parseInt(x);
+                document.getElementById("balance").innerHTML = tot;
 
+        }
+
+        else if((document.getElementById(i).checked &&(type == "deposit_check")) || (!(document.getElementById(i).checked) && (type == "credit" || type == "check"))) 
+        {    
+                tot = parseInt(y)-parseInt(x);
+                document.getElementById("balance").innerHTML = tot;
+        }      
     }
+    
+
     function set_quote_status(){
         var selected = [];
         $('#table_report_reconcile_list_wrapper input:checked').each(function() {        
-          selected.push($(this).attr('id'));
+             selected.push($(this).attr('id'));
         });
         
        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "process_reconcile", "reconcile_ids" : selected }}, "reconcile_result", {});
     }
     function reconcile_result(response, callback_params, api_params){
 
-        
+      alert("success");  window.location="/reconciles";
 
     }  
 </script>

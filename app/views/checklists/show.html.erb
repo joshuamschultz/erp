@@ -1,0 +1,25 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Checklist of <a href="#"><%= @checklist.quality_lot.lot_control_no %></a></h4>            
+        </div> 
+    </div>
+    <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+        <thead>
+            <tr>
+                <th>Quality Level name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if  @checklist.check_list_lines.present? %>
+                <% @checklist.check_list_lines.each do |check_list_line| %>
+                    <tr>
+                        <td><%= check_list_line.master_type.type_name %></td>
+                        <td><%= check_box_tag 'receive_email', 'yes', check_list_line.check_list_status %></td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </tbody>
+    </table>
+</div>

@@ -115,7 +115,7 @@ class CommonActionsController < ApplicationController
           end  
          when "process_reconcile"
           if params[:reconcile_ids].present?
-            Reconcile.where("id = ?", params[:reconcile_ids]).each do |obj|
+            Reconcile.where(id: params[:reconcile_ids]).each do |obj|
                obj.update_attributes(:tag => "reconciled")
             end 
             result ="Success"
