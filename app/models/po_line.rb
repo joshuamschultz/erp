@@ -21,6 +21,7 @@ class PoLine < ActiveRecord::Base
   has_many :payable_shipments, :dependent => :destroy
   has_many :po_shipments, :dependent => :destroy
   has_one :quote_line
+  has_many :checklists
 
   belongs_to :item_transfer_name, :foreign_key => "alt_name_transfer_id", :class_name => "ItemAltName"
 

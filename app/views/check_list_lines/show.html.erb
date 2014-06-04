@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Checklist:</b>
+  <%= @check_list_line.checklist %>
+</p>
+
+<p>
+  <b>Quality level:</b>
+  <%= @check_list_line.quality_level %>
+</p>
+
+<p>
+  <b>Mater type:</b>
+  <%= @check_list_line.mater_type %>
+</p>
+
+<p>
+  <b>Check list status:</b>
+  <%= @check_list_line.check_list_status %>
+</p>
+
+
+<%= link_to 'Edit', edit_check_list_line_path(@check_list_line) %> |
+<%= link_to 'Back', check_list_lines_path %>
