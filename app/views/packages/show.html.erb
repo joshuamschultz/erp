@@ -74,7 +74,7 @@
     <div class="span6  item_detail_view packaging">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="9%"><p style="margin-top: 166px; font-size: 13px; font-weight: bold;transform: rotate(-90deg);">DIGITAL IMAGES </p></td>
+                <td width="9%"><p class="rotate-text">DIGITAL IMAGES </p></td>
                 <td width="43%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr align="left" valign="top">
@@ -103,7 +103,7 @@
         <h5>Container :<span></span></h5>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="2%"><p style="margin-top: 75px; font-size: 10px; font-weight: bold;transform: rotate(-90deg);">PACKAGE DATA</p></td>
+                <td width="2%"><p class="rotate-text" style="margin-top: 74px;" >PACKAGE DATA</p></td>
                 <td width="82%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr class="color-02 align-table">
@@ -121,9 +121,9 @@
                             <td><%= @package.part_size_length %></td>
                             <td><%= @package.part_size_width %></td>
                             <td><%= @package.part_size_width %></td>
-                            <td class="r-align r-alings">Part (Tare)</td>
+                            <td class=" r-alings">Part (Tare)</td>
                             <td><%= @package.part_size_width %></td>
-                            <td class="r-align r-alings">Qty Parts per Container</td>
+                            <td class=" r-alings">Qty Parts per Container</td>
                             <td><%= @package.quantity_per_container %></td>
                         </tr>
                         <tr>
@@ -211,7 +211,7 @@
     <div class="span6  item_detail_view packaging">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="9%"><p style="margin-top: 166px; font-size: 13px; font-weight: bold;transform: rotate(-90deg);">DIGITAL IMAGES </p></td>
+                <td width="9%"><p class="rotate-text">DIGITAL IMAGES </p></td>
                 <td width="43%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr align="left" valign="top">
@@ -240,7 +240,7 @@
         <h5>Container :<span></span></h5>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
-                <td width="2%"><p style="margin-top: 100px; font-size: 10px; font-weight: bold;transform: rotate(-90deg);">PACKAGING MATERIALS </p></td>
+                <td width="2%"><p class="rotate-text" style="margin-top: 80px;">PACKAGING MATERIALS </p></td>
                 <td width="82%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tr class="color-02 align-table">
@@ -334,4 +334,14 @@
     .align-table{}
     .r-align{ text-align: right;}
     .r-aligns { text-align: right; width: 200px; }
+    .rotate-text {  
+         margin-top: 166px;        
+         font-size: 13px; 
+         font-weight: bold;
+         -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
+         -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
+         -webkit-transform: rotate(-90.0deg);  /* Saf3.1+, Chrome */
+         filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
+         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+        }
 </style>
