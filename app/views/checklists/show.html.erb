@@ -15,11 +15,59 @@
             <% if  @checklist.check_list_lines.present? %>
                 <% @checklist.check_list_lines.each do |check_list_line| %>
                     <tr>
-                        <td><%= check_list_line.master_type.type_name %></td>
-                        <td><%= check_box_tag 'receive_email', 'yes', check_list_line.check_list_status %></td>
+                        <td><%= check_list_line.master_type.type_name %></td><% value = check_list_line.master_type.type_value %>
+                        <% case(value) %>
+                            <% when "design_records"%>                            
+                                <td><%= check_box_tag 'design_records', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                            <% when "process_flow_diagram" %>
+                                <td><%= check_box_tag 'process_flow_diagram', "true",check_list_line.checklist.quality_lot.process_flow.present?, :disabled => true %></td>
+                            <% when "pfmea" %>
+                                <td><%= check_box_tag 'pfmea', "true",check_list_line.checklist.quality_lot.fmea_type.present?, :disabled => true %></td>
+                            <% when "control_plan" %>
+                                <td><%= check_box_tag 'control_plan', "true",check_list_line.checklist.quality_lot.control_plan.present?, :disabled => true %></td>
+                            <% when "material_inspection" %>
+                                <td><%= check_box_tag 'material_inspection', "true",check_list_line.checklist.quality_lot.quality_lot_materials.present?, :disabled => true %></td>
+                            <% when "dimensional_inspection" %>
+                                <td><%= check_box_tag 'material_inspection', "true",check_list_line.checklist.quality_lot.quality_lot_dimensions.present?, :disabled => true %></td>
+                            <% when "gage_r&r" %>
+                                <td><%= check_box_tag 'gage_r&r', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                            <% when "capability_studies" %>
+                                <td><%= check_box_tag 'capability_studies', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                            <% when "run_at_rate" %>
+                                <td><%= check_box_tag 'run_at_rate', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                            <% when "packaging" %>                                
+                                <td><%= check_box_tag 'packaging', "true", check_list_line.package_detail , :disabled => true %></td>                                
+                            <% when "sample_production_parts" %>                                
+                                <td><%= check_box_tag 'sample_production_parts', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'sample_production_parts')" %></td>
+                            <% when "master_sample" %>                                
+                                <td><%= check_box_tag 'master_sample', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'master_sample')" %></td>
+                            <% when "parker_form_35" %>                                
+                                <td><%= check_box_tag 'parker_form_35', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_35')" %></td>
+                            <% when "parker_form_36" %>                                
+                                <td><%= check_box_tag 'parker_form_36', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_36')" %></td>
+                            <% when "goodrich_release_check" %>                                
+                                <td><%= check_box_tag 'goodrich_release_check', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'goodrich_release_check')" %></td>                            
+                            <% else %>
+                                <td><%= check_box_tag value, "true",false , :disabled => false %></td>
+                        <% end %>
                     </tr>
                 <% end %>
             <% end %>
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    function check(check_list_id,id){
+        // var a = $('#'+id).is(':checked');
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_checklist", "id": check_list_id, "value": $('#'+id).is(':checked')}}, "status_result", {});
+    }
+    function status_result(response, callback_params, api_params){
+        // alert(JSON.stringify(callback_params));
+        // if(response["aaData"] ==  "false"){
+        //     $('#'+api_params["params"]["value"]).attr('checked', true);
+        // }
+    }  
+
+</script>
+

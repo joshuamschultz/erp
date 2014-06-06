@@ -114,12 +114,19 @@ class CommonActionsController < ApplicationController
             end
           end  
          when "process_reconcile"
-          if params[:reconcile_ids].present?
-            Reconcile.where(id: params[:reconcile_ids]).each do |obj|
-               obj.update_attributes(:tag => "reconciled")
-            end 
-            result ="Success"
-          end                      
+            if params[:reconcile_ids].present?
+              Reconcile.where(id: params[:reconcile_ids]).each do |obj|
+                 obj.update_attributes(:tag => "reconciled")
+              end 
+              result ="Success"
+            end
+          when "set_checklist"
+            if params[:id].present? && params[:value].present?
+              CheckListLine.find(params[:id]).update_attributes(:check_list_status => params[:value])
+              result ="Success"
+            else
+              result = "false"
+            end
       end
       render json: {:aaData => result}
   end
