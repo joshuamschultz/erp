@@ -4,7 +4,7 @@ class Checklist < ActiveRecord::Base
   belongs_to :customer_quality
   attr_accessible :checklist_status, :quality_lot_id, :po_line_id, :customer_quality_id
 
-  has_many :check_list_lines
+  has_many :check_list_lines, :dependent => :destroy
 
   validate :quality_lot, :po_line, :customer_quality
 end

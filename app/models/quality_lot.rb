@@ -36,8 +36,8 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauges, :dependent => :destroy
 	has_many :attachments, :as => :attachable, :dependent => :destroy
-	has_one :package
-	has_many :checklist
+	has_one :package, :dependent => :destroy
+	has_many :checklist, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
@@ -48,10 +48,9 @@ class QualityLot < ActiveRecord::Base
 
 	def create_checklist
 		checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => po_line.organization.customer_quality.id)
-		if checklist
+		if checklist		
 			checklist.po_line.organization.customer_quality.customer_quality_levels.each do |quality_level|
-				checklist.check_list_lines.build(:master_type_id => quality_level.master_type_id)
-				checklist.save
+				CheckListLine.create(:checklist_id => checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
 			end
 		end
 	end
