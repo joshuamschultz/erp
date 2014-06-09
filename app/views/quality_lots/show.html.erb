@@ -79,6 +79,10 @@
             <td>Control Plan:</td>
             <td><%= link_to(@quality_lot.control_plan.plan_name, @quality_lot.control_plan) if @quality_lot.control_plan %></td>
           </tr>
+          <tr>
+            <td>Checklist:</td>
+            <td><%= link_to(@quality_lot.checklist.id, @quality_lot.checklist) if @quality_lot.checklist %></td>
+          </tr>
 
           <tr>
             <td>Finalized At:</td>
