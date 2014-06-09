@@ -68,4 +68,12 @@ class QualityAction < ActiveRecord::Base
        quality_action_path(self)
     end
 
+    def get_link
+    	if self.quality_action_status == "finished" 
+    		self.updated_at.to_date == Date.today ? '<a  href="/quality_actions/'+self.id.to_s+'/edit"><button class="btn btn-warning" type="button" style="width: 45px; height: 26px; font-size:11px">Undo</button></a>'.html_safe : ""
+    	else
+    		'<a class="btn-action glyphicons pencil btn-success" href="/quality_actions/'+self.id.to_s+'/edit"><i></i></a>'.html_safe
+    	end
+    end
+
 end
