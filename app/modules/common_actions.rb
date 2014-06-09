@@ -255,7 +255,7 @@ module CommonActions
 	end
 
 	def self.set_quality_status(status)
-		if status == "open"
+		if status == "un_finished"
 			"<div style='color:yellow'>#{status.capitalize}</div>".html_safe
 		elsif status == "finished"
 			"<div style='color:green'>#{status.capitalize}</div>".html_safe

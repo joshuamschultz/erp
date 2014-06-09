@@ -36,7 +36,7 @@ class QualityActionsController < ApplicationController
       format.json { 
          @quality_actions = @quality_actions.select{|quality_action|
             quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
-            quality_action[:links] = quality_action.quality_action_status == "finished" ? "" : CommonActions.object_crud_paths(nil, edit_quality_action_path(quality_action),nil) 
+            quality_action[:links] = quality_action.get_link
             quality_action[:user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
             quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
@@ -73,7 +73,7 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions/1/edit
   def edit
     @quality_action = QualityAction.find(params[:id])
-    redirect_to quality_actions_path if @quality_action.quality_action_status == "finished"
+    redirect_to quality_actions_path if @quality_action.quality_action_status == "finished" && @quality_action.updated_at.to_date != Date.today
   end
 
   # POST /quality_actions
@@ -109,13 +109,11 @@ class QualityActionsController < ApplicationController
      if params[:finish]
       @quality_action = QualityAction.find(params[:id])
       @quality_action[:quality_action_status] = "finished"
-      @quality_action[:submit_time] = Time.now     
-
+      @quality_action[:submit_time] = Time.now
     elsif params[:save]
       @quality_action = QualityAction.find(params[:id])
-    end
-
-
+      @quality_action[:quality_action_status] = "un_finished"
+    end    
 
     respond_to do |format|
       if @quality_action.update_attributes(params[:quality_action])
