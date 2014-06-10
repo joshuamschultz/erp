@@ -11,6 +11,7 @@ class RunAtRate < ActiveRecord::Base
 	end
 
 	has_one :attachment, :as => :attachable, :dependent => :destroy
+	has_many :quality_lots
 
 	accepts_nested_attributes_for :attachment, :allow_destroy => true
 

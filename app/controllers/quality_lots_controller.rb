@@ -19,6 +19,9 @@ class QualityLotsController < ApplicationController
 
       params[:quality_lot][:control_plan_id], params[:control_plan_id] = params[:control_plan_id], params[:quality_lot][:control_plan_id]
       params[:quality_lot][:control_plan_id] = params[:org_control_plan_id] if params[:quality_lot][:control_plan_id] == ""
+
+      params[:quality_lot][:run_at_rate_id], params[:run_at_rate_id] = params[:run_at_rate_id], params[:quality_lot][:run_at_rate_id]
+      params[:quality_lot][:run_at_rate_id] = params[:org_run_at_rate_id] if params[:quality_lot][:run_at_rate_id] == ""
   end
 
   def lot_info
