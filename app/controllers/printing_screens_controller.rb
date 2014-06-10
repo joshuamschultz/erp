@@ -6,7 +6,20 @@ class PrintingScreensController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @printing_screens }
+      format.json { 
+       @printing_screens = @printing_screens.select{|printing_screen|
+
+              printing_screen[:ids] = CommonActions.linkable(printing_screen_path(printing_screen), printing_screen.id)
+              printing_screen[:status] = printing_screen.status
+              printing_screen[:payment_name] = printing_screen.payment.present? ? CommonActions.linkable(payment_path(printing_screen.payment), printing_screen.payment_id) : ""
+
+              printing_screen[:links] = CommonActions.object_crud_paths(nil, edit_printing_screen_path(printing_screen), nil)
+              printing_screen[:print_check] = CommonActions.linkable(printing_screens_path,  "Print Check" )
+
+
+        }
+        render json: {:aaData => @printing_screens}
+      } 
     end
   end
 

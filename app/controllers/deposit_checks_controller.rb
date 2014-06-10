@@ -66,6 +66,10 @@ class DepositChecksController < ApplicationController
         format.html { render action: "edit" }
         format.json { render json: @deposit_check.errors, status: :unprocessable_entity }
       end
+      if @deposit_check.status == "closed"
+        reconcile = Reconcile.find_by_deposit_check_id(@deposit_check.id)
+        reconcile.update_attribute(:tag, "not reconciled")
+      end  
     end
   end
 
