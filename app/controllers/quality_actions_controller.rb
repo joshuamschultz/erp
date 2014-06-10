@@ -86,7 +86,7 @@ class QualityActionsController < ApplicationController
 
     elsif params[:save]
       @quality_action = QualityAction.new(params[:quality_action])
-      @quality_action[:quality_action_status] = "un_finished"
+      @quality_action[:quality_action_status] = "open"
     end
       @quality_action[:created_user_id] = current_user.id
 
@@ -112,7 +112,7 @@ class QualityActionsController < ApplicationController
       @quality_action[:submit_time] = Time.now
     elsif params[:save]
       @quality_action = QualityAction.find(params[:id])
-      @quality_action[:quality_action_status] = "un_finished"
+      @quality_action[:quality_action_status] = "open"
     end    
 
     respond_to do |format|
