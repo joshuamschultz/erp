@@ -28,9 +28,9 @@
                             <% when "material_inspection" %>
                                 <td><%= check_box_tag 'material_inspection', "true",check_list_line.checklist.quality_lot.quality_lot_materials.present?, :disabled => true %></td>
                             <% when "dimensional_inspection" %>
-                                <td><%= check_box_tag 'material_inspection', "true",check_list_line.checklist.quality_lot.quality_lot_dimensions.present?, :disabled => true %></td>
+                                <td><%= check_box_tag 'dimensional_inspection', "true",check_list_line.checklist.quality_lot.quality_lot_dimensions.present?, :disabled => true %></td>
                             <% when "gage_r&r" %>
-                                <td><%= check_box_tag 'gage_r&r', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                                <td><%= check_box_tag 'gage_r&r', "true",check_list_line.checklist.quality_lot.quality_lot_gauges.present?, :disabled => true %></td>
                             <% when "capability_studies" %>
                                 <td><%= check_box_tag 'capability_studies', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
                             <% when "run_at_rate" %>
@@ -44,7 +44,7 @@
                             <% when "parker_form_35" %>                                
                                 <td><%= check_box_tag 'parker_form_35', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_35')" %></td>
                             <% when "parker_form_36" %>                                
-                                <td><%= check_box_tag 'parker_form_36', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_36')" %></td>
+                                <td><%= check_box_tag 'parker_form_36', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_36')", :class => "select_text" %></td>
                             <% when "goodrich_release_check" %>                                
                                 <td><%= check_box_tag 'goodrich_release_check', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'goodrich_release_check')" %></td>                            
                             <% else %>
@@ -67,7 +67,20 @@
         // if(response["aaData"] ==  "false"){
         //     $('#'+api_params["params"]["value"]).attr('checked', true);
         // }
-    }  
+    } 
 
 </script>
+<style type="text/css">
+
+ input[type="checkbox"]:checked {  
+   outline: 3px solid #059D01 !important;
+   outline-offset: -4px !important;
+}
+
+ input[type="checkbox"] {
+   outline: 3px solid #FF0500 !important;
+   outline-offset: -4px !important;
+}
+
+</style>
 
