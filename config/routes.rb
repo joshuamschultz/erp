@@ -33,7 +33,9 @@ AllianceFasteners::Application.routes.draw do
   resources :capacity_plannings
 
 
-  resources :run_at_rates
+  resources :run_at_rates do
+    get :autocomplete_run_at_rate_run_at_rate_name, :on => :collection
+  end
 
 
   resources :customer_quotes do
