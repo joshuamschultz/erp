@@ -32,9 +32,10 @@
                             <% when "gage_r&r" %>
                                 <td><%= check_box_tag 'gage_r&r', "true",check_list_line.checklist.quality_lot.quality_lot_gauges.present?, :disabled => true %></td>
                             <% when "capability_studies" %>
+                                <td><%= check_box_tag 'gcapability_studies', "true",check_list_line.checklist.quality_lot.quality_lot_capabilities.present?, :disabled => true %></td>
                                 <td><%= check_box_tag 'capability_studies', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
                             <% when "run_at_rate" %>
-                                <td><%= check_box_tag 'run_at_rate', "true",check_list_line.checklist.po_line.item_revision.present? ? check_list_line.checklist.po_line.item_revision.print.present? : false , :disabled => true %></td>
+                                <td><%= check_box_tag 'run_at_rate', "true",check_list_line.checklist.quality_lot.run_at_rate.present?, :disabled => true %></td>
                             <% when "packaging" %>                                
                                 <td><%= check_box_tag 'packaging', "true", check_list_line.package_detail , :disabled => true %></td>                                
                             <% when "sample_production_parts" %>                                
