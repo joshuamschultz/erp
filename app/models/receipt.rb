@@ -3,6 +3,8 @@ class Receipt < ActiveRecord::Base
 
   has_many :receipt_lines, :dependent => :destroy, :before_add => :set_receipt
   belongs_to :organization
+  has_one :reconcile
+  has_one :deposit_check
 
   attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
     :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
@@ -59,6 +61,15 @@ class Receipt < ActiveRecord::Base
     self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier)
     self.receipt_status = "open"
   end
+  
+  after_save :process_after_save
+
+  def process_after_save
+    if self.receipt_type.present? && self.receipt_type.type_value == "check" 
+            depositCheck = DepositCheck.create(receipt_id: self.id, status: "open")
+            Reconcile.create(reconcile_type: "deposit check", receipt_id: self.id, deposit_check_id: depositCheck.id)
+    end      
+  end 
 
   def redirect_path
     receipt_path(self)

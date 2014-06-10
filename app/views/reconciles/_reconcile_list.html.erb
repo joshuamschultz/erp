@@ -1,0 +1,95 @@
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+           <h4 class="span6 heading">Listing reconciles</h4> 
+             <span class="span6 heading right">
+                <%= link_to 'All', reconciles_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Credit', reconciles_path(:reconcile_type => "credit"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Printing', reconciles_path(:reconcile_type => "check"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Deposit Check', reconciles_path(:reconcile_type => "deposit check"), :class => "btn btn-mini btn-success" %> 
+             </span>
+
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+    <div>Balance : <label id="balance"><%= @balance %></label></div>
+    <div class="widget-body">
+        <table id="table_report_reconcile_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr> 
+                    <th>Id</id>
+                    <th>Tag</th>
+                    <th>Reconcile Type</th>
+                    <th>Payment</th>
+                    <th>Receipt</th> 
+                    <th>Deposit check</th>
+                    <th>Printing screen</th>
+                    <th>Amount</th>
+                    <th>Checked</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+        <% if @reconciles.length > 0 %>
+        <input type="button" class="btn btn-mini btn-success" value="Reconcile" onclick="set_quote_status();"></input>
+        <% end %>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_reconcile_list", :path => reconciles_path(:reconcile_type => params[:reconcile_type]), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "ids" },
+                        { "mData": "tag" },
+                        { "mData": "reconcile_type" },
+                        { "mData": "payment_name" },
+                        { "mData": "receipt_name" },    
+                        { "mData": "deposit_check_name" },
+                        { "mData": "printing_screen_name" },                        
+                        { "mData": "amt" }, 
+                        { "mData": "checkboxes" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
+
+
+<script type="text/javascript">
+    function calcBalance(i, type){
+        
+        var x=$('#'+i).val();
+
+        var y=$('#balance').html();
+
+        if(($('#'+i).is(':checked') && (type == "credit" || type == "check")) || (!($('#'+i).is(':checked')) &&(type == "deposit check")))
+        {
+                tot = parseInt(y)+parseInt(x);
+                $('#balance').html(tot);
+
+        }
+
+        else if(($('#'+i).is(':checked') &&(type == "deposit check")) || (!($('#'+i).is(':checked')) && (type == "credit" || type == "check"))) 
+        {    
+                tot = parseInt(y)-parseInt(x);
+                $('#balance').html(tot);
+        }      
+    }
+    
+
+    function set_quote_status(){
+        var selected = [];
+        $('#table_report_reconcile_list_wrapper input:checked').each(function() {        
+             selected.push($(this).attr('id'));
+        });
+        
+       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "process_reconcile", "reconcile_ids" : selected }}, "reconcile_result", {});
+    }
+    function reconcile_result(response, callback_params, api_params){
+
+      alert("success");  window.location="/reconciles";
+
+    }  
+</script>

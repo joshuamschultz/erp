@@ -1,8 +1,21 @@
 class ReconcilesController < ApplicationController
+  before_filter :find_reconciles, only: [:index] 
+
   # GET /reconciles
   # GET /reconciles.json
-  def index
-    @reconciles = Reconcile.where(:tag => "not reconciled")
+
+
+  def find_reconciles
+      params[:reconcile_type] ||= nil
+      if params[:reconcile_type].present?
+        @reconciles = Reconcile.type_based_reconcile(params[:reconcile_type])
+      else
+         @reconciles = Reconcile.where(:tag => "not reconciled")
+      end
+  end
+  
+
+  def index   
     @balance = 100 
 
     respond_to do |format|
@@ -12,16 +25,16 @@ class ReconcilesController < ApplicationController
             
            @reconciles = @reconciles.select{|reconcile|
               i = reconcile.id
-              operation =  reconcile.payment.present? ? 'inc' : reconcile.deposit_check.present? ? 'dec' : ""
               reconcile[:ids] = CommonActions.linkable(reconcile_path(reconcile), reconcile.id)
               reconcile[:tag] = reconcile.tag 
               reconcile[:reconcile_type] = reconcile.reconcile_type
               reconcile[:payment_name] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : ""
+              reconcile[:receipt_name] = reconcile.receipt.present? ? CommonActions.linkable(receipt_path(reconcile.receipt_id), reconcile.receipt.receipt_identifier) : ""
               reconcile[:deposit_check_name] = reconcile.deposit_check.present? ? CommonActions.linkable(deposit_check_path(reconcile.deposit_check_id), reconcile.deposit_check.id) : ""
               reconcile[:printing_screen_name] = reconcile.printing_screen.present? ? CommonActions.linkable(printing_screen_path(reconcile.printing_screen_id), reconcile.printing_screen.id) : ""
-              reconcile[:payment_amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount : 0
+              reconcile[:amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount :  reconcile.receipt.present? ? reconcile.receipt.receipt_check_amount : 0
               reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
-              reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:payment_amt],i ,'calcBalance(' + i.to_s + ',"' + operation + '","'+reconcile.reconcile_type+'");' )
+              reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
              
           }
           render json: {:aaData => @reconciles}
@@ -100,4 +113,3 @@ class ReconcilesController < ApplicationController
     end
   end
 end
-
