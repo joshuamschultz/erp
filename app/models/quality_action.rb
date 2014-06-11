@@ -19,7 +19,9 @@ class QualityAction < ActiveRecord::Base
     before_validation :before_save_validate
 
     def before_save_validate
-        self.quality_action_no = CheckCode.get_next_quality_action_number
+        unless self.persisted?
+            self.quality_action_no = CheckCode.get_next_quality_action_number
+        end       
     end
 
     def before_save_process
