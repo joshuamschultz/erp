@@ -7,4 +7,6 @@ class Checklist < ActiveRecord::Base
   has_many :check_list_lines, :dependent => :destroy
 
   validate :quality_lot, :po_line, :customer_quality
+  validates_uniqueness_of :quality_lot_id
+
 end

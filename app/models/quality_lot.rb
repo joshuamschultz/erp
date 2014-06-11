@@ -48,12 +48,22 @@ class QualityLot < ActiveRecord::Base
 	after_save :create_checklist
 
 	def create_checklist
-		checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => po_line.organization.customer_quality.id)
-		if checklist		
-			checklist.po_line.organization.customer_quality.customer_quality_levels.each do |quality_level|
-				CheckListLine.create(:checklist_id => checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
+		unless self.checklist.present?
+			checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => self.get_quality_level.id)		
+			if checklist
+				self.get_quality_level.customer_quality_levels.each do |quality_level|
+					CheckListLine.create(:checklist_id => checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
+				end
 			end
-		end
+		else			
+			self.checklist.destroy
+			checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => self.get_quality_level.id)		
+			if checklist
+				self.get_quality_level.customer_quality_levels.each do |quality_level|
+					CheckListLine.create(:checklist_id => checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
+				end
+			end
+		end		
 	end
 
 	def redirect_path
@@ -127,6 +137,18 @@ class QualityLot < ActiveRecord::Base
 	        end
 	    end
 		lot_material_elements    	
+ 	end
+
+ 	def get_quality_level
+ 		so_line = SoLine.find_by_so_line_vendor_po_and_item_id(self.po_header.po_identifier, self.po_line.item.id)
+ 		if so_line && so_line.customer_quality.present?
+ 			so_line.customer_quality
+ 		elsif po_line.organization.customer_quality.present?
+ 			po_line.organization.customer_quality
+ 		else
+ 			default = MasterType.find_by_type_category("default_customer_quality").type_value
+ 			CustomerQuality.find(default)
+ 		end
  	end
   	
 end
