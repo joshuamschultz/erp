@@ -48,7 +48,7 @@
                             <% when "goodrich_release_check" %>                                
                                 <td><%= check_box_tag 'goodrich_release_check', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'goodrich_release_check')" %></td>                            
                             <% else %>
-                                <td><%= check_box_tag value, "true",false , :disabled => false %></td>
+                                <td><%= check_box_tag value, "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, '#{value}')" %></td>
                         <% end %>
                     </tr>
                 <% end %>
