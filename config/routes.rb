@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :ppaps
+
+
   resources :check_list_lines
 
 
