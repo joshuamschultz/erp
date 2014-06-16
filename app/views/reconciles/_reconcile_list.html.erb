@@ -13,7 +13,35 @@
         </div> 
     </div>
     <!-- // Widget heading END -->
-    <div>Balance : <label id="balance"><%= @balance %></label></div>
+
+     <div class="row-fluid item_detail_classic_btn">
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="">                   
+                    <span class="txt"><strong>Balance</strong></span>
+                     <h5 ><strong id="balance"> <%= @balance %> </strong></h5>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="">
+                    <span class="txt"><strong>Credit Reconciled</strong></span>
+                    <h5 id="credit_reconciled"><strong id="credit">0 </strong></h5>                    
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="">
+                    <span class="txt"><strong>Cash Reconciled</strong></span>
+                    <h5 id = "cash_reconciled"><strong id="debit">0</strong></h5>                    
+                    <div class="clearfix"></div>
+                </a>
+            </div>   
+            
+        </div>
+
+
+   
     <div class="widget-body">
         <table id="table_report_reconcile_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
@@ -60,21 +88,32 @@
 <script type="text/javascript">
     function calcBalance(i, type){
         
-        var x=$('#'+i).val();
+        var changeInAmount=$('#'+i).val();
 
-        var y=$('#balance').html();
+        var toatalAmount=$('#balance').html();
+
+                
 
         if(($('#'+i).is(':checked') && (type == "credit" || type == "check")) || (!($('#'+i).is(':checked')) &&(type == "deposit check")))
         {
-                tot = parseInt(y)+parseInt(x);
+                tot = parseInt(toatalAmount)+parseInt(changeInAmount);
                 $('#balance').html(tot);
-
+                if(!($('#'+i).is(':checked')))
+                   $('#credit').html(parseInt($('#credit').html()) + parseInt(changeInAmount) );
+                if($('#'+i).is(':checked'))
+                   $('#debit').html(parseInt($('#debit').html()) + parseInt(changeInAmount) );  
         }
 
         else if(($('#'+i).is(':checked') &&(type == "deposit check")) || (!($('#'+i).is(':checked')) && (type == "credit" || type == "check"))) 
         {    
-                tot = parseInt(y)-parseInt(x);
+                tot = parseInt(toatalAmount)-parseInt(changeInAmount);
                 $('#balance').html(tot);
+                if($('#'+i).is(':checked'))
+                   $('#credit').html(parseInt($('#credit').html()) - parseInt(changeInAmount) );
+                if(!($('#'+i).is(':checked')))
+                   $('#debit').html(parseInt($('#debit').html()) - parseInt(changeInAmount) );  
+
+
         }      
     }
     
@@ -89,7 +128,7 @@
     }
     function reconcile_result(response, callback_params, api_params){
 
-      alert("success");  window.location="/reconciles";
+        alert("success");  window.location="/reconciles";
 
     }  
 </script>
