@@ -74,10 +74,16 @@ class QualityLot < ActiveRecord::Base
 	validate :check_lot_quantity
 
 	def check_lot_quantity
-		p "oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo" if self.persisted?
-		lot_total_quantity = self.po_line.quality_lots.where("id != ?", self.id).sum(:lot_quantity)
-		if (lot_total_quantity + self.lot_quantity) > self.po_line.po_line_quantity
-			errors.add(:lot_quantity, "exceeded than PO item quantity (#{self.po_line.po_line_quantity})")
+		if self.persisted?
+			lot_total_quantity = self.po_line.quality_lots.where("id != ?", self.id).sum(:lot_quantity)
+			if (lot_total_quantity + self.lot_quantity) > self.po_line.po_line_quantity
+				errors.add(:lot_quantity, "exceeded than PO item quantity (#{(lot_total_quantity - self.po_line.po_line_quantity).abs})")
+			end
+		else
+			lot_total_quantity = self.po_line.quality_lots.sum(:lot_quantity)
+			if (lot_total_quantity + self.lot_quantity) > self.po_line.po_line_quantity
+				errors.add(:lot_quantity, "exceeded than item quantity (#{(lot_total_quantity - self.po_line.po_line_quantity).abs})")
+			end
 		end
 		# errors.add(:lot_quantity, " #{lot_total_quantity},  #{self.lot_quantity},  #{self.po_line.po_line_quantity})")
 	end
