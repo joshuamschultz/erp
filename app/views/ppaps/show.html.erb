@@ -2,24 +2,20 @@
     <div class="row-fluid">
         <h4 class="span3 left">Lot Info</h4>
         <span class="span9 right">
-        <%= link_to "Edit", ppap_path(@ppap), :class => "btn btn-small" %>     
+        <%= link_to "Edit", edit_ppap_path(@ppap), :class => "btn btn-small" %>     
         <%= link_to "Back", ppaps_path, :class =>"btn btn-small" %>
         </span>
     </div>
-    <style>
-        td{border:1px solid #111}
-        th{border:1px solid #111}
-    </style>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
+        <tr >
+            <td class="none-01 border-none">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr align="left" valign="top">
-                        <th width="26%" scope="row" class="r-align">
+                        <th width="26%" scope="row" class="align">
                             <p>SUPPLIER</p>
                             <p>PART SUBMISSION WARRANT (PSW)</p>
                         </th>
-                        <td width="74%">
+                        <td width="74%" class="none-01">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr align="left" valign="top">
                                     <th scope="row">Date</th>
@@ -42,8 +38,8 @@
                                     <th scope="row">Text</th>
                                 </tr>
                                 <tr align="left" valign="top">
-                                    <th scope="row">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <th scope="row" class="none-01">
+                                        <table width="100%" border="0" class="nothing">
                                             <tr align="left" valign="top">
                                                 <th align="center" scope="row">Drawing Rev Level</th>
                                                 <td>Dummy Text</td>
@@ -68,21 +64,21 @@
             </td>
         </tr>
         <tr align="left" valign="top">
-            <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <td class="none-01">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="nothing top-botton ">
                     <tr>
-                        <th width="26%" scope="row">Reason For Submissiont</th>
-                        <td width="23%">
+                        <th width="26%" scope="row" class="text-align">Reason For Submissiont</th>
+                        <td width="23%" class="border-none">
                             <label> <%= check_box_tag 'initial_submission', "true", @ppap.initial_submission , :disabled => true %> Initial submission</label><br>
                             <label><%= check_box_tag 'revision_change', "true", @ppap.revision_change , :disabled => true %>Revision Change</label><br>
                             <label><%= check_box_tag 'process_change', "true", @ppap.process_change , :disabled => true %> Process Change</label>
                         </td>
-                        <td width="26%">
+                        <td width="26%" class="border-none">
                             <label><%= check_box_tag 're_submission', "true", @ppap.re_submission , :disabled => true %> Re-Submission </label> <br>
                             <label><%= check_box_tag 'camo_pattern_new_to_part', "true", @ppap.camo_pattern_new_to_part , :disabled => true %>Camo pattern new to part </label><br>
                             <label><%= check_box_tag 'Change_in_mfg_source', "true", @ppap.Change_in_mfg_source , :disabled => true %>Change in mfg source </label>
                         </td>
-                        <td width="25%">
+                        <td width="25%" class="border-none">
                             <label><%= check_box_tag 'change_to_materials_used', "true", @ppap.change_to_materials_used , :disabled => true %>Change to materials used</label><br>
                             <label><%= check_box_tag 'tooling_replacement', "true", @ppap.tooling_replacement , :disabled => true %>Tooling transfer, refurbishment,replacement or additional</label> <br>
                         </td>
@@ -91,10 +87,10 @@
             </td>
         </tr>
         <tr>
-            <td>
+            <td class="none-01">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <th width="26%" scope="row">Requested Submission Level</th>
+                        <th width="26%" scope="row" class="border-none" "text-align">Requested Submission Level</th>
                         <td width="74%"> 
                             <label>Level &nbsp; <%= radio_button_tag 'level1', "true", @ppap.level1 , :disabled => true %> &nbsp;Warrant only </label><br>
                             <label>Level &nbsp; <%= radio_button_tag 'level2', "true", @ppap.level2 , :disabled => true %> &nbsp; Warrant with product samples and limited supporting data submitted to customer </label><br>
@@ -107,11 +103,11 @@
             </td>
         </tr>
         <tr>
-            <td>
+            <td class="none-01">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr align="left" valign="top">
-                        <th width="26%" height="188" scope="row">Submission Results<br>(check items included on the submission - must follow PPAP level requirements)</th>
-                        <td width="24%">
+                        <th width="26%" height="188" scope="row" class="text-align align">Submission Results<br>(check items included on the submission - must follow PPAP level requirements)</th>
+                        <td width="35%" class="border-none">
                             <label>
                             <%= check_box_tag 'purchasing_agreement', "true",@ppap.purchasing_agreement , :disabled => true %>
                             Purchasing Agreement</label>
@@ -151,8 +147,8 @@
                             <label for="checkbox9">
                             </label>
                         </td>
-                        <td width="50%">
-                            <p>
+                        <td width="50%" class="border-none">
+                            <p class="text-align-02">
                                 <label>
                                 <%= check_box_tag 'first_article_parts', "true",@ppap.first_article_parts , :disabled => true %>
                                 First Article Parts (labelled)</label>
@@ -194,22 +190,25 @@
         <tr>
         </tr>
         <tr>
-            <td>
+            <td class="none-01">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <th width="26%" scope="row"> </th>
                         <td width="74%"><label for="checkbox11">These results meet all drawing & specification requirements:  &nbsp;&nbsp;&nbsp; 
-                           <%= check_box_tag 'result_meeting_yes', "true",@ppap.result_meeting_yes , :disabled => true %> Yes  <%= check_box_tag 'result_meeting_no', "true",@ppap.result_meeting_no , :disabled => true %> No if "No" explain</label>
+                         <%= radio_button_tag :result_meeting_yes, true, checked = @ppap.result_meeting_yes, :disabled => true %>
+                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => true %> No if "No" explain</label>
+                          
+                            <%#= radio_button_tag :result_meeting_yes, :collection => , :selected => @ppap.result_meeting_yes %>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td>
+            <td class="none-01">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <th>#Past/Hours : <%= @ppap.past_hour %></th>
+                        <th class="border-none">#Past/Hours : <%= @ppap.past_hour %></th>
                         <th>#Hour/Run: <%= @ppap.hour_run %></th>
                         <th>Date: <%=@ppap.date%></th>
                     </tr>
@@ -226,29 +225,46 @@
     </table>
 </div>
 <style type="text/css">
-    .packaging{width: 98% !important;}
-    .span6.item_detail_view.packaging tr {
-    border: 1px solid #FFFFFF;}
-    .span6.item_detail_view tr{    border: 1px solid #FFFFFF;}
-    .span6.item_detail_view.packaging tr{ border: 1px solid #FFFFFF;}
-    .span6.item_detail_view.packaging td{ border: 1px solid #FFFFFF;}
-    .img-02{height: 350px;}
-    .color-02{background-color:  #555; font-weight: bold; text-align: center; }
-    .align-table{}
-    .r-align{ text-align: right;}
-    .r-aligns { text-align: right; width: 200px; }
-    .rotate-text {  
-         margin-top: 166px;        
-         font-size: 13px; 
-         font-weight: bold;
-         -moz-transform: rotate(-90.0deg);  /* FF3.5+ */
-         -o-transform: rotate(-90.0deg);  /* Opera 10.5 */
-         -webkit-transform: rotate(-90.0deg);  /* Saf3.1+, Chrome */
-         filter:  progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083);  /* IE6,IE7 */
-         -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
-        }
-
+    td{border:1px solid #111;padding: 10px 15px;}
+    th{border:1px solid #111;padding: 10px 15px;}
+    
     .ppap, .ppap td, .ppap th, .ppap tr {
-        border-color: #FFFFFF!important;
+        border-color: #999!important;
+        /*padding: 10px;*/
+    }
+    .ppap-no-border {
+        border: 0; 
+    }
+    .none-01{padding: 0;}
+    .row-fluid.span12.well.packaging.ppap {
+    margin: 0;
+    padding: 0;
+}
+.row-fluid h4 {
+    padding: 10px 15px;
+}
+.span9.right {
+    padding: 10px 15px;
+}
+.border-none{border: none;}
+p{text-align: center !important;}
+.text-align{text-align: center;}
+.text-align-02{text-align: left !important;}
+.align{padding:10% 0 0 0;}
+
+    /*.nothing
+    {
+       border-collapse:collapse;
+    } 
+    .nothing td
+    {
+       border:none;
+       outline:none;
+    }*/
+        /*td { 
+        padding: 10px;
+    }*/
+    .top-botton {
+        border-bottom: 0px;
     }
 </style>

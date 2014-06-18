@@ -13,17 +13,21 @@ class Ppap < ActiveRecord::Base
 
   def self.process_ppap(params, type)    
     if type == "new"
-      params["reason_for_submission"].each do |t|
-        params["ppap"][t] = true
+      if params["reason_for_submission"].present?    
+        params["reason_for_submission"].each do |t|
+          params["ppap"][t] = true
+        end
       end
       params["ppap"]
-    else
+    elsif params["reason_for_submission"].present?  && type == "update"
       ppap_default= Ppap.new
       ppap_default = ppap_default.attributes
       ppap_default.delete("created_at")
       ppap_default.delete("updated_at")
-      params["reason_for_submission"].each do |t|
-        params["ppap"][t] = true
+      if params["reason_for_submission"].present?    
+        params["reason_for_submission"].each do |t|
+          params["ppap"][t] = true
+        end
       end
       ppap_default.merge(params["ppap"])
     end
