@@ -7,21 +7,29 @@ class QualityLotsController < ApplicationController
       @menus[:quality][:active] = "active"
   end
 
-  def set_autocomplete_values
+  def set_autocomplete_values     
       params[:quality_lot][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:quality_lot][:po_header_id]
       params[:quality_lot][:po_header_id] = params[:org_po_header_id] if params[:quality_lot][:po_header_id] == ""
 
+    if params[:quality_lot][:process_flow_id].present?
       params[:quality_lot][:process_flow_id], params[:process_flow_id] = params[:process_flow_id], params[:quality_lot][:process_flow_id]
       params[:quality_lot][:process_flow_id] = params[:org_process_flow_id] if params[:quality_lot][:process_flow_id] == ""
+    end
 
+    if params[:quality_lot][:fmea_type_id].present?
       params[:quality_lot][:fmea_type_id], params[:fmea_type_id] = params[:fmea_type_id], params[:quality_lot][:fmea_type_id]
       params[:quality_lot][:fmea_type_id] = params[:org_fmea_type_id] if params[:quality_lot][:fmea_type_id] == ""
+    end
 
+    if params[:quality_lot][:control_plan_id].present?
       params[:quality_lot][:control_plan_id], params[:control_plan_id] = params[:control_plan_id], params[:quality_lot][:control_plan_id]
       params[:quality_lot][:control_plan_id] = params[:org_control_plan_id] if params[:quality_lot][:control_plan_id] == ""
+    end
 
+    if params[:quality_lot][:run_at_rate_id].present?
       params[:quality_lot][:run_at_rate_id], params[:run_at_rate_id] = params[:run_at_rate_id], params[:quality_lot][:run_at_rate_id]
       params[:quality_lot][:run_at_rate_id] = params[:org_run_at_rate_id] if params[:quality_lot][:run_at_rate_id] == ""
+    end
   end
 
   def lot_info
