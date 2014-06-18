@@ -7,7 +7,8 @@ class CheckListLine < ActiveRecord::Base
 
 	def package_detail
 		status = false
-		if package = self.checklist.quality_lot.package.present?
+		package = self.checklist.quality_lot.package if self.checklist.quality_lot.package.present?
+		if package.present?
 			if package.part.present? && package.container.present? && package.dunnage.present? && package.unit_load.present?
 				status = true
 			end
