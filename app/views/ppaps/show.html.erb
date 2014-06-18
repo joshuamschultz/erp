@@ -18,7 +18,7 @@
                         <td width="74%" class="none-01">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr align="left" valign="top">
-                                    <th scope="row">Date</th>
+                                    <th scope="row" >Date</th>
                                     <th scope="row">Text</th>
                                 </tr>
                                 <tr align="left" valign="top">
@@ -38,7 +38,7 @@
                                     <th scope="row">Text</th>
                                 </tr>
                                 <tr align="left" valign="top">
-                                    <th scope="row" class="none-01">
+                                    <th scope="row" class="none-01" colspan="2">
                                         <table width="100%" border="0" class="nothing">
                                             <tr align="left" valign="top">
                                                 <th align="center" scope="row">Drawing Rev Level</th>
@@ -195,8 +195,8 @@
                     <tr>
                         <th width="26%" scope="row"> </th>
                         <td width="74%"><label for="checkbox11">These results meet all drawing & specification requirements:  &nbsp;&nbsp;&nbsp; 
-                         <%= radio_button_tag :result_meeting_yes, true, checked = @ppap.result_meeting_yes, :disabled => true %>
-                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => true %> No if "No" explain</label>
+                         <%= radio_button_tag :result_meeting_yes, true, checked = @ppap.result_meeting_yes, :disabled => true %>&nbsp; 
+                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => true %>&nbsp;  No if "No" explain</label>
                           
                             <%#= radio_button_tag :result_meeting_yes, :collection => , :selected => @ppap.result_meeting_yes %>
                         </td>
@@ -213,11 +213,11 @@
                         <th>Date: <%=@ppap.date%></th>
                     </tr>
                     <tr>
-                        <th>Committed weekly capacity: : <%= @ppap.commited_weekly_capacity %></th>
-                        <th colspan="2">Maximum Weekly Capacity <%= @ppap.maximum_weekly_capacity %></th>
+                        <th>Committed weekly capacity: &nbsp; <%= @ppap.commited_weekly_capacity %></th>
+                        <th colspan="2">Maximum Weekly Capacity:&nbsp;  <%= @ppap.maximum_weekly_capacity %></th>
                     </tr>
                     <tr>
-                        <th colspan="3">Lathe CNC Maching, Heat Treat Oven, Wash Bat Identify the constraint operation(s): <%= @ppap.lathe_cnc %></th>
+                        <th colspan="3">Lathe CNC Maching, Heat Treat Oven, Wash Bat Identify the constraint operation(s):&nbsp;  <%= @ppap.lathe_cnc %></th>
                     </tr>
                 </table>
             </td>
@@ -266,5 +266,8 @@ p{text-align: center !important;}
     }*/
     .top-botton {
         border-bottom: 0px;
+    }
+    .right-botom {
+        border-right-style: solid;
     }
 </style>
