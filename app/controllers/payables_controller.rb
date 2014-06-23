@@ -105,6 +105,10 @@ class PayablesController < ApplicationController
     @payable = Payable.find(params[:id])
     params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
+    # Updating GlAccount  
+    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',@payable.payable_freight ) 
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',@payable.payable_freight )   
+   
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }

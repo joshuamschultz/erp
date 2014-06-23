@@ -70,6 +70,7 @@ class Payable < ActiveRecord::Base
 
   def process_after_save
       self.process_payable_total
+      self.update_gl_account 
   end 
 
   before_create :process_before_create
@@ -87,6 +88,11 @@ class Payable < ActiveRecord::Base
       Payable.set_callback("save", :before, :process_before_save)
       Payable.set_callback("save", :after, :process_after_save)
   end
+
+  def update_gl_account
+    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',self.payable_freight )    
+  end 
 
   def update_payable_total
       payable_total = self.payable_lines.sum(:payable_line_cost)

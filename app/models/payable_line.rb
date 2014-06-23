@@ -13,6 +13,11 @@ class PayableLine < ActiveRecord::Base
 
     def update_payable_total
     	  payable_total = self.payable.process_payable_total
+          self.update_gl_account
     end
+    def update_gl_account
+      CommonActions.update_gl_accounts('INVENTORY', 'increment',self.payable_line_cost)
+      CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',self.payable_line_cost )
+    end    
 
 end

@@ -17,6 +17,7 @@ class GlAccountsController < ApplicationController
             gl_account[:gl_type_name] = CommonActions.linkable(gl_type_path(gl_account.gl_type), gl_account.gl_type.gl_name)
             gl_account[:gl_type_side] = gl_account.gl_type.gl_side
             gl_account[:gl_type_report] = gl_account.gl_type.gl_report
+            gl_account[:gl_account_amount] = gl_account.gl_account_amount
           }
           render json: {:aaData => @gl_accounts} 
       }
