@@ -32,4 +32,19 @@ class Ppap < ActiveRecord::Base
       ppap_default.merge(params["ppap"])
     end
   end
+
+  def self.set_levels(field, psw, value, type)
+    if type == "level"
+      ppap = Ppap.find(psw)
+      ppap[:level1] = false
+      ppap[:level2] = false
+      ppap[:level3] = false
+      ppap[:level4] = false
+      ppap[:level5] = false
+      ppap[field.to_sym] = true
+      ppap.save
+    else
+      ppap = Ppap.find(psw).update_attributes(field.to_sym => value )
+    end
+  end
 end

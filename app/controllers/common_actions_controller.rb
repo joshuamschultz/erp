@@ -104,29 +104,38 @@ class CommonActionsController < ApplicationController
                 result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_id = ?", params[:organization_id], item_id).order("po_headers.created_at DESC")
               end
             when "set_customer_quote_status"
-                if params[:customer_quote_id].present? && params[:status_id].present?
-                    customer_quote = CustomerQuote.find(params[:customer_quote_id])
-                    customer_quote.customer_quote_status = params[:status_id]
-                    if customer_quote.save
-                        result = "success"
-                    else
-                        result = "fail"
-                    end
-                end  
+              if params[:customer_quote_id].present? && params[:status_id].present?
+                  customer_quote = CustomerQuote.find(params[:customer_quote_id])
+                  customer_quote.customer_quote_status = params[:status_id]
+                  if customer_quote.save
+                      result = "success"
+                  else
+                      result = "fail"
+                  end
+              end  
             when "process_reconcile"
-                if params[:reconcile_ids].present?
-                  Reconcile.where(id: params[:reconcile_ids]).each do |obj|
-                     obj.update_attributes(:tag => "reconciled")
-                  end 
-                  result ="Success"
-                end
+              if params[:reconcile_ids].present?
+                Reconcile.where(id: params[:reconcile_ids]).each do |obj|
+                   obj.update_attributes(:tag => "reconciled")
+                end 
+                result ="Success"
+              end
             when "set_checklist"
-                if params[:id].present? && params[:value].present?
-                  CheckListLine.find(params[:id]).update_attributes(:check_list_status => params[:value])
+              if params[:id].present? && params[:value].present?
+                checklist = CheckListLine.find(params[:id])
+                if checklist.update_attributes(:check_list_status => params[:value])
                   result ="Success"
-                else
-                  result = "false"
                 end
+              else
+                result = "false"
+              end
+            when "set_psw_value"              
+              if params[:field].present? && params[:psw_id].present? && params[:value].present?         
+                Ppap.set_levels(params[:field],params[:psw_id],params[:value], params[:type])                   
+                result ="Success"
+              else
+                result = "fail"
+              end
         end
          render json: {:aaData => result}
     end

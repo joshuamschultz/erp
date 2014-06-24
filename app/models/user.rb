@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
 
   roles_attribute :roles_mask
 
-  roles :superadmin, :manager, :quality, :operations, :clerical, :logistics, :vendor, :customer, :support
+  roles :superadmin, :manager, :quality, :operations, :clerical, :logistics, :vendor, :customer, :support, :president, 
+  :plant_manager, :sales_manager, :operations_manager, :quality_manager, :logistics_manager
+
 
   has_one :organization
 

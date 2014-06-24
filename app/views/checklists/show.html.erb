@@ -59,19 +59,15 @@
 
 <script type="text/javascript">
     function check(check_list_id,id){
-        // var a = $('#'+id).is(':checked');
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_checklist", "id": check_list_id, "value": $('#'+id).is(':checked')}}, "status_result", {});
     }
     function status_result(response, callback_params, api_params){
-        // alert(JSON.stringify(callback_params));
-        // if(response["aaData"] ==  "false"){
-        //     $('#'+api_params["params"]["value"]).attr('checked', true);
-        // }
-    } 
-
+        if(response["aaData"] ==  "fail"){
+            location.reload(true);
+        }
+    }
 </script>
 <style type="text/css">
-
  input[type="checkbox"]:checked {  
    outline: 2px solid #059D01 !important;
    outline-offset: -3px !important;
