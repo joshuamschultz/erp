@@ -196,7 +196,7 @@
                         <th width="26%" scope="row"> </th>
                         <td width="74%"><label for="checkbox11">These results meet all drawing & specification requirements:  &nbsp;&nbsp;&nbsp; 
                          <%= radio_button_tag :result_meeting_yes, true, checked = @ppap.result_meeting_yes, :disabled =>  false, :id => "result_meeting_yes"%>&nbsp; 
-                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => false, :id => "result_meeting_yes" %>&nbsp;  No if "No" explain</label>
+                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => false, :id => "result_meeting_no" %>&nbsp;  No if "No" explain</label>
                           
                             <%#= radio_button_tag :result_meeting_yes, :collection => , :selected => @ppap.result_meeting_yes %>
                         </td>
