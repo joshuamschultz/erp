@@ -35,16 +35,20 @@ class Ppap < ActiveRecord::Base
 
   def self.set_levels(field, psw, value, type)
     if type == "level"
-      ppap = Ppap.find(psw)
-      ppap[:level1] = false
-      ppap[:level2] = false
-      ppap[:level3] = false
-      ppap[:level4] = false
-      ppap[:level5] = false
-      ppap[field.to_sym] = true
-      ppap.save
+      if field == "result_meeting_no"
+        ppap = Ppap.find(psw).update_attributes(:result_meeting_yes => false)
+      else
+        ppap = Ppap.find(psw)
+        ppap[:level1] = false
+        ppap[:level2] = false
+        ppap[:level3] = false
+        ppap[:level4] = false
+        ppap[:level5] = false
+        ppap[field.to_sym] = true
+        ppap.save
+      end
     else
-      ppap = Ppap.find(psw).update_attributes(field.to_sym => value )
+        ppap = Ppap.find(psw).update_attributes(field.to_sym => value)
     end
   end
 end
