@@ -17,7 +17,7 @@ class Payment < ActiveRecord::Base
     accepts_nested_attributes_for :payment_lines, :reject_if => lambda { |b| b[:payment_line_amount].blank? || b[:payable_id].blank? }
 
     belongs_to :payment_type, :class_name => "MasterType", :foreign_key => "payment_type_id",
-        :conditions => ['type_category = ?', 'payment_type']
+        :conditions => "type_category = 'payment_type' and type_name != 'cash'"
 
     belongs_to :check_entry #, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
 
@@ -89,6 +89,8 @@ class Payment < ActiveRecord::Base
         end
         if self.payment_type.present? && self.payment_type.type_value == "credit"
             Reconcile.create(tag: "not reconciled", reconcile_type: "credit", payment_id: self.id)
+            CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount )
+            CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
         end
         if self.payment_type.present? && self.payment_type.type_value == "check" 
             printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")

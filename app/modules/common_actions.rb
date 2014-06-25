@@ -34,17 +34,15 @@ module CommonActions
 		attribute.nil? || attribute.eql?("")
 	end
 
-    def self.update_gl_accounts(title, op, amount)
-		if op == 'increment'	
-			gl_account = GlAccount.where('gl_account_title' => title ).first 
-			gl_amount = gl_account.gl_account_amount + amount 
-			gl_account.update_attributes(gl_account_amount: gl_amount )
-		elsif op == 'decrement'  
-			gl_account = GlAccount.where('gl_account_title' => title ).first 
-			gl_amount = gl_account.gl_account_amount - amount 
-			gl_account.update_attributes(gl_account_amount: gl_amount )
-		end
-	end
+       def self.update_gl_accounts(title, op, amount)
+	  gl_account = GlAccount.where('gl_account_title' => title ).first 	
+	  if op == 'increment'			
+		gl_amount = gl_account.gl_account_amount + amount 
+          elsif op == 'decrement'  
+		gl_amount = gl_account.gl_account_amount - amount 
+          end	
+         gl_account.update_attributes(gl_account_amount: gl_amount ) 	
+       end	
 
 	def self.process_application_shortcuts(shortcuts_html, shortcuts)
 		shortcuts.each do |shortcut|
