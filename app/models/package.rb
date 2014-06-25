@@ -13,7 +13,7 @@ class Package < ActiveRecord::Base
     :container_type_lead_time ,:cover_cap_lead_time ,:pallet_lead_time ,:strech_shrink_lead_time ,:banding_lead_time ,:other_lead_time, :dunnage_ret_exp ,
     :container_color_ret_exp ,:container_type_ret_exp ,:cover_cap_ret_exp ,:pallet_ret_exp ,:strech_shrink_ret_exp ,:banding_ret_exp ,:other_ret_exp,
     :dunnage_comment ,:container_color_comment ,:container_type_comment ,:cover_cap_comment ,:pallet_comment ,:strech_shrink_comment ,
-    :banding_comment ,:other_comment, :in_to_mm1, :in_to_mm2, :lbs_to_kg1, :lbs_to_kg2
+    :banding_comment ,:other_comment, :in_to_mm1, :in_to_mm2, :lbs_to_kg1, :lbs_to_kg2, :supplier_code
 
 
 
