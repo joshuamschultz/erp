@@ -16,7 +16,8 @@ class ReconcilesController < ApplicationController
   
 
   def index   
-    @balance = 100 
+    gl_account = GlAccount.where('gl_account_title' => 'PETTY CASH' ).first 
+    @balance = gl_account.gl_account_amount
 
     respond_to do |format|
       format.html # index.html.erb
