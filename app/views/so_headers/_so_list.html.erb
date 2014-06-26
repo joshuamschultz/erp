@@ -5,9 +5,9 @@
             <h4 class="span6 heading">Sales Orders <%= @organization.organization_type_title if @organization %> <%#= "With Selected Revision" if @item_revision %> 
             </h4>
             <span class="span6 heading right">
-                <%= link_to 'All', all_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'All', '#', :class => "btn btn-mini btn-success", :onclick => "get_so_header(1); return false;" %>
+                <%= link_to 'Open', '#', :class => "btn btn-mini btn-success", :onclick => "get_so_header(2); return false;" %>
+                <%= link_to 'Closed', '#', :class => "btn btn-mini btn-success", :onclick => "get_so_header(3); return false;" %>
                 <%= link_to 'New SO', new_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 

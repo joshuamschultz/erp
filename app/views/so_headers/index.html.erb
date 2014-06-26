@@ -1,8 +1,52 @@
-<%= render :partial => 'so_headers/so_list', locals: {
-	all_path: so_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
-	open_path: so_headers_path(:so_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
-	closed_path: so_headers_path(:so_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
-	index_path: so_headers_path(:so_status => params[:so_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
-	new_path: new_so_header_path
+<div id='so_header'>
+	<%= render :partial => 'so_headers/so_list', locals: {
+		all_path: so_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
+		open_path: so_headers_path(:so_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
+		closed_path: so_headers_path(:so_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
+		index_path: so_headers_path(:so_status => params[:so_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
+		new_path: new_so_header_path
+		}
+	%>
+</div>
+
+<script type="text/javascript">
+	//ajax load So header
+	function get_so_header(status){
+	    var link = "/so_headers"
+	    if (status == 2){
+	        link = "/so_headers?so_status=open"
+	    }else if(status == 3){
+	        link = "/so_headers?so_status=closed"
+	    }else{
+
+	    }
+
+	    $('#so_header').html("");
+	    var so_headers = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Sales Orders   </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(3); return false;">Closed</a><a href="/so_headers/new" class="btn btn-mini btn-success">New SO</a></span></div> </div><div class="widget-body"><table id="table_report_so_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>index</th><th>SO ID</th><th>Customer</th><th>Bill To</th><th>Ship To</th><th>Cofc</th><th>Squality</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+	    $('#so_header').html(so_headers);
+	    var data_table_report_so_header_list;    
+	    $(document).ready(function(){ 
+	        data_table_report_so_header_list = $('#table_report_so_header_list').dataTable({
+	            "bAutoWidth": false,
+	            "bProcessing": true,
+	            "sAjaxSource": link,
+	            "aaSorting": [[0, "asc"]],
+	            "aoColumns": [
+	                        { "mData": "index","bVisible": false },
+	                        { "mData": "so_id" },
+	                        { "mData": "customer_name"},
+	                        { "mData": "bill_to_address_name" },
+	                        { "mData": "ship_to_address_name" },
+	                        { "mData": "so_cofc" },                       
+	                        { "mData": "so_squality" },                       
+	                        { "mData": "so_status"},
+	                        { "mData": "links", "bSortable": false, "bSearchable": false }
+	                        
+	                    ],
+	                    
+	            "bFilter": true,
+	            "bLengthChange": true
+	        });
+	    });
 	}
-%>
+</script>
