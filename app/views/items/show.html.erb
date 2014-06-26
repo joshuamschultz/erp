@@ -76,23 +76,27 @@
 <!-- Attachments -->
 <%= render 'attachments/attachments' if @item_revision %>
 
-<%= render :partial => 'po_headers/po_list', locals: {
-    all_path: item_path(@item, :revision_id => @item_revision.id),
-    open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
-    closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
-    index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id),
-    new_path: new_po_header_path
-    }
-%>
+<div id="po_header">
+    <%= render :partial => 'po_headers/po_list', locals: {
+        all_path: item_path(@item, :revision_id => @item_revision.id),
+        open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
+        closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
+        index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id),
+        new_path: new_po_header_path
+        }
+    %>
+</div>
 
-<%= render :partial => 'so_headers/so_list', locals: {
-    all_path: item_path(@item, :revision_id => @item_revision.id),
-    open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
-    closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
-    index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id),
-    new_path: new_so_header_path
-    }
-%>
+<div id="so_header">
+    <%= render :partial => 'so_headers/so_list', locals: {
+        all_path: item_path(@item, :revision_id => @item_revision.id),
+        open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
+        closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
+        index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id),
+        new_path: new_so_header_path
+        }
+    %>
+</div>
 
 
 <%= render :partial => 'quality_lots/lots' %>
@@ -156,4 +160,78 @@
         });
 
     }
+//ajax load po order
+function get_po_header(status){
+    var link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>"
+    if (status == 2){
+        link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&po_status=open"
+    }else if(status == 3){
+        link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&po_status=closed"
+    }else{
+
+    }
+
+    $('#po_header').html("");
+    var po_header = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading"> Purchase Order  </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(3); return false;">Closed</a><a href="/po_headers/new" class="btn btn-mini btn-success">New PO</a></span></div></div><div class="widget-body"><table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Index</th><th>PO ID</th><th>PO Type</th><th>Vendor</th><th>Identifier</th><th>Description</th><th>Total</th><th>Status</th><th>Active</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+    $('#po_header').html(po_header);
+    var data_table_report_po_header_list;    
+    data_table_report_po_header_list = $('#table_report_po_header_list').dataTable({
+        "bAutoWidth": false,
+        "bProcessing": true,
+        "sAjaxSource": link,
+        "aaSorting": [[0, "asc"]],
+        "aoColumns": [
+                    { "mData": "index","bVisible": false },
+                    { "mData": "po_id" },
+                    { "mData": "po_type_name" },
+                    { "mData": "vendor_name" },
+                    { "mData": "po_identifier", "bVisible": false },
+                    { "mData": "po_description", "bVisible": false },
+                    { "mData": "po_total", "bVisible": false },
+                    { "mData": "po_status" },
+                    { "mData": "po_active", "bVisible": false },
+                    { "mData": "links", "bSortable": false, "bSearchable": false }
+                ],
+        "bFilter": true,
+        "bLengthChange": true        
+    });
+}
+//ajax load So header
+function get_so_header(status){
+    var link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>"
+    if (status == 2){
+        link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&so_status=open"
+    }else if(status == 3){
+        link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&so_status=closed"
+    }else{
+
+    }
+
+    $('#so_header').html("");
+    var so_headers = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Sales Orders   </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(3); return false;">Closed</a><a href="/so_headers/new" class="btn btn-mini btn-success">New SO</a></span></div> </div><div class="widget-body"><table id="table_report_so_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>index</th><th>SO ID</th><th>Customer</th><th>Bill To</th><th>Ship To</th><th>Cofc</th><th>Squality</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+    $('#so_header').html(so_headers);
+    var data_table_report_so_header_list;    
+    $(document).ready(function(){ 
+        data_table_report_so_header_list = $('#table_report_so_header_list').dataTable({
+            "bAutoWidth": false,
+            "bProcessing": true,
+            "sAjaxSource": link,
+            "aaSorting": [[0, "asc"]],
+            "aoColumns": [
+                        { "mData": "index","bVisible": false },
+                        { "mData": "so_id" },
+                        { "mData": "customer_name"},
+                        { "mData": "bill_to_address_name" },
+                        { "mData": "ship_to_address_name" },
+                        { "mData": "so_cofc" },                       
+                        { "mData": "so_squality" },                       
+                        { "mData": "so_status"},
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                        
+                    ],
+            "bFilter": true,
+            "bLengthChange": true
+        });
+    });
+}
 </script>

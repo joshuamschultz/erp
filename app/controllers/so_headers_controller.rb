@@ -41,7 +41,6 @@ class SoHeadersController < ApplicationController
   end
 
   def index
-    p @so_headers.to_yaml
     respond_to do |format|
       format.html # index.html.erb
       format.json {     

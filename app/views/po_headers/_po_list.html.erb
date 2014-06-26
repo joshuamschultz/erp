@@ -1,5 +1,4 @@
 <% lot_info ||= nil %>
-
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -9,9 +8,9 @@
                 <%#= "With Selected Revision" if @item_revision %> 
             </h4>
             <span class="span6 heading right">
-                <%= link_to 'All', all_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'All', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(1); return false;" %>
+                <%= link_to 'Open', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(2); return false;" %>
+                <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(3); return false;" %>
                 <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>
             </span>
         </div> 
@@ -55,5 +54,3 @@
                     ]'
     } 
 %>
-
-<!-- :grouping => true, :column_index => 2 -->

@@ -1,8 +1,52 @@
-<%= render :partial => 'po_headers/po_list', locals: {
-	all_path: po_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
-	open_path: po_headers_path(:po_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
-	closed_path: po_headers_path(:po_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
-	index_path: po_headers_path(:po_status => params[:po_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
-	new_path: new_po_header_path
+<div id="po_header>">
+
+	<%= render :partial => 'po_headers/po_list', locals: {
+		all_path: po_headers_path(:organization_id => (@organization.nil? ? nil : @organization.id)), 
+		open_path: po_headers_path(:po_status => "open", :organization_id => (@organization.nil? ? nil : @organization.id)), 
+		closed_path: po_headers_path(:po_status => "closed", :organization_id => (@organization.nil? ? nil : @organization.id)),		
+		index_path: po_headers_path(:po_status => params[:po_status], :organization_id => (@organization.nil? ? nil : @organization.id)),
+		new_path: new_po_header_path
+		}
+	%>
+</div>
+
+
+<script type="text/javascript">
+	//ajax load po order
+	function get_po_header(status){		
+	    var link = "/po_headers"
+	    if (status == 2){
+	        link = "/po_headers?po_status=open"
+	    }else if(status == 3){
+	        link = "/po_headers?po_status=closed"
+	    }else{
+
+	    }
+
+	    $('#po_header').html("");
+	    var po_header = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading"> Purchase Order  </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(3); return false;">Closed</a><a href="/po_headers/new" class="btn btn-mini btn-success">New PO</a></span></div></div><div class="widget-body"><table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Index</th><th>PO ID</th><th>PO Type</th><th>Vendor</th><th>Identifier</th><th>Description</th><th>Total</th><th>Status</th><th>Active</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+	    $('#po_header').html(po_header);
+	    var data_table_report_po_header_list;    
+	    data_table_report_po_header_list = $('#table_report_po_header_list').dataTable({
+	        "bAutoWidth": false,
+	        "bProcessing": true,
+	        "sAjaxSource": link,
+	        "aaSorting": [[0, "asc"]],
+	        "aoColumns": [
+	                    { "mData": "index","bVisible": false },
+	                    { "mData": "po_id" },
+	                    { "mData": "po_type_name" },
+	                    { "mData": "vendor_name" },
+	                    { "mData": "po_identifier", "bVisible": false },
+	                    { "mData": "po_description", "bVisible": false },
+	                    { "mData": "po_total", "bVisible": false },
+	                    { "mData": "po_status" },
+	                    { "mData": "po_active", "bVisible": false },
+	                    { "mData": "links", "bSortable": false, "bSearchable": false }
+	                ],
+	        "bFilter": true,
+	        "bDestroy": true,
+	        "bLengthChange": true        
+	    });
 	}
-%>
+</script>
