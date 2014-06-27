@@ -121,7 +121,7 @@
                 <div class="input-append span11">
                     <input type="hidden" id="organization_tags" style="width: 100%;" name="tags" value="<%= @tags.collect(&:comment).join(",") %>" />
                     <!-- <input type="hidden" name="tags" id="organization_tag_list" value="" /> -->
-                    <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
+                    <!-- <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button> -->
                 </div>
             <% end %>
         </div>
@@ -141,7 +141,28 @@
         // $("#submit_org_tags").on("click", function(e){
         //   $("#organization_tag_list").val($("#organization_tags").select2("val"));
         // });
+        $(".select2-input").on("keydown",function search(e) {
+            if(e.keyCode == 13 || e.keyCode == 8) {
+                set_tag($(".select2-choices li").map(function() { return $(this).text() }).get());
+            }
+        });
     });
+
+    function set_tag(data){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_tag", "id": "<%= @organization.id%>", "value": data}}, "status_result", {});
+    }
+
+    function status_result(response, callback_params, api_params){
+        if(response["aaData"] ==  "fail"){
+        }
+ 
+    }
+
+    // function search(ele) {
+    //     if(event.keyCode == 13) {
+    //         alert(ele.value);        
+    //     }
+    // }
 
     function callback_for_contacts(response, callback_params, api_params){
         $("#organization_table_data").html(response);

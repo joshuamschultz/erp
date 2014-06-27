@@ -136,6 +136,15 @@ class CommonActionsController < ApplicationController
               else
                 result = "fail"
               end
+            when "set_tag"
+              if params[:id].present? && params[:value].present?
+                organization = Organization.find(params[:id])
+                tags = params[:value]
+                tags = tags.collect(&:strip).compact
+                tags = tags.reject(&:empty?)
+                Comment.process_comments(current_user, organization, tags, "tag")
+                result ="Success"   
+              end          
         end
          render json: {:aaData => result}
     end
