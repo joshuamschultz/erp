@@ -144,7 +144,14 @@ class CommonActionsController < ApplicationController
                 tags = tags.reject(&:empty?)
                 Comment.process_comments(current_user, organization, tags, "tag")
                 result ="Success"   
-              end          
+              end
+            when "set_process"
+              if params[:id].present? && params[:value].present?
+                organization = Organization.find(params[:id])
+                OrganizationProcess.process_organization_processes(current_user, organization, params[:value])
+                result ="Success"   
+              end
+                            
         end
          render json: {:aaData => result}
     end
