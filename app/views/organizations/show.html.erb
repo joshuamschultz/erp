@@ -82,8 +82,8 @@
             <div class="row-fluid">
                 <h4 class="span6 heading">Quotes</h4>
                 <span class="span6 heading right">
-                    <%= link_to 'Customer', "#", :class => "btn btn-mini btn-success" %>
-                    <%= link_to 'Vendor', "#", :class => "btn btn-mini btn-success" %>
+                    <%#= link_to 'Customer', "#", :class => "btn btn-mini btn-success" %>
+                    <%#= link_to 'Vendor', "#", :class => "btn btn-mini btn-success" %>
                 </span>
             </div> 
         </div>
@@ -105,7 +105,6 @@
         <div class="span12">
             <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
                 <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]}, @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)), :multiple => true, :size => 5, :class => "multi_select_box" %>
-                <button class="btn btn-default" id="submit_org_tags" type="submit">Save</button>
             <% end %>
         </div>
     </div>
@@ -142,6 +141,11 @@
         // $("#submit_org_tags").on("click", function(e){
         //   $("#organization_tag_list").val($("#organization_tags").select2("val"));
         // });
+        $("#processes_").on("change",function search(e) {            
+            set_process($("#processes_").val());
+        });
+
+
         $(".select2-input").on("keydown",function search(e) {
             if(e.keyCode == 13 || e.keyCode == 8) {
                 set_tag($(".select2-choices li").map(function() { return $(this).text() }).get());
@@ -165,6 +169,10 @@
         if(response["aaData"] ==  "fail"){
         }
  
+    }
+
+    function set_process(data){
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_process", "id": "<%= @organization.id%>", "value": data}}, "status_result", {});
     }
 
     // function search(ele) {
