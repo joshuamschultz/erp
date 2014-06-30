@@ -136,6 +136,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){ 
+        var length = $(".select2-choices li").map(function() { return $(this).text() }).get().length;
         $("#organization_tags").select2({tags:<%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
 
         // $("#submit_org_tags").on("click", function(e){
@@ -146,10 +147,18 @@
                 set_tag($(".select2-choices li").map(function() { return $(this).text() }).get());
             }
         });
+        $("#organization_tags").on("change",function search(e) {
+            if($(".select2-choices li").map(function() { return $(this).text() }).get().length > length) {
+                set_tag($(".select2-choices li").map(function() { return $(this).text() }).get());
+            }
+        });
     });
 
     function set_tag(data){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_tag", "id": "<%= @organization.id%>", "value": data}}, "status_result", {});
+        if($(".select2-choices li").map(function() { return $(this).text() }).get().length != length) {
+            length = $(".select2-choices li").map(function() { return $(this).text() }).get().length;
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_tag", "id": "<%= @organization.id%>", "value": data}}, "status_result", {});
+        }
     }
 
     function status_result(response, callback_params, api_params){
