@@ -13,7 +13,7 @@ class GlAccountsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @gl_accounts = GlAccount.order(:gl_account_identifier).select{|gl_account| 
-            gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account), gl_account_path(gl_account))
+            gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account),nil)
             gl_account[:gl_type_name] = CommonActions.linkable(gl_type_path(gl_account.gl_type), gl_account.gl_type.gl_name)
             gl_account[:gl_type_side] = gl_account.gl_type.gl_side
             gl_account[:gl_type_report] = gl_account.gl_type.gl_report
