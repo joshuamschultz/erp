@@ -85,6 +85,8 @@ class Payment < ActiveRecord::Base
     def process_after_save
         if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"
             CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+            temp = CheckCode.find_by_counter_type("check_code")
+            temp.update_attributes(:counter => self.payment_check_code)
             CheckCode.get_next_check_code
         end
         if self.payment_type.present? && self.payment_type.type_value == "credit"
