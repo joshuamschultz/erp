@@ -88,6 +88,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_tvp = gauge_tv / gauge_dev * 100
           gauge_rrtp = gauge_rr / gauge_dev * 100
 
+
           if gauge_rrtp <= 10
               gauge_status = "Acceped"
           elsif gauge_rrtp.to_f.between?(10, 30)

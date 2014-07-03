@@ -3,12 +3,11 @@
 
 <% values = [] %>
 
-<% objects = @quality_lot.lot_item_dimensions.where(:item_part_critical => true) %> 
+<% objects = @quality_lot.lot_item_dimensions.where(:item_part_critical => true, :go_non_go => false) %> 
 
 <% objects.each do |object| %>
     <% values << object.quality_lot_capabilities.where(:quality_lot_id => @quality_lot.id).order(:item_part_dimension_id).all %>
 <% end %>
-
 <%= form_for(@quality_lot_capability, :html => {:id => "form_for_lot_capabilities"} ) do |f| %>
   <%= hidden_field_tag :quality_lot_id, @quality_lot.id %>
 

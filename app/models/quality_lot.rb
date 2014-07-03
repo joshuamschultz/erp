@@ -159,5 +159,20 @@ class QualityLot < ActiveRecord::Base
  			CustomerQuality.find(default)
  		end
  	end
+
+ 	def get_guage_dimensions
+ 		temp = []
+ 		self.lot_item_dimensions.each do |lot_dimension|
+ 			k = []
+ 			unless lot_dimension.go_non_go
+ 			 	k << lot_dimension.item_part_letter
+ 			 	k <<  lot_dimension.id
+ 			 	temp << k
+ 			end 			
+ 		end
+ 		p '-------------------------'
+ 		p temp
+ 		temp
+ 	end
   	
 end

@@ -44,7 +44,7 @@
             <tr>
                 <td><%= CommonActions.linkable(organization_path(@package.quality_lot.po_header.organization), @package.quality_lot.po_header.organization.organization_name).html_safe %></td>
                 <td><%= @package.quality_lot.po_header.organization.organization_telephone %></td>
-                <td>&nbsp;</td>
+                <td><%= @package.quality_lot.po_line.item_revision.item_revision_name %></td>
             </tr>
             <tr>
                 <td class="color-02">Supplier Code</td>
