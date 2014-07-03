@@ -15,7 +15,7 @@
             <div class="control-group">
                 <label for="quote_dimensions" class="optional control-label">Dimensions</label>
                 <div class="controls">
-                    <%= select_tag "dimensions[]", options_for_select(@quality_lot.lot_item_dimensions.all.map {|dimension| [dimension.item_part_letter, dimension.id]}, @quality_lot_gauge.persisted? ? (@quality_lot_gauge.quality_lot_gauge_dimensions.empty? ? [] : @quality_lot_gauge.quality_lot_gauge_dimensions.collect(&:item_part_dimension_id)) : []), :multiple => true, :size => 10, :class => "multi_select_box", :id => "quote_dimensions" %>
+                    <%= select_tag "dimensions[]", options_for_select(@quality_lot.get_guage_dimensions, @quality_lot_gauge.persisted? ? (@quality_lot_gauge.quality_lot_gauge_dimensions.empty? ? [] : @quality_lot_gauge.get_selected_list) : []), :multiple => true, :size => 10, :class => "multi_select_box", :id => "quote_dimensions" %>
 
                     <%= f.submit "Update", :class =>"btn" %>
 
@@ -24,7 +24,6 @@
             </div>
         </div>
       <% end %>
-      
       <%= render 'quality_lot_gauge_results/index' unless @quality_lot_gauge.new_record? %>
 
   </div>

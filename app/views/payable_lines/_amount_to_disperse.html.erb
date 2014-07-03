@@ -1,0 +1,18 @@
+ 
+<h4 class="span6 heading">Amount To Disperse</h4>
+ <table class="table">
+      <tbody>
+
+          <tr>
+            <th class="span3">Discount</th>
+            <th class="span3">Freight</th>
+            <th class="span3">Amount</th>            
+          </tr>   
+
+          <tr>
+          	<td class="span3">$<%= @payable.discount_to_dispers %></td>
+          	<td class="span3">$<%= @payable.payable_freight %></td>
+          	<td class="span3">$<%= @payable.payable_lines.sum(:payable_line_cost) %></td>
+          </tr>
+ </tbody>
+</table>

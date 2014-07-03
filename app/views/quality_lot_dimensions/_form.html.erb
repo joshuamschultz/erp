@@ -2,7 +2,7 @@
 <% @item = @item_revision.item %>
 
 <% values = [] %>
-<% objects = @quality_lot.lot_item_dimensions.order(:id) %>
+<% objects = @quality_lot.lot_item_dimensions.where(:go_non_go => false).order(:id) %>
 <% objects.each do |object| %>
     <% values << object.quality_lot_dimensions.where(:quality_lot_id => @quality_lot.id).order(:item_part_dimension_id).all %>
 <% end %>
