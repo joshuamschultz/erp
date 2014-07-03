@@ -5,13 +5,13 @@ class Payable < ActiveRecord::Base
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date, 
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
   :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, 
-  :gl_account_id, :payable_accounts_attributes
+  :gl_account_id, :payable_accounts_attributes, :gl_account_amount
 
   belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
   belongs_to :po_header
   belongs_to :gl_account
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
-	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
+  :conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
 
   scope :status_based_payables, lambda{|status| where(:payable_status => status) }
 
@@ -63,7 +63,7 @@ class Payable < ActiveRecord::Base
 
   def process_before_save
       self.organization = self.po_header.organization if self.po_header
-  		# self.payable_total = self.update_payable_total
+      # self.payable_total = self.update_payable_total
   end
 
   after_save :process_after_save
@@ -100,6 +100,12 @@ class Payable < ActiveRecord::Base
       payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
       payable_total - payable_discount_val + payable_freight
   end
+
+  def discount_to_dispers
+    payable_total = self.payable_lines.sum(:payable_line_cost)
+    payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
+    (payable_total / 100) * self.payable_discount
+  end  
 
   def payable_current_balance
       self.payable_total - self.payment_lines.sum(:payment_line_amount)
