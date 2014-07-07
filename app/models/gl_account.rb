@@ -1,6 +1,6 @@
 class GlAccount < ActiveRecord::Base
   attr_accessible :gl_account_active, :gl_account_description, :gl_account_title, 
-  :gl_account_identifier, :gl_type_id, :gl_account_amount
+  :gl_account_identifier, :gl_type_id, :gl_account_amount, :key_account
 
   belongs_to :gl_type
 
