@@ -13,7 +13,7 @@ class GlAccountsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @gl_accounts = GlAccount.order(:gl_account_identifier).select{|gl_account| 
-            gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account),nil)
+            gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account),gl_account_path(gl_account))
             gl_account[:gl_type_name] = CommonActions.linkable(gl_type_path(gl_account.gl_type), gl_account.gl_type.gl_name)
             gl_account[:gl_type_side] = gl_account.gl_type.gl_side
             gl_account[:gl_type_report] = gl_account.gl_type.gl_report
@@ -86,13 +86,19 @@ class GlAccountsController < ApplicationController
   # DELETE /gl_accounts/1
   # DELETE /gl_accounts/1.json
   def destroy
-    @gl_account = GlAccount.find(params[:id])
-    @gl_account.destroy
-
-    respond_to do |format|
-      format.html { redirect_to gl_accounts_url }
-      format.json { head :no_content }
-    end
+     @gl_account = GlAccount.find(params[:id])
+     if @gl_account.key_account? == true
+      respond_to do |format|
+        format.html { redirect_to gl_accounts_url,  notice: 'This is a key account and cannot be deleted'}
+        format.json { head :no_content }
+      end
+     else  
+      @gl_account.destroy
+      respond_to do |format|
+        format.html { redirect_to gl_accounts_url }
+        format.json { head :no_content }
+      end
+     end 
   end
 
 
