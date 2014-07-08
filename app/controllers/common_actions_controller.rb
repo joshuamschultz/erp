@@ -73,7 +73,7 @@ class CommonActionsController < ApplicationController
             when "get_quote_info"
                 if params[:quote_id].present?
                   quote = Quote.find(params[:quote_id])
-                  result = CustomerQuoteLine.get_line_items(quote)
+                  result = CustomerQuoteLine.get_line_items(quote)                  
                 else
                   result = "fail"
                 end
@@ -114,12 +114,14 @@ class CommonActionsController < ApplicationController
                   end
               end  
             when "process_reconcile"
-              if params[:reconcile_ids].present?
-                Reconcile.where(id: params[:reconcile_ids]).each do |obj|
-                   obj.update_attributes(:tag => "reconciled")
-                end 
-                result ="Success"
-              end
+		    if params[:reconcile_ids].present? && params[:balance].present?
+		      Reconcile.where(id: params[:reconcile_ids]).each do |obj|
+		         obj.update_attributes(:tag => "reconciled")
+		       end  
+		      gl_account = GlAccount.where('gl_account_title' => 'PETTY CASH' ).first            
+		      gl_account.update_attributes(gl_account_amount: params[:balance])
+		      result ="Success"
+		    end
             when "set_checklist"
               if params[:id].present? && params[:value].present?
                 checklist = CheckListLine.find(params[:id])
