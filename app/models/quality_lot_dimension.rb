@@ -13,8 +13,16 @@ class QualityLotDimension < ActiveRecord::Base
   def process_after_save
     if self.item_part_dimension.go_non_go
       QualityLotDimension.skip_callback("save", :after, :process_after_save)
-      if self.lot_dimension_value == 1
-        self.all_lot_dimensions.update_all(:lot_dimension_status => "accepted")
+      p  self.lot_dimension_value.to_i
+      if self.lot_dimension_value.to_i == 1
+        result = self.quality_lot.quality_lot_dimensions.where(:item_part_dimension_id => self.item_part_dimension_id).collect(&:lot_dimension_value)
+        result = result.map(&:to_i)
+        result = result.uniq
+        if result.size == 1 && result[0] == 1
+          self.all_lot_dimensions.update_all(:lot_dimension_status => "accepted")
+        else
+          self.all_lot_dimensions.update_all(:lot_dimension_status => "rejected")
+        end
       else
         self.all_lot_dimensions.update_all(:lot_dimension_status => "rejected")
       end

@@ -1,0 +1,137 @@
+<% values_count = values[0].present? ? values[0].count : default_rows %>
+
+<% add_row = true if add_row.nil? %>
+
+<% dimension_status = false %>
+
+<% objects.each_with_index do |object, i_int|%>
+	<%= hidden_field_tag "#{name}_header_data[#{i_int}]", object.id %>
+<% end %>
+
+<div class="row-fluid">
+  	<div class="span12 editable_table_container">
+		<table id="<%= name %>_editable_table" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
+			<thead>
+			    <tr>
+			    	<th>Sl No</th>
+			    	<% objects.each do |object|%>
+			    		<th><%= object[title_field] %></th>
+			    	<% end %>
+			    	<th></th>
+			    </tr>
+			</thead>
+
+		    <tbody id="<%= name %>_editable_table_body">
+		    	<% for i_int in 0..values_count-1 %>
+						<% if(objects[i_int]) %>
+						   <% row_no = i_int %>
+						<% end %> 
+
+			    	<tr id="<%= name %>_editable_tr_id_<%= i_int %>">
+			    		<td class="editable_rows_slno"><%= i_int + 1 %></td>
+				    	<% for j_int in 0..objects.count-1 %>
+				    		<% if(objects[j_int] && objects[j_int].go_non_go ) %>
+				    			<% dimension_status = values[j_int][i_int].present? ? (values[j_int][i_int][value_field].to_i == 1 ? true : false) : false %>			    	  <%= hidden_field_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 0 , :id => "hidden_value" %> 
+					    	    <td><%= check_box_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 1, dimension_status %></td> 
+					    	<%else%>
+						    	<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]) %></td>				    	       
+						    <%end%>	    	
+				    	<% end %>
+				    	<td>
+				    		<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='delete_editable_row($(this).parent().parent()); return false' ><i></i></a>
+				    		<%#= link_to "Delete", "#", class: "btn btn-small btn-danger", onclick: "delete_editable_row($(this).parent().parent()); return false" %>
+				    	</td>
+			    	</tr>
+		    	<% end %>
+		    </tbody>
+		</table>
+ 	</div>	
+</div> 
+
+<div class="separator bottom"></div>
+
+<div class="row-fluid">
+	<div class="span12 right">
+		<%= f.submit "Save", class: "btn" %>
+		<%= link_to "Add Row", "#", class: "btn", onclick: "add_editable_row(); return false" if add_row %>
+		<%= link_to "Back", back, class: "btn" %>
+	</div>
+</div>
+
+<div class="separator bottom"></div>
+
+<script type="text/javascript">
+var edit_tab_field_forms = {};
+var editable_rows_count = <%= values_count %>;
+var editable_fields_count = <%= objects.count %>;
+
+$(document).ready(function(){
+	bind_editable_row_tab();
+});
+
+function add_editable_row(){	
+	var new_row_html = "<tr id='<%= name %>_editable_tr_id_" + editable_rows_count + "'>";
+	new_row_html += "<td class='editable_rows_slno'>" + (editable_rows_count + 1) + "</td>";
+	for(i_int=0;i_int<editable_fields_count;i_int++){
+		new_row_html += "<td>";
+		//Get the row input typype
+		ed_row = editable_rows_count-1;
+		row_id = "<%= name %>_field_data_"+ ed_row  + "_"+ i_int;
+		col_type = $('#'+row_id).attr('type');
+		if (col_type == 'checkbox'){
+			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='<%= name %>_field_data_" + editable_rows_count + "_" + i_int + "' value='1'>";
+			new_row_html +=  "<input type='hidden' name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='hidden_value' value='1'>";
+		}
+		else{
+			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='<%= name %>_field_data_" + editable_rows_count + "_" + i_int + "'>";
+		}
+		
+		new_row_html += "</td>";
+	}
+	new_row_html += "<td><a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='delete_editable_row($(this).parent().parent()); return false' ><i></i></a></td>"
+	new_row_html += "</tr>";
+	$("#<%= name %>_editable_table_body").append(new_row_html);
+	editable_rows_count += 1;	
+	bind_editable_row_tab();
+}
+
+function delete_editable_row(element){
+	element.remove();
+	editable_rows_count -= 1;
+	set_editable_row_slno();
+}
+
+function bind_editable_row_tab(){
+	$("#<%= form %> input[type=text]").on("keydown",function(e){		
+		var keyCode = e.keyCode || e.which;
+		var form_id = $(this).closest('form').attr("id");
+		var current_index = $(this).index('input:text');
+		var next_element = $('input:text').eq(current_index + <%= objects.count %>).attr('id');
+		var next_index = $("#"+next_element).index('input:text');
+
+		if(next_index == -1){
+			next_index = (current_index % <%= objects.count %>) + 1;
+
+			if(next_index == <%= objects.count %>)
+				next_index = -1;
+
+			var next_element = $('input:text').eq(next_index).attr('id');
+		}
+
+       	if(keyCode == 13){
+       		e.preventDefault();
+       	    if(next_index > -1)
+				$("#"+next_element).focus();
+			else
+				$("#<%= form %>").submit();
+       	}	
+   	});
+}
+
+function set_editable_row_slno(){
+	$(".editable_rows_slno").each(function(index){
+		$(this).html(index + 1);
+	});
+}
+
+</script>
