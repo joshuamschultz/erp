@@ -53,6 +53,7 @@ class Receivable < ActiveRecord::Base
 
   def process_after_save
       self.process_receivable_total
+      self.update_gl_account
   end 
 
   before_create :process_before_create
@@ -105,5 +106,12 @@ class Receivable < ActiveRecord::Base
   def check_receivable_account_total
       (self.receivable_accounts.sum(:receivable_account_amount) == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
+
+  def update_gl_account
+    receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
+    receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
+    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
+    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
+  end  
 
 end
