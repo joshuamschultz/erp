@@ -16,22 +16,29 @@
    <div class="row-fluid">
     <div class="span12">
      <div class="row-fluid item_detail_classic_btn">
-            <div class="span4 well">
+            <div class="span3 well">
                 <a class="widget-stats" href="#" id="">                   
                     <span class="txt"><strong>Balance</strong></span>
                      <h5 ><strong id="balance"> <%= @balance %> </strong></h5>
                     <div class="clearfix"></div>
                 </a>
             </div>
+            <div class="span3 well">
+                <a class="widget-stats" href="#" id="">                   
+                    <span class="txt"><strong>Reconciled</strong></span>
+                     <h5 ><strong id="reconciled"> <%= @reconciled %> </strong></h5>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
 
-            <div class="span4 well">
+            <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
                     <span class="txt"><strong>Credit Reconciled</strong></span>
                     <h5 id="credit_reconciled"><strong id="credit">0 </strong></h5>                    
                     <div class="clearfix"></div>
                 </a>
             </div>
-            <div class="span4 well">
+            <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
                     <span class="txt"><strong>Cash Reconciled</strong></span>
                     <h5 id = "cash_reconciled"><strong id="debit">0</strong></h5>                    
@@ -92,14 +99,14 @@
         
         var changeInAmount=$('#'+i).val();
 
-        var toatalAmount=$('#balance').html();
+        var toatalAmount=$('#reconciled').html();
 
                 
 
         if(($('#'+i).is(':checked') && (type == "credit" || type == "check")) || (!($('#'+i).is(':checked')) &&(type == "deposit check")))
         {
-                tot = parseInt(toatalAmount)+parseInt(changeInAmount);
-                $('#balance').html(tot);
+                tot = parseInt(toatalAmount)-parseInt(changeInAmount);
+                $('#reconciled').html(tot);
                 if(!($('#'+i).is(':checked')))
                    $('#credit').html(parseInt($('#credit').html()) + parseInt(changeInAmount) );
                 if($('#'+i).is(':checked'))
@@ -108,8 +115,8 @@
 
         else if(($('#'+i).is(':checked') &&(type == "deposit check")) || (!($('#'+i).is(':checked')) && (type == "credit" || type == "check"))) 
         {    
-                tot = parseInt(toatalAmount)-parseInt(changeInAmount);
-                $('#balance').html(tot);
+                tot = parseInt(toatalAmount)+parseInt(changeInAmount);
+                $('#reconciled').html(tot);
                 if($('#'+i).is(':checked'))
                    $('#credit').html(parseInt($('#credit').html()) - parseInt(changeInAmount) );
                 if(!($('#'+i).is(':checked')))
@@ -126,7 +133,7 @@
              selected.push($(this).attr('id'));
         });
        
-       var balance = parseInt($('#balance').html());
+       var balance = parseInt($('#reconciled').html());
  
        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "process_reconcile", "reconcile_ids" : selected, 'balance' : balance}}, "reconcile_result", {});
     }
