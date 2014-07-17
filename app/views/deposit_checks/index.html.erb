@@ -1,25 +1,39 @@
-<h1>Listing deposit_checks</h1>
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Listing deposit_checks</h4>
+        </div> 
+    </div>
 
-<table>
-  <tr>
-    <th>Type</th>
-    <th>Receipt</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+   
+    <!-- // Widget heading END -->
+    <div class="widget-body">
+        <table id="table_report_deposit_check_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr> 
+                    <th>Status</th>
+                    <th>Receipt</th>
+                    <th></th>                    
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<% @deposit_checks.each do |deposit_check| %>
-  <tr>
-    <td><%= deposit_check.status %></td>
-    <td><%= deposit_check.receipt %></td>
-    <td><%= link_to 'Show', deposit_check %></td>
-    <td><%= link_to 'Edit', edit_deposit_check_path(deposit_check) %></td>
-    <td><%= link_to 'Destroy', deposit_check, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_deposit_check_list", :path => deposit_checks_path, :extras => {:slno => false},
+        :columns => '[                
+                        { "mData": "status"}, 
+                        { "mData": "receipt_name" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false },
+                     ]'
+    } 
+%>
 
-<br />
 
-<%= link_to 'New Deposit check', new_deposit_check_path %>
+
+
+
