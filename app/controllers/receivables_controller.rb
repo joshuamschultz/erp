@@ -95,6 +95,11 @@ class ReceivablesController < ApplicationController
   def update
     @receivable = Receivable.find(params[:id])
 
+     # Updating GlAccount  
+    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',@payable.payable_freight ) 
+    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',@payable.payable_freight )
+
+
     respond_to do |format|
       if @receivable.update_attributes(params[:receivable])
         format.html { redirect_to @receivable, notice: 'Receivable was successfully updated.' }
