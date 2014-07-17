@@ -90,8 +90,10 @@ class Payable < ActiveRecord::Base
   end
 
   def update_gl_account
+    payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
+    payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
     CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
-    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',self.payable_freight )    
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )    
   end 
 
   def update_payable_total
