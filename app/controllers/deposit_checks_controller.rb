@@ -6,7 +6,18 @@ class DepositChecksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @deposit_checks }
+      format.json { 
+          @deposit_checks = @deposit_checks.select{|deposit_check|
+
+              
+              deposit_check[:status] = deposit_check.status
+              deposit_check[:receipt_name] = deposit_check.receipt.present? ? CommonActions.linkable(receipt_path(deposit_check.receipt), deposit_check.receipt_id) : ""
+
+              deposit_check[:links] = CommonActions.object_crud_paths(nil, edit_deposit_check_path(deposit_check), nil)     
+
+          }
+         render json: {:aaData => @deposit_checks }  
+      }
     end
   end
 
