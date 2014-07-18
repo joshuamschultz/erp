@@ -118,8 +118,8 @@ class CommonActionsController < ApplicationController
 		      Reconcile.where(id: params[:reconcile_ids]).each do |obj|
 		         obj.update_attributes(:tag => "reconciled")
 		       end  
-		      gl_account = GlAccount.where('gl_account_title' => 'PETTY CASH' ).first            
-		      gl_account.update_attributes(gl_account_amount: params[:balance])
+		      reconciled = Reconciled.first            
+		      reconciled.update_attributes(balance: params[:balance])
 		      result ="Success"
 		    end
             when "set_checklist"

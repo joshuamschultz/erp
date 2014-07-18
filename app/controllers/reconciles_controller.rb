@@ -19,6 +19,8 @@ class ReconcilesController < ApplicationController
     gl_account = GlAccount.where('gl_account_title' => 'PETTY CASH' ).first 
     @balance = gl_account.gl_account_amount
 
+    @reconciled = Reconciled.first.balance
+
     respond_to do |format|
       format.html # index.html.erb
       #format.json { render json: @reconciles }
