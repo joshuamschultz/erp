@@ -27,6 +27,7 @@
                     <th>Identifier</th>
                     <th>Description</th>
                     <th>Total</th>
+                    <% if @item.present? %> <th>Cost</th> <% end %>
                     <th>Status</th>
                     <th>Active</th>
                     <th></th>
@@ -38,19 +39,39 @@
     </div>
 </div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false},
-        :columns => '[
-                        { "mData": "index","bVisible": false },
-                        { "mData": "po_id" },
-                        { "mData": "po_type_name" },
-                        { "mData": "vendor_name" },
-                        { "mData": "po_identifier", "bVisible": false },
-                        { "mData": "po_description", "bVisible": false },
-                        { "mData": "po_total", "bVisible": false },
-                        { "mData": "po_status" },
-                        { "mData": "po_active", "bVisible": false },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
+<% if @item.present? %>
+        <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "po_id" },
+                            { "mData": "po_type_name" },
+                            { "mData": "vendor_name" },
+                            { "mData": "po_identifier", "bVisible": false },
+                            { "mData": "po_description", "bVisible": false },
+                            { "mData": "po_total", "bVisible": false },
+                            { "mData": "po_line_price"},
+                            { "mData": "po_status" },
+                            { "mData": "po_active", "bVisible": false },
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]'
+        } 
+    %>
+<% else %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "po_id" },
+                            { "mData": "po_type_name" },
+                            { "mData": "vendor_name" },
+                            { "mData": "po_identifier", "bVisible": false },
+                            { "mData": "po_description", "bVisible": false },
+                            { "mData": "po_total", "bVisible": false },
+                            { "mData": "po_status" },
+                            { "mData": "po_active", "bVisible": false },
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]'
+        } 
+    %>
+<% end %>
