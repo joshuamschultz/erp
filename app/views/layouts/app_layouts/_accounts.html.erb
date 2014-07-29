@@ -9,6 +9,8 @@
     </thead>
 
     <tbody id="accounts_dispersal_table_body">
+         
+        
         <%= f.fields_for fields[0], accounts do |account| %>
             <tr>
                 <td><%= account.association fields[1], label: false, label_method: :gl_account_title, label_value: :id, :include_blank => false, collection: gl_accounts, input_html: { class: (object.new_record? ? "account_new " : "account_edit ") + fields[1].to_s } %></td>
@@ -19,6 +21,9 @@
         <% end %>
     </tbody>
 </table>
+
+<%= hidden_field_tag :payable_cost, @payable.payable_total- @payable.payable_freight   %>
+<%= hidden_field_tag :payable_freight, @payable.payable_freight %>
 
 <div class="separator bottom"></div>
 
@@ -33,7 +38,32 @@
 
     $(document).ready(function(){ 
         account_select_html = $.trim(Mustache.render($(".account-select-box-template").html(), {"aaData": <%= gl_accounts.to_json.html_safe %>}));
+
+        //Dispersing Amounts to Inventory and Freight
+
+        var payable_cost = $("#payable_cost").val();
+        var payable_freight = $("#payable_freight").val();
+        var account_row_count = $(".account_new").length + $(".account_edit").length;
+        if(payable_cost > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_gl_account_id").length) ) {
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(12);
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_cost);
+        }
+        if(payable_freight > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
+            account_row_count = $(".account_new").length + $(".account_edit").length;
+           var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(84);
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_freight); 
+        }    
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_payable_account_amount").val(payable_cost)
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_payable_account_amount").val(payable_freight); 
+
     });
+    
 
     function add_account_row(){
         var account_row_count = $(".account_new").length + $(".account_edit").length;

@@ -21,6 +21,7 @@
 
     <%= hidden_field_tag :organization_id, (@payable.organization.id if @payable.organization) %>
     <%= hidden_field_tag :org_organization_id, (@payable.organization.id if @payable.organization) %>
+    <%= hidden_field_tag :payable_id, @payable.id %>
 
     <% if @payable.po_header %>
         <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" %>   
@@ -56,7 +57,8 @@
   <div class="separator bottom"></div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, 'Create Payable' %>
+    <%= link_to 'Update Payable', edit_payable_path(@payable),  :class => "btn", :onclick => "add_freight();" if @payable.id? %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>
     <%= link_to 'Back', @payable, :class => "btn" %>
   </div>
@@ -64,6 +66,7 @@
 </div>
 </div>
 
+Amount To Disperse: $<%= @payable.amount_to_dispers %>
 
 <%= render :partial => 'payables/po_shipments' if @po_header %>
 
@@ -141,7 +144,14 @@
     function set_vendor_info(response, callback_params, api_params){
         $("#payable_vendor_info").html(response);
         return false;
-    }
+     } 
+    function add_freight () {
+        var payableId =  $("#payable_id").val(); 
+        var freightAmt = $("#payable_payable_freight").val();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_freight", "payable_id" : payableId, "freight_amt": freightAmt }}, "freight_result", {});
+            // body...
+        }    
+    
 
 </script>
 
