@@ -12,20 +12,28 @@
             <%= f.input :payable_line_cost, :label => "Cost" %>
             <%= f.input :payable_line_notes, :label => "Notes" %>
         </div>
-
+        <%= hidden_field_tag :payable_id, @payable.id %>  
+        <%= hidden_field_tag :payable_freight, @payable.payable_freight %>
         <div class="separator bottom"></div>
 
         <div class="actions">
             <%= f.submit "Save", :class =>"btn" %>
             <%= link_to 'Delete', payable_payable_line_path(@payable, @payable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable_line.new_record? %>
             <%= link_to 'Back', payable_path(@payable), :class =>"btn" %>
+            <%= link_to 'Update Payable', edit_payable_path(@payable),  :class => "btn", :onclick => "add_freight();" if @payable.id? %>
         </div>
     <% end %>
   </div>
 </div>
-<%= render :partial => 'payable_lines/amount_to_disperse' %>
+Amount To Disperse: $<%= @payable.amount_to_dispers %>
 <script type="text/javascript">
     tab_field_forms["form_for_payable_line"] = ["payable_line_payable_line_description", "payable_line_payable_line_cost", "payable_line_payable_line_notes"];
+    function add_freight () {
+        var payableId =  $("#payable_id").val(); 
+        var freightAmt = $("#payable_payable_freight").val();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_freight", "payable_id" : payableId, "freight_amt": freightAmt }}, "freight_result", {});
+            // body...
+        }    
 </script>
 
 <div class="separator bottom"></div>

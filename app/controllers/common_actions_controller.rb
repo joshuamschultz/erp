@@ -114,14 +114,22 @@ class CommonActionsController < ApplicationController
                   end
               end  
             when "process_reconcile"
-		    if params[:reconcile_ids].present? && params[:balance].present?
-		      Reconcile.where(id: params[:reconcile_ids]).each do |obj|
-		         obj.update_attributes(:tag => "reconciled")
-		       end  
-		      reconciled = Reconciled.first            
-		      reconciled.update_attributes(balance: params[:balance])
-		      result ="Success"
-		    end
+              if params[:reconcile_ids].present? && params[:balance].present?
+                Reconcile.where(id: params[:reconcile_ids]).each do |obj|
+                  obj.update_attributes(:tag => "reconciled")
+                end  
+                reconciled = Reconciled.first            
+                reconciled.update_attributes(balance: params[:balance])
+                result ="Success"
+              end
+            when "add_or_update_freight" 
+              if  params[:payable_id].present? && params[:freight_amt].present?
+                payable = Payable.find(params[:payable_id])
+                if payable.update_attributes(:payable_freight => params[:freight_amt])
+                  result ="Success"
+                end
+              end
+
             when "set_checklist"
               if params[:id].present? && params[:value].present?
                 checklist = CheckListLine.find(params[:id])

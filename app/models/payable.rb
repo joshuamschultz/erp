@@ -90,10 +90,14 @@ class Payable < ActiveRecord::Base
   end
 
   def update_gl_account
-    payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
-    payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
-    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
-    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )    
+    self.payable_accounts.each do |payable_account|
+       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount )             
+       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )
+    end
+    # payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
+    # payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
+    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
+    # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )    
   end 
 
   def update_payable_total
@@ -103,10 +107,12 @@ class Payable < ActiveRecord::Base
       payable_total - payable_discount_val + payable_freight
   end
 
-  def discount_to_dispers
-    payable_total = self.payable_lines.sum(:payable_line_cost)
-    payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
-    (payable_total / 100) * self.payable_discount
+  def amount_to_dispers
+    # payable_total = self.payable_lines.sum(:payable_line_cost)
+    # payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
+    # (payable_total / 100) * self.payable_discount
+    self.payable_total - self.payable_accounts.sum(:payable_account_amount)
+
   end  
 
   def payable_current_balance
