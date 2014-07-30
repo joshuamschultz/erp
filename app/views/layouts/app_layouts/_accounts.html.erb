@@ -48,7 +48,13 @@
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
             $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(12);
+            var theText = "INVENTORY";
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+           
             $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_cost);
         }
         if(payable_freight > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
@@ -56,7 +62,12 @@
            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
             $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(84);
+            var theText = "FREIGHT ; UPS";
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
             $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_freight); 
         }    
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_payable_account_amount").val(payable_cost)

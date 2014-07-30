@@ -92,7 +92,7 @@ class Payable < ActiveRecord::Base
   def update_gl_account
     self.payable_accounts.each do |payable_account|
        CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount )             
-       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )
+       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_account.payable_account_amount )
     end
     # payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
     # payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
