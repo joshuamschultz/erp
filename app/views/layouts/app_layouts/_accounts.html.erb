@@ -22,8 +22,8 @@
     </tbody>
 </table>
 
-<%= hidden_field_tag :payable_cost, @payable.payable_total- @payable.payable_freight   %>
-<%= hidden_field_tag :payable_freight, @payable.payable_freight %>
+<%= hidden_field_tag :payable_cost, @payable.payable_total- @payable.payable_freight if @payable  %>
+<%= hidden_field_tag :payable_freight, @payable.payable_freight if @payable %>
 
 <div class="separator bottom"></div>
 
@@ -68,10 +68,10 @@
                     $(this).attr('selected', 'selected');            
                 }                        
             });
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_freight); 
+            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(payable_freight); 
         }    
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_payable_account_amount").val(payable_cost)
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_payable_account_amount").val(payable_freight); 
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_<%= account_type %>_account_amount").val(payable_cost)
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_<%= account_type %>_account_amount").val(payable_freight); 
 
     });
     
