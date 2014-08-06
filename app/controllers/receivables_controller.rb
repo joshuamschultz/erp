@@ -96,8 +96,8 @@ class ReceivablesController < ApplicationController
     @receivable = Receivable.find(params[:id])
 
      # Updating GlAccount  
-    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',@payable.payable_freight ) 
-    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',@payable.payable_freight )
+    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',@receivable.receivable_freight ) 
+    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',@receivable.receivable_freight )
 
 
     respond_to do |format|
