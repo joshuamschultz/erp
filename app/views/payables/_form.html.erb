@@ -58,7 +58,6 @@
 
   <div class="form-actions">
     <%= f.button :submit, 'Create Payable' %>
-    <%= link_to 'Update Payable', edit_payable_path(@payable),  :class => "btn", :onclick => "add_freight();" if @payable.id? %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>
     <%= link_to 'Back', @payable, :class => "btn" %>
   </div>
@@ -66,7 +65,7 @@
 </div>
 </div>
 
-Amount To Disperse: $<%= @payable.amount_to_dispers %>
+<div id="amount_to_disperse" >Amount To Disperse: $<%= @payable.amount_to_dispers %></div>
 
 <%= render :partial => 'payables/po_shipments' if @po_header %>
 
@@ -129,6 +128,9 @@ Amount To Disperse: $<%= @payable.amount_to_dispers %>
                 payable_fine_to_submit = true;
         });
     });
+    $( "#payable_payable_freight" ).on("focusout mousemove",function() {
+       add_freight ();
+    });    
 
     function set_vendor_addresses(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
@@ -147,11 +149,36 @@ Amount To Disperse: $<%= @payable.amount_to_dispers %>
      } 
     function add_freight () {
         var payableId =  $("#payable_id").val(); 
-        var freightAmt = $("#payable_payable_freight").val();
+        var freightAmt = $("#payable_payable_freight").val();        
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_freight", "payable_id" : payableId, "freight_amt": freightAmt }}, "freight_result", {});
             // body...
-        }    
-    
+        } 
+
+    function  freight_result ()     
+    {
+        var account_row_count = $(".account_new").length + $(".account_edit").length;
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS")
+                {
+                    $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val($("#payable_payable_freight").val());
+                    break;
+                } 
+        }
+        if(i ==account_row_count ){
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            var theText = "FREIGHT ; UPS";
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val($("#payable_payable_freight").val());
+        }
+        $("#amount_to_disperse").html("Amount To Disperse: $<%= @payable.amount_to_dispers %>");
+       
+    }
 
 </script>
 
