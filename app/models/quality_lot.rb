@@ -58,11 +58,12 @@ class QualityLot < ActiveRecord::Base
 				end
 			end
 		else			
-			self.checklist.destroy
-			checklist = Checklist.create(:quality_lot_id => self.id, :po_line_id => self.po_line.id, :customer_quality_id => self.get_quality_level.id)		
-			if checklist
+			# self.checklist.destroy
+			self.checklist.update_attributes(:po_line_id => self.po_line.id, :customer_quality_id => self.get_quality_level.id)
+			if self.checklist
+				self.checklist.check_list_lines.destroy_all if self.checklist.check_list_lines.present?
 				self.get_quality_level.customer_quality_levels.each do |quality_level|
-					CheckListLine.create(:checklist_id => checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
+					CheckListLine.create(:checklist_id => self.checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
 				end
 			end
 		end		
