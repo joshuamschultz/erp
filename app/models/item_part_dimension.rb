@@ -34,6 +34,10 @@ class ItemPartDimension < ActiveRecord::Base
  				errors.add(:dimension_string, " Must be a float value")
  			end
  		end
+ 		if self.go_non_go == true && self.item_part_critical == true
+ 			errors.add(:go_non_go, "Choose any one Critical or Go/Nogo")
+ 			errors.add(:item_part_critical, "Choose any one Critical or Go/Nogo")
+ 		end
  	end
 
 	validates_presence_of :item_revision
