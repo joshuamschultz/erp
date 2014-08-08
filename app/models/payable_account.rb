@@ -7,6 +7,5 @@ class PayableAccount < ActiveRecord::Base
 
   validates_presence_of :payable, :gl_account, :payable_account_amount
 
-  validates_numericality_of :payable_account_amount, greater_than: 0
-
+  validates_numericality_of :payable_account_amount
 end
