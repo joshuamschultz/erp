@@ -22,8 +22,10 @@
     </tbody>
 </table>
 
-<%= hidden_field_tag :payable_cost, @payable.payable_total- @payable.payable_freight if @payable  %>
+<%= hidden_field_tag :payable_cost, @payable.payable_lines.sum(:payable_line_cost)  if @payable  %>
 <%= hidden_field_tag :payable_freight, @payable.payable_freight if @payable %>
+<%= hidden_field_tag :payable_discount, @payable.payable_discount_val  if @payable %>
+
 
 <div class="separator bottom"></div>
 
@@ -43,37 +45,42 @@
 
         var payable_cost = $("#payable_cost").val();
         var payable_freight = $("#payable_freight").val();
+        var payable_discount = parseFloat($("#payable_discount").val()) * -1 ;
         var account_row_count = $(".account_new").length + $(".account_edit").length;
         if(payable_cost > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_gl_account_id").length) ) {
-            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
-            $("#accounts_dispersal_table_body").append(html); 
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "INVENTORY";
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
-                if($(this).text() == theText) {
-                    $(this).attr('selected', 'selected');            
-                }                        
-            });
-           
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_payable_account_amount").val(payable_cost);
+            
+            disperse_amount("INVENTORY", payable_cost);
+            
         }
         if(payable_freight > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
-            account_row_count = $(".account_new").length + $(".account_edit").length;
-           var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
-            $("#accounts_dispersal_table_body").append(html); 
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "FREIGHT ; UPS";
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
-                if($(this).text() == theText) {
-                    $(this).attr('selected', 'selected');            
-                }                        
-            });
-            $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(payable_freight); 
-        }    
+
+            disperse_amount("FREIGHT ; UPS", payable_freight);
+            
+        }   
+        if(payable_discount < parseFloat(0) && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_2_gl_account_id").length)) {
+
+            disperse_amount("COGS; DISCOUNT", payable_discount);
+             
+        }     
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_<%= account_type %>_account_amount").val(payable_cost)
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_<%= account_type %>_account_amount").val(payable_freight); 
-
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_2_<%= account_type %>_account_amount").val(payable_discount); 
     });
+    
+    function disperse_amount(theText, amt){
+        account_row_count = $(".account_new").length + $(".account_edit").length;
+        var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+        $("#accounts_dispersal_table_body").append(html); 
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+        //var theText = "FREIGHT ; UPS";
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+            if($(this).text() == theText) {
+                $(this).attr('selected', 'selected');            
+            }                        
+        });
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
+
+    } 
     
 
     function add_account_row(){

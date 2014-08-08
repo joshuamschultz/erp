@@ -113,7 +113,13 @@ class Payable < ActiveRecord::Base
     # (payable_total / 100) * self.payable_discount
     self.payable_total - self.payable_accounts.sum(:payable_account_amount)
 
-  end  
+  end 
+
+  def payable_discount_val  
+    payable_total = self.payable_lines.sum(:payable_line_cost)
+    payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
+    (payable_total / 100) * self.payable_discount rescue 0
+  end   
 
   def payable_current_balance
       self.payable_total - self.payment_lines.sum(:payment_line_amount)
