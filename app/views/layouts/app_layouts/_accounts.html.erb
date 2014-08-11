@@ -52,11 +52,11 @@
             disperse_amount("INVENTORY", payable_cost);
             
         }
-        if(payable_freight > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
+        if( !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
 
             disperse_amount("FREIGHT ; UPS", payable_freight);
             
-        }   
+        }           
         if(payable_discount < parseFloat(0) && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_2_gl_account_id").length)) {
 
             disperse_amount("COGS; DISCOUNT", payable_discount);
