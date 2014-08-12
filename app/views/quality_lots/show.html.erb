@@ -8,7 +8,8 @@
         <div class="row-fluid">
             <h4 class="span3 left">Lot Info</h4>
             <span class="span9 right">
-                <%= link_to "New PSW", new_ppap_path(:quality_lot_id => @quality_lot.id), :class => "btn btn-small" unless @quality_lot.ppap %>
+            <%= link_to "Checklist", checklist_path(@quality_lot.checklist), :class => "btn btn-small" if @quality_lot.checklist %>
+                <%= link_to "New PSW", new_ppap_path(:quality_lot_id => @quality_lot.id), :class => "btn btn-small" unless @quality_lot.ppap %>                
                 <%= link_to "PSW", ppap_path(@quality_lot.ppap), :class => "btn btn-small" if @quality_lot.ppap %>
                 <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>     
                 <%= link_to "Back", quality_lots_path, :class =>"btn btn-small" %>
@@ -40,6 +41,11 @@
           <tr>
             <td>Quantity:</td>
             <td><%= @quality_lot.lot_quantity %></td>
+          </tr>
+
+          <tr>
+            <td>Quantity On Hand:</td>
+            <td><%= @quality_lot.quantity_on_hand %></td>
           </tr>
 
           <tr>
@@ -99,7 +105,7 @@
 
           <tr>
             <td>Finalized At:</td>
-            <td><%= @quality_lot.lot_finalized_at.to_date %></td>
+            <td><%= @quality_lot.lot_finalized_at.to_date if @quality_lot.lot_finalized_at.present? %></td>
           </tr>
 
           <tr>

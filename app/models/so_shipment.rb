@@ -1,13 +1,14 @@
 class SoShipment < ActiveRecord::Base
   belongs_to :so_line
 
-  attr_accessible :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, 
+  attr_accessible :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
   :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status
 
   validate :check_total_shipped
 
   has_one :receivable_so_shipment, :dependent => :destroy
   has_one :receivable, through: :receivable_so_shipment
+  belongs_to :quality_lot
 
   def check_total_shipped
     total_shipped = self.other_so_shipments.sum(:so_shipped_count) + self.so_shipped_count
@@ -70,4 +71,19 @@ class SoShipment < ActiveRecord::Base
       shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end
 
+  def set_quality_on_hand
+    if self.quality_lot.present?
+      quality_lotss = self.quality_lot
+      p '---------------------'
+      p quality_lotss.quantity_on_hand
+      p self.so_shipped_count
+      quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.so_shipped_count
+      if quality_lotss.quantity_on_hand <= 0
+        quality_lotss.finished = self.created_at
+      end
+      if quality_lotss.save(:validate => false)
+        p quality_lotss.to_yaml
+      end
+    end    
+  end
 end

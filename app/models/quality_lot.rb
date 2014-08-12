@@ -10,16 +10,17 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	before_create :before_create_values
-
+	
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
+		self.quantity_on_hand = self.lot_quantity
 	end
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
   	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
   	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number, :quality_lot_materials_attributes, :run_at_rate_id,
-  	:fai
+  	:fai, :finished, :quantity_on_hand
 
    	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
 	:conditions => ['type_category = ?', 'inspection_level']
@@ -38,6 +39,7 @@ class QualityLot < ActiveRecord::Base
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauges, :dependent => :destroy
 	has_many :attachments, :as => :attachable, :dependent => :destroy
+	has_many :quality_lots
 	has_one :package, :dependent => :destroy
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy

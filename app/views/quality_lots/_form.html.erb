@@ -98,7 +98,7 @@
 
           <%= hidden_field_tag :org_run_at_rate_id, (@quality_lot.run_at_rate_id if @quality_lot.run_at_rate) %>
 
-          <%= f.input :lot_finalized_at, as: :string, label: "Finalized At" %>
+          <%#= f.input :lot_finalized_at, as: :string, label: "Finalized At" %>
 
           <%= f.input :lot_notes, label: "Notes" %>
 
@@ -196,8 +196,7 @@
         <% end %>
 
         page_initial = false;
-    }  
-
+    }
   </script>
 
   <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "revision-select-box"} %>
