@@ -59,7 +59,7 @@ class PpapsController < ApplicationController
     @ppap = Ppap.new(pap)
     respond_to do |format|
       if @ppap.save
-        format.html { redirect_to @ppap, notice: 'Ppap was successfully created.' }
+        format.html { redirect_to @ppap, notice: 'PSW was successfully created.' }
         format.json { render json: @ppap, status: :created, location: @ppap }
       else
         format.html { render action: "new" }
@@ -75,7 +75,7 @@ class PpapsController < ApplicationController
     pap = Ppap.process_ppap(params,"update")
     respond_to do |format|
       if @ppap.update_attributes(pap)
-        format.html { redirect_to @ppap, notice: 'Ppap was successfully updated.' }
+        format.html { redirect_to @ppap, notice: 'PSW was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
