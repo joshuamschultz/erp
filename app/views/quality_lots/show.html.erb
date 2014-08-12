@@ -80,29 +80,24 @@
 
           <tr>
             <td>Process Flow:</td>
-            <td><%= link_to(@quality_lot.process_flow.process_name, @quality_lot.process_flow) if @quality_lot.process_flow %></td>
+            <td><%= link_to @quality_lot.process_flow.process_name, @quality_lot.process_flow.attachment.attachment.url(:original), :target => "_blank" if @quality_lot.process_flow && @quality_lot.process_flow.attachment.present? %></td>
           </tr>
 
           <tr>
             <td>FMEA:</td>
-            <td><%= link_to(@quality_lot.fmea_type.fmea_name, @quality_lot.fmea_type) if @quality_lot.fmea_type %></td>
+            <td><%= link_to @quality_lot.fmea_type.fmea_name, @quality_lot.fmea_type.attachment.attachment.url(:original), :target => "_blank" if @quality_lot.fmea_type && @quality_lot.fmea_type.attachment.present? %></td>
           </tr>
 
           <tr>
             <td>Control Plan:</td>
-            <td><%= link_to(@quality_lot.control_plan.plan_name, @quality_lot.control_plan) if @quality_lot.control_plan %></td>
+            <td><%= link_to @quality_lot.control_plan.plan_name, @quality_lot.control_plan.attachment.attachment.url(:original), :target => "_blank" if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %></td>
           </tr>
 
           <tr>
             <td>Run At Rate:</td>
-            <td><%= link_to(@quality_lot.run_at_rate.run_at_rate_name, @quality_lot.run_at_rate) if @quality_lot.run_at_rate %></td>
+            <td><%= link_to @quality_lot.run_at_rate.run_at_rate_name, @quality_lot.run_at_rate.attachment.attachment.url(:original), :target => "_blank" if @quality_lot.run_at_rate && @quality_lot.run_at_rate.attachment.present? %></td>
           </tr>
-
-          <tr>
-            <td>Checklist:</td>
-            <td><%= link_to(@quality_lot.checklist.id, @quality_lot.checklist) if @quality_lot.checklist %></td>
-          </tr>
-
+        
           <tr>
             <td>Finalized At:</td>
             <td><%= @quality_lot.lot_finalized_at.to_date if @quality_lot.lot_finalized_at.present? %></td>
