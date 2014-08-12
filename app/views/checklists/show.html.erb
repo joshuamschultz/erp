@@ -46,7 +46,9 @@
                             <% when "parker_form_36" %>                                
                                 <td><%= check_box_tag 'parker_form_36', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'parker_form_36')", :class => "select_text" %></td>
                             <% when "goodrich_release_check" %>                                
-                                <td><%= check_box_tag 'goodrich_release_check', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'goodrich_release_check')" %></td>                            
+                                <td><%= check_box_tag 'goodrich_release_check', "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, 'goodrich_release_check')" %></td>
+                            <% when "part_submission_warrant_psw"%>
+                                 <td><%= check_box_tag 'part_submission_warrant_psw', "true",check_list_line.checklist.quality_lot.ppap.present?, :disabled => true %></td>                     
                             <% else %>
                                 <td><%= check_box_tag value, "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, '#{value}')" %></td>
                         <% end %>
