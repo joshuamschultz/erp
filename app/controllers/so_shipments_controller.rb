@@ -93,6 +93,7 @@ class SoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @so_shipment.save
+        @so_shipment.set_quality_on_hand
         @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
         @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
         format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }

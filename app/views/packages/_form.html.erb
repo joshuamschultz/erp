@@ -1,4 +1,4 @@
-<%= simple_form_for(@package, :html => {:id => "form_for_attachment", :class => "form-horizontal", :multipart => true}) do |f| %>
+<%= simple_form_for(@package, :html => {:id => "form_for_package", :class => "form-horizontal", :multipart => true}) do |f| %>
   <%= f.error_notification %>
 
     <div class="form-inputs">       
@@ -669,7 +669,7 @@
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_attachment"] = ["package_quality_lot_id", "package_supplier_code", "package_part", "package_container", "package_dunnage", "package_unit_load","package_part_size_length", "package_part_size_width", "package_part_size_height", "package_container_length", "package_container_width", "package_container_height", "package_pallet_length", "package_pallet_width", "package_pallet_height", "package_load_shipped_length", "package_load_shipped_width", "package_load_shipped_height","package_in_to_mm1", "package_in_to_mm2", "package_lbs_to_kg1", "package_lbs_to_kg2", "package_part_weight", "package_dunnage_tare_Weight", "package_container_tare_weight", "package_pallet_tare_weight", "package_container_gross_inc_weight", "package_unit_load_gross", "package_quantity_per_container","package_container_per_layer_pallet", "package_layers_per_pallet", "package_container_per_pallet", "package_package_comment", "package_dunnage_manufacturer", "package_container_color_manufacturer", "package_container_type_manufacturer", "package_cover_cap_manufacturer", "package_pallet_manufacturer", "package_strech_shrink_manufacturer", "package_banding_manufacturer", "package_other_manufacturer", "package_dunnage_material", "package_container_color_material", "package_container_type_material",  "package_cover_cap_material", "package_pallet_material", "package_strech_shrink_material", "package_banding_material", "package_other_material", "package_dunnage_lead_time", "package_container_color_lead_time", "package_container_type_lead_time", "package_cover_cap_lead_time", "package_pallet_lead_time", "package_strech_shrink_lead_time", "package_banding_lead_time", "package_other_lead_time", "package_dunnage_ret_exp", "package_container_color_ret_exp", "package_container_type_ret_exp", "package_cover_cap_ret_exp", "package_pallet_ret_exp", "package_strech_shrink_ret_exp", "package_banding_ret_exp", "package_other_ret_exp", "package_dunnage_comment", "package_container_color_comment", "package_container_type_comment", "package_cover_cap_comment", "package_pallet_comment", "package_strech_shrink_comment", "package_banding_comment", "package_other_comment"
+    tab_field_forms["form_for_package"] = ["package_quality_lot_id", "package_supplier_code", "package_part", "package_container", "package_dunnage", "package_unit_load","package_part_size_length", "package_part_size_width", "package_part_size_height", "package_container_length", "package_container_width", "package_container_height", "package_pallet_length", "package_pallet_width", "package_pallet_height", "package_load_shipped_length", "package_load_shipped_width", "package_load_shipped_height","package_in_to_mm1", "package_in_to_mm2", "package_lbs_to_kg1", "package_lbs_to_kg2", "package_part_weight", "package_dunnage_tare_Weight", "package_container_tare_weight", "package_pallet_tare_weight", "package_container_gross_inc_weight", "package_unit_load_gross", "package_quantity_per_container","package_container_per_layer_pallet", "package_layers_per_pallet", "package_container_per_pallet", "package_package_comment", "package_dunnage_manufacturer", "package_container_color_manufacturer", "package_container_type_manufacturer", "package_cover_cap_manufacturer", "package_pallet_manufacturer", "package_strech_shrink_manufacturer", "package_banding_manufacturer", "package_other_manufacturer", "package_dunnage_material", "package_container_color_material", "package_container_type_material",  "package_cover_cap_material", "package_pallet_material", "package_strech_shrink_material", "package_banding_material", "package_other_material", "package_dunnage_lead_time", "package_container_color_lead_time", "package_container_type_lead_time", "package_cover_cap_lead_time", "package_pallet_lead_time", "package_strech_shrink_lead_time", "package_banding_lead_time", "package_other_lead_time", "package_dunnage_ret_exp", "package_container_color_ret_exp", "package_container_type_ret_exp", "package_cover_cap_ret_exp", "package_pallet_ret_exp", "package_strech_shrink_ret_exp", "package_banding_ret_exp", "package_other_ret_exp", "package_dunnage_comment", "package_container_color_comment", "package_container_type_comment", "package_cover_cap_comment", "package_pallet_comment", "package_strech_shrink_comment", "package_banding_comment", "package_other_comment"
 
     ];
 
@@ -677,6 +677,9 @@
          $("#package_quality_lot_id").val("<%= @package.quality_lot.lot_control_no if @package.quality_lot %>");
 
     });
+    $('input').on('focus', function() {
+        $(this).select();
+    })  
  </script>
 
 <style type="text/css">
@@ -687,5 +690,4 @@
 }
 
 </style>
-
 

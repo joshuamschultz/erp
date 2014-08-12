@@ -162,6 +162,12 @@ class CommonActionsController < ApplicationController
                 OrganizationProcess.process_organization_processes(current_user, organization, params[:value])
                 result ="Success"   
               end
+            when "get_quality_lots"
+              if params[:id].present?
+                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                result = quality_lots
+              end
+              
                             
         end
          render json: {:aaData => result}

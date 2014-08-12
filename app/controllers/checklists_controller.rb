@@ -1,4 +1,9 @@
 class ChecklistsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+      @menus[:quality][:active] = "active"
+  end
   # GET /checklists
   # GET /checklists.json
   def index

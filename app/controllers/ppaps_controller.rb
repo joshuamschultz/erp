@@ -1,4 +1,10 @@
 class PpapsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+    @menus[:quality][:active] = "active"
+    # simple_form_validation = false
+  end
   # GET /ppaps
   # GET /ppaps.json
   def index
