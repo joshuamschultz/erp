@@ -123,9 +123,18 @@ class CommonActionsController < ApplicationController
                 result ="Success"
               end
             when "add_or_update_freight" 
-              if  params[:payable_id].present? && params[:freight_amt].present?
+              if  params[:payable_id].present? && params[:freight_amt].present? 
                 payable = Payable.find(params[:payable_id])             
                 if payable.update_attributes(:payable_freight => params[:freight_amt] )
+                  payable.update_payable_total
+                  result ="Success"
+                end
+              end
+
+            when "add_or_update_discount"
+              if  params[:payable_id].present? && params[:discount].present? 
+                payable = Payable.find(params[:payable_id])             
+                if payable.update_attributes(:payable_discount => params[:discount] )
                   payable.update_payable_total
                   result ="Success"
                 end

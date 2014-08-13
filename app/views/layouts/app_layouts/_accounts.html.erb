@@ -22,7 +22,9 @@
     </tbody>
 </table>
 
-<%= hidden_field_tag :payable_cost, @payable.payable_lines.sum(:payable_line_cost)  if @payable  %>
+<% inventory_amount = @payable.payable_lines.sum(:payable_line_cost) %>   
+<% inventory_amount += @payable.po_shipments.sum(:po_shipped_cost) if @payable.po_header %>
+<%= hidden_field_tag :payable_cost,  inventory_amount   if @payable  %>
 <%= hidden_field_tag :payable_freight, @payable.payable_freight if @payable %>
 <%= hidden_field_tag :payable_discount, @payable.payable_discount_val  if @payable %>
 
