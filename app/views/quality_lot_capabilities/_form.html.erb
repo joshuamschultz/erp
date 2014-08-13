@@ -8,6 +8,11 @@
 <% objects.each do |object| %>
     <% values << object.quality_lot_capabilities.where(:quality_lot_id => @quality_lot.id).order(:item_part_dimension_id).all %>
 <% end %>
+<div class="row-fluid">
+	<span class="span12 heading right">
+	    <%= link_to 'Lot Info', quality_lot_path(@quality_lot), :class => "btn btn-mini btn-success" %><br><br>
+	</span>
+</div>
 <%= form_for(@quality_lot_capability, :html => {:id => "form_for_lot_capabilities"} ) do |f| %>
   <%= hidden_field_tag :quality_lot_id, @quality_lot.id %>
 

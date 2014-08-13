@@ -1,3 +1,7 @@
 <h4 class="heading">New PPAP for <%= @quality_lot.lot_control_no %></h4>
-
+<div class="row-fluid">
+    <span class="span12 heading right">
+        <%= link_to 'Lot Info', quality_lot_path(@quality_lot), :class => "btn btn-mini btn-success" %>
+    </span>
+</div>
 <%= render 'form' %>

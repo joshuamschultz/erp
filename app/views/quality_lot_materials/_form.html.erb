@@ -1,6 +1,8 @@
 <div class="row-fluid">
   <%= render :partial => 'items/item_info' %>
-
+  <span class="span9 heading right">
+    <%= link_to 'Lot Info', quality_lot_path(@quality_lot), :class => "btn btn-mini btn-success" %>
+  </span>
   <div class="span9">
       <%= simple_form_for(@quality_lot, :html => {:id => "form_for_material_elements",:class => "form-horizontal"}) do |f| %>
 
