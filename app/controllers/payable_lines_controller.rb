@@ -72,13 +72,7 @@ class PayableLinesController < ApplicationController
   # PUT payables/1/payable_lines/1.json
   def update
     @payable = Payable.find(params[:payable_id])
-    @payable_line = @payable.payable_lines.find(params[:id])
-    
-      #Updating GlAccount 
-    if @payable_line
-        CommonActions.update_gl_accounts('INVENTORY', 'decrement',@payable_line.payable_line_cost )
-        CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',@payable_line.payable_line_cost )
-    end  
+    @payable_line = @payable.payable_lines.find(params[:id])  
 
     respond_to do |format|
       if @payable_line.update_attributes(params[:payable_line])
