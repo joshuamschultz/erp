@@ -89,6 +89,7 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.save
+        @payable.update_gl_account
         format.html { redirect_to new_payable_payable_line_path(@payable), notice: 'Payable was successfully created.' }
         format.json { render json: @payable, status: :created, location: @payable }
       else
@@ -105,15 +106,14 @@ class PayablesController < ApplicationController
     @payable = Payable.find(params[:id])
     params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
-    # Updating GlAccount  
-    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',@payable.payable_freight ) 
-    # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',@payable.payable_freight )   
+    # Updating GlAccount      
     @payable.payable_accounts.each do |payable_account|
        CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount )             
-       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',@payable.payable_freight )
+       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',payable_account.payable_account_amount)
     end
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
+        @payable.update_gl_account
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }
         format.json { head :no_content }
       else

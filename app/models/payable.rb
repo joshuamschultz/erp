@@ -69,8 +69,7 @@ class Payable < ActiveRecord::Base
   after_save :process_after_save
 
   def process_after_save
-      self.process_payable_total
-      self.update_gl_account 
+      self.process_payable_total      
   end 
 
   before_create :process_before_create
