@@ -130,7 +130,10 @@
     });
     $( "#payable_payable_freight" ).on("focusout mousemove",function() {
        add_freight ();
-    });    
+    });
+    $( "#payable_payable_discount" ).on("focusout mousemove",function() {
+       add_discount ();
+    });
 
     function set_vendor_addresses(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
@@ -179,7 +182,41 @@
         $("#amount_to_disperse").html("Amount To Disperse: $<%= @payable.amount_to_dispers %>");
        
     }
+    function add_discount () {
+        var payableId =  $("#payable_id").val(); 
+        var discount = $("#payable_payable_discount").val();   
+          
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_discount", "payable_id" : payableId, "discount": discount  }}, "discount_result", {});
+            // body...
+        } 
 
+    function  discount_result ()     
+    {
+        var account_row_count = $(".account_new").length + $(".account_edit").length;        
+        var discount_val = ($("#payable_cost").val() /100 * $("#payable_payable_discount").val()) * -1;
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "COGS; DISCOUNT")
+                {
+                    
+                    $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val(discount_val);
+                    break;
+                } 
+        }
+        if(i ==account_row_count ){
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            var theText = "COGS; DISCOUNT";
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val(discount_val);
+        }
+        $("#amount_to_disperse").html("Amount To Disperse: $<%= @payable.amount_to_dispers %>");
+       
+    }
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
