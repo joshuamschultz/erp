@@ -20,8 +20,7 @@
                 <table id="table_report_dimension_analysis" class="dynamicTable table table-striped table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th>Lot</th>
-                            <th>Letter</th>
+                            <th>Bubble</th>
                             <th>Dimension</th>
                             <th>+ Tol</th>
                             <th>- Tol</th>
@@ -49,7 +48,6 @@
     {
         :name => "table_report_dimension_analysis", :path => quality_lot_dimensions_path(quality_lot_id: @quality_lot.id), :extras => {:slno => false},
         :columns => '[
-                        { "mData": "lot_control_no", "bVisible": false },
                         { "mData": "item_part_letter" },
                         { "mData": "item_part_dimensions" },
                         { "mData": "item_part_pos_tolerance" },
