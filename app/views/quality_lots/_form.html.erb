@@ -115,7 +115,7 @@
     <% end %>
 
   <script type="text/javascript">
-    tab_field_forms["form_for_lots"] = ["quality_lot_po_header_id", "quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_lot_aql_no", "quality_lot_fai", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_run_at_rate_id", "quality_lot_lot_finalized_at", "quality_lot_lot_notes"];
+    tab_field_forms["form_for_lots"] = ["quality_lot_po_header_id", "quality_lot_po_line_id", "quality_lot_item_revision_id", "quality_lot_lot_quantity", "quality_lot_inspection_level_id", "quality_lot_inspection_method_id", "quality_lot_inspection_type_id", "quality_lot_lot_aql_no", "quality_lot_fai", "quality_lot_process_flow_id", "quality_lot_fmea_type_id", "quality_lot_control_plan_id", "quality_lot_run_at_rate_id", "quality_lot_lot_notes"];
 
     <% date_box_date = @quality_lot.new_record? ? Date.today : @quality_lot.lot_finalized_at %>
 
