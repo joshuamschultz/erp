@@ -155,7 +155,7 @@ class QualityLot < ActiveRecord::Base
  		so_line = SoLine.find_by_so_line_vendor_po_and_item_id(self.po_header.po_identifier, self.po_line.item.id)
  		if so_line && so_line.customer_quality.present?
  			so_line.customer_quality
- 		elsif po_line.organization.customer_quality.present?
+ 		elsif po_line.organization.present? &&  po_line.organization.customer_quality.present?
  			po_line.organization.customer_quality
  		else
  			default = MasterType.find_by_type_category("default_customer_quality").type_value
