@@ -32,9 +32,9 @@
 				    	<% for j_int in 0..objects.count-1 %>
 				    		<% if(objects[j_int] && objects[j_int].go_non_go ) %>
 				    			<% dimension_status = values[j_int][i_int].present? ? (values[j_int][i_int][value_field].to_i == 1 ? true : false) : false %>			    	  <%= hidden_field_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 0 , :id => "hidden_value" %> 
-					    	    <td><%= check_box_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 1, dimension_status %></td> 
+					    	    <td><%= check_box_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 1, dimension_status, :id => "#{i_int}_#{j_int}" %></td> 
 					    	<%else%>
-						    	<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]) %></td>				    	       
+						    	<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]), :id => "#{i_int}_#{j_int}" %></td>				    	       
 						    <%end%>	    	
 				    	<% end %>
 				    	<td>
@@ -67,6 +67,7 @@ var editable_fields_count = <%= objects.count %>;
 
 $(document).ready(function(){
 	bind_editable_row_tab();
+	$("#0_0").focus();
 });
 
 function add_editable_row(){	
@@ -76,14 +77,14 @@ function add_editable_row(){
 		new_row_html += "<td>";
 		//Get the row input typype
 		ed_row = editable_rows_count-1;
-		row_id = "<%= name %>_field_data_"+ ed_row  + "_"+ i_int;
+		row_id = ed_row+"_"+i_int;
 		col_type = $('#'+row_id).attr('type');
 		if (col_type == 'checkbox'){
-			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='<%= name %>_field_data_" + editable_rows_count + "_" + i_int + "' value='1'>";
-			new_row_html +=  "<input type='hidden' name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='hidden_value' value='1'>";
+			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='" +editable_rows_count+"_"+ i_int+"' value='1'>";
+			new_row_html +=  "<input type='hidden' name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='hidden_value' value='0'>";
 		}
 		else{
-			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='<%= name %>_field_data_" + editable_rows_count + "_" + i_int + "'>";
+			new_row_html += "<input type='" +col_type +"'name='<%= name %>_field_data[" + editable_rows_count + "][" + i_int + "]' id='"+editable_rows_count +"_"+i_int+"'>";
 		}
 		
 		new_row_html += "</td>";
@@ -102,29 +103,56 @@ function delete_editable_row(element){
 }
 
 function bind_editable_row_tab(){
-	$("#<%= form %> input[type=text]").on("keydown",function(e){		
-		var keyCode = e.keyCode || e.which;
-		var form_id = $(this).closest('form').attr("id");
-		var current_index = $(this).index('input:text');
-		var next_element = $('input:text').eq(current_index + <%= objects.count %>).attr('id');
-		var next_index = $("#"+next_element).index('input:text');
+	$("#<%= form %> input[type=checkbox]").on("keydown",function(e){
+		var keyCode = e.keyCode || e.which;			
+		if(keyCode == 13){
+	 		var a = this.id;
+	 		var k = a.split('_');
+	 		var x = parseInt(k[0])+1;
+	 		var y = parseInt(k[1]);
+	       	var next_index = "#"+x.toString()+"_"+y.toString();
+	       	if ($(next_index).length) {
+	       		$(next_index).focus();
+	       		$(next_index).select();
+	       		e.preventDefault();
+	       	}else{
+	       		 x = 0;
+	       		 y = y+1;
+	       		var next_index = "#"+x.toString()+"_"+y.toString();
+	       		if ($(next_index).length) {
+	       			$(next_index).focus();
+	       			$(next_index).select();
+	       			e.preventDefault();
 
-		if(next_index == -1){
-			next_index = (current_index % <%= objects.count %>) + 1;
+	       		}
+	       	}
+	    }
+   	});
+   	$("#<%= form %> input[type=text]").on("keydown",function(e){
+		var keyCode = e.keyCode || e.which;			
+		if(keyCode == 13){
+	 		var a = this.id;
+	 		var k = a.split('_');
+	 		var x = parseInt(k[0])+1;
+	 		var y = parseInt(k[1]);
+	       	var next_index = "#"+x.toString()+"_"+y.toString();
+	       	if ($(next_index).length) {
+	       		$(next_index).focus();
+	       		$(next_index).select();
+	       		e.preventDefault();
+	       	}else{
+	       		 x = 0;
+	       		 y = y+1;
+	       		var next_index = "#"+x.toString()+"_"+y.toString();
+	       		if ($(next_index).length) {
+	       			$(next_index).focus();
+	       			$(next_index).select();
+	       			e.preventDefault();
 
-			if(next_index == <%= objects.count %>)
-				next_index = -1;
+	       		}
+	       	}	       
 
-			var next_element = $('input:text').eq(next_index).attr('id');
-		}
-
-       	if(keyCode == 13){
-       		e.preventDefault();
-       	    if(next_index > -1)
-				$("#"+next_element).focus();
-			else
-				$("#<%= form %>").submit();
-       	}	
+	    }
    	});
 }
 
