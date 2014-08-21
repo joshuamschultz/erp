@@ -53,10 +53,11 @@
     <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
     <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
   </div>
-
+   <div class="separator bottom"></div>
+  <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @payable.new_record?%></div><br>
   <div class="separator bottom"></div>
-
-  <div class="form-actions">
+  
+  <div class="form-actions">    
     <%= f.button :submit %>
     <%= link_to 'Payables', '/payables', :class => "btn" %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>    
@@ -65,7 +66,7 @@
 </div>
 </div>
 
-<div id="amount_to_disperse" >Amount To Disperse: $<%= @payable.amount_to_dispers %></div>
+<div id="amount_to_disperse" >Amount To Disperse: $<%= @payable.amount_to_dispers %> </div>
 
 <%= render :partial => 'payables/po_shipments' if @po_header %>
 
@@ -128,13 +129,36 @@
                 payable_fine_to_submit = true;
         });
     });
-    $( "#payable_payable_freight" ).on("focusout mousemove",function() {
-       add_freight ();
-    });
-    $( "#payable_payable_discount" ).on("focusout mousemove",function() {
-       add_discount ();
-    });
+    function update(){
+      add_freight ();
+      add_discount (); 
+         
+    }
+    // $( "#payable_payable_freight" ).on("focusout",function() {
+    //     var account_row_count = get_rowcount();    
+    //     var dispersed_amt = parseFloat(0);
+    //     for ( var i = 0 ; i < account_row_count; i++ ){
+    //         dispersed_amt += parseFloat($("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val());
+    //         if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS"){
+    //               to_subtract = parseFloat($("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val());
+    //             }
+    //     }
+    //     var to_disperse = parseFloat($("#payable_payable_freight").val()) - to_subtract  ;
+    //     $('#amount_to_disperse').html("Amount To Disperse: $"+to_disperse);
+        
 
+        
+    // });
+    // $( "#payable_payable_discount" ).on("focusout mousemove",function() {
+    //    add_discount ();
+    // });
+    function get_rowcount(){
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
+        var last_id = $last.children('td:first').children().find('select').attr('id');
+        var getNum = last_id.match(/(\d+)/g);  
+        getNum = parseInt(getNum);  
+        return (getNum+1);
+    }  
     function set_vendor_addresses(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
         $("#payable_payable_to_id").html(html);
@@ -145,11 +169,10 @@
 
         return false;
     }
-
     function set_vendor_info(response, callback_params, api_params){
         $("#payable_vendor_info").html(response);
         return false;
-     } 
+    } 
     function add_freight () {
         var payableId =  $("#payable_id").val(); 
         var freightAmt = $("#payable_payable_freight").val();        
@@ -159,15 +182,20 @@
 
     function  freight_result ()     
     {
-        var account_row_count = $(".account_new").length + $(".account_edit").length;
+        var account_row_count = get_rowcount();    
         for ( var i = 0; i < account_row_count; i++ ) {             
             if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS")
                 {
-                    $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val($("#payable_payable_freight").val());
+                    if($("#payable_payable_freight").val() > 0){
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val($("#payable_payable_freight").val());
+                    }
+                    else{
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").closest("tr").remove();   
+                    }    
                     break;
                 } 
         }
-        if(i ==account_row_count ){
+        if(i ==account_row_count && $("#payable_payable_freight").val() > 0 && $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").length == 0){
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
             $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
@@ -177,10 +205,10 @@
                     $(this).attr('selected', 'selected');            
                 }                        
             });
+            if($("#payable_payable_freight").val() > 0){
             $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val($("#payable_payable_freight").val());
-        }
-        $("#amount_to_disperse").html("Amount To Disperse: $<%= @payable.amount_to_dispers %>");
-       
+            }
+        }         
     }
     function add_discount () {
         var payableId =  $("#payable_id").val(); 
@@ -192,17 +220,22 @@
 
     function  discount_result ()     
     {
-        var account_row_count = $(".account_new").length + $(".account_edit").length;        
-        var discount_val = ($("#payable_cost").val() /100 * $("#payable_payable_discount").val()) * -1;
+        var account_row_count = get_rowcount();        
+        var discount_val = ($("#payable_cost").val() /100 * $("#payable_payable_discount").val()) * -1;        
         for ( var i = 0; i < account_row_count; i++ ) {             
             if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "COGS; DISCOUNT")
-                {
-                    
-                    $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val(discount_val);
+                {                    
+                    if($("#payable_payable_discount").val() > 0)
+                    {                   
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val(discount_val);
+                    }
+                    else{
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").closest("tr").remove();    
+                    }   
                     break;
                 } 
-        }
-        if(i ==account_row_count ){
+        }        
+        if(i ==account_row_count && $("#payable_payable_discount").val() > 0 && $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").length == 0){
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
             $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
@@ -212,10 +245,11 @@
                     $(this).attr('selected', 'selected');            
                 }                        
             });
-            $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val(discount_val);
+            if($("#payable_payable_discount").val() > 0){
+                $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val(discount_val);
+            }    
         }
-        $("#amount_to_disperse").html("Amount To Disperse: $<%= @payable.amount_to_dispers %>");
-       
+        
     }
 </script>
 

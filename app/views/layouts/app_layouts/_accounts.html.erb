@@ -49,44 +49,60 @@
         var payable_freight = $("#payable_freight").val();
         var payable_discount = parseFloat($("#payable_discount").val()) * -1 ;
         var account_row_count = $(".account_new").length + $(".account_edit").length;
-        if(payable_cost > 0 && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_gl_account_id").length) ) {
+        if(payable_cost > 0 ) {
             
             disperse_amount("INVENTORY", payable_cost);
             
         }
-        if( !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_gl_account_id").length)) {
+        if( payable_freight > 0 ) {
 
             disperse_amount("FREIGHT ; UPS", payable_freight);
             
         }           
-        if(payable_discount < parseFloat(0) && !($("#<%= account_type %>_<%= account_type %>_accounts_attributes_2_gl_account_id").length)) {
+        if(payable_discount < parseFloat(0) ) {
 
             disperse_amount("COGS; DISCOUNT", payable_discount);
              
-        }     
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_0_<%= account_type %>_account_amount").val(payable_cost)
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_1_<%= account_type %>_account_amount").val(payable_freight); 
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_2_<%= account_type %>_account_amount").val(payable_discount); 
+        }             
     });
-    
+    function get_rowcount(){
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));      
+        var last_id = $last.children('td:first').children().find('select').attr('id');
+        var getNum = last_id.match(/(\d+)/g);         
+        getNum = parseInt(getNum);  
+        return (getNum+1);
+    }  
     function disperse_amount(theText, amt){
         account_row_count = $(".account_new").length + $(".account_edit").length;
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
+                {
+                    if(amt > 0 || amt < 0){                    
+                        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
+                    }
+                    else{
+                        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").closest("tr").remove();   
+                    }    
+                    break;
+                } 
+        }
+
+        if(i ==account_row_count && (amt > 0 || amt < 0) && $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").length == 0){
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html); 
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-        //var theText = "FREIGHT ; UPS";
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
             if($(this).text() == theText) {
                 $(this).attr('selected', 'selected');            
             }                        
-        });
+        });        
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
+        }  
 
-    } 
-    
+    }     
 
     function add_account_row(){
-        var account_row_count = $(".account_new").length + $(".account_edit").length;
+        var account_row_count = get_rowcount();
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html);
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
