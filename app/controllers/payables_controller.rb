@@ -128,7 +128,14 @@ class PayablesController < ApplicationController
   # DELETE /payables/1.json
   def destroy
     @payable = Payable.find(params[:id])
+    # Updating GlAccount      
+    @payable.payable_accounts.each do |payable_account|
+       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount )             
+       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',payable_account.payable_account_amount)
+    end
     @payable.destroy
+
+    
 
     respond_to do |format|
       format.html { redirect_to payables_url }
