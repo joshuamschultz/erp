@@ -34,7 +34,7 @@
 				    			<% dimension_status = values[j_int][i_int].present? ? (values[j_int][i_int][value_field].to_i == 1 ? true : false) : false %>			    	  <%= hidden_field_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 0 , :id => "hidden_value" %> 
 					    	    <td><%= check_box_tag :"#{name}_field_data[#{i_int}][#{j_int}]", 1, dimension_status, :id => "#{i_int}_#{j_int}" %></td> 
 					    	<%else%>
-						    	<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]), :id => "#{i_int}_#{j_int}" %></td>				    	       
+						    	<td><%= text_field_tag "#{name}_field_data[#{i_int}][#{j_int}]", (values[j_int][i_int][value_field] if values[j_int] && values[j_int][i_int]), :id => "#{i_int}_#{j_int}",:autocomplete => :off %></td>				    	       
 						    <%end%>	    	
 				    	<% end %>
 				    	<td>
