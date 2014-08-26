@@ -169,6 +169,19 @@ class SoHeadersController < ApplicationController
       end
   end
 
+  def report
+      @so_header = SoHeader.find(params[:id])
+      render :layout => false
+  end
+
+  def packing_report
+      @so_header = SoHeader.find(params[:id])
+      @company_info = CompanyInfo.first
+      render :layout => false
+
+  end
+
+
 private
 
   def genarate_pdf 
