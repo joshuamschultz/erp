@@ -70,6 +70,7 @@ class SoLinesController < ApplicationController
 
     respond_to do |format|
       if @so_line.save
+        genarate_pdf
         format.html { redirect_to new_so_header_so_line_path(@so_header), :notice => 'So line was successfully created.' }
         format.json { render :json => @so_line, :status => :created, :location => [@so_line.so_header, @so_line] }
       else
@@ -87,6 +88,7 @@ class SoLinesController < ApplicationController
 
     respond_to do |format|
       if @so_line.update_attributes(params[:so_line])
+        genarate_pdf
         format.html { redirect_to(new_so_header_so_line_path(@so_header), :notice => 'So line was successfully updated.') }
         format.json { head :ok }
       else
@@ -108,4 +110,40 @@ class SoLinesController < ApplicationController
       format.json { head :ok }
     end
   end
+
+private
+
+  def genarate_pdf 
+      html = render_to_string(:layout => false , :partial => 'so_headers/sales_report')
+      kit = PDFKit.new(html, :page_size => 'letter' )  
+      # Get an inline PDF
+      pdf = kit.to_pdf
+      # Save the PDF to a file    
+      path = Rails.root.to_s+"/public/sales_report"
+      if File.directory? path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
+      else
+        Dir.mkdir path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
+      end
+
+
+      html1 = render_to_string(:layout => false , :partial => 'so_headers/sales_report')
+      kit1 = PDFKit.new(html1, :page_size => 'letter' )  
+      # Get an inline PDF
+      pdf1 = kit1.to_pdf
+      # Save the PDF to a file    
+      path1 = Rails.root.to_s+"/public/sales_report"
+      if File.directory? path1
+        path1 = path1+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit1.to_file(path1)
+      else
+        Dir.mkdir path1
+        path1 = path1+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit1.to_file(path1)
+      end
+  end
+
 end

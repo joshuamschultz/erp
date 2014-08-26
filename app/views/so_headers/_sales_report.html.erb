@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sales Report</title>
+        <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+        <style type="text/css">
+            @charset "utf-8";
+            body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
+            /* New Style */
+            .ms_wrapper{height: auto;}
+            .ms_wrapper section {float: left;height: auto;margin: 0 26px;width: 689px;}
+            .ms_wrapper .ms_heading { border-bottom: 2px solid #999; font-size: 16px;margin: 30px 0 4px; padding: 0 0 10px; width: 100%;}
+            .ms_wrapper .ms_image{   border: 1px solid black;
+            float: left;
+            font-size: 22px;
+            margin: 0 20px 0 0;
+            padding: 56px 0;
+            text-align: center;
+            width: 404px;}
+            .ms_wrapper article{/*margin:0 50px;*/float: left;}
+            }
+            .ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;padding-bottom:15px;}
+            .ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}
+            .ms_wrapper .ms_sub-heading{font-size: 22px;margin:0 0 2px 0;color:#000;}
+            .ms_text strong {
+            float: left;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 19px;
+            width: 100%;
+            }
+            .ms_text1 strong {
+            float: left;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 19px;
+            width: 100%;
+            margin: 1px 0;
+            text-align: center;
+            font-weight: bold;
+            }
+            .ms_sub{  font-size: 15px;
+            text-align: center;
+            text-decoration: underline;
+            margin: 2px 0 10px 0;}
+            .ms_text {
+            border-bottom: 2px solid #999;
+            float: left;
+            padding: 0 0 8px;
+            width: 100%;
+            }
+            .ms_text1 {
+            float: left;
+            margin:5px 15px 0;
+            width: 34%;
+            }
+            .ms_wrapper .ms_image2{margin: 0 20px 0 0;border: 1px solid #ccc;padding: 20px 0;text-align: center;font-size: 22px;}
+            .ms_image h2{font-size: 17px;margin: 0;}
+            .ms_image2 strong {
+            color: #800000;
+            float: left;
+            font-size: 22px;
+            margin: 0 0 8px;
+            width: 100%;
+            }
+            .ms_image p{font-size: 18px;margin: 0;color: #000080;}
+            .article_head{ width: 700px;}
+        </style>
+    </head>
+    <body>
+        <div class="ms_wrapper">
+            <section style="height: 555px; width: 689px;" style="height: 555px;">
+                <article class="article_head">
+                    <div class="ms_image"  style="padding-top: 47px; padding-bottom: 0px; width: 318px; height: 65px;">Chess Group Inc</div>
+                    <div class="ms_image" style="padding-top: 10px; padding-bottom: 10px; height: 89px; width: 323px;">
+                        <p><u>Sales Order Number</u></p>
+                        <strong><%= @so_header.id%>&nbsp;</strong>
+                        <h2>Sales Order Date : <%= @so_header.created_at.strftime("%m/%d/%Y") %></h2>
+                        <h2>Customer P.O:<%= @so_header.so_header_customer_po %></h2>
+                    </div>
+                </article>
+                <article class="article_head">
+                    <h1 style="width:42%;float:left;border-bottom: 2px solid #999;padding-bottom:5px;">
+                    Bill To : </h2> 
+                    <h1 style="width:50%;float:left;border-bottom: 2px solid #999;padding-bottom:5px;margin-left:22px;">
+                    Ship To : </h2> 
+                    <div class="ms_text" style="width:42%;">
+                        <h2 class="ms_sub-heading"><%= @so_header.bill_to_address.contact_title %></h2>
+                        <strong><%= @so_header.bill_to_address.contact_address_1 %>&nbsp;</strong> 
+                        <strong><%= @so_header.bill_to_address.contact_address_2 %>&nbsp;</strong>
+                        <strong><%= @so_header.bill_to_address.contact_state %>&nbsp;</strong>
+                        <strong><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></strong>
+                    </div>
+                    <div class="ms_text" style="width:50%;margin-left:21px;">
+                        <h2 class="ms_sub-heading"><%= @so_header.ship_to_address.contact_title%>&nbsp;</h2>
+                        <strong><%= @so_header.ship_to_address.contact_address_1 %>&nbsp;</strong> 
+                        <strong><%= @so_header.ship_to_address.contact_address_2 %>&nbsp;</strong>
+                        <strong><%= @so_header.ship_to_address.contact_state %>&nbsp;</strong>
+                        <strong><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></strong>
+                    </div>
+                </article>
+
+                <article style="height: 65px;" class="article_head">
+                    <article style="width:45%;margin-top:15px;margin-bottom:50px;">
+                        <div class="ms_text1">
+                            <h2 class="ms_sub">CUST P/N - ALL P/N</h2>
+                        </div>
+                        <div class="ms_text1">
+                            <h2 class="ms_sub">DESCRIPTION</h2>
+                        </div>
+                    </article>
+                    <article style="width:45%;margin-top:15px;margin-bottom:-13pxpx;">
+                        <div class="ms_text1">
+                            <h2 class="ms_sub">QTY</h2>
+                        </div>
+                        <div class="ms_text1">
+                            <h2 class="ms_sub">Shipped</h2>
+                        </div>
+                    </article>
+                </article>
+
+                <article class="article_head">
+                    <article style="width:45%;margin-top:15px;margin-bottom:50px;">
+                        <div class="ms_text1">
+                            <% @so_header.so_lines.each do |partno| %>
+                                <strong><%= partno.item.item_part_no %> </strong>
+                            <% end %>
+                        </div>
+                        <div class="ms_text1">
+                            <% @so_header.so_lines.each do |so_line| %>
+                                <strong><%= so_line.so_line_notes %> </strong>
+                            <% end %>
+                        </div>
+                    </article>
+                    <article style="width:45%;margin-top:15px;margin-bottom:-13pxpx;">
+                        <div class="ms_text1">
+                            <% @so_header.so_lines.each do |note| %>
+                                <strong><%= note.so_line_quantity %> </strong>
+                            <% end %>
+                        </div>
+                        <div class="ms_text1">
+                        </div>
+                    </article>
+                </article>
+                 <footer style="clear:both;height:75px;border:2px solid black;margin-top:20px;width:643px;padding:10px;position:absolute;bottom:0px;" class="divFooter">
+                    <div class="left" style="float:left;width:33%;height:75px;">
+                    </div>
+                    <div class="mid" style="float:left;width:33%;height:75px;"> 
+                        <h4 style="text-align:center;line-height:22px;">  <%=@so_header.so_notes %>
+                             </h4>
+                    </div>
+                    <div class="right" style="float:left;width:33%;height:75px; text-aligh:left;">
+                            Original
+                    </div>
+                </footer>
+            </section>
+ 
+        </div>
+    </body>
+</html>
+
