@@ -55,6 +55,10 @@
 
    <%= image_tag(@company_info.image.image.url(:original), :width => "150") if @company_info.image %>
 
+    <br />
+
+   <%= image_tag(@company_info.logo.joint.url(:original), :width => "150") if @company_info.logo %>
+
   <div class="form-actions">
       <%= link_to 'Update', edit_company_info_path(@company_info), :class => "btn" %>
   </div>
