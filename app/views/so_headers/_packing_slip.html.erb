@@ -73,25 +73,26 @@
             }
             .para{
                  position: absolute;
-                left: 200px;
+                left: 140px;
                 top:  12px; 
+            font-size: 10px;
             }
+            
+
         </style>
     </head>
     <body>
         <div class="ms_wrapper">
             <section style="height: 555px; width: 689px;" style="height: 555px;">
                 <article class="article_head">
-                    <div class="ms_image"  style="padding-top: 47px; padding-bottom: 0px; width: 318px; height: 65px;">
-                        <div class="logo"><%= image_tag(@company_info.logo.joint.url(:original), :width => "150", :height => "30") if @company_info.logo %></div>
+                    <div class="ms_image"  style="padding-top: 47px; padding-left: 13px; padding-bottom: 0px; width: 318px; height: 65px;">
+                        <div class="logo"><%= image_tag(@company_info.logo.joint.url(:original), :width => "120", :height => "30") if @company_info.logo %></div>
                         <div class="para">
-                            <p><u><%= @company_info.company_name %></u></p>
-                            <strong><%= @company_info.company_slogan %>&nbsp;</strong>
-                            <h2><%= @company_info.company_address1 %></h2>
-                            <h2><%= @company_info.company_address2 %></h2>
-                            <h2><%= @company_info.company_phone1 %></h2>
-                            <h2><%= @company_info.company_fax %></h2>
-                            <h2><%= @company_info.company_website %></h2>
+                            <p><font color="black"><u><%= @company_info.company_name %></u></font></p>
+                            <p><font size="-1"color="black"><%= @company_info.company_slogan %></font></p>
+                            <p><font size="-1"color="black"><%= @company_info.company_address1 %>,<%= @company_info.company_address2 %></font></p>
+                            <p><font size="-2"color="black"><%= @company_info.company_phone1 %>,><%= @company_info.company_fax %></font></p>
+                            <p><font size="-2" color="black"><%= @company_info.company_website %></font></p>
                         </div>
                     </div>
                     <div class="ms_image" style="padding-top: 10px; padding-bottom: 10px; height: 89px; width: 323px;">
