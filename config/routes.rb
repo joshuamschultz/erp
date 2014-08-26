@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :logos
+
+
   get "home/index"
 
   resources :ppaps
@@ -182,6 +185,7 @@ AllianceFasteners::Application.routes.draw do
   resources :so_headers do
     member do 
       get 'report'
+      get 'packing_report'
     end
     resources :so_lines
     member do
