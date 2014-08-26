@@ -1,0 +1,21 @@
+<h1>Listing logos</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @logos.each do |logo| %>
+  <tr>
+    <td><%= link_to 'Show', logo %></td>
+    <td><%= link_to 'Edit', edit_logo_path(logo) %></td>
+    <td><%= link_to 'Destroy', logo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Logo', new_logo_path %>
