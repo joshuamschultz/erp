@@ -1,5 +1,7 @@
 AllianceFasteners::Application.routes.draw do
 
+  get "home/index"
+
   resources :ppaps
 
 
@@ -178,6 +180,9 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :so_headers do
+    member do 
+      get 'report'
+    end
     resources :so_lines
     member do
       get 'populate'

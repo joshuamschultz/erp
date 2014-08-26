@@ -103,6 +103,7 @@ class SoHeadersController < ApplicationController
 
     respond_to do |format|
       if @so_header.save
+        genarate_pdf
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully created.' }
         format.json { render json: @so_header, status: :created, location: @so_header }
       else
@@ -119,6 +120,7 @@ class SoHeadersController < ApplicationController
 
     respond_to do |format|
       if @so_header.update_attributes(params[:so_header])
+        genarate_pdf
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully updated.' }
         format.json { head :no_content }
       else
@@ -164,6 +166,26 @@ class SoHeadersController < ApplicationController
           render :layout => false
       else
           render :text => "" and return
+      end
+  end
+
+private
+
+  def genarate_pdf 
+      p @so_header
+      html = render_to_string(:layout => false , :partial => 'so_headers/sales_report')
+      kit = PDFKit.new(html, :page_size => 'A4')    
+      # Get an inline PDF
+      pdf = kit.to_pdf
+      # Save the PDF to a file    
+      path = Rails.root.to_s+"/public/sales_report"
+      if File.directory? path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
+      else
+        Dir.mkdir path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
       end
   end
 
