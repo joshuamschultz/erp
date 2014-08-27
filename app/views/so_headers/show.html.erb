@@ -4,7 +4,7 @@
     <span class="span9 right">
         <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
         <%= link_to 'Back', so_headers_path, :class => "btn btn-small" %>
-                <%= link_to 'Test', packing_report_so_header_path(@so_header), :class => "btn btn-small" %>
+               
 
     </span>
 </div>
@@ -57,10 +57,11 @@
 
 <script type="text/javascript">
   function print_report() {
-      $('#myPrintView').get(0).contentWindow.print();
-      $('#myPrintView1').get(0).contentWindow.print();
+          $('#myPrintView').get(0).contentWindow.focus();
+          $('#myPrintView').get(0).contentWindow.print();
+      //$('#myPrintView1').get(0).contentWindow.print();
 
   }
 </script>
-<iframe src="<%= report_so_header_path(@so_header) %>" style="display: none" id="myPrintView"></iframe>
-<iframe src="<%= packing_report_so_header_path(@so_header) %>" style="display: none" id="myPrintView1"></iframe>
+<iframe src="<%= report_so_header_path(@so_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
+<iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
