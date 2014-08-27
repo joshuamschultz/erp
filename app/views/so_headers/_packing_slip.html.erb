@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="ms_image" style="padding-top: 10px; padding-bottom: 10px; height: 89px; width: 323px;">
-                        <p><u>Sales Order Number</u></p>
+                        <p><u>Packing Slip Number</u></p>
                         <strong><%= @so_header.so_identifier %>&nbsp;</strong>
                         <h2>Sales Order Date : <%= @so_header.created_at.strftime("%m/%d/%Y") %></h2>
                         <h2>Customer P.O:<%= @so_header.so_header_customer_po %></h2>
@@ -178,7 +178,7 @@
                              </h4>
                     </div>
                     <div class="right" style="float:left;width:33%;height:75px; text-aligh:left;">
-                            Original
+                            Customer copy
                     </div>
                 </footer>
             </section>
