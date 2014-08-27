@@ -102,8 +102,7 @@ class SoHeadersController < ApplicationController
     @so_header = SoHeader.new(params[:so_header])
 
     respond_to do |format|
-      if @so_header.save
-        genarate_pdf
+      if @so_header.save        
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully created.' }
         format.json { render json: @so_header, status: :created, location: @so_header }
       else
@@ -119,8 +118,7 @@ class SoHeadersController < ApplicationController
     @so_header = SoHeader.find(params[:id])
 
     respond_to do |format|
-      if @so_header.update_attributes(params[:so_header])
-        genarate_pdf
+      if @so_header.update_attributes(params[:so_header])        
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully updated.' }
         format.json { head :no_content }
       else
