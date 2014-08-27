@@ -128,7 +128,11 @@
                         </div>
                         <div class="ms_text1">
                             <% @so_header.so_lines.each do |so_line| %>
-                                <strong><%= so_line.item_revision.item_description %> </strong>
+                                <strong><%= so_line.item_revision.item_description %> </strong> <br/>
+                                <strong><%= so_line.organization.organization_name %></strong>
+                            <% end %>        
+                            <% if @so_header.po_header.present? %>
+                                <strong><%= @so_header.po_header.po_identifier %></strong>
                             <% end %>
                         </div>
                     </article>
