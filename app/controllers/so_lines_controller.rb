@@ -70,7 +70,6 @@ class SoLinesController < ApplicationController
 
     respond_to do |format|
       if @so_line.save
-        genarate_pdf
         format.html { redirect_to new_so_header_so_line_path(@so_header), :notice => 'So line was successfully created.' }
         format.json { render :json => @so_line, :status => :created, :location => [@so_line.so_header, @so_line] }
       else
@@ -88,7 +87,6 @@ class SoLinesController < ApplicationController
 
     respond_to do |format|
       if @so_line.update_attributes(params[:so_line])
-        genarate_pdf
         format.html { redirect_to(new_so_header_so_line_path(@so_header), :notice => 'So line was successfully updated.') }
         format.json { head :ok }
       else
