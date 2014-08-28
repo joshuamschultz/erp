@@ -70,7 +70,12 @@
         var last_id = $last.children('td:first').children().find('select').attr('id');
         var getNum = last_id.match(/(\d+)/g);         
         getNum = parseInt(getNum);  
-        return (getNum+1);
+        if(getNum)  {
+            return (getNum+1);
+        }
+        else{
+            return parseInt(0);
+        } 
     }  
     function disperse_amount(theText, amt){
         account_row_count = $(".account_new").length + $(".account_edit").length;
