@@ -68,8 +68,11 @@
     function get_rowcount(){
         var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));      
         var last_id = $last.children('td:first').children().find('select').attr('id');
-        var getNum = last_id.match(/(\d+)/g);         
-        getNum = parseInt(getNum);  
+        var getNum;
+        if(last_id){
+         getNum = last_id.match(/(\d+)/g);                 
+         getNum = parseInt(getNum);
+        }         
         if(getNum)  {
             return (getNum+1);
         }
