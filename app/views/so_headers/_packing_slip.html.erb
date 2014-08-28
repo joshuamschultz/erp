@@ -65,43 +65,44 @@
             }
             .ms_image p{font-size: 18px;margin: 0;color: #000080;}
             .article_head{ width: 700px;}
-.logo {
-max-width: 141px;
-height: 110px;
-top: 0;
-position: absolute;
-float: left;
-left: 0;
-width: 100%;
-}
+            .logo {
+                max-width: 141px;
+                height: 110px;
+                top: 0;
+                position: absolute;
+                float: left;
+                left: 10;
+                top:   0px;
+                width: 100%;
+            }
             .logo img {
-width: 160px;
-height: 110px;  
-float: left;
-margin-top: 1px;
-margin-left: 1px;
-}
+                width: 210px;
+                height: 105px;  
+                float: left;
+                margin-top: 0px;
+                margin-left: 1px;
+            }
             .para{
-                 position: absolute;
-                left: 140px;
-                top:  12px; 
-            font-size: 10px;
-            float: left;
-            width:280px;
+                position: absolute;
+                left: 220px;
+                top:  20px; 
+                font-size: 10px;
+                float: left;
+                width:280px;
                 height: 140px;
             }
             .ms_image p {
-line-height: 14px;
-}
+                line-height: 14px;
+            }
             
 
         </style>
     </head>
     <body>
         <div class="ms_wrapper">
-            <section style="height: 555px; width: 850px;" style="height: 555px;">
-                <article class="article_head" style="width: 800px;">
-                    <div class="ms_image"  style="padding-top: 47px; padding-left: 13px; padding-bottom: 0px; width: 380px; height: 65px;position:relative;">
+            <section style="height: 555px; width: 1100px;" style="height: 555px;">
+                <article class="article_head" style="width: 1000px;">
+                    <div class="ms_image"  style="padding-top: 47px; padding-left: 13px; padding-bottom: 0px; width: 470px; height: 65px;position:relative;">
                         <div class="logo"><%= image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %></div>
                         <div class="para">
                             <p><font color="black"><u><%= @company_info.company_name %></u></font></p>
@@ -111,7 +112,7 @@ line-height: 14px;
                             <p><font size="-2" color="black"><%= @company_info.company_website %></font></p>
                         </div>
                     </div>
-                    <div class="ms_image" style="padding-top: 10px; padding-bottom: 10px; height: 89px; width: 310px;position:relative;">
+                    <div class="ms_image" style="padding-top: 10px; padding-bottom: 10px; height: 89px; width: 350px;position:relative;">
                         <p><u>Packing Slip Number</u></p>
                         <strong><%= @so_header.so_identifier %>&nbsp;</strong>
                         <h2>Sales Order Date : <%= @so_header.created_at.strftime("%m/%d/%Y") %></h2>
