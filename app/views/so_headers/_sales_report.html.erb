@@ -122,8 +122,20 @@
                 <article class="article_head">
                     <article style="width:45%;margin-top:15px;margin-bottom:50px;">
                         <div class="ms_text1">
+
                             <% @so_header.so_lines.each do |partno| %>
                                 <strong><%= partno.item.item_part_no %> </strong>
+                                <% partno.item.item_alt_names.each do |alt_name| %>
+                                    <% if alt_name.present? %>
+                                        <% if alt_name.item.present? %>
+                                            <% if alt_name.item.item_part_no != alt_name.item_alt_identifier %>
+                                                <strong><%= alt_name.item_alt_identifier %> </strong>
+                                            <% end %>
+                                        <% end %>
+                                    <% end %>
+                                    <br><br>
+                                <% end %> 
+                                <br><br>
                             <% end %>
                         </div>
                         <div class="ms_text1">
