@@ -24,6 +24,18 @@
         <td class="span3">Active:</td>
         <td class="span5"><strong><%= @gl_account.gl_account_active %></strong></td>
       </tr>
+      <tr>
+        <td class="span3">Credit(+):</td>
+        <td class="span5"><strong><%= @gl_account.credit_total %></strong></td>
+      </tr>
+      <tr>
+        <td class="span3">Debit(-):</td>
+        <td class="span5"><strong><%= @gl_account.debit_total %></strong></td>
+      </tr>
+      <tr>
+        <td class="span3">Balance:</td>
+        <td class="span5"><strong><%=@gl_account.credit_total - @gl_account.debit_total %></strong></td>
+      </tr>
   </tbody>
 </table>
 

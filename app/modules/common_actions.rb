@@ -34,15 +34,18 @@ module CommonActions
 		attribute.nil? || attribute.eql?("")
 	end
 
-       def self.update_gl_accounts(title, op, amount)
-	  gl_account = GlAccount.where('gl_account_title' => title ).first 	
-	  if op == 'increment'			
-		gl_amount = gl_account.gl_account_amount + amount 
-          elsif op == 'decrement'  
-		gl_amount = gl_account.gl_account_amount - amount 
-          end	
+	def self.update_gl_accounts(title, op, amount)
+		gl_account = GlAccount.where('gl_account_title' => title ).first 	
+		if op == 'increment'			
+			gl_amount = gl_account.gl_account_amount + amount
+			@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_credit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s) 
+		elsif op == 'decrement'  
+			gl_amount = gl_account.gl_account_amount - amount 
+			@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_debit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s) 
+		end			  
          gl_account.update_attributes(gl_account_amount: gl_amount ) 	
-       end	
+         @gl_entry.save
+    end	
 
 	def self.process_application_shortcuts(shortcuts_html, shortcuts)
 		shortcuts.each do |shortcut|
@@ -158,7 +161,7 @@ module CommonActions
 
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
 		menus[:general_ledger][:sub_menu] = 	[
-			{:path => "#", :name => "Journal Entries"},
+			{:path => new_gl_entry_path, :name => "Journal Entries"},
 			{:path => gl_accounts_path, :name => "Accounts"},
 			{:path => gl_types_path, :name => "Types"},
 			{:path => reconciles_path, :name => "Reconcile"}
