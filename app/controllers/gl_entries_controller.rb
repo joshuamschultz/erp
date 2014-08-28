@@ -11,13 +11,21 @@ class GlEntriesController < ApplicationController
       params[:gl_entry][:gl_account_id] = params[:org_gl_account_id] if params[:gl_entry][:gl_account_id] == ""
   end
 
+
   # GET /gl_entries
   # GET /gl_entries.json
   def index
+      @gl_account=params[:gl_account]
+      if params[:gl_account]
+
+        @gl_entries = GlEntry.where(:gl_account_id => params[:gl_account])          
+      else
+        @gl_entries = GlEntry.all  
+      end 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @gl_entries = GlEntry.all.select{|gl_entry| 
+      format.json {         
+          @gl_entries.select{|gl_entry| 
             gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
             gl_entry[:gl_entry_identifier] = CommonActions.linkable(gl_entry_path(gl_entry), gl_entry.gl_entry_identifier)
             gl_entry[:gl_account_name] = CommonActions.linkable(gl_account_path(gl_entry.gl_account), gl_entry.gl_account.gl_account_title)

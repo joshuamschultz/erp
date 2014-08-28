@@ -19,4 +19,19 @@ class GlAccount < ActiveRecord::Base
   (validates_uniqueness_of :gl_account_identifier if validates_length_of :gl_account_identifier, :minimum => 2, :maximum => 20) if validates_numericality_of(:gl_account_identifier) && validates_presence_of(:gl_account_identifier)
   (validates_uniqueness_of :gl_account_title if validates_length_of :gl_account_title, :minimum => 2, :maximum => 20) if validates_presence_of :gl_account_title
   validates_presence_of :gl_type
+
+  def credit_total
+    credit = 0
+    self.gl_entries.each do |gl_entry|
+      credit += gl_entry.gl_entry_credit
+    end
+    credit 
+  end 
+  def debit_total
+    debit = 0
+    self.gl_entries.each do |gl_entry|
+      debit += gl_entry.gl_entry_debit
+    end
+    debit 
+  end    
 end
