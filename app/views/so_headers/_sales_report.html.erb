@@ -147,14 +147,16 @@
                     </article>
                 </article>
                  <footer style="clear:both;height:75px;border:2px solid black;margin-top:20px;width:643px;padding:10px;position:absolute;bottom:0px;" class="divFooter">
-                    <div class="left" style="float:left;width:33%;height:75px;">
+                    <div class="left" style="float:left;width:33%;height:75px;">Page <br/>
+                        <span class="changeNumber">&nbsp;&nbsp;1</span>
                     </div>
                     <div class="mid" style="float:left;width:33%;height:75px;"> 
                         <h4 style="text-align:center;line-height:22px;">  <%=@so_header.so_notes %>
                              </h4>
                     </div>
                     <div class="right" style="float:left;width:33%;height:75px; text-aligh:left;">
-                            Original
+                            Original <br/>
+                            &nbsp;&nbsp;$ <%= @so_header.so_total.to_f %>
                     </div>
                 </footer>
             </section>
@@ -163,3 +165,6 @@
     </body>
 </html>
 
+<script type="text/javascript">
+    $('.changeNumber').html(parseInt($('.changeNumber').html(), 10)+1)
+</script>
