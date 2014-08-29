@@ -12,9 +12,19 @@ class GlEntry < ActiveRecord::Base
   validates_presence_of :gl_entry_description, :gl_account
 
   before_create :process_before_create
+  after_save :process_after_save
 
   def process_before_create
       self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier)
+  end
+
+  def process_after_save
+    if self.gl_entry_credit
+      CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title, 'increment', self.gl_entry_credit)
+    end
+    if self.gl_entry_debit
+      CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title, 'decrement', self.gl_entry_debit)
+    end
   end
 
   def redirect_path
