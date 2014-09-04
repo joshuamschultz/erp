@@ -281,7 +281,7 @@
             <div class="ms_text-3-wrapper">
                 <div class="ms_text-3">
                     <h2 class="ms_sub-heading">CUST P/N - ALL P/N</h2> 
-                        <% @so_header.so_lines.each do |partno| %>
+                        <% @so_header.so_lines.each do |so_line| %>
                             <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
                                 <strong><%= so_line.item.item_part_no %></strong>
                             <%  else %>
