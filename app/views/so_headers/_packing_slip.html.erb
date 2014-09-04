@@ -36,7 +36,7 @@
         font-size: 22px;
         text-align: center;
         width: 310px;
-        height: 135px;
+        height: 115px;
     }
     .ms_wrapper .ms_image-2 {
         border: 1px solid #ccc;
@@ -44,7 +44,7 @@
         font-size: 22px;
         text-align: center;
         width: 310px;
-        height: 135px;
+        height: 115px;
     }
     .ms_wrapper article {
         float: left;
@@ -226,14 +226,14 @@
     float: left;
     width: 128px;
     height: 69px;
-    margin: 25px 0 0 5px;
+    margin: 5px 0 0 5px;
 }
 .ms_image-wrapper img {
-    width: 128px;
+    width: 160px;
 }
 .ms_image-text {
     float: right;
-    margin: 0 2px 0 0;
+    margin: 30px 2px 0 0;
     width: 170px;
 }
 .ms_image-text h2 {
@@ -247,10 +247,10 @@
     margin: 3px 0;
 }
 .ms_image-text h5 {
-    font-size: 12px;
+    font-size: 9px;
     font-weight: normal;
-    margin: 0;
-    width: 170px;
+    margin: 0 10px 0 40px;
+    width: 120px;
 }
 .page-center {
     margin: 0 160px;
@@ -281,16 +281,18 @@
                 </div>
 
                 <div class="ms_image-text">
-                    <h2> Chess Group Inc </h2>
-                    <h3><%= @company_info.company_name %></h3>
-                    <h3>><%= @company_info.company_slogan %></h3>
-                    <h5><%= @company_info.company_address1 %>,<%= @company_info.company_address2 %>,<%= @company_info.company_phone1 %>,><%= @company_info.company_fax %><br/><%= @company_info.company_website %></h5>
+                    <h5><%= @company_info.company_address1 %><br/>
+                    <%= @company_info.company_address2 %>
+                    <hr>
+                    <b>P:</b> <%= @company_info.company_phone1 %><br/>
+                    <b>F:</b><%= @company_info.company_fax %>
+                    <hr></h5>
                 </div>
             </div>
 
 
             <div class="ms_image-2">
-                <h3> Sales Order Number </h3>
+                <h3>Packing Slip Number</h3>
                 <h2> <%= @so_header.so_identifier %> </h2>
                 <h5>Sales Order Date : <%= @so_header.created_at.strftime("%m/%d/%Y") %> </h5>
                 <h5> Customer P.O:<%= @so_header.so_header_customer_po %></h5>
