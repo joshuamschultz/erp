@@ -90,12 +90,14 @@
     font-weight: bold;
 }
 .ms_image-2 h3 {
+    color: #000080;
     font-size: 16px;
     font-weight: normal;
     margin: 17px 0 0;
     text-decoration: underline;
 }
 .ms_image-2 h2 {
+    color: #800000;
     font-size: 20px;
     font-weight: bold;
     margin: 2px 0;
@@ -127,14 +129,20 @@
     text-align: center;
 }
 .ms_text-3-wrapper .ms_text-3 strong {
+    color: #800000;
     float: left;
     font-size: 14px;
     font-weight: normal;
     line-height: 19px;
-    width: 100%;
     margin: 6px 0;
     text-align: center;
+    width: 100%;
 }
+
+.ms_text-3.text-5 strong {
+    color: #000 !important;
+}
+
 .ms_text-3-wrapper .ms_sub-heading {
     font-size: 16px;
     text-align: center;
@@ -217,25 +225,28 @@
     margin: 12px 0 0;
 }
 .original h4 {
+    color: #800000;
     font-size: 12px;
     font-weight: normal;
-    margin: 5px 0 12px 0;
+    margin: 5px 0 12px;
     text-align: center;
 }
 .ms_image-wrapper {
     float: left;
-    width: 128px;
     height: 69px;
-    margin: 5px 0 0 5px;
+    margin: 6px 0 0 3px;
+    width: 150px;
 }
+
 .ms_image-wrapper img {
-    width: 160px;
+    width: 150px;
 }
 .ms_image-text {
     float: right;
-    margin: 30px 2px 0 0;
-    width: 170px;
+    margin: 6px 10px 0 0;
+    width: 120px;
 }
+
 .ms_image-text h2 {
     font-size: 13px;
     margin: 19px 0 8px 0;
@@ -249,14 +260,15 @@
 .ms_image-text h5 {
     font-size: 9px;
     font-weight: normal;
-    margin: 0 10px 0 40px;
     width: 120px;
 }
 .page-center {
-    margin: 0 160px;
     float: left;
+    text-align: center;
+    width: 411px;
 }
 .page-center h3 {
+    color: #800000;
     font-size: 14px;
     font-weight: bold;
     margin: 12px 0 0;
@@ -267,6 +279,18 @@
     margin: 5px 0 12px 0;
     text-align: center;
 }
+
+
+.original h4 span{
+    color: #000;
+
+}
+.original h4 span {
+    color: #000;
+    margin: 0 4px 0 0;
+}
+
+
 </style>
 
 
@@ -284,8 +308,8 @@
                     <h5><%= @company_info.company_address1 %><br/>
                     <%= @company_info.company_address2 %>
                     <hr>
-                    <b>P:</b> <%= @company_info.company_phone1 %><br/>
-                    <b>F:</b><%= @company_info.company_fax %>
+                    <b>P:&nbsp;</b><%= @company_info.company_phone1 %><br/>
+                    &nbsp;<b>F:&nbsp;</b><%= @company_info.company_fax %>
                     <hr></h5>
                 </div>
             </div>
@@ -325,7 +349,7 @@
         <article>
 
             <div class="ms_text-3-wrapper">
-                <div class="ms_text-3">
+                <div class="ms_text-3 text-5" >
                     <h2 class="ms_sub-heading">CUST P/N - ALL P/N</h2> 
                         <% @so_header.so_lines.each do |so_line| %>
                             <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
@@ -382,7 +406,7 @@
                 </div>
                 <div class="original">
                     <h3>Customer Copy </h3>
-                    <h4> $ <%= @so_header.so_total.to_f %></h4>
+                    <h4><span> $</span> <%= @so_header.so_total.to_f %></h4>
                 </div>
 
         </article>

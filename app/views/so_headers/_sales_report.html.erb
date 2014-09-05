@@ -88,12 +88,14 @@
     font-weight: bold;
 }
 .ms_image-2 h3 {
+    color: #000080;
     font-size: 16px;
     font-weight: normal;
     margin: 17px 0 0;
     text-decoration: underline;
 }
 .ms_image-2 h2 {
+    color: #800000;
     font-size: 20px;
     font-weight: bold;
     margin: 2px 0;
@@ -125,6 +127,7 @@
     text-align: center;
 }
 .ms_text-3-wrapper .ms_text-3 strong {
+    color: #800000;
     float: left;
     font-size: 14px;
     font-weight: normal;
@@ -133,6 +136,10 @@
     margin: 6px 0;
     text-align: center;
 }
+.ms_text-3.text-5 strong {
+    color: #000 !important;
+}
+
 .ms_text-3-wrapper .ms_sub-heading {
     font-size: 16px;
     text-align: center;
@@ -215,16 +222,28 @@
     margin: 12px 0 0;
 }
 .original h4 {
+    color: #800000;
     font-size: 12px;
     font-weight: normal;
     margin: 5px 0 12px 0;
     text-align: center;
 }
+.original h4 span{
+    color: #000;
+
+}
+.original h4 span {
+    color: #000;
+    margin: 0 4px 0 0;
+}
+
 .page-center {
-    margin: 0 160px;
     float: left;
+    text-align: center;
+    width: 411px;
 }
 .page-center h3 {
+    color: #800000;
     font-size: 14px;
     font-weight: bold;
     margin: 12px 0 0;
@@ -279,7 +298,7 @@
         <article>
 
             <div class="ms_text-3-wrapper">
-                <div class="ms_text-3">
+                <div class="ms_text-3 text-5">
                     <h2 class="ms_sub-heading">CUST P/N - ALL P/N</h2> 
                         <% @so_header.so_lines.each do |so_line| %>
                             <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
@@ -335,7 +354,7 @@
                 </div>
                 <div class="original">
                     <h3>Original </h3>
-                    <h4> $ <%= @so_header.so_total.to_f %></h4>
+                    <h4><span>$</span> <%= @so_header.so_total.to_f %></h4>
                 </div>
 
         </article>
