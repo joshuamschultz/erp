@@ -7,7 +7,7 @@
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Reason For Submission</label>
         <div class="controls">
-            <%= select_tag "reason_for_submission[]", options_for_select([["Initial Submission","initial_submission"], ["Re-Submission", "re_submission"], ["Change To Material Used", "change_to_materials_used"], ["Revision Change", "revision_change"], ["Camo pattern new to part", "camo_pattern_new_to_part"], ["Tooling transfer, refurbishment,", "tooling_replacement"], ["Process Change", "process_change"], ["Change in mfg source", "Change_in_mfg_source"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
+            <%= select_tag "reason_for_submission[]", options_for_select([["Initial Submission","initial_submission"], ["Re-Submission", "re_submission"], ["Change To Material Used", "change_to_materials_used"], ["Revision Change", "revision_change"], ["Camo pattern new to part", "camo_pattern_new_to_part"], ["Tooling transfer, refurbishment,", "tooling_replacement"], ["Process Change", "process_change"], ["Change in mfg source", "Change_in_mfg_source"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "reason_for_submission1" %>
         </div>
     </div>
    
@@ -16,7 +16,7 @@
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Requested Submission Level</label>
         <div class="controls">
-            <%= select_tag "reason_for_submission[]", options_for_select([["Warrant only", "level1"], ["Warrant with product samples and limited supporting data submitted to customer", "level2"], ["Warrant with product samples and complete supporting data submitted to custome", "level3"], ["Warrant and other requirements as defined by customer", "level4"], ["Warrant with product samples and complete supporting data reviewed at Mfg location", "level5"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
+            <%= select_tag "reason_for_submission[]", options_for_select([["Warrant only", "level1"], ["Warrant with product samples and limited supporting data submitted to customer", "level2"], ["Warrant with product samples and complete supporting data submitted to custome", "level3"], ["Warrant and other requirements as defined by customer", "level4"], ["Warrant with product samples and complete supporting data reviewed at Mfg location", "level5"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "reason_for_submission2" %>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Process Capability Study Submission Results</label>
         <div class="controls">
-            <%= select_tag "reason_for_submission[]", options_for_select([["Purchasing Agreement", "purchasing_agreement"], ["First Article Parts (labelled)", "first_article_parts"], ["Part Submission Warrant", "part_submission_warrant"], ["FAI - Dimensional Inspection Results/ Eng Dwg", "fai_dimensional_inspection"], ["Packaging/Shipping", "packaging_shipping"], ["FAI - Material Test Results", "fai_material_test_result"], ["Component Review Meeting", "component_review_meeting"], ["Gage Review", "guage_review"], ["DFMEA- Design Failure Mode & Effect Analysis", "dfmea_desing"], ["Measurement Analysis Study (Gage R&R)", "measurement_analysis"], ["Process Flow Diagram", "process_flow_diagram"], ["Process Capability Study", "process_capabilty_study"], ["PFMEA - Process Failure Mode & Effect Analysis", "pfmea_analysis"], ["Production Run at Rate", "production_run_rate"], ["Control Plan", "control_plan"], ["Appearance Approval Report", "appearance_report"], ["Other", "Other"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
+            <%= select_tag "reason_for_submission[]", options_for_select([["Purchasing Agreement", "purchasing_agreement"], ["First Article Parts (labelled)", "first_article_parts"], ["Part Submission Warrant", "part_submission_warrant"], ["FAI - Dimensional Inspection Results/ Eng Dwg", "fai_dimensional_inspection"], ["Packaging/Shipping", "packaging_shipping"], ["FAI - Material Test Results", "fai_material_test_result"], ["Component Review Meeting", "component_review_meeting"], ["Gage Review", "guage_review"], ["DFMEA- Design Failure Mode & Effect Analysis", "dfmea_desing"], ["Measurement Analysis Study (Gage R&R)", "measurement_analysis"], ["Process Flow Diagram", "process_flow_diagram"], ["Process Capability Study", "process_capabilty_study"], ["PFMEA - Process Failure Mode & Effect Analysis", "pfmea_analysis"], ["Production Run at Rate", "production_run_rate"], ["Control Plan", "control_plan"], ["Appearance Approval Report", "appearance_report"], ["Other", "Other"]], @ppap.persisted? ? @ppap.attributes.collect{|k| k[0] if k[1]==true}.compact : ""), :multiple => true, :size => 5, :class => "multi_select_box", :id => "reason_for_submission3" %>
         </div>
     </div>
     <%= f.input :result_meeting_yes, :collection => [["Yes", true], ['No  if "No" explain', false]], :label => "These results meet all drawing & specification requirements:" , :as => :radio %>
@@ -50,3 +50,10 @@
         <%= link_to 'Back', ppaps_path,:class =>"btn" %>
     </div>    
 <% end %>
+
+<script type="text/javascript">
+    //  $('input').on('focus', function() {
+    //     $(this).select();
+    // }
+    tab_field_forms["form_for_ppap"] = ["reason_for_submission1", "reason_for_submission2", "reason_for_submission3", "ppap_result_meeting_yes_true", "ppap_result_meeting_yes_false", "ppap_past_hour", "ppap_hour_run", "ppap_date", "ppap_commited_weekly_capacity", "ppap_lathe_cnc", "ppap_comment"];
+</script>

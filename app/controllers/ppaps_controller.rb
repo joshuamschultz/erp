@@ -15,7 +15,7 @@ class PpapsController < ApplicationController
       format.json { 
         @ppaps = @ppaps.select{|ppap|
           ppap[:id_link] = CommonActions.linkable(ppap_path(ppap), ppap.id)
-          ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap), ppap.quality_lot.lot_control_no)
+          ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap.quality_lot), ppap.quality_lot.lot_control_no)
           ppap[:links] = CommonActions.object_crud_paths(nil, edit_ppap_path(ppap), nil)
         }
         render json: {:aaData => @ppaps}
