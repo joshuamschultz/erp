@@ -13,7 +13,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: alliance_fasteners_development
+  database: alliance_fastners_development
   pool: 5
   username: root
   password: redhat
