@@ -21,6 +21,7 @@ class Payable < ActiveRecord::Base
   has_many :payable_po_shipments, :dependent => :destroy
   has_many :po_shipments, through: :payable_po_shipments
   has_many :payable_accounts, :dependent => :destroy
+  has_many :gl_entries, :dependent => :destroy
 
   accepts_nested_attributes_for :po_shipments
   accepts_nested_attributes_for :payable_accounts
@@ -89,10 +90,12 @@ class Payable < ActiveRecord::Base
   end
 
   def update_gl_account
+    accountsPayableAmt = 0 
     self.payable_accounts.each do |payable_account|
-       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount )             
-       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_account.payable_account_amount )
+       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount, self.id )                    
+       accountsPayableAmt += payable_account.payable_account_amount
     end
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',accountsPayableAmt, self.id )
     # payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
     # payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
     # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
