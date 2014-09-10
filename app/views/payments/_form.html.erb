@@ -250,6 +250,17 @@
         payable_select_html = $.trim(Mustache.render($(".payable-select-box-template").html(), response));
         $(".payment_payable_new").html(payable_select_html);
         set_all_payment_payable_info("new");
+        var vendor_payable_info="<h4><strong>All open payables of the vendor</strong></h4><table id='vendor_payable_info_table' class='dynamicTable table table-striped table-bordered table-condensed dataTable'><thead><tr><th>Payable No</th><th>Date</th><th>Due Date</th><th>Total</th></tr></thead><tbody id='payment_lines_table_body'>";
+
+        $.each(response.aaData, function(){
+            if(this.payable_status == "open"){
+                vendor_payable_info += "<tr><td>"+this.payable_identifier+"</td><td>"+this.payable_invoice_date+"</td><td>"+this.payable_due_date+"</td><td>"+this.payable_total+"</td></tr>";
+            }                     
+        });
+        vendor_payable_info +="</tbody></table>";
+        $("#vendor_payable_info").html(vendor_payable_info);
+        $("#vendor_payable_info").show(); 
+
     }
 
     function add_payment_line_row(){
@@ -317,3 +328,5 @@
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "payable-select-box"} %>
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "payment-line-row-html"} %>
+<div class="separator bottom"></div>
+<div id="vendor_payable_info" style="display:none;"></div>

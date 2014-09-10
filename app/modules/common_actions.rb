@@ -34,18 +34,26 @@ module CommonActions
 		attribute.nil? || attribute.eql?("")
 	end
 
-	def self.update_gl_accounts(title, op, amount)
+	def self.update_gl_accounts(title, op, amount,payableId)
 		gl_account = GlAccount.where('gl_account_title' => title ).first 	
 		if op == 'increment'			
 			gl_amount = gl_account.gl_account_amount + amount
-			@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_credit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s) 
+			gl_entry = GlEntry.where('payable_id' =>  payableId, 'gl_account_id' => gl_account.id).first
+			if gl_entry
+				gl_entry.update_attributes(gl_entry_credit: amount)
+			else
+				@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_credit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s, payable_id: payableId) 
+			end				
 		elsif op == 'decrement'  
 			gl_amount = gl_account.gl_account_amount - amount 
-			@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_debit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s) 
+			#@gl_entry=GlEntry.new(gl_account_id: gl_account.id, gl_entry_description: "Transaction", gl_entry_debit: amount, gl_entry_active: 1, gl_entry_date: Date.today.to_s) 
 		end			  
-         gl_account.update_attributes(gl_account_amount: gl_amount ) 	
-         @gl_entry.save
+        gl_account.update_attributes(gl_account_amount: gl_amount ) 	
+        if @gl_entry
+         	@gl_entry.save
+        end	
     end	
+    
 	def self.update_gl_accounts_for_gl_entry(title, op, amount)
     	gl_account = GlAccount.where('gl_account_title' => title ).first 	
 		if op == 'increment'			
