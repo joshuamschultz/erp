@@ -106,11 +106,14 @@ class PayablesController < ApplicationController
     @payable = Payable.find(params[:id])
     params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
-    # Updating GlAccount      
+    # Updating GlAccount 
+    accountsPayableAmt = 0     
     @payable.payable_accounts.each do |payable_account|
-       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount )             
-       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',payable_account.payable_account_amount)
+       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount, @payable.id )                    
+       accountsPayableAmt += payable_account.payable_account_amount
     end
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',accountsPayableAmt, @payable.id )
+
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
         @payable.update_gl_account
@@ -128,11 +131,13 @@ class PayablesController < ApplicationController
   # DELETE /payables/1.json
   def destroy
     @payable = Payable.find(params[:id])
-    # Updating GlAccount      
+    # Updating GlAccount  
+    accountsPayableAmt = 0     
     @payable.payable_accounts.each do |payable_account|
-       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount )             
-       CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',payable_account.payable_account_amount)
+       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount,@payable.id   )             
+       accountsPayableAmt += payable_account.payable_account_amount
     end
+    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',accountsPayableAmt, @payable.id )
     @payable.destroy
 
     
