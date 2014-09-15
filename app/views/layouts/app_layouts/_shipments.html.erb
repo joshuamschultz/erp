@@ -1,4 +1,6 @@
 <script type="text/javascript">
+var quality_lot_id;
+var current_field_temp;
 	function shipping_fnDrawCallback(dt_settings){
 		
 	}
@@ -32,27 +34,31 @@
 	});
 
 	function process_shipping_inputs(current_field){
-		$(".shipping_status").html("");
-		$(".shipping_status").removeClass("success");
-		$(".shipping_status").removeClass("error");
-		var <%= type %>_line_row = current_field.closest("tr");
-		var <%= type %>_line_id = current_field.attr("<%= type %>_line_id");
-		var <%= type %>_shipped_status = current_field.attr("<%= type %>_shipped_status");
+		var so_line_id = current_field.attr("<%= type %>_line_id");
+		current_field_temp = current_field;
+		get_quality_lots(so_line_id);
+		// $(".shipping_status").html("");
+		// $(".shipping_status").removeClass("success");
+		// $(".shipping_status").removeClass("error");
+		// var <%= type %>_line_row = current_field.closest("tr");
+		// var <%= type %>_line_id = current_field.attr("<%= type %>_line_id");
+		// var <%= type %>_shipped_status = current_field.attr("<%= type %>_shipped_status");
 
-		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
-		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
-		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
-		if(parseFloat(<%= type %>_line_shipping) > 0)
-			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
-		else{
-			<%= type %>_line_row.find(".shipping_status").addClass("error");
-			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
-		}
-		return false;
+		// var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
+		// var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
+		// var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
+		// if(parseFloat(<%= type %>_line_shipping) > 0)
+		// 	initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+		// else{
+		// 	<%= type %>_line_row.find(".shipping_status").addClass("error");
+		// 	<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
+		// }
+		// return false;
 	}
 
 	$(document).ready(function(){
-
+		$('#modal-simple').on('shown.bs.modal', function (e) {
+		})
 	});
 
 	<% if type == "po" %>
@@ -101,5 +107,47 @@
             $(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());
         });
     }
+	function get_quality_lots(id){
+    	initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_po", "id": id}}, "set_quality_lots_option", {});
+    }
+    function set_quality_lots_option(response, callback_params, api_params) {
+    	if(response["aaData"].length == 0){
+	 		after_quality_lot_select();
+	    }
+    	else{
+    		$('#modal-simple').modal('show');
+	    	$('#quality_lot').empty();
+	    	$.each(response["aaData"], function (i,item) {
+			    $('#quality_lot').append($('<option>', { 
+			        value: item[0],
+			        text : item[1] 
+			    }));
+			});
+			$("#quality_lot").prepend("<option value='' selected='selected'></option>");
+    	}    
+    }
+   
+    // set quality id from popup
+    function set_quality_lot_id(){
+    	quality_lot_id = $('#quality_lot').val();
+    	after_quality_lot_select(quality_lot_id);
+    }
+	function after_quality_lot_select(qualityLotId) {
+		$(".shipping_status").html("");
+		$(".shipping_status").removeClass("success");
+		$(".shipping_status").removeClass("error");
+		var <%= type %>_line_row = current_field_temp.closest("tr");
+		var <%= type %>_line_id = current_field_temp.attr("<%= type %>_line_id");
+		var <%= type %>_shipped_status = current_field_temp.attr("<%= type %>_shipped_status");
 
+		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
+		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
+		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();
+		if(parseFloat(<%= type %>_line_shipping) > 0)
+			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":qualityLotId,"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+		else{
+			<%= type %>_line_row.find(".shipping_status").addClass("error");
+			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
+		}
+	}    
 </script>

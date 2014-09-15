@@ -54,3 +54,29 @@
 %>
 
 <%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "po"} %>
+
+<div class="modal hide fade" id="modal-simple">
+    <div class="modal-header">
+        <h3>Choose Lot</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+        <table class="dynamicTable table table-striped table-bordered" >
+            <thead>
+                
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lots</td>
+                    <td>
+                        <select id="quality_lot">                          
+                        </select> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="set_quality_lot_id();">Ok</button>
+    </div>
+</div>
