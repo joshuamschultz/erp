@@ -100,7 +100,7 @@ class ReceivablesController < ApplicationController
      accountsReceivableAmt = 0     
      @receivable.receivable_accounts.each do |receivable_account|
       CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'increment',receivable_account.receivable_account_amount, @receivable.id )                    
-      accountsReceivableAmt+=receivable_account.payable_account_amount
+      accountsReceivableAmt+=receivable_account.receivable_account_amount
      end
     CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',accountsReceivableAmt, @receivable.id )
 
