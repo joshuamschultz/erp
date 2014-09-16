@@ -24,7 +24,7 @@
             </div>
 
             <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="purchase_report()">
                       <span class="glyphicons print"><i></i></span>
                       <span class="txt">Print</span>
                       <div class="clearfix"></div>
@@ -69,4 +69,15 @@
 
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_po_header_path(type: "note", id: @po_header.id)}} %>
+
+<script type="text/javascript">
+function purchase_report() {
+    var purchase_iframe = $("#myPrintView")[0];
+    purchase_iframe.contentWindow.focus();
+    purchase_iframe.contentWindow.print();
+
+}
+</script>
+<iframe src="<%= purchase_report_po_header_path(@po_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
+
 
