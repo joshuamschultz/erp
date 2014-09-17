@@ -2,14 +2,12 @@
 
 <p>Please see the attached purchase order from Chess Group and confirm via email that you have received. </p>
 
-<% @po_header.po_lines.each do |po_line| %>
-    <p><%= po_line.item_revision.item_notes %></p>
-<% end %>
+
+    <p><%= @po_header.po_notes %></p>
+
 
 <p>You can logon to our system to view purchase order details and find related documents at http://erp.chessgroupinc.com
 </p>
-
-
 
 <p>Thank you,</p>
 <p>Purchasing</p>
