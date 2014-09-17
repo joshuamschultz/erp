@@ -385,10 +385,9 @@ margin: 2px 0 10px 0;}
             <div class="ms_text-55">
                 <h1 class="ms_heading-3">Comments:</h1> 
 
-                <div class="ms_text-6">
-                    <% @po_header.po_lines.each do |po_line| %>
-                        <strong class="ms-5"><%= po_line.item_revision.item_notes %></strong> 
-                    <% end %>
+                <div class="ms_text-6">                
+                    <strong class="ms-5"><%= @po_header.po_notes %></strong> 
+               
 <!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
 PLEASE SHIP UPS GROUND ASAP!
 THANK YOU!</strong> 
