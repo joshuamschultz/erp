@@ -53,7 +53,7 @@ class Receivable < ActiveRecord::Base
 
   def process_after_save
       self.process_receivable_total
-      self.update_gl_account
+      # self.update_gl_account
   end 
 
   before_create :process_before_create
@@ -108,10 +108,17 @@ class Receivable < ActiveRecord::Base
   end
 
   def update_gl_account
-    receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
-    receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
-    CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
-    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
+    accountsReceivableAmt = 0 
+    self.receivable_accounts.each do |receivable_account|
+       CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'decrement',receivable_account.receivable_account_amount, self.id )                    
+       accountsReceivableAmt += receivable_account.receivable_account_amount
+    end
+    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',accountsReceivableAmt, self.id )
+
+    # receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
+    # receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
+    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
+    # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
   end  
 
 end

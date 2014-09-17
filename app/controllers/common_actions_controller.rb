@@ -185,6 +185,11 @@ class CommonActionsController < ApplicationController
                 quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
                 result = quality_lots
               end
+            when "get_quality_lots_po"
+              if params[:id].present?
+                quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                result = quality_lots
+              end
               
                             
         end
