@@ -1,80 +1,53 @@
 <!DOCTYPE html>
-
-
-<title>Packing Report</title>
+<html>
+<head>
+<title>Member Spotlight</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
 
 
-<style type="text/css">
-    @charset "utf-8";
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-    }
-    /* New Style */
-    .clear {
-        clear: both;
-    }
-    .ms_wrapper {
-        height: auto;
-    }
-    .ms_wrapper section {
-        float: left;
-        height: auto;
-        width: 640px;
-    }
-    .ms_wrapper .ms_heading {
-        border-bottom: 2px solid #999;
-        font-size: 16px;
-        margin: 30px 0 4px;
-        padding: 0 0 10px;
-        width: 100%;
-    }
-    .ms_wrapper .ms_image {
-        border: 1px solid #ccc;
-        float: left;
-        font-size: 22px;
-        text-align: center;
-        width: 310px;
-        height: 115px;
-    }
-    .ms_wrapper .ms_image-2 {
-        border: 1px solid #ccc;
-        float: right;
-        font-size: 22px;
-        text-align: center;
-        width: 310px;
-        height: 115px;
-    }
-    .ms_wrapper article {
-        float: left;
-        width: 100%;
-    }
-}
-.ms_wrapper .ms_text {
+<style>
+@charset "utf-8";
+
+body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
+
+
+/* New Style */
+.clear{clear: both;}
+
+.ms_wrapper{height: auto;}
+.ms_wrapper section {float: left;height: auto;width:640px;}
+.ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}
+.ms_wrapper .ms_image{   border: 1px solid #ccc;
     float: left;
-    font-size: 15px;
-    height: auto;
-    line-height: 23px;
-    width: 262px;
-    margin: 0;
-    color: #666;
-}
-.ms_wrapper .ms_offers {
-    float: left;
-    margin: 12px 0 0;
-    padding: 10px 0 0;
-    text-align: center;
-}
-.ms_wrapper .ms_sub-heading {
     font-size: 22px;
-    margin: 20px 0 6px;
-    color: #000;
+    text-align: center;
+    width: 310px;
+height: 135px;
 }
-.ms_text strong,
-.ms_text-2 strong {
+.ms_wrapper .ms_heading-3{  text-decoration: underline; font-size: 14px;margin: 0 0 4px; padding: 0 0 10px;float: left;}
+
+article.art-01 {
+    border-bottom: 1px solid #555;
+    border-top: 1px solid #555;
+    margin: 18px 0 0;
+    padding: 7px 0 0;
+}
+
+    .ms_wrapper .ms_image-2{   border: 1px solid #ccc;
+    float: right;
+    font-size: 22px;
+    text-align: center;
+    width: 310px;
+height: 135px;}
+.ms_wrapper article{float: left;width: 100%;}
+}
+.ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;}
+.ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}
+.ms_wrapper .ms_sub-heading{font-size: 13px;margin:20px 0 6px;color:#000;}
+
+.ms_text strong, .ms_text-2 strong {
     float: left;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: normal;
     line-height: 19px;
     width: 100%;
@@ -89,36 +62,67 @@
     text-align: center;
     font-weight: bold;
 }
+.ms_text-6.ms-33 .ms_sub-heading {
+    font-size: 17px;
+}
+
+.ms_text-6.ms-33 {
+    text-align: center;
+}
 .ms_image-2 h3 {
     color: #000080;
-    font-size: 16px;
+    font-size: 21px;
     font-weight: normal;
     margin: 17px 0 0;
     text-decoration: underline;
 }
+
+.ms_text-6 > h3 {
+    float: left;
+    margin: 0;
+    padding: 18px 0 0;
+    font-size: 14px;
+}
+
+
+.ms_text-6 {
+    float: left;
+    margin: 0 0 0 27px;
+    width: 212px;
+}
+
 .ms_image-2 h2 {
     color: #800000;
     font-size: 20px;
     font-weight: bold;
     margin: 2px 0;
 }
-.ms_image-2 h5 {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 2px 0;
-}
+
+        .ms_image-2 h5{  font-size: 16px;
+    font-weight: bold;margin: 2px 0;}
+
 .ms_text-3-wrapper {
     float: left;
-    width: 310px;
+
 }
-.ms_text-3-wrapper .ms_text-3 {
-    width: 152px;
-    float: left;
-}
+.ms_text-3-wrapper .ms_text-3{width: 126px;float: left;}
+.ms_text-3-wrapper .ms_text-5{width: 204px;float: left;text-align: center;}
 .ms_text-3-wrapper .ms_text-4 {
-    width: 152px;
-    float: right;
+    float: left;
+    width: 91px;
 }
+
+article.art-02 {
+    border: 1px solid #555;
+    margin: 18px 0 0;
+    padding: 7px 0 0;
+    border: 1px solid #555;
+    border-radius: 15px;
+}
+.ms_text-5 > strong {
+    font-weight: normal;
+}
+
 .ms_text-3-wrapper .ms_text-4 strong {
     float: left;
     font-size: 14px;
@@ -127,61 +131,87 @@
     width: 100%;
     margin: 6px 0;
     text-align: center;
+
 }
+
 .ms_text-3-wrapper .ms_text-3 strong {
-    color: #800000;
     float: left;
     font-size: 14px;
     font-weight: normal;
     line-height: 19px;
+    width: 100%;
     margin: 6px 0;
     text-align: center;
-    width: 100%;
+
 }
 
-.ms_text-3.text-5 strong {
-    color: #000 !important;
-}
 
 .ms_text-3-wrapper .ms_sub-heading {
-    font-size: 16px;
+    border-bottom: 1px solid #555;
+    font-size: 13px;
+    margin: 21px 0 12px;
+    padding: 0 0 12px;
     text-align: center;
-    margin: 30px 0 12px;
 }
-.ms_sub {
-    font-size: 15px;
+
+.ms_sub{  font-size: 15px;
     text-align: center;
     text-decoration: underline;
-    margin: 2px 0 10px 0;
-}
+margin: 2px 0 10px 0;}
+
+
 .ms_text {
-    border-bottom: 2px solid #999;
+    border-right: 1px solid #555;
     float: left;
-    padding: 0 0 16px;
+    padding: 0 3px 11px;
     width: 310px;
 }
 .ms_text-2 {
-    border-bottom: 2px solid #999;
     float: right;
     padding: 0 0 16px;
-    width: 310px;
+     min-height: 128px;
+}
+
+.ms_text-7 > strong {
+    float: none;
+}
+.ms_text-7.ms_text-8 {
+    border-bottom: 1px solid #555;
+    padding: 0 0 9px;
+}
+
+.ms-1 {
+    float: left !important;
+    text-align: right;
+    width: 95px !important;
+}
+.ms_text-7.ms_text-9 strong {
+    font-size: 14px;
+    font-weight: bold;
+}
+.ms_text-7 {
+    float: left;
+    margin: 4px 0;
+    width: 90%;
 }
 .ms_text1 {
     float: left;
     margin: 12px 28px 0;
     width: 42%;
 }
-.ms_wrapper .ms_image2 {
-    margin: 0 20px 0 0;
-    border: 1px solid #ccc;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 22px;
+
+.ms-5{color: #800000;}
+.ms-2 {
+    margin: 0 0 0 38px;
 }
-.ms_image2 h2 {
-    font-size: 17px;
-    margin: 0;
+
+
+.ms_text-55 {
+   float: left;
+   padding: 0 3px 11px;
 }
+.ms_wrapper .ms_image2{margin: 0 20px 0 0;border: 1px solid #ccc;padding: 20px 0;text-align: center;font-size: 22px;}
+.ms_image2 h2{font-size: 17px;margin: 0;}
 .ms_image2 strong {
     color: #800000;
     float: left;
@@ -189,120 +219,61 @@
     margin: 0 0 8px;
     width: 100%;
 }
-.ms_image2 p {
-    font-size: 18px;
-    margin: 0;
-    color: #000080;
-}
-.footer {
-    margin: 330px 0 0 0;
-    width: 630px;
-    border: 2px solid #444;
-    float: left;
-}
-.page {
-    float: left;
-    margin: 0 0 0 20px;
-}
-.page h3 {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 12px 0 0;
-}
-.page h4 {
-    font-size: 12px;
-    font-weight: normal;
-    margin: 5px 0 12px 0;
-    text-align: center;
-}
-.original {
-    float: right;
-    margin: 0 20px 0 0;
-}
-.original h3 {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 12px 0 0;
-}
-.original h4 {
-    color: #800000;
-    font-size: 12px;
-    font-weight: normal;
-    margin: 5px 0 12px;
-    text-align: center;
-}
+.ms_image2 p{font-size: 18px;margin: 0;color: #000080;}
+.footer{margin:200px 0 0 0;width:640px;border: 2px solid #444;float: left; }
+.page{float: left;margin: 0 0 0 20px;}
+.page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
+.original{float: right;margin: 0 20px 0 0;}
+.original h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.original h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
+
 .ms_image-wrapper {
     float: left;
     height: 69px;
     margin: 6px 0 0 3px;
-    width: 150px;
+    width: 128px;
 }
-
 .ms_image-wrapper img {
     width: 150px;
 }
+
 .ms_image-text {
     float: right;
     margin: 6px 10px 0 0;
-    width: 120px;
 }
-
 .ms_image-text h2 {
     font-size: 13px;
     margin: 19px 0 8px 0;
-    text-decoration: underline;
+     text-decoration: underline;
 }
 .ms_image-text h3 {
+    border-bottom: 1px solid #555;
     font-size: 13px;
     font-weight: normal;
-    margin: 3px 0;
+    margin: 12px 0 6px 0;
+    padding: 0 0 7px;
 }
+
+
+
 .ms_image-text h5 {
     font-size: 9px;
     font-weight: normal;
-    width: 120px;
 }
+
+
 .page-center {
     float: left;
-    text-align: center;
-    width: 411px;
+    margin: 8px 36px;
+    width: 394px;
 }
-.page-center h3 {
-    color: #800000;
-    font-size: 14px;
-    font-weight: bold;
-    margin: 12px 0 0;
-}
-.page-center h4 {
-    font-size: 12px;
-    font-weight: normal;
-    margin: 5px 0 12px 0;
-    text-align: center;
-}
-
-
-.original h4 span{
-    color: #000;
-
-}
-.original h4 span {
-    color: #000;
-    margin: 0 4px 0 0;
-}
-.text-6 {
-    color: #800000;
-    margin: 0 14px 0 0 !important;
-    width: auto !important;
-}
-.text-7 {
-    float: left;
-    margin: 22px 0 0;
-    width: 100%;
-}
-
+.page-center h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.page-center h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
 </style>
-
-
+</head>
+<body>
+<% @company_info = CompanyInfo.first%>
 <div class="ms_wrapper">
 
     <section>
@@ -310,7 +281,6 @@
         <article>
             <div class="ms_image">
                 <div class="ms_image-wrapper">
-                    <% @company_info = CompanyInfo.first %>
                     <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
                 </div>
 
@@ -324,16 +294,150 @@
                 </div>
             </div>
 
-
             <div class="ms_image-2">
-                <h3>Purchase Order Number</h3>
-                <h2> <%= @po_header.po_identifier %> </h2>
-                <h5>Purchase Order Date : <%= @po_header.created_at.strftime("%m/%d/%Y") %> </h5>
+                <h3> Purchase Order Number</h3>
+                <h2><%= @po_header.po_identifier %></h2>
+                <h5>Purchase Order Date :  <%= @po_header.created_at.strftime("%m/%d/%Y") %> </h5>
+            </div>
 
+        </article>
+
+        <article class="art-01">
+
+            <div class="ms_text">
+                <h1 class="ms_heading">Vendor :</h1> 
+                <div class="ms_text-6">
+                    <h2 class="ms_sub-heading">
+                        <%= @po_header.organization.id %><br>
+                        <%= @po_header.organization.organization_name %><br>
+                        <%= @po_header.organization.organization_address_1 %>
+                        <%= @po_header.organization.organization_address_2 %>
+                    </h2> 
+
+                    <h3><%= @po_header.organization.organization_city %> 
+                        <%= @po_header.organization.organization_state %> 
+                        <%= @po_header.organization.organization_country %>
+                        <%= @po_header.organization.organization_zipcode %>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="ms_text-2">
+                <h1 class="ms_heading">Ship To : </h1> 
+                <div class="ms_text-6 ms-33">
+                    <h2 class="ms_sub-heading">Chess Group Inc </h2> 
+                    <strong><%= @company_info.company_address1 %></strong>
+                    <strong><%= @company_info.company_address2 %></strong>
+                </div>
+            </div>
+
+        </article>
+
+
+
+        <article>
+
+            <div class="ms_text-3-wrapper">
+                <div class="ms_text-3">
+                    <h2 class="ms_sub-heading">QTY</h2> 
+                    <% @po_header.po_lines.each do |po_line| %>
+                        <strong><%= po_line.po_line_quantity %> </strong>
+                    <% end %>   
+                </div>
+
+                <div class="ms_text-3">
+                    <h2 class="ms_sub-heading"> CUST P/N - ALL P/N</h2> 
+
+                        <% @po_header.po_lines.each do |po_line| %>
+                            <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
+                                <strong><%= po_line.item.item_part_no %></strong>
+                            <%  else %>
+                                <strong><%= po_line.item.item_part_no %></strong>
+                                <strong><%= po_line.item_alt_name.item_alt_identifier %></strong>
+                            <%  end %>
+                        <% end %>  
+                </div>
+
+                <div class="ms_text-5">
+                    <h2 class="ms_sub-heading">DESCRIPTION</h2> 
+                        <% @po_header.po_lines.each do |po_line| %>
+                            <% if po_line.item_revision.present? %>
+                                <strong><%= po_line.item_revision.item_description %> </strong>
+                            <% end %>
+                        <% end %>
+                </div>
+                <div class="ms_text-4">
+                    <h2 class="ms_sub-heading">  COST </h2> 
+                    <% @po_header.po_lines.each do |po_line| %>
+                        <strong><%= po_line.po_line_cost.to_f %></strong>
+                    <% end %>
+                </div>
+                <div class="ms_text-4">
+                    <h2 class="ms_sub-heading">TOTAL </h2> 
+                    <strong><%= @po_header.po_total.to_f %></strong>
+                </div>
             </div>
         </article>
 
-   
-    </div>
+
+        <article class="art-02">
+
+            <div class="ms_text-55">
+                <h1 class="ms_heading-3">Comments:</h1> 
+
+                <div class="ms_text-6">
+                    <% @po_header.po_lines.each do |po_line| %>
+                        <strong class="ms-5"><%= po_line.item_revision.item_notes %></strong> 
+                    <% end %>
+<!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
+PLEASE SHIP UPS GROUND ASAP!
+THANK YOU!</strong> 
+ -->
+                </div>
+            </div>
+
+            <div class="ms_text-2">
+                <div class="ms_text-6">
+                    <div class="ms_text-7 ms_text-8 ">
+                    </div>
+                    <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"><%= @po_header.po_total.to_f %></strong> 
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+        </article>
+
+        <article>
+            <div class="footer">
+
+                <div class="page">
+                    <h3>Date</h3>
+                    <h4><%= @po_header.created_at.strftime("%m/%d/%Y") %></h4>
+                </div>
+
+                <div class="page-center">
+                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
+regulatory agencies reserve the right to audit Seller's books and records and the right to
+inspect at the Seller's plant any and all materials and systems.</h4>
+                </div>
+
+                <div class="original">
+                    <h3>Page </h3>
+                    <h4>1
+</h4>
+                </div>
+
+
+        </article>
+
+
+        </div>
 
 </div>
+</body>
+</html>
