@@ -131,17 +131,10 @@ private
       path = Rails.root.to_s+"/public/purchase_report"
       if File.directory? path
         path = path+"/"+@po_header.po_identifier.to_s+".pdf"
-
-                p "========================="
-          p @po_header.po_identifier.to_s
-        p "============================"
         kit.to_file(path)
       else
         Dir.mkdir path
         path = path+"/"+@po_header.po_identifier.to_s+".pdf"
-        p "========================="
-          p @po_header.po_identifier.to_s
-        p "============================"
         kit.to_file(path)
       end
 

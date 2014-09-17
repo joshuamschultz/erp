@@ -22,6 +22,8 @@
 
             <%= hidden_field_tag :org_organization_id, (@po_header.organization.id if @po_header.organization) %>
 
+            <%= f.input :po_notes, :label => "Notes" %>
+
             <div id="po_customer_div">
                 <%= f.association :customer, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#customer_id', :label => "Customer", input_html: {class: "po_customer_fields"} %>
 
