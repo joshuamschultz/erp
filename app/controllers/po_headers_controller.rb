@@ -99,6 +99,7 @@ class PoHeadersController < ApplicationController
 
     respond_to do |format|
       if @po_header.save
+        genarate_pdf
         format.html { redirect_to  new_po_header_po_line_path(@po_header), notice: 'Po header was successfully created.' }
         format.json { render json: @po_header, status: :created, location: @po_header }
       else        
@@ -115,6 +116,7 @@ class PoHeadersController < ApplicationController
 
     respond_to do |format|
       if @po_header.update_attributes(params[:po_header])
+        genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully updated.' }
         format.json { head :no_content }
       else
@@ -170,7 +172,6 @@ class PoHeadersController < ApplicationController
   end
 
 private
-
 
   def genarate_pdf 
       html = render_to_string(:layout => false , :partial => 'po_headers/purchase_report')
