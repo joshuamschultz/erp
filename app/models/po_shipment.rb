@@ -85,5 +85,21 @@ class PoShipment < ActiveRecord::Base
       shipments ||= PoShipment
       shipments.where("po_shipments.id in (?)", PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
   end
+  def set_quality_on_hand
+    if self.quality_lot.present?
+      quality_lotss = self.quality_lot
+      p '---------------------'
+      p quality_lotss.quantity_on_hand
+      p self.po_shipped_count
+      quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.po_shipped_count
+      quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.po_shipped_count
+      if quality_lotss.quantity_on_hand <= 0
+        quality_lotss.finished = self.created_at
+      end
+      if quality_lotss.save(:validate => false)
+        p quality_lotss.to_yaml
+      end
+    end    
+  end
 
 end
