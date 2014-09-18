@@ -18,6 +18,7 @@
                     <th>Final P/N</th>
                     <th>Customer</th>
                     <th>Customer PO</th>
+                    <th>Po Comments</th>
                     <th>Status</th>
                     <th>Quantity</th>
                     <th>Cost</th>
@@ -39,10 +40,11 @@
                         { "mData": "item_transfer_no", "bVisible": ' + (@po_header.po_type.type_value == "transer").to_s + '},
                         { "mData": "customer_name" },
                         { "mData": "po_line_customer_po" },
+                        { "mData": "item_notes" },   
                         { "mData": "po_line_status" },
                         { "mData": "po_line_quantity" },
                         { "mData": "po_line_cost" },
-                        { "mData": "po_line_total" },                        
+                        { "mData": "po_line_total" },   
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
