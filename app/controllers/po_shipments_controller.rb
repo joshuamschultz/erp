@@ -73,6 +73,7 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.save
+        @po_shipment.set_quality_on_hand
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
         @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
