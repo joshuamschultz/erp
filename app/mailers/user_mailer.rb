@@ -1,6 +1,22 @@
 class UserMailer < ActionMailer::Base
   default from: "Alliance Fastners <do-not-reply@alliance-fastners.com>"
 
+
+
+
+  def purchase_order_mail(po_header,vendor_email)
+    @po_header = po_header
+    @vendor_email = vendor_email
+    file_name = @po_header.po_identifier
+    file_path = "#{Rails.root.to_s}/public/purchase_report/#{@po_header.po_identifier}.pdf"
+    attachments[file_name.to_s + '.pdf'] = File.read(file_path)
+    mail( to: "#{@po_header.organization.organization_email}", 
+           cc: @vendor_email,
+          subject: "Purchase Order [#{@po_header.po_identifier}]"
+    )
+  end 
+
+
   def welcome_email(user, params = {})
       @user = user
       to_address = (ENV['RAILS_ENV'] == "development") ? "sreejeshkp@agileblaze.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]

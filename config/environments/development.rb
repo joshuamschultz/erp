@@ -60,7 +60,7 @@ AllianceFasteners::Application.configure do
        :address              => "smtp.gmail.com",
        :port                 => 587,
        :user_name            => 'testagile00@gmail.com',
-       :password             => 'praveenkannan',
+       :password             => 'mohanraj',
        :authentication       => 'plain',
        :enable_starttls_auto => true  }
 

@@ -1,5 +1,6 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :so_mails
   resources :logos
 
 
@@ -206,6 +207,10 @@ AllianceFasteners::Application.routes.draw do
   resources :customer_quality_levels
 
   resources :po_headers do
+    member do 
+   
+      get 'purchase_report'
+    end
     resources :po_lines
     member do
       get 'populate'
