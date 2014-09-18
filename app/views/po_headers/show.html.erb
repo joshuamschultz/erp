@@ -13,10 +13,13 @@
         <%= render :partial => 'po_headers/po_header_info' %>
     </div>
 
-    <div class="span9">
+
+
+
+   <div class="span9">
         <div class="row-fluid">
             <div class="span4 well">
-                  <a class="widget-stats" href="#" id="alt_address_btn">
+                  <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
                       <span class="glyphicons message_out"><i></i></span>
                       <span class="txt">Send</span>
                       <div class="clearfix"></div>
@@ -24,7 +27,7 @@
             </div>
 
             <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="purchase_report()">
                       <span class="glyphicons print"><i></i></span>
                       <span class="txt">Print</span>
                       <div class="clearfix"></div>
@@ -70,3 +73,56 @@
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_po_header_path(type: "note", id: @po_header.id)}} %>
 
+<script type="text/javascript">
+function purchase_report() {
+    var purchase_iframe = $("#myPrintView")[0];
+    purchase_iframe.contentWindow.focus();
+    purchase_iframe.contentWindow.print();
+
+}
+</script>
+<iframe src="<%= purchase_report_po_header_path(@po_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
+
+<script type="text/javascript">
+    function after_send(){
+        alert("sucess")
+    }
+    function send_mail_vendor(){
+
+        var po_id = $( '#attachment_dropzone' ).attr( 'action' ).replace ( /[^\d.]/g, '' ); 
+        po_id = parseInt(po_id, 10)
+
+     
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_po_order_mail","po_header_id": po_id,
+         "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
+    }
+</script>
+
+<div class="modal hide fade" id="modal-simple">
+    <div class="modal-header">
+        <h3>Send Purchase Order</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+        <form id="send_mail">
+            <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                <thead>
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Contacts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        <tr>
+                            <td><%= @po_header.organization.organization_name %></td>
+                            <td><%= select_tag "#{@po_header.organization.id}", options_for_select(@po_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
+                        </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
+    </div>
+</div>

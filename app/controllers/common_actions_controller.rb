@@ -62,6 +62,15 @@ class CommonActionsController < ApplicationController
               #   end
               # end
               result = "success"
+              
+            when "send_po_order_mail"
+              val =  params[:organizations]
+              @po_header = PoHeader.find(params[:po_header_id])
+              @contact = Contact.find(val["0"]["value"].to_i)
+              @vendor_email = @contact.contact_email
+              UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
+              result = "success"
+
             when "get_item_description"
               if params[:item_id].present?
                 description = ItemAltName.find(params[:item_id]).item.current_revision.item_description
