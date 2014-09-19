@@ -77,7 +77,7 @@ class PoLine < ActiveRecord::Base
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier : self.po_header.po_identifier
 
     self.po_header.update_attributes(po_identifier: po_identifier, po_total: self.po_header.po_lines.sum(:po_line_total))
-    after_commit_process
+    # after_commit_process
   end
 
   def po_line_item_name
