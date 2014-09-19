@@ -130,13 +130,13 @@ class PoLine < ActiveRecord::Base
                               qty<< "<strong>"+po_line.po_line_quantity.to_s+"</strong>"
 
                               if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
-                                c1<< "<strong>"+po_line.item.item_part_no+"</strong>"
+                                c1<< "<strong>"+(po_line.item.item_part_no).to_s+"</strong>"
                               else 
-                                c1<< "<strong>"+po_line.item.item_part_no+"</strong>"
-                                c2<< "<strong>"+po_line.item_alt_name.item_alt_identifier+"</strong>"
+                                c1<< "<strong>"+(po_line.item.item_part_no).to_s+"</strong>"
+                                c2<< "<strong>"+(po_line.item_alt_name.item_alt_identifier).to_s+"</strong>"
                               end 
                               if po_line.item_revision.present?
-                                b<< "<strong>"+po_line.item_revision.item_description+ "</strong>"
+                                b<< "<strong>"+(po_line.item_revision.item_description).to_s+ "</strong>"
                               end 
 
                                 a<< "<strong>"+(po_line.po_line_cost.to_f).to_s+"</strong>"
