@@ -120,7 +120,6 @@ class PoLinesController < ApplicationController
       format.json { head :ok }
     end
   end
-
 # private
 
 #   def genarate_pdf 
