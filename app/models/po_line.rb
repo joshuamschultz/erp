@@ -60,6 +60,7 @@ class PoLine < ActiveRecord::Base
       end
 
   end
+  
 
   before_save :update_item_total
 
