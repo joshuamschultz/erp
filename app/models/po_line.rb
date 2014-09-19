@@ -43,24 +43,8 @@ class PoLine < ActiveRecord::Base
     end
   end
 
-  def after_commit_process 
-    html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
-      kit = PDFKit.new(html, :page_size => 'A4' )  
-      # Get an inline PDF
-      pdf = kit.to_pdf
-      # Save the PDF to a file    
-      path = Rails.root.to_s+"/public/purchase_report"
-      if File.directory? path
-        path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
-        kit.to_file(path)
-      else
-        Dir.mkdir path
-        path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
-        kit.to_file(path)
-      end
 
-  end
-  
+
 
   before_save :update_item_total
 
@@ -77,7 +61,7 @@ class PoLine < ActiveRecord::Base
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier : self.po_header.po_identifier
 
     self.po_header.update_attributes(po_identifier: po_identifier, po_total: self.po_header.po_lines.sum(:po_line_total))
-    # after_commit_process
+    generate_pdf
   end
 
   def po_line_item_name
@@ -125,6 +109,27 @@ class PoLine < ActiveRecord::Base
 
   def po_customer
       self.po_header.po_is?("direct") ? self.po_header.customer : self.organization
+  end
+
+
+  def generate_pdf
+    html = " "
+    if Rails.env == "production"
+      html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
+    end
+    kit = PDFKit.new(html, :page_size => 'A4' )  
+    # Get an inline PDF
+    pdf = kit.to_pdf
+    # Save the PDF to a file    
+    path = Rails.root.to_s+"/public/purchase_report"
+    if File.directory? path
+    path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
+    kit.to_file(path)
+    else
+    Dir.mkdir path
+    path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
+    kit.to_file(path)
+    end
   end
 
 end
