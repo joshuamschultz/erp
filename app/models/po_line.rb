@@ -191,6 +191,13 @@ class PoLine < ActiveRecord::Base
     path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
     kit.to_file(path)
     end
+
+    p "==============================="
+        p html
+
+    p "=================================="
+
+    puts "Successfully"
   end
 
 end
