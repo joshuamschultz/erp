@@ -43,9 +43,8 @@ class PoLine < ActiveRecord::Base
     end
   end
 
-
   def after_commit_process 
-    html = "#{root_url}/public/#{self.po_header.id}/purchase_report"
+    html = "#{root_url}/po_headers/#{self.po_header.id}/purchase_report"
       kit = PDFKit.new(html, :page_size => 'A4' )  
       # Get an inline PDF
       pdf = kit.to_pdf
