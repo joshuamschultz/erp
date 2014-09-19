@@ -80,7 +80,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.save
-        # genarate_pdf
+        genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
       else
@@ -98,7 +98,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
-        # genarate_pdf
+        genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }
       else
@@ -121,27 +121,27 @@ class PoLinesController < ApplicationController
     end
   end
   
-# private
+private
 
-#   def genarate_pdf 
-#       html = render_to_string(:layout => false , :partial => 'po_headers/purchase_report')
-#       p "===================================="
-#         p html
-#       p "===================================="
+  def genarate_pdf 
+      html = render_to_string(:layout => false , :partial => 'po_headers/purchase_report')
+      p "===================================="
+        p html
+      p "===================================="
 
-#       kit = PDFKit.new(html, :page_size => 'A4' )  
-#       # Get an inline PDF
-#       pdf = kit.to_pdf
-#       # Save the PDF to a file    
-#       path = Rails.root.to_s+"/public/purchase_report"
-#       if File.directory? path
-#         path = path+"/"+@po_header.po_identifier.to_s+".pdf"
-#         kit.to_file(path)
-#       else
-#         Dir.mkdir path
-#         path = path+"/"+@po_header.po_identifier.to_s+".pdf"
-#         kit.to_file(path)
-#       end
+      kit = PDFKit.new(html, :page_size => 'A4' )  
+      # Get an inline PDF
+      pdf = kit.to_pdf
+      # Save the PDF to a file    
+      path = Rails.root.to_s+"/public/purchase_report"
+      if File.directory? path
+        path = path+"/"+@po_header.po_identifier.to_s+".pdf"
+        kit.to_file(path)
+      else
+        Dir.mkdir path
+        path = path+"/"+@po_header.po_identifier.to_s+".pdf"
+        kit.to_file(path)
+      end
 
-#   end
+  end
 end
