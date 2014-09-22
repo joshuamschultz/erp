@@ -64,11 +64,11 @@ module AllianceFasteners
     config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js"]
 
     config.middleware.use PDFKit::Middleware, :print_media_type => true
-
     # In `config/environments/development.rb`
-    config.action_controller.asset_host = "http://localhost:3000"
+    #  config.action_controller.asset_host = "http://localhost:3001"
+    
 
-    # In `config/environments/production.rb`
-    config.action_controller.asset_host = "http://erp.chessgroupinc.com"
+    # # In `config/environments/production.rb`
+    # config.action_controller.asset_host = "http://erp.chessgroupinc.com"
   end
 end
