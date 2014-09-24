@@ -70,6 +70,10 @@ class CommonActionsController < ApplicationController
               @vendor_email = @contact.contact_email
               UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
               result = "success"
+            when "send_invoice"
+              
+
+              result = "success"
 
             when "get_item_description"
               if params[:item_id].present?

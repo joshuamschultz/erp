@@ -64,6 +64,9 @@ AllianceFasteners::Application.routes.draw do
   resources :check_codes
 
   resources :receivables do
+    member do 
+      get 'invoice_report'
+    end
     resources :receivable_accounts
   end
 
