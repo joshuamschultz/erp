@@ -11,6 +11,39 @@
     <%= render :partial => 'receivables/receivable_info' %>
 
     <div class="span9">
+            <div class="row-fluid">
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
+                      <span class="glyphicons message_out"><i></i></span>
+                      <span class="txt">Send</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
+                      <span class="glyphicons print"><i></i></span>
+                      <span class="txt">Print</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+
+            <div class="span4 well">
+                    <% if @receipt.present? %>
+                        <a class="widget-stats" href="/receipts/<%= @receipt.id%>" id="contacts_btn">
+                          <span class="glyphicons notes_2"><i></i></span>
+                          <span class="txt">Receipt</span>
+                          <div class="clearfix"></div>
+                        </a>
+                    <% else %>
+                        <a class="widget-stats" href="#" id="contacts_btn" onclick="create_receipt()">
+                          <span class="glyphicons notes_2"><i></i></span>
+                          <span class="txt">Receipt</span>
+                          <div class="clearfix"></div>
+                        </a>
+                    <% end %>
+
+            </div>
+        </div>
         <%= render :partial => 'receivable_lines/line_items' unless @so_header %>
 
         <%= render :partial => 'receivables/so_shipments' if @so_header %> 
@@ -28,3 +61,27 @@
 </div>
 
 <%#= render :partial => 'so_lines/line_items' if @so_header %>
+
+<script type="text/javascript">
+function invoice_report() {
+    var sales_iframe = $("#myPrintView")[0];
+    sales_iframe.contentWindow.focus();
+    sales_iframe.contentWindow.print();
+
+}
+function create_receipt(){
+    alert("Please create receipt");
+}
+
+function after_send(){
+    alert("sucess")
+}
+function send_mail_vendor(){
+
+    var receivable_id = $('#myPrintView').attr('src').replace ( /[^\d.]/g, '' ); 
+    receivable_id = parseInt(receivable_id, 10) 
+    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_invoice","receivable_id": receivable_id }}, "after_send", {});
+}
+</script>
+<iframe src="<%= invoice_report_receivable_path(@receivable) %>" style="border:0;"  id="myPrintView" width="10" height= "10"></iframe>
+
