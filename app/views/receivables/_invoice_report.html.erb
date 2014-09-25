@@ -452,7 +452,7 @@
 
 <body>
 
-
+<% @company_info = CompanyInfo.first %>
     <div class="ms_wrapper">
 
         <section>
@@ -516,11 +516,13 @@
                         <div class="ms_text-6">
                             <h2 class="ms_sub-heading">
                             <% if @so_header.present? %>
+                                <% if @so_header.bill_to_address.present? %>
                                 <span><%= @so_header.bill_to_address.contact_title %></span>
                                 <%= @so_header.bill_to_address.contact_address_1 %>
                                 <%= @so_header.bill_to_address.contact_address_2 %>
                                 <%= @so_header.bill_to_address.contact_state %>
                                 <%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></h2> 
+                                <% end %>
                             <% end %>
                         </div>
                     </div>
@@ -535,11 +537,14 @@
                         <div class="ms_text-6">
                             <h2 class="ms_sub-heading">
                             <% if @so_header.present? %>
+                                <% if @so_header.ship_to_address.present? %>
+
                                 <span><%= @so_header.ship_to_address.contact_title %></span>
                                 <%= @so_header.ship_to_address.contact_address_1 %>
                                 <%= @so_header.ship_to_address.contact_address_2 %>
                                 <%= @so_header.ship_to_address.contact_state %>
                                 <%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> 
+                                <% end %>
                             <% end %>
                         </div>
 
