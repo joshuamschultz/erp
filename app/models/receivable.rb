@@ -157,7 +157,7 @@ class Receivable < ActiveRecord::Base
       end
       
       if so_shipment.so_line.item_revision.present? 
-        product_description+= so_shipment.so_line.item_revision.item_description 
+        product_description+= so_shipment.so_line.item_revision.item_description.to_s 
       end 
       product_cost+= so_shipment.so_line.so_line_cost
       product_shipped_cost+=  so_shipment.so_shipped_cost
