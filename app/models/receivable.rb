@@ -55,7 +55,9 @@ class Receivable < ActiveRecord::Base
   def process_after_save
       self.process_receivable_total
       # self.update_gl_account
-      generate_pdf
+      if self.so_header.present?
+        generate_pdf
+      end
   end 
 
   before_create :process_before_create
@@ -136,6 +138,7 @@ class Receivable < ActiveRecord::Base
     ship_contact_title = ship_contact_address1 = ship_contact_address2 = ship_contact_state =  ship_contact_czip = ''
     qty = shipped = product_cost = product_shipped_cost = sub_total = 0
     product1 = product2 = product_description=  ''
+    
     if self.so_header.present?
         if self.so_header.bill_to_address.present? 
           in_contact_title = '<span>'+self.so_header.bill_to_address.contact_title+'</span>'
