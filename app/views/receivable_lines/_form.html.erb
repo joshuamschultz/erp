@@ -19,6 +19,7 @@
             <%= f.submit "Save", :class =>"btn" %>
             <%= link_to 'Delete', receivable_receivable_line_path(@receivable, @receivable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable_line.new_record? %>
             <%= link_to 'Back to Receivable', receivable_path(@receivable), :class =>"btn" %>
+            <%= link_to 'Update Receivable', edit_receivable_path(@receivable),  :class => "btn", :onclick => "add_freight();" if @receivable.id? %>
         </div>
     <% end %>
   </div>
@@ -26,6 +27,12 @@
 
 <script type="text/javascript">
     tab_field_forms["form_for_receivable_line"] = ["receivable_line_receivable_line_description", "receivable_line_receivable_line_cost", "receivable_line_receivable_line_notes"];
+    function add_freight () {
+        var receivableId =  $("#receivable_id").val(); 
+        var freightAmt = $("#receivable_payable_freight").val();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_receivable_freight", "receivable_id" : receivableId, "freight_amt": freightAmt }}, "freight_result", {});
+            // body...
+        }   
 </script>
 
 

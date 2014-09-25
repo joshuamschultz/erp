@@ -41,10 +41,7 @@ class PayableAccount < ActiveRecord::Base
 
   def process_before_destory
   	@gl_entry = GlEntry.where(:id => self.gl_entry_id_was).first
-    amount = @gl_entry.gl_entry_credit
-    p "================================="    
-    p @gl_entry.gl_account.gl_account_title
-    p "==================================="
+    amount = @gl_entry.gl_entry_credit    
   	# CommonActions.update_gl_accounts_for_gl_entry(@gl_entry.gl_account.gl_account_title, 'decrement', @gl_entry.gl_entry_credit)
     @gl_entry.destroy     	
   end  
