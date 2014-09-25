@@ -20,7 +20,8 @@ class Receivable < ActiveRecord::Base
   has_many :so_shipments, through: :receivable_so_shipments
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :receivable_accounts, :dependent => :destroy
-
+  has_many :gl_entries, through: :receivable_accounts
+  
   accepts_nested_attributes_for :receivable_shipments
   accepts_nested_attributes_for :receivable_accounts
 
@@ -96,6 +97,12 @@ class Receivable < ActiveRecord::Base
       receivable_total - receivable_discount_val + receivable_freight
   end
 
+  def receivable_discount_val  
+    receivable_total = self.receivable_lines.sum(:receivable_line_cost)
+    receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
+    (receivable_total / 100) * self.receivable_discount rescue 0
+  end 
+
   def receivable_current_balance
       self.receivable_total - self.receipt_lines.sum(:receipt_line_amount)
   end
@@ -108,19 +115,19 @@ class Receivable < ActiveRecord::Base
       (self.receivable_accounts.sum(:receivable_account_amount) == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
 
-  def update_gl_account
-    accountsReceivableAmt = 0 
-    self.receivable_accounts.each do |receivable_account|
-       CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'decrement',receivable_account.receivable_account_amount, self.id )                    
-       accountsReceivableAmt += receivable_account.receivable_account_amount
-    end
-    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',accountsReceivableAmt, self.id )
+  # def update_gl_account
+  #   accountsReceivableAmt = 0 
+  #   self.receivable_accounts.each do |receivable_account|
+  #      CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'decrement',receivable_account.receivable_account_amount, self.id )                    
+  #      accountsReceivableAmt += receivable_account.receivable_account_amount
+  #   end
+  #   CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',accountsReceivableAmt, self.id )
 
-    # receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
-    # receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
-    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
-    # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
-  end  
+  #   # receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
+  #   # receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
+  #   # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
+  #   # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
+  # end  
 
   def generate_pdf
 

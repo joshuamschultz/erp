@@ -21,13 +21,21 @@
         <% end %>
     </tbody>
 </table>
+<% if @payable %>
+<% inventory_amount = @payable.payable_lines.sum(:payable_line_cost) %>   
+<% inventory_amount += @payable.po_shipments.sum(:po_shipped_cost) if  @payable.po_header %>
+<%= hidden_field_tag :payable_cost,  inventory_amount     %>
+<%= hidden_field_tag :payable_freight, @payable.payable_freight  %>
+<%= hidden_field_tag :payable_discount, @payable.payable_discount_val  %>
+<% end %>
 
-<% inventory_amount = @payable.payable_lines.sum(:payable_line_cost) if @payable%>   
-<% inventory_amount += @payable.po_shipments.sum(:po_shipped_cost) if @payable && @payable.po_header %>
-<%= hidden_field_tag :payable_cost,  inventory_amount   if @payable  %>
-<%= hidden_field_tag :payable_freight, @payable.payable_freight if @payable %>
-<%= hidden_field_tag :payable_discount, @payable.payable_discount_val  if @payable %>
-
+<% if @receivable %>
+<% inventory_amount = @receivable.receivable_lines.sum(:receivable_line_cost) %>   
+<% inventory_amount += @receivable.so_shipments.sum(:so_shipped_cost) if  @receivable.so_header %>
+<%= hidden_field_tag :receivable_cost,  inventory_amount     %>
+<%= hidden_field_tag :receivable_freight, @receivable.receivable_freight  %>
+<%= hidden_field_tag :receivable_discount, @receivable.receivable_discount_val  %>
+<% end %>
 
 <div class="separator bottom"></div>
 
@@ -48,20 +56,25 @@
         var payable_cost = $("#payable_cost").val();
         var payable_freight = $("#payable_freight").val();
         var payable_discount = parseFloat($("#payable_discount").val()) * -1 ;
+
+        var receivable_cost = $("#receivable_cost").val();
+        var receivable_freight = $("#receivable_freight").val();
+        var receivable_discount = parseFloat($("#receivable_discount").val()) * -1 ;
         var account_row_count = $(".account_new").length + $(".account_edit").length;
-        if(payable_cost > 0 ) {
-            
-            disperse_amount("INVENTORY", payable_cost);
+        if(payable_cost > 0 || receivable_cost > 0) {            
+            var cost = payable_cost ? payable_cost : receivable_cost ;
+            disperse_amount("INVENTORY", cost);
             
         }
-        if( payable_freight > 0 ) {
-
-            disperse_amount("FREIGHT ; UPS", payable_freight);
+        if( payable_freight > 0 ||  receivable_freight > 0) {
+            var freight = payable_freight ? payable_freight : receivable_freight;
+            disperse_amount("FREIGHT ; UPS", freight);
             
         }           
-        if(payable_discount < parseFloat(0) ) {
+        if(payable_discount < parseFloat(0) || receivable_discount < parseFloat(0)) {
 
-            disperse_amount("COGS; DISCOUNT", payable_discount);
+            var discount = payable_discount ? payable_discount : receivable_discount ;
+            disperse_amount("COGS; DISCOUNT", discount);
              
         }             
     });
@@ -69,7 +82,7 @@
         var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));      
         var last_id = $last.children('td:first').children().find('select').attr('id');
         var getNum;
-        if(last_id){
+        if(typeof  last_id != 'undefined'){
          getNum = last_id.match(/(\d+)/g);                 
          getNum = parseInt(getNum);
         }         
@@ -80,11 +93,12 @@
             return parseInt(0);
         } 
     }  
-    function disperse_amount(theText, amt){
-        account_row_count = $(".account_new").length + $(".account_edit").length;
-        for ( var i = 0; i < account_row_count; i++ ) {             
-            if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
+    function disperse_amount(theText, amt){        
+        account_row_count = $(".account_new").length + $(".account_edit").length;        
+        for ( var i = 0; i < account_row_count; i++ ) {                    
+            if ($("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
+
                     if(amt > 0 || amt < 0){                    
                         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
                     }
@@ -93,9 +107,8 @@
                     }    
                     break;
                 } 
-        }
-
-        if(i ==account_row_count && (amt > 0 || amt < 0) && $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").length == 0){
+        }        
+        if(i ==account_row_count && (amt > 0 || amt < 0) && $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").length == 0){         
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html); 
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
