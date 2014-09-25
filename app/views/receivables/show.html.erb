@@ -73,8 +73,12 @@ function create_receipt(){
     alert("Please create receipt");
 }
 
-function after_send(){
-    alert("sucess")
+function after_send(response){
+    
+
+    alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
+
+  
 }
 function send_mail_vendor(){
 
