@@ -20,7 +20,8 @@ class Receivable < ActiveRecord::Base
   has_many :so_shipments, through: :receivable_so_shipments
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :receivable_accounts, :dependent => :destroy
-
+  has_many :gl_entries, through: :receivable_accounts
+  
   accepts_nested_attributes_for :receivable_shipments
   accepts_nested_attributes_for :receivable_accounts
 
@@ -94,6 +95,12 @@ class Receivable < ActiveRecord::Base
       receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
       receivable_total - receivable_discount_val + receivable_freight
   end
+
+  def receivable_discount_val  
+    receivable_total = self.receivable_lines.sum(:receivable_line_cost)
+    receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
+    (receivable_total / 100) * self.receivable_discount rescue 0
+  end 
 
   def receivable_current_balance
       self.receivable_total - self.receipt_lines.sum(:receipt_line_amount)

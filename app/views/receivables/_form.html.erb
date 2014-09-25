@@ -21,6 +21,7 @@
 
     <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.organization) %>
+    <%= hidden_field_tag :receivable_id, @receivable.id %>
 
     <% if @receivable.so_header %>
         <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" %>   
@@ -41,7 +42,9 @@
   </div>
 
   <div class="separator bottom"></div>
-
+  <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @receivable.new_record?%></div><br>
+  <div class="separator bottom"></div>
+  
   <div class="form-actions">
     <%= f.button :submit, 'Create Invoice'  if @receivable.new_record? %>
     <%= f.button :submit, 'Update Invoice'  unless @receivable.new_record? %>
@@ -106,6 +109,104 @@
         return false;
     }
 
+    function update()
+    {
+      add_freight ();
+      add_discount ();          
+    } 
+     function get_rowcount(){
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
+        var last_id = $last.children('td:first').children().find('select').attr('id');
+        if(typeof last_id != 'undefined')    
+        {
+            var getNum = last_id.match(/(\d+)/g);  
+            getNum = parseInt(getNum);  
+            return (getNum+1);
+        }
+        else
+        {
+          return  0;
+        }
+    }   
+    function add_freight () {        
+        var receivableId =  $("#receivable_id").val(); 
+        var freightAmt = $("#receivable_receivable_freight").val();        
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_receivable_freight", "receivable_id" : receivableId, "freight_amt": freightAmt }}, "freight_result", {});
+            // body...
+        } 
+
+    function  freight_result ()     
+    {
+        var account_row_count = get_rowcount();    
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS")
+                {
+                    if($("#receivable_receivable_freight").val() > 0){
+                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val($("#receivable_receivable_freight").val());
+                    }
+                    else{
+                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").closest("tr").remove();   
+                    }    
+                    break;
+                } 
+        }
+        if(i ==account_row_count && $("#receivable_receivable_freight").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            var theText = "FREIGHT ; UPS";
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+            if($("#receivable_receivable_freight").val() > 0){
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val($("#receivable_receivable_freight").val());
+            }
+        }         
+    }
+    function add_discount () {
+        var receivableId =  $("#receivable_id").val(); 
+        var discount = $("#receivable_receivable_discount").val();   
+          
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_receivable_discount", "receivable_id" : receivableId, "discount": discount  }}, "discount_result", {});
+            // body...
+        } 
+
+    function  discount_result ()     
+    {
+        var account_row_count = get_rowcount();         
+        var discount_val = ($("#receivable_cost").val() /100 * $("#receivable_receivable_discount").val()) * -1;        
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "COGS; DISCOUNT")
+                {                    
+                    if($("#receivable_receivable_discount").val() > 0)
+                    {                   
+                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val(discount_val);
+                    }
+                    else{
+                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").closest("tr").remove();    
+                    }   
+                    break;
+                } 
+        }        
+        if(i ==account_row_count && $("#receivable_receivable_discount").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){
+            alert("Inside");
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+            var theText = "COGS; DISCOUNT";
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+            if($("#receivable_receivable_discount").val() > 0){
+                $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val(discount_val);
+            }    
+        }
+        
+    }
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>

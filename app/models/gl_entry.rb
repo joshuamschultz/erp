@@ -4,13 +4,14 @@ class GlEntry < ActiveRecord::Base
   belongs_to :gl_account
   belongs_to :payable
   belongs_to :payable_account
+  belongs_to :receivable_account
 
 
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :comments, :as => :commentable, :dependent => :destroy
   
   attr_accessible :gl_entry_active, :gl_entry_credit, :gl_entry_date, :gl_entry_debit, 
-  :gl_entry_description, :gl_entry_identifier, :gl_entry_notes, :gl_account_id, :payable_id, :payable_account_id
+  :gl_entry_description, :gl_entry_identifier, :gl_entry_notes, :gl_account_id, :payable_id, :payable_account_id, :receivable_id, :receivable_account_id
 
   validates_presence_of :gl_entry_description, :gl_account
 

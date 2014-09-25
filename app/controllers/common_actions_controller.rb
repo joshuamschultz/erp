@@ -143,7 +143,14 @@ class CommonActionsController < ApplicationController
                   result ="Success"
                 end
               end
-
+             when "add_or_update_receivable_freight" 
+              if  params[:receivable_id].present? && params[:freight_amt].present? 
+                receivable = Receivable.find(params[:receivable_id])             
+                if receivable.update_attributes(:receivable_freight => params[:freight_amt] )
+                  receivable.update_receivable_total
+                  result ="Success"
+                end
+              end
             when "add_or_update_discount"
               if  params[:payable_id].present? && params[:discount].present? 
                 payable = Payable.find(params[:payable_id])             
@@ -152,7 +159,14 @@ class CommonActionsController < ApplicationController
                   result ="Success"
                 end
               end
-
+            when "add_or_update_receivable_discount"
+              if  params[:receivable_id].present? && params[:discount].present? 
+                receivable = Receivable.find(params[:receivable_id])             
+                if receivable.update_attributes(:receivable_discount => params[:discount] )
+                  receivable.update_receivable_total
+                  result ="Success"
+                end
+              end
             when "set_checklist"
               if params[:id].present? && params[:value].present?
                 checklist = CheckListLine.find(params[:id])
