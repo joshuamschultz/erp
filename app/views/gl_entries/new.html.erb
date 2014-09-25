@@ -26,7 +26,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_entries_path(:order => "gl_entry_date desc"), :extras => {:slno => false, :order => "desc"},
+        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false, :order => "desc"},
         :columns => '[
                         { "mData": "gl_entry_identifier" },
                         { "mData": "gl_account_name" },
