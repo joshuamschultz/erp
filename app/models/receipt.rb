@@ -68,8 +68,8 @@ class Receipt < ActiveRecord::Base
     if self.receipt_type.present? && self.receipt_type.type_value == "check" 
             depositCheck = DepositCheck.create(receipt_id: self.id, status: "open")
             Reconcile.create(reconcile_type: "deposit check", receipt_id: self.id, deposit_check_id: depositCheck.id)
-            CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',self.receipt_check_amount )
-            CommonActions.update_gl_accounts('PETTY CASH', 'increment',self.receipt_check_amount ) 
+            # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',self.receipt_check_amount )
+            # CommonActions.update_gl_accounts('PETTY CASH', 'increment',self.receipt_check_amount ) 
     end  
         
   end 
