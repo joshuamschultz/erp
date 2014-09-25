@@ -76,12 +76,16 @@ class ReceivablesController < ApplicationController
   def create
     if params[:shipments].present?
         @receivable = SoHeader.process_receivable_so_lines(params)
+
     else
         @receivable = Receivable.new(params[:receivable])
+
     end
 
     respond_to do |format|
       if @receivable.save
+        # @so_header = @receivable.so_header rescue nil
+        # genarate_pdf
         @receivable.update_gl_account
         format.html { redirect_to new_receivable_receivable_line_path(@receivable), notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
@@ -111,6 +115,8 @@ class ReceivablesController < ApplicationController
 
     respond_to do |format|
       if @receivable.update_attributes(params[:receivable])
+        # @so_header = @receivable.so_header rescue nil
+        # genarate_pdf
         format.html { redirect_to @receivable, notice: 'Receivable was successfully updated.' }
         format.json { head :no_content }
       else
@@ -144,6 +150,25 @@ class ReceivablesController < ApplicationController
     @company_info = CompanyInfo.first
     render :layout => false
   end 
+private
 
-
+  def genarate_pdf 
+      html = render_to_string(:layout => false , :partial => 'receivables/invoice_report')
+      kit = PDFKit.new(html, :page_size => 'A4')    
+      # Get an inline PDF
+      pdf = kit.to_pdf
+      # Save the PDF to a file    
+      path = Rails.root.to_s+"/public/invoice_report"
+      if File.directory? path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
+      else
+        Dir.mkdir path
+        path = path+"/"+@so_header.so_identifier.to_s+".pdf"
+        kit.to_file(path)
+      end
+      p "===================================================="
+        puts html
+      p "==================================================="
+  end
 end

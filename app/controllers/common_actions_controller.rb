@@ -71,8 +71,9 @@ class CommonActionsController < ApplicationController
               UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
               result = "success"
             when "send_invoice"
-              
-
+              @receivable = Receivable.find(params[:receivable_id])
+              @customer_eamil = @receivable.so_header.bill_to_address.contact_email
+              UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
               result = "success"
 
             when "get_item_description"
