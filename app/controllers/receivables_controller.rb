@@ -86,7 +86,7 @@ class ReceivablesController < ApplicationController
       if @receivable.save
         # @so_header = @receivable.so_header rescue nil
         # genarate_pdf
-        @receivable.update_gl_account
+        # @receivable.update_gl_account
         format.html { redirect_to new_receivable_receivable_line_path(@receivable), notice: 'Receivable was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
