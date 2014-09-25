@@ -107,18 +107,18 @@ class Receivable < ActiveRecord::Base
       (self.receivable_accounts.sum(:receivable_account_amount) == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
 
-  def update_gl_account
-    accountsReceivableAmt = 0 
-    self.receivable_accounts.each do |receivable_account|
-       CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'decrement',receivable_account.receivable_account_amount, self.id )                    
-       accountsReceivableAmt += receivable_account.receivable_account_amount
-    end
-    CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',accountsReceivableAmt, self.id )
+  # def update_gl_account
+  #   accountsReceivableAmt = 0 
+  #   self.receivable_accounts.each do |receivable_account|
+  #      CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'decrement',receivable_account.receivable_account_amount, self.id )                    
+  #      accountsReceivableAmt += receivable_account.receivable_account_amount
+  #   end
+  #   CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',accountsReceivableAmt, self.id )
 
-    # receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
-    # receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
-    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
-    # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
-  end  
+  #   # receivable_amount =  self.receivable_lines.sum(:receivable_line_cost) + receivable_freight
+  #   # receivable_amount +=  self.so_shipments.sum(:so_shipped_cost) if self.so_header
+  #   # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement', receivable_freight) 
+  #   # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'increment',receivable_amount )     
+  # end  
 
 end
