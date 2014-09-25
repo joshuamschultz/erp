@@ -595,6 +595,8 @@
 
 
                         <% sub_total = 0 %>
+                        <% freight_val = 0 %>
+
                         <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
                            <td><%= so_shipment.so_line.so_line_quantity %></td>
                            <td><%= so_shipment.so_shipped_count %></td>
@@ -626,6 +628,7 @@
                             <td><%= so_shipment.so_line.so_line_cost %></td>
                             <td><%= so_shipment.so_shipped_cost %></td>
                             <% sub_total+= so_shipment.so_shipped_cost %>
+                            <% freight_val+= so_shipment.so_line.so_line_freight.to_f %>
                         <% end %>
                     </tr>
 
@@ -655,11 +658,11 @@
                             </tr>
                             <tr>
                                 <th align="right" scope="row">FREIGHT :</th>
-                                <td align="right"><%= @receivable.receivable_freight.to_f %></td>
+                                <td align="right"><%= freight_val %></td>
                             </tr>
                             <tr>
                                 <th align="right" scope="row">TOTAL :</th>
-                                <td align="right"><%= sub_total.to_f + @receivable.receivable_freight.to_f %></td>
+                                <td align="right"><%= sub_total.to_f +  freight_val %></td>
                             </tr>
                         </table>
                     </div>
