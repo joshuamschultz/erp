@@ -45,6 +45,7 @@ class ReceivablesController < ApplicationController
   def show
     @receivable = Receivable.find(params[:id])
     @so_header = @receivable.so_header
+    @receipt = @receivable.receipt_lines.last.receipt rescue nil
     @attachable = @receivable
 
     respond_to do |format|
@@ -136,4 +137,13 @@ class ReceivablesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def invoice_report
+    @receivable = Receivable.find(params[:id])
+    @so_header = @receivable.so_header rescue nil
+    @company_info = CompanyInfo.first
+    render :layout => false
+  end 
+
+
 end
