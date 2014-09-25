@@ -594,8 +594,8 @@
                     <tr tr class="h-pad" valign="top" align="left">
 
 
-                        <% sub_total = 0 %>
-                        <% freight_val = 0 %>
+                        <% sub_total = 0.0 %>
+                        <% freight_val = 0.0 %>
 
                         <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
                            <td><%= so_shipment.so_line.so_line_quantity %></td>
