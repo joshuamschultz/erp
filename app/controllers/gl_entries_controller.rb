@@ -101,12 +101,12 @@ class GlEntriesController < ApplicationController
   # DELETE /gl_entries/1.json
   def destroy
     @gl_entry = GlEntry.find(params[:id])
-    if @gl_entry.gl_entry_credit
-      CommonActions.update_gl_accounts_for_gl_entry(@gl_entry.gl_account.gl_account_title, 'decrement', @gl_entry.gl_entry_credit)
-    end
-    if @gl_entry.gl_entry_debit
-      CommonActions.update_gl_accounts_for_gl_entry(@gl_entry.gl_account.gl_account_title, 'increment', @gl_entry.gl_entry_debit)
-    end
+    # if @gl_entry.gl_entry_credit
+    #    CommonActions.update_gl_accounts_for_gl_entry(@gl_entry.gl_account.gl_account_title, 'decrement', @gl_entry.gl_entry_credit)
+    #  end
+    #  if @gl_entry.gl_entry_debit
+    #    CommonActions.update_gl_accounts_for_gl_entry(@gl_entry.gl_account.gl_account_title, 'increment', @gl_entry.gl_entry_debit)
+    #  end
     @gl_entry.destroy
 
     respond_to do |format|

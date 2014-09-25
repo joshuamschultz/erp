@@ -21,10 +21,11 @@ class Payable < ActiveRecord::Base
   has_many :payable_po_shipments, :dependent => :destroy
   has_many :po_shipments, through: :payable_po_shipments
   has_many :payable_accounts, :dependent => :destroy
-  has_many :gl_entries, :dependent => :destroy
+  has_many :gl_entries, through: :payable_accounts
 
   accepts_nested_attributes_for :po_shipments
   accepts_nested_attributes_for :payable_accounts
+  accepts_nested_attributes_for :gl_entries
 
   validates_presence_of :payable_invoice_date, :payable_due_date, :organization, :payable_invoice
   # validates_presence_of :payable_invoice, on: :update
@@ -89,18 +90,18 @@ class Payable < ActiveRecord::Base
       Payable.set_callback("save", :after, :process_after_save)
   end
 
-  def update_gl_account
-    accountsPayableAmt = 0 
-    self.payable_accounts.each do |payable_account|
-       CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount, self.id )                    
-       accountsPayableAmt += payable_account.payable_account_amount
-    end
-    CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',accountsPayableAmt, self.id )
-    # payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
-    # payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
-    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
-    # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )    
-  end 
+  # def update_gl_account
+  #   accountsPayableAmt = 0 
+  #   self.payable_accounts.each do |payable_account|
+  #      CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'increment',payable_account.payable_account_amount, self.id )                    
+  #      accountsPayableAmt += payable_account.payable_account_amount
+  #   end
+  #   CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',accountsPayableAmt, self.id )
+  #   # payable_amount = self.payable_lines.sum(:payable_line_cost) + self.payable_freight
+  #   # payable_amount +=self.po_shipments.sum(:po_shipped_cost) if self.po_header
+  #   # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',self.payable_freight )
+  #   # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'increment',payable_amount )    
+  # end 
 
   def update_payable_total
       payable_total = self.payable_lines.sum(:payable_line_cost)
