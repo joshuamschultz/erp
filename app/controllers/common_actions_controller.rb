@@ -76,10 +76,11 @@ class CommonActionsController < ApplicationController
                 if @receivable.so_header.bill_to_address.present?
                   @customer_eamil = @receivable.so_header.bill_to_address.contact_email
                   UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
+                else
+                    result = "fail"
                 end
+
                 result = "success"
-              else
-                result = "fail"
               end
             when "get_item_description"
               if params[:item_id].present?
