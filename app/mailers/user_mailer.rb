@@ -15,6 +15,8 @@ class UserMailer < ActionMailer::Base
           subject: "Purchase Order [#{@po_header.po_identifier}]"
     )
   end 
+
+
   def customer_billing_mail(receivable,customer_email)
     @receivable = receivable
     @customer_email = customer_email
@@ -22,7 +24,7 @@ class UserMailer < ActionMailer::Base
     file_path = "#{Rails.root.to_s}/public/invoice_report/#{@receivable.so_header.so_identifier}.pdf"
     attachments[file_name.to_s + '.pdf'] = File.read(file_path)
     mail( to: @customer_email, 
-          subject: "Invoice [#{@receivable.so_header.so_identifier}]"
+          subject: "Invoice [#{@receivable.receivable_identifier}]"
     )
   end 
 
