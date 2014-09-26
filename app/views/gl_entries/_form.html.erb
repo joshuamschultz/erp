@@ -64,7 +64,7 @@
 
         <div class="form-actions form-actions-02">
           <%= f.button :submit, :class => "btn btn-02"  %>
-          <%= link_to 'Delete', gl_entry_path(@gl_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-02" unless @gl_entry.new_record? %>
+          <%= link_to 'Delete', gl_entry_path(@gl_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-03" unless @gl_entry.new_record? %>
           <%= link_to 'Back to Journal Entries', gl_entries_path, :class => "btn" %>
         </div>
     </div>
@@ -99,3 +99,71 @@
       return false;
     }
 </script>
+<style>
+ .row-fluid.row-fluid-02 {
+    float: left;
+    width: 70%;
+}
+
+
+.span8.well.item_detail_view {
+    float: right;
+    width: 22%;
+}
+
+.form-horizontal .well .control-label {
+    text-align: left;
+    width: 90px !important;
+}
+
+.span8.well.item_detail_view input {
+    width: 125px;
+}
+.form-horizontal .well .controls {
+    margin-left: !important;
+}
+
+.text.optional textarea {
+    width: 125px;
+}
+.form-actions input {
+    margin: 0 0 10px;
+}
+.span4.well.item_detail_view {
+    margin: 0 0 50px;
+    width: 100%;
+}
+.form-horizontal .well .controls {
+margin-left: 92px !important;
+}
+.btn.btn-02 {
+    width: 180px !important;
+}
+.btn:not(.btn-block) {
+    margin: 10px 0 0 !important;
+}
+.form-actions.form-actions-02 {
+    margin: 0 auto !important;
+    width: 182px;
+}
+.row-fluid.row-fluid-02 {
+float: left;
+width: 72%;
+}
+
+.span8.well.item_detail_view {
+    float: right;
+    padding: 13px;
+    width: 221px;
+}
+.glyphicons.btn-action {
+height: 24px;
+width: 22px;
+}
+.table-condensed th, .table-condensed td {
+    padding: 4px 5px;
+}
+.btn.btn-03 {
+    width: 85%;
+}
+ </style>
