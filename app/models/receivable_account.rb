@@ -14,7 +14,9 @@ class ReceivableAccount < ActiveRecord::Base
   after_save :process_after_save
   before_destroy :process_before_destory
   
-  def process_after_save  	
+  def process_after_save 
+    @gl_account_to_update = GlAccount.where(:gl_account_identifier=> "11080").first
+    @gl_account_id_to_update = @gl_account_to_update.id
   	if self.gl_entry_id
   		@gl_entry = GlEntry.where(:id => self.gl_entry_id, :gl_account_id => self.gl_account_id).first       
       	self.gl_account.gl_account_identifier == "51020020" || self.gl_account.gl_account_identifier == "11050" ? @gl_entry.update_attributes(:gl_entry_credit=> self.receivable_account_amount * -1) : @gl_entry.update_attributes(:gl_entry_credit => self.receivable_account_amount)  ;
@@ -30,9 +32,9 @@ class ReceivableAccount < ActiveRecord::Base
   	end
   	receivable = Receivable.where(:id => self.receivable_id).first
   	pacctsum =  receivable.receivable_accounts.sum(:receivable_account_amount).to_f  	
-  	@gl_entry = GlEntry.where(:receivable_id => self.receivable_id, :gl_account_id => 14).first
+  	@gl_entry = GlEntry.where(:receivable_id => self.receivable_id, :gl_account_id => @gl_account_id_to_update).first
   	if @gl_entry.blank?
-  		@gl_entry = GlEntry.new(:gl_account_id => 14, :gl_entry_description => "Transaction", :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_account_id => self.id, :receivable_id => self.receivable_id)  		
+  		@gl_entry = GlEntry.new(:gl_account_id => @gl_account_id_to_update, :gl_entry_description => "Transaction", :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_account_id => self.id, :receivable_id => self.receivable_id)  		
       @gl_entry.save   	
     else
     	@gl_entry.update_attributes(:gl_entry_credit => pacctsum )
@@ -45,7 +47,7 @@ class ReceivableAccount < ActiveRecord::Base
     	@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f  + self.receivable_account_amount.to_f
 	end    	
     @gl_account.update_attributes(:gl_account_amount => @amount)
-    @gl_account = GlAccount.where(:id => 14).first
+    @gl_account = GlAccount.where(:id => @gl_account_id_to_update).first
     amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f + self.receivable_account_amount.to_f
     @gl_account.update_attributes(:gl_account_amount => amount)   
   end
