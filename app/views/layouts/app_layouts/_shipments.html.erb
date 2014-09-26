@@ -36,7 +36,8 @@ var current_field_temp;
 	function process_shipping_inputs(current_field){
 		var so_line_id = current_field.attr("<%= type %>_line_id");
 		current_field_temp = current_field;
-		get_quality_lots(so_line_id);
+		after_quality_lot_select();
+		//get_quality_lots(so_line_id);
 		// $(".shipping_status").html("");
 		// $(".shipping_status").removeClass("success");
 		// $(".shipping_status").removeClass("error");
