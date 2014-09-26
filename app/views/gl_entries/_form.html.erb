@@ -1,10 +1,48 @@
 <%= simple_form_for(@gl_entry, :html => {:id => "form_for_gl_entries",:class => "form-horizontal"}) do |f| %>
-<div class="row-fluid">
+<div class="row-fluid row-fluid-02">
     <div id="gl_entry_gl_account_info" class="span4 well item_detail_view">
         <% if @gl_entry.persisted? %>            
                 <%= render :partial => 'gl_accounts/gl_account_info' %>
         <% end %>
     </div>
+
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>GL Account</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Credit</th>
+                <th>Debit</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false, :order => "desc"},
+        :columns => '[
+                        { "mData": "gl_entry_identifier" },
+                        { "mData": "gl_account_name" },
+                        { "mData": "gl_entry_description" },
+                        { "mData": "gl_entry_date" },
+                        { "mData": "gl_entry_credit"},
+                        { "mData": "gl_entry_debit"},
+                        { "mData": "gl_entry_active" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
 
     <div class="span8 well item_detail_view">
         <%= f.error_notification %>
@@ -24,9 +62,9 @@
 
         <div class="separator bottom"></div>
 
-        <div class="form-actions">
-          <%= f.button :submit %>
-          <%= link_to 'Delete', gl_entry_path(@gl_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_entry.new_record? %>
+        <div class="form-actions form-actions-02">
+          <%= f.button :submit, :class => "btn btn-02"  %>
+          <%= link_to 'Delete', gl_entry_path(@gl_entry), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-02" unless @gl_entry.new_record? %>
           <%= link_to 'Back to Journal Entries', gl_entries_path, :class => "btn" %>
         </div>
     </div>

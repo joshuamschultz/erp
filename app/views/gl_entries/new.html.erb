@@ -2,40 +2,68 @@
 
 <%= render 'form' %>
 
- <div class="widget-body">
-        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>GL Account</th>
-                <th>Description</th>
-                <th>Date</th>
-                <th>Credit</th>
-                <th>Debit</th>
-                <th>Active</th>
-                <th></th>
-              </tr>
-            </thead>
+ <style>
+ .row-fluid.row-fluid-02 {
+    float: left;
+    width: 70%;
+}
 
-            <tbody>
-                
-            </tbody>
-        </table>
-    </div>
-</div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false, :order => "desc"},
-        :columns => '[
-                        { "mData": "gl_entry_identifier" },
-                        { "mData": "gl_account_name" },
-                        { "mData": "gl_entry_description" },
-                        { "mData": "gl_entry_date" },
-                        { "mData": "gl_entry_credit"},
-                        { "mData": "gl_entry_debit"},
-                        { "mData": "gl_entry_active" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
+.span8.well.item_detail_view {
+    float: right;
+    width: 22%;
+}
+
+.form-horizontal .well .control-label {
+    text-align: left;
+    width: 90px !important;
+}
+
+.span8.well.item_detail_view input {
+    width: 125px;
+}
+.form-horizontal .well .controls {
+    margin-left: !important;
+}
+
+.text.optional textarea {
+    width: 125px;
+}
+.form-actions input {
+    margin: 0 0 10px;
+}
+.span4.well.item_detail_view {
+    margin: 0 0 50px;
+    width: 100%;
+}
+.form-horizontal .well .controls {
+margin-left: 92px !important;
+}
+.btn.btn-02 {
+    width: 180px !important;
+}
+.btn:not(.btn-block) {
+    margin: 10px 0 0 !important;
+}
+.form-actions.form-actions-02 {
+    margin: 0 auto !important;
+    width: 182px;
+}
+.row-fluid.row-fluid-02 {
+float: left;
+width: 72%;
+}
+
+.span8.well.item_detail_view {
+    float: right;
+    padding: 13px;
+    width: 221px;
+}
+.glyphicons.btn-action {
+height: 24px;
+width: 22px;
+}
+.table-condensed th, .table-condensed td {
+    padding: 4px 5px;
+}
+ </style>
