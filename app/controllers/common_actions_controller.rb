@@ -72,10 +72,15 @@ class CommonActionsController < ApplicationController
               result = "success"
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
-              @customer_eamil = @receivable.so_header.bill_to_address.contact_email
-              UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
-              result = "success"
-
+              if @receivable.so_header.present?
+                if @receivable.so_header.bill_to_address.present?
+                  @customer_eamil = @receivable.so_header.bill_to_address.contact_email
+                  UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
+                end
+                result = "success" 
+              else
+                result = 'fail'
+              end
             when "get_item_description"
               if params[:item_id].present?
                 description = ItemAltName.find(params[:item_id]).item.current_revision.item_description
