@@ -376,11 +376,6 @@
                             <% if so_line.item_revision.present? %>
                                 <strong><%= so_line.item_revision.item_description %> </strong>
                             <% end %>
-                            <div class="text-7">
-                                <% if so_line.organization.present? %>
-                                    <strong class="text-6" ><%= so_line.organization.organization_name %></strong>
-                                <% end %>
-                            </div>
                         <% end %>
                             <div class="text-7">
                                 <% if @so_header.po_header.present? %>
@@ -401,7 +396,13 @@
 
                 <div class="ms_text-4">
                     <h2 class="ms_sub-heading">  Shipped </h2>
-                    <strong> </strong>
+                    <% @so_header.so_lines.each do |so_line| %>
+                        <% if so_line.so_shipments.present? %>
+                            <strong><%= so_line.so_shipments.last.so_shipped_count %> </strong>
+                        <% else %>
+                            <strong><%= shipped_val = 0 %></strong>
+                        <% end %>
+                    <% end %>
                 </div>
             </div>
         </article>
