@@ -133,25 +133,7 @@
       add_freight ();
       add_discount (); 
          
-    }
-    // $( "#payable_payable_freight" ).on("focusout",function() {
-    //     var account_row_count = get_rowcount();    
-    //     var dispersed_amt = parseFloat(0);
-    //     for ( var i = 0 ; i < account_row_count; i++ ){
-    //         dispersed_amt += parseFloat($("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val());
-    //         if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS"){
-    //               to_subtract = parseFloat($("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val());
-    //             }
-    //     }
-    //     var to_disperse = parseFloat($("#payable_payable_freight").val()) - to_subtract  ;
-    //     $('#amount_to_disperse').html("Amount To Disperse: $"+to_disperse);
-        
-
-        
-    // });
-    // $( "#payable_payable_discount" ).on("focusout mousemove",function() {
-    //    add_discount ();
-    // });
+    } 
     function get_rowcount(){
         var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
         var last_id = $last.children('td:first').children().find('select').attr('id');
@@ -198,8 +180,8 @@
         if(i ==account_row_count && $("#payable_payable_freight").val() > 0 && $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").length == 0){
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
-            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "FREIGHT ; UPS";
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);            
+            var theText = $("#inventory_text").val();
             $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
                 if($(this).text() == theText) {
                     $(this).attr('selected', 'selected');            
@@ -238,8 +220,8 @@
         if(i ==account_row_count && $("#payable_payable_discount").val() > 0 && $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").length == 0){
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
-            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "COGS; DISCOUNT";
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);        
+            var theText = $("#discount_text").val();
             $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
                 if($(this).text() == theText) {
                     $(this).attr('selected', 'selected');            

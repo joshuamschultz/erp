@@ -36,7 +36,9 @@
 <%= hidden_field_tag :receivable_freight, @receivable.receivable_freight  %>
 <%= hidden_field_tag :receivable_discount, @receivable.receivable_discount_val  %>
 <% end %>
-
+<%= hidden_field_tag :inventory_text %>
+<%= hidden_field_tag :freight_text %>
+<%= hidden_field_tag :discount_text %>
 <div class="separator bottom"></div>
 
  <div class="form-actions">
@@ -46,10 +48,24 @@
 
 <script type="text/javascript"> 
     var account_select_html = "";
-    var page_submit = true;
-
+    var page_submit = true;   
     $(document).ready(function(){ 
-        account_select_html = $.trim(Mustache.render($(".account-select-box-template").html(), {"aaData": <%= gl_accounts.to_json.html_safe %>}));
+
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_gl_account_title" }}, "receive_titles", {});
+
+        
+        account_select_html = $.trim(Mustache.render($(".account-select-box-template").html(), {"aaData": <%= gl_accounts.to_json.html_safe %>}));     
+        
+     
+    });
+
+    function receive_titles(response, callback_params, api_params){                    
+        inventory = response["aaData"]["11050"]; 
+        $("#inventory_text").val(inventory);        
+        discount = response["aaData"]["51010020"];
+        $("#discount_text").val(discount);
+        freight = response["aaData"]["51020020"]; 
+        $("#freight_text").val(freight);
 
         //Dispersing Amounts to Inventory and Freight
 
@@ -61,23 +77,27 @@
         var receivable_freight = $("#receivable_freight").val();
         var receivable_discount = parseFloat($("#receivable_discount").val()) * -1 ;
         var account_row_count = $(".account_new").length + $(".account_edit").length;
+
+
         if(payable_cost > 0 || receivable_cost > 0) {            
             var cost = payable_cost ? payable_cost : receivable_cost ;
-            disperse_amount("INVENTORY", cost);
+            disperse_amount($("#inventory_text").val(), cost);
             
         }
         if( payable_freight > 0 ||  receivable_freight > 0) {
             var freight = payable_freight ? payable_freight : receivable_freight;
-            disperse_amount("FREIGHT ; UPS", freight);
+            disperse_amount($("#freight_text").val(), freight);
             
         }           
         if(payable_discount < parseFloat(0) || receivable_discount < parseFloat(0)) {
 
             var discount = payable_discount ? payable_discount : receivable_discount ;
-            disperse_amount("COGS; DISCOUNT", discount);
+            disperse_amount($("#discount_text").val(), discount);
              
-        }             
-    });
+        }            
+
+
+    }
     function get_rowcount(){
         var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));      
         var last_id = $last.children('td:first').children().find('select').attr('id');
