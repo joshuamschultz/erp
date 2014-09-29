@@ -190,8 +190,7 @@
                     break;
                 } 
         }        
-        if(i ==account_row_count && $("#receivable_receivable_discount").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){
-            alert("Inside");
+        if(i ==account_row_count && $("#receivable_receivable_discount").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){            
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
             $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
