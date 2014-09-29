@@ -214,7 +214,16 @@ class CommonActionsController < ApplicationController
                 quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
                 result = quality_lots
               end
-              
+            when "get_gl_account_title" 
+              gl_account_titles = Hash.new 
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "11050").first              
+              gl_account_titles["11050"] = @gl_account.gl_account_title
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010020").first
+              gl_account_titles["51010020"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51020020").first
+              gl_account_titles["51020020"] = @gl_account["gl_account_title"]
+              result = gl_account_titles 
+  
                             
         end
          render json: {:aaData => result}
