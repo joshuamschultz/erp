@@ -35,13 +35,14 @@
             text-decoration: underline;
         }
         .ms_wrapper .ms_image {
-            float: left;
-            font-size: 22px;
-            height: 105px;
-            margin: 28px 0 0;
-            text-align: center;
-            width: 310px;
+        float: left;
+        font-size: 22px;
+        height: 93px;
+        margin: 21px 0 0;
+        text-align: center;
+        width: 310px;
         }
+
         .ms_wrapper .ms_heading-3 {
             text-decoration: underline;
             font-size: 14px;
@@ -50,15 +51,15 @@
             float: left;
         }
         article.art-01 {
-            margin: 18px 0 0;
-            padding: 7px 0 0;
+        margin: 0;
+        padding: 3px 0 0;
         }
         .ms_image-6 h5 {
             font-size: 14px !important;
         }
         .ms_image-6 h4 {
             font-size: 13px;
-            margin: 3px 0;
+            margin: 0;
             text-decoration: underline;
         }
         .ms_text-wra {
@@ -68,20 +69,19 @@
             float: right;
         }
         .space {
-            margin: 12px 0;
+        margin: 5px 0;
         }
-
-        .ms_image-5 {
+                .ms_image-5 {
             border: 1px solid #800000;
             border-radius: 12px;
-            padding: 12px 34px;
+            padding: 4px 34px;
         }
         .ms_wrapper .ms_image-2 {
             float: right;
             font-size: 22px;
+            height: 119px;
             text-align: center;
             width: 310px;
-            height: 135px;
         }
         .ms_wrapper article {
             float: left;
@@ -100,7 +100,8 @@
         border-bottom: 1px dashed #444;
         font-size: 13px;
         margin: 0;
-        padding:10px 0;
+        padding: 10px 0;
+        text-align: center;
     }
 
 .h-pad2 strong {
@@ -206,7 +207,7 @@
         color: #800000;
         font-size: 16px;
         font-weight: bold;
-        margin: 2px 0;
+        margin: 0;
     }
     .ms_text-3-wrapper {
         float: left;
@@ -350,11 +351,11 @@
         color: #000080;
     }
     .footer {
-        margin: 200px 0 0 0;
-        width: 640px;
         float: left;
+        margin: 300px 0 0;
+        width: 640px;
     }
-    .page {
+        .page {
         float: left;
         margin: 0 0 0 20px;
     }
@@ -396,7 +397,7 @@
     .ms_image-wrapper {
         float: left;
         height: 69px;
-        margin: 6px 0 0 3px;
+        margin: 20px 0 0 3px;
         width: 150px;
     }
     .ms_image-wrapper img {
@@ -468,7 +469,7 @@
                         <h3><%= @company_info.company_address1 %>
                         <br><%= @company_info.company_address2 %></h3>
                         <h5><span> P:</span> <%= @company_info.company_phone1 %> <br>
-                        <span> F:</span><%= @company_info.company_fax %></h5>
+                        <span> F:&nbsp;</span><%= @company_info.company_fax %></h5>
                     </div>
 
 
@@ -562,16 +563,13 @@
                     <tr align="center">
                         <td width="124">TERMS</td>
                         <td width="132">ORDER DATE</td>
-                        <td width="84">FOB</td>
                         <td width="146">SHIP VIA</td>
-                        <td width="154">SALE MAN</td>
                     </tr>
                     <tr>
+                        <td><%= @so_header.organization.organization_name %></td>
+                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") %></td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+
                     </tr>
                 </table>
 
@@ -595,7 +593,6 @@
 
 
                         <% sub_total = 0.0 %>
-                        <% freight_val = 0.0 %>
 
                         <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
                            <td><%= so_shipment.so_line.so_line_quantity %></td>
@@ -628,7 +625,6 @@
                             <td><%= so_shipment.so_line.so_line_cost %></td>
                             <td><%= so_shipment.so_shipped_cost %></td>
                             <% sub_total+= so_shipment.so_shipped_cost %>
-                            <% freight_val+= so_shipment.so_line.so_line_freight.to_f %>
                         <% end %>
                     </tr>
 
@@ -658,11 +654,11 @@
                             </tr>
                             <tr>
                                 <th align="right" scope="row">FREIGHT :</th>
-                                <td align="right"><%= freight_val %></td>
+                                <td align="right"><%= @receivable.receivable_freight.to_f %></td>
                             </tr>
                             <tr>
                                 <th align="right" scope="row">TOTAL :</th>
-                                <td align="right"><%= sub_total.to_f +  freight_val %></td>
+                                <td align="right"><%= sub_total.to_f + @receivable.receivable_freight.to_f  %></td>
                             </tr>
                         </table>
                     </div>
