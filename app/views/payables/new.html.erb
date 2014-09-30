@@ -1,3 +1,19 @@
 <h4 class="heading">New Payable</h4>
 
 <%= render 'form' %>
+
+<script>
+$(function() 
+{
+
+  $("#payable_payable_invoice_date, #payable_payable_due_date").datepicker().on("keydown", function(e){ 
+  	if (e.which == 13) {  		
+      var n=$(this).closest("form").attr("id");
+      var s=tab_field_forms[n].indexOf($(this).attr("id"));      
+      $($("#"+tab_field_forms[n][s]).selector).datepicker('hide');
+  	}	
+  });
+});
+
+</script>
+
