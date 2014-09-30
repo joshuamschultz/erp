@@ -286,7 +286,39 @@ margin: 2px 0 10px 0;}
     font-weight: normal;
     margin: 0 0 12px;
     text-align: center;
-}</style>
+}
+
+.h-pad > td {
+padding: 6px 10px;
+}
+
+.hea.art-002 {
+    border-bottom: 1px solid #222;
+    float: left;
+    font-weight: bold;
+    padding: 11px 0;
+}
+.hea.art-002 > td {
+    padding: 0 10px;
+}
+
+.h-pad > td {
+    padding: 9px 10px;
+}
+
+.h-pad {
+    float: left;
+    width: 100%;
+}
+
+
+.h-pad-04{width: 640px;text-align: center;}
+
+.h-pad-04 {
+color: #800000;
+}
+
+</style>
 </head>
 <body>
 <% @company_info = CompanyInfo.first%>
@@ -353,49 +385,59 @@ margin: 2px 0 10px 0;}
 
         <article>
 
-            <div class="ms_text-3-wrapper">
-                <div class="ms_text-3">
-                    <h2 class="ms_sub-heading">QTY</h2> 
+<article class="art-01 art-04">
+    <table cellspacing="0" cellpadding="0" width="640" border="0">
+        <tbody>
+            <tr align="center" class="hea art-002">
+                <td width="72">QTY</td>
+                <td width="150">CUST P/N-ALL P/N</td>
+                <td width="150">DESCRIPTION</td>
+                <td width="95">COST</td>
+                <td width="107">TOTAL</td>
+            </tr>
                     <% @po_header.po_lines.each do |po_line| %>
-                        <strong><%= po_line.po_line_quantity %> </strong>
-                    <% end %>   
-                </div>
 
-                <div class="ms_text-3">
-                    <h2 class="ms_sub-heading"> CUST P/N - ALL P/N</h2> 
+            <tr valign="top" align="left" class="h-pad">
 
-                        <% @po_header.po_lines.each do |po_line| %>
-                            <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
-                                <strong><%= po_line.item.item_part_no %></strong>
-                            <%  else %>
-                                <strong><%= po_line.item.item_part_no %></strong>
-                                <strong><%= po_line.item_alt_name.item_alt_identifier %></strong>
-                            <%  end %>
-                        <% end %>  
-                </div>
+                <td width="70"><%= po_line.po_line_quantity %> </td>
+                <td>
+                    <table width="100%" border="0">
+                        <tbody>
 
-                <div class="ms_text-5">
-                    <h2 class="ms_sub-heading">DESCRIPTION</h2> 
-                        <% @po_header.po_lines.each do |po_line| %>
-                            <% if po_line.item_revision.present? %>
-                                <strong><%= po_line.item_revision.item_description %> </strong>
-                            <% end %>
-                        <% end %>
-                </div>
-                <div class="ms_text-4">
-                    <h2 class="ms_sub-heading">  COST </h2> 
-                    <% @po_header.po_lines.each do |po_line| %>
-                        <strong><%= po_line.po_line_cost.to_f %></strong>
-                    <% end %>
-                </div>
-                <div class="ms_text-4">
-                    <h2 class="ms_sub-heading">TOTAL </h2> 
-                    <% @po_header.po_lines.each do |po_line| %>
-                        <strong><%= po_line.po_line_total.to_f %></strong>
-                    <% end %>
-                </div>
+                        <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
+                            <tr >
+                                <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
+                            </tr>                            
+                        <%  else %>
 
-            </div>
+                            <tr>
+                                <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
+                            </tr>
+                            <tr>
+                                <th width="150" scope="row"><%= po_line.item_alt_name.item_alt_identifier %></th>
+                            </tr>
+                        <%  end %>
+
+                        </tbody>
+                    </table>
+                </td>
+                <% if po_line.item_revision.present? %>
+                    <td width="150"><%= po_line.item_revision.item_description %> </td>
+                <% end %>
+                <td><%= po_line.po_line_cost.to_f %></td>
+                <td ><%= po_line.po_line_total.to_f %></td>
+            </tr>
+
+            <tr class="h-pad">
+                <td colspan="6" class="h-pad-04"><%= po_line.item_revision.item_notes%></td>
+            </tr>
+        <% end %>
+
+        </tbody>
+    </table>
+
+</article>
+
         </article>
 
 
