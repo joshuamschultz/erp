@@ -388,15 +388,15 @@ color: #800000;
     <table cellspacing="0" cellpadding="0" width="640" border="0">
         <tbody>
             <tr align="center" class="hea art-002">
-                <td width="72">QTY</td>
+                <td width="70">QTY</td>
                 <td width="150">CUST P/N-ALL P/N</td>
                 <td width="150">DESCRIPTION</td>
-                <td width="95">COST</td>
-                <td width="107">TOTAL</td>
+                <td width="0">COST</td>
+                <td width="150">TOTAL</td>
             </tr>
                     <% @po_header.po_lines.each do |po_line| %>
 
-            <tr valign="top" align="left" class="h-pad">
+            <tr valign="top" align="center" class="h-pad">
 
                 <td width="70"><%= po_line.po_line_quantity %> </td>
                 <td>
@@ -424,7 +424,7 @@ color: #800000;
                     <td width="150"><%= po_line.item_revision.item_description %> </td>
                 <% end %>
                 <td><%= po_line.po_line_cost.to_f %></td>
-                <td ><%= po_line.po_line_total.to_f %></td>
+                <td width="150"><%= po_line.po_line_total.to_f %></td>
             </tr>
 
             <tr class="h-pad">
