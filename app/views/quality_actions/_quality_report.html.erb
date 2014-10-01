@@ -161,7 +161,7 @@ p {
                                     <th scope="row">Standard Operationg Procedures</th>
                                 </tr>
                                 <tr align="right" valign="top">
-                                    <th scope="row">QM200 V.12 <span class="color-01"> 01/28/2014  Rev 2</span>
+                                    <th scope="row">QM200 V.12 <span class="color-01"> <%= @quality_action.created_at.strftime("%m/%d/%Y") %>  Rev 2</span>
                                     </th>
                                 </tr>
                             </table>
@@ -207,13 +207,13 @@ p {
                                                             </th>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row">Lorem Ipsum is simply dummy text</th>
+                                                            <th scope="row"><%= @quality_action.po_header.organization.organization_address_1%>,<%= @quality_action.po_header.organization.organization_address_2%>,<%= @quality_action.po_header.organization.organization_city %>,<%= @quality_action.po_header.organization.organization_state %>,<%= @quality_action.po_header.organization.organization_country %>,<%= @quality_action.po_header.organization.organization_zipcode %> </th>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row">Lorem Ipsum is simply dummy text of</th>
+                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no %></th>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><strong>Qty:</strong> 407007-HP &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier %></th>
+                                                            <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier %></th>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -268,7 +268,7 @@ p {
                         <th width="18%" scope="row">Date: <u> &nbsp;&nbsp; <%= @quality_action.created_at.strftime("%m/%d/%Y") %> &nbsp;&nbsp;</u>
                         </th>
                         <td width="31%">Initiated By
-                            <U>&nbsp;&nbsp;APHRODITE ROSE &nbsp;&nbsp;</u><strong></strong>
+                            <U>&nbsp;&nbsp; <%= @quality_action.created_user.name %> &nbsp;&nbsp;</u><strong></strong>
                             </u>
                         </td>
                         <td width="51%">
@@ -284,8 +284,8 @@ p {
                                         <br>Verified By</td>
                                 </tr>
                                 <tr align="center">
-                                    <th scope="row">APHRODIT</th>
-                                    <td class="bo-01">&nbsp;</td>
+                                    <th scope="row"><%= @quality_action.users.collect{|user| user.name+"</br>" }.join.html_safe %></th>
+                                    <td class="bo-01"><%= @quality_action.due_date.strftime("%m/%d/%Y") %></td>
                                     <td><%= @quality_action.created_at.strftime("%m/%d/%Y") %></td>
                                 </tr>
                             </table>

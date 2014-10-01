@@ -6,7 +6,7 @@
     <div class="span9"> 
         <div class="row-fluid item_detail_classic_btn">
             <div class="span3 well">
-                <a class="widget-stats" href="<%= quality_report_quality_action_path(@quality_action) %>" id="">
+                <a class="widget-stats" href="#" id="" onclick="quality_report()">
                     <h5><strong><%= @quality_action.quality_action_no %></strong></h5>
                     <span class="txt"><strong>Quality ID</strong></span>
                     <div class="clearfix"></div>
@@ -117,3 +117,13 @@
         <%= render 'attachments/attachments_less' %>
     </div>
 </div>
+
+<script type="text/javascript">
+function quality_report() {
+    var quality_iframe = $("#myPrintView")[0];
+    quality_iframe.contentWindow.focus();
+    quality_iframe.contentWindow.print();
+
+}
+</script>
+<iframe src="<%= quality_report_quality_action_path(@quality_action) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
