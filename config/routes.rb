@@ -28,6 +28,9 @@ AllianceFasteners::Application.routes.draw do
 
 
   resources :quality_actions do
+    member do
+      get 'quality_report'
+    end 
     get :autocomplete_quality_action_quality_action_no, :on => :collection
   end
 
