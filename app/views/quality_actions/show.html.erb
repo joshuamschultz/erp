@@ -6,19 +6,14 @@
     <div class="span9"> 
         <div class="row-fluid item_detail_classic_btn">
             <div class="span3 well">
-                <a class="widget-stats" href="#" id="">
+                <a class="widget-stats" href="<%= quality_report_quality_action_path(@quality_action) %>" id="">
                     <h5><strong><%= @quality_action.quality_action_no %></strong></h5>
-                    <span class="txt"><strong>Quality Action No</strong></span>
+                    <span class="txt"><strong>Quality ID</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
 
-            <div class="span3 well">
-                <a class="widget-stats" href="<%= quality_report_quality_action_path(@quality_action) %>" id="">
-                    <span class="txt"><strong>Quality Report</strong></span>
-                    <div class="clearfix"></div>
-                </a>
-            </div>
+
 
         </div>
     </div>
