@@ -139,4 +139,10 @@ class QualityActionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def quality_report
+    @quality_action = QualityAction.find(params[:id])
+      render :layout => false
+
+  end
 end

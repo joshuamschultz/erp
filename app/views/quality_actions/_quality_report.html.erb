@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Member Spotlight</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+
+<style>
+
+@charset "utf-8";
+
+body {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    line-height: 17px;
+}
+/* New Style */
+.clear{clear: both;}
+
+.ms_wrapper{float: left;height: auto;width:640px;}
+.form-bold {
+    font-size: 18px;
+}
+
+
+.color-01 {
+    color: #31369f;
+    margin: 0 0 0 16px;
+}
+.bord-01 {
+    border-bottom: 1px solid #111;
+    width: 100%;
+}
+
+.bord-02 {
+    border-bottom: 1px solid #111;
+    width: 100%;
+}
+.rin-01 {
+    float: left;
+}
+
+.rin-01 {
+    float: right;
+}
+
+
+.bord-03 th {
+    border: 1px solid #555;
+    padding: 6px 13px;
+}
+
+.bord-none {
+    border: medium none !important;
+    padding: 0 !important;
+}
+
+.h2-blod {
+    font-size: 50px;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 13px;
+}
+
+h3 {
+    font-size: 13px;
+    text-decoration: underline;
+}
+.bord-none p {
+    margin: 9px 0;
+    padding: 0;
+}
+
+.space01 {
+    padding: 10px 0;
+}
+
+p {
+    margin: 10px 0;
+    padding: 0;
+}
+
+
+.bord-08 {
+    border: 1px solid #111;
+    float: left;
+    margin: 3px 0;
+    padding: 4px 15px;
+    text-align: left;
+    width: 95%;
+}
+
+.bo-01 {
+    border-left: 1px solid #111;
+    border-right: 1px solid #111;
+}
+
+.bo-02 {
+    border-bottom: 1px solid #111;
+    padding: 0 0 5px;
+}
+
+.bor-05 {
+    border-top: 1px solid #111;
+    float: left;
+    margin: 17px 0;
+    padding: 5px 0;
+    width: 100%;
+}
+.rig-01{
+    float: left;
+}
+
+.rig-02 {
+    float: right;
+}
+
+
+.color-02 {
+    color: #31369f;
+
+}
+.color-03 {
+    color:#833e2d;
+
+}
+
+.color-04 {
+    color: #833e2d;
+    margin: 0;
+    padding: 0;
+}
+
+</style>
+
+</head>
+<body>
+<% @company_info = CompanyInfo.first%>
+
+<div class="ms_wrapper">
+
+    <table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr align="left" valign="top" class="bord-01">
+            <th scope="row" class="bord-02">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr align="right" valign="top">
+                        <th width="25%" scope="row">
+                        	<%=image_tag(@company_info.logo.joint.url(:original), :size => "161x69" ) if @company_info.logo %>
+
+                        </th>
+                        <td width="75%" class="rin-02">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr align="right" valign="top">
+                                    <th scope="row" class="form-bold">Form QP100</th>
+                                </tr>
+                                <tr align="right" valign="top">
+                                    <th scope="row">Standard Operationg Procedures</th>
+                                </tr>
+                                <tr align="right" valign="top">
+                                    <th scope="row">QM200 V.12 <span class="color-01"> 01/28/2014  Rev 2</span>
+                                    </th>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+        <tr align="center" valign="top">
+            <th scope="row" class="space01 color-02">Title: Quality Action</th>
+        </tr>
+        <tr>
+            <th scope="row">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr align="center" valign="top">
+                        <th width="58%" scope="row">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bord-03">
+                                <tr>
+                                    <th scope="row" class="bord-none">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th align="center" valign="middle" scope="row"><strong>Non-Conforming Material or Product<br>
+                </strong>C)Customer, V)Vendor, I)Internal &nbsp;&nbsp;<u>V</u></th>
+                                            </tr>
+                                        </table>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th height="18" scope="row" class="bord-none">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr align="center" valign="middle">
+                                                <th width="35%" scope="row">
+                                                    <p><u><strong>Vendor</strong></u>
+                                                        <br><%= @quality_action.po_header.organization.organization_name%>
+                                                        <br>
+                                                        <u><strong>Contact:</strong></u>
+                                                    </p>
+                                                     Control Number:</th>
+                                                <td width="65%">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class- "bord-05">
+                                                        <tr>
+                                                            <th scope="row"><strong>P/N:</strong>  <span class="color-04"><%= @quality_action.item.item_part_no %></span>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Lorem Ipsum is simply dummy text</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">Lorem Ipsum is simply dummy text of</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row"><strong>Qty:</strong> 407007-HP &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier %></th>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </th>
+                                </tr>
+                            </table>
+                        </th>
+                        <td width="42%">
+                            <p>I) Improvement,&nbsp; C) Corrective, &nbsp;P) Preventive
+                                <br>I/C/P) Action #: &nbsp;&nbsp;<u>C</u>
+                            </p>
+                            <p><strong><h3>Qualiy Action Number</h3></strong>
+                            </p>
+                            <h2 class="h2-blod"><strong><%= @quality_action.quality_action_no %>
+          </strong></h2>
+                        </td>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+        <tr>
+            <th class="bord-08"><u><strong>Definition of Issue :</strong></u>
+                <br>
+                <p class="color-04"><%= @quality_action.definition_of_issue %></p>
+            </th>
+        </tr>
+        <tr>
+            <th class="bord-08"><u><strong>Short Term Fix</strong></u>
+                <br>
+                <p class="color-04"><%= @quality_action.short_term_fix %></p>
+            </th>
+        </tr>
+        <tr>
+            <th class="bord-08"><u><strong>Result of Root Cause (Inadequate training, equipment, planning, material)</strong></u>
+                <br>
+                <p class="color-04"><%= @quality_action.root_cause %></p>
+
+            </th>
+        </tr>
+        <tr>
+            <th class="bord-08"><u><strong>Required Action:</strong></u>
+                <br>
+                <p class="color-04"><%= @quality_action.required_action %></p>
+            </th>
+        </tr>
+        <tr align="left" valign="top">
+            <th scope="row">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <th width="18%" scope="row">Date: <u> &nbsp;&nbsp; <%= @quality_action.created_at.strftime("%m/%d/%Y") %> &nbsp;&nbsp;</u>
+                        </th>
+                        <td width="31%">Initiated By
+                            <U>&nbsp;&nbsp;APHRODITE ROSE &nbsp;&nbsp;</u><strong></strong>
+                            </u>
+                        </td>
+                        <td width="51%">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr align="center">
+                                    <th width="32%" scope="row" class="bo-02">Responsible
+                                        <br>Party(s)
+                                    </th>
+                                    <td width="31%" class="bo-01 bo-02">Due
+                                        <br>Date
+                                    </td>
+                                    <td width="37%" class="bo-02">Finished Date,
+                                        <br>Verified By</td>
+                                </tr>
+                                <tr align="center">
+                                    <th scope="row">APHRODIT</th>
+                                    <td class="bo-01">&nbsp;</td>
+                                    <td><%= @quality_action.created_at.strftime("%m/%d/%Y") %></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+        <tr align="left" valign="top">
+            <th scope="row">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr align="left" class="bor-05">
+                        <th width="50%" scope="row" class="rig-01">Revision Status: Final</th>
+                        <td width="50%" align="right" class="rig-02">Document Owner: <strong><span class="color-02">Qulity</span></strong>
+                        </td>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+    </table>
+
+
+
+
+
+</div>
+
+
+</body>
+</html>
