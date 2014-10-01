@@ -509,7 +509,6 @@ color: #800000;
                 <h1 class="ms_heading">Vendor :</h1> 
                 <div class="ms_text-6">
                     <h2 class="ms_sub-heading">
-                        #{self.po_header.organization.id}<br>
                         #{self.po_header.organization.organization_name}<br>
                         #{self.po_header.organization.organization_address_1}
                         #{self.po_header.organization.organization_address_2}
