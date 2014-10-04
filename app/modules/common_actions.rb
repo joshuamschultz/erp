@@ -221,7 +221,10 @@ module CommonActions
 			{:path => "#", :name => "Internal"},
 			{:path => "#", :name => "Vendor"},
 			{:path => "#", :name => "Customer"},
-			{:path => "#", :name => "General"}
+			{:path => "#", :name => "General"},
+			{:path => new_quality_document_path, :name => "Quality Level Documents"}
+
+
 		]
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}

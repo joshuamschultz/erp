@@ -1,0 +1,45 @@
+<%= simple_form_for(@quality_document, :html => {:id => "form_for_quality_company",:class => "form-horizontal", :multipart => true }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+
+     <div class="control-group string optional quality_document_company_website">
+        <label class="control-label">Choose Document</label>
+        <div class="controls">
+              <%= f.fields_for :logo, Logo.new do |g| %>
+                  <div data-provides="fileupload" class="fileupload fileupload-exists">                      
+                      <span class="btn btn-default btn-file" onclick="get_upload_file()">
+                          <span class="fileupload-new">Browse/Drop File</span>
+                          <span class="fileupload-exists">Browse/Drop File</span>
+                          <%= g.file_field :joint %>
+                      </span>
+                      <span class="fileupload-preview"></span>
+                      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+                  </div>
+              <% end %>
+        </div>
+    </div>   
+
+  
+  </div>
+
+
+  <div class="separator bottom"></div>
+  <div class="form-actions">
+      <%= f.button :submit %>
+  </div>
+<% end %>
+<script type="text/javascript">
+function get_upload_file(){
+
+	var file_name = "mystring"
+
+  $(":file").change(function(){
+  var p= 	$(":file").val().replace("newname");
+    // alert($(":file").val());
+    alert(p);
+  });
+}
+</script>
+
+

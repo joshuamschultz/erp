@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :quality_documents
+
+
   resources :so_mails
   resources :logos
 
