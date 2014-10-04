@@ -1,0 +1,21 @@
+<h1>Listing quality_documents</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @quality_documents.each do |quality_document| %>
+  <tr>
+    <td><%= link_to 'Show', quality_document %></td>
+    <td><%= link_to 'Edit', edit_quality_document_path(quality_document) %></td>
+    <td><%= link_to 'Destroy', quality_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Quality document', new_quality_document_path %>
