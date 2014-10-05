@@ -54,6 +54,9 @@
                                  <td><%= check_box_tag 'part_submission_warrant_psw', "true",check_list_line.checklist.quality_lot.ppap.present?, :disabled => true %></td>                     
                             <% else %>
                                 <td><%= check_box_tag value, "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, '#{value}')" %></td>
+                                <% if value[0] == "F" %>
+                                    <td><%= check_box_tag value, "true", check_list_line.check_list_status , :disabled => false, :onchange => "check(#{check_list_line.id}, '#{value}')" %></td>
+                                <% end %>
                         <% end %>
                     </tr>
                 <% end %>
