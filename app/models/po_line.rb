@@ -116,93 +116,24 @@ class PoLine < ActiveRecord::Base
 
   @company_info = CompanyInfo.first
 
-  qty = product1 = product2 = product_description  = product_cost = ''
-  po_item_total = ''
-                   
+ product1 = product2 = product_description   = product_notes = source =''      
   self.po_header.po_lines.each do |po_line| 
-    qty+= "<strong>"+po_line.po_line_quantity.to_s+"</strong>"
-
     if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
-      product1+= "<strong>"+(po_line.item.item_part_no).to_s+"</strong>"
+      product1= "<tr><th scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
     else 
-      product1+= "<strong>"+(po_line.item.item_part_no).to_s+"</strong>"
-      product2+= "<strong>"+(po_line.item_alt_name.item_alt_identifier).to_s+"</strong>"
+      product1="<tr><th scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
+      product2= "<tr><th scope='row'>"+(po_line.item_alt_name.item_alt_identifier).to_s+ "</th></tr>"
     end 
     if po_line.item_revision.present?
-      product_description+= "<strong>"+(po_line.item_revision.item_description).to_s+ "</strong>"
+      product_description= ""+po_line.item_revision.item_description.to_s+""
+      product_notes= po_line.item_revision.item_notes.to_s
     end 
-
-    product_cost+= "<strong>"+(po_line.po_line_cost.to_f).to_s+"</strong>"
-    po_item_total+= "<strong>"+(po_line.po_line_total.to_f).to_s+"</strong>"
-
+    source+="<tr valign='top' align='left' class='h-pad'><td width='70'>" +po_line.po_line_quantity.to_s+"<td width='150'><table width='100%'' border='0'><tbody>"+product1+""+product2+"</tbody></table></td></td><td width='150'>"+product_description+"</td><td width='150'>"+(po_line.po_line_cost.to_f).to_s+"</td><td width='150'>"+(po_line.po_line_total.to_f).to_s+"</td></tr><tr class='h-pad'><td colspan='6' class='h-pad-04'>" +product_notes+"</td></tr>"
   end 
 
+  html = %'<!DOCTYPE html><html><head><title>Member Spotlight</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style>@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{text-decoration:underline;font-size:14px;margin:17px 0 4px;padding:0 0 10px;float:left}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;height:104px;text-align:center;width:310px}.ms_wrapper .ms_heading-3{text-decoration:underline;font-size:14px;margin:0 0 4px;padding:0 0 10px;float:left}article.art-01{border-bottom:1px solid #555;border-top:1px solid #555;margin:18px 0 0;padding:7px 0 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;height:104px;text-align:center}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:13px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:13px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_text-6.ms-33 .ms_sub-heading{font-size:17px}.ms_text-6.ms-33{text-align:center}.ms_image-2 h3{color:navy;font-size:21px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_text-6>h3{float:left;margin:0;padding:18px 0 0;font-size:14px}.ms_text-6{float:left;margin:0 0 0 27px;width:212px}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left}.ms_text-3-wrapper .ms_text-3{width:126px;float:left}.ms_text-3-wrapper .ms_text-5{width:204px;float:left;text-align:center}.ms_text-3-wrapper .ms_text-4{float:left;width:91px}article.art-02{border:1px solid #555;border-radius:15px;margin:150px 0 0;padding:7px 0 0}.ms_text-5>strong{font-weight:400}.ms_text-3-wrapper .ms_text-3 strong,.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_sub-heading{border-bottom:1px solid #555;font-size:13px;margin:21px 0 12px;padding:0 0 12px;text-align:center}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-right:1px solid #555;float:left;padding:0 3px 11px;width:310px}.ms_text-2{float:right;padding:0 0 16px;min-height:35px}.ms_text-7>strong{float:none}.ms_text-7.ms_text-8{border-bottom:1px solid #555;padding:0 0 9px}.ms-1{float:left!important;text-align:right;width:95px!important}.ms_text-7.ms_text-9 strong{font-size:14px;font-weight:700}.ms_text-7{float:left;margin:4px 0;width:90%}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms-5{color:maroon}.ms-2{margin:0 0 0 38px}.ms_text-55{float:left;padding:0 3px 11px}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{border:2px solid #444;float:left;margin:11px 0 0;width:640px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.ms_image-wrapper{float:left;height:69px;margin:6px 0 0 3px;width:128px}.ms_image-wrapper img{width:150px}.ms_image-text{float:right;margin:6px 10px 0 0}.ms_image-text h2{font-size:13px;margin:19px 0 8px;text-decoration:underline}.ms_image-text h3{border-bottom:1px solid #555;font-size:13px;font-weight:400;margin:12px 0 6px;padding:0 0 7px}.ms_image-text h5{font-size:9px;font-weight:400}.page-center{float:left;margin:8px 36px;width:394px}.ms_text-5 strong{float:left;margin:6px 0;width:100%}.page-center h3{font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:9px;font-weight:400;margin:0 0 12px;text-align:center}.hea.art-002{border-bottom:1px solid #222;float:left;font-weight:700;padding:11px 0}.hea.art-002>td{padding:0 10px}.h-pad>td{padding:6px 10px;text-align:center}.h-pad{float:left;width:100%}.h-pad-04{width:640px;text-align:center}th{font-weight:400}.h-pad-04{color:maroon}</style></head><body><div class="ms_wrapper"><section><article><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} /> </div><div class="ms_image-text"><h5>#{@company_info.company_address1}<br/>#{@company_info.company_address2}<hr><b>P:&nbsp;</b> #{@company_info.company_phone1}<br/>&nbsp;<b>F:&nbsp;</b> #{@company_info.company_fax}<hr></h5></div></div><div class="ms_image-2"><h3> Purchase Order Number</h3><h2> #{self.po_header.po_identifier}</h2><h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5></div></article><article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">#{self.po_header.organization.organization_name}<br>#{self.po_header.organization.organization_address_1}#{self.po_header.organization.organization_address_2}</h2> <h3> #{self.po_header.organization.organization_city}#{self.po_header.organization.organization_state} #{self.po_header.organization.organization_country}#{self.po_header.organization.organization_zipcode}</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong></div></div></article><article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="640" border="0"><tbody><tr align="center" class="hea art-002"><td width="72">QTY</td><td width="150">CUST P/N-ALL P/N</td><td width="67">DESCRIPTION</td><td width="95">COST</td> <td width="107">TOTAL</td></tr>#{source}</tbody></table></article><article class="art-02"><div class="ms_text-55"><h1 class="ms_heading-3">Comments:</h1> <div class="ms_text-6">                <strong class="ms-5">#{self.po_header.po_notes}</strong> </div></div><div class="ms_text-2"><div class="ms_text-6"><div class="ms_text-7 ms_text-8 "></div><div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"> #{self.po_header.po_total.to_f}</strong> </div></div></div></article><article><div class="footer"><div class="page"><h3>Date</h3><h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4></div><div class="page-center"><h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page regulatory agencies reserve the right to audit Seller"s books and records and the right to inspect at the Seller"s plant any and all materials and systems.</h4></div><div class="original"><h3>Page </h3><h4>1</h4></div></article></div></div></body></html>'
+ 
 
-    html = "<!DOCTYPE html>\n<html>\n<head>\n<title>Member Spotlight</title>\n<!--[if lt IE 9]><script src=\"html5.js\"></script><![endif]-->\n\n\n<style>\n@charset \"utf-8\";\n\nbody{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}\n\n\n/* New Style */\n.clear{clear: both;}\n\n.ms_wrapper{height: auto;}\n.ms_wrapper section {float: left;height: auto;width:640px;}\n.ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}\n.ms_wrapper .ms_image{ 
-
-
-
-
-
-
-  border: 1px solid #ccc;
-    float: left;
-    font-size: 22px;
-    height: 104px;
-    text-align: center;
-    width: 310px;
-
-
-
-
-
-
-      }\n.ms_wrapper .ms_heading-3{  text-decoration: underline; font-size: 14px;margin: 0 0 4px; padding: 0 0 10px;float: left;}\n\narticle.art-01 {\n    border-bottom: 1px solid #555;\n    border-top: 1px solid #555;\n    margin: 18px 0 0;\n    padding: 7px 0 0;\n}\n\n    .ms_wrapper .ms_image-2{  
-
-
-
-
-border: 1px solid #ccc;
-    float: right;
-    font-size: 22px;
-    height: 104px;
-    text-align: center;
-
-
-
-       }\n.ms_wrapper article{float: left;width: 100%;}\n}\n.ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;}\n.ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}\n.ms_wrapper .ms_sub-heading{font-size: 13px;margin:20px 0 6px;color:#000;}\n\n.ms_text strong, .ms_text-2 strong {\n    float: left;\n    font-size: 13px;\n    font-weight: normal;\n    line-height: 19px;\n    width: 100%;\n}\n.ms_text1 strong {\n    float: left;\n    font-size: 14px;\n    font-weight: normal;\n    line-height: 19px;\n    width: 100%;\n    margin: 1px 0;\n    text-align: center;\n    font-weight: bold;\n}\n.ms_text-6.ms-33 .ms_sub-heading {\n    font-size: 17px;\n}\n\n.ms_text-6.ms-33 {\n    text-align: center;\n}\n.ms_image-2 h3 {\n    color: #000080;\n    font-size: 21px;\n    font-weight: normal;\n    margin: 17px 0 0;\n    text-decoration: underline;\n}\n\n.ms_text-6 > h3 {\n    float: left;\n    margin: 0;\n    padding: 18px 0 0;\n    font-size: 14px;\n}\n\n\n.ms_text-6 {\n    float: left;\n    margin: 0 0 0 27px;\n    width: 212px;\n}\n\n.ms_image-2 h2 {\n    color: #800000;\n    font-size: 20px;\n    font-weight: bold;\n    margin: 2px 0;\n}\n\n        .ms_image-2 h5{  font-size: 16px;\n    font-weight: bold;margin: 2px 0;}\n\n.ms_text-3-wrapper {\n    float: left;\n\n}\n.ms_text-3-wrapper .ms_text-3{width: 126px;float: left;}\n.ms_text-3-wrapper .ms_text-5{width: 204px;float: left;text-align: center;}\n.ms_text-3-wrapper .ms_text-4 {\n    float: left;\n    width: 91px;\n}\n\narticle.art-02 {\n    
-
-
-
-
-
-
-  border: 1px solid #555;
-    border-radius: 15px;
-    margin: 150px 0 0;
-    padding: 7px 0 0;
-
-
-
-
-       }\n.ms_text-5 > strong {\n    font-weight: normal;\n}\n\n.ms_text-3-wrapper .ms_text-4 strong {\n    float: left;\n    font-size: 14px;\n    font-weight: normal;\n    line-height: 19px;\n    width: 100%;\n    margin: 6px 0;\n    text-align: center;\n\n}\n\n.ms_text-3-wrapper .ms_text-3 strong {\n    float: left;\n    font-size: 14px;\n    font-weight: normal;\n    line-height: 19px;\n    width: 100%;\n    margin: 6px 0;\n    text-align: center;\n\n}\n\n\n.ms_text-3-wrapper .ms_sub-heading {\n    border-bottom: 1px solid #555;\n    font-size: 13px;\n    margin: 21px 0 12px;\n    padding: 0 0 12px;\n    text-align: center;\n}\n\n.ms_sub{  font-size: 15px;\n    text-align: center;\n    text-decoration: underline;\nmargin: 2px 0 10px 0;}\n\n\n.ms_text {\n    border-right: 1px solid #555;\n    float: left;\n    padding: 0 3px 11px;\n    width: 310px;\n}\n.ms_text-2 {\n    float: right;\n    padding: 0 0 16px;\n     min-height: 35px;\n}\n\n.ms_text-7 > strong {\n    float: none;\n}\n.ms_text-7.ms_text-8 {\n    border-bottom: 1px solid #555;\n    padding: 0 0 9px;\n}\n\n.ms-1 {\n    float: left !important;\n    text-align: right;\n    width: 95px !important;\n}\n.ms_text-7.ms_text-9 strong {\n    font-size: 14px;\n    font-weight: bold;\n}\n.ms_text-7 {\n    float: left;\n    margin: 4px 0;\n    width: 90%;\n}\n.ms_text1 {\n    float: left;\n    margin: 12px 28px 0;\n    width: 42%;\n}\n\n.ms-5{color: #800000;}\n.ms-2 {\n    margin: 0 0 0 38px;\n}\n\n\n.ms_text-55 {\n   float: left;\n   padding: 0 3px 11px;\n}\n.ms_wrapper .ms_image2{margin: 0 20px 0 0;border: 1px solid #ccc;padding: 20px 0;text-align: center;font-size: 22px;}\n.ms_image2 h2{font-size: 17px;margin: 0;}\n.ms_image2 strong {\n    color: #800000;\n    float: left;\n    font-size: 22px;\n    margin: 0 0 8px;\n    width: 100%;\n}\n.ms_image2 p{font-size: 18px;margin: 0;color: #000080;}\n.footer{
-
-
-
-
-    border: 2px solid #444;
-    float: left;
-    margin: 11px 0 0;
-    width: 640px;
-
-
-
-       }\n.page{float: left;margin: 0 0 0 20px;}\n.page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}\n.page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}\n.original{float: right;margin: 0 20px 0 0;}\n.original h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}\n.original h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}\n\n.ms_image-wrapper {\n    float: left;\n    height: 69px;\n    margin: 6px 0 0 3px;\n    width: 128px;\n}\n.ms_image-wrapper img {\n    width: 150px;\n}\n\n.ms_image-text {\n    float: right;\n    margin: 6px 10px 0 0;\n}\n.ms_image-text h2 {\n    font-size: 13px;\n    margin: 19px 0 8px 0;\n     text-decoration: underline;\n}\n.ms_image-text h3 {\n    border-bottom: 1px solid #555;\n    font-size: 13px;\n    font-weight: normal;\n    margin: 12px 0 6px 0;\n    padding: 0 0 7px;\n}\n\n\n\n.ms_image-text h5 {\n    font-size: 9px;\n    font-weight: normal;\n}\n\n\n.page-center {\n    float: left;\n    margin: 8px 36px;\n    width: 394px;\n}\n.page-center h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}\n.page-center h4{    font-size: 9px;font-weight: normal;margin: 0 0 12px;text-align: center;}\n .ms_text-5 strong {float: left;margin: 6px 0;width: 100%;
-
-
-
-
-       </style>\n</head>\n<body>\n<div class=\"ms_wrapper\">\n\n    <section>\n\n        <article>\n            <div class=\"ms_image\">\n                <div class=\"ms_image-wrapper\">\n                      <img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} />\n                </div>\n\n                <div class=\"ms_image-text\">\n                    <h5>#{@company_info.company_address1}<br/>\n                    #{@company_info.company_address2}\n                    <hr>\n                    <b>P:&nbsp;</b>#{@company_info.company_phone1}<br/>\n                    &nbsp;<b>F:&nbsp;</b>#{@company_info.company_fax}\n                    <hr></h5>\n                </div>\n            </div>\n\n            <div class=\"ms_image-2\">\n                <h3> Purchase Order Number</h3>\n                <h2>#{self.po_header.po_identifier}</h2>\n                <h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5>\n            </div>\n\n        </article>\n\n        <article class=\"art-01\">\n\n            <div class=\"ms_text\">\n                <h1 class=\"ms_heading\">Vendor :</h1> \n                <div class=\"ms_text-6\">\n                    <h2 class=\"ms_sub-heading\">\n                        #{self.po_header.organization.id}<br>\n                        #{self.po_header.organization.organization_name}<br>\n                        #{self.po_header.organization.organization_address_1}\n                        #{self.po_header.organization.organization_address_2}\n                    </h2> \n\n                    <h3>#{self.po_header.organization.organization_city} \n                        #{self.po_header.organization.organization_state} \n                         #{self.po_header.organization.organization_country}\n                        #{self.po_header.organization.organization_zipcode}\n                    </h3>\n                </div>\n            </div>\n\n            <div class=\"ms_text-2\">\n                <h1 class=\"ms_heading\">Ship To : </h1> \n                <div class=\"ms_text-6 ms-33\">\n                    <h2 class=\"ms_sub-heading\">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong></div>\n            </div>\n\n        </article>\n\n\n\n        <article>\n\n            <div class=\"ms_text-3-wrapper\">\n                <div class=\"ms_text-3\">\n                    <h2 class=\"ms_sub-heading\">QTY</h2> #{qty}</div>\n\n                <div class=\"ms_text-3\">\n                    <h2 class=\"ms_sub-heading\"> CUST P/N - ALL P/N</h2> #{product1}#{product2}</div>\n\n                <div class=\"ms_text-5\">\n                    <h2 class=\"ms_sub-heading\">DESCRIPTION</h2> #{product_description}</div>\n                <div class=\"ms_text-4\">\n                    <h2 class=\"ms_sub-heading\">  COST </h2>#{product_cost}</div>\n                <div class=\"ms_text-4\">\n                    <h2 class=\"ms_sub-heading\">TOTAL </h2> \n                    #{po_item_total}\n                </div>\n            </div>\n        </article>\n\n\n        <article class=\"art-02\">\n\n            <div class=\"ms_text-55\">\n                <h1 class=\"ms_heading-3\">Comments:</h1> \n\n                <div class=\"ms_text-6\">                \n                    <strong class=\"ms-5\">#{self.po_header.po_notes}</strong> \n               \n<!--                     <strong class=\"ms-5\">CONFIRM VIA E-MAIL 9/1/14!\nPLEASE SHIP UPS GROUND ASAP!\nTHANK YOU!</strong> \n -->\n                </div>\n            </div>\n\n            <div class=\"ms_text-2\">\n                <div class=\"ms_text-6\">\n                    <div class=\"ms_text-7 ms_text-8 \">\n                    </div>\n                    <div class=\"ms_text-7 ms_text-9 \"> <strong class=\"ms-1\">P.O. Total :</strong>  <strong class=\"ms-2\">#{self.po_header.po_total.to_f}</strong> \n                    </div>\n                </div>\n\n\n            </div>\n\n\n\n\n        </article>\n\n        <article>\n            <div class=\"footer\">\n\n                <div class=\"page\">\n                    <h3>Date</h3>\n                    <h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4>\n                </div>\n\n                <div class=\"page-center\">\n                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page\nregulatory agencies reserve the right to audit Seller's books and records and the right to\ninspect at the Seller's plant any and all materials and systems.</h4>\n                </div>\n\n                <div class=\"original\">\n                    <h3>Page </h3>\n                    <h4>1\n</h4>\n                </div>\n\n\n        </article>\n\n\n        </div>\n\n</div>\n</body>\n</html>\n"
 
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
