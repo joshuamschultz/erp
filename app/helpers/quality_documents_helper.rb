@@ -1,0 +1,2 @@
+module QualityDocumentsHelper
+end

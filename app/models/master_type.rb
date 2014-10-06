@@ -1,5 +1,5 @@
 class MasterType < ActiveRecord::Base
-  attr_accessible :type_active, :type_category, :type_description, :type_name, :type_value
+  attr_accessible :type_active, :type_category, :type_description, :type_name, :type_value, :quality_document_id
 
   scope :po_types, where(:type_category => 'po_type')
 
