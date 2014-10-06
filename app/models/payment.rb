@@ -5,7 +5,7 @@ class Payment < ActiveRecord::Base
     has_one :reconcile
     has_one :deposit_check
     has_one :printing_screen
-
+    has_many :gl_entries, :dependent => :destroy
 
     belongs_to :organization
 
@@ -92,6 +92,7 @@ class Payment < ActiveRecord::Base
         if self.payment_type.present? && self.payment_type.type_value == "credit"
             Reconcile.create(tag: "not reconciled", reconcile_type: "credit", payment_id: self.id)
             payable = Payable.find (self.payment_lines.collect(&:payable_id).first)
+            self.update_transactions
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
             # CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
@@ -104,6 +105,26 @@ class Payment < ActiveRecord::Base
 
     def redirect_path
         payment_path(self)
+    end
+
+
+    def update_transactions       
+        self.update_transaction("11012") 
+        self.update_transaction("21010")
+    end
+
+    def  update_transaction(account)      
+        @gl_account_to_update = GlAccount.where(:gl_account_identifier=> account).first
+        @gl_entry = GlEntry.where(payment_id: self.id, gl_account_id: @gl_account_to_update.id).first
+           unless @gl_entry.nil?
+                @gl_entry.update_attributes(:gl_entry_debit => self.payment_check_amount)
+            else
+                @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)    
+                @gl_entry.save                 
+            end 
+        @gl_account = GlAccount.where(:id => @gl_account_to_update.id).first
+        amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
+        @gl_account.update_attributes(:gl_account_amount => amount)
     end
 
     private
