@@ -22,11 +22,13 @@ class Logo < ActiveRecord::Base
 			# self.joint_file_name=new_quote_identifier+"."+(self.joint_file_name).split('.')[-1]
 			self.joint_file_name=new_quote_identifier+"."+(self.joint_file_name).match(/(.*)\.(.*)/)[1..2][1]
 
+			type_name = (self.joint_file_name).match(/(.*)\.(.*)/)[1..2][0]
+
 			unless MasterType.find_by_quality_document_id(self.jointable_id)
-				MasterType.create(type_name: self.joint_file_name, type_description: "", type_value: self.joint_file_name, type_category: "customer_quality_level", type_active: true, quality_document_id: self.jointable_id)
+				MasterType.create(type_name: type_name, type_description: "", type_value: type_name, type_category: "customer_quality_level", type_active: true, quality_document_id: self.jointable_id)
 			else
 			@master_type = MasterType.find_by_quality_document_id(self.jointable_id)
-			@master_type.update_attributes(:type_name => self.joint_file_name, :type_value => self.joint_file_name)
+			@master_type.update_attributes(:type_name => type_name, :type_value => type_name)
 			end
   		end
   	end
