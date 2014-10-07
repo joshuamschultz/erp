@@ -16,8 +16,8 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>Code</th>
-                <th>Used</th>
+                <th>Check Code</th>
+                <th>Payables</th>
                 <th></th>
               </tr>
             </thead>
@@ -34,7 +34,7 @@
         :name => "table_report", :path => check_entries_path, :extras => {:slno => false},
         :columns => '[
                         { "mData": "check_identifier" },
-                        { "mData": "check_used" },
+                        { "mData": "payables" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                     ]'
     } 
