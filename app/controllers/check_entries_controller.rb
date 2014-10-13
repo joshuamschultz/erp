@@ -88,6 +88,11 @@ class CheckEntriesController < ApplicationController
     end
   end
 
+  def report
+    @check_entries = CheckEntry.all
+    render :layout => false
+  end
+  
   def generate_check_entry
     if params[:serial_no].present? && params[:serial_end].present?
         for serial in params[:serial_no].to_i..params[:serial_end].to_i
