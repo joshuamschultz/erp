@@ -82,6 +82,9 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       if @payment.save
+        check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
+        @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
+
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render json: @payment, status: :created, location: @payment }
       else
@@ -100,6 +103,8 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       if @payment.update_attributes(params[:payment])
+        check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
+        @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
         format.html { redirect_to @payment, notice: 'Payment was successfully updated.' }
         format.json { head :no_content }
       else
