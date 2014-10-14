@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Inventory adjustment quantity:</b>
+  <%= @inventory_adjustment.inventory_adjustment_quantity %>
+</p>
+
+<p>
+  <b>Inventory adjustment description:</b>
+  <%= @inventory_adjustment.inventory_adjustment_description %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @inventory_adjustment.item_id %>
+</p>
+
+<p>
+  <b>Item alt name:</b>
+  <%= @inventory_adjustment.item_alt_name_id %>
+</p>
+
+<p>
+  <b>Quality lot:</b>
+  <%= @inventory_adjustment.quality_lot_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_inventory_adjustment_path(@inventory_adjustment) %> |
+<%= link_to 'Back', inventory_adjustments_path %>

@@ -1,0 +1,96 @@
+
+
+<%= simple_form_for(@inventory_adjustment, :html => {:id => "form_for_inventory_adjustment",:class => "form-horizontal", :multipart => true }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+
+    <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+
+    <%= hidden_field_tag :alt_name_id, (@inventory_adjustment.item_alt_name.id if @inventory_adjustment.item_alt_name) %>
+
+    <%= hidden_field_tag :org_alt_name_id, (@inventory_adjustment.item_alt_name.id if @inventory_adjustment.item_alt_name) %>
+
+    <div class="control-group select required quality_lot_po_line">
+      <label for="inventory_adjustment_quality_lot_id" class="select required control-label">
+        <abbr title="required">*</abbr> Lot
+      </label>
+    <div class="controls">
+      <select name="inventory_adjustment[quality_lot_id]" id="inventory_adjustment_quality_lot_id" class="select required" autofocus="autofocus">
+
+      </select>
+    </div>
+    </div>
+
+
+    <%= f.input :inventory_adjustment_quantity, label: "Quantity" %>
+    <%= f.input :inventory_adjustment_description,  label: "Reason for Discrepancy" %>
+
+  
+  </div>
+
+
+  <div class="separator bottom"></div>
+  <div class="form-actions">
+      <%= f.button :submit %>
+  </div>
+<% end %>
+
+
+  <script type="text/javascript">
+    tab_field_forms["form_for_inventory_adjustment"] = ["inventory_adjustment_item_alt_name_id","inventory_adjustment_quality_lot_id","inventory_adjustment_inventory_adjustment_quantity","inventory_adjustment_inventory_adjustment_description"];
+
+
+    var page_initial = true;
+
+    $(document).ready(function(){ 
+        // $("#quality_lot_po_line_id").html("");
+        // $("#quality_lot_item_revision_id").html("");
+
+        $("#inventory_adjustment_item_alt_name_id").focusout(function(){
+            initiate_line_items();
+        });
+        $("#inventory_adjustment_quality_lot_id").focusout(function(){
+            initiate_current_quantity();
+        });
+
+
+
+    initiate_line_items();
+
+        $("#inventory_adjustment_item_alt_name_id").focus();
+    });
+
+    function initiate_line_items(){
+        $("#inventory_adjustment_quality_lot_id").html("");
+
+        if($("#alt_name_id").val() != "" && $("#alt_name_id").val() != null)
+          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_inventory", "id": $("#alt_name_id").val()}}, "set_quality_lots", {});
+        else{
+
+              page_initial = false;
+        }  
+    }
+
+    function set_quality_lots(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
+        $("#inventory_adjustment_quality_lot_id").html(html);
+
+        initiate_current_quantity();
+    }
+
+    function initiate_current_quantity(){
+        if($("#inventory_adjustment_quality_lot_id").val() != "" && $("#inventory_adjustment_quality_lot_id").val() != null)
+          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lot_current_quantity", "id": $("#inventory_adjustment_quality_lot_id").val()}}, "set_current_quantity", {});
+        else{
+            page_initial = false;
+        }
+    }  
+
+    function set_current_quantity(response, callback_params, api_params){
+      $("#inventory_adjustment_inventory_adjustment_quantity").val(response["aaData"]["lot_quantity"]);
+      page_initial = false;
+    }
+  </script>
+
+  <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "lot-control-select-box"} %>

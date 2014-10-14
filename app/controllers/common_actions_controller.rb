@@ -15,6 +15,19 @@ class CommonActionsController < ApplicationController
               result = po_header.present? ? po_header.po_lines : []
               result = result.each {|line| line[:po_line_item_name] = line.po_line_item_name }
 
+            when "get_quality_lots_inventory"
+              if params[:id].present?
+                item_alt_name = ItemAltName.find(params[:id])
+                result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
+                result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
+              end
+            when "get_quality_lot_current_quantity"
+              if params[:id].present?
+                quality_lot = QualityLot.find(params[:id])
+                result = quality_lot
+              end
+
+
             when "lot_item_material_elements"
               lot = QualityLot.find(params[:id])
               result = lot.lot_item_material_elements
@@ -209,6 +222,9 @@ class CommonActionsController < ApplicationController
                 quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
                 result = quality_lots
               end
+
+
+
             when "get_quality_lots_po"
               if params[:id].present?
                 quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
