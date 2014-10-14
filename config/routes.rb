@@ -86,6 +86,7 @@ AllianceFasteners::Application.routes.draw do
   resources :check_entries do
     collection do
       post 'generate_check_entry'
+      get 'report'
     end
   end
 

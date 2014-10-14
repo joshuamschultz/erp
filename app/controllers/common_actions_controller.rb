@@ -239,8 +239,15 @@ class CommonActionsController < ApplicationController
               @gl_account = GlAccount.where(:gl_account_identifier =>   "51020020").first
               gl_account_titles["51020020"] = @gl_account["gl_account_title"]
               result = gl_account_titles 
-  
-                            
+            when "after_print_checks"
+              if params[:id].present? 
+                check_entry = CheckEntry.find(params[:id]) 
+                check_entry.update_attributes(:status => "Printed", :check_active => 0)
+                payment = Payment.find_by_check_entry_id(params[:id])
+                payment.update_transactions
+                Reconcile.create(tag: "not reconciled", reconcile_type: "check", payment_id: payment.id)
+                result = "success"
+              end              
         end
          render json: {:aaData => result}
     end
