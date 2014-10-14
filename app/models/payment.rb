@@ -116,16 +116,19 @@ class Payment < ActiveRecord::Base
 
     def  update_transaction(account)      
         @gl_account_to_update = GlAccount.where(:gl_account_identifier=> account).first
+        @gl_account = GlAccount.where(:id => @gl_account_to_update.id).first
+
         @gl_entry = GlEntry.where(payment_id: self.id, gl_account_id: @gl_account_to_update.id).first
            unless @gl_entry.nil?
                 @gl_entry.update_attributes(:gl_entry_debit => self.payment_check_amount)
+                amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
+                @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)    
-                @gl_entry.save                 
+                @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)                    
+                @gl_entry.save 
+                amount = @gl_account.gl_account_amount - self.payment_check_amount.to_f               
+                @gl_account.update_attributes(:gl_account_amount => amount) 
             end 
-        @gl_account = GlAccount.where(:id => @gl_account_to_update.id).first
-        amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
-        @gl_account.update_attributes(:gl_account_amount => amount)
     end
 
     private

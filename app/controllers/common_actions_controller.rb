@@ -228,6 +228,7 @@ class CommonActionsController < ApplicationController
                 check_entry = CheckEntry.find(params[:id]) 
                 check_entry.update_attributes(:status => "Printed", :check_active => 0)
                 payment = Payment.find_by_check_entry_id(params[:id])
+                payment.update_transactions
                 Reconcile.create(tag: "not reconciled", reconcile_type: "check", payment_id: payment.id)
                 result = "success"
               end              
