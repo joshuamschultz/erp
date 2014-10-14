@@ -1,0 +1,31 @@
+<h1>Listing inventory_adjustments</h1>
+
+<table>
+  <tr>
+    <th>Inventory adjustment quantity</th>
+    <th>Inventory adjustment description</th>
+    <th>Item</th>
+    <th>Item alt name</th>
+    <th>Quality lot</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @inventory_adjustments.each do |inventory_adjustment| %>
+  <tr>
+    <td><%= inventory_adjustment.inventory_adjustment_quantity %></td>
+    <td><%= inventory_adjustment.inventory_adjustment_description %></td>
+    <td><%= inventory_adjustment.item_id %></td>
+    <td><%= inventory_adjustment.item_alt_name_id %></td>
+    <td><%= inventory_adjustment.quality_lot_id %></td>
+    <td><%= link_to 'Show', inventory_adjustment %></td>
+    <td><%= link_to 'Edit', edit_inventory_adjustment_path(inventory_adjustment) %></td>
+    <td><%= link_to 'Destroy', inventory_adjustment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Inventory adjustment', new_inventory_adjustment_path %>
