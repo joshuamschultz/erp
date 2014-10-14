@@ -24,6 +24,7 @@ class InventoryAdjustmentsController < ApplicationController
               inventory_adjustment[:inventory_adjustment_quantity] = inventory_adjustment.inventory_adjustment_quantity
               inventory_adjustment[:control_no] = CommonActions.linkable(quality_lot_path(inventory_adjustment.quality_lot),inventory_adjustment.quality_lot.lot_control_no)
               inventory_adjustment[:inventory_adjustment_description] = inventory_adjustment.inventory_adjustment_description
+              inventory_adjustment[:links] = CommonActions.object_crud_paths( nil, edit_inventory_adjustment_path(inventory_adjustment), nil)
 
           }
           render json: {:aaData => @inventory_adjustments}
