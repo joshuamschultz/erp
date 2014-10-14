@@ -65,7 +65,7 @@ class InventoryAdjustmentsController < ApplicationController
 
     respond_to do |format|
       if @inventory_adjustment.save
-        format.html { redirect_to @inventory_adjustment, notice: 'Inventory adjustment was successfully created.' }
+        format.html { redirect_to inventory_adjustments_path, notice: 'Inventory adjustment was successfully created.' }
         format.json { render json: @inventory_adjustment, status: :created, location: @inventory_adjustment }
       else
         format.html { render action: "new" }
