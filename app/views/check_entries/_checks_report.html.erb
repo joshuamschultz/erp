@@ -47,13 +47,20 @@ body {
     float: left;
     width: 640px;
 }
+.print-checks{
+    page-break-after: always;
 
+}
+.print-checks:first-child {
+     page-break-before: auto;
+}
 </style>
+
 </head>
 
 <body>
-<p style="page-break-after:always;">	
-<div class="ms_wrapper">
+
+<div class="ms_wrapper print-checks">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr class="line-02">
       <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -134,7 +141,7 @@ body {
     </tr>
     <% end %>
   </table> 
-</div></p>
+</div>
 </body>
 </html>
 

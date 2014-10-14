@@ -2,10 +2,11 @@ class CheckEntriesController < ApplicationController
   # GET /check_entries
   # GET /check_entries.json
   def index
+    @check_entries = CheckEntry.where(:check_active => 1)
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-          @check_entries = CheckEntry.all.select{|check_entry| 
+          @check_entries = @check_entries.select{|check_entry| 
             check_data = check_entry.check_belongs_to
             check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
             check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
@@ -89,7 +90,7 @@ class CheckEntriesController < ApplicationController
   end
 
   def report
-    @check_entries = CheckEntry.all
+    @check_entries = CheckEntry.where(:check_active => 1)
     render :layout => false
   end
   
