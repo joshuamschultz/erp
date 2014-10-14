@@ -1,7 +1,7 @@
  <div class="row-fluid">
         <div class="span9">
            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn" onclick="checks_report()">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="checks_report();return false;">
                       <span class="glyphicons print"><i></i></span>
                       <span class="txt">Print Checks</span>
                       <div class="clearfix"></div>
@@ -51,9 +51,34 @@
 
 <script type="text/javascript">
 function checks_report() { 
-    <% @check_entries = CheckEntry.all %>
-    var checks_iframe = $("#myPrintView")[0];        
-    checks_iframe.contentWindow.print();    
+    var flag = 0;
+    var count =0;
+    var checks_iframe = $("#myPrintView")[0];   
+    <% @check_entries =  CheckEntry.where(:check_active => 1) %>         
+        <% @check_entries.each do |c| %>
+            <% unless c.check_belongs_to.nil? %> 
+               flag = 1; 
+               count = count + 1;
+               checkEntryId = <%= c.id %>
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "after_print_checks", "id" : checkEntryId  }}, "", {});
+            <% end %>
+        <% end %> 
+    if (flag == 1){             
+        checks_iframe.contentWindow.print();
+    }    
+    else {
+        alert("There are no Checks to Print");
+    }  
+
+    var timer = (count/2) * 1000
+    setTimeout(function(){
+       reload_the_page();
+    }, timer);
+
 }  
+function reload_the_page()
+{
+    location.reload();
+}
 </script>
 <iframe src="<%= report_check_entries_path%>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>

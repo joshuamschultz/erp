@@ -1,6 +1,7 @@
 <div class="row-fluid">
     <h4 class="span3 left">Payment Info</h4>
     <span class="span9 right">
+    	<%= link_to 'Print Checks', check_entries_path, :class => "btn btn-small"%>
         <%= link_to 'Edit', edit_payment_path(@payment), :class => "btn btn-small" %>
         <%= link_to 'Back', payments_path, :class => "btn btn-small" %>
     </span>
