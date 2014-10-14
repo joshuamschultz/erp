@@ -1,0 +1,5 @@
+<% @check_entries.each do |c| %>
+	<% unless c.check_belongs_to.nil? %>
+		<%= render :partial => 'check_entries/checks_report', :locals => {:check_entry => c}%>
+	<% end %>
+<% end %>

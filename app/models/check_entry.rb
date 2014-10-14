@@ -1,7 +1,7 @@
 class CheckEntry < ActiveRecord::Base
   include Rails.application.routes.url_helpers 
 
-  attr_accessible :check_active, :check_code, :check_identifier
+  attr_accessible :check_active, :check_code, :check_identifier, :status
 
   validates_presence_of :check_code
 
