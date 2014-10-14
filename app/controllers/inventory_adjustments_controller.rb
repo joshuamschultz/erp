@@ -7,10 +7,8 @@ class InventoryAdjustmentsController < ApplicationController
       simple_form_validation = true
   end
   def set_autocomplete_values
-
     params[:inventory_adjustment][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:inventory_adjustment][:item_alt_name_id]
     params[:inventory_adjustment][:item_alt_name_id] = params[:org_alt_name_id] if params[:inventory_adjustment][:item_alt_name_id] == "" || params[:inventory_adjustment][:item_alt_name_id].nil?
-
   end
   # GET /inventory_adjustments
   # GET /inventory_adjustments.json
@@ -18,8 +16,18 @@ class InventoryAdjustmentsController < ApplicationController
     @inventory_adjustments = InventoryAdjustment.all
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @inventory_adjustments }
+      format.html 
+      format.json { 
+          @inventory_adjustments = @inventory_adjustments.select{|inventory_adjustment|
+              inventory_adjustment[:id] = inventory_adjustment.id
+              inventory_adjustment[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier)
+              inventory_adjustment[:inventory_adjustment_quantity] = inventory_adjustment.inventory_adjustment_quantity
+              inventory_adjustment[:control_no] = CommonActions.linkable(quality_lot_path(inventory_adjustment.quality_lot),inventory_adjustment.quality_lot.lot_control_no)
+              inventory_adjustment[:inventory_adjustment_description] = inventory_adjustment.inventory_adjustment_description
+
+          }
+          render json: {:aaData => @inventory_adjustments}
+       }
     end
   end
 

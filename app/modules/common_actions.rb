@@ -161,7 +161,7 @@ module CommonActions
 		menus[:inventory][:sub_menu] = 	[
 			{:path => items_path, :name => "Items"},
 			{:path => item_alt_names_path, :name => "Alt Names"},
-			{:path => new_inventory_adjustment_path, :name => "Adjust Inventory"},
+			{:path => inventory_adjustments_path, :name => "Adjust Inventory"},
 			{:path => prints_path, :name => "Prints"},
 			{:path => process_types_path, :name => "Processes"},
 			{:path => specifications_path, :name => "Specifications"},

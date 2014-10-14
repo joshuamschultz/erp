@@ -1,31 +1,48 @@
-<h1>Listing inventory_adjustments</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Inventory Adjustments</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Quality', new_inventory_adjustment_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th>Inventory adjustment quantity</th>
-    <th>Inventory adjustment description</th>
-    <th>Item</th>
-    <th>Item alt name</th>
-    <th>Quality lot</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Part no</th>
+                <th>Control no</th>
+                <th>Adjustment_quantity</th>
+                <th>Reason for Discrepancy</th>
 
-<% @inventory_adjustments.each do |inventory_adjustment| %>
-  <tr>
-    <td><%= inventory_adjustment.inventory_adjustment_quantity %></td>
-    <td><%= inventory_adjustment.inventory_adjustment_description %></td>
-    <td><%= inventory_adjustment.item_id %></td>
-    <td><%= inventory_adjustment.item_alt_name_id %></td>
-    <td><%= inventory_adjustment.quality_lot_id %></td>
-    <td><%= link_to 'Show', inventory_adjustment %></td>
-    <td><%= link_to 'Edit', edit_inventory_adjustment_path(inventory_adjustment) %></td>
-    <td><%= link_to 'Destroy', inventory_adjustment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+                <th></th>
+              </tr>
+            </thead>
 
-<br />
+            <tbody>
 
-<%= link_to 'New Inventory adjustment', new_inventory_adjustment_path %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => inventory_adjustments_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "item_part_no" },
+                        { "mData": "control_no" },
+                        { "mData": "inventory_adjustment_quantity" },
+                        { "mData": "inventory_adjustment_description" }
+
+
+                    ]'
+    } 
+%>
