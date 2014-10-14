@@ -5,7 +5,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Inventory Adjustments</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Quality', new_inventory_adjustment_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Inventory Adjustments', new_inventory_adjustment_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div> 
     </div>
@@ -20,7 +20,6 @@
                 <th>Control no</th>
                 <th>Adjustment_quantity</th>
                 <th>Reason for Discrepancy</th>
-
                 <th></th>
               </tr>
             </thead>
@@ -41,7 +40,6 @@
                         { "mData": "control_no" },
                         { "mData": "inventory_adjustment_quantity" },
                         { "mData": "inventory_adjustment_description" }
-
 
                     ]'
     } 
