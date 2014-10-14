@@ -4,6 +4,8 @@ class InventoryAdjustment < ActiveRecord::Base
 
   belongs_to :item
   belongs_to :item_alt_name
+  belongs_to :quality_lot
+
 
   before_save :update_item
   after_save :update_item
