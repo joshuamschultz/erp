@@ -16,7 +16,8 @@ class ReconcilesController < ApplicationController
   
 
   def index   
-    gl_account = GlAccount.where('gl_account_title' => 'PETTY CASH' ).first 
+
+    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first 
     @balance = gl_account.gl_account_amount
 
     @reconciled = Reconciled.first.balance
