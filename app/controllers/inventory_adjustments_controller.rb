@@ -87,7 +87,7 @@ class InventoryAdjustmentsController < ApplicationController
 
     respond_to do |format|
       if @inventory_adjustment.update_attributes(params[:inventory_adjustment])
-        format.html { redirect_to @inventory_adjustment, notice: 'Inventory adjustment was successfully updated.' }
+        format.html { redirect_to inventory_adjustments_path, notice: 'Inventory adjustment was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
