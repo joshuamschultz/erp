@@ -17,7 +17,7 @@ class Logo < ActiveRecord::Base
 
   	before_create :before_create_process
 
-  	def before_create_process
+	def before_create_process
 	  	if self.jointable_type =="QualityDocument"
 			# self.joint_file_name=new_quote_identifier+"."+(self.joint_file_name).split('.')[-1]
 			quality_document = QualityDocument.find(self.jointable_id)
