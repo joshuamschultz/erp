@@ -1,6 +1,6 @@
 class MasterType < ActiveRecord::Base
   attr_accessible :type_active, :type_category, :type_description, :type_name, :type_value, :quality_document_id
-
+  belongs_to :quality_document
   scope :po_types, where(:type_category => 'po_type')
 
   scope :organization_types, where(:type_category => 'organization_type')
