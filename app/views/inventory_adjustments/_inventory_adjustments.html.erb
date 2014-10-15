@@ -33,7 +33,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => inventory_adjustments_path,
+        :name => "table_report", :path => inventory_adjustments_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
         :columns => '[
                         { "mData": "id" },
                         { "mData": "item_part_no" },

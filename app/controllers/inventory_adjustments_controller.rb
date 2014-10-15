@@ -13,7 +13,12 @@ class InventoryAdjustmentsController < ApplicationController
   # GET /inventory_adjustments
   # GET /inventory_adjustments.json
   def index
-    @inventory_adjustments = InventoryAdjustment.all
+    if params[:item_id].present?
+        @item = Item.find(params[:item_id])
+        @inventory_adjustments = @item.inventory_adjustments.order('created_at desc')
+    else
+      @inventory_adjustments = InventoryAdjustment.all
+    end
 
     respond_to do |format|
       format.html 
