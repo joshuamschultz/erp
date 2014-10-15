@@ -72,7 +72,7 @@ before_filter :set_page_info
 
     respond_to do |format|
       if @quality_document.update_attributes(params[:quality_document])
-        format.html { redirect_to @quality_document, notice: 'Quality document was successfully updated.' }
+        format.html { redirect_to quality_documents_path, notice: 'Quality document was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
