@@ -55,6 +55,7 @@
         $("#inventory_adjustment_quality_lot_id").focusout(function(){
             initiate_current_quantity();
         });
+        $("#inventory_adjustment_item_alt_name_id").val("<%= @inventory_adjustment.item_alt_name.alt_item_name if @inventory_adjustment.item_alt_name %>");
 
 
 
