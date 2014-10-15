@@ -13,7 +13,7 @@ before_filter :set_page_info
       format.json { 
           @quality_documents = @quality_documents.select{|quality_document|
               quality_document[:id] = quality_document.id
-              quality_document[:name] = "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank'><i>#{quality_document.logo.joint_file_name}</i></a> " if quality_document.logo.joint
+              quality_document[:name] = "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank'><i>#{quality_document.quality_document_name}</i></a> " if quality_document.logo.joint
 
               quality_document[:links] = CommonActions.object_crud_paths( nil, edit_quality_document_path(quality_document), quality_document_path(quality_document))
               quality_document[:links] += "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if quality_document.logo.joint

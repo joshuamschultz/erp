@@ -22,7 +22,7 @@
               <% end %>
           <div>
             <% if @quality_document.logo.present? %>
-                Current file <a href='<%= @quality_document.logo.joint.url(:original) %>' target='_blank'><i><%= @quality_document.logo.joint_file_name  %></i></a> 
+                Current file <a href='<%= @quality_document.logo.joint.url(:original) %>' target='_blank'><i><%= @quality_document.quality_document_name %></i></a> 
             <% end %>
           </div>
         </div>
