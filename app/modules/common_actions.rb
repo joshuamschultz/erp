@@ -223,7 +223,7 @@ module CommonActions
 			{:path => "#", :name => "Vendor"},
 			{:path => "#", :name => "Customer"},
 			{:path => "#", :name => "General"},
-			{:path => new_quality_document_path, :name => "Quality Level Documents"}
+			{:path => quality_documents_path, :name => "Quality Level Documents"}
 
 
 		]
