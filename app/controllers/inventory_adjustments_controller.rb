@@ -103,7 +103,7 @@ class InventoryAdjustmentsController < ApplicationController
     @inventory_adjustment.destroy
 
     respond_to do |format|
-      format.html { redirect_to inventory_adjustments_url }
+      format.html { redirect_to new_inventory_adjustment_path, :notice => ' inventory_adjustment was successfully deleted.' }
       format.json { head :no_content }
     end
   end
