@@ -20,7 +20,13 @@
                       <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
                   </div>
               <% end %>
+          <div>
+            <% if @quality_document.logo.present? %>
+                Current file <a href='<%= @quality_document.logo.joint.url(:original) %>' target='_blank'><i><%= @quality_document.logo.joint_file_name  %></i></a> 
+            <% end %>
+          </div>
         </div>
+
     </div>   
 
   
