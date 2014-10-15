@@ -25,6 +25,7 @@ class ItemAltName < ActiveRecord::Base
   has_many :quality_actions
 
   has_many :transferring_po_lines, :foreign_key => "alt_name_transfer_id", :class_name => "PoLine"
+  has_many :inventory_adjustments, :dependent => :destroy
 
   def alt_item_name
       self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")

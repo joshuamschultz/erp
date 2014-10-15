@@ -43,6 +43,7 @@ class QualityLot < ActiveRecord::Base
 	has_one :package, :dependent => :destroy
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy
+  	has_many :inventory_adjustments, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
