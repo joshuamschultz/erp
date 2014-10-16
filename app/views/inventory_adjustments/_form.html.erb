@@ -49,8 +49,7 @@
     $(document).ready(function(){ 
         // $("#quality_lot_po_line_id").html("");
         // $("#quality_lot_item_revision_id").html("");
-
-        $("#inventory_adjustment_item_alt_name_id").focusout(function(){
+   $("#inventory_adjustment_item_alt_name_id").focusout(function(){
             initiate_line_items();
         });
         $("#inventory_adjustment_quality_lot_id").focusout(function(){
@@ -59,6 +58,9 @@
         $("#inventory_adjustment_item_alt_name_id").val("<%= @inventory_adjustment.item_alt_name.alt_item_name if @inventory_adjustment.item_alt_name %>");
 
     initiate_line_items();
+
+
+
 
         $("#inventory_adjustment_item_alt_name_id").focus();
     });
@@ -77,8 +79,22 @@
     function set_quality_lots(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
         $("#inventory_adjustment_quality_lot_id").html(html);
-
+        set_val_selectbox();
         initiate_current_quantity();
+
+    }
+
+
+    function set_val_selectbox(){
+
+      var theText = "<%= @inventory_adjustment.quality_lot_id %>";
+      $("#inventory_adjustment_quality_lot_id option").each(function() {
+        if($(this).text() == theText) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+
     }
 
     function initiate_current_quantity(){
