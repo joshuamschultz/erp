@@ -7,13 +7,15 @@ class InventoryAdjustment < ActiveRecord::Base
   belongs_to :quality_lot
 
 
-  after_save :before_create_process
-  def before_create_process
-    self.item_id = item_no
+  after_save :after_create_process
+  before_create :before_create_process
 
+  def after_create_process
     @quality_lot = QualityLot.find(self.quality_lot_id)
     @quality_lot.update_attribute(:lot_quantity , self.inventory_adjustment_quantity)
-
+  end
+  def before_create_process 
+    self.item_id = item_no
   end
   def item_no
   	self.item_alt_name.item.id
