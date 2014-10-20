@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :inventory_adjustments
+
+
   resources :quality_documents
 
 

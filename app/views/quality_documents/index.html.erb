@@ -1,21 +1,42 @@
-<h1>Listing quality_documents</h1>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Quality_Documents </h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Quality Documents', new_quality_document_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>        
+                <th>Id</th>
+                <th>Name</th>
 
-<% @quality_documents.each do |quality_document| %>
-  <tr>
-    <td><%= link_to 'Show', quality_document %></td>
-    <td><%= link_to 'Edit', edit_quality_document_path(quality_document) %></td>
-    <td><%= link_to 'Destroy', quality_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+                <th></th>
+              </tr>
+            </thead>
 
-<br />
+            <tbody>
 
-<%= link_to 'New Quality document', new_quality_document_path %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => quality_documents_path,
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "name" },
+                        { "mData": "links" }
+
+                    ]'
+    } 
+%>

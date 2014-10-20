@@ -3,6 +3,9 @@
 
   <div class="form-inputs">
 
+    <%= f.input :quality_document_name, :label => "Document_name" %>
+
+
      <div class="control-group string optional quality_document_company_website">
         <label class="control-label">Choose Document</label>
         <div class="controls">
@@ -17,7 +20,13 @@
                       <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
                   </div>
               <% end %>
+          <div>
+            <% if @quality_document.logo.present? %>
+                Current file <a href='<%= @quality_document.logo.joint.url(:original) %>' target='_blank'><i><%= @quality_document.quality_document_name %></i></a> 
+            <% end %>
+          </div>
         </div>
+
     </div>   
 
   
@@ -27,6 +36,8 @@
   <div class="separator bottom"></div>
   <div class="form-actions">
       <%= f.button :submit %>
+      <%= link_to 'Back', quality_documents_path, :class =>"btn" %>
+
   </div>
 <% end %>
 
