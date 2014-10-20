@@ -77,7 +77,7 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_reconcile_list", :path => reconciles_path(:reconcile_type => params[:reconcile_type]), :extras => {:slno => false},
+    {:name => "table_report_reconcile_list", :path => reconciles_path(:reconcile_type => params[:reconcile_type]), :extras => {:slno => false, :order => "desc"},
         :columns => '[
                         { "mData": "ids" },
                         { "mData": "tag" },
