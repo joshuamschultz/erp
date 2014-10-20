@@ -53,9 +53,11 @@ class SoShipmentsController < ApplicationController
     object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
     object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
     object[:lot] = "" 
-    if shipment && object.quality_lot_id > 0
-      quality_lot = QualityLot.find(object.quality_lot_id)
-      object[:lot] =quality_lot.lot_control_no
+    if object.quality_lot_id
+      if shipment && object.quality_lot_id > 0
+        quality_lot = QualityLot.find(object.quality_lot_id)
+        object[:lot] =quality_lot.lot_control_no
+      end
     end
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
     object[:so_line_quantity] = so_line.so_line_quantity

@@ -137,9 +137,10 @@
 
     function  freight_result ()     
     {
+        var theText = $("#freight_text").val();
         var account_row_count = get_rowcount();    
         for ( var i = 0; i < account_row_count; i++ ) {             
-            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "FREIGHT ; UPS")
+            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
                     if($("#receivable_receivable_freight").val() > 0){
                         $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val($("#receivable_receivable_freight").val());
@@ -153,8 +154,7 @@
         if(i ==account_row_count && $("#receivable_receivable_freight").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
-            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "FREIGHT ; UPS";
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);            
             $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
                 if($(this).text() == theText) {
                     $(this).attr('selected', 'selected');            
@@ -175,10 +175,11 @@
 
     function  discount_result ()     
     {
+        var theText = $("#discount_text").val();
         var account_row_count = get_rowcount();         
         var discount_val = ($("#receivable_cost").val() /100 * $("#receivable_receivable_discount").val()) * -1;        
         for ( var i = 0; i < account_row_count; i++ ) {             
-            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == "COGS; DISCOUNT")
+            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {                    
                     if($("#receivable_receivable_discount").val() > 0)
                     {                   
@@ -193,8 +194,7 @@
         if(i ==account_row_count && $("#receivable_receivable_discount").val() > 0 && $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").length == 0){            
             var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
             $("#accounts_dispersal_table_body").append(html); 
-            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
-            var theText = "COGS; DISCOUNT";
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);            
             $("#receivable_receivable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
                 if($(this).text() == theText) {
                     $(this).attr('selected', 'selected');            

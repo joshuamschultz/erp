@@ -134,6 +134,7 @@ class Receivable < ActiveRecord::Base
   def generate_pdf
 
     @company_info = CompanyInfo.first
+    if @company_info.logo
     in_contact_title = in_contact_address1 = in_contact_address2 = in_contact_state =  in_contact_czip = ''
     ship_contact_title = ship_contact_address1 = ship_contact_address2 = ship_contact_state =  ship_contact_czip = ''
     qty = shipped = product_cost = product_shipped_cost = sub_total = 0
@@ -195,6 +196,7 @@ class Receivable < ActiveRecord::Base
     path = path+"/"+self.so_header.so_identifier.to_s+".pdf"
     kit.to_file(path)
     end
+  end
   end
 
 end
