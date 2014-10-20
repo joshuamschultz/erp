@@ -1,6 +1,8 @@
 <div class="row-fluid">
     <div class="span3 well item_detail_view">
+    <% unless @so_line.new_record? %>
         <%= render :partial => 'so_headers/so_header_info' %>
+    <% end %>
     </div>
     <div class="span9 well">
         <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
