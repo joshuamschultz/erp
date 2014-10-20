@@ -2,7 +2,9 @@
 
 <div class="row-fluid">
     <div class="span3 well item_detail_view">
+    <% unless @po_line.new_record? %>
         <%= render :partial => 'po_headers/po_header_info' %>
+    <% end %>
     </div>
 
     <div class="span9 well">
