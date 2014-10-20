@@ -1,0 +1,47 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Inventory Adjustments</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Inventory Adjustments', new_inventory_adjustment_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>Part no</th>
+                <th>Control no</th>
+                <th>Adjustment_quantity</th>
+                <th>Reason for Discrepancy</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => inventory_adjustments_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "item_part_no" },
+                        { "mData": "control_no" },
+                        { "mData": "inventory_adjustment_quantity" },
+                        { "mData": "inventory_adjustment_description" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+
+                    ]'
+    } 
+%>

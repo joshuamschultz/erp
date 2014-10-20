@@ -10,7 +10,17 @@ before_filter :set_page_info
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @quality_documents }
+      format.json { 
+          @quality_documents = @quality_documents.select{|quality_document|
+              quality_document[:id] = quality_document.id
+              quality_document[:name] = "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank'><i>#{quality_document.quality_document_name}</i></a> " if quality_document.logo.joint
+
+              quality_document[:links] = CommonActions.object_crud_paths( nil, edit_quality_document_path(quality_document), quality_document_path(quality_document))
+              quality_document[:links] += "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if quality_document.logo.joint
+
+          }
+          render json: {:aaData => @quality_documents}
+       }
     end
   end
 
@@ -48,7 +58,7 @@ before_filter :set_page_info
 
     respond_to do |format|
       if @quality_document.save
-        format.html { redirect_to @quality_document, notice: 'Quality document was successfully created.' }
+        format.html { redirect_to quality_documents_path, notice: 'Quality document was successfully created.' }
         format.json { render json: @quality_document, status: :created, location: @quality_document }
       else
         format.html { render action: "new" }
@@ -64,7 +74,7 @@ before_filter :set_page_info
 
     respond_to do |format|
       if @quality_document.update_attributes(params[:quality_document])
-        format.html { redirect_to @quality_document, notice: 'Quality document was successfully updated.' }
+        format.html { redirect_to quality_documents_path, notice: 'Quality document was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

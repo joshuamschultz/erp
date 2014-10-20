@@ -20,6 +20,9 @@ class Item < ActiveRecord::Base
   has_many :item_alt_names, :dependent => :destroy
   has_many :quality_actions, :dependent => :destroy
 
+  has_many :inventory_adjustments, :dependent => :destroy
+
+
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 
   after_initialize :default_values

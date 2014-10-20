@@ -34,7 +34,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_types_path, :extras => {:slno => false},
+        :name => "table_report", :path => gl_types_path, :extras => {:slno => false, :order => "desc"},
         :columns => '[
                         { "mData": "gl_name" },
                         { "mData": "gl_side" },
