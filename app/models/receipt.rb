@@ -66,8 +66,16 @@ class Receipt < ActiveRecord::Base
 
   def process_after_save
     if self.receipt_type.present? && self.receipt_type.type_value == "check" 
-            depositCheck = DepositCheck.create(receipt_id: self.id, status: "open")
-            Reconcile.create(reconcile_type: "deposit check", receipt_id: self.id, deposit_check_id: depositCheck.id)
+            
+            @reconcile = Reconcile.where(:receipt_id => self.id).first
+            @deposit_check = DepositCheck.where(:receipt_id => self.id).first
+            if @deposit_check.nil?
+              depositCheck = DepositCheck.create(receipt_id: self.id, status: "open") 
+              if @reconcile.nil?
+                Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: self.id, deposit_check_id: depositCheck.id, )
+              end
+            end   
+            self.update_transactions
             # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',self.receipt_check_amount )
             # CommonActions.update_gl_accounts('PETTY CASH', 'increment',self.receipt_check_amount ) 
     end  
@@ -77,6 +85,40 @@ class Receipt < ActiveRecord::Base
   def redirect_path
     receipt_path(self)
   end
+
+  def update_transactions       
+        self.update_transaction("11012","credit") # Cash
+        self.update_transaction("11080", "debit")  # Receivable
+  end
+
+  def  update_transaction(account, type)      
+        @gl_account_to_update = GlAccount.where(:gl_account_identifier=> account).first
+        @gl_account = GlAccount.where(:id => @gl_account_to_update.id).first
+
+        @gl_entry = GlEntry.where(receipt_id: self.id, gl_account_id: @gl_account_to_update.id).first
+        amount = 0
+           unless @gl_entry.nil?
+                if type == "debit"
+                  @gl_entry.update_attributes(:gl_entry_debit => self.receipt_check_amount)
+                  amount = @gl_account.gl_account_amount - self.receipt_check_amount_was.to_f + self.receipt_check_amount.to_f 
+                elsif type == "credit"  
+                  @gl_entry.update_attributes(:gl_entry_credit => self.receipt_check_amount)
+                  amount = @gl_account.gl_account_amount + self.receipt_check_amount_was.to_f - self.receipt_check_amount.to_f if type == "credit"                                                
+                end  
+                @gl_account.update_attributes(:gl_account_amount => amount)
+            else
+                if type == "debit"
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)           
+                  amount = @gl_account.gl_account_amount - self.receipt_check_amount.to_f if type == "debit"  
+                elsif type == "credit"    
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_credit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id) 
+                  amount = @gl_account.gl_account_amount + self.receipt_check_amount.to_f
+                end  
+                @gl_entry.save 
+                @gl_account.update_attributes(:gl_account_amount => amount) 
+            end 
+  end
+
 
   private
 
