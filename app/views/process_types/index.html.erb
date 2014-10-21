@@ -1,1 +1,16 @@
 <%= render :partial => 'attachments/relational_attachments', :locals => {list_path: process_types_path, new_path: new_process_type_path, name: "process"} %>
+
+
+<script type="text/javascript"> 
+
+$(document).ready(function (){
+	var $myTable = $('table');
+	hideColumn($myTable, 2);
+});
+function hideColumn($table, columnNumber){
+
+	setTimeout(function() {
+		$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
+	}, 100);
+}
+</script> 

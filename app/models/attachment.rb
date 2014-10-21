@@ -12,14 +12,14 @@ class Attachment < ActiveRecord::Base
 
   # validates_attachment_content_type :attachment, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
   
-  validates_length_of :attachment_revision_title, :maximum => 50 if validates_presence_of :attachment_revision_title  unless :is_post?
+  validates_length_of :attachment_revision_title, :maximum => 50 if validates_presence_of :attachment_revision_title  unless :is_process_type?
 
   (validates :attachment_name, :uniqueness => { :scope => :attachable_type, :message => "already exists!" } if validates_length_of :attachment_name, :maximum => 50) if validates_presence_of :attachment_name
 
   validates_presence_of :attachment
   
   # attachment_status - pending/approved/rejected
-  def is_post?
+  def is_process_type?
     self.attachable_type == "ProcessType"
   end
 
