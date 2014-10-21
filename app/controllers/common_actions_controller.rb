@@ -219,7 +219,7 @@ class CommonActionsController < ApplicationController
               end
             when "get_quality_lots"
               if params[:id].present?
-                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
                 result = quality_lots
               end
 

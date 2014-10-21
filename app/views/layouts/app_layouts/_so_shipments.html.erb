@@ -103,10 +103,12 @@ var current_field_temp;
     		$('#modal-simple').modal('show');
 	    	$('#quality_lot').empty();
 	    	$.each(response["aaData"], function (i,item) {
-			    $('#quality_lot').append($('<option>', { 
-			        value: item[0],
-			        text : item[1] 
-			    }));
+	    		if(item.length != 0 ){
+				    $('#quality_lot').append($('<option>', { 
+				        value: item[0],
+				        text : item[1] 
+				    }));				 
+				}
 			});
 			$("#quality_lot").prepend("<option value='' selected='selected'></option>");
     	}    
