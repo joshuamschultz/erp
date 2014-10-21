@@ -67,8 +67,8 @@ class Receipt < ActiveRecord::Base
   def process_after_save
     if self.receipt_type.present? && self.receipt_type.type_value == "check" 
             
-            @reconcile = Reconcile.where(:receipt_id => self.id)
-            @deposit_check = DepositCheck.where(:receipt_id => self.id)
+            @reconcile = Reconcile.where(:receipt_id => self.id).first
+            @deposit_check = DepositCheck.where(:receipt_id => self.id).first
             if @deposit_check.nil?
               depositCheck = DepositCheck.create(receipt_id: self.id, status: "open") 
               if @reconcile.nil?
