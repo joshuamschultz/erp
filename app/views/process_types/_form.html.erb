@@ -19,10 +19,22 @@
 <% end %>
 
 <script type="text/javascript">
+
+$( document ).ready(function() {
+
+$(".process_type_attachment_attachment_revision_title").remove();
+});
   tab_field_forms["form_for_processes"] = ["process_type_attachment_attributes_attachment_name", "process_type_attachment_attributes_attachment_revision_title", "process_type_attachment_attributes_attachment_revision_date", "process_type_attachment_attributes_attachment_description", "process_type_attachment_attributes_attachment_public", "process_type_attachment_attributes_attachment_active", "process_type_attachment_attributes_attachment"];
 
   <% date_box_date = @process_type.new_record? ? Date.today : @process_type.attachment.attachment_revision_date %> 
 
   date_box_fields = date_box_fields.concat([{"name":"process_type_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
+
+
+
+
+
+
+
 </script>
 
