@@ -100,7 +100,7 @@ class Payment < ActiveRecord::Base
         end
         if self.payment_type.present? && self.payment_type.type_value == "check" 
             printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")
-            Reconcile.create(reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)
+            Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)
         end    
     end
 
