@@ -4,13 +4,23 @@
 <script type="text/javascript"> 
 
 $(document).ready(function (){
-	var $myTable = $('table');
-	hideColumn($myTable, 2);
+
+var myjson;
+$.getJSON("http://erp.chessgroupinc.com/process_types", function(json){
+    myjson = json;
+
+   	var $myTable = $('table');
+	hideColumn($myTable, 2); 
+});
+
+
 });
 function hideColumn($table, columnNumber){
+		
+	$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
 
-	setTimeout(function() {
-		$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
-	}, 5000);
+	// setTimeout(function() {
+	// 	$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
+	// }, 5000);
 }
 </script> 
