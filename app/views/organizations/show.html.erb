@@ -99,6 +99,8 @@
 
 <div class="separator bottom"></div>
 
+<% unless @organization.type_name == "customer"%>
+
 <h5>Processes : <span></span></h5>
 <div class="well"> 
     <div class="row-fluid">    
@@ -109,6 +111,8 @@
         </div>
     </div>
 </div>
+
+<% end %>
 
 <div class="separator bottom"></div>
 
