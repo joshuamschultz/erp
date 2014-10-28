@@ -16,7 +16,7 @@ class Attachment < ActiveRecord::Base
 
   (validates :attachment_name, :uniqueness => { :scope => :attachable_type, :message => "already exists!" } if validates_length_of :attachment_name, :maximum => 50) if validates_presence_of :attachment_name
 
-  validates_presence_of :attachment
+  validates_presence_of :attachment unless :is_process_type?
   
   # attachment_status - pending/approved/rejected
   def is_process_type?
