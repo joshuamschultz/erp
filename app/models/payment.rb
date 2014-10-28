@@ -99,8 +99,11 @@ class Payment < ActiveRecord::Base
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
         end
         if self.payment_type.present? && self.payment_type.type_value == "check" 
-            printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")
-            Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)
+            @reconcile = Reconcile.where(:payment_id => self.id).first
+            if @reconcile.nil?
+                printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")
+                Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)                           
+            end    
         end    
     end
 
