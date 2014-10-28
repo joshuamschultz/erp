@@ -97,14 +97,7 @@ class Payment < ActiveRecord::Base
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
             # CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
-        end
-        if self.payment_type.present? && self.payment_type.type_value == "check" 
-            @reconcile = Reconcile.where(:payment_id => self.id).first
-            if @reconcile.nil?
-                printingScreen = PrintingScreen.create(payment_id: self.id, status: "open")
-                Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: self.id, printing_screen_id: printingScreen.id)                           
-            end    
-        end    
+        end          
     end
 
     def redirect_path
