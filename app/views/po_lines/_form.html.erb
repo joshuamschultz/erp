@@ -1,11 +1,13 @@
 <% po_is_transfer = @po_header.po_is?("transer") %>
 
 <div class="row-fluid">
-    <div class="span3 well item_detail_view">
     <% unless @po_line.new_record? %>
+
+    <div class="span3 well item_detail_view">
         <%= render :partial => 'po_headers/po_header_info' %>
-    <% end %>
     </div>
+        <% end %>
+
 
     <div class="span9 well">
         <%= simple_form_for([@po_line.po_header, @po_line], :html => {:id => "form_for_po_line",:class => "form-horizontal"}) do |f| %>

@@ -19,7 +19,9 @@ class SoHeader < ActiveRecord::Base
 	has_many :so_lines, :dependent => :destroy
   has_many :receivables, :dependent => :destroy
 
+  default_scope order('created_at ASC')
 	before_create :before_create_level_defaults
+
 
   def before_create_level_defaults
   		self.so_status = "open"
