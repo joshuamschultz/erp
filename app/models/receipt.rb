@@ -69,12 +69,13 @@ class Receipt < ActiveRecord::Base
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
             if @deposit_check.nil? 
               if self.receipt_type.type_value == "check"
-               depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type, check_identifier:  self.receipt_check_code, active: 1) 
+               depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, check_identifier:  self.receipt_check_code, active: 1) 
               elsif self.receipt_type.type_value == "credit"
-                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type, active: 1 )       
+                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
               end              
-            end   
-            self.update_transactions          
+            end         
+    else
+      self.update_transactions   
     end          
   end 
 
