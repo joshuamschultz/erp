@@ -250,7 +250,19 @@ class CommonActionsController < ApplicationController
                   Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
                 end           
                 result = "success"
-              end              
+              end 
+            when "after_print_deposits"
+              if params[:id].present? 
+                deposit_check = DepositCheck.find(params[:id]) 
+                deposit_check.update_attributes(:status => "Printed", :active => 0)
+                receipt = Receipt.find_by_deposit_check_id(params[:id])
+                receipt.update_transactions
+                @reconcile = Reconcile.where(:receipt_id => receipt.id).first
+                if @reconcile.nil?                                  
+                  Reconcile.create(tag: "not reconciled",reconcile_type: deposit_check.receipt_type, receipt_id: receipt.id, deposit_check_id: params[:id])                                             
+                end           
+                result = "success"
+              end                    
         end
          render json: {:aaData => result}
     end

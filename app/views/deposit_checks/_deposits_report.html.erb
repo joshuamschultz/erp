@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+<style type="text/css">
+body {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+}
+/* New Style */
+.clear{clear: both;}
+
+.ms_wrapper{float: left;height: auto;width:640px;}
+.form-bold {
+    font-size: 18px;
+}
+.ms_wrapper td {
+    padding: 5px 0;
+    width: 640px;
+}
+.pay-heading {
+    font-size: 19px;
+    font-weight: bold;
+}
+.tab-02 td {
+    border: 1px solid #111;
+    float: left;
+    padding: 11px 0;
+    width: 103px;
+}
+.tab-head-02 > td {
+    padding: 0;
+}
+.tab-head td {
+    background-color: #111;
+    border: 1px solid #111;
+    color: #fff;
+    float: left;
+    font-weight: bold;
+    padding: 11px 0;
+    width: 103px;
+}
+
+.line-02 {
+    border-bottom: 1px solid #111;
+    float: left;
+    width: 640px;
+}
+.print-checks{
+    page-break-after: always;
+
+}
+.print-checks:first-child {
+     page-break-before: auto;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="ms_wrapper print-checks">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="line-02">
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="left" valign="top">
+                  <td width="50%" scope="row">Check Code:</td>
+                  <td width="50%"><%= deposit_check.check_identifier %></td>
+                </tr>
+              </table></td>
+              </tr>
+              <% receipt = Receipt.find_by_deposit_check_id(deposit_check.id) %>
+            <tr align="left" valign="top">
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="left" valign="top">
+                  <td width="50%" scope="row">Receipt Identifier:</td>
+                  <td width="50%"><%= receipt.receipt_identifier %></td>
+                </tr>
+              </table></td>
+              </tr>
+            </table></td>
+          <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="left" valign="top">
+                  <td width="50%" scope="row">Receipt Amount:</td>
+                  <td width="50%"><%= receipt.receipt_check_amount %></td>
+                </tr>
+              </table></td>
+              </tr>
+            <tr>
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="left" valign="top">
+                  <td width="50%" scope="row">Vendor : </td>
+                  <td width="50%"><%= receipt.organization.organization_name %></td>
+                </tr>
+              </table></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td scope="row">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" scope="row" class="pay-heading">Receipt Lines </td>
+    </tr>
+    <tr>
+      <td scope="row">&nbsp;</td>
+    </tr>
+        <tr class="tab-head-02">
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-head">
+        <tr align="center" valign="middle">
+          <td scope="row">Invoice</td>         
+          <td>Total</td>
+          <td>Balance</td>
+          <td>Amount</td>
+        </tr>
+      </table></td>
+    </tr>
+    <% receipt.receipt_lines.each do |receipt_line| %>
+    <tr class="tab-head-02">
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-02">
+        <tr align="center" valign="middle">
+          <td scope="row"><%= receipt_line.receivable.receivable_identifier %></td>
+          <td><%= receipt_line.receivable.receivable_total %></td>
+          <td><%= receipt_line.receivable.receivable_current_balance %></td>
+          <td><%= receipt_line.receipt_line_amount %></td>
+        </tr>        
+      </table></td>
+    </tr>
+    <% end %>
+  </table> 
+</div>
+</body>
+</html>

@@ -68,6 +68,8 @@ class ReceiptsController < ApplicationController
 
     respond_to do |format|
       if @receipt.save
+        deposit_check = DepositCheck.find_by_receipt_id(@receipt.id)
+        @receipt.update_attributes(:deposit_check_id => deposit_check.id) if deposit_check
         format.html { redirect_to @receipt, notice: 'Receipt was successfully created.' }
         format.json { render json: @receipt, status: :created, location: @receipt }
       else
@@ -85,6 +87,8 @@ class ReceiptsController < ApplicationController
 
     respond_to do |format|
       if @receipt.update_attributes(params[:receipt])
+        deposit_check = DepositCheck.find_by_receipt_id(@receipt.id)
+        @receipt.update_attributes(:deposit_check_id => deposit_check.id) if deposit_check
         format.html { redirect_to @receipt, notice: 'Receipt was successfully updated.' }
         format.json { head :no_content }
       else
