@@ -12,7 +12,8 @@ class InventoryAdjustment < ActiveRecord::Base
 
   def after_create_process
     @quality_lot = QualityLot.find(self.quality_lot_id)
-    @quality_lot.update_attribute(:lot_quantity , self.inventory_adjustment_quantity)
+    @quantity_on_hand =@quality_lot.quantity_on_hand + self.inventory_adjustment_quantity
+    @quality_lot.update_attribute(:quantity_on_hand , @quantity_on_hand)
   end
   def before_create_process 
     self.item_id = item_no
