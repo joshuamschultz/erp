@@ -8,7 +8,7 @@ class Receipt < ActiveRecord::Base
 
   attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
     :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
-    :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes
+    :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id
 
   scope :status_based_receipts, lambda{|status| where(:receipt_status => status) }
 
@@ -65,21 +65,18 @@ class Receipt < ActiveRecord::Base
   after_save :process_after_save
 
   def process_after_save
-    if self.receipt_type.present? && self.receipt_type.type_value == "check" 
-            
-            @reconcile = Reconcile.where(:receipt_id => self.id).first
+    if self.receipt_type.present?   && (self.receipt_type.type_value == "check" ||   self.receipt_type.type_value == "credit")                  
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
-            if @deposit_check.nil?
-              depositCheck = DepositCheck.create(receipt_id: self.id, status: "open") 
-              if @reconcile.nil?
-                Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: self.id, deposit_check_id: depositCheck.id, )
-              end
-            end   
-            self.update_transactions
-            # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',self.receipt_check_amount )
-            # CommonActions.update_gl_accounts('PETTY CASH', 'increment',self.receipt_check_amount ) 
-    end  
-        
+            if @deposit_check.nil? 
+              if self.receipt_type.type_value == "check"
+               depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, check_identifier:  self.receipt_check_code, active: 1) 
+              elsif self.receipt_type.type_value == "credit"
+                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
+              end              
+            end         
+    else
+      self.update_transactions   
+    end          
   end 
 
   def redirect_path
