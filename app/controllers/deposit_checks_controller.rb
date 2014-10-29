@@ -2,16 +2,17 @@ class DepositChecksController < ApplicationController
   # GET /deposit_checks
   # GET /deposit_checks.json
   def index
-    @deposit_checks = DepositCheck.all
+    @deposit_checks = DepositCheck.where(:active => 1)
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
           @deposit_checks = @deposit_checks.select{|deposit_check|
 
-              
-              deposit_check[:status] = deposit_check.status
-              deposit_check[:receipt_name] = deposit_check.receipt.present? ? CommonActions.linkable(receipt_path(deposit_check.receipt), deposit_check.receipt_id) : ""
+              deposit_check[:receipt_type] = CommonActions.linkable(deposit_check_path(deposit_check), deposit_check.receipt_type)              
+              deposit_check[:check_code] = CommonActions.linkable(receipt_path(deposit_check.receipt),deposit_check.check_identifier)
+              receivables = deposit_check.get_receivables
+              deposit_check[:receivables] = receivables
 
               deposit_check[:links] = CommonActions.object_crud_paths(nil, edit_deposit_check_path(deposit_check), nil)     
 
@@ -94,5 +95,10 @@ class DepositChecksController < ApplicationController
       format.html { redirect_to deposit_checks_url }
       format.json { head :no_content }
     end
+  end
+
+   def report
+    @deposit_checks = DepositCheck.where(:active => 1)
+    render :layout => false
   end
 end

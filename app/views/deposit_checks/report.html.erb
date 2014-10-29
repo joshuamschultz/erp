@@ -1,0 +1,5 @@
+<% @deposit_checks.each do |d| %>
+	<% if d.active == 1 %>
+		<%= render :partial => 'deposit_checks/deposits_report', :locals => {:deposit_check => d}%>
+	<% end %>
+<% end %>
