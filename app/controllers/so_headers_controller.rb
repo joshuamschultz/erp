@@ -2,6 +2,7 @@ class SoHeadersController < ApplicationController
   before_filter :find_relations, only: [:index]
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update] 
+  # before_filter :check_permissions, :only => [:update, :destroy]
   autocomplete :so_header, :so_identifier, :full => true
 
   def set_page_info
@@ -13,6 +14,9 @@ class SoHeadersController < ApplicationController
       params[:so_header][:organization_id] = params[:org_organization_id] if params[:so_header][:organization_id] == ""
   end
 
+  # def check_permissions
+  #       authorize! :update, SoHeader
+  # end
   def get_autocomplete_items(parameters)
       items = super(parameters)
       if params[:organization_id].present?
@@ -49,6 +53,8 @@ class SoHeadersController < ApplicationController
           so_header[:index] = i
           so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
           so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
+          so_header[:so_type_qty]  = so_header.so_lines.map { |x| x.so_line_quantity }.sum
+
           if so_header.bill_to_address
               so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
           else

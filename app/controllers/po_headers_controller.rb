@@ -57,6 +57,9 @@ class PoHeadersController < ApplicationController
               po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
               po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
               po_header[:po_line_price] =  po_header.po_lines.find_by_item_id(@item.id).po_line_cost if params[:item_id].present?
+
+              po_header[:po_type_qty]  = po_header.po_lines.map { |x| x.po_line_quantity }.sum
+
               i += 1
           }
           render json: {:aaData => @po_headers}
