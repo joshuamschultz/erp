@@ -21,7 +21,7 @@
                     <% inventory_quantity = 0 %>
                     <% @item.quality_lots.each do |quality_lot| %>
                         <% if quality_lot.present? %>
-                            <h5><strong><% inventory_quantity+= quality_lot.lot_quantity %></strong></h5>
+                            <h5><strong><% inventory_quantity+= quality_lot.quantity_on_hand %></strong></h5>
                         <% end %>
                     <% end  %>
                     <h5><strong><%= inventory_quantity %></strong></h5>
