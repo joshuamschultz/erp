@@ -24,8 +24,11 @@ AllianceFasteners::Application.routes.draw do
   resources :printing_screens
 
 
-  resources :deposit_checks
-
+  resources :deposit_checks do
+    collection do      
+      get 'report'
+    end
+  end 
 
   resources :reconciles
 
