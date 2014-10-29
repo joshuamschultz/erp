@@ -1,78 +1,158 @@
-<div class="row-fluid">
-    <% unless @so_line.new_record? %>
 
-    <div class="span3 well item_detail_view">
-        <%= render :partial => 'so_headers/so_header_info' %>
-    </div>
-        <% end %>
+<% unless @so_line.new_record? %>
 
-    <div class="span9 well">
-        <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
-            <%= f.error_notification %>     
+    <div class="row-fluid">
 
-            <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+        <div class="span3 well item_detail_view">
+            <%= render :partial => 'so_headers/so_header_info' %>
+        </div>
 
-            <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
+        <div class="span4 well">
+            <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
+                <%= f.error_notification %>     
 
-            <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
-            <%= f.input :so_line_cost, :label => "Cost" %>     
+                <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-            <%= f.input :so_line_sell, :label => "Sell" %>        
+                <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-            <%= f.input :so_line_quantity, :label => "Quantity" %>
-            
-            <%#= f.input :so_line_freight, :label => "Freight Charge" %>
+                <%= f.input :so_line_cost, :label => "Cost" %>     
 
-            <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', :label => "Vendor" %>
+                <%= f.input :so_line_sell, :label => "Sell" %>        
 
-            <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.organization) %>
+                <%= f.input :so_line_quantity, :label => "Quantity" %>
+                
+                <%#= f.input :so_line_freight, :label => "Freight Charge" %>
 
-            <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.organization) %>
-<!-- 
-            <div id="group_div" style="padding-bottom:20px;">
-                <div class="control-group">
-                    <label for="quote_vendors" class="optional control-label">Choose Item</label>
-                    <div class="controls">
-                        <select name="quote_item" id="quote_item">
-                            <option value=""></option>
-                        </select>
-                        <%#= select_tag :quote_item, options_for_select([[ , ""] ])%>
+                <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', :label => "Vendor" %>
+
+                <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.organization) %>
+
+                <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.organization) %>
+    <!-- 
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Choose Item</label>
+                        <div class="controls">
+                            <select name="quote_item" id="quote_item">
+                                <option value=""></option>
+                            </select>
+                            <%#= select_tag :quote_item, options_for_select([[ , ""] ])%>
+                        </div>
                     </div>
-                </div>
-            </div> -->
+                </div> -->
 
-            <div id="group_div" style="padding-bottom:20px;">
-                <div class="control-group">
-                    <label for="quote_vendors" class="optional control-label">Vendor PO</label>
-                    <div class="controls">                        
-                        <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
-  
-                    </div>
-                </div>
-            </div>
-            
-
-            <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
-
-            <%= f.input :so_line_notes, :label => "Notes" %>
-
-            <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
-
-            <div class="separator bottom"></div>
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Vendor PO</label>
+                        <div class="controls">                        
+                            <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
       
-            <div class="actions">
-                <%= f.submit "ADD", :class =>"btn" %>
-                <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
-                <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
-           </div>
-        <% end %>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
+
+                <%= f.input :so_line_notes, :label => "Notes" %>
+
+                <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
+
+                <div class="separator bottom"></div>
+          
+                <div class="actions">
+                    <%= f.submit "ADD", :class =>"btn" %>
+                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
+                    <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
+               </div>
+            <% end %>
+        </div>
     </div>
-</div>
 
-<div class="separator bottom"></div>
+    <div class="separator bottom"></div>
 
-<%= render :partial => 'so_lines/line_items' %>
+    <%= render :partial => 'so_lines/line_items' %>
+
+
+<% else %>
+    <div class="row-fluid">
+
+
+
+        <div class="span4 well">
+            <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
+                <%= f.error_notification %>     
+
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+
+                <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
+
+                <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
+
+                <%= f.input :so_line_cost, :label => "Cost" %>     
+
+                <%= f.input :so_line_sell, :label => "Sell" %>        
+
+                <%= f.input :so_line_quantity, :label => "Quantity" %>
+                
+                <%#= f.input :so_line_freight, :label => "Freight Charge" %>
+
+                <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', :label => "Vendor" %>
+
+                <%= hidden_field_tag :organization_id, (@so_line.organization.id if @so_line.organization) %>
+
+                <%= hidden_field_tag :org_organization_id, (@so_line.organization.id if @so_line.organization) %>
+    <!-- 
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Choose Item</label>
+                        <div class="controls">
+                            <select name="quote_item" id="quote_item">
+                                <option value=""></option>
+                            </select>
+                            <%#= select_tag :quote_item, options_for_select([[ , ""] ])%>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div id="group_div" style="padding-bottom:20px;">
+                    <div class="control-group">
+                        <label for="quote_vendors" class="optional control-label">Vendor PO</label>
+                        <div class="controls">                        
+                            <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
+      
+                        </div>
+                    </div>
+                </div>
+                
+
+                <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
+
+                <%= f.input :so_line_notes, :label => "Notes" %>
+
+                <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
+
+                <div class="separator bottom"></div>
+          
+                <div class="actions">
+                    <%= f.submit "ADD", :class =>"btn" %>
+                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
+                    <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
+               </div>
+            <% end %>
+        </div>
+
+
+    <div class="separator bottom"></div>
+        <div class="span8">
+            <%= render :partial => 'so_lines/line_items' %>
+        </div>
+    </div>
+
+<% end %>
+
 
 <script type="text/javascript">
     tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_vendor_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
@@ -158,3 +238,4 @@
     }
 
 </script>
+
