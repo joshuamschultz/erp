@@ -20,6 +20,7 @@ class ProcessType < ActiveRecord::Base
   has_many :item_revisions, :through => :item_processes
   has_one :attachment, :as => :attachable, :dependent => :destroy
 
+  default_scope :order => 'process_short_name ASC'
   accepts_nested_attributes_for :attachment, :allow_destroy => true
 
   def redirect_path
