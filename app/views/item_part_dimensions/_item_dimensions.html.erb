@@ -9,7 +9,7 @@
             <h4 class="span6 heading">Dimensions <%= "of " unless item_page %> <%= link_to "#{@item.item_part_no}", @item unless item_page %></h4>
             <span class="span6 heading right">
                 <%#= link_to 'Back to Item', item_path(@item), :class => "btn btn-mini" %>
-                <%= link_to 'New Dimension Type', new_dimension_path(:item_id => @item.id), :class => "btn btn-mini btn-success" if item_page %>
+                <%= link_to 'New Dimension Type', new_dimension_path(:item_id => @item.id), :id => "hide_new", :class => "btn btn-mini btn-success" if item_page %>
                 <%= link_to 'New Item dimension', new_item_item_revision_item_part_dimension_path(@item, @item_revision), :class => "btn btn-mini btn-success" if item_page %>               
             </span>
         </div> 
