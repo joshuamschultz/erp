@@ -234,7 +234,6 @@ module CommonActions
 			{:path => owners_path, :name => "Owners"},
 			{:path => privileges_path, :name => "Privileges"},
 			{:path => territories_path, :name => "Territories"},
-			{:path => "#", :name => "Documents"},
 			{:path => commodities_path, :name => "Commodities"},
 			{:path => check_code_path(CheckCode.first), :name => "Counters"},
 			# {:path => }
