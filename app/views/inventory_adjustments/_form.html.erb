@@ -49,15 +49,24 @@
     $(document).ready(function(){ 
         // $("#quality_lot_po_line_id").html("");
         // $("#quality_lot_item_revision_id").html("");
-   $("#inventory_adjustment_item_alt_name_id").focusout(function(){
+
+        jQuery("#inventory_adjustment_item_alt_name_id").on('change', function() {
             initiate_line_items();
         });
-        $("#inventory_adjustment_quality_lot_id").focusout(function(){
+
+        jQuery(".ui-corner-all").live('click', function() {
+            initiate_line_items();
+        });
+
+        jQuery("#inventory_adjustment_quality_lot_id").on('change', function() {
+
             initiate_current_quantity();
         });
+
+
         $("#inventory_adjustment_item_alt_name_id").val("<%= @inventory_adjustment.item_alt_name.alt_item_name if @inventory_adjustment.item_alt_name %>");
 
-    initiate_line_items();
+        initiate_line_items();
 
 
 
