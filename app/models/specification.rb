@@ -17,6 +17,8 @@ class Specification < ActiveRecord::Base
   has_many :item_specifications, :dependent => :destroy
   has_many :item_revisions, :through => :item_specifications
   has_one :attachment, :as => :attachable, :dependent => :destroy
+  
+  default_scope :order => 'specification_identifier ASC'
 
   accepts_nested_attributes_for :attachment, :allow_destroy => true
 
