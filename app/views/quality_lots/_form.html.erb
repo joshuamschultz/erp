@@ -124,14 +124,19 @@
     var page_initial = true;
 
     $(document).ready(function(){ 
-        // $("#quality_lot_po_line_id").html("");
-        // $("#quality_lot_item_revision_id").html("");
-
-        $("#quality_lot_po_header_id").focusout(function(){
-            initiate_line_items();
+ 
+        jQuery("#quality_lot_po_header_id").on('change', function() {
+                initiate_line_items();
         });
 
-        $("#quality_lot_po_line_id").focusout(function(){
+        jQuery(".ui-corner-all").live('click', function() {
+                initiate_line_items();
+        });
+
+
+
+        jQuery("#quality_lot_po_line_id").on('change', function() {
+
             initiate_line_revisions();
         });
 
