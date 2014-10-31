@@ -69,6 +69,10 @@
         <%= render 'item_part_dimensions/item_dimensions' %>
     </div>
 </div>
+
+
+<%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path, new_path: new_process_type_path, name: "process"} %>
+
 <div id="send_quote">
     <% if @quote_type_item == "vendor" %>
         
