@@ -1,26 +1,45 @@
-<%= render :partial => 'attachments/relational_attachments', :locals => {list_path: process_types_path, new_path: new_process_type_path, name: "process"} %>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Process Type</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Process Type', new_process_type_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
 
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Effective Date</th>
+                <th>Public</th>
+                <th>Uploaded By</th>
+                <th></th>
+              </tr>
+            </thead>
 
-<script type="text/javascript"> 
+            <tbody>
 
-$(document).ready(function (){
+            </tbody>
+        </table>
+    </div>
+</div>
 
-var myjson;
-$.getJSON("http://erp.chessgroupinc.com/process_types", function(json){
-    myjson = json;
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => process_types_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "name" },
+                        { "mData": "effective_date" },
+                        { "mData": "attachment_public" },
+                        { "mData": "uploaded_by" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
 
-   	var $myTable = $('table');
-	hideColumn($myTable, 2); 
-});
-
-
-});
-function hideColumn($table, columnNumber){
-		
-	$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
-
-	// setTimeout(function() {
-	// 	$table.find('td:nth-child('+columnNumber+'), th:nth-child('+columnNumber+')').hide();
-	// }, 5000);
-}
-</script> 
+                    ]'
+    } 
+%>
