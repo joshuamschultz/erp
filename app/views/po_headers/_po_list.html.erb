@@ -27,7 +27,9 @@
                     <th>Identifier</th>
                     <th>Description</th>
                     <th>Total</th>
-                    <% if @item.present? %> <th>Cost</th> <% end %>
+                    <% if @item.present? %> <th>Cost</th> 
+                    <th>Quantity Ordered</th>
+                    <% end %>
                     <th>Quantity Ordered</th>
                     <th>Status</th>
                     <th>Active</th>
@@ -70,7 +72,6 @@
                             { "mData": "po_identifier", "bVisible": false },
                             { "mData": "po_description", "bVisible": false },
                             { "mData": "po_total", "bVisible": false },
-                            { "mData": "po_type_qty" },
                             { "mData": "po_status" },
                             { "mData": "po_active", "bVisible": false },
                             { "mData": "links", "bSortable": false, "bSearchable": false }
