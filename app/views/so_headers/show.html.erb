@@ -46,9 +46,10 @@
 
 <div class="separator bottom"></div>
 
-<%= render :partial => 'attachments/droppable_form_plup' %>
-
-<%= render 'attachments/attachments' %>
+<div class="new_widget">
+  <%= render :partial => 'attachments/droppable_form_plup' %>
+  <%= render 'attachments/attachments' %>
+</div>
 
 <div class="separator bottom"></div>
 
@@ -72,3 +73,23 @@ function packing_report()
 </script>
 <iframe src="<%= report_so_header_path(@so_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
 <iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
+
+<style>
+
+.widget.widget-003 {
+float: left;
+margin: 0 17px 0 0;
+width: 37%;
+}
+.new_widget {
+float: left;
+width: 100%;
+}
+.widget.widget-004 {
+float: left;
+width: 60%;
+}
+.widget-body.widget-body-002 {
+    min-height: 190px;
+}
+</style>
