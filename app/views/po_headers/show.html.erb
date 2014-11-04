@@ -59,10 +59,11 @@
         <%#= render 'attachments/attachments' %>
     </div> 
 </div> -->
-
+<div class="new_widget">
 <%= render :partial => 'attachments/droppable_form_plup' %>
 
 <%= render 'attachments/attachments' %>
+</div>
 
 <!-- <div class="separator bottom"></div> -->
 
@@ -126,3 +127,24 @@ function purchase_report() {
         <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
     </div>
 </div>
+
+
+<style>
+
+.widget.widget-003 {
+float: left;
+margin: 0 17px 0 0;
+width: 37%;
+}
+.new_widget {
+float: left;
+width: 100%;
+}
+.widget.widget-004 {
+float: left;
+width: 60%;
+}
+.widget-body.widget-body-002 {
+    min-height: 190px;
+}
+</style>
