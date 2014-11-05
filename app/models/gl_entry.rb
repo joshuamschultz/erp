@@ -33,7 +33,19 @@ class GlEntry < ActiveRecord::Base
      end
    end
 
-  
+   def get_description_link 
+    result = self.gl_entry_description
+    if self.receivable_id
+      result = CommonActions.linkable(receivable_path(self.receivable_id), self.gl_entry_description)
+    elsif self.payable_id
+      result = CommonActions.linkable(payable_path(self.payable_id), self.gl_entry_description)
+    elsif self.payment_id
+      result = CommonActions.linkable(payment_path(self.payment_id), self.gl_entry_description)
+    elsif receipt_id
+      result = CommonActions.linkable(receipt_path(self.receipt_id), self.gl_entry_description)
+    end
+    result      
+   end
 
   def redirect_path
      gl_entry_path(self)
