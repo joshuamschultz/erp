@@ -3,3 +3,49 @@
 <%= render 'form' %>
 
 
+<div class="widget widget-004">
+	<div class="widget-head">
+		<div class="row-fluid">
+			<h4 class="span6 heading">Attachment</h4>
+		</div>
+	</div>
+	<div class="widget-body">
+		<div id="table_report_attachments_wrapper" class="dataTables_wrapper form-inline" role="grid">
+			<div class="row-fluid">
+				<div id="table_report_attachments_processing" class="dataTables_processing" style="visibility: hidden;">Processing...</div>
+	</div>
+	<table id="table_report_attachments" class="dynamicTable table table-striped table-bordered table-condensed dataTable" aria-describedby="table_report_attachments_info">
+	<thead>
+	<tr role="row">
+	<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="table_report_attachments" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
+	<th class="sorting" role="columnheader" tabindex="0" aria-controls="table_report_attachments" rowspan="1" colspan="1" aria-label="Public: activate to sort column ascending">Public</th>
+	<th class="sorting" role="columnheader" tabindex="0" aria-controls="table_report_attachments" rowspan="1" colspan="1" aria-label="Uploaded By: activate to sort column ascending">Uploaded By</th>
+	<th class="sorting" role="columnheader" tabindex="0" aria-controls="table_report_attachments" rowspan="1" colspan="1" aria-label=": activate to sort column ascending"></th>
+	</tr>
+	</thead>
+	<tbody role="alert" aria-live="polite" aria-relevant="all">
+	<tr class="odd">
+	<td class=" sorting_1">
+	<a target="_blank" href="/attachments/documents/283/original/1.pdf">
+	<i><%=  @attachment.attachment_file_name if @attachment.present? %></i>
+	</a>
+	</td>
+	<td class=""><%= @attachment.attachment_public if @attachment.present? %></td>
+	<td class=""><%= @attachment.created_by.name if @attachment.present? %></td>
+	<td class="">
+	<a class="btn-action glyphicons pencil btn-success" href="/attachments/<%= @attachment.id %>/edit">
+	<i></i>
+	</a>
+
+	</a>
+	<a class="btn-action glyphicons file btn-success" target="_blank" href="<%= @attachment.attachment.url %>">
+	<i></i>
+	</a>
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	<div class="row-fluid">
+	</div>
+	</div>
+</div>
