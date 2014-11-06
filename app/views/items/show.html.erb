@@ -112,11 +112,11 @@
 
 <%= render :partial => 'quality_lots/lots' %>
 <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
+<div class="new_widget">
+<%= render :partial => 'po_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
 
-<%= render :partial => 'po_shipments/shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
-
-<%= render :partial => 'so_shipments/shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
-
+<%= render :partial => 'so_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
+</div>
 <!-- Revisions -->
 <%= render 'item_revisions/item_revisions' %>
 
@@ -255,3 +255,12 @@ function get_so_header(status){
     });
 }
 </script>
+
+<style>
+
+.widget.widget-005 {
+    float: left;
+    margin: 0 13px 0 0;
+    width: 45%;
+}
+</style>
