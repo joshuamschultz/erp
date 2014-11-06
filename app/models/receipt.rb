@@ -67,10 +67,10 @@ class Receipt < ActiveRecord::Base
   def process_after_save
     if self.receipt_type.present?   && (self.receipt_type.type_value == "check" ||   self.receipt_type.type_value == "credit")                  
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
-            if @deposit_check.nil? 
+            if @deposit_check.nil? self.receipt_type.type_value == "credit"
               if self.receipt_type.type_value == "check"
                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, check_identifier:  self.receipt_check_code, active: 1) 
-              elsif self.receipt_type.type_value == "credit"
+              elsif self.receipt_type.type_value == "credit" || self.receipt_type.type_value == "cash" || self.receipt_type.type_value == "ach"
                 depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
               end              
             end         
@@ -104,11 +104,15 @@ class Receipt < ActiveRecord::Base
                 end  
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
+                desc = "Transaction"
+                if self.receipt_type.type_value == "check"  
+                    desc = "Check "+ self.receipt_check_code               
+                end
                 if type == "debit"
-                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)           
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)           
                   amount = @gl_account.gl_account_amount - self.receipt_check_amount.to_f if type == "debit"  
                 elsif type == "credit"    
-                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_credit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id) 
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_credit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id) 
                   amount = @gl_account.gl_account_amount + self.receipt_check_amount.to_f
                 end  
                 @gl_entry.save 

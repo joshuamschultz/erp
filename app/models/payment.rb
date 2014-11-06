@@ -89,8 +89,8 @@ class Payment < ActiveRecord::Base
             temp.update_attributes(:counter => self.payment_check_code)
             CheckCode.get_next_check_code
         end
-        if self.payment_type.present? && self.payment_type.type_value == "credit"
-            Reconcile.create(tag: "not reconciled", reconcile_type: "credit", payment_id: self.id)
+        if self.payment_type.present? && (self.payment_type.type_value == "credit" || self.payment_type.type_value == "ach" )
+            Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) 
             self.update_transactions
             # payable = Payable.find (self.payment_lines.collect(&:payable_id).first)
             
@@ -98,6 +98,7 @@ class Payment < ActiveRecord::Base
             # CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
         end          
+
     end
 
     def redirect_path
@@ -120,7 +121,11 @@ class Payment < ActiveRecord::Base
                 amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => "Transaction", :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)                    
+                desc = "Transaction"
+                if self.payment_type.type_value == "check"  
+                    desc = "Check "+ self.payment_check_code                
+                end
+                @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)
                 @gl_entry.save 
                 amount = @gl_account.gl_account_amount - self.payment_check_amount.to_f               
                 @gl_account.update_attributes(:gl_account_amount => amount) 

@@ -23,9 +23,9 @@ class ReceivableAccount < ActiveRecord::Base
     else
     	@gl_entry
     	if self.gl_account.gl_account_identifier == "51020020" || self.gl_account.gl_account_identifier == "11050"
-    		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Transaction", :gl_entry_credit => self.receivable_account_amount * -1, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 
+    		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Receivable " +self.receivable_identifier, :gl_entry_credit => self.receivable_account_amount * -1, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 
     	else	
-    		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Transaction", :gl_entry_credit => self.receivable_account_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 	
+    		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Receivable " +self.receivable_identifier, :gl_entry_credit => self.receivable_account_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 	
 		end    		
     	@gl_entry.save    	
      	self.update_attributes(:gl_entry_id => @gl_entry.id)
@@ -34,7 +34,7 @@ class ReceivableAccount < ActiveRecord::Base
   	pacctsum =  receivable.receivable_accounts.sum(:receivable_account_amount).to_f  	
   	@gl_entry = GlEntry.where(:receivable_id => self.receivable_id, :gl_account_id => @gl_account_id_to_update).first
   	if @gl_entry.blank?
-  		@gl_entry = GlEntry.new(:gl_account_id => @gl_account_id_to_update, :gl_entry_description => "Transaction", :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_account_id => self.id, :receivable_id => self.receivable_id)  		
+  		@gl_entry = GlEntry.new(:gl_account_id => @gl_account_id_to_update, :gl_entry_description => "Receivable " +self.receivable_identifier, :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_account_id => self.id, :receivable_id => self.receivable_id)  		
       @gl_entry.save   	
     else
     	@gl_entry.update_attributes(:gl_entry_credit => pacctsum )
