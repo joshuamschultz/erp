@@ -90,6 +90,7 @@ AllianceFasteners::Application.routes.draw do
     collection do
       post 'generate_check_entry'
       get 'report'
+      get 'printed'
     end
   end
 
