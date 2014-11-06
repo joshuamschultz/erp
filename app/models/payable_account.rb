@@ -20,7 +20,7 @@ class PayableAccount < ActiveRecord::Base
   		@gl_entry = GlEntry.where(:id => self.gl_entry_id, :gl_account_id => self.gl_account_id).first       
       @gl_entry.update_attributes(:gl_entry_credit => self.payable_account_amount)        
     else
-    	@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Transaction", :gl_entry_credit => self.payable_account_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payable_id => self.payable_id) 	
+    	@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Payable "+self.payable_identifier, :gl_entry_credit => self.payable_account_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payable_id => self.payable_id) 	
     	@gl_entry.save    	
      	self.update_attributes(:gl_entry_id => @gl_entry.id)
   	end
@@ -28,7 +28,7 @@ class PayableAccount < ActiveRecord::Base
   	pacctsum =  payable.payable_accounts.sum(:payable_account_amount).to_f  	
   	@gl_entry = GlEntry.where(:payable_id => self.payable_id, :gl_account_id => @gl_account_id_to_update).first
   	if @gl_entry.blank?
-  		@gl_entry = GlEntry.new(:gl_account_id => @gl_account_id_to_update, :gl_entry_description => "Transaction", :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payable_account_id => self.id, :payable_id => self.payable_id)  		
+  		@gl_entry = GlEntry.new(:gl_account_id => @gl_account_id_to_update, :gl_entry_description => "Payable "+self.payable_identifier, :gl_entry_credit => pacctsum , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payable_account_id => self.id, :payable_id => self.payable_id)  		
       @gl_entry.save   	
     else
     	@gl_entry.update_attributes(:gl_entry_credit => pacctsum )
