@@ -65,9 +65,9 @@ class Receipt < ActiveRecord::Base
   after_save :process_after_save
 
   def process_after_save
-    if self.receipt_type.present?   && (self.receipt_type.type_value == "check" ||   self.receipt_type.type_value == "credit")                  
+    if self.receipt_type.present?   && (self.receipt_type.type_value == "check" ||  self.receipt_type.type_value == "credit")
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
-            if @deposit_check.nil? self.receipt_type.type_value == "credit"
+            if @deposit_check.nil? 
               if self.receipt_type.type_value == "check"
                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, check_identifier:  self.receipt_check_code, active: 1) 
               elsif self.receipt_type.type_value == "credit" || self.receipt_type.type_value == "cash" || self.receipt_type.type_value == "ach"
