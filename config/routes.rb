@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :process_type_specifications
+
+
   resources :inventory_adjustments
 
 
