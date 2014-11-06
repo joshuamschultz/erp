@@ -11,7 +11,7 @@ class CheckEntriesController < ApplicationController
             check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
             check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
             payables = check_entry.get_payables
-            check_entry[:payables] = payables
+            check_entry[:payables] = payables["payableIds"]
           }
           render json: {:aaData => @check_entries}
       }
@@ -92,6 +92,27 @@ class CheckEntriesController < ApplicationController
   def report
     @check_entries = CheckEntry.where(:check_active => 1)
     render :layout => false
+  end
+
+  def printed
+    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first 
+    @balance = gl_account.gl_account_amount
+    
+    @check_entries = CheckEntry.where(:status => "Printed")
+    respond_to do |format|
+      format.html # printed.html.erb
+      format.json { 
+          @check_entries = @check_entries.select{|check_entry| 
+            check_data = check_entry.check_belongs_to
+            check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
+            check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
+            payables = check_entry.get_payables
+            check_entry[:payables] = payables["payableIds"]
+            check_entry[:amount] = payables["amount"]
+          }
+          render json: {:aaData => @check_entries}
+      }
+    end
   end
   
   def generate_check_entry
