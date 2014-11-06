@@ -589,12 +589,14 @@
                         <td width="107">TOTAL</td>
                     </tr>
 
+
+            <% sub_total = 0.0 %>
+
+            <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
                     <tr tr class="h-pad" valign="top" align="left">
 
 
-                        <% sub_total = 0.0 %>
-
-                        <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
+                   
                            <td><%= so_shipment.so_line.so_line_quantity %></td>
                            <td><%= so_shipment.so_shipped_count %></td>
                             
@@ -625,9 +627,9 @@
                             <td><%= so_shipment.so_line.so_line_cost %></td>
                             <td><%= so_shipment.so_shipped_cost %></td>
                             <% sub_total+= so_shipment.so_shipped_cost %>
-                        <% end %>
                     </tr>
 
+                <% end %>
 
 
                 </table>
