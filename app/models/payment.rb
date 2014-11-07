@@ -121,7 +121,7 @@ class Payment < ActiveRecord::Base
                 amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                desc = "Transaction"
+                desc = self.payment_type.type_name
                 if self.payment_type.type_value == "check"  
                     desc = "Check "+ self.payment_check_code                
                 end

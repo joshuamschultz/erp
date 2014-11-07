@@ -104,9 +104,9 @@ class Receipt < ActiveRecord::Base
                 end  
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                desc = "Transaction"
+                desc = self.receipt_type.type_name
                 if self.receipt_type.type_value == "check"  
-                    desc = "Check "+ self.receipt_check_code               
+                    desc = "Deposit "+ self.receipt_check_code               
                 end
                 if type == "debit"
                   @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)           
