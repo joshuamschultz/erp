@@ -56,7 +56,7 @@ class SoShipmentsController < ApplicationController
     
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
         quality_lot = QualityLot.find(object.quality_lot_id)
-        object[:lot] =quality_lot.lot_control_no
+        object[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"
       end
    
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
