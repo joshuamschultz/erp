@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :check_registers
+
+
   resources :process_type_specifications
 
 
@@ -96,8 +99,7 @@ AllianceFasteners::Application.routes.draw do
   resources :check_entries do
     collection do
       post 'generate_check_entry'
-      get 'report'
-      get 'printed'
+      get 'report'     
     end
   end
 
