@@ -6,6 +6,7 @@ class Payment < ActiveRecord::Base
     has_one :deposit_check
     has_one :printing_screen
     has_many :gl_entries, :dependent => :destroy
+    has_one :check_register, :dependent => :destroy
 
     belongs_to :organization
 
@@ -97,7 +98,16 @@ class Payment < ActiveRecord::Base
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
             # CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
-        end          
+        end    
+        if  self.payment_type.present? &&  self.payment_type.type_value == "ach"  
+            check_register = CheckRegister.where(payment_id: self.id).first
+            unless  check_register.present?                
+                 balance = 0                  
+                 balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                        
+                CheckRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.payment_check_amount, rec: false, payment_id: self.id, balance: balance)
+            end
+
+        end    
 
     end
 
@@ -121,7 +131,7 @@ class Payment < ActiveRecord::Base
                 amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                desc = "Transaction"
+                desc = self.payment_type.type_name
                 if self.payment_type.type_value == "check"  
                     desc = "Check "+ self.payment_check_code                
                 end

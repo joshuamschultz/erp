@@ -149,6 +149,14 @@ class CommonActionsController < ApplicationController
               if params[:reconcile_ids].present? && params[:balance].present?
                 Reconcile.where(id: params[:reconcile_ids]).each do |obj|
                   obj.update_attributes(:tag => "reconciled")
+                  if obj.payment_id.present?
+                    check_register = CheckRegister.find_by_payment_id(obj.payment_id)
+                    check_register.update_attributes(:rec => true) if  check_register
+                  elsif obj.receipt_id.present?
+                    check_register = CheckRegister.find_by_receipt_id(obj.receipt_id)
+                    check_register.update_attributes(:rec => true) if  check_register                      
+                  end  
+
                 end  
                 reconciled = Reconciled.first            
                 reconciled.update_attributes(balance: params[:balance])
@@ -248,7 +256,13 @@ class CommonActionsController < ApplicationController
                 @reconcile = Reconcile.where(:payment_id => payment.id).first
                 if @reconcile.nil?                                  
                   Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
-                end           
+                end 
+                check_register = CheckRegister.where(payment_id: payment.id).first
+                unless  check_register.present?                    
+                    balance = 0                  
+                    balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                       
+                    CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: payment.payment_check_amount, rec: false, payment_id: payment.id, balance: balance)
+                end          
                 result = "success"
               end 
             when "after_print_deposits"
@@ -260,7 +274,15 @@ class CommonActionsController < ApplicationController
                 @reconcile = Reconcile.where(:receipt_id => receipt.id).first
                 if @reconcile.nil?                                  
                   Reconcile.create(tag: "not reconciled",reconcile_type: deposit_check.receipt_type, receipt_id: receipt.id, deposit_check_id: params[:id])                                             
-                end           
+                end  
+                check_register = CheckRegister.where(receipt_id: receipt.id).first
+                unless  check_register.present? 
+                    if deposit_check.receipt_type != 'credit'
+                      balance = 0                  
+                      balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                       
+                      CheckRegister.create(transaction_date: Date.today.to_s, check_code: receipt.receipt_check_code, organization_id: receipt.organization_id, deposit: receipt.receipt_check_amount, rec: false, receipt_id: receipt.id, balance: balance)
+                    end  
+                end          
                 result = "success"
               end                    
         end

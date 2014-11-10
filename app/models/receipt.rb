@@ -5,6 +5,7 @@ class Receipt < ActiveRecord::Base
   belongs_to :organization
   has_one :reconcile
   has_one :deposit_check
+  has_one :check_register
 
   attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
     :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
@@ -65,7 +66,7 @@ class Receipt < ActiveRecord::Base
   after_save :process_after_save
 
   def process_after_save
-    if self.receipt_type.present?   && (self.receipt_type.type_value == "check" ||  self.receipt_type.type_value == "credit")
+    if self.receipt_type.present?   
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
             if @deposit_check.nil? 
               if self.receipt_type.type_value == "check"
@@ -75,8 +76,8 @@ class Receipt < ActiveRecord::Base
               end              
             end         
     else
-      self.update_transactions   
-    end          
+      self.update_transactions         
+    end             
   end 
 
   def redirect_path
@@ -104,9 +105,9 @@ class Receipt < ActiveRecord::Base
                 end  
                 @gl_account.update_attributes(:gl_account_amount => amount)
             else
-                desc = "Transaction"
+                desc = self.receipt_type.type_name
                 if self.receipt_type.type_value == "check"  
-                    desc = "Check "+ self.receipt_check_code               
+                    desc = "Deposit "+ self.receipt_check_code               
                 end
                 if type == "debit"
                   @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.receipt_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)           
