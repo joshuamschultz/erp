@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Transaction date:</b>
+  <%= @check_register.transaction_date %>
+</p>
+
+<p>
+  <b>Check code:</b>
+  <%= @check_register.check_code %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @check_register.organization_id %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @check_register.amount %>
+</p>
+
+<p>
+  <b>Deposit:</b>
+  <%= @check_register.deposit %>
+</p>
+
+<p>
+  <b>Balance:</b>
+  <%= @check_register.balance %>
+</p>
+
+<p>
+  <b>Rec:</b>
+  <%= @check_register.rec %>
+</p>
+
+
+<%= link_to 'Edit', edit_check_register_path(@check_register) %> |
+<%= link_to 'Back', check_registers_path %>
