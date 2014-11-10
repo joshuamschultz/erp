@@ -40,6 +40,15 @@ class ReceivablesController < ApplicationController
     end
   end
 
+  def report
+    @receivables = Receivable.status_based_receivables(params[:receivable_status] || "open")
+    @receivables.each do |receivable|
+      @so_header = receivable.so_header rescue nil
+    end
+    @company_info = CompanyInfo.first
+    render :layout => false
+  end
+
   # GET /receivables/1
   # GET /receivables/1.json
   def show
