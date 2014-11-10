@@ -568,7 +568,7 @@
                     <tr align="center">
 
                         <td><%= @so_header.organization.organization_name if @so_header %></td>
-                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") %></td>
+                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") if @so_header %></td>
                         <td>&nbsp;</td>
 
                     </tr>
