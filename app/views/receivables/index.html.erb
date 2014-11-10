@@ -78,5 +78,15 @@
         sales_iframe.contentWindow.focus();
         sales_iframe.contentWindow.print();
     }
+
+    function after_send(response){
+        alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
+    }
+    function send_mail_vendor(){
+        <% @receivables.each do |receivable| %>
+            var receivable_id = <%= receivable.id %>
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_invoice","receivable_id": receivable_id }}, "after_send", {});
+        <% end %>
+    }
 </script>
 <iframe src="<%= report_receivables_path %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
