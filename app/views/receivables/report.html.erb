@@ -1,0 +1,3 @@
+<% @receivables.each do |c| %>
+		<%= render :partial => 'receivables/invoice_report', :locals => {:@receivable => c}%>
+<% end %>
