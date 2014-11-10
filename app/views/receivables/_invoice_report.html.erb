@@ -566,7 +566,8 @@
                         <td width="146">SHIP VIA</td>
                     </tr>
                     <tr align="center">
-                        <td><%= @so_header.organization.organization_name if @so_header.organization %></td>
+
+                        <td><%= @so_header.organization.organization_name if @so_header %></td>
                         <td><%= @so_header.created_at.strftime("%m/%d/%Y") %></td>
                         <td>&nbsp;</td>
 
