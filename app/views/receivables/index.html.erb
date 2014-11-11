@@ -1,3 +1,20 @@
+
+<div class="row-fluid">
+    <div class="span4 well well-002">
+          <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
+              <span class="glyphicons message_out"><i></i></span>
+              <span class="txt">Send All</span>
+              <div class="clearfix"></div>
+          </a>
+    </div>
+    <div class="span4 well well-002">
+          <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
+              <span class="glyphicons print"><i></i></span>
+              <span class="txt">Print All</span>
+              <div class="clearfix"></div>
+          </a>
+    </div>
+</div>
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
@@ -44,3 +61,32 @@
                     ]'
     } 
 %>
+
+
+
+
+<style>
+
+.span4.well.well-002 {
+    width: 49%;
+}
+</style>
+
+<script type="text/javascript">
+    function invoice_report() {
+        var sales_iframe = $("#myPrintView")[0];
+        sales_iframe.contentWindow.focus();
+        sales_iframe.contentWindow.print();
+    }
+
+    function after_send(response){
+        alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
+    }
+    function send_mail_vendor(){
+        <% @receivables.each do |receivable| %>
+            var receivable_id = <%= receivable.id %>
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_invoice","receivable_id": receivable_id }}, "after_send", {});
+        <% end %>
+    }
+</script>
+<iframe src="<%= report_receivables_path %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
