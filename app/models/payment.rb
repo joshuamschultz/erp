@@ -92,7 +92,7 @@ class Payment < ActiveRecord::Base
         end
         if self.payment_type.present? && (self.payment_type.type_value == "credit" || self.payment_type.type_value == "ach" )
             Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) 
-            self.update_transactions
+            self.update_transactions if self.payment_type.type_value == "ach"
             # payable = Payable.find (self.payment_lines.collect(&:payable_id).first)
             
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
@@ -102,12 +102,26 @@ class Payment < ActiveRecord::Base
         if  self.payment_type.present? &&  self.payment_type.type_value == "ach"  
             check_register = CheckRegister.where(payment_id: self.id).first
             unless  check_register.present?                
-                 balance = 0                  
-                 balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                        
-                CheckRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.payment_check_amount, rec: false, payment_id: self.id, balance: balance)
+                    balance = 0 
+                    amount =  self.payment_check_amount * -1 
+                    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
+                    if  CheckRegister.exists? 
+                      check_register = CheckRegister.last                                       
+                      balance += amount + check_register.balance
+                    else
+                      balance += gl_account.gl_account_amount                         
+                    end          
+                    CheckRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: amount, rec: false, payment_id: self.id, balance: balance)
             end
-
         end    
+        if  self.payment_type.present? &&  self.payment_type.type_value == "credit"  
+            credit_register = CreditRegister.where(payment_id: self.id).first
+            unless  credit_register.present?                
+                 balance = 0                  
+                 balance += CreditRegister.calculate_balance.to_f  if  CreditRegister.exists?                                        
+                CreditRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.payment_check_amount, rec: false, payment_id: self.id, balance: balance)
+            end
+        end 
 
     end
 
