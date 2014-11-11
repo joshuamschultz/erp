@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Transaction date:</b>
+  <%= @credit_register.transaction_date %>
+</p>
+
+<p>
+  <b>Payment:</b>
+  <%= @credit_register.payment_id %>
+</p>
+
+<p>
+  <b>Organization:</b>
+  <%= @credit_register.organization_id %>
+</p>
+
+<p>
+  <b>Amount:</b>
+  <%= @credit_register.amount %>
+</p>
+
+<p>
+  <b>Balance:</b>
+  <%= @credit_register.balance %>
+</p>
+
+<p>
+  <b>Rec:</b>
+  <%= @credit_register.rec %>
+</p>
+
+
+<%= link_to 'Edit', edit_credit_register_path(@credit_register) %> |
+<%= link_to 'Back', credit_registers_path %>
