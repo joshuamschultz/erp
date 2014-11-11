@@ -566,8 +566,9 @@
                         <td width="146">SHIP VIA</td>
                     </tr>
                     <tr align="center">
-                        <td><%= @so_header.organization.organization_name %></td>
-                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") %></td>
+
+                        <td><%= @so_header.organization.organization_name if @so_header %></td>
+                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") if @so_header %></td>
                         <td>&nbsp;</td>
 
                     </tr>
@@ -671,7 +672,8 @@
 
             </div>
 
-    </div>
+    </div><div style="page-break-before:always">&nbsp;</div> 
+
 </body>
 
 </html>
