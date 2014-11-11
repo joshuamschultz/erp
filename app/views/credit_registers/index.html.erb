@@ -1,0 +1,45 @@
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Check Register</h4>
+            <span class="span6 heading right">                
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+   
+    <div class="widget-body">
+        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Transaction date</th>
+                <th>Ref #</th>
+                <th>Organization</th>
+                <th>Amount</th>
+                <th>Balance</th>
+                <th>Rec</th>                
+              </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "table_report", :path => credit_registers_path, :extras => {:slno => false, :order => "desc", :hide_column => 0},
+        :columns => '[
+                        { "mData": "id" },
+                        { "mData": "transaction_date" },
+                        { "mData": "payables" },
+                        { "mData": "organization" },
+                        { "mData": "amount" },                     
+                        { "mData": "balance" },
+                        { "mData": "reconcile" }
+                    ]'
+    } 
+%>
+

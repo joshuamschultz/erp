@@ -152,6 +152,8 @@ class CommonActionsController < ApplicationController
                   if obj.payment_id.present?
                     check_register = CheckRegister.find_by_payment_id(obj.payment_id)
                     check_register.update_attributes(:rec => true) if  check_register
+                    credit_register = CreditRegister.find_by_payment_id(obj.payment_id)
+                    credit_register.update_attributes(:rec => true) if  credit_register
                   elsif obj.receipt_id.present?
                     check_register = CheckRegister.find_by_receipt_id(obj.receipt_id)
                     check_register.update_attributes(:rec => true) if  check_register                      

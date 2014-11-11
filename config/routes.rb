@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :credit_registers
+
+
   resources :check_registers
 
 
