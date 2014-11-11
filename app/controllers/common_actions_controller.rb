@@ -261,9 +261,17 @@ class CommonActionsController < ApplicationController
                 end 
                 check_register = CheckRegister.where(payment_id: payment.id).first
                 unless  check_register.present?                    
-                    balance = 0                  
-                    balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                       
-                    CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: payment.payment_check_amount, rec: false, payment_id: payment.id, balance: balance)
+                    balance = 0 
+                    amount =  payment.payment_check_amount * -1 
+                    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
+                    if  CheckRegister.exists? 
+                      check_register = CheckRegister.last                                       
+                      balance += amount + check_register.balance
+                    else
+                      balance += gl_account.gl_account_amount                         
+                    end                   
+                                                     
+                    CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: amount, rec: false, payment_id: payment.id, balance: balance)
                 end          
                 result = "success"
               end 
@@ -281,7 +289,14 @@ class CommonActionsController < ApplicationController
                 unless  check_register.present? 
                     if deposit_check.receipt_type != 'credit'
                       balance = 0                  
-                      balance += CheckRegister.calculate_balance.to_f  if  CheckRegister.exists?                                       
+                      gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
+                      if  CheckRegister.exists?                 
+                        check_register = CheckRegister.last                          
+                        balance +=  receipt.receipt_check_amount + check_register.balance
+                      else
+                        balance += gl_account.gl_account_amount                           
+                      end            
+
                       CheckRegister.create(transaction_date: Date.today.to_s, check_code: receipt.receipt_check_code, organization_id: receipt.organization_id, deposit: receipt.receipt_check_amount, rec: false, receipt_id: receipt.id, balance: balance)
                     end  
                 end          

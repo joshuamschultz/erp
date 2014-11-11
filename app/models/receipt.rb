@@ -76,7 +76,7 @@ class Receipt < ActiveRecord::Base
               end              
             end         
     else
-      self.update_transactions         
+      self.update_transactions if self.receipt_type.type_value != "credit"       
     end             
   end 
 
