@@ -288,24 +288,27 @@ margin: 2px 0 10px 0;}
     text-align: center;
 }
 
-.h-pad > td {
-padding: 6px 10px;
-}
+
+
 
 .hea.art-002 {
-    border-bottom: 1px solid #222;
-    float: left;
-    font-weight: bold;
-    padding: 11px 0;
+border-bottom: 1px solid #222;
+float: left;
+font-weight: bold;
+padding: 11px 0;
+width: 100%;
 }
 .hea.art-002 > td {
-    padding: 0 10px;
+float: left;
+padding: 0;
+width: 128px;
 }
 
 .h-pad > td {
-    padding: 9px 10px;
+float: left;
+padding: 9px 0 0;
+width: 128px;
 }
-
 .h-pad {
     float: left;
     width: 100%;
@@ -388,17 +391,17 @@ color: #800000;
     <table cellspacing="0" cellpadding="0" width="640" border="0">
         <tbody>
             <tr align="center" class="hea art-002">
-                <td width="70">QTY</td>
-                <td width="150">CUST P/N-ALL P/N</td>
-                <td width="150">DESCRIPTION</td>
-                <td width="0">COST</td>
-                <td width="150">TOTAL</td>
+                <td>QTY</td>
+                <td>CUST P/N-ALL P/N</td>
+                <td>DESCRIPTION</td>
+                <td>COST</td>
+                <td>TOTAL</td>
             </tr>
                     <% @po_header.po_lines.each do |po_line| %>
 
             <tr valign="top" align="center" class="h-pad">
 
-                <td width="70"><%= po_line.po_line_quantity %> </td>
+                <td><%= po_line.po_line_quantity %> </td>
                 <td>
                     <table width="100%" border="0">
                         <tbody>
@@ -421,10 +424,10 @@ color: #800000;
                     </table>
                 </td>
                 <% if po_line.item_revision.present? %>
-                    <td width="150"><%= po_line.item_revision.item_description %> </td>
+                    <td><%= po_line.item_revision.item_description %> </td>
                 <% end %>
                 <td><%= po_line.po_line_cost.to_f %></td>
-                <td width="150"><%= po_line.po_line_total.to_f %></td>
+                <td><%= po_line.po_line_total.to_f %></td>
             </tr>
 
             <tr class="h-pad">
