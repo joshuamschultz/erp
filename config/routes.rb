@@ -96,6 +96,12 @@ AllianceFasteners::Application.routes.draw do
   end
 
   resources :payables do
+    collection do
+      get 'manual_new'      
+    end  
+     member do
+      get 'manual_edit' 
+     end 
     resources :payable_accounts
   end
 
