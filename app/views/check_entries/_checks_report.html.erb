@@ -88,7 +88,8 @@ font-size: 22px;
     <tr>
       <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr align="left" valign="top">
-   <%= image_tag(@company_info.image.image.url(:original), :width => "150") if @company_info.image %>
+          <th>   <%= image_tag(@company_info.image.image.url(:original), :width => "60%", :class => "logo", :scope => "row") if @company_info.image %>
+ </th>
           <td width="67%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
               <th width="79%" align="center" scope="row">M &amp; T BANK
