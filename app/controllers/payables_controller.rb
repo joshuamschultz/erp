@@ -72,8 +72,22 @@ class PayablesController < ApplicationController
     end
   end
 
+  def manual_new
+    @payable = Payable.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @payable }
+    end
+  end
+
   # GET /payables/1/edit
   def edit
+    @payable = Payable.find(params[:id])
+    @po_header = @payable.po_header
+  end
+
+  def manual_edit
     @payable = Payable.find(params[:id])
     @po_header = @payable.po_header
   end
@@ -88,10 +102,15 @@ class PayablesController < ApplicationController
     end
 
     respond_to do |format|
-      if @payable.save
+      if @payable.save 
         # @payable.update_gl_account
-        format.html { redirect_to new_payable_payable_line_path(@payable), notice: 'Payable was successfully created.' }
-        format.json { render json: @payable, status: :created, location: @payable }
+        if @payable.payable_type == 'manual'
+          format.html { redirect_to manual_edit_payable_path(@payable), notice: 'Payable was successfully created.' }
+          format.json { render json: @payable, status: :created, location: @payable }
+        else  
+          format.html { redirect_to new_payable_payable_line_path(@payable), notice: 'Payable was successfully created.' }
+          format.json { render json: @payable, status: :created, location: @payable }
+        end  
       else
         p @payable.errors.to_yaml
         format.html { render action: "new" }
@@ -121,8 +140,13 @@ class PayablesController < ApplicationController
         format.json { head :no_content }
       else
         p @payable.errors.to_json
-        format.html { render action: "edit" }
-        format.json { render json: @payable.errors, status: :unprocessable_entity }
+        if @payable.payable_type == 'manual'
+          format.html { render action: "manual_edit" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+        end  
       end
     end
   end

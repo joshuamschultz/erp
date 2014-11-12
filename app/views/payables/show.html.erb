@@ -2,7 +2,8 @@
     <h4 class="span3 left">Payable Info</h4>
     <span class="span9 right">
 	<%= link_to 'New Payable From Received', po_shipments_path, :class => "btn btn-small" %>
-        <%= link_to 'Update', edit_payable_path(@payable), :class => "btn btn-small" %>
+        <%= link_to 'Update', edit_payable_path(@payable), :class => "btn btn-small" if @payable.payable_type != 'manual'%>
+        <%= link_to 'Update', manual_edit_payable_path(@payable), :class => "btn btn-small" if @payable.payable_type == 'manual'%>
         <%= link_to 'Pay', new_payment_path(payable_id: @payable.id), :class => "btn btn-small" if @payable.payable_status == "open" %>
         <%= link_to 'Back', payables_path, :class => "btn btn-small" %>
     </span>

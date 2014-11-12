@@ -1,0 +1,207 @@
+<%= simple_form_for(@payable, :html => {:id => "form_for_paybles",:class => "form-horizontal"}) do |f| %>
+<div class="row-fluid">
+  <% if @payable.persisted? %>
+        <%= render :partial => 'payables/payable_info' %>
+  <% else %>
+        <div class="span4 well item_detail_view">
+            <div id="payable_vendor_info"></div>
+        </div>
+  <% end %>  
+
+  <div class="span8 well item_detail_view">
+
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <% if @payable.persisted? %>
+        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Vendor" %>
+    <% else %>
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>        
+    <% end %>
+
+    <%= hidden_field_tag :organization_id, (@payable.organization.id if @payable.organization) %>
+    <%= hidden_field_tag :org_organization_id, (@payable.organization.id if @payable.organization) %>
+    <%= hidden_field_tag :payable_id, @payable.id %>
+
+    <% if @payable.po_header %>
+        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" %>   
+        <%= hidden_field_tag :po_header_id, @payable.po_header.id %>
+        <%= hidden_field_tag :org_po_header_id, @payable.po_header.id %>
+    <% end %>
+
+    <div class="control-group select optional payable_payable_to_address">
+        <label for="payable_payable_to_id" class="select optional control-label">Payable To</label>
+        <div class="controls">
+            <select name="payable[payable_to_id]" id="payable_payable_to_id" class="select optional">
+
+            </select>
+        </div>
+    </div>
+
+    <%= f.input :payable_invoice, :label => "Vendor Invoice" %> 
+    <%= f.input :payable_invoice_date, :as => :string, :label => "Invoice date" %>    
+    <%= f.input :payable_due_date, :as => :string, :label => "Due Date" %>
+
+    <%#= f.association :gl_account, :url => autocomplete_gl_account_gl_account_title_gl_accounts_path, :as => :autocomplete, :id_element => '#gl_account_id', :label => "GL Account" %>
+    <%#= hidden_field_tag :gl_account_id, (@payable.gl_account_id if @payable.gl_account) %>
+    <%#= hidden_field_tag :org_gl_account_id, (@payable.gl_account_id if @payable.gl_account) %>
+
+    <%= f.input :payable_description, :label => "Description" %>
+    <%= f.input :payable_notes, :label => "Notes" %>
+    <%= f.input :payable_total, :label => "Amount" %>
+    <%= f.hidden_field :payable_type, :value => 'manual'%>
+    
+    <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>
+    <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
+  </div>
+   <div class="separator bottom"></div>
+   <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @payable.new_record?%></div><br>
+  <div class="separator bottom"></div>
+  
+  <div class="form-actions">    
+    <%= f.button :submit %>
+    <%= link_to 'Payables', '/payables', :class => "btn" %>
+    <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>    
+  </div>
+
+</div>
+</div>
+
+<div id="amount_to_disperse" >Amount To Disperse: $<%= @payable.amount_to_dispers %> </div>
+
+<%= render :partial => 'payables/po_shipments' if @po_header %>
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<% if @payable.persisted? %>
+    <% payable_accounts = @payable.payable_accounts.any? ? @payable.payable_accounts : [PayableAccount.new]*0 %>
+    <% gl_accounts = GlAccount.order(:gl_account_title) %>
+    <%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @payable, fields: [:payable_accounts, :gl_account, :payable_account_description, :payable_account_amount], accounts: payable_accounts, gl_accounts: gl_accounts, form_name: "form_for_paybles", default_account: (GlAccount.find_by_gl_account_identifier("71107") rescue GlAccount.first), account_type: "payable"} %>
+<% end %>
+
+<% end %>
+
+
+<script type="text/javascript">
+    tab_field_forms["form_for_paybles"] = ["payable_organization_id", "payable_payable_to_id", "payable_payable_invoice", "payable_payable_invoice_date", "payable_payable_due_date", "payable_payable_description", "payable_payable_notes"];
+
+    <% date_box_date1 = @payable.new_record? ? Date.today : @payable.payable_invoice_date %>
+    <% date_box_date2 = @payable.new_record? ? Date.today : @payable.payable_due_date %>
+
+    date_box_fields = date_box_fields.concat([{"name":"payable_payable_invoice_date", "value":"<%= date_box_date1 %>"}, {"name":"payable_payable_due_date", "value":"<%= date_box_date2 %>"}]);
+
+    var payable_fine_to_submit = true;
+
+    $(document).ready(function(){ 
+        $("#payable_organization_id").on("focusout", function(){
+            if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+
+                initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+            }
+            else{
+                $("#payable_vendor_info").html("");
+                $("#payable_payable_to_id").html("");
+            }
+        });
+        add_expense ();
+        <% unless @payable.nil? %>
+            $("#payable_po_header_id").val("<%= @payable.po_header.po_identifier if @payable.po_header %>");
+
+            $("#payable_organization_id").val("<%= @payable.organization.organization_name if @payable.organization %>");
+
+            // $("#payable_gl_account_id").val("<%#= @payable.gl_account.gl_account_title if @payable.gl_account %>");
+
+            if($("#organization_id").val() != "" && $("#organization_id").val() != undefined)
+                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+        <% end %>
+
+        $(document).on("keydown", ".payable_shipment_count", function(e){
+            payable_fine_to_submit = true;
+            payable_fine_to_submit = table_row_next_focus(e, "#form_for_paybles", $(this), ".payable_shipment_count", true);
+        });
+
+        $("#form_for_payments").submit(function(e){
+            if(payable_fine_to_submit == false)
+                e.preventDefault();
+            else
+                payable_fine_to_submit = true;
+        });
+    });
+    function update(){
+      add_expense ();   
+         
+    } 
+    function get_rowcount(){
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
+        var last_id = $last.children('td:first').children().find('select').attr('id');
+        var getNum = 0
+        if (last_id){
+          getNum = last_id.match(/(\d+)/g);  
+        }  
+        getNum = parseInt(getNum);  
+        return (getNum+1);
+    }  
+    function set_vendor_addresses(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        $("#payable_payable_to_id").html(html);
+
+        <% if @payable.persisted? && @payable.payable_to_address %>
+                $("#payable_payable_to_id").val('<%= @payable.payable_to_id %>');
+        <% end %>
+
+        return false;
+    }
+    function set_vendor_info(response, callback_params, api_params){
+        $("#payable_vendor_info").html(response);
+        return false;
+    } 
+   
+    function add_expense () {
+        var payableId =  $("#payable_id").val(); 
+        var expenseAmt = $("#payable_payable_total").val();        
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "add_or_update_expense", "payable_id" : payableId, "expense_amt": expenseAmt }}, "expense_result", {});
+            // body...
+        } 
+
+    function  expense_result ()     
+    {
+        var theText = $("#expense_text").val();
+        var account_row_count = get_rowcount();         
+        for ( var i = 0; i < account_row_count; i++ ) {             
+            if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText )
+                {
+                    if($("#payable_payable_total").val() > 0){
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val($("#payable_payable_total").val());
+                    }
+                    else{
+                        $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").closest("tr").remove();   
+                    }    
+                    break;
+                } 
+        }
+        if(i ==account_row_count && $("#payable_payable_total").val() > 0 && $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").length == 0){
+            var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+            $("#accounts_dispersal_table_body").append(html); 
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);            
+            
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_gl_account_id option").each(function() {
+                if($(this).text() == theText) {
+                    $(this).attr('selected', 'selected');            
+                }                        
+            });
+            if($("#payable_payable_total").val() > 0){
+            $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val($("#payable_payable_total").val());
+            }
+        }         
+    }
+
+</script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
+
+<div class="separator bottom"></div>
+
+
+<%# @po_header = @payable.po_header if @payable.persisted? %>
+<%#= render :partial => 'po_lines/line_items' if @po_header %>
