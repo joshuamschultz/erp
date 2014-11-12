@@ -426,26 +426,23 @@ width: 128px;
                     </table>
                 </td>
 
-<td>
-<table border="0" width="100%">
-<tbody>
-
-<tr>
-<% if po_line.item_revision.present? %>
-<td><%= po_line.item_revision.item_description %> </td>
-<% end %>
-</tr> 
-
-<tr>
-<td colspan="6" class="h-pad-04"><%= po_line.item_revision.item_notes%></td>
-</tr>    
-<tr>
-<td colspan="6" class="h-pad-04"><%= po_line.po_line_notes %></td>
-</tr>                           
-
-</tbody>
-</table>
-</td>
+                    <td>
+                        <table border="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <% if po_line.item_revision.present? %>
+                                    <td><%= po_line.item_revision.item_description %> </td>
+                                    <% end %>
+                                </tr> 
+                                <tr>
+                                    <td colspan="6" class="h-pad-04"><%= po_line.item_revision.item_notes%></td>
+                                </tr>    
+                                <tr>
+                                    <td colspan="6" class="h-pad-04"><%= po_line.po_line_notes %></td>
+                                </tr>                           
+                            </tbody>
+                        </table>
+                    </td>
 
 
                 <td><%= po_line.po_line_cost.to_f %></td>
