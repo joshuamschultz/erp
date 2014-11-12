@@ -39,6 +39,7 @@
 <%= hidden_field_tag :inventory_text %>
 <%= hidden_field_tag :freight_text %>
 <%= hidden_field_tag :discount_text %>
+<%= hidden_field_tag :expense_text %>
 <div class="separator bottom"></div>
 
  <div class="form-actions">
@@ -66,6 +67,8 @@
         $("#discount_text").val(discount);
         freight = response["aaData"]["51020020"]; 
         $("#freight_text").val(freight);
+        expense = response["aaData"]["71107"]; 
+        $("#expense_text").val(expense);
 
         //Dispersing Amounts to Inventory and Freight
 

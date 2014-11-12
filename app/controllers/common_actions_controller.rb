@@ -164,6 +164,13 @@ class CommonActionsController < ApplicationController
                 reconciled.update_attributes(balance: params[:balance])
                 result ="Success"
               end
+             when "add_or_update_expense" 
+              if  params[:payable_id].present? && params[:expense_amt].present? 
+                payable = Payable.find(params[:payable_id])             
+                if payable.update_attributes(:payable_total => params[:expense_amt] )                  
+                  result ="Success"
+                end
+              end 
             when "add_or_update_freight" 
               if  params[:payable_id].present? && params[:freight_amt].present? 
                 payable = Payable.find(params[:payable_id])             
@@ -248,7 +255,10 @@ class CommonActionsController < ApplicationController
               gl_account_titles["51010020"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "51020020").first
               gl_account_titles["51020020"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "71107").first
+              gl_account_titles["71107"] = @gl_account["gl_account_title"]
               result = gl_account_titles 
+
             when "after_print_checks"
               if params[:id].present? 
                 check_entry = CheckEntry.find(params[:id]) 
