@@ -88,8 +88,27 @@ font-size: 22px;
     <tr>
       <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr align="left" valign="top">
+
+
+
+<th scope="row" width="33%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tbody><tr>
           <th>   <%= image_tag(@company_info.image.image.url(:original), :width => "60%", :class => "logo", :scope => "row") if @company_info.image %>
- </th>
+ </th>            </tr>
+            <tr>
+              <th scope="row"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody><tr>
+                  <th scope="row" width="10%">&nbsp;</th>
+                  <td width="82%"><span class="fo-4"><b>P:&nbsp;</b><%= @company_info.company_phone1 %><br>
+                     <%= @company_info.company_address1 %><br>
+                    <%= @company_info.company_address2 %> 
+                  </span></td>
+                </tr>
+                </tbody></table></th>
+            </tr>
+            </tbody></table></th>
+
+
           <td width="67%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="left" valign="top">
               <th width="79%" align="center" scope="row">M &amp; T BANK
