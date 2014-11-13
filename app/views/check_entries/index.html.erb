@@ -60,7 +60,7 @@ function checks_report() {
                flag = 1; 
                count = count + 1;
                checkEntryId = <%= c.id %>
-                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "aafter_print_checks", "id" : checkEntryId  }}, "", {});
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "after_print_checks", "id" : checkEntryId  }}, "", {});
             <% end %>
         <% end %> 
     if (flag == 1){             
