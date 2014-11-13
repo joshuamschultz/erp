@@ -37,7 +37,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "so_shipment_table_report", :path => so_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_receivable: (create_receivable if create_receivable)), :extras => {:slno => false}, 
+        :name => "so_shipment_table_report", :path => so_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_receivable: (create_receivable if create_receivable)), :extras => {:slno => false, :order => "desc"}, 
         :columns => '[
                         { "mData": "so_shipped_count" },
                         { "mData": "so_identifier" },                        
