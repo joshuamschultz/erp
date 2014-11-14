@@ -15,7 +15,8 @@ class PoShipmentsController < ApplicationController
         if params[:type] == "shipping"
             @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
                 po_line = po_line.po_line_data_list(po_line, false)
-                po_line = so_line_data_list(po_line, false)
+                po_line[:lot] = ""
+                # po_line = so_line_data_list(po_line, false)
              }
             render json: {:aaData => @po_lines}
         else
@@ -30,11 +31,12 @@ class PoShipmentsController < ApplicationController
                 po_shipment[:index] =  i
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
 
-                po_shipment = so_line_data_list(po_shipment, true)  
+                # po_shipment = so_line_data_list(po_shipment, true)  
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
-                po_shipment[:lot] =po_shipment.quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if po_shipment.quality_lot
+                quality_lot = QualityLot.find(po_shipment.quality_lot_id) if po_shipment.quality_lot_id
+                po_shipment[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
    
                 i += 1
             }
@@ -44,15 +46,15 @@ class PoShipmentsController < ApplicationController
     end
   end
 
-  def so_line_data_list(object, shipment)
-    po_line = shipment ? object.po_line : object
-  object[:lot] = "" 
+  # def po_line_data_list(object, shipment)
+  #   po_line = shipment ? object.po_line : object
+  # object[:lot] = "" 
     
-      if shipment && object.quality_lot_id && object.quality_lot_id > 0
-        quality_lot = QualityLot.find(object.quality_lot_id)
-        object[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"
-      end
-  end
+  #     if shipment && object.quality_lot_id && object.quality_lot_id > 0
+  #       quality_lot = QualityLot.find(object.quality_lot_id)
+  #       object[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"
+  #     end
+  # end
 
   # GET /po_shipments/1
   # GET /po_shipments/1.json
