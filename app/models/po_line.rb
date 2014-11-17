@@ -137,7 +137,7 @@ class PoLine < ActiveRecord::Base
     <tr valign='top' align='left' class='h-pad'>
 
 
-      <td>" +po_line.po_line_quantity.to_s+"</td>
+      <td width='72'>" +po_line.po_line_quantity.to_s+"</td>
       <td>
 
 
@@ -161,8 +161,8 @@ class PoLine < ActiveRecord::Base
          </tbody>
         </table>
       </td>
-      <td>"+(po_line.po_line_cost.to_f).to_s+"</td>
-      <td>"+(po_line.po_line_total.to_f).to_s+"</td>
+      <td width='95'>"+(po_line.po_line_cost.to_f).to_s+"</td>
+      <td width='107'>"+(po_line.po_line_total.to_f).to_s+"</td>
 
     </tr>"
 
@@ -519,18 +519,18 @@ width: 128px;
 
 
 <tr align="center" class="hea art-002">
-  <td>QTY</td>
+  <td width="72">QTY</td>
 
-  <td>CUST P/N-ALL P/N</td>
-
-
-  <td>DESCRIPTION</td>
+  <td width="150">CUST P/N-ALL P/N</td>
 
 
-  <td>COST</td> 
+  <td width="67">DESCRIPTION</td>
 
 
-  <td>TOTAL</td></tr>
+  <td width="95">COST</td> 
+
+
+  <td width="107">TOTAL</td></tr>
 
 
   #{source}
