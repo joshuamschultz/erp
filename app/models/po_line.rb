@@ -525,18 +525,18 @@ width: 128px;
 
 
 <tr align="center" class="hea art-002">
-  <td width="72">QTY</td>
+  <td>QTY</td>
 
-  <td width="150">CUST P/N-ALL P/N</td>
-
-
-  <td width="67">DESCRIPTION</td>
+  <td>CUST P/N-ALL P/N</td>
 
 
-  <td width="95">COST</td> 
+  <td>DESCRIPTION</td>
 
 
-  <td width="107">TOTAL</td></tr>
+  <td>COST</td> 
+
+
+  <td>TOTAL</td></tr>
 
 
   #{source}
