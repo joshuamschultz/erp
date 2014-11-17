@@ -28,6 +28,7 @@
                 <th>Date</th>
                 <th>Shelf</th>
                 <th>Status</th>
+                <th>lot</th>
                 <th></th>
               </tr>
             </thead>
@@ -41,7 +42,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false}, 
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false, :order => "desc"}, 
         :columns => '[
                         { "mData": "po_shipped_count" },
                         { "mData": "po_identifier" },
@@ -49,6 +50,7 @@
                         { "mData": "po_shipped_date" },
                         { "mData": "po_shipped_shelf" },
                         { "mData": "po_shipped_status" },
+                        { "mData": "lot" }, 
                         { "mData": "links", "bportable": false, "bSearchable": false }  
                     ]'
     } 
