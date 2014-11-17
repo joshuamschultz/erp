@@ -1,154 +1,271 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Member Spotlight</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
-<style type="text/css">
+<style>
+
+
 body {
     font-family: Arial,Helvetica,sans-serif;
-    font-size: 14px;
-    line-height: 17px;
+    font-size: 12px;
 }
 /* New Style */
 .clear{clear: both;}
 
 .ms_wrapper{float: left;height: auto;width:640px;}
 .form-bold {
-    font-size: 18px;
+    font-size: 12px;
 }
-.ms_wrapper td {
-    padding: 5px 0;
-    width: 640px;
-}
-.pay-heading {
-    font-size: 19px;
-    font-weight: bold;
-}
-.tab-02 td {
-    border: 1px solid #111;
-    float: left;
-    padding: 11px 0;
-    width: 103px;
-}
-.tab-head-02 > td {
-    padding: 0;
-}
-.tab-head td {
-    background-color: #111;
-    border: 1px solid #111;
-    color: #fff;
-    float: left;
-    font-weight: bold;
-    padding: 11px 0;
-    width: 103px;
+.logo {
+    padding: 0 16px 0 0;
 }
 
-.line-02 {
-    border-bottom: 1px solid #111;
-    float: left;
-    width: 640px;
+.fon {
+    font-size: 11px;
+    line-height: 11px;
 }
-.print-checks{
-    page-break-after: always;
 
+.pad {
+    font-size: 13px;
+    padding: 12px 0 0 0;
 }
-.print-checks:first-child {
-     page-break-before: auto;
+.pad-02 {
+    font-size: 13px;
+    padding: 20px 0 5px 0;
+    text-transform: uppercase;
+}
+.fontw {
+    font-size: 16px;
+}
+.fontw-04 {
+    font-size: 28px;
+}
+.fon-03 {
+    font-size: 12px;
+    padding: 0 0 0 71px;
+    text-transform: none;
+}
+.font-04{font-size:12px;}
+.pad-02.bor {
+    border-bottom: 2px solid #000;
+    padding: 20px 0 19px;
+}
+.pad-02.fon-05 {
+    font-size: 16px;
+}
+.fon-06 td {
+    font-size: 13px;
+    padding: 4px 0 9px;
+}
+.bor-03 td {
+    border-top: 1px dashed #000;
+    padding: 17px 0;
+}
+.fon9 {
+    font-size: 28px;
+    padding: 21px 0 0;
+}
+.fon-10 {
+    font-size: 17px;
+}
+.fo {
+font-size: 22px;
 }
 </style>
 
+
+
+
 </head>
-
 <body>
+<% @company_info = CompanyInfo.first %>
 
-<div class="ms_wrapper print-checks">
+<% payment = Payment.find_by_check_entry_id(check_entry.id) %>
+
+<div class="ms_wrapper">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr class="line-02">
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="left" valign="top">
+
+
+
+<th scope="row" width="33%"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tbody><tr>
+          <th>   <%= image_tag(@company_info.image.image.url(:original), :width => "60%", :class => "logo", :scope => "row") if @company_info.image %>
+ </th>            </tr>
+            <tr>
+              <th scope="row"><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody><tr>
+                  <th scope="row" width="10%">&nbsp;</th>
+                  <td width="82%"><span class="fo-4"><b>P:&nbsp;</b><%= @company_info.company_phone1 %><br>
+                     <%= @company_info.company_address1 %><br>
+                    <%= @company_info.company_address2 %> 
+                  </span></td>
+                </tr>
+                </tbody></table></th>
+            </tr>
+            </tbody></table></th>
+
+
+          <td width="67%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+              <th width="79%" align="center" scope="row">M &amp; T BANK
+                <br>
+                MANUFACTURERS AND TRADERS TRUST COMPANY</th>
+              <th width="21%" scope="row">&nbsp;</th>
+            </tr>
+            <tr align="right">
+              <th align="center" scope="row" class="fon" >1-800-724-2440 <br>
+                WWW.MANDTBANK.COM </th>
+              <th scope="row">10-4-220</th>
+            </tr>
+            <tr align="right">
+              <th colspan="2" align="center" class="fon" scope="row" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="79%" align="right" scope="row"  class="pad">Check Date</th>
+                  <td width="21%" align="right"  class="pad" ><%= check_entry.created_at.strftime("%m/%d/%Y") %></td>
+                </tr>
+              </table></th>
+              </tr>
+          </table></td>
+        </tr>
+      </table></th>
+    </tr>
+    <tr>
+      <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="pad-02">
+        <tr align="left" valign="top">
+          <th width="4%" scope="row">pay to the <br>
+            order of</th>
+          <td width="17%" class="fontw"><%= payment.organization.organization_name %></td>
+
+          <td width="17%" align="right" class="fontw">$ <%= payment.payment_check_amount %></td>
+        </tr>
+        <tr align="left" valign="top">
+          <th colspan="4" scope="row" class="pad-02"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+              <th scope="row" class="fon-03">Seventeen Thousans Eight Hundred Ninely-Two &amp;</th>
+              <td>........................................</td>
+              <td>Dollars</td>
+            </tr>
+          </table></th>
+          </tr>
+      </table></th>
+    </tr>
+    <tr>
+      <th scope="row" class="pad-02 bor"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="left">
+          <th width="14%" scope="row">&nbsp;</th>
+          <td width="46%" rowspan="3"><br>
+             <%= payment.organization.organization_name %><br>
+            <%= payment.organization.organization_address_1 %> <%= payment.organization.organization_address_2 %> <br>
+            <%= payment.organization.organization_city %>, <%= payment.organization.organization_state %>, <%= payment.organization.organization_country %>, <%= payment.organization.organization_zipcode %></td>
+          <td width="40%">&nbsp;</td>
+        </tr>
         <tr>
-          <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Check Code:</td>
-                  <td width="50%"><%= check_entry.check_code %></td>
-                </tr>
-              </table></td>
-              </tr>
-              <% payment = Payment.find_by_check_entry_id(check_entry.id) %>
-            <tr align="left" valign="top">
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Payment Identifier:</td>
-                  <td width="50%"><%= payment.payment_identifier %></td>
-                </tr>
-              </table></td>
-              </tr>
-            </table></td>
-          <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr align="left" valign="top">
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Payment Amount:</td>
-                  <td width="50%"><%= payment.payment_check_amount %></td>
-                </tr>
-              </table></td>
-              </tr>
-            <tr>
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Vendor : </td>
-                  <td width="50%"><%= payment.organization.organization_name %></td>
-                </tr>
-              </table></td>
-              </tr>
-            </table></td>
+          <th scope="row">&nbsp;</th>
+          <td>&nbsp;</td>
         </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td scope="row">&nbsp;</td>
-    </tr>
-    <tr>
-      <td align="center" scope="row" class="pay-heading">Payment Lines </td>
-    </tr>
-    <tr>
-      <td scope="row">&nbsp;</td>
-    </tr>
-        <tr class="tab-head-02">
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-head">
-        <tr align="center" valign="middle">
-          <td scope="row">Invoice</td>
-          <td>Date</td>
-          <td>Due Date</td>
-          <td>Total</td>
-          <td>Balance</td>
-          <td>Amount</td>
+        <tr>
+          <th align="left" scope="row" class="font-04">MEMO</th>
+          <td align="right"><img src="images/image-02.jpg"></td>
         </tr>
-      </table></td>
+        <tr>
+          <th scope="row">&nbsp;</th>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table></th>
     </tr>
-    <% payment.payment_lines.each do |payment_line| %>
-    <tr class="tab-head-02">
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-02">
-        <tr align="center" valign="middle">
-          <td scope="row"><%= payment_line.payable.payable_identifier %></td>
-          <td><%= payment_line.payable.payable_invoice_date %></td>
-          <td><%= payment_line.payable.payable_due_date %></td>
-          <td><%= payment_line.payable.payable_total %></td>
-          <td><%= payment_line.payable.payable_current_balance %></td>
-          <td><%= payment_line.payment_line_amount %></td>
-        </tr>        
-      </table></td>
+    <tr>
+      <th scope="row" class="pad-02 fon-05">chess Group INC.</th>
     </tr>
-    <% end %>
-  </table> 
-</div>
+    <tr>
+      <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center" class="fon-06">
+          <th scope="row"><u>Vendor inv</u></th>
+          <td><u>Invoice Date:</u></td>
+          <td><u>Payable #:</u></td>
+          <td><u>Invoice Amount:</u></td>
+          <td><u>Discount:</u></td>
+          <td><u>Amount paid</u></td>
+        </tr>
+        <% payment.payment_lines.each do |payment_line| %>
+          <tr align="center" class="bor-03">
+            <td><%= payment_line.payable.payable_invoice %></td>
+            <td><%= payment_line.payable.payable_invoice_date.strftime("%m/%d/%Y") %></td>
+            <td><%= payment_line.payable.payable_identifier %></td>
+            <td><%= payment_line.payable.payable_total %></td>
+            <td><%= payment_line.payable.payable_discount %></td>
+            <td><%= payment_line.payment_line_amount %></td>
+          </tr>
+        <% end %>
+      
+      </table></th>
+    </tr>
+    <tr>
+      <th scope="row" class="pad-02 fon-05"><span class="pad-02 fon-05" >chess Group INC.</span></th>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+    </tr>
+    <tr>
+      <th align="left" scope="row"><span class="fontw-04"><%= payment.organization.organization_name %></span></th>
+    </tr>
+    <tr>
+      <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <th width="58%" scope="row">&nbsp;</th>
+          <td width="42%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <th scope="row">Check Date</th>
+              <td class="fon-10"><%= check_entry.created_at.strftime("%m/%d/%Y") %></td>
+            </tr>
+          </table></td>
+        </tr>
+        <tr align="center" valign="top">
+          <th scope="row">&nbsp;</th>
+          <td class="fon9"><%= payment.payment_check_amount %></td>
+        </tr>
+      </table></th>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+    </tr>
+    <tr>
+      <th scope="row">&nbsp;</th>
+    </tr>
+
+
+
+
+    <tr align="left">
+      <th scope="row">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="fo">
+          <tr>
+            <th scope="row"></th>
+          </tr>
+          <tr align="left">
+            <th scope="row"><%= payment.organization.organization_address_1 %></th>
+          </tr>
+          <tr align="left">
+            <th scope="row"><%= payment.organization.organization_address_2 %></th>
+          </tr>
+          <tr align="left">
+            <th scope="row"><%= payment.organization.organization_city %>, <%= payment.organization.organization_state %></th>
+          </tr>
+          <tr align="left">
+            <th scope="row"><%= payment.organization.organization_country %>, <%= payment.organization.organization_zipcode %></th>
+          </tr>
+        </table>
+      </th>
+    </tr>
+
+  </table>
+</div><div style="page-break-before:always">&nbsp;</div> 
 </body>
 </html>
-
-
-
-
-
-
-
-
