@@ -172,13 +172,7 @@ class PoLine < ActiveRecord::Base
          
   end 
 
-  html = %'<
-
-
-
-
-
-  !DOCTYPE html><html><head><title>Member Spotlight</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+  html = %'<!DOCTYPE html><html><head><title>Member Spotlight</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
 
 
 
