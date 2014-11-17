@@ -92,10 +92,11 @@ class PoShipmentsController < ApplicationController
     @po_shipment = PoShipment.new(params[:po_shipment])
 
     respond_to do |format|
-      if @po_shipment.save
+      if @po_shipment.save                        
+        QualityLot.create(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count)    
         @po_shipment.set_quality_on_hand
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status
+        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status        
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }
       else
