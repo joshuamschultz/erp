@@ -231,14 +231,9 @@ width: 128px;
   <td width="107">TOTAL</td></tr>
 
 
-  #{source}<
+  #{source}
 
-
-
-
-
-
-/tbody></table>
+  </tbody></table>
 
 
 
