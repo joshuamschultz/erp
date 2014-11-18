@@ -560,16 +560,6 @@ width: 134px;
             </tr>
   #{source}
 
-
-
-
-
-
-
-
-    
-        
-
         </tbody>
     </table>
 
