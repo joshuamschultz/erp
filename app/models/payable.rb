@@ -7,7 +7,9 @@ class Payable < ActiveRecord::Base
   :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, 
   :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type
 
-  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
+  # belongs_to :organization, :conditions => ['organization_type_id = ?zz', MasterType.find_by_type_value("vendor").id]
+
+  belongs_to :organization
   belongs_to :po_header
   belongs_to :gl_account
   belongs_to :payable_to_address, :class_name => "Contact", :foreign_key => "payable_to_id", 
