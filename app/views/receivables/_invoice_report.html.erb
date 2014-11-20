@@ -455,7 +455,10 @@
 <body>
 
 <% @company_info = CompanyInfo.first %>
-    <div class="ms_wrapper">
+
+<div style="page-break-inside:auto; position:relative">&nbsp;</div> 
+
+    <div class="ms_wrapper" >
 
         <section>
 
@@ -471,7 +474,6 @@
                         <h5><span> P:</span> <%= @company_info.company_phone1 %> <br>
                         <span> F:&nbsp;</span><%= @company_info.company_fax %></h5>
                     </div>
-
 
                 </div>
 
@@ -549,8 +551,6 @@
                                 <% end %>
                             <% end %>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -597,7 +597,6 @@
                     <tr tr class="h-pad" valign="top" align="left">
 
 
-                   
                            <td><%= so_shipment.so_line.so_line_quantity %></td>
                            <td><%= so_shipment.so_shipped_count %></td>
                             
@@ -666,14 +665,14 @@
                         </table>
                     </div>
 
-
+            </div>
             </article>
 
-
+  </section>
             </div>
 
-    </div><div style="page-break-before:always">&nbsp;</div> 
-
+</div>
+<div style="page-break-before:always; position:relative">&nbsp;</div> 
 </body>
 
 </html>
