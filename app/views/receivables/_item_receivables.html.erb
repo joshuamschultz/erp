@@ -1,0 +1,47 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Receivables</h4>
+            <span class="span6 heading right">
+                <%= link_to 'New Receivable From Shipped', so_shipments_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Receivable', new_receivable_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Open', receivables_path(receivable_status: "open"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', receivables_path(receivable_status: "closed"), :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+
+    <div class="widget-body">
+        <table id="table_report_receivable_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Invoices</th>
+                    <th>Customer</th>
+                    <th>SO</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_receivable_list", :path => receivables_path(receivable_status: params[:receivable_status]), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "receivable_identifier" },
+                        { "mData": "customer_name" },
+                        { "mData": "so_identifier" },
+                        { "mData": "receivable_description" },
+                        { "mData": "receivable_total" },
+                        { "mData": "receivable_status" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
+
