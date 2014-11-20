@@ -1,0 +1,49 @@
+<div class="widget">
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span5 heading">Payables</h4>
+            <span class="span7 heading right">
+                <%= link_to 'New Payable From Received', po_shipments_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Payable', new_payable_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Manual Payable', manual_new_payables_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Open', payables_path(payable_status: "open"), :class => "btn btn-mini btn-success" %>
+                <%= link_to 'Closed', payables_path(payable_status: "closed"), :class => "btn btn-mini btn-success" %>
+            </span>
+        </div> 
+    </div>
+
+    <div class="widget-body">
+        <table id="table_report_payable_list" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Payable No</th>
+                    <th>Vendor</th>
+                    <th>PO</th>
+                    <th>Payable To</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_payable_list", :path => payables_path(payable_status: params[:payable_status]), :extras => {:slno => false},
+        :columns => '[
+                        { "mData": "payable_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "po_identifier" },
+                        { "mData": "payable_to_name" },
+                        { "mData": "payable_description" },
+                        { "mData": "payable_total" },
+                        { "mData": "payable_status" },
+                        { "mData": "links", "bSortable": false, "bSearchable": false }
+                    ]'
+    } 
+%>
