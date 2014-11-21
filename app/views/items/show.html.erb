@@ -18,13 +18,8 @@
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
 
-                    <% inventory_quantity = 0 %>
-                    <% @item.quality_lots.each do |quality_lot| %>
-                        <% if quality_lot.present? %>
-                            <h5><strong><% inventory_quantity+= quality_lot.quantity_on_hand %></strong></h5>
-                        <% end %>
-                    <% end  %>
-                    <h5><strong><%= inventory_quantity %></strong></h5>
+
+                    <h5><strong><%= @item.qty_on_hand %></strong></h5>
                     <span class="txt"><strong>Quantity On Hand</strong></span>
                     <div class="clearfix"></div>
                 </a>
