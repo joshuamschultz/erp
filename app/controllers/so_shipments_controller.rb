@@ -15,6 +15,7 @@ class SoShipmentsController < ApplicationController
         if(params[:type] == "shipping")
             @so_lines = SoLine.where(:so_line_status => "open").select{|so_line|
                 so_line = so_line_data_list(so_line, false)
+                so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
