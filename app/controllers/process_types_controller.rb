@@ -10,17 +10,21 @@ class ProcessTypesController < ApplicationController
     if params[:item_id].present?
 
 
-     @process_types=[]
-       Item.find( params[:item_id]).item_revisions.each do |item_revision|
-        if item_revision.present?
-          item_revision.item_processes.each do |process|
-            if process.present?
-              @process_types<<process.process_type
-            end
+    @process_types=[]
+      Item.find( params[:item_id]).item_revisions.each do |item_revision|
+      if item_revision.present?
+        item_revision.item_processes.each do |process|
+          if process.present?
+            @process_types<<process.process_type
           end
         end
       end
-      respond_to do |format|
+    end
+
+    else
+      @process_types = ProcessType.joins(:attachment).all
+    end
+        respond_to do |format|
         format.html # index.html.erb
         format.json { 
           @process_types = @process_types.select{|process_type| 
@@ -34,23 +38,7 @@ class ProcessTypesController < ApplicationController
           render json: {:aaData => @process_types} 
         }
       end
-    else
-        @process_types = ProcessType.joins(:attachment).all
-      
-    
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { 
-          @process_types = @process_types.collect{|process_type| 
-            attachment = process_type.attachment.attachment_fields
-            attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
-            attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
-            attachment
-          }
-          render json: {:aaData => @process_types} 
-        }
-      end
-     end
+
   end
 
   # GET /process_types/1
