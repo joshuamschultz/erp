@@ -24,7 +24,7 @@ class ProcessTypesController < ApplicationController
         format.html # index.html.erb
         format.json { 
           @process_types = @process_types.select{|process_type| 
-
+            process_type[:attachment_name] = '<a href="process_types/#{process_type.id}">#{process_type.attachment_name}</a>' if process_type.attachment.present?
             process_type[:attachment_name] = process_type.attachment.attachment_name if process_type.attachment.present?
             process_type[:effective_date] = process_type.attachment.attachment_revision_date ? process_type.attachment.attachment_revision_date.strftime("%m-%d-%Y") : "" if process_type.attachment.present?
             process_type[:attachment_active]= process_type.attachment.attachment_public if process_type.attachment.present?
