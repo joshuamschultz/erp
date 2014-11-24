@@ -15,12 +15,14 @@
         <table id="table_report_shipping_items" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
+               
               	<th>SO</th>
                 <th>Part No</th>
                 <th>Vendor</th>
                 <th>Quantity Ordered</th>
                 <th>Quantity Open</th>
                 <th>Shipping</th>
+                <th></th>
                 <!-- <th>Shelf</th>
                 <th>Unit</th> -->
                 <th></th>
@@ -34,14 +36,16 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback", :grouping => true, :column_index => 0},
+    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback",:order => "desc",:sorting => 6, :hide_column => 6, :grouping => true, :column_index => 0},
         :columns => '[
-        				{ "mData": "so_identifier" },
+        				
+                        { "mData": "so_identifier" }, 
                         { "mData": "item_part_no" },
                         { "mData": "vendor_name" },
                         { "mData": "so_line_quantity" },
                         { "mData": "so_line_quantity_open" },
-                        { "mData": "so_line_shipping" },                        
+                        { "mData": "so_line_shipping" },   
+                        { "mData": "so_due_date","bVisible": false },                    
                         { "mData": "links", "bSortable": false, "bSearchable": false }                        
                     ]'
     } 
