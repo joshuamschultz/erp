@@ -28,11 +28,11 @@ class ProcessTypesController < ApplicationController
         format.html # index.html.erb
         format.json { 
           @process_types = @process_types.select{|process_type| 
-            process_type[:attachment_name] = CommonActions.linkable(process_type_path(process_type), process_type.attachment.attachment_name) if process_type.attachment.present?
-            process_type[:effective_date] = process_type.attachment.attachment_revision_date ? process_type.attachment.attachment_revision_date.strftime("%m-%d-%Y") : "" if process_type.attachment.present?
-            process_type[:attachment_active]= process_type.attachment.attachment_public if process_type.attachment.present?
-            process_type[:uploaded_by] =process_type.attachment.created_by ? process_type.attachment.created_by.name : ""  if process_type.attachment.present?
-            process_type[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil) if process_type.attachment.present?
+            process_type[:attachment_name] = CommonActions.linkable(process_type_path(process_type), process_type.attachment.attachment_name) 
+            process_type[:effective_date] = process_type.attachment.attachment_revision_date ? process_type.attachment.attachment_revision_date.strftime("%m-%d-%Y") : "" 
+            process_type[:attachment_active]= process_type.attachment.attachment_public
+            process_type[:uploaded_by] =process_type.attachment.created_by ? process_type.attachment.created_by.name : "" 
+            process_type[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil) 
       
           }
           render json: {:aaData => @process_types} 
