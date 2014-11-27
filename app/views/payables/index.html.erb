@@ -3,9 +3,8 @@
         <div class="row-fluid">
             <h4 class="span5 heading">Payables</h4>
             <span class="span7 heading right">
-                <%= link_to 'New Payable From Received', po_shipments_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Payable', new_payable_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Manual Payable', manual_new_payables_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Payable From Received', po_shipments_path, :class => "btn btn-mini btn-success" %>                
+                <%= link_to 'New Payable', manual_new_payables_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Open', payables_path(payable_status: "open"), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', payables_path(payable_status: "closed"), :class => "btn btn-mini btn-success" %>
             </span>
