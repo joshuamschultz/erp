@@ -23,7 +23,7 @@
         <div id="payment_check_div" style="padding-bottom:20px;">
             <label class='payment_check_label' style="float: left;margin-right: 25px;margin-left: 19px;">Check Code Type</label>
             <% [ 'Automatic', 'Manual' ].each do |code_type| %>
-                <%= radio_button_tag 'payment_check_code_type', code_type,  @code_type == code_type, :class => "check_code_type_rad" %>
+                <%= f.radio_button :payment_check_code_type, code_type,  :class => "check_code_type_rad"   %>
                 <%= label_tag "code_type_#{code_type}", code_type.humanize, :class => "check_code_type", :style => "display:inline;" %>
             <% end %>
           
@@ -107,7 +107,9 @@
     var payment_fine_to_submit = true;
 
     $(document).ready(function(){
-         $('.check_code_type_rad:first').attr('checked', true);
+        if (!$("input:radio[name='payment[payment_check_code_type]']").is(":checked")) {
+            $('.check_code_type_rad:first').attr('checked', true);
+        }    
         $("#payment_payment_check_code").attr('readonly', 'readonly'); 
         $("#payment_organization_id").on("focusout", function(){
 

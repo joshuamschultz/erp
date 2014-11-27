@@ -13,7 +13,7 @@ class Payment < ActiveRecord::Base
     attr_accessible :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
         :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
         :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
-        :check_entry_attributes, :next_check_code
+        :check_entry_attributes, :next_check_code, :payment_check_code_type
 
     accepts_nested_attributes_for :payment_lines, :reject_if => lambda { |b| b[:payment_line_amount].blank? || b[:payable_id].blank? }
 
@@ -83,9 +83,14 @@ class Payment < ActiveRecord::Base
 
     after_save :process_after_save
 
-    def process_after_save
-        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"
-            CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+    def process_after_save        
+        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"                         
+            if self.payment_check_code_type == "Manual"
+                Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) if self.payment_check_code_type == "Manual"
+                self.update_transactions
+            else
+               CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+            end    
             temp = CheckCode.find_by_counter_type("check_code")
             temp.update_attributes(:counter => self.payment_check_code)
             CheckCode.get_next_check_code
@@ -99,19 +104,25 @@ class Payment < ActiveRecord::Base
             # CommonActions.update_gl_accounts('PETTY CASH', 'decrement',self.payment_check_amount ) 
             # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'decrement',payable.payable_freight ) 
         end    
-        if  self.payment_type.present? &&  self.payment_type.type_value == "ach"  
+        if  self.payment_type.present? &&  self.payment_type.type_value == "ach"  || (self.payment_type.type_value == "check" && self.payment_check_code_type == "Manual")
+            check_code = self.payment_check_code || nil if self.payment_check_code_type == "Manual"
             check_register = CheckRegister.where(payment_id: self.id).first
-            unless  check_register.present?                
-                    balance = 0 
-                    amount =  self.payment_check_amount * -1 
-                    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
-                    if  CheckRegister.exists? 
-                      check_register = CheckRegister.last                                       
-                      balance += amount + check_register.balance
-                    else
-                      balance += gl_account.gl_account_amount                         
-                    end          
-                    CheckRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: amount, rec: false, payment_id: self.id, balance: balance)
+            if check_register.present?
+                prev_amount = check_register.amount
+                amount = self.payment_check_amount * -1 
+                balance = check_register.balance - prev_amount + amount
+                check_register.update_attributes(:amount => amount, :balance => balance)
+            else 
+                balance = 0 
+                amount =  self.payment_check_amount * -1 
+                gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
+                if  CheckRegister.exists? 
+                check_register = CheckRegister.last                                       
+                balance += amount + check_register.balance
+                else
+                    balance += gl_account.gl_account_amount                         
+                end          
+                CheckRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: amount, rec: false, payment_id: self.id, balance: balance, check_code: check_code)
             end
         end    
         if  self.payment_type.present? &&  self.payment_type.type_value == "credit"  
@@ -138,9 +149,8 @@ class Payment < ActiveRecord::Base
     def  update_transaction(account)      
         @gl_account_to_update = GlAccount.where(:gl_account_identifier=> account).first
         @gl_account = GlAccount.where(:id => @gl_account_to_update.id).first
-
         @gl_entry = GlEntry.where(payment_id: self.id, gl_account_id: @gl_account_to_update.id).first
-           unless @gl_entry.nil?
+            unless @gl_entry.nil?
                 @gl_entry.update_attributes(:gl_entry_debit => self.payment_check_amount)
                 amount = @gl_account.gl_account_amount - self.payment_check_amount_was.to_f + self.payment_check_amount.to_f
                 @gl_account.update_attributes(:gl_account_amount => amount)
