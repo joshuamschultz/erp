@@ -33,8 +33,8 @@
 
             <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
-                    <h5><strong>$<%= @item_revision.item_cost.to_f if @item_revision %></strong></h5>
-                    <span class="txt"><strong>Cost</strong></span>
+                    <h5><strong>$<%= @item.weighted_cost %></strong></h5>
+                    <span class="txt"><strong>weighted Cost</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>

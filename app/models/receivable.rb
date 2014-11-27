@@ -8,7 +8,6 @@ class Receivable < ActiveRecord::Base
   :receivable_accounts_attributes, :receivable_freight
 
   scope :status_based_receivables, lambda{|status| where(:receivable_status => status) }
-
   # belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
    belongs_to :organization
   belongs_to :so_header
