@@ -22,7 +22,11 @@ class ReceivablesController < ApplicationController
   # GET /receivables
   # GET /receivables.json
   def index
-    @receivables = Receivable.status_based_receivables(params[:receivable_status] || "open")
+    if params[:item_id].present?
+      @receivables =Receivable.open_receivables(params[:item_id],params[:receivable_status])
+    else
+      @receivables = Receivable.status_based_receivables(params[:receivable_status] || "open")
+    end
 
     respond_to do |format|
       format.html # index.html.erb

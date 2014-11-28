@@ -152,5 +152,15 @@ class Payable < ActiveRecord::Base
       Payable.set_callback("save", :before, :process_before_save)
       Payable.set_callback("save", :after, :process_after_save)
   end
+  def self.open_payables(item,status)
+    payables = []
+    @item = Item.find(item)
+    @item.po_lines.each do |po_line|
+      unless po_line.po_header.payables.empty?
+        payables= po_line.po_header.payables.status_based_payables(status || "open")
+      end
+    end
+    return payables
+  end
 
 end
