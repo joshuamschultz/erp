@@ -22,7 +22,14 @@ class PayablesController < ApplicationController
   # GET /payables
   # GET /payables.json
   def index
+    if params[:item_id].present?
+ 
+      @payables =Payable.open_payables(params[:item_id],params[:payable_status])
+
+
+    else
     @payables = Payable.status_based_payables(params[:payable_status] || "open")
+    end
 
     respond_to do |format|
       format.html # index.html.erb

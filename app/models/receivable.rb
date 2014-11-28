@@ -199,4 +199,17 @@ class Receivable < ActiveRecord::Base
   end
   end
 
+  def self.open_receivables(item,status)
+    receivables = []
+    @item = Item.find(item)
+    @item.so_lines.each do |so_line|
+      unless so_line.so_header.receivables.empty?
+        receivables= so_line.so_header.receivables.status_based_receivables(status || "open")
+      end
+    end
+    return receivables
+  end
+
+
+
 end
