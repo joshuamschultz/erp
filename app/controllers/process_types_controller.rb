@@ -9,17 +9,8 @@ class ProcessTypesController < ApplicationController
   def index
     if params[:item_id].present?
 
+      @process_types =ProcessType.item_process_type(params[:item_id])
 
-    @process_types=[]
-      Item.find( params[:item_id]).item_revisions.each do |item_revision|
-      if item_revision.present?
-        item_revision.item_processes.each do |process|
-          if process.present?
-            @process_types<<process.process_type
-          end
-        end
-      end
-    end
 
     else
       @process_types = ProcessType.joins(:attachment).all
