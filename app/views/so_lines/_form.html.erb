@@ -54,8 +54,6 @@
                 </div>
                 
 
-                <%= f.association :customer_quality, :label_method => "quality_name", :label_value => "id", :include_blank => false, :label => "Quality Level", :selected => ((@so_line.persisted? && @so_line.customer_quality.present?) ? @so_line.customer_quality_id : @so_header.organization.customer_quality_id) %>
-
                 <%= f.input :so_line_notes, :label => "Notes" %>
 
                 <%= f.input :so_line_price, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
