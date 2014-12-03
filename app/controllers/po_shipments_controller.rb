@@ -93,7 +93,7 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.save                        
-        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count)    
+        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :inspection_level_id => 49, :inspection_method_id => 52, :inspection_type_id => 55)    
         @quality_lot.lot_inspector = current_user
         @quality_lot.save
         @po_shipment.set_quality_on_hand
