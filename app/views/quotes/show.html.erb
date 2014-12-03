@@ -7,38 +7,30 @@
 </div>
 
 <div class="row-fluid">
-    
-            <div class="span4 well">
-                  <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
-                      <span class="glyphicons message_out"><i></i></span>
-                      <span class="txt">Send</span>
-                      <div class="clearfix"></div>
-                  </a>
-            </div>
 
-            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn" onclick="purchase_report()">
-                      <span class="glyphicons print"><i></i></span>
-                      <span class="txt">Print</span>
-                      <div class="clearfix"></div>
-                  </a>
-            </div>
+   <div class="row-fluid item_detail_classic_btn">
 
-            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn">
-                      <span class="glyphicons notes_2"><i></i></span>
-                      <span class="txt">Add Quote</span>
-                      <div class="clearfix"></div>
-                  </a>
-            </div>
-        
+        <div class="span4 well well-002">
+              <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
+                  <span class="glyphicons message_out"><i></i></span>
+                  <span class="txt">Send</span>
+                  <div class="clearfix"></div>
+              </a>
+        </div>
 
+        <div class="span4 well well-002">
+              <a class="widget-stats" href="#" id="contacts_btn" onclick="purchase_report()">
+                  <span class="glyphicons print"><i></i></span>
+                  <span class="txt">Print</span>
+                  <div class="clearfix"></div>
+              </a>
+        </div>
+    </div>
+   
 
-        <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>   
-
+    <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>   
+   
 </div>
- 
-
 
 <div class="separator bottom"></div>
 
@@ -76,7 +68,7 @@
 
 <script type="text/javascript">
     function after_send(){
-         alert("sucess")
+        // alert("sucess")
     }
     function send_mail_vendor(){
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_quotes_mail", "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
@@ -121,3 +113,9 @@
         <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
     </div>
 </div>
+
+<style> 
+.span4.well.well-002 {
+    width: 49%;
+}
+</style>
