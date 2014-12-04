@@ -93,7 +93,7 @@ class Item < ActiveRecord::Base
   end
 
   def qty_on_hand
-      self.po_lines.sum(:po_line_shipped) - self.so_lines.sum(:so_line_shipped)
+      self.quality_lots.sum(:quantity_on_hand).to_f
   end
   def weighted_cost
   	total = self.quality_lots.sum(:quantity_on_hand).to_f
