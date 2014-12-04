@@ -54,7 +54,7 @@ class UserMailer < ActionMailer::Base
         attachments[file_name] = File.read(file_path)
       end
     end
-    mail(:to => to_address, :subject => "Quotes").deliver
+    mail(:to => quote_vendor.organization.organization_email, :subject => "Quotes").deliver
     puts "Mail Send!"
 
   end
@@ -65,7 +65,7 @@ class UserMailer < ActionMailer::Base
     @customer_quote = CustomerQuote.find(customer_quote_id)
     organization = @customer_quote.organization    
     if organization.contact_type.type_value == 'email'
-       # to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
+        to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
       if @customer_quote.attachments
         @customer_quote.attachments.each do |attachmen|
           file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
