@@ -103,9 +103,7 @@ class Item < ActiveRecord::Base
     end
     return cost.round(6)
   end
-
   def item_sell_price
-    
   end
 
   def current_location
