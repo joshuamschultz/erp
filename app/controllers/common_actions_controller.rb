@@ -68,12 +68,12 @@ class CommonActionsController < ApplicationController
 
             when "send_quotes_mail"
               p params[:organizations].to_yaml
-              # quote = Quote.find(params[:quote_id])
-              # quote.quote_vendors.each do |quote_vendor|
-              #   if quote_vendor.organization.contact_type.type_name == "Email"
-              #     UserMailer.send_quote(quote, quote_vendor).deliver
-              #   end
-              # end
+              quote = Quote.find(params[:quote_id])
+              quote.quote_vendors.each do |quote_vendor|
+                if quote_vendor.organization.contact_type.type_name == "Email"
+                  UserMailer.send_quote(quote, quote_vendor).deliver
+                end
+              end
               result = "success"
               
             when "send_po_order_mail"
@@ -83,6 +83,7 @@ class CommonActionsController < ApplicationController
               @vendor_email = @contact.contact_email
               UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
               result = "success"
+              
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
               if @receivable.so_header.present?
