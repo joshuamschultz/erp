@@ -7,4 +7,5 @@ class CustomerFeedback < ActiveRecord::Base
 
   belongs_to :customer_feedback_type, :class_name => "MasterType", :foreign_key => "customer_feedback_type_id",
 	    :conditions => ['type_category = ?', 'customer_response']
+  has_many :attachments, :as => :attachable, :dependent => :destroy
 end
