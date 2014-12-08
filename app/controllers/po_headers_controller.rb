@@ -46,9 +46,9 @@ class PoHeadersController < ApplicationController
   # GET /po_headers
   # GET /po_headers.json
   def index
-    if  PoHeader.find_by_po_identifier("Unassigned").present?
-      PoHeader.find_by_po_identifier("Unassigned").delete
-        redirect_to action: "index"
+    if  @po_headers.find_by_po_identifier("Unassigned").present?
+      @po_headers.find_by_po_identifier("Unassigned").delete
+      redirect_to action: "index"
     else
     respond_to do |format|
       format.html # index.html.erb
