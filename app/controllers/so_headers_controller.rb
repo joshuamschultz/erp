@@ -45,32 +45,37 @@ class SoHeadersController < ApplicationController
   end
 
   def index
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json {     
-        i = 0    
-        @so_headers = @so_headers.select{|so_header|          
-          so_header[:index] = i
-          so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
-          so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
-          so_header[:so_line_price] = so_header.so_lines.find_by_item_id(@item.id).so_line_cost if params[:item_id].present?
-          so_header[:so_type_qty] =  so_header.so_lines.find_by_item_id(@item.id).so_line_quantity if params[:item_id].present?
+    if  @so_headers.find_by_so_identifier("Unassigned").present?
+      @so_headers.find_by_so_identifier("Unassigned").delete
+      redirect_to action: "index"
+    else
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json {     
+          i = 0    
+          @so_headers = @so_headers.select{|so_header|          
+            so_header[:index] = i
+            so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
+            so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
+            so_header[:so_line_price] = so_header.so_lines.find_by_item_id(@item.id).so_line_cost if params[:item_id].present?
+            so_header[:so_type_qty] =  so_header.so_lines.find_by_item_id(@item.id).so_line_quantity if params[:item_id].present?
 
-          if so_header.bill_to_address
-              so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
-          else
-              so_header[:bill_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
-          end
-          if so_header.ship_to_address
-              so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_description)
-          else
-              so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
-          end
-          so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
-           i += 1
-         }
-         render json: {:aaData => @so_headers} 
-      }
+            if so_header.bill_to_address
+                so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
+            else
+                so_header[:bill_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+            end
+            if so_header.ship_to_address
+                so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_description)
+            else
+                so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+            end
+            so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
+             i += 1
+           }
+           render json: {:aaData => @so_headers} 
+        }
+      end
     end
   end
 
@@ -78,12 +83,17 @@ class SoHeadersController < ApplicationController
   # GET /so_headers/1.json
   def show
     @so_header = SoHeader.find(params[:id])
-    @attachable = @so_header
-    @notes = @so_header.present? ? @so_header.comments.where(:comment_type => "note").order("created_at desc") : []  
-    @attachment = @so_header.attachments.new
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @so_header }
+    if @so_header.so_identifier == "Unassigned"
+      @so_header.delete
+      redirect_to action: "index"
+    else
+      @attachable = @so_header
+      @notes = @so_header.present? ? @so_header.comments.where(:comment_type => "note").order("created_at desc") : []  
+      @attachment = @so_header.attachments.new
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json { render json: @so_header }
+      end
     end
   end
 
