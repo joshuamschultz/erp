@@ -26,7 +26,7 @@ class PoLine < ActiveRecord::Base
   belongs_to :item_transfer_name, :foreign_key => "alt_name_transfer_id", :class_name => "ItemAltName"
 
   validates_presence_of :item_alt_name_id
-  validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity
+  validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity, :customer_quality
   validates_numericality_of :po_line_cost
 
   validates_numericality_of :po_line_quantity, greater_than: 0
