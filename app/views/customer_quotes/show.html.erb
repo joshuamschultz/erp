@@ -52,7 +52,8 @@
     }
     
     function after_send(response, callback_params, api_params){
-         alert("sucess")
+        
+        alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
 </script>
 
@@ -74,7 +75,7 @@
                 <tbody>                    
                         <tr>
                             <td><%= @customer_quote.organization.organization_name %></td>
-                            <td><%= select_tag "#{@customer_quote.organization.id}", options_for_select(@customer_quote.organization.contacts.map{ |contact| [ contact.contact_title, contact.id ] }), :class => "status-select", :id => "contact_id" %></td>
+                            <td><%= select_tag "#{@customer_quote.organization.id}", options_for_select(@customer_quote.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "contact_id" %></td>
                         </tr>
                 </tbody>
             </table>

@@ -42,11 +42,12 @@ class UserMailer < ActionMailer::Base
   end
 
 
-  def send_quote(quote, quote_vendor)
+  def send_quote(quote, quote_vendor,contact_id)
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     # to_address = quote_vendor.oraganzition.organization_email
     @quote = quote
     @quote_vendor = quote_vendor
+    @contact_id = contact_id 
     if @quote.attachments
       @quote.attachments.each do |attachmen|
         file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
@@ -54,7 +55,7 @@ class UserMailer < ActionMailer::Base
         attachments[file_name] = File.read(file_path)
       end
     end
-    mail(:to => quote_vendor.organization.organization_email, :subject => "Quotes").deliver
+    mail(:to => Contact.find(@contact_id).contact_email, :subject => "Quotes").deliver
     puts "Mail Send!"
 
   end
