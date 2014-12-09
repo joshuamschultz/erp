@@ -21,6 +21,16 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
+
+
+            when "org_contact_mail"
+              if params[:organization_id].present?
+                organization = Organization.find(params[:organization_id])
+                result = organization.present? ? organization.contacts : []
+                result = result.each {|line| line[:contact_email] = line.contact_email }
+              end
+
+
             when "get_quality_lot_current_quantity"
               if params[:id].present?
                 quality_lot = QualityLot.find(params[:id])
@@ -67,14 +77,18 @@ class CommonActionsController < ApplicationController
               # PoHeader.process_payable_po_lines(params)
 
             when "send_quotes_mail"
-              p params[:organizations].to_yaml
-              quote = Quote.find(params[:quote_id])
-              quote.quote_vendors.each do |quote_vendor|
-                if quote_vendor.organization.contact_type.type_name == "Email"
-                  UserMailer.send_quote(quote, quote_vendor).deliver
+
+              if params[:contact_id].present? && params[:quote_id].present?
+                quote = Quote.find(params[:quote_id])
+                quote.quote_vendors.each do |quote_vendor|
+                  if quote_vendor.organization.contact_type.type_name == "Email"
+                    UserMailer.send_quote(quote, quote_vendor,params[:contact_id]).deliver
+                  end
                 end
-              end
-              result = "success"
+                result = "success"
+               else
+                result = "fail"
+               end
               
             when "send_po_order_mail"
               val =  params[:organizations]
@@ -117,9 +131,13 @@ class CommonActionsController < ApplicationController
                 result = "fail"
               end
             when "send_customer_quotes_mail"
-              if params[:customer_quote_id].present?
+              if params[:customer_quote_id].present? && params[:contact].present?
                 UserMailer.send_customer_quote(params[:customer_quote_id], params[:contact])
+                result = "success"
+              else
+                result = "fail"
               end
+
             when "set_quote_status"
               if params[:quote_id].present? && params[:status_id].present?
                 quote = Quote.find(params[:quote_id])
