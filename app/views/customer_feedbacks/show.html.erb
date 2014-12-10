@@ -42,3 +42,29 @@
     <%= link_to 'Back to Feedbacks', customer_feedbacks_path, :class => "btn btn-small" %>
   </div>
 </div>
+
+<!-- Attachments -->
+<div class="new_widget">
+    <%= render :partial => 'attachments/droppable_form_plup_less' %>
+    <%= render 'attachments/attachments_less' %>
+</div>
+
+<style>
+
+.widget.widget-003 {
+float: left;
+margin: 0 17px 0 0;
+width: 37%;
+}
+.new_widget {
+float: left;
+width: 100%;
+}
+.widget.widget-004 {
+float: left;
+width: 60%;
+}
+.widget-body.widget-body-002 {
+    min-height: 190px;
+}
+</style>
