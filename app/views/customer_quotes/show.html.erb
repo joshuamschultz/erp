@@ -10,7 +10,7 @@
    <div class="row-fluid item_detail_classic_btn">
 
         <div class="span4 well well-002">
-              <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
+              <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-customer-quote" class="btn btn-small btn-success">
                   <span class="glyphicons message_out"><i></i></span>
                   <span class="txt">Send</span>
                   <div class="clearfix"></div>
@@ -52,6 +52,8 @@
     }
     
     function after_send(response, callback_params, api_params){
+        
+        alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
 </script>
 
@@ -73,7 +75,7 @@
                 <tbody>                    
                         <tr>
                             <td><%= @customer_quote.organization.organization_name %></td>
-                            <td><%= select_tag "#{@customer_quote.organization.id}", options_for_select(@customer_quote.organization.contacts.map{ |contact| [ contact.contact_title, contact.id ] }), :class => "status-select", :id => "contact_id" %></td>
+                            <td><%= select_tag "#{@customer_quote.organization.id}", options_for_select(@customer_quote.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "contact_id" %></td>
                         </tr>
                 </tbody>
             </table>

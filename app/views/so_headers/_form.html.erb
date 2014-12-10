@@ -80,12 +80,22 @@
 <script type="text/javascript">
     tab_field_forms["form_for_so_header"] = ["so_header_organization_id", "so_header_so_header_customer_po", "so_header_so_due_date", "so_header_so_bill_to_id", "so_header_so_ship_to_id"];
 
+
 <% date_box_date = @so_header.new_record? ? Date.today : @so_header.so_due_date %> 
 
   date_box_fields = date_box_fields.concat([{"name":"so_header_so_due_date", "value":"<%= date_box_date %>"}]);
 
       
     $(document).ready(function(){ 
+
+        $('#so_header_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9) {  
+              
+              $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html());     
+            }
+        });        
         $("#so_header_organization_id").on("focusout", function(){
             if($("#organization_id").val() != ""){
                 initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
@@ -94,7 +104,7 @@
             }
             else{
                 $("#so_header_customer_info").html("");
-                $("#so_header_organization_id").val("");
+                //$("#so_header_organization_id").val("");
                 $("#so_header_so_bill_to_id").html("");
                 $("#so_header_so_ship_to_id").html("");
             }
