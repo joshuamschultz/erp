@@ -287,20 +287,24 @@
 
             <div class="ms_text">
                 <h1 class="ms_heading">Bill To :</h1> 
+                <% if @so_header.bill_to_address.present? %>
                 <h2 class="ms_sub-heading"><%= @so_header.bill_to_address.contact_title %></h2> 
                     <strong><%= @so_header.bill_to_address.contact_address_1 %></strong> 
                     <strong><%= @so_header.bill_to_address.contact_address_2 %></strong>
                     <strong><%= @so_header.bill_to_address.contact_state %></strong>
                     <strong><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></strong>
+                    <% end %>
             </div>
 
             <div class="ms_text-2">
                 <h1 class="ms_heading">Ship To : </h1> 
+                <% if @so_header.ship_to_address.present? %>
                 <h2 class="ms_sub-heading"><%= @so_header.ship_to_address.contact_title%></h2> 
                     <strong><%= @so_header.ship_to_address.contact_address_1 %></strong> 
                     <strong><%= @so_header.ship_to_address.contact_address_2 %></strong>
                     <strong><%= @so_header.ship_to_address.contact_state %></strong>
-                    <strong><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></strong>                
+                    <strong><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></strong>   
+                    <% end %>             
             </div>
 
         </article>
@@ -355,8 +359,8 @@
                 <div class="ms_text-4">
                     <h2 class="ms_sub-heading">  Shipped </h2> 
                     <% @so_header.so_lines.each do |so_line| %>
-                        <% if so_line.so_shipments.present? %>
-                            <strong><%= so_line.so_shipments.last.so_shipped_count %> </strong>
+                        <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
+                            <strong><%= shipment.so_shipped_count %> </strong>
                         <% else %>
                             <strong><%= shipped_val = 0 %></strong>
                         <% end %>
