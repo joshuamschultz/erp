@@ -299,6 +299,7 @@
 }
 .text-6 {
     color: #800000;
+    padding: 0 15px 0 0;
     margin: 0 14px 0 0 !important;
     width: auto !important;
 }
@@ -435,26 +436,34 @@
           </tr>
           <% @so_header.so_lines.each do |so_line| %>
               <tr align="center">
-                <td scope="row"><%= so_line.item.item_part_no %></td>
-                <td><%= so_line.item_revision.item_description %></td>
-                <td><%= so_line.so_line_quantity %></td>
-                <% if so_line.so_shipments.present? %>
-                    <td><%= so_line.so_shipments.last.so_shipped_count %> </td>
+                <td scope="row"><%= so_line.item.item_part_no %>
+                    <table> 
+                        <% if so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier %>
+                            <tr><td align="center"><%= so_line.item_alt_name.item_alt_identifier %></td></tr>
+                        <% end %>  
+                        <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
+                            <tr> <td align="center"><%= shipment.quality_lot.lot_control_no if shipment.quality_lot %></td></tr>
+                        <% end %>
+                    </table>
+                </td>
+                <td><%= so_line.item_revision.item_description %>
+                    <table> 
+                        <tr><td class="text-6"><%= so_line.organization.organization_name if so_line.organization %></td>
+                          <td class="text-6"><%= @so_header.po_header.po_identifier  if @so_header.po_header %> </td></tr>
+
+
+                    </table>
+                </td>
+                <td class="text-6"><%= so_line.so_line_quantity %></td>
+                <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
+                    <td><%= shipment.so_shipped_count %> </td>
                 <% else %>
                     <td><%= shipped_val = 0 %></td>
                 <% end %>
               </tr>
-                <% if so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier %>
-                  <tr align="center">
-                    <td scope="row"><%= so_line.item_alt_name.item_alt_identifier %></td>
-                  </tr>
-                <% end %>                       
-                <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
-                    <tr align="center">
-                        <td scope="row"><%= shipment.quality_lot.lot_control_no if shipment.quality_lot %> </td>
-                    </tr>
-                <% end %>
-            
+
+
+                               
           <% end %>
     
       </table>
