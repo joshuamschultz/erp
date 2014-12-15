@@ -35,9 +35,10 @@ class PoShipmentsController < ApplicationController
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
-                if po_shipment.quality_lot_id.present?
-                  quality_lot = QualityLot.find(po_shipment.quality_lot_id) 
-                  po_shipment[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
+                if po_shipment.po_shipped_status =="received"
+                  po_header_id = po_shipment.po_line.po_header
+                  quality_lot = QualityLot.find_by_po_header_id(po_header_id) 
+                  po_shipment[:lot] ="<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
                 else
                    po_shipment[:lot]= ""
                 end
@@ -99,9 +100,13 @@ class PoShipmentsController < ApplicationController
         @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)    
         @quality_lot.lot_inspector = current_user
         @quality_lot.save
-        @po_shipment.set_quality_on_hand
+        @po_shipment.set_quality_on_hand        
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status        
+        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
+        @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
+        @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
+        @po_shipment["customer"] = @po_shipment.po_line.po_header.customer.customer_name if @po_shipment.po_line.po_header.customer.present?
+        @po_shipment["control_number"] = @po_shipment.quality_lot.lot_control_no if @po_shipment.quality_lot.present?
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }
       else
