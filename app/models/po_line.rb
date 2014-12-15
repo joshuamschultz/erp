@@ -26,7 +26,7 @@ class PoLine < ActiveRecord::Base
   belongs_to :item_transfer_name, :foreign_key => "alt_name_transfer_id", :class_name => "ItemAltName"
 
   validates_presence_of :item_alt_name_id
-  validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity
+  validates_presence_of :po_header, :item_alt_name, :po_line_cost, :po_line_quantity, :customer_quality
   validates_numericality_of :po_line_cost
 
   validates_numericality_of :po_line_quantity, greater_than: 0
@@ -503,72 +503,7 @@ width: 134px;
 }
 
 </style>
-</head>
-<body>
-<div class="ms_wrapper">
-
-    <section>
-
-        <article>
-            <div class="ms_image">
-                <div class="ms_image-wrapper">
-                   <img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} />
-                </div>
-
-                <div class="ms_image-text">
-                  <h5>#{@company_info.company_address1}<br/>#{@company_info.company_address2}<hr><b>P:&nbsp;</b> #{@company_info.company_phone1}<br/>&nbsp;<b>F:&nbsp;</b> #{@company_info.company_fax}<hr></h5>
-                </div>
-            </div>
-
-            <div class="ms_image-2">
-<h3> Purchase Order Number</h3><h2> #{self.po_header.po_identifier}</h2><h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5>
-            </div>
-
-        </article>
-
-        <article class="art-01">
-
-            <div class="ms_text">
-                <h1 class="ms_heading">Vendor :</h1> 
-                <div class="ms_text-6">
-                  <h2 class="ms_sub-heading">#{self.po_header.organization.organization_name}<br>#{self.po_header.organization.organization_address_1}#{self.po_header.organization.organization_address_2}</h2> <h3> #{self.po_header.organization.organization_city}#{self.po_header.organization.organization_state} #{self.po_header.organization.organization_country}#{self.po_header.organization.organization_zipcode}</h3>
-                </div>
-            </div>
-
-            <div class="ms_text-2">
-                <h1 class="ms_heading">Ship To : </h1> 
-                <div class="ms_text-6 ms-33">
-                  <h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong>
-                </div>
-            </div>
-
-        </article>
-
-
-
-        <article>
-
-<article class="art-01 art-04">
-    <table cellspacing="0" cellpadding="0" width="678px" border="0">
-        <tbody>
-            <tr align="center" class="hea art-002">
-                <td>QTY</td>
-                <td>CUST P/N-ALL P/N</td>
-                <td>DESCRIPTION</td>
-                <td>COST</td>
-                <td>TOTAL</td>
-            </tr>
-  #{source}
-
-        </tbody>
-    </table>
-
-</article>
-
-        </article>
-
-
-<article class="art-02"><div class="ms_text-55"><h1 class="ms_heading-3">Comments:</h1> <div class="ms_text-6">                <strong class="ms-5">#{self.po_header.po_notes}</strong> </div></div><div class="ms_text-2"><div class="ms_text-6"><div class="ms_text-7 ms_text-8 "></div><div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"> #{self.po_header.po_total.to_f}</strong> </div></div></div></article><article><div class="footer"><div class="page"><h3>Date</h3><h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4></div><div class="page-center"><h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page regulatory agencies reserve the right to audit Seller"s books and records and the right to inspect at the Seller"s plant any and all materials and systems.</h4></div><div class="original"><h3>Page </h3><h4>1</h4></div></article></div></div></body></html>'
+</head><body><div class="ms_wrapper"><section><article><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} /></div><div class="ms_image-text"><h5>#{@company_info.company_address1}<br/>#{@company_info.company_address2}<hr><b>P:&nbsp;</b> #{@company_info.company_phone1}<br/>&nbsp;<b>F:&nbsp;</b> #{@company_info.company_fax}<hr></h5></div></div><div class="ms_image-2"><h3> Purchase Order Number</h3><h2> #{self.po_header.po_identifier}</h2><h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5></div></article><article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">#{self.po_header.organization.organization_name}<br>#{self.po_header.organization.organization_address_1}#{self.po_header.organization.organization_address_2}</h2> <h3> #{self.po_header.organization.organization_city}#{self.po_header.organization.organization_state} #{self.po_header.organization.organization_country}#{self.po_header.organization.organization_zipcode}</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong></div></div></article><article><article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr>#{source}</tbody></table></article></article><article class="art-02"><div class="ms_text-55"><h1 class="ms_heading-3">Comments:</h1> <div class="ms_text-6">                <strong class="ms-5">#{self.po_header.po_notes}</strong> </div></div><div class="ms_text-2"><div class="ms_text-6"><div class="ms_text-7 ms_text-8 "></div><div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"> #{self.po_header.po_total.to_f}</strong> </div></div></div></article><article><div class="footer"><div class="page"><h3>Date</h3><h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4></div><div class="page-center"><h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page regulatory agencies reserve the right to audit Seller"s books and records and the right to inspect at the Seller"s plant any and all materials and systems.</h4></div><div class="original"><h3>Page </h3><h4>1</h4></div></article></div></div></body></html>'
 
  
 

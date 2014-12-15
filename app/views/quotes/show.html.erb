@@ -16,7 +16,6 @@
                   <div class="clearfix"></div>
               </a>
         </div>
-
         <div class="span4 well well-002">
               <a class="widget-stats" href="#" id="contacts_btn" onclick="purchase_report()">
                   <span class="glyphicons print"><i></i></span>
@@ -26,7 +25,6 @@
         </div>
     </div>
    
-
     <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>   
    
 </div>
@@ -66,11 +64,39 @@
 :locals => {:extras => {:link => populate_quote_path(type: "note", id: @quote)}} %>
 
 <script type="text/javascript">
-    function after_send(){
-        // alert("sucess")
+  
+    
+
+    $(document).ready(function(){ 
+
+        initiate_vendor_quotes();
+        jQuery("#set_status").on('change', function() {
+            initiate_vendor_quotes();    
+        });
+
+    });
+    function initiate_vendor_quotes(){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "org_contact_mail","organization_id":  $( "#set_status" ).val() }}, "set_contact_emails", {});
+    
+    }  
+
+
+    function set_contact_emails(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".contact-email-select-box-template").html(), response));
+        $("#inventory_adjustment_quality_lot_id").html(html);
+
+    }
+
+
+    function after_send(response){
+          alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
     function send_mail_vendor(){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_quotes_mail", "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
+
+
+
+        var vendor_quote_id = <%= @quote.id %>
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_quotes_mail","quote_id": vendor_quote_id,"organization_id": $( "#set_status" ).val(),"contact_id":$( "#inventory_adjustment_quality_lot_id" ).val() }}, "after_send", {});
     }
 </script>
 <style type="text/css">
@@ -93,17 +119,26 @@
             <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
                 <thead>
                     <tr>
-                        <th>Vendor Name</th>
-                        <th>Contacts</th>
+                        Vendor Name
+                 
                     </tr>
                 </thead>
                 <tbody>
-                    <% @quote.quote_vendors.includes(:organization).each do |quote_vendor| %>
                         <tr>
-                            <td><%= quote_vendor.organization.organization_name %></td>
-                            <td><%= select_tag "#{quote_vendor.organization.id}", options_for_select(quote_vendor.organization.contacts.map{ |contact| [ contact.contact_title, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
-                        </tr>
-                    <% end %>
+                          <%= select_tag "#{}", options_for_select(@quote.quote_vendors.map{ |quote_vendor| [  quote_vendor.organization.organization_name, quote_vendor.organization.id  ] }), :class => "status-select", :id => "set_status" %>
+
+                            <div class="control-group select required quality_lot_po_line">
+                                <label for="inventory_adjustment_quality_lot_id" class="select required control-label">
+                                    <abbr title="required">*</abbr> Contacts
+                                </label>
+                                <div class="controls">
+                                    <select name="inventory_adjustment[quality_lot_id]" id="inventory_adjustment_quality_lot_id" class="select required" autofocus="autofocus">
+
+                                    </select>
+                                </div>
+                            </div>
+                       </tr>
+         
                 </tbody>
             </table>
         </form>
@@ -118,3 +153,5 @@
     width: 49%;
 }
 </style>
+
+  <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "contact-email-select-box"} %>
