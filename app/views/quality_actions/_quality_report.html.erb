@@ -207,7 +207,9 @@ p {
                                                             </th>
                                                         </tr>
                                                         <tr>
+                                                        <% if @quality_action.po_header.organization.present? %>
                                                             <th scope="row"><%= @quality_action.po_header.organization.organization_address_1%>,<%= @quality_action.po_header.organization.organization_address_2%>,<%= @quality_action.po_header.organization.organization_city %>,<%= @quality_action.po_header.organization.organization_state %>,<%= @quality_action.po_header.organization.organization_country %>,<%= @quality_action.po_header.organization.organization_zipcode %> </th>
+                                                            <% end %>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no %></th>
