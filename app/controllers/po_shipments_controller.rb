@@ -35,9 +35,10 @@ class PoShipmentsController < ApplicationController
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
-                if po_shipment.quality_lot_id.present?
-                  quality_lot = QualityLot.find(po_shipment.quality_lot_id) 
-                  po_shipment[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
+                if po_shipment.po_shipped_status =="received"
+                  po_header_id = po_shipment.po_line.po_header
+                  quality_lot = QualityLot.find_by_po_header_id(po_header_id) 
+                  po_shipment[:lot] ="<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
                 else
                    po_shipment[:lot]= ""
                 end
