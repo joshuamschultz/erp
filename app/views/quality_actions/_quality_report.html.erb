@@ -197,7 +197,7 @@ p {
                                                     <p><u><strong>Vendor</strong></u>
                                                     <% if @quality_action.po_header.present? %>
                                                         <br><%= @quality_action.po_header.organization.organization_name %>
-                                                        <% end %>
+                                                     <% end %>
                                                         <br>
                                                         <u><strong>Contact:</strong></u>
                                                     </p>
@@ -214,10 +214,10 @@ p {
                                                             <% end %>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no %></th>
+                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no if @quality_action.po_header %></th>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier %></th>
+                                                            <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier  if @quality_action.po_header %></th>
                                                         </tr>
                                                     </table>
                                                 </td>
