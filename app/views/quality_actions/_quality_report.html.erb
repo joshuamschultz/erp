@@ -205,7 +205,7 @@ p {
                                                 <td width="65%">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class- "bord-05">
                                                         <tr>
-                                                            <th scope="row"><strong>P/N:</strong>  <span class="color-04"><%= @quality_action.item.item_part_no %></span>
+                                                            <th scope="row"><strong>P/N:</strong>  <span class="color-04"><%= @quality_action.item.item_part_no if @quality_action.item %></span>
                                                             </th>
                                                         </tr>
                                                         <tr>
