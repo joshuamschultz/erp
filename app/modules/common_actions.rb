@@ -175,7 +175,9 @@ module CommonActions
 			{:path => new_gl_entry_path, :name => "Journal Entries"},
 			{:path => gl_accounts_path, :name => "Accounts"},
 			{:path => gl_types_path, :name => "Types"},
-			{:path => reconciles_path, :name => "Reconcile"}
+			{:path => reconciles_path, :name => "Reconcile"},
+			{:path => check_registers_path, :name => "Check Register"},
+			{:path => credit_registers_path, :name => "Credit Register"}
 		]
 
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
