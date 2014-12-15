@@ -61,7 +61,7 @@ module AllianceFasteners
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js"]
+    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js", "jr100.css"]
 
     config.middleware.use PDFKit::Middleware, :print_media_type => true
     

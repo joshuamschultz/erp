@@ -195,7 +195,9 @@ p {
                                             <tr align="center" valign="middle">
                                                 <th width="35%" scope="row">
                                                     <p><u><strong>Vendor</strong></u>
-                                                        <br><%= @quality_action.po_header.organization.organization_name%>
+                                                    <% if @quality_action.po_header.present? %>
+                                                        <br><%= @quality_action.po_header.organization.organization_name %>
+                                                     <% end %>
                                                         <br>
                                                         <u><strong>Contact:</strong></u>
                                                     </p>
@@ -203,17 +205,19 @@ p {
                                                 <td width="65%">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class- "bord-05">
                                                         <tr>
-                                                            <th scope="row"><strong>P/N:</strong>  <span class="color-04"><%= @quality_action.item.item_part_no %></span>
+                                                            <th scope="row"><strong>P/N:</strong>  <span class="color-04"><%= @quality_action.item.item_part_no if @quality_action.item %></span>
                                                             </th>
                                                         </tr>
                                                         <tr>
+                                                        <% if @quality_action.po_header.present? %>
                                                             <th scope="row"><%= @quality_action.po_header.organization.organization_address_1%>,<%= @quality_action.po_header.organization.organization_address_2%>,<%= @quality_action.po_header.organization.organization_city %>,<%= @quality_action.po_header.organization.organization_state %>,<%= @quality_action.po_header.organization.organization_country %>,<%= @quality_action.po_header.organization.organization_zipcode %> </th>
+                                                            <% end %>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no %></th>
+                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no if @quality_action.po_header %></th>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier %></th>
+                                                            <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier  if @quality_action.po_header %></th>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -285,7 +289,7 @@ p {
                                 </tr>
                                 <tr align="center">
                                     <th scope="row"><%= @quality_action.users.collect{|user| user.name+"</br>" }.join.html_safe %></th>
-                                    <td class="bo-01"><%= @quality_action.due_date.strftime("%m/%d/%Y") %></td>
+                                    <td class="bo-01"><%= @quality_action.due_date.strftime("%m/%d/%Y") if @quality_action.due_date  %></td>
                                     <td><%= @quality_action.created_at.strftime("%m/%d/%Y") %></td>
                                 </tr>
                             </table>
