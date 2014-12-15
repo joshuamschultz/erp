@@ -12,7 +12,7 @@ class SoLine < ActiveRecord::Base
   :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped, :so_line_sell,
   :so_line_vendor_po
 
-  validates_presence_of :so_header, :item_alt_name, :so_line_cost, :so_line_quantity, :customer_quality
+  validates_presence_of :so_header, :item_alt_name, :so_line_cost, :so_line_quantity
 
   validates_numericality_of :so_line_cost, :so_line_sell
 

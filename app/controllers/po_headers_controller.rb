@@ -46,6 +46,10 @@ class PoHeadersController < ApplicationController
   # GET /po_headers
   # GET /po_headers.json
   def index
+    if  @po_headers.find_by_po_identifier("Unassigned").present?
+      @po_headers.find_by_po_identifier("Unassigned").delete
+      redirect_to action: "index"
+    else
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
@@ -65,17 +69,24 @@ class PoHeadersController < ApplicationController
       }
     end
   end
+  end
 
   # GET /po_headers/1
   # GET /po_headers/1.json
   def show
-    @po_header = PoHeader.find(params[:id])
-    @attachable = @po_header
-    @notes = @po_header.present? ? @po_header.comments.where(:comment_type => "note").order("created_at desc") : []  
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @po_header }
-    end
+     @po_header = PoHeader.find(params[:id])
+      if @po_header.po_identifier == "Unassigned"
+        @po_header.delete
+        redirect_to action: "index"
+      else
+
+        @attachable = @po_header
+        @notes = @po_header.present? ? @po_header.comments.where(:comment_type => "note").order("created_at desc") : []  
+        respond_to do |format|
+          format.html # show.html.erb
+          format.json { render json: @po_header }
+        end
+      end
   end
 
   # GET /po_headers/new

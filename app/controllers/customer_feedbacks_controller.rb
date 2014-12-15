@@ -35,7 +35,7 @@ class CustomerFeedbacksController < ApplicationController
   # GET /customer_feedbacks/1.json
   def show
     @customer_feedback = CustomerFeedback.find(params[:id])
-
+    @attachable = @customer_feedback
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @customer_feedback }

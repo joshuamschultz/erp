@@ -16,7 +16,7 @@
     <% if @payable.persisted? %>
         <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Vendor" %>
     <% else %>
-        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>        
+        <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>        
     <% end %>
 
     <%= hidden_field_tag :organization_id, (@payable.organization.id if @payable.organization) %>
@@ -55,15 +55,14 @@
     <%#= f.input :payable_total, :disabled => true, input_html: { class: 'special_font' }, :label => "Total" %>
   </div>
    <div class="separator bottom"></div>
-   <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @payable.new_record?%></div><br>
+  <!--  <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @payable.new_record?%></div> --><br>
   <div class="separator bottom"></div>
   
   <div class="form-actions">    
     <%= f.button :submit %>
-    <%= link_to 'Payables', '/payables', :class => "btn" %>
+<!--     <%= link_to 'Payables', '/payables', :class => "btn" %> -->
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>    
   </div>
-
 </div>
 </div>
 

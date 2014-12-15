@@ -4,6 +4,7 @@
 <title>Packing Report</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
 
+
 <style type="text/css">
     @charset "utf-8";
     body {
@@ -29,6 +30,9 @@
         padding: 0 0 10px;
         width: 100%;
     }
+    td {
+    padding: 2px 0;
+}
     .ms_wrapper .ms_image {
         border: 1px solid #ccc;
         float: left;
@@ -152,6 +156,11 @@
     text-align: center;
     text-decoration: underline;
     margin: 2px 0 10px 0;
+}
+.fon-004 > td {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 20px 0 8px;
 }
 .ms_text {
     border-bottom: 2px solid #999;
@@ -290,6 +299,7 @@
 }
 .text-6 {
     color: #800000;
+    padding: 0 15px 0 0;
     margin: 0 14px 0 0 !important;
     width: auto !important;
 }
@@ -336,25 +346,29 @@
 
             <div class="ms_text">
                 <h1 class="ms_heading">Bill To :</h1> 
-                <h2 class="ms_sub-heading"><%= @so_header.bill_to_address.contact_title %></h2> 
-                <strong><%= @so_header.bill_to_address.contact_address_1 %></strong> 
-                <strong><%= @so_header.bill_to_address.contact_address_2 %></strong>
-                <strong><%= @so_header.bill_to_address.contact_state %></strong>
-                <strong><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></strong>
+                <% if @so_header.bill_to_address.present? %>
+                    <h2 class="ms_sub-heading"><%= @so_header.bill_to_address.contact_title %></h2> 
+                    <strong><%= @so_header.bill_to_address.contact_address_1 %></strong> 
+                    <strong><%= @so_header.bill_to_address.contact_address_2 %></strong>
+                    <strong><%= @so_header.bill_to_address.contact_state %></strong>
+                    <strong><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></strong>
+                <% end %>
             </div>
 
             <div class="ms_text-2">
                 <h1 class="ms_heading">Ship To : </h1> 
-                <h2 class="ms_sub-heading"><%= @so_header.ship_to_address.contact_title%></h2> 
-                <strong><%= @so_header.ship_to_address.contact_address_1 %></strong> 
-                <strong><%= @so_header.ship_to_address.contact_address_2 %></strong>
-                <strong><%= @so_header.ship_to_address.contact_state %></strong>
-                <strong><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></strong> 
+                <% if @so_header.ship_to_address.present? %>
+                    <h2 class="ms_sub-heading"><%= @so_header.ship_to_address.contact_title%></h2> 
+                    <strong><%= @so_header.ship_to_address.contact_address_1 %></strong> 
+                    <strong><%= @so_header.ship_to_address.contact_address_2 %></strong>
+                    <strong><%= @so_header.ship_to_address.contact_state %></strong>
+                    <strong><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></strong> 
+                <% end %>
             </div>
 
         </article>
 
-        <article>
+     <!--    <article>
 
             <div class="ms_text-3-wrapper">
                 <div class="ms_text-3 text-5">
@@ -366,6 +380,8 @@
                                   <strong><%= so_line.item.item_part_no %></strong>
                                   <strong><%= so_line.item_alt_name.item_alt_identifier %></strong>
                             <%  end %>
+
+                            <strong>control on </strong>
                         <% end %>
                 </div>
 
@@ -380,6 +396,7 @@
                             <div class="text-7">
                                 <% if @so_header.po_header.present? %>
                                     <strong class="text-6"><%= @so_header.po_header.po_identifier %></strong>
+
                                 <% end %>
                             </div>
                 </div>
@@ -406,6 +423,68 @@
                 </div>
             </div>
         </article>
+ -->
+
+
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center" class="fon-004">
+            <td width="28%">CUST P/N - ALL P/N</td>
+            <td width="28%">Description</td>
+            <td width="29%">QTY</td>
+            <td width="30%">Shipped</td>
+          </tr>
+          <% @so_header.so_lines.each do |so_line| %>
+              <tr align="center">
+                <td scope="row"><%= so_line.item.item_part_no %>
+                    <table> 
+                        <% if so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier %>
+                            <tr><td align="center"><%= so_line.item_alt_name.item_alt_identifier %></td></tr>
+                        <% end %>  
+                        <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
+                            <tr> <td align="center"><%= shipment.quality_lot.lot_control_no if shipment.quality_lot %></td></tr>
+                        <% end %>
+                    </table>
+                </td>
+                <td><%= so_line.item_revision.item_description %>
+                    <table> 
+                        <tr><td class="text-6"><%= so_line.organization.organization_name if so_line.organization %></td>
+                          <td class="text-6"><%= @so_header.po_header.po_identifier  if @so_header.po_header %> </td></tr>
+
+
+                    </table>
+                </td>
+                <td class="text-6"><%= so_line.so_line_quantity %></td>
+                <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
+                    <td><%= shipment.so_shipped_count %> </td>
+                <% else %>
+                    <td><%= shipped_val = 0 %></td>
+                <% end %>
+              </tr>
+
+
+                               
+          <% end %>
+    
+      </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <article>
