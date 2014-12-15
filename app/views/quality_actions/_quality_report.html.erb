@@ -195,7 +195,9 @@ p {
                                             <tr align="center" valign="middle">
                                                 <th width="35%" scope="row">
                                                     <p><u><strong>Vendor</strong></u>
-                                                        <br><%= @quality_action.po_header.organization.organization_name if @quality_action.po_header.organization.present? %>
+                                                    <% if @quality_action.po_header.organization.present? %>
+                                                        <br><%= @quality_action.po_header.organization.organization_name %>
+                                                        <% end %>
                                                         <br>
                                                         <u><strong>Contact:</strong></u>
                                                     </p>
