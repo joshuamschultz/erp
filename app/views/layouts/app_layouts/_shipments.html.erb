@@ -19,6 +19,20 @@ var current_field_temp;
 				setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
 			}
 			else{
+
+                var currentDate = new Date()
+                var day = currentDate.getDate()
+                var month = currentDate.getMonth() + 1
+                var year = currentDate.getFullYear()
+                shipment_date = day + "/" + month + "/" + year ;
+                $("#jr100_date").html(shipment_date);
+				$("#jr100_partno").html(response.part_number);
+				$("#jr100_quantity").html(response.po_shipped_count);
+				$("#jr100_po").html(response.po);
+				$("#jr100_customer").html(response.customer);
+				$("#jr100_controlno").text(response.control_no);				
+				printDiv($("#jr100").attr('id'));
+
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
 				<%= type %>_line_row.find(".shipping_status").html("Saved successfully!");
 				<%= type %>_line_row.find(".<%= type %>_line_quantity_open").html(response.quantity_open);			
@@ -29,14 +43,36 @@ var current_field_temp;
 		}
 	}
 
+
+	 function printDiv(divID) {
+            //Get the HTML of div            
+            var divElements = document.getElementById(divID).innerHTML;
+            //Get the HTML of whole page
+            var oldPage = document.body.innerHTML;
+
+            //Reset the page's HTML with div's HTML only
+            document.body.innerHTML = 
+              "<html><head><title></title></head><body>" + 
+              divElements + "</body>";
+
+            //Print Page
+            window.print();
+
+            //Restore orignal HTML
+            document.body.innerHTML = oldPage; 
+    }               
+   
+
 	$(document).on("click", ".btn_save_shipped", function(){
-		process_shipping_inputs($(this));
-	});
+		process_shipping_inputs($(this));	
+		
+	});	
 
 	function process_shipping_inputs(current_field){
 		var so_line_id = current_field.attr("<%= type %>_line_id");
 		current_field_temp = current_field;
-		after_quality_lot_select();
+		after_quality_lot_select();				
+		
 		//get_quality_lots(so_line_id);
 		// $(".shipping_status").html("");
 		// $(".shipping_status").removeClass("success");
@@ -55,11 +91,11 @@ var current_field_temp;
 		// 	<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
 		// }
 		// return false;
-	}
-
+	}	
 	$(document).ready(function(){
 		$('#modal-simple').on('shown.bs.modal', function (e) {
 		})
+        $("#jr100").hide();
 	});
 
 	<% if type == "po" %>
@@ -91,7 +127,7 @@ var current_field_temp;
 			if(parseFloat($(this).val()) > 0){
 				process_shipping_inputs($(this));
 			}				
-		});
+		});		
 	}
 
 	function process_all_open(shipping_id, current_element){
@@ -152,3 +188,164 @@ var current_field_temp;
 		}
 	}    
 </script>
+ <!DOCTYPE html>
+
+
+<title>Packing Report</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+
+<div id="jr100">
+<div class="ms_wrapper">   
+    <section>
+        <article class="lin">
+            <div class="ms_image">
+                <div class="ms_image-wrapper" >
+                	<% @company_info = CompanyInfo.first %>
+                    <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
+                </div>
+            </div>
+
+
+            <div class="ms_image-2">
+                <h4><strong>Form JR100</strong> is </h4>
+               
+              <h5><strong>Standard</strong> Operating Procedures </h5>
+          
+
+          </div>
+        </article>
+        <table width="100%" border="0" cellspacing="0"  class="bor" cellpadding="0">
+          <tr>
+            <td colspan="2" align="center" scope="row"><strong>Title: Job Router</strong></td>
+          </tr>
+          <tr>
+            <td width="50%" align="right" scope="row">Date :</td>
+            <td width="50%" id="jr100_date"></td>
+          </tr>
+          <tr>
+            <td align="right" scope="row">Part Number :</td>
+            <td id="jr100_partno"></td>
+          </tr>
+          <tr>
+            <td align="right" scope="row">Quantity :</td>
+            <td id="jr100_quantity"> </td>
+          </tr>
+          <tr>
+            <td align="right" scope="row">PO :</td>
+            <td id="jr100_po"></td>
+          </tr>
+           <tr>
+            <td align="right" scope="row">Customer(If Known) :</td>
+            <td id="jr100_customer"></td>
+          </tr>
+        </table>
+        
+        <table width="100%" border="0" cellspacing="0" class="bor-2" cellpadding="0">
+  <tr>
+    <td width="11%" scope="row"><strong>Department </strong></td>
+    <td width="68%" align="center"><strong>Description</strong></td>
+    <td width="13%"><strong>Date </strong></td>
+    <td width="8%"><strong>Approved </strong></td>
+  </tr>
+  <tr>
+    <td scope="row"><strong>Receiving: </strong></td>
+    <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td scope="row">Check for Damaged Incoming Boxes </td>
+      </tr>
+      <tr>
+        <td scope="row">Visual Inspection of Parts </td>
+      </tr>
+      <tr>
+        <td scope="row">Quantity count (Attach D200 if applicable)</td>
+      </tr>
+      <tr>
+        <td scope="row">Paperwork w/ parts(If required) </td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td scope="row"><strong>Disbursement: </strong></td>
+    <td align="center"><strong>Proceed to Quality Department</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td scope="row"><strong>Quality:</strong></td>
+    <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td scope="row">Assign Control No. : <h4 id="jr100_controlno"></h4></td>
+      </tr>
+      <tr>
+        <td scope="row">Retreive and Verify Alliance Purchase Order:</td>
+      </tr>
+      <tr>
+        <td scope="row">Inspect to Alliance's PO Specifications </td>
+      </tr>
+      <tr>
+        <td scope="row">Retreive and Verify Customer Purchase Order: </td>
+      </tr>
+      <tr>
+        <td scope="row">Inspect to Customer PO Specifications </td>
+      </tr>
+      <tr>
+        <td scope="row">Generate Paperwork</td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td scope="row"><strong> Disbursement:</strong></td>
+    <td align="center"><strong>Proceed To Shipping Department</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td scope="row">Shipping:</td>
+    <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td align="center" scope="row"><strong>Secondary Processing</strong></td>
+      </tr>
+      <tr>
+        <td scope="row">Supplier:</td>
+      </tr>
+      <tr>
+        <td scope="row">Verify Paperwork </td>
+      </tr>
+      <tr>
+        <td scope="row">Put Paperwork in Processing Bin </td>
+      </tr>
+      <tr>
+        <td align="center" scope="row"><strong> Ship/ Stock</strong></td>
+      </tr>
+      <tr>
+        <td scope="row">Verify Paperwork </td>
+      </tr>
+      <tr>
+        <td scope="row">Package to PO Specifications </td>
+      </tr>
+      <tr>
+        <td scope="row">If Stock ; Shelf# </td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+        <article>
+            <div class="footer">
+            <div class="page-center">
+              <h3><strong>Must Fill Out </strong> a Quality Action for any Steps above that do not fulfill an "Approved" status</h3>
+                </div>
+        </article>
+
+    </div>
+
+</section>
+</div>
+</div>
