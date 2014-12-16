@@ -96,6 +96,12 @@
 
     $(document).ready(function(){ 
         $("#update_payable").attr('disabled',true);
+        $("#payable_payable_discount " ).on("focusout", function(){
+          $("#update_invoice").attr('disabled',true);  
+         });   
+        $("#payable_payable_freight" ).on("focusout", function(){
+          $("#update_invoice").attr('disabled',true);  
+         });
         $("#payable_organization_id").on("focusout", function(){
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
                 initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
