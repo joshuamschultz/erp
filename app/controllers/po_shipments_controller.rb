@@ -38,7 +38,7 @@ class PoShipmentsController < ApplicationController
                 if po_shipment
                   po_header_id = po_shipment.po_line.po_header
                   quality_lot = QualityLot.find_by_po_header_id(po_header_id) 
-                  po_shipment[:lot] ="<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
+                  po_shipment[:lot] =  quality_lot.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : ""
                 else
                    po_shipment[:lot]= ""
                 end
