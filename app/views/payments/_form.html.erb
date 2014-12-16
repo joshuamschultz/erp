@@ -225,6 +225,7 @@
             add_payment_line_row();
             $("#payment_lines_table_body").hide();
             setTimeout(function(){
+                $('#payment_payment_lines_attributes_0_payment_line_amount').attr('readonly', true);                
                 $("#payment_payment_lines_attributes_0_payable_id").val("<%= @payable.id %>");
                 call_payment_payable_info($("#payment_payment_lines_attributes_0_payable_id"));
                 $("#payment_lines_table_body").show();
