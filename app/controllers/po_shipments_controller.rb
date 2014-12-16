@@ -22,11 +22,7 @@ class PoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             if @item
-                if params[:type].present?
-                  @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
-                else
-                  @po_shipments = PoShipment.all_shipments(@item.id)
-                end  
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
             else
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
             end
@@ -42,7 +38,7 @@ class PoShipmentsController < ApplicationController
                 if po_shipment.po_shipped_status =="received"
                   po_header_id = po_shipment.po_line.po_header
                   quality_lot = QualityLot.find_by_po_header_id(po_header_id) 
-                  po_shipment[:lot] = if quality_lot ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" : ""
+                  po_shipment[:lot] ="<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
                 else
                    po_shipment[:lot]= ""
                 end
