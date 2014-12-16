@@ -42,7 +42,7 @@ class PoShipmentsController < ApplicationController
                 if po_shipment.po_shipped_status =="received"
                   po_header_id = po_shipment.po_line.po_header
                   quality_lot = QualityLot.find_by_po_header_id(po_header_id) 
-                  po_shipment[:lot] ="<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
+                  po_shipment[:lot] = if quality_lot ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" : ""
                 else
                    po_shipment[:lot]= ""
                 end
