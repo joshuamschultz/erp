@@ -70,7 +70,9 @@ class SoShipment < ActiveRecord::Base
       shipments ||= SoShipment
       shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end
-
+  def self.all_shipments(itemId)
+    SoShipment.joins(:so_line).where(:so_lines => {:item_id => itemId})
+  end 
   def set_quality_on_hand
     if self.quality_lot.present?
       quality_lotss = self.quality_lot

@@ -29,7 +29,11 @@ class SoShipmentsController < ApplicationController
             @item = Item.find(params[:item_id]) if params[:item_id].present?
 
             if @item
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
+                if params[:type].present?
+                  @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
+                else
+                  @so_shipments = SoShipment.all_shipments(@item.id)
+                end  
             else
                 @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc")
             end
