@@ -59,7 +59,7 @@
   <div class="separator bottom"></div>
   
   <div class="form-actions">    
-    <%= f.button :submit %>
+    <%= f.button :submit, :id => 'update_payable' %>
     <%= link_to 'Payables', '/payables', :class => "btn" %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>    
   </div>
@@ -95,6 +95,7 @@
     var payable_fine_to_submit = true;
 
     $(document).ready(function(){ 
+        $("#update_payable").attr('disabled',true);
         $("#payable_organization_id").on("focusout", function(){
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
                 initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
@@ -130,10 +131,10 @@
                 payable_fine_to_submit = true;
         });
     });
-    function update(){
+    function update(){        
       add_freight ();
-      add_discount (); 
-         
+      add_discount ();       
+      $("#update_payable").attr('disabled',false);   
     } 
     function get_rowcount(){
         var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
