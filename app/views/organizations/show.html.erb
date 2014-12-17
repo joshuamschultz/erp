@@ -2,7 +2,9 @@
 <div class="row-fluid">
     <h4 class="span3 left"><%= @organization.organization_type.type_name %><span></span></h4>
     <span class="span9 right">
+        <% if can? :update, @organizations %>
         <%= link_to 'Edit', edit_organization_path(@organization), :class => "btn btn-small" %>
+        <% end %>
         <%#= link_to 'Gauges', organization_gauges_path(@organization), :class => "btn btn-small" if @organization.organization_type.type_value == "support" %>
         <%= link_to 'Back to Organizations', organizations_path, :class => "btn btn-small" %>
     </span>
