@@ -22,7 +22,11 @@ class ItemPartDimensionsController < ApplicationController
             item_part_dimension[:dimension_type] = CommonActions.linkable(dimension_path(item_part_dimension.dimension), item_part_dimension.dimension.dimension_identifier)
             item_part_dimension[:gauge_name] = item_part_dimension.gauge.present? ? CommonActions.linkable(gauge_path(item_part_dimension.gauge), item_part_dimension.gauge.gauge_tool_name) : ""
             item_part_dimension[:item_part_letter] = "<a href='#{item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
-            item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)      
+            if can? :edit, Item
+              item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)      
+            else
+              item_part_dimension[:links]   = ""
+            end  
           }
           render json: {:aaData => @item_part_dimensions } 
       }                
