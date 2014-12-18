@@ -60,6 +60,7 @@
 
 <%  if ["customer", "vendor"].include?(@organization.type_name) %>
 
+   <% if can? :manage, PoHeader %>   
     <%= render :partial => 'po_headers/po_list', locals: {
         all_path: organization_path(@organization),
         open_path: organization_path(@organization, :po_status => "open"),
@@ -68,6 +69,7 @@
         new_path: new_po_header_path
         }
     %>
+   <% end %> 
 
     <%= render :partial => 'so_headers/so_list', locals: {
         all_path: organization_path(@organization),

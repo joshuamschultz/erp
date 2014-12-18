@@ -64,7 +64,7 @@
 </div>
 
 <%= render :partial => 'process_types/item_process_type' %>
-
+<%= render :partial => 'attachments/relational_attachments', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
 <div id="send_quote">
     <% if @quote_type_item == "vendor" %>
         
@@ -75,11 +75,11 @@
 </div>
 
 
-
 <!-- Attachments -->
 <%= render 'attachments/attachments' if @item_revision %>
 
 <div id="po_header">
+    <% if can? :manage, PoHeader %>
     <%= render :partial => 'po_headers/po_list', locals: {
         all_path: item_path(@item, :revision_id => @item_revision.id),
         open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
@@ -88,6 +88,7 @@
         new_path: new_po_header_path
         }
     %>
+    <% end %>
 </div>
 
 <div id="so_header">

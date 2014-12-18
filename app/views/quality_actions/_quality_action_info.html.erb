@@ -21,7 +21,11 @@
             <% if @quality_action.po_header.present? %>
                 <tr>
                     <td>PO</td>
-                    <td><%= CommonActions.linkable(po_header_path(@quality_action.po_header), @quality_action.po_header.po_identifier).html_safe %></td>
+                    <% if can? :view, PoHeader %>
+                        <td><%= CommonActions.linkable(po_header_path(@quality_action.po_header), @quality_action.po_header.po_identifier).html_safe %></td>
+                    <% else %>
+                          <td><%=  @quality_action.po_header.po_identifier %>
+                    <% end %>        
                 </tr>
             <% end %>
         </tbody>
