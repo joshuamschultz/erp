@@ -32,7 +32,9 @@
     </table>
 
    <div class="form-actions">
+   <% if can? :edit, GlAccount %> 
     <%= link_to 'Edit', edit_gl_account_path(@gl_account), :class => "btn"%>    
+   <% end %> 
     <%= link_to 'GL Accounts', gl_accounts_path, :class =>"btn" %>
   </div>
 </div>
