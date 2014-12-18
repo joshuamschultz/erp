@@ -194,8 +194,7 @@ module CommonActions
 			menus[:general_ledger][:sub_menu].push({:path => reconciles_path, :name => "Reconcile"},)
 		end
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
-		menus[:quality][:sub_menu] = 	[
-			{:path => checklists_path, :name => "Checklist"},
+		menus[:quality][:sub_menu] = 	[			
 			{:path => quality_lots_path, :name => "Lot Info"},
 			# {:path => quality_lot_materials_path, :name => "Material"},
 			# {:path => quality_lot_dimensions_path, :name => "Dimensions"},
@@ -217,6 +216,10 @@ module CommonActions
 		 if can? :view, Dimension
                      menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
          end
+         if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
+	         menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
+	     end
+
 
 
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
