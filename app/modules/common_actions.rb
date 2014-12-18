@@ -134,16 +134,19 @@ module CommonActions
 
 		]
 
+		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
 		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => '#' , :name => "Quotes", :type => "multiple"}
+       	
 		menus[:quotes][:sub_menu] = 	[
 			{:path => quotes_path, :name => "Vendor Quotes"},
 			{:path => customer_quotes_path, :name => "Customer Quotes"}
 		]
-
+           
 		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
 		menus[:purchases][:sub_menu] = 	[
 			{:path => po_headers_path, :name => "Purchase Orders"}
 		]
+		end
 
 		menus[:sales] = {:class => "hasSubmenu glyphicons stats", :path => "#", :name => "Sales", :type => "multiple"}
 		menus[:sales][:sub_menu] = 		[
