@@ -159,13 +159,15 @@ module CommonActions
 			{:path => item_alt_names_path, :name => "Alt Names"},
 			{:path => inventory_adjustments_path, :name => "Adjust Inventory"},
 			{:path => prints_path, :name => "Prints"},			
-			{:path => specifications_path, :name => "Specifications"},
 			{:path => materials_path, :name => "Materials"},
 			{:path => elements_path, :name => "Elements"}
 		]
 
 		if can? :view, ProcessType
 			menus[:inventory][:sub_menu].push({:path => process_types_path, :name => "Processes"})
+		end	
+		if can? :view, Specification
+			menus[:inventory][:sub_menu].push({:path => specifications_path, :name => "Specifications"})	
 		end	
 
 		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
