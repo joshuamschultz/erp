@@ -3,8 +3,10 @@
     <h4 class="span3 left">Item Info<%#= @item.item_part_no %><span></span></h4>
     <span class="span9 right">
         <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
+       <% if can? :edit, Item %>  
         <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
         <%= link_to 'Edit Revision', edit_item_item_revision_path(@item, @item_revision), :class => "btn btn-small" if @item_revision %> 
+        <% end %>
         <%#= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>        
         <%= link_to 'Back to Items', items_path, :class => "btn btn-small" %>
     </span>
@@ -66,11 +68,13 @@
 <%= render :partial => 'process_types/item_process_type' %>
 <%= render :partial => 'attachments/relational_attachments', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
 <div id="send_quote">
+    <% if can? :manage, Quote %> 
     <% if @quote_type_item == "vendor" %>
         
             <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
     <% else %>
         <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+    <% end %>
     <% end %>
 </div>
 
