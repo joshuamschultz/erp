@@ -65,8 +65,9 @@
         <% end %> 
     </div>
 </div>
-
+<% if can? :read, ProcessType %>
 <%= render :partial => 'process_types/item_process_type' %>
+<% end %>
 <%= render :partial => 'attachments/relational_attachments', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
 <div id="send_quote">
     <% if can? :manage, Quote %> 
@@ -112,6 +113,7 @@
 <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
 <div class="new_widget">
     <div class="row-fluid">
+        
         <div class="span6">
         <%= render :partial => 'po_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
         </div>
@@ -122,13 +124,19 @@
 </div>
 <div class="new_widget">
     <div class="row-fluid">
+    <% if can? :read, Payable %>         
         <div class="span6">
+           
 <%= render :partial => 'payables/item_payables' %>
         </div>
+<% end %>
+ <% if can? :read, Receivable %>      
         <div class="span6">
+
 <%= render :partial => 'receivables/item_receivables' %>
 
         </div>
+<% end %>        
     </div>
 </div>
 <!-- Revisions -->
