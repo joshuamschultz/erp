@@ -201,9 +201,12 @@ module CommonActions
 			{:path => customer_feedbacks_path, :name => "Customer Response"},
 			{:path => quality_actions_path, :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
-			{:path => customer_qualities_path, :name => "Quality Level"},
-			{:path => dimensions_path, :name => "Dimension Types"}
+			{:path => customer_qualities_path, :name => "Quality Level"}			
 		]
+
+		 if can? :view, Dimension
+                     menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
+         end
 
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
 

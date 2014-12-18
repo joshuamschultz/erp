@@ -59,9 +59,10 @@
         </div>
 
         <div class="separator bottom"></div>
-
+       <% if can? :view, Dimension %>
         <!-- Dimensions -->
         <%= render 'item_part_dimensions/item_dimensions' %>
+        <% end %> 
     </div>
 </div>
 
