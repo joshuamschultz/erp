@@ -179,14 +179,16 @@ module CommonActions
 		]
 
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
-		menus[:general_ledger][:sub_menu] = 	[
-			{:path => new_gl_entry_path, :name => "Journal Entries"},
+		menus[:general_ledger][:sub_menu] = 	[			
 			{:path => gl_accounts_path, :name => "Accounts"},
 			{:path => gl_types_path, :name => "Types"},
 			{:path => reconciles_path, :name => "Reconcile"},
 			{:path => check_registers_path, :name => "Check Register"},
 			{:path => credit_registers_path, :name => "Credit Register"}
 		]
+		if can? :view, GlEntry
+			menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
+		end	
 
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
 		menus[:quality][:sub_menu] = 	[
