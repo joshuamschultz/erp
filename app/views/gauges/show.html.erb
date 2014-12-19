@@ -1,7 +1,9 @@
 <div class="row-fluid">
     <h3 class="span3 left">Instrument Info<span></span></h3>
     <span class="span9 right">
+      <% if can? :edit, Gauge %>
         <%= link_to 'Edit', edit_gauge_path(@gauge), :class => "btn btn-small"%> 
+      <% end %>
         <%= link_to 'Back to Instruments', gauges_path, :class => "btn btn-small" %>
     </span>
 </div>
@@ -27,7 +29,11 @@
 
           <tr>
             <td>Caliberator:</td>
-            <td><%= link_to @gauge.organization.organization_short_name, @gauge.organization if @gauge.organization %></td>
+            <% if can? :edit, Gauge %>
+              <td><%= link_to @gauge.organization.organization_short_name, @gauge.organization if @gauge.organization %></td>
+            <% else %>
+                <td><%=  @gauge.organization.organization_short_name if @gauge.organization %></td>
+            <% end  %>
           </tr>
 
           <tr>
