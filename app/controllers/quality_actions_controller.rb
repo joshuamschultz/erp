@@ -32,11 +32,26 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions
   # GET /quality_actions.json
   def index
-    if params[:status]
-      @quality_actions = QualityAction.status_based_quality_action(params[:status])
-      @status = params[:status]
+    if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+
+      if params[:status]
+
+        @quality_actions = QualityAction.quality_action_filtering_status(params[:status])
+        @quality_actions = QualityAction.status_based_quality_action(params[:status])
+        @status = params[:status]
+      else
+        @quality_actions = QualityAction.quality_action_filtering
+      end
+    
     else
-      @quality_actions = QualityAction.all
+
+      if params[:status]
+        @quality_actions = QualityAction.status_based_quality_action(params[:status])
+        @status = params[:status]
+      else
+        @quality_actions = QualityAction.all
+      end
+
     end
 
     respond_to do |format|
