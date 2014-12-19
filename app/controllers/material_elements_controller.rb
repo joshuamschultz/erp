@@ -2,6 +2,22 @@ class MaterialElementsController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, MaterialElement
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, MaterialElement
+    end 
+  end
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -23,10 +39,19 @@ class MaterialElementsController < ApplicationController
         @material_elements = @material_elements.select{|element| 
             element[:element_name] = CommonActions.linkable(element_path(element.element), element.element.element_name)
             element[:element_symbol] = element.element.element_symbol
-            element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
-                              edit_material_material_element_path(@material, element), 
-                              material_material_element_path(@material, element)
+
+            if can? :edit , MaterialElement
+
+              element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
+                                edit_material_material_element_path(@material, element), 
+                                material_material_element_path(@material, element)
+                              )
+            else
+              element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
+                              nil, 
+                              nil
                             )
+            end
         }
         render json: {:aaData => @material_elements}
       }

@@ -10,7 +10,9 @@
   </div>
 
   <div class="form-actions">
+  <% if can? :edit, Material %>
     <%= f.button :submit, :class => "btn" %>
+  <% end %>
     <%= link_to 'Back to Materials', materials_path, :class => "btn" %>
   </div>
 <% end %>

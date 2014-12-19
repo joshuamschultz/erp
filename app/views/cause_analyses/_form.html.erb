@@ -11,10 +11,10 @@
   <div class="separator bottom"></div> 
 
   <div class="form-actions">
-    <%= g.button :submit, :class => "btn" %>
-
-    <%= link_to 'Delete', cause_analyasis_path(@cause_analyasis), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @cause_analyasis.new_record? %>
-    
+  <% if can? :edit , CauseAnalysis %>
+      <%= g.button :submit, :class => "btn" %>
+      <%= link_to 'Delete', cause_analyasis_path(@cause_analyasis), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @cause_analyasis.new_record? %>
+  <% end %>
     <%= link_to 'Back to Cause Analyasis', cause_analyses_path, :class => "btn" %>
   </div>
 <% end %>

@@ -658,7 +658,7 @@
 
 
         <div class="form-actions">
-        <% if can? :edit, @package %>
+        <% if can? :edit , Package %>
             <%= f.button :submit, :class => "btn" %>
                  
             <%= link_to 'Delete', package_path(@package), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @package.new_record? %>
