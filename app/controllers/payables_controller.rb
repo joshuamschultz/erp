@@ -50,9 +50,15 @@ class PayablesController < ApplicationController
                 payable[:payable_to_name] = "-"
               end  
               if can? :edit, Payable            
-                payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
+                if payable.payable_type == 'manual'
+                    payable[:links] = CommonActions.object_crud_paths(nil, manual_edit_payable_path(payable), nil, 
                 [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
               )
+                else    
+                  payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
+                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
+              )
+              end    
               else
                 payable[:links] = CommonActions.object_crud_paths(nil, nil, nil, 
                 [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
