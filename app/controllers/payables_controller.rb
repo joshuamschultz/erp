@@ -119,9 +119,15 @@ class PayablesController < ApplicationController
           format.json { render json: @payable, status: :created, location: @payable }
         end  
       else
-        p @payable.errors.to_yaml
-        format.html { render action: "new" }
-        format.json { render json: @payable.errors, status: :unprocessable_entity }
+        if @payable.payable_type == 'manual'
+          p @payable.errors.to_yaml
+          format.html { render action: "manual_new" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+        else  
+          p @payable.errors.to_yaml
+          format.html { render action: "new" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+         end 
       end
     end
   end
@@ -130,7 +136,7 @@ class PayablesController < ApplicationController
   # PUT /payables/1.json
   def update
     @payable = Payable.find(params[:id])
-    params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
+    # params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
     # Updating GlAccount 
     # accountsPayableAmt = 0     
