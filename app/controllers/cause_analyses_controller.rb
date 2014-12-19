@@ -3,6 +3,22 @@ class CauseAnalysesController < ApplicationController
 
   autocomplete :cause_analysis, :name, :full => true
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_logistics?
+        authorize! :edit, CauseAnalysis
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, CauseAnalysis
+    end 
+  end
+
   def set_page_info
     @menus[:quality][:active] = "active"
   end
@@ -17,7 +33,13 @@ class CauseAnalysesController < ApplicationController
           @cause_analyses = @cause_analyses.collect{|cause_analysis| 
           attachment = cause_analysis.attachment.attachment_fields
           attachment[:attachment_name] = CommonActions.linkable(cause_analyasis_path(cause_analysis), attachment.attachment_name)
-          attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analyasis_path(cause_analysis), nil)
+          # attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analyasis_path(cause_analysis), nil)
+          if can? :edit,cause_analysis
+            attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analyasis_path(cause_analysis), nil)
+          else
+            attachment[:links] =CommonActions.object_crud_paths(nil, nil, nil)
+          end
+
           attachment
         }
         render json: {:aaData => @cause_analyses} 

@@ -16,7 +16,7 @@
                 <td><%= @package.updated_at.strftime("%d/%m/%Y") %></td>
                 <td>&nbsp;</td>
 
-                <% if can? :edit, @package %>
+                <% if can? :edit , Package %>
                     <td><%= link_to(@package.quality_lot.po_line.item_alt_name.item_alt_identifier, item_path(@package.quality_lot.item_revision.item, revision_id: @package.quality_lot.item_revision_id)) if @package.quality_lot.item_revision %> </td>
                 <% else %>
                     <td><%= @package.quality_lot.po_line.item_alt_name.item_alt_identifier %></td>
@@ -47,7 +47,7 @@
                 <td class="color-02">Print Revision Level</td>
             </tr>
             <tr>
-            <% if can? :edit, @package %>
+            <% if can? :edit , Package %>
                 <td><%= CommonActions.linkable(organization_path(@package.quality_lot.po_header.organization), @package.quality_lot.po_header.organization.organization_name).html_safe %></td>
             <% else %>
                 <td><%= @package.quality_lot.po_header.organization.organization_name %></td>

@@ -1,6 +1,22 @@
 class ProcessTypesController < ApplicationController
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, ProcessType
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, ProcessType
+    end 
+  end
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -23,8 +39,11 @@ class ProcessTypesController < ApplicationController
             process_type[:effective_date] = process_type.attachment.attachment_revision_date ? process_type.attachment.attachment_revision_date.strftime("%m-%d-%Y") : "" 
             process_type[:attachment_active]= process_type.attachment.attachment_public
             process_type[:uploaded_by] =process_type.attachment.created_by ? process_type.attachment.created_by.name : "" 
-            process_type[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil) 
-      
+            if can? :edit, process_type
+              process_type[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil) 
+            else
+              process_type[:links] = nil
+            end
           }
           render json: {:aaData => @process_types} 
         }

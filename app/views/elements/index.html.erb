@@ -5,7 +5,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Elements</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Element', new_element_path, :class => "btn btn-mini btn-success" %>              
+             <% if can? :edit , Element %>
+                <%= link_to 'New Element', new_element_path, :class => "btn btn-mini btn-success" %>   
+                <% end %>           
             </span>
         </div> 
     </div>
