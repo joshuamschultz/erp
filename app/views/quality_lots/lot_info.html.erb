@@ -1,3 +1,4 @@
+<% if can? :view, PoHeader %>
 <%= render :partial => 'po_headers/po_list', locals: {
         all_path: quality_lots_lot_info_path,
         open_path: quality_lots_lot_info_path(:po_status => "open"),
@@ -6,3 +7,4 @@
         new_path: new_po_header_path, lot_info: true
 	}
 %>
+<% end %>

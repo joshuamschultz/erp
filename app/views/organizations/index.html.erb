@@ -9,7 +9,9 @@
                 <%= link_to 'Customer', organizations_path(type: "customer"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Vendor', organizations_path(type: "vendor"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Support', organizations_path(type: "support"), :class => "btn btn-mini btn-info" %>
+                 <% if can? :update, @organizations %>
                 <%= link_to 'New Organization', new_organization_path, :class => "btn btn-mini btn-success" %>
+                <% end %>
             </span>
         </div> 
     </div>

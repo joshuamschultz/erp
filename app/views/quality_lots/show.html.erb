@@ -27,7 +27,11 @@
 
           <tr>
             <td>PO: </td>
-            <td><%= link_to(@quality_lot.po_header.po_identifier, po_header_path(@quality_lot.po_header)) %></td>
+            <% if can? :view, PoHeader %>
+              <td><%= link_to(@quality_lot.po_header.po_identifier, po_header_path(@quality_lot.po_header)) %></td>
+            <% else %>
+               <td><%= @quality_lot.po_header.po_identifier %></td>
+            <% end%> 
           </tr>
 
           <tr>

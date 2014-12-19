@@ -36,8 +36,11 @@ class PaymentsController < ApplicationController
           payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.payment_identifier)
           payment[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
           payment[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
-          payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
-        }
+          if can? :edit, Payment
+            payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
+          else 
+            payment[:links] = ""
+          end          }
         render json: {:aaData => @payments}
       }
     end

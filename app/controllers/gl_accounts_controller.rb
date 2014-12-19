@@ -13,7 +13,11 @@ class GlAccountsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @gl_accounts = GlAccount.order(:gl_account_identifier).select{|gl_account| 
+           if can? :edit, GlAccount 
             gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account),gl_account_path(gl_account))
+           else
+             gl_account[:links] = ""
+           end  
             gl_account[:gl_account_title] =   CommonActions.linkable(gl_entries_path({:gl_account => gl_account.id}), gl_account.gl_account_title)         
             gl_account[:gl_type_name] = CommonActions.linkable(gl_type_path(gl_account.gl_type), gl_account.gl_type.gl_name)
             gl_account[:gl_type_side] = gl_account.gl_type.gl_side
