@@ -73,8 +73,11 @@ class QualityLotsController < ApplicationController
             quality_lot[:item_revision_name] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
             revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)
 
-            quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
-            
+            if can? :view, PoHeader
+              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
+            else
+              quality_lot[:po_identifier] = quality_lot.po_header.po_identifier
+            end 
             quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
             quality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
             quality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type

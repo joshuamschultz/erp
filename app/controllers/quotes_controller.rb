@@ -36,7 +36,7 @@ class QuotesController < ApplicationController
                                      quote[:index] = i
                                      quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
                                      quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil) if can? :update, @quotes
                                      quote[:created] = quote.created_at.strftime("%d %b %Y")
                                      quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
                                      quote[:price] = Quote.get_quote_item_prices(quote, params[:item_id])

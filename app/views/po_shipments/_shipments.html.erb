@@ -7,9 +7,9 @@
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
                 <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
-            <% if can? :view , @po_shipment %>
+                <% if can? :edit, Payable %>
                 <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" if create_payable %>
-            <% end %>
+                <% end %>
                 <%#= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%#= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
 
