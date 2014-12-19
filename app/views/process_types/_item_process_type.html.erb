@@ -7,7 +7,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Process Type</h4>
             <span class="span6 heading right">
+            <% if can? :edit, ProcessType %>
                 <%= link_to 'New  Process Type', new_process_type_path, :class => "btn btn-mini btn-success" %>
+            <% end %>
             </span>
         </div> 
     </div>
