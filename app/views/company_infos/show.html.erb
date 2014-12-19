@@ -60,7 +60,9 @@
    <%= image_tag(@company_info.logo.joint.url(:original), :width => "150") if @company_info.logo %>
 
   <div class="form-actions">
-      <%= link_to 'Update', edit_company_info_path(@company_info), :class => "btn" %>
+    <% if can? :edit, @company_info %>
+        <%= link_to 'Update', edit_company_info_path(@company_info), :class => "btn" %>
+    <% end %>
   </div>
 </div>
 
