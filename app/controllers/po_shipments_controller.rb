@@ -22,7 +22,11 @@ class PoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             if @item
+               if params[:type].present?
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
+               else
+                @po_shipments = PoShipment.all_shipments(@item.id)
+                end  
             else
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
             end
