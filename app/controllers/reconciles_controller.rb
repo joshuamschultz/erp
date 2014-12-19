@@ -18,9 +18,11 @@ class ReconcilesController < ApplicationController
   def index   
 
     gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first 
-    @balance = gl_account.gl_account_amount
-
+    @balance = gl_account.gl_account_amount 
+    Reconciled.create(:balance => 0) if Reconciled.find(:all).empty?
     @reconciled = Reconciled.first.balance
+    
+    
 
     respond_to do |format|
       format.html # index.html.erb
