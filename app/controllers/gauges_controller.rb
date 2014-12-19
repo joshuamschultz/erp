@@ -30,7 +30,11 @@ class GaugesController < ApplicationController
         @gauges = @gauges.select{|gauge|
           gauge[:gauge_tool_name] = CommonActions.linkable(gauge_path(gauge), gauge[:gauge_tool_name])
           gauge[:gauge_caliberator] = gauge.organization.present? ? CommonActions.linkable(organization_path(gauge.organization), gauge.organization.organization_short_name) : "" 
-          gauge[:links] = CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
+          if can? :edit , gauge
+            gauge[:links] = CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
+          else
+             gauge[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+          end
         }
         render json: {:aaData => @gauges}
       }
