@@ -70,7 +70,7 @@ class PoLine < ActiveRecord::Base
 
   def po_line_data_list(object, shipment)
     po_line = shipment ? object.po_line : object
-    if  user_signed_in? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
+    if User.current_user.present? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
       object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
       object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
       object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
