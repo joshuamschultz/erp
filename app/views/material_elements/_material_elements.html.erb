@@ -5,7 +5,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Elements of <%= link_to @material.material_short_name, @material %></h4>
             <span class="span6 heading right">
-                <%= link_to 'New Element', new_material_material_element_path(@material), :class => "btn btn-mini btn-success" %>
+                <% if can? :edit , MaterialElement %>
+                    <%= link_to 'New Element', new_material_material_element_path(@material), :class => "btn btn-mini btn-success" %>
+                <% end %>
                 <%= link_to 'Materials', materials_path, :class => "btn btn-mini btn-info" %>
             </span>
         </div> 
