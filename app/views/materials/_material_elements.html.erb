@@ -29,7 +29,9 @@
       </table>
 
       <div class="form-actions">
-        <%= link_to 'Edit', edit_material_path(material), :class => "btn btn-small" %>
+        <% if can? :edit, Material %>
+          <%= link_to 'Edit', edit_material_path(material), :class => "btn btn-small" %>
+        <% end %>
         <%= link_to 'Elements', material_material_elements_path(material), :class => "btn btn-small" %>
         <%= link_to 'Back', materials_path, :class => "btn btn-small" %>
       </div>

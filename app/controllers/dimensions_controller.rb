@@ -6,13 +6,13 @@ class DimensionsController < ApplicationController
 
   def view_permissions
    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, RunAtRate
+        authorize! :edit, Dimension
     end 
   end
 
   def user_permissions
    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
-        authorize! :edit, RunAtRate
+        authorize! :edit, Dimension
     end 
   end
   def set_page_info
