@@ -1,9 +1,13 @@
 <div class="row-fluid span8">
   <%= render 'attachments/attachment_info' %>
   <div class="form-actions">
+
+ 
       <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+   <% if can? :edit , CauseAnalysis %>
       <%= link_to 'Edit', edit_cause_analyasis_path(@cause_analyasis), :class => "btn btn-small"%> 
       <%= link_to 'Delete', cause_analyasis_path(@cause_analyasis), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+  <% end %>
       <%= link_to 'Back', cause_analyses_path, :class => "btn btn-small" %>
   </div>
 </div>
