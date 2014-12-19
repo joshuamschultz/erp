@@ -212,12 +212,15 @@ module CommonActions
 			{:path => process_flows_path, :name => "Process Flow"},
 			{:path => fmea_types_path, :name => "FMEA"},
 			{:path => control_plans_path, :name => "Control Plan"},
-			{:path => customer_feedbacks_path, :name => "Customer Response"},
+			# {:path => customer_feedbacks_path, :name => "Customer Response"},
 			{:path => quality_actions_path, :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
 			{:path => customer_qualities_path, :name => "Quality Level"}
 		]
 
+		if can? :view, CustomerFeedback
+			menus[:quality][:sub_menu].push({:path => customer_feedbacks_path, :name => "Customer Response"}) 
+		end 
 		if can? :view, Package
 			menus[:quality][:sub_menu].push({:path => packages_path, :name => "Packaging"}) 
 		end 
@@ -233,12 +236,12 @@ module CommonActions
 		if can? :view, RunAtRate
 			menus[:quality][:sub_menu].push({:path => run_at_rates_path, :name => "Run at Rate"}) 
 		end
-  	        if can? :view, Dimension
-                     menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
-        	end
-	        if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
-	         menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
-	        end
+	    if can? :view, Dimension
+                 menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
+    	end
+        if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
+         menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
+        end
 
 
 
