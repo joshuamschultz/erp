@@ -25,7 +25,11 @@ class ReceiptsController < ApplicationController
           receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
           receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
           receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
-          receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          if can? :edit, Receipt
+            receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          else
+             receipt[:links] = "" 
+          end   
         }
         render json: {:aaData => @receipts}
       }

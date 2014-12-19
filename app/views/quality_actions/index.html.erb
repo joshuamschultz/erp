@@ -6,7 +6,10 @@
             <span class="span6 heading right">
                 <%= link_to 'Open', quality_actions_path(:status => "open" ), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'finished', quality_actions_path(:status => "un_finished" ), :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Quality Action', new_quality_action_path, :class => "btn btn-mini btn-success" %>
+                <% if can? :edit, QualityAction %>
+                    <%= link_to 'New Quality Action', new_quality_action_path, :class => "btn btn-mini btn-success" %>
+                <% end %>
+             
             </span>
         </div> 
     </div>

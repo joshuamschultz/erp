@@ -21,9 +21,19 @@ class PackagesController < ApplicationController
       format.html # index.html.erb
       format.json { 
          @packages = @packages.select{|package|
-            package[:links] = CommonActions.object_crud_paths(nil, edit_package_path(package), nil)
+             if can? :edit , package
+              package[:links] = CommonActions.object_crud_paths(nil, edit_package_path(package), nil)
+            else
+              package[:links] = ""
+            end
             package[:id_link] = CommonActions.linkable(package_path(package), package.id)
-            package[:lot_control_no] = CommonActions.linkable(quality_lot_path(package.quality_lot), package.quality_lot.lot_control_no)
+           
+            if can? :edit , package
+              package[:lot_control_no] = CommonActions.linkable(quality_lot_path(package.quality_lot), package.quality_lot.lot_control_no)
+
+            else
+              package[:lot_control_no] = package.quality_lot.lot_control_no
+            end
 
         }
         render json: {:aaData => @packages}

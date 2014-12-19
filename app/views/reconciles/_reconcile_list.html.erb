@@ -70,7 +70,9 @@
             </tbody>
         </table>
         <% if @reconciles.length > 0 %>
+        <% if can? :edit, Reconcile %>
         <input type="button" class="btn btn-mini btn-success" value="Reconcile" onclick="set_quote_status();"></input>
+       <% end %> 
         <% end %>
     </div>
     

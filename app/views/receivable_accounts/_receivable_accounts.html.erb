@@ -26,8 +26,9 @@
                         <td><%= account.gl_account.gl_account_title if account.gl_account %></td>
                         <td><%= account.receivable_account_description %></td>
                         <td><%= account.receivable_account_amount %></td>
-                        <td>
+                        <td><% if can? :edit, Receivable %>
                             <a rel="nofollow" data-method="delete" data-confirm="Are you sure?" class="btn-action btn glyphicons remove_2 btn-danger" href="<%= receivable_receivable_account_path(@receivable, account) %>"><i></i></a>
+                           <% end %> 
                         </td>
                     </tr>
                 <% end %>

@@ -18,9 +18,11 @@ class ReconcilesController < ApplicationController
   def index   
 
     gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first 
-    @balance = gl_account.gl_account_amount
-
+    @balance = gl_account.gl_account_amount 
+    Reconciled.create(:balance => 0) if Reconciled.find(:all).empty?
     @reconciled = Reconciled.first.balance
+    
+    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -37,7 +39,11 @@ class ReconcilesController < ApplicationController
               reconcile[:deposit_check_name] = reconcile.deposit_check.present? ? CommonActions.linkable(deposit_check_path(reconcile.deposit_check_id), reconcile.deposit_check.id) : ""
               reconcile[:check_entry_name] = reconcile.payment.present? && reconcile.payment.check_entry_id.present? ? CommonActions.linkable(check_entry_path(reconcile.payment.check_entry_id), reconcile.payment.check_entry.id) : ""
               reconcile[:amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount :  reconcile.receipt.present? ? reconcile.receipt.receipt_check_amount : 0
-              reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
+              if can? :edit, Reconcile  
+                reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
+              else  
+                reconcile[:links] = ""
+              end  
               reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
              
           }

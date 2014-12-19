@@ -36,7 +36,11 @@ class PayablesController < ApplicationController
       format.json { 
           @payables = @payables.select{|payable|
               payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.payable_identifier)
-              payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
+              if can? :view, PoHeader
+                payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
+              else
+                payable[:po_identifier] = payable.po_header.present? ?  payable.po_header.po_identifier : '-' 
+              end  
               payable[:vendor_name] = payable.organization.present? ? CommonActions.linkable(organization_path(payable.organization), payable.organization.organization_name) : "-"
               if payable.payable_to_address
                 payable[:payable_to_name] = CommonActions.linkable(contact_path(payable.payable_to_address), payable.payable_to_address.contact_description)
@@ -44,10 +48,17 @@ class PayablesController < ApplicationController
                 payable[:payable_to_name] = CommonActions.linkable(organization_main_address_path(payable.organization), payable.organization.organization_name)
               else
                 payable[:payable_to_name] = "-"
-              end              
-              payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
+              end  
+              if can? :edit, Payable            
+                payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
                 [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
               )
+              else
+                payable[:links] = CommonActions.object_crud_paths(nil, nil, nil, 
+                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
+              )
+             end     
+
           }
           render json: {:aaData => @payables}
 
@@ -119,9 +130,15 @@ class PayablesController < ApplicationController
           format.json { render json: @payable, status: :created, location: @payable }
         end  
       else
-        p @payable.errors.to_yaml
-        format.html { render action: "new" }
-        format.json { render json: @payable.errors, status: :unprocessable_entity }
+        if @payable.payable_type == 'manual'
+          p @payable.errors.to_yaml
+          format.html { render action: "manual_new" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+        else  
+          p @payable.errors.to_yaml
+          format.html { render action: "new" }
+          format.json { render json: @payable.errors, status: :unprocessable_entity }
+         end 
       end
     end
   end
@@ -130,7 +147,7 @@ class PayablesController < ApplicationController
   # PUT /payables/1.json
   def update
     @payable = Payable.find(params[:id])
-    params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
+    # params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
     # Updating GlAccount 
     # accountsPayableAmt = 0     
