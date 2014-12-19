@@ -32,7 +32,9 @@
   	</table>
 
 	<div class="form-actions">
-		<%= link_to 'Edit', edit_owner_path(@owner), :class => "btn btn-small" %>
+    <% if can? :edit, @owner %>
+  		<%= link_to 'Edit', edit_owner_path(@owner), :class => "btn btn-small" %>
+    <% end %>
 		<%= link_to 'Back to Owners', owners_path, :class => "btn btn-small" %>
 	</div>
 </div>
