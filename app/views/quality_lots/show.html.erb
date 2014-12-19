@@ -11,7 +11,9 @@
             <%= link_to "Checklist", checklist_path(@quality_lot.checklist), :class => "btn btn-small" if @quality_lot.checklist %>
                 <%= link_to "New PSW", new_ppap_path(:quality_lot_id => @quality_lot.id), :class => "btn btn-small" unless @quality_lot.ppap %>                
                 <%= link_to "PSW", ppap_path(@quality_lot.ppap), :class => "btn btn-small" if @quality_lot.ppap %>
-                <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>     
+                <% if can? :edit, @quality_lot %>
+                  <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>  
+                <% end %>   
                 <%= link_to "Back", quality_lots_path, :class =>"btn btn-small" %>
             </span>
         </div>

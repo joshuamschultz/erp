@@ -18,7 +18,7 @@
         </div> 
     </div>
     <!-- // Widget heading END -->
-
+<% if can? :view , @po_shipment %>
     <div class="widget-body">
         <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
@@ -68,6 +68,93 @@
                     ]'
     } 
 %>
+
+
+
+
+<% else %>
+
+  <div class="widget-body">
+        <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>index</th>
+                <th>Part No</th>
+                <th>PO</th>
+                <th>Vendor</th>
+                <th>Customer</th>
+                <th>Quality Level</th>
+                <th>Quantity Ordered</th>
+                <th>Quantity Received</th>
+                <th>Date Received</th>
+
+                <th>Status</th>
+             
+            
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false}, 
+        :columns => '[
+                        { "mData": "index"},
+                        { "mData": "item_part_no" },
+                        { "mData": "po_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "customer_name" },
+                        { "mData": "quality_level_name" },
+                        { "mData": "po_line_quantity" },
+                        { "mData": "po_shipped_count" },
+                        { "mData": "po_shipped_date" },
+                        { "mData": "po_shipped_status" },
+                
+                      
+                    ]'
+    } 
+%>
+
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- { "mData": "po_line_quantity_shipped" }, -->
 

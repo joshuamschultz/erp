@@ -57,11 +57,13 @@
       <div class="separator bottom"></div>
 
       <div class="form-actions">
- 
+
         <%= f.button :submit, "Save & Exit", :class => 'btn', :name => 'save' %>
+
         <%= f.button :submit, "Finish", :class => 'btn', :name => 'finish' %>
 
         <%= link_to 'Delete', quality_action_path(@quality_action), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_action.new_record? %>
+ 
 
         <%= link_to 'Back', quality_actions_path,:class =>"btn" %>
       </div>
