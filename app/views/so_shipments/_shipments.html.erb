@@ -6,9 +6,9 @@
             <h4 class="span6 heading">Shipped<%= " - History" if (shipment_type == "history") %></h4>
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_so_shipment_path, :class => "btn btn-mini btn-success" %>
-                
-                <%= link_to 'Create Receivable', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
-
+                <% if can? :edit , @so_shipment %>
+                    <%= link_to 'Create Receivable', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
+                <% end %>
                 <%= link_to 'Received - History', po_shipments_path(type: "history"), class: "btn btn-mini btn-success" if (shipment_type == "history") %>
             </span>
         </div> 
