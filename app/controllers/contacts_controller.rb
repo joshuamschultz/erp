@@ -31,7 +31,11 @@ class ContactsController < ApplicationController
             contact[:contact_name] = contact.contact_title
             contact[:contact_default] = contact.default_address.present? ? "selected" : ""
             contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
-            contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
+            if can? :update, @contacts
+              contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
+            else
+               contact[:links] = ""
+            end   
           }
           render json: {:aaData => @contacts}        
       }

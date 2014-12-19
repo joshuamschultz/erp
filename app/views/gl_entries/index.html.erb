@@ -6,7 +6,9 @@
             <h4 class="span6 heading">Journal Entries</h4>
             <span class="span6 heading right">
                 <%= link_to 'GL Accounts', gl_accounts_path, :class => "btn btn-mini btn-success" %>
+                <% if can? :edit, GlEntry
                 <%= link_to 'New Journal Entry', new_gl_entry_path, :class => "btn btn-mini btn-success" %>
+                <% end %>
             </span>
         </div> 
     </div>
