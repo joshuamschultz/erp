@@ -6,7 +6,7 @@
             <h4 class="span6 heading"><%= @contact_type.titlecase.pluralize %></h4>
             <span class="span6 heading right">
                 <%#= link_to 'Back to ' + @contactable.class.to_s, @contactable, :class => "btn btn-small" %>
-                <% if can? :update, @organizations %>
+                <% if can? :edit, @contact %>
                 <%= link_to 'New ' + @contact_type.titlecase, new_contact_path(:object_id => @contactable.id, :contact_type => @contact_type), :class => "btn btn-mini btn-success" %>
                 <% end %>
             </span>
