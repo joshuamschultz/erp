@@ -249,12 +249,13 @@ module CommonActions
 
 
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
-
+		if  user_signed_in? && !current_user.is_vendor?  && !current_user.is_customer? 
 		menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
 		menus[:logistics][:sub_menu] = 	[
 			{:path => new_po_shipment_path, :name => "Shipments"},
 			{:path => po_shipments_path(type: "history"), :name => "History"}
 		]
+	end
 
 		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
 
