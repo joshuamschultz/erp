@@ -1,6 +1,20 @@
 class DimensionsController < ApplicationController
   before_filter :set_page_info
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
 
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Dimension
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, Dimension
+    end 
+  end
   def set_page_info
       @menus[:quality][:active] = "active"
   end
@@ -15,8 +29,14 @@ class DimensionsController < ApplicationController
         @dimensions = @dimensions.select{|dimension|
           dimension[:dimension_identifier] = "<a href='#{dimension_path(dimension)}'>#{dimension[:dimension_identifier]}</a>"
           # dimension[:instrument_name] = "<a href='#{gauge_path(dimension.gauge)}'>#{dimension.gauge.gauge_tool_name}</a>"
-          dimension[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
+          if can? :edit, Dimension
+            dimension[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
+          else
+            dimension[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+          end
+
       }
+
         render json: {:aaData => @dimensions} 
       }
     end

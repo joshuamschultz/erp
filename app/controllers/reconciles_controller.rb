@@ -1,6 +1,15 @@
 class ReconcilesController < ApplicationController
   before_filter :find_reconciles, only: [:index] 
    before_filter :set_page_info
+
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, Reconcile
+    end 
+  end
+
   # GET /reconciles
   # GET /reconciles.json
   def set_page_info

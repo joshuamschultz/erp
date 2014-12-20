@@ -1,7 +1,21 @@
 class ElementsController < ApplicationController
   before_filter :set_page_info
   autocomplete :element, :element_name, :full => true, :display_value => :element_symbol_name
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
 
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Element
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, Element
+    end 
+  end
   def set_page_info
     @menus[:inventory][:active] = "active"
   end
@@ -21,7 +35,11 @@ class ElementsController < ApplicationController
       format.html # index.html.erb
       format.json { @elements.select{ |element|
         element[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
-        element[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
+        if can? :edit, element
+          element[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
+        else
+          element[:links] = nil
+        end
         }
         render json: {:aaData => @elements} 
       }
