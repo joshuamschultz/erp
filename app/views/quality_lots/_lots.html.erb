@@ -3,7 +3,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Lots</h4>
             <span class="span6 heading right">
+            <% if can? :new, QualityLot %>
                 <%= link_to 'New Lot', new_quality_lot_path, :class => "btn btn-mini btn-success" %>
+            <% end %>
             </span>
         </div> 
     </div>

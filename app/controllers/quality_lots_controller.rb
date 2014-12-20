@@ -3,6 +3,22 @@ class QualityLotsController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]
   autocomplete :quality_lot, :lot_control_no, :full => true
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, QualityLot
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_clerical? 
+        authorize! :edit, QualityLot
+    end 
+  end
+
   def set_page_info
       @menus[:quality][:active] = "active"
   end
@@ -72,12 +88,15 @@ class QualityLotsController < ApplicationController
 
             quality_lot[:item_revision_name] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
             revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)
-
-            if can? :view, PoHeader
-              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
+            if  user_signed_in? && current_user.is_customer? 
+              if can? :edit , quality_lot
+                quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
+              else
+                quality_lot[:po_identifier] = quality_lot.po_header.po_identifier
+              end
             else
-              quality_lot[:po_identifier] = quality_lot.po_header.po_identifier
-            end 
+              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
+            end
             quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
             quality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
             quality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
