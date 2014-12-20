@@ -62,7 +62,9 @@
 
           <%#= f.input :lot_control_no, label: "Control No" %>
 
-          <%= f.input :lot_quantity, label: "Quantity" %>
+          <%= f.input :lot_quantity, label: "Quantity"  if @quality_lot.new_record?%>
+
+          <%= f.input :lot_quantity,label: "Quantity", :disabled => true, input_html: { class: 'special_font' } unless @quality_lot.new_record? %>
 
           <%= f.association :inspection_level, label_method: :type_name, label_value: :id, label: "Inspection Level", :include_blank => false %>
 
