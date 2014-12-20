@@ -2,8 +2,8 @@
 <div class="row-fluid">
     <h4 class="span3 left"><%= @organization.organization_type.type_name %><span></span></h4>
     <span class="span9 right">
-        <% if can? :update, @organizations %>
-        <%= link_to 'Edit', edit_organization_path(@organization), :class => "btn btn-small" %>
+        <% if can? :edit, Organization %>
+            <%= link_to 'Edit', edit_organization_path(@organization), :class => "btn btn-small" %>
         <% end %>
         <%#= link_to 'Gauges', organization_gauges_path(@organization), :class => "btn btn-small" if @organization.organization_type.type_value == "support" %>
         <%= link_to 'Back to Organizations', organizations_path, :class => "btn btn-small" %>
@@ -60,7 +60,7 @@
 
 <%  if ["customer", "vendor"].include?(@organization.type_name) %>
 
-   <% if can? :manage, PoHeader %>   
+  <% if can? :view, PoHeader %>
     <%= render :partial => 'po_headers/po_list', locals: {
         all_path: organization_path(@organization),
         open_path: organization_path(@organization, :po_status => "open"),
@@ -69,7 +69,7 @@
         new_path: new_po_header_path
         }
     %>
-   <% end %> 
+
 
     <%= render :partial => 'so_headers/so_list', locals: {
         all_path: organization_path(@organization),
@@ -79,6 +79,8 @@
         new_path: new_so_header_path
         }
     %>    
+
+    <% end %>
 
     <!-- Quotes -->
     <!-- <div class="widget">
@@ -96,6 +98,7 @@
 
     <!-- if @organization.organization_type.type_value == "vendor" -->
 <% end %>
+
 <%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
 <%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
 
