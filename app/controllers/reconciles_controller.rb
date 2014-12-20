@@ -1,9 +1,11 @@
 class ReconcilesController < ApplicationController
   before_filter :find_reconciles, only: [:index] 
-
+   before_filter :set_page_info
   # GET /reconciles
   # GET /reconciles.json
-
+  def set_page_info
+      @menus[:general_ledger][:active] = "active"
+  end
 
   def find_reconciles
       params[:reconcile_type] ||= nil
