@@ -123,29 +123,38 @@ module CommonActions
 	def application_main_menu
 		menus = {}
 		menus[:dashboard] = {:class => "glyphicons dashboard", :path => account_dashboard_path, :name => "Dashboard", :type => "single"}
+		if  user_signed_in? &&  !current_user.is_customer? && !current_user.is_vendor? 
+			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Contacts", :type => "multiple"}
+			menus[:contacts][:sub_menu] = 	[
+				{:path => organizations_path, :name => "Organizations"},
+				{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
+				{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
+				{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
+				{:path => groups_path, :name => "Group"},
 
-		menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Contacts", :type => "multiple"}
-		menus[:contacts][:sub_menu] = 	[
-			{:path => organizations_path, :name => "Organizations"},
-			{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
-			{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
-			{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
-			{:path => groups_path, :name => "Group"},
-
-		]
+			]
+		end 
 
 		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
-		menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => '#' , :name => "Quotes", :type => "multiple"}
-       	
-		menus[:quotes][:sub_menu] = 	[
-			{:path => quotes_path, :name => "Vendor Quotes"},
-			{:path => customer_quotes_path, :name => "Customer Quotes"}
-		]
-           
-		menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
-		menus[:purchases][:sub_menu] = 	[
-			{:path => po_headers_path, :name => "Purchase Orders"}
-		]
+			menus[:quotes] = {:class => "hasSubmenu glyphicons notes", :path => '#' , :name => "Quotes", :type => "multiple"}
+	       	
+			menus[:quotes][:sub_menu] = 	[
+				# {:path => quotes_path, :name => "Vendor Quotes"},
+				# {:path => customer_quotes_path, :name => "Customer Quotes"}
+			]
+			if can? :view, Quote
+				menus[:quotes][:sub_menu].push({:path => quotes_path, :name => "Vendor Quotes"}) 
+			end 
+			if can? :view, CustomerQuote
+				menus[:quotes][:sub_menu].push({:path => customer_quotes_path, :name => "Customer Quotes"}) 
+			end 
+
+		end 
+        if  user_signed_in? && !current_user.is_customer?    
+			menus[:purchases] = {:class => "hasSubmenu glyphicons cart_in", :path => "#", :name => "Purchases", :type => "multiple"}
+			menus[:purchases][:sub_menu] = 	[
+				{:path => po_headers_path, :name => "Purchase Orders"}
+			]
 		end
 
 		if  user_signed_in? && !current_user.is_vendor? 
@@ -174,14 +183,15 @@ module CommonActions
 		if can? :view, Specification
 			menus[:inventory][:sub_menu].push({:path => specifications_path, :name => "Specifications"})	
 		end	
-
-		menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
-		menus[:accounts][:sub_menu] = 	[
-			{:path => payables_path, :name => "Payables"},
-			{:path => payments_path, :name => "Payments"},
-			{:path => receivables_path, :name => "Receivables"},
-			{:path => receipts_path, :name => "Receipts"}
-		]
+		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
+			menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
+			menus[:accounts][:sub_menu] = 	[
+				{:path => payables_path, :name => "Payables"},
+				{:path => payments_path, :name => "Payments"},
+				{:path => receivables_path, :name => "Receivables"},
+				{:path => receipts_path, :name => "Receipts"}
+			]
+		end 
 
 		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
 		menus[:general_ledger][:sub_menu] = 	[			
@@ -204,7 +214,7 @@ module CommonActions
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
 			
 		menus[:quality][:sub_menu] = 	[
-			{:path => quality_lots_path, :name => "Lot Info"},
+			# {:path => quality_lots_path, :name => "Lot Info"},
 			# {:path => quality_lot_materials_path, :name => "Material"},
 			# {:path => quality_lot_dimensions_path, :name => "Dimensions"},
 			{:path => capacity_plannings_path, :name => "Capacity Planning"},
@@ -218,6 +228,9 @@ module CommonActions
 			{:path => customer_qualities_path, :name => "Quality Level"}
 		]
 
+		if can? :view, QualityLot
+			menus[:quality][:sub_menu].push({:path => quality_lots_path, :name => "Lot Info"}) 
+		end 
 		if can? :view, CauseAnalysis
 			menus[:quality][:sub_menu].push({:path => cause_analyses_path, :name => "Cause Analysis"}) 
 		end 

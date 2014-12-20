@@ -1,9 +1,13 @@
 <!-- Wells -->
+
 <div class="row-fluid">
     <h4 class="span3 left">SO Info</h4>
     <span class="span9 right">
-        <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
+        <% if can? :edit , SoHeader %>
+          <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
+        <% end %>
         <%= link_to 'Back', so_headers_path, :class => "btn btn-small" %>
+
     
 
     </span>

@@ -1,6 +1,13 @@
 class QuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
     before_filter :set_page_info
+    before_filter :user_permissions
+
+    def user_permissions
+        if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
+        authorize! :edit, User
+        end 
+    end
 
     def set_page_info
         @menus[:quotes][:active] = "active"

@@ -4,6 +4,22 @@ class ReceiptsController < ApplicationController
 
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Receipt
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Receipt
+    end 
+  end 
+
   def set_page_info
     @menus[:accounts][:active] = "active"
   end

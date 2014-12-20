@@ -55,8 +55,37 @@ class Ability
 
             can :manage, SoShipment
 
+            can :manage, QualityLot
 
-        elsif user.has_role? :operations
+            can :manage, Payable
+
+            can :manage, Payment
+
+            can :manage, Receivable
+
+            can :manage, Receipt
+
+            can :manage, SoHeader
+
+            can :manage, SoLine
+
+            can :manage, PoHeader
+
+            can :manage, PoLine
+
+            can :manage, Quote
+
+            can :manage, CustomerQuote
+
+            can :manage, CustomerQuoteLine
+
+            can :manage, Organization
+
+            can :manage, Contact
+
+            can :manage, Item
+
+   elsif user.has_role? :operations
             
             can :manage, Territory
 
@@ -98,6 +127,36 @@ class Ability
 
             can :view, SoShipment
 
+            can :manage, QualityLot
+
+            can :view, Payable
+
+            can :view, Payment
+
+            can :view, Receivable
+
+            can :view, Receipt
+
+            can :manage, SoHeader
+
+            can :manage, SoLine
+
+            can :manage, PoHeader
+
+            can :manage, PoLine
+
+            can :manage, Quote
+
+            can :manage, CustomerQuote
+
+            can :manage, CustomerQuoteLine
+
+            can :manage, Organization
+
+            can :manage, Contact
+
+            can :manage, Item
+
         elsif user.has_role? :quality
 
             can :view, CompanyInfo
@@ -136,7 +195,23 @@ class Ability
 
             can :manage, SoShipment
 
-        elsif user.has_role? :logistics
+            can :manage, QualityLot
+
+            can :view, SoHeader
+
+            can :view, SoLine
+
+            can :view, PoHeader
+
+            can :view, PoLine
+
+            can :manage, Organization
+
+            can :manage, Contact
+
+            can :manage, Item
+
+      elsif user.has_role? :logistics
 
             can :view, CompanyInfo
 
@@ -153,8 +228,23 @@ class Ability
             can :manage, PoShipment
 
             can :manage, SoShipment
-            
 
+            can :view, QualityLot
+
+            can :view, SoHeader
+
+            can :view, SoLine
+
+            can :view, PoHeader
+
+            can :view, PoLine
+
+            can :view, Organization
+
+            can :view, Contact
+
+            can :view, Item
+            
         elsif user.has_role? :clerical
 
             can :view, Owner
@@ -173,7 +263,34 @@ class Ability
 
             can :view, SoShipment
 
-  
+            can :manage, Payable
+
+            can :manage, Payment
+
+            can :manage, Receivable
+
+            can :manage, Receipt
+
+            can :manage, SoHeader
+
+            can :manage, SoLine
+
+            can :manage, PoHeader
+
+            can :manage, PoLine
+
+            can :manage, Quote
+
+            can :manage, CustomerQuote
+
+            can :manage, CustomerQuoteLine
+
+            can :manage, Organization
+
+            can :manage, Contact
+
+            can :manage, Item
+
         elsif user.has_role? :vendor
 
             can :view, QualityAction
@@ -197,8 +314,17 @@ class Ability
             can :view, ProcessType
 
             can :view, Specification
-           
 
+            can :view, QualityLot
+
+            can :view, PoHeader
+
+            can :view, PoLine
+
+            can :manage, Quote
+
+            can :view, Item
+           
         elsif user.has_role? :customer
 
             can :view, QualityAction
@@ -222,14 +348,19 @@ class Ability
             can :view, ProcessType
 
             can :view, Specification
-                       
+
+            can :view, QualityLot
+
+            can :view, SoHeader
+
+            can :view, SoLine
+
+            can :view, CustomerQuote
+
+            can :view, CustomerQuoteLine
+
+            can :view, Item         
     end
-
-
-
-
-
-
 
 
 
