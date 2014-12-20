@@ -2,7 +2,9 @@
 <div class="row-fluid">
     <h4 class="span3 left">PO Info</h4>
     <span class="span9 right">
-        <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+        <% if can? :edit, PoHeader %>
+          <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+        <% end %>
         <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
     </span>
 </div>
