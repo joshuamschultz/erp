@@ -1,6 +1,22 @@
 class SpecificationsController < ApplicationController
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Specification
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, Specification
+    end 
+  end
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -16,7 +32,11 @@ class SpecificationsController < ApplicationController
         @specifications = @specifications.collect{|specification| 
           attachment = specification.attachment.attachment_fields
           attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
-          attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
+          if can? :edit, specification
+            attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
+          else
+            attachment[:links] = nil
+          end
           attachment
         }
         render json: {:aaData => @specifications} 
@@ -29,7 +49,6 @@ class SpecificationsController < ApplicationController
   def show
     @specification = Specification.find(params[:id])
     @attachment = @specification.attachment
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @specification }
@@ -52,6 +71,7 @@ class SpecificationsController < ApplicationController
   def edit
     @specification = Specification.find(params[:id])
     @attachment = @specification.attachment
+    
   end
 
   # POST /specifications

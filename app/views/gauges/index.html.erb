@@ -5,7 +5,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Instruments</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Instrument', new_gauge_path, :class => "btn btn-mini btn-success" %>                
+            <% if can? :edit, Gauge %>
+                <%= link_to 'New Instrument', new_gauge_path, :class => "btn btn-mini btn-success" %>   
+            <% end %>                
             </span>
         </div> 
     </div>

@@ -25,7 +25,9 @@
     </tbody>
   </table>
   <div class="form-actions">
-    <%= link_to 'Edit', edit_element_path(@element), :class => "btn" %> 
+    <% if can? :edit , Element %>
+      <%= link_to 'Edit', edit_element_path(@element), :class => "btn" %> 
+    <% end %>
 
     <%= link_to 'Back', elements_path, :class => "btn" %>    
   </div>

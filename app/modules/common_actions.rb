@@ -208,7 +208,7 @@ module CommonActions
 			# {:path => quality_lot_materials_path, :name => "Material"},
 			# {:path => quality_lot_dimensions_path, :name => "Dimensions"},
 			{:path => capacity_plannings_path, :name => "Capacity Planning"},
-			{:path => cause_analyses_path, :name => " Cause Analysis"},
+			# {:path => cause_analyses_path, :name => " Cause Analysis"},
 			{:path => process_flows_path, :name => "Process Flow"},
 			{:path => fmea_types_path, :name => "FMEA"},
 			{:path => control_plans_path, :name => "Control Plan"},
@@ -218,6 +218,9 @@ module CommonActions
 			{:path => customer_qualities_path, :name => "Quality Level"}
 		]
 
+		if can? :view, CauseAnalysis
+			menus[:quality][:sub_menu].push({:path => cause_analyses_path, :name => "Cause Analysis"}) 
+		end 
 		if can? :view, CustomerFeedback
 			menus[:quality][:sub_menu].push({:path => customer_feedbacks_path, :name => "Customer Response"}) 
 		end 

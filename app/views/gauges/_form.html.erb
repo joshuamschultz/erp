@@ -15,8 +15,10 @@
   <div class="separator bottom"></div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Submit", :class => "btn" %>
-    <%= link_to 'Delete', gauge_path(@gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @gauge.new_record? %>
+    <% if can? :edit, Gauge %>
+      <%= f.button :submit, "Submit", :class => "btn" %>
+      <%= link_to 'Delete', gauge_path(@gauge), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" unless @gauge.new_record? %>
+    <% end %>
     <%= link_to 'Back to Instruments', gauges_path,:class =>"btn btn-small" %>
   </div>
 <% end %>

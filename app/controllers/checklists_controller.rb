@@ -1,5 +1,12 @@
 class ChecklistsController < ApplicationController
   before_filter :set_page_info
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Checklist
+    end 
+  end
 
   def set_page_info
       @menus[:quality][:active] = "active"

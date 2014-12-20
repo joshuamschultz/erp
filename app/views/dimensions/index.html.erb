@@ -5,7 +5,8 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Dimension Types</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Dimension Type', new_dimension_path, :class => "btn btn-mini btn-success" %>              
+                <% if can? :edit, Dimension %>
+                    <%= link_to 'New Dimension Type', new_dimension_path, :class => "btn btn-mini btn-success" %>   <% end %>              
             </span>
         </div> 
     </div>

@@ -1,7 +1,13 @@
 class GlAccountsController < ApplicationController
   before_filter :set_page_info  
   autocomplete :gl_account, :gl_account_title, :full => true
+  before_filter :user_permissions
 
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, GlAccount
+    end 
+  end
   def set_page_info
     @menus[:general_ledger][:active] = "active"
   end
