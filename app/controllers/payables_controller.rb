@@ -2,7 +2,23 @@ class PayablesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update] 
   skip_before_filter :verify_authenticity_token, :only => :create
 
-  before_filter :set_page_info  
+  before_filter :set_page_info 
+
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Payable
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Payable
+    end 
+  end 
 
   def set_page_info
       @menus[:accounts][:active] = "active"
