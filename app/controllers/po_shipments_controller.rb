@@ -2,6 +2,22 @@ class PoShipmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:new,:index]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+        authorize! :edit, PoShipment
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, PoShipment
+    end 
+  end
+
   def set_page_info
       @menus[:logistics][:active] = "active"
   end
