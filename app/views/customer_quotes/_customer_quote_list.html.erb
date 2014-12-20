@@ -6,7 +6,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Customer Quotes</h4>
             <span class="span6 heading right">
+            <% if can? :edit, CustomerQuote %>
                 <%= link_to 'New Customer Quote', new_customer_quote_path, :id => "customer_new",  :class => "btn btn-mini btn-success" %>
+            <% end %>
                 <%= link_to 'Customer','#', :onclick => "get_customer_quote(); return false",:class => "btn btn-mini btn-success" if show_quote_types %>
                 <%= link_to 'Vendor', "#", :onclick => "get_quote(); return false",:class => "btn btn-mini btn-success" if show_quote_types %>  
             </span>
