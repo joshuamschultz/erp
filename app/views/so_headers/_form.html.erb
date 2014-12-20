@@ -63,9 +63,12 @@
       <div class="separator bottom"></div>
 
       <div class="form-actions">
-        <%= f.button :submit, "Submit", :class => 'btn' %>
-
-        <%= link_to 'Delete', so_header_path(@so_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_header.new_record? %>
+        <% if can? :new, @so_header %>
+            <%= f.button :submit, "Submit", :class => 'btn' %>
+        <% end %>
+        <% if can? :destroy, @so_header %>
+          <%= link_to 'Delete', so_header_path(@so_header), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_header.new_record? %>
+        <% end %>
 
         <%= link_to 'Back', so_headers_path,:class =>"btn" %>
       </div>
