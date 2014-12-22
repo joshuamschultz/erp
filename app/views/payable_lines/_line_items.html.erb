@@ -5,7 +5,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Payable Line Items</h4>
             <span class="span6 heading right">
+              <% if can? :edit, Payable   %>
                 <%= link_to 'New Line Item', new_payable_payable_line_path(@payable), :class => "btn btn-mini btn-success"  %>  
+               <% end %> 
             </span>
         </div> 
     </div>

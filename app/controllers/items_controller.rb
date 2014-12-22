@@ -3,6 +3,16 @@ class ItemsController < ApplicationController
   autocomplete :item, :item_part_no, :full => true
   before_filter :set_autocomplete_values, only: [:create] 
 
+  before_filter :view_permissions, except: [:index, :show]
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics?  || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, Item
+    end 
+  end
+
+
+
   def set_autocomplete_values
       params[:item][:item_revisions_attributes]["0"][:print_id], params[:print_id] = params[:print_id], params[:item][:item_revisions_attributes]["0"][:print_id]
       params[:item][:item_revisions_attributes]["0"][:print_id] = params[:org_print_id] if params[:item][:print_id] == ""

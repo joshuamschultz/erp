@@ -1,6 +1,21 @@
 class CustomerQuoteLinesController < ApplicationController
     before_filter :set_page_info
     before_filter :set_autocomplete_values, only: [:create, :update]
+    before_filter :view_permissions, except: [:index, :show]
+    before_filter :user_permissions
+
+
+    def view_permissions
+     if  user_signed_in? &&  current_user.is_customer?
+          authorize! :edit, CustomerQuoteLine
+      end 
+    end
+
+    def user_permissions
+     if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor?  )
+          authorize! :edit, CustomerQuoteLine
+      end 
+    end
 
     def set_page_info
       @menus[:quotes][:active] = "active"
@@ -21,7 +36,11 @@ class CustomerQuoteLinesController < ApplicationController
                 @customer_quote_lines = @customer_quote_lines.select{|customer_quote_line|
                     customer_quote_line[:item_part_no] = CommonActions.linkable(item_path(customer_quote_line.item), customer_quote_line.item_alt_name.item_alt_identifier) if customer_quote_line.item && customer_quote_line.item_alt_name
                     customer_quote_line[:item_part_no] = customer_quote_line.item_name_sub unless customer_quote_line.item && customer_quote_line.item_alt_name
-                    customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line))
+                    if can? :edit, CustomerQuoteLine
+                        customer_quote_line[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line), customer_quote_customer_quote_line_path(@customer_quote, customer_quote_line))
+                    else
+                        customer_quote_line[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+                    end
                 }
                 render json: {:aaData => @customer_quote_lines}
             }

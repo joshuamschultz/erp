@@ -2,6 +2,22 @@ class PoLinesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
+        authorize! :edit, PoLine
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_customer? 
+        authorize! :edit, PoLine
+    end 
+  end
+
   def set_page_info
       @menus[:purchases][:active] = "active"
       simple_form_validation = true
@@ -33,7 +49,12 @@ class PoLinesController < ApplicationController
               po_line[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
               po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "CHESS"
               po_line[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"              
-              po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+              if can? :edit , PoLine
+                po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+              else
+                po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
+              end
+              
           }
           render json: {:aaData => @po_lines}
        }

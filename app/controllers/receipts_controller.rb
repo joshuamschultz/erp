@@ -4,6 +4,22 @@ class ReceiptsController < ApplicationController
 
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Receipt
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Receipt
+    end 
+  end 
+
   def set_page_info
     @menus[:accounts][:active] = "active"
   end
@@ -25,7 +41,11 @@ class ReceiptsController < ApplicationController
           receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
           receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
           receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
-          receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          if can? :edit, Receipt
+            receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          else
+             receipt[:links] = "" 
+          end   
         }
         render json: {:aaData => @receipts}
       }

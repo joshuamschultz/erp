@@ -2,6 +2,22 @@ class SoLinesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
+        authorize! :edit, User
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_vendor? 
+        authorize! :edit, User
+    end 
+  end
+
   def set_page_info
       @menus[:sales][:active] = "active"
       simple_form_validation = true
@@ -27,7 +43,11 @@ class SoLinesController < ApplicationController
           so_line[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
           so_line[:vendor_po] = so_line.so_line_vendor_po.present? ? so_line.so_line_vendor_po : "Stock"
           so_line[:quality_level_name] = so_line.customer_quality ? CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name) : ""
-          so_line[:links] = CommonActions.object_crud_paths(nil, edit_so_header_so_line_path(@so_header, so_line), nil)
+          if can? :edit , SoLine
+            so_line[:links] = CommonActions.object_crud_paths(nil, edit_so_header_so_line_path(@so_header, so_line), nil)
+          else
+            so_line[:links] = nil
+          end
           so_line[:customer_name] = CommonActions.linkable(organization_path(@so_header.organization), @so_header.organization.organization_name)
         }
         render json: {:aaData => @so_lines} 
@@ -47,7 +67,7 @@ class SoLinesController < ApplicationController
   end
 
  
-  def new
+  def new 
     @so_header = SoHeader.find(params[:so_header_id])
     @so_line = @so_header.so_lines.build
 

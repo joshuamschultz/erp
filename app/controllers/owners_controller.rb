@@ -1,9 +1,28 @@
 class OwnersController < ApplicationController
   before_filter :set_page_info  
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+        authorize! :edit, User
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, User
+    end 
+  end
+
+
+
   def set_page_info
       @menus[:system][:active] = "active"
   end
+
 
   # GET /owners
   # GET /owners.json
@@ -20,8 +39,13 @@ class OwnersController < ApplicationController
       format.html # index.html.erb
       format.json { 
         @owners = @owners.select{|owner| 
-          owner[:links] = CommonActions.object_crud_paths(owner_path(owner), edit_owner_path(owner), 
-                        owner_path(owner))
+          if can? :edit, owner
+            owner[:links] = CommonActions.object_crud_paths(owner_path(owner), edit_owner_path(owner), 
+                   owner_path(owner))
+          else
+            owner[:links] = CommonActions.object_crud_paths(owner_path(owner), nil, 
+                   nil)
+          end
           owner[:owner_commission_type] = owner.commission_type.type_name
           owner[:owner_commission_percentage] = owner.owner_commission_amount.to_s + "%"
         }

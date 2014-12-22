@@ -4,6 +4,22 @@ class PoHeadersController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]  
   autocomplete :po_header, :po_identifier, :full => true
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
+        authorize! :edit, PoHeader
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_customer? 
+        authorize! :edit, PoHeader
+    end 
+  end
+
   def set_page_info
       @menus[:purchases][:active] = "active"
   end
@@ -59,7 +75,11 @@ class PoHeadersController < ApplicationController
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
               po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
-              po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+              if can? :edit, PoHeader
+                po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+              else
+                po_header[:links] = nil
+              end
               po_header[:po_line_price] =  po_header.po_lines.find_by_item_id(@item.id).po_line_cost if params[:item_id].present?
               po_header[:po_type_qty] =  po_header.po_lines.find_by_item_id(@item.id).po_line_quantity if params[:item_id].present?
 

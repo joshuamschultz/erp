@@ -1,6 +1,22 @@
 class PpapsController < ApplicationController
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Ppap
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, Ppap
+    end 
+  end
+
   def set_page_info
     @menus[:quality][:active] = "active"
     # simple_form_validation = false
@@ -15,8 +31,13 @@ class PpapsController < ApplicationController
       format.json { 
         @ppaps = @ppaps.select{|ppap|
           ppap[:id_link] = CommonActions.linkable(ppap_path(ppap), ppap.id)
-          ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap), ppap.quality_lot.lot_control_no)
-          ppap[:links] = CommonActions.object_crud_paths(nil, edit_ppap_path(ppap), nil)
+          if can? :edit, ppap
+            ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap), ppap.quality_lot.lot_control_no)
+            ppap[:links] = CommonActions.object_crud_paths(nil, edit_ppap_path(ppap), nil)
+          else
+            ppap[:lot_control_no] =  ppap.quality_lot.lot_control_no
+            ppap[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+          end
         }
         render json: {:aaData => @ppaps}
       }     
