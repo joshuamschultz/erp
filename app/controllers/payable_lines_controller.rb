@@ -11,8 +11,12 @@ class PayableLinesController < ApplicationController
           # redirect_to new_payable_payable_line_path(@payable) 
       }
       format.json { 
-          @payable_lines = @payable_lines.select{|payable_line|              
+          @payable_lines = @payable_lines.select{|payable_line|    
+             if can? :edit, Payable        
               payable_line[:links] = CommonActions.object_crud_paths(nil, edit_payable_payable_line_path(@payable, payable_line), nil)
+             else   
+              payable_line[:links] = ""
+            end  
           }
           render json: {:aaData => @payable_lines}
       }

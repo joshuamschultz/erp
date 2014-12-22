@@ -2,8 +2,25 @@ class SoHeadersController < ApplicationController
   before_filter :find_relations, only: [:index]
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update] 
-  # before_filter :check_permissions, :only => [:update, :destroy]
+  # before_filter :check_permissions, :only => [:edit, :destroy]
   autocomplete :so_header, :so_identifier, :full => true
+
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
+        authorize! :edit, User
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_vendor? 
+        authorize! :edit, User
+    end 
+  end
+
 
   def set_page_info
       @menus[:sales][:active] = "active"
@@ -15,7 +32,7 @@ class SoHeadersController < ApplicationController
   end
 
   # def check_permissions
-  #       authorize! :update, SoHeader
+  #       authorize! :edit, SoHeader
   # end
   def get_autocomplete_items(parameters)
       items = super(parameters)
@@ -70,7 +87,14 @@ class SoHeadersController < ApplicationController
             else
                 so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
             end
-            so_header[:links] = CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
+            if can? :edit, so_header
+
+              so_header[:links] =  CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil) 
+            
+            else
+              so_header[:links]=""
+            end
+
              i += 1
            }
            render json: {:aaData => @so_headers} 

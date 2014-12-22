@@ -7,8 +7,9 @@
             <span class="span6 heading right">
                 <%#= link_to 'New Shipment', new_po_shipment_path, :class => "btn btn-mini btn-success" %>
                 <%#= text_field_tag :shipment_payable_identifier, "", height: "14px" %>
-                
+            <% if can? :view , PoShipment %>
                 <%= link_to 'Create Payable', "#", class: "btn btn-mini btn-success", onclick: "create_payable_for_items(); return false;" if create_payable %>
+            <% end %>
                 <%#= link_to 'Open', open_path, :class => "btn btn-mini btn-success" %>
                 <%#= link_to 'Closed', closed_path, :class => "btn btn-mini btn-success" %>
 
@@ -17,7 +18,7 @@
         </div> 
     </div>
     <!-- // Widget heading END -->
-
+<% if can? :view , @po_shipment %>
     <div class="widget-body">
         <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
@@ -42,7 +43,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type, item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false, :order => "desc"}, 
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type,item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false, :order => "desc"}, 
         :columns => '[
                         { "mData": "po_shipped_count" },
                         { "mData": "po_identifier" },
@@ -55,6 +56,61 @@
                     ]'
     } 
 %>
+
+
+<% else %>
+
+
+    <div class="widget-body">
+        <table id="po_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Qty</th>
+                <th>PO</th>
+                <th>Vendor</th>
+                <th>Date</th>
+                <th>Status</th>
+             
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "po_shipment_table_report", :path => po_shipments_path(type: shipment_type,item_id: (@item.id if @item), create_payable: (create_payable if create_payable)), :extras => {:slno => false, :order => "desc"}, 
+        :columns => '[
+                        { "mData": "po_shipped_count" },
+                        { "mData": "po_identifier" },
+                        { "mData": "vendor_name" },
+                        { "mData": "po_shipped_date" },        
+                        { "mData": "po_shipped_status" },
+
+                    ]'
+    } 
+%>
+
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- { "mData": "po_line_quantity_shipped" }, -->
 

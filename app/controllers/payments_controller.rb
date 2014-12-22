@@ -2,6 +2,22 @@ class PaymentsController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Payment
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Payment
+    end 
+  end 
+
   def set_page_info
     @menus[:accounts][:active] = "active"
   end
@@ -36,8 +52,11 @@ class PaymentsController < ApplicationController
           payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.payment_identifier)
           payment[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
           payment[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
-          payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
-        }
+          if can? :edit, Payment
+            payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
+          else 
+            payment[:links] = ""
+          end          }
         render json: {:aaData => @payments}
       }
     end

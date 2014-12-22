@@ -1,6 +1,21 @@
 class RunAtRatesController < ApplicationController
   before_filter :set_page_info
   autocomplete :run_at_rate, :run_at_rate_name, :full => true
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, RunAtRate
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+        authorize! :edit, RunAtRate
+    end 
+  end
   def set_page_info
     @menus[:quality][:active] = "active"
   end
@@ -15,7 +30,11 @@ class RunAtRatesController < ApplicationController
           @run_at_rates = @run_at_rates.collect{|run_at_rate| 
           attachment = run_at_rate.attachment.attachment_fields
           attachment[:attachment_name] = CommonActions.linkable(run_at_rate_path(run_at_rate), attachment.attachment_name)
-          attachment[:links] = CommonActions.object_crud_paths(nil, edit_run_at_rate_path(run_at_rate), nil)
+          if can? :edit, run_at_rate
+            attachment[:links] = CommonActions.object_crud_paths(nil, edit_run_at_rate_path(run_at_rate), nil)
+          else
+            attachment[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+          end
           attachment
         }
         render json: {:aaData => @run_at_rates} 

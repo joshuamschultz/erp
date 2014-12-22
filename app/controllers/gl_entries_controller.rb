@@ -26,7 +26,11 @@ class GlEntriesController < ApplicationController
       format.html # index.html.erb
       format.json {         
           @gl_entries.select{|gl_entry| 
-            gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
+            if can? :edit, GlEntry
+              gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
+            else
+              gl_entry[:links] =  ""
+            end   
             gl_entry[:gl_entry_identifier] = CommonActions.linkable(gl_entry_path(gl_entry), gl_entry.gl_entry_identifier)
             gl_entry[:gl_account_name] = CommonActions.linkable(gl_account_path(gl_entry.gl_account), gl_entry.gl_account.gl_account_title)
             gl_entry[:gl_entry_description] = gl_entry.get_description_link

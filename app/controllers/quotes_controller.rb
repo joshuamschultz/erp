@@ -1,6 +1,13 @@
 class QuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
     before_filter :set_page_info
+    before_filter :user_permissions
+
+    def user_permissions
+        if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
+        authorize! :edit, User
+        end 
+    end
 
     def set_page_info
         @menus[:quotes][:active] = "active"
@@ -36,7 +43,7 @@ class QuotesController < ApplicationController
                                      quote[:index] = i
                                      quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
                                      quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil) if can? :update, @quotes
                                      quote[:created] = quote.created_at.strftime("%d %b %Y")
                                      quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
                                      quote[:price] = Quote.get_quote_item_prices(quote, params[:item_id])

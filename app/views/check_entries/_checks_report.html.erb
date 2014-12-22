@@ -82,7 +82,7 @@ body {
 
 
 .cent-1 {
-    margin: 300px 0 0;
+    margin: 235px 0 0;
     text-align: center;
 }
 .fontw.fontw-003 {
@@ -94,6 +94,18 @@ body {
 }
 .bo-02 {
     border-top: 2px solid #111;
+}
+
+
+.foot {
+    float: left;
+    width: 100%;
+}
+
+.foot-2 {
+    float: left;
+    height: 430px;
+    width: 100%;
 }
 </style>
 
@@ -157,6 +169,10 @@ body {
        <tr>
       <th scope="row" class="pad-02">&nbsp;</th>
     </tr>
+</table>
+
+<div class="foot-2">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
        <tr>
       <th scope="row"><table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -177,23 +193,24 @@ body {
               <td><%= payment_line.payable.payable_discount %></td>
               <td><%= payment_line.payment_line_amount %></td>
           </tr>
-        <% end %>
+      <% end %>
       
         
 
       </tbody></table></th>
     </tr>
     </tr>
-    <tr align="left" valign="top">
-      <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <th width="30%" scope="row">&nbsp;</th>
-          <td width="10%" rowspan="2"><br></td>
-          <td width="60%">&nbsp;</td>
-        </tr>
-        <h2 class="cent-1">  </h2>
-        <tr>
-          <th align="left" scope="row" class="font-04"><%= payment.organization.organization_name %></th>
+
+
+
+
+  </table></div>
+
+<div class="foot">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+    <tr>
+        <th align="left" scope="row" class="font-04"><%= payment.organization.organization_name %></th>
           <td align="right">&nbsp;</td>
         </tr>
         <tr>
@@ -216,11 +233,8 @@ body {
           <td>&nbsp;</td>
           <td><span class="font-04"><%= payment.payment_check_amount %></span></td>
         </tr>
-      </table></th>
-    </tr>
-    <tr>
-      <th scope="row">&nbsp;</th>
-    </tr>
+
+
     <tr>
       <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -232,25 +246,8 @@ body {
         </tr>
       </table></th>
     </tr>
-    <tr>
-      <th scope="row">&nbsp;</th>
-    </tr>
-    <tr>
-      <th scope="row">&nbsp;</th>
-    </tr>
-    <tr>
-      <th scope="row">&nbsp;</th>
-    </tr>
-    <tr align="left">
-      <th scope="row">&nbsp;</th>
-    </tr>
-    <tr align="left">
-   
-    </tr>
-    <tr align="left">
-      <th scope="row">&nbsp;</th>
-    </tr>
-  </table>
+
+  </table></div>
 </div><div style="page-break-before:always">&nbsp;</div> 
 </body>
 </html>
