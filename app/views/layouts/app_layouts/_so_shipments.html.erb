@@ -25,9 +25,60 @@ var current_field_temp;
 				<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
 				<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
 				<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
+                $("#pk100_date").html(response.so_date);
+                $("#pk100_so").html(response.so);
+                $("#pk100_part_no").html(response.part_number);
+                $("#pk100_control_no").html(response.control_number);
+                $("#pk100_part_description").html(response.part_desc);
+                $("#pk100_alt_part_no").html(response.alt_part_number);
+                $("#pk100_shipped_part").html(response.so_shipped_count);
+                $("#pk100_so_qty").html(response.so_line_quantity);
+                $("#pk100_so_notes").html(response.so_notes);
+
+                $("#pk100_so_b_c_title").html(response.so_b_c_title);
+                $("#pk100_so_b_c_address_1o").html(response.so_b_c_address_1o);
+                $("#pk100_so_b_c_address_2").html(response.so_b_c_address_2);
+                $("#pk100_so_b_c_state").html(response.so_b_c_state);
+                $("#pk100_so_b_c_country").html(response.so_b_c_country);
+                $("#pk100_so_b_c_zipcode").html(response.so_b_c_zipcode);
+
+                $("#pk100_so_s_c_title").html(response.so_s_c_title);
+                $("#pk100_so_s_c_address_1o").html(response.so_s_c_address_1o);
+                $("#pk100_so_s_c_address_2").html(response.so_s_c_address_2);
+                $("#pk100_so_s_c_state").html(response.so_s_c_state);
+                $("#pk100_so_s_c_country").html(response.so_s_c_country);
+                $("#pk100_so_s_c_zipcode").html(response.so_s_c_zipcode);
+
+
+
+
+                
+
+
+				  printDiv($("#pk100").attr('id'));
+
 			}
 		}
 	}
+
+
+	function printDiv(divID) {
+            //Get the HTML of div            
+            var divElements = document.getElementById(divID).innerHTML;
+            //Get the HTML of whole page
+            var oldPage = document.body.innerHTML;
+
+            //Reset the page's HTML with div's HTML only
+            document.body.innerHTML = 
+              "<html><head><title></title></head><body>" + 
+              divElements + "</body>";
+
+            //Print Page
+            window.print();
+
+            //Restore orignal HTML
+            document.body.innerHTML = oldPage; 
+	    }
 
 	$(document).on("click", ".btn_save_shipped", function(){
 		process_shipping_inputs($(this));
@@ -106,6 +157,127 @@ var current_field_temp;
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
 			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
 		}
-	}    
+	} 
+
+			$(document).ready(function(){
+		$('#modal-simple').on('shown.bs.modal', function (e) {
+		})
+        $("#pk100").hide();
+	});
+   
 
 </script>
+
+
+
+<div id="pk100">
+
+<div class="ms_wrapper">
+<% @so_header = SoHeader.last %> 
+    <section>
+
+        <article>
+            <div class="ms_image">
+                <div class="ms_image-wrapper">
+                	<% @company_info = CompanyInfo.first %>
+                    <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
+                </div>
+
+                <div class="ms_image-text">
+                    <h5><%= @company_info.company_address1 %><br/>
+                    <%= @company_info.company_address2 %>
+                    <hr>
+                    <b>P:&nbsp;</b><%= @company_info.company_phone1 %><br/>
+                    &nbsp;<b>F:&nbsp;</b><%= @company_info.company_fax %>
+                    <hr></h5>
+                </div>
+            </div>
+
+
+            <div class="ms_image-2">
+                <h3>Packing Slip Number</h3>
+                <h2 id="pk100_so"></h2>
+                <h5 id ="pk100_date">  </h5>
+                <h5> Customer P.O:<%= @so_header.so_header_customer_po %></h5>
+
+            </div>
+        </article>
+
+        <article>
+
+            <div class="ms_text">
+                <h1 class="ms_heading">Bill To :</h1> 
+
+                    <h2 class="ms_sub-heading" id="pk100_so_b_c_title"></h2> 
+                    <strong id ="pk100_so_b_c_address_1o"> </strong> 
+                    <strong id="pk100_so_b_c_address_2"></strong>
+                    <strong id="pk100_so_b_c_state"></strong>
+                    <strong id="pk100_so_b_c_country">&nbsp;<span id="pk100_so_b_c_zipcode"></span></strong>
+               
+            </div>
+
+            <div class="ms_text-2">
+                <h1 class="ms_heading">Ship To : </h1> 
+               
+                    <h2 class="ms_sub-heading" id="pk100_so_b_c_title"></h2> 
+                    <strong id ="pk100_so_s_c_address_1o"> </strong> 
+                    <strong id="pk100_so_s_c_address_2"></strong>
+                    <strong id="pk100_so_s_c_state"></strong>
+                    <strong id="pk100_so_s_c_country">&nbsp;<span id="pk100_so_s_c_zipcode"></span></strong>
+              
+            </div>
+
+        </article>
+
+   
+
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center" class="fon-004">
+            <td width="28%">CUST P/N - ALL P/N</td>
+            <td width="28%">Description</td>
+            <td width="29%">QTY</td>
+            <td width="30%">Shipped</td>
+          </tr>
+              <tr align="center">
+                <td scope="row" id="pk100_part_no">
+                    <table>       
+                    <tr><td align="center" id="pk100_alt_part_no"></td></tr>
+                    <tr> <td align="center" id="pk100_control_no"></td></tr>
+                    </table>
+                </td>
+                <td id="pk100_part_description"></td>
+                <td class="text-6" id="pk100_so_qty"></td>
+                <td id="pk100_shipped_part"> </td>
+
+              </tr>
+
+
+                               
+         
+    
+      </table>
+        <article>
+            <div class="footer">
+
+                <div class="page">
+                    <h3>Page </h3>
+                    <h4>1</h4>
+                </div>
+
+                <div class="page-center">
+                    <h3 id="pk100_so_notes"></h3>
+                </div>
+                <div class="original">
+                    <h3>Customer Copy </h3>
+                    <h4><span> $</span> <%= @so_header.so_total.to_f %></h4>
+                </div>
+
+        </article>
+
+    </div>
+
+</div>
+
+
+</div>
