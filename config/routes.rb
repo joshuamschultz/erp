@@ -258,6 +258,8 @@ AllianceFasteners::Application.routes.draw do
     get :autocomplete_quality_lot_lot_control_no, :on => :collection
     member do
       get 'populate'
+      get 'material_report'
+      get 'dimension_report'
     end
   end
 

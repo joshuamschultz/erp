@@ -216,4 +216,14 @@ class QualityLotsController < ApplicationController
     render json: {:result => note} 
   end
 
+  def material_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def dimension_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
 end
