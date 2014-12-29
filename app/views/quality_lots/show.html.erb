@@ -181,7 +181,7 @@
 
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
-            <a class="widget-stats" href="#" id="">
+            <a class="widget-stats" href="#" id="" onclick="report()">
                 <h5><strong>Inspection <br />  Report</strong></h5>
                 <!-- <span class="txt"><strong>Process Capability</strong></span> -->
                 <div class="clearfix"></div>
@@ -227,3 +227,15 @@
 
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+
+
+
+<script type="text/javascript">
+function report() {
+    var quality_iframe = $("#myPrintView")[0];
+    quality_iframe.contentWindow.focus();
+    quality_iframe.contentWindow.print();
+
+}
+</script>
+<iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
