@@ -152,8 +152,15 @@ MATERIAL TEST RESULTS </strong></td>
                 <td><%= element.lot_element_low_range %></td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td><%= element.lot_material_result %></td>
+                <% if element.lot_material_result =="accepted" %>
+                  <td><%= element.lot_material_result %></td>
+                <% else %>
+                   <td>&nbsp;</td>
+                <% if element.lot_material_result =="rejected" %>
+                  <td><%= element.lot_material_result %></td>
+                <% else %>
+                   <td>&nbsp;</td>
+                <% end %>
               </tr>
         <% end %>
 
