@@ -101,7 +101,9 @@ class Item < ActiveRecord::Base
     self.quality_lots.each do |quality_lot|
       cost += (quality_lot.quantity_on_hand.to_f/total)*quality_lot.po_line.po_line_cost.to_f
     end
-    return cost.round(6)
+    cost.is_a?(Float)  ? 0.0 : cost    
+
+
   end
   def item_sell_price
   end
