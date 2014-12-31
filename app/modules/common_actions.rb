@@ -23,7 +23,8 @@ module CommonActions
 	def self.get_quality_lot_div(soLineId)		
 		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id'>"
         if soLineId.present?
-            quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
+            # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
+                        quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x|  [x.id,x.lot_control_no]  } 
             quality_lots.each do |quality_lot|
             	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
             end
