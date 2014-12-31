@@ -1,4 +1,4 @@
-<script type="text/javascript">
+ <script type="text/javascript">
 var quality_lot_id;
 var current_field_temp;
 	function shipping_fnDrawCallback(dt_settings){
@@ -60,8 +60,18 @@ var current_field_temp;
             window.print();
 
             //Restore orignal HTML
+            var timer = 1000;
+            setTimeout(function(){
+            main_load();
+            }, timer);
             document.body.innerHTML = oldPage; 
-    }               
+           
+           
+    }    
+    function main_load()
+    {
+       location.reload();
+    }           
    
 
 	$(document).on("click", ".btn_save_shipped", function(){
