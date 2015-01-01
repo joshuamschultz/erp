@@ -73,20 +73,46 @@ class SoShipment < ActiveRecord::Base
   def self.all_shipments(itemId)
     SoShipment.joins(:so_line).where(:so_lines => {:item_id => itemId})
   end 
-  def set_quality_on_hand
+  # def set_quality_on_hand
+  #   if self.quality_lot.present?
+  #     quality_lotss = self.quality_lot
+  #     p '---------------------'
+  #     p quality_lotss.quantity_on_hand
+  #     p self.so_shipped_count
+  #     # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
+  #     quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.so_shipped_count
+  #     if quality_lotss.quantity_on_hand <= 0
+  #       quality_lotss.finished = true
+  #       quality_lotss.lot_finalized_at = Date.today.to_s
+  #     end
+  #     if quality_lotss.save(:validate => false)
+  #       p quality_lotss.to_yaml
+  #     end
+  #   end    
+  # end
+
+    def set_quality_on_hand
     if self.quality_lot.present?
-      quality_lotss = self.quality_lot
-      p '---------------------'
-      p quality_lotss.quantity_on_hand
+      quality_lot = self.quality_lot
+      p '=================================='
+      p quality_lot.quantity_on_hand
       p self.so_shipped_count
+
+      p quality_lot.lot_quantity 
+      p "=================================="
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
-      quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.so_shipped_count
-      if quality_lotss.quantity_on_hand <= 0
-        quality_lotss.finished = true
-        quality_lotss.lot_finalized_at = Date.today.to_s
+      quality_lot.quantity_on_hand = quality_lot.lot_quantity - self.so_shipped_count
+
+      p "=================================="
+        p  quality_lot.quantity_on_hand 
+
+      p "==================================="
+      if quality_lot.quantity_on_hand <= 0
+        quality_lot.finished = true
+        quality_lot.lot_finalized_at = Date.today.to_s
       end
-      if quality_lotss.save(:validate => false)
-        p quality_lotss.to_yaml
+      if quality_lot.save(:validate => false)
+        p quality_lot.to_yaml
       end
     end    
   end
