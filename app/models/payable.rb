@@ -7,7 +7,7 @@ class Payable < ActiveRecord::Base
   :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, 
   :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type
 
-  # belongs_to :organization, :conditions => ['organization_type_id = ?zz', MasterType.find_by_type_value("vendor").id]
+  # belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
   belongs_to :organization
   belongs_to :po_header
@@ -152,15 +152,15 @@ class Payable < ActiveRecord::Base
       Payable.set_callback("save", :before, :process_before_save)
       Payable.set_callback("save", :after, :process_after_save)
   end
-  def self.open_payables(item,status)
+  def self.all_payables(item)
     payables = []
     @item = Item.find(item)
     @item.po_lines.each do |po_line|
       unless po_line.po_header.payables.empty?
-        payables= po_line.po_header.payables.status_based_payables(status || "open")
+        payables= po_line.po_header.payables
       end
     end
-    return payables
+    payables
   end
 
 end
