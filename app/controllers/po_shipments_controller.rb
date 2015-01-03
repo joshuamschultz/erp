@@ -127,9 +127,10 @@ class PoShipmentsController < ApplicationController
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
         @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)    
         @quality_lot.lot_inspector = current_user
-        @quality_lot.save    
+        @quality_lot.save 
+
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
-        @po_shipment.set_quality_on_hand           
+        # @po_shipment.set_quality_on_hand           
         quality_lot = @po_shipment.quality_lot 
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
         @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   

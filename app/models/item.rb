@@ -89,22 +89,26 @@ class Item < ActiveRecord::Base
   end 
 
   def qty_on_order
-      self.po_lines.sum(:po_line_quantity) - self.po_lines.sum(:po_line_shipped)
+      # self.po_lines.sum(:po_line_quantity) - self.po_lines.sum(:po_line_shipped)
+      self.quality_lots.sum(:lot_quantity)
   end
 
   def qty_on_hand
       self.quality_lots.sum(:quantity_on_hand).to_f
   end
   def weighted_cost
-  	total = self.quality_lots.sum(:quantity_on_hand).to_f
+    total = self.quality_lots.sum(:quantity_on_hand).to_f
     cost =0
-    self.quality_lots.each do |quality_lot|
+    if total == 0
+      cost
+    else
+      self.quality_lots.each do |quality_lot|
       cost += (quality_lot.quantity_on_hand.to_f/total)*quality_lot.po_line.po_line_cost.to_f
     end
-    cost.is_a?(Float)  ? 0.0 : cost    
-
-
+      return  cost.round(6)
+    end
   end
+
   def item_sell_price
   end
 
