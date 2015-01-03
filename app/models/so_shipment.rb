@@ -94,19 +94,8 @@ class SoShipment < ActiveRecord::Base
     def set_quality_on_hand
     if self.quality_lot.present?
       quality_lot = self.quality_lot
-      p '=================================='
-      p quality_lot.quantity_on_hand
-      p self.so_shipped_count
-
-      p quality_lot.lot_quantity 
-      p "=================================="
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
-      quality_lot.quantity_on_hand = quality_lot.lot_quantity - self.so_shipped_count
-
-      p "=================================="
-        p  quality_lot.quantity_on_hand 
-
-      p "==================================="
+      quality_lot.quantity_on_hand = quality_lot.quantity_on_hand - self.so_shipped_count
       if quality_lot.quantity_on_hand <= 0
         quality_lot.finished = true
         quality_lot.lot_finalized_at = Date.today.to_s
@@ -116,4 +105,8 @@ class SoShipment < ActiveRecord::Base
       end
     end    
   end
+
+
+
+  
 end
