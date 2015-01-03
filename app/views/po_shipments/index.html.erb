@@ -4,4 +4,4 @@
 
 <%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} unless params[:type].eql?("history") %>
 
-<%= render :partial => 'po_shipments/shipments', :locals => {shipment_type: params[:type], create_payable: !params[:type].eql?("history")} %>z
+<%= render :partial => 'po_shipments/shipments', :locals => {shipment_type: params[:type], create_payable: !params[:type].eql?("history")} %>
