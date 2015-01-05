@@ -17,19 +17,18 @@ var current_field_temp;
 				<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
 				<%= type %>_line_row.hide(1000, arguments.callee);
 
-				var currentDate = new Date()
-				var day = currentDate.getDate()
-				var month = currentDate.getMonth() + 1
-				var year = currentDate.getFullYear()
-				shipment_date = day + "/" + month + "/" + year ;
-				$("#jr100_date").html(shipment_date);
-				$("#jr100_partno").html(response.part_number);
-				$("#jr100_quantity").html(response.po_shipped_count);
-				$("#jr100_po").html(response.po);
-				$("#jr100_customer").html(response.customer);
-				$("#jr100_controlno").text(response.control_number);        
-				printDiv($("#jr100").attr('id'));
-
+				        var currentDate = new Date()
+        var day = currentDate.getDate()
+        var month = currentDate.getMonth() + 1
+        var year = currentDate.getFullYear()
+        shipment_date = day + "/" + month + "/" + year ;
+        $("#jr100_date").html(shipment_date);
+        $("#jr100_partno").html(response.part_number);
+        $("#jr100_quantity").html(response.po_shipped_count);
+        $("#jr100_po").html(response.po);
+        $("#jr100_customer").html(response.customer);
+        $("#jr100_controlno").text(response.control_number);        
+        printContent($("#jr100").attr('id'));
 				setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
 			}
 			else{              
@@ -40,53 +39,128 @@ var current_field_temp;
 				<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
 				<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
 				<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
-				
-			    var currentDate = new Date()
-			    var day = currentDate.getDate()
-			    var month = currentDate.getMonth() + 1
-			    var year = currentDate.getFullYear()
-			    shipment_date = day + "/" + month + "/" + year ;
-			    $("#jr100_date").html(shipment_date);
-			    $("#jr100_partno").html(response.part_number);
-			    $("#jr100_quantity").html(response.po_shipped_count);
-			    $("#jr100_po").html(response.po);
-			    $("#jr100_customer").html(response.customer);
-			    $("#jr100_controlno").text(response.control_number);        
-			    printDiv($("#jr100").attr('id'));
+        var currentDate = new Date()
+        var day = currentDate.getDate()
+        var month = currentDate.getMonth() + 1
+        var year = currentDate.getFullYear()
+        shipment_date = day + "/" + month + "/" + year ;
+        $("#jr100_date").html(shipment_date);
+        $("#jr100_partno").html(response.part_number);
+        $("#jr100_quantity").html(response.po_shipped_count);
+        $("#jr100_po").html(response.po);
+        $("#jr100_customer").html(response.customer);
+        $("#jr100_controlno").text(response.control_number);        
+        printContent($("#jr100").attr('id'));
 
 
 			}
 		}
 	}
 
+// function printContent(div_id){
+// var win = window.open('http://google.com', '_blank');
+// if(win){
+//     //Browser has allowed it to be opened
+//     win.focus();
+//     win.print();
+//    // win.close();
+// }else{
+//     //Broswer has blocked it
+//     alert('Please allow popups for this site');
+// }
+// }
 
-	 function printDiv(divID) {
-            //Get the HTML of div            
-            var divElements = document.getElementById(divID).innerHTML;
-            //Get the HTML of whole page
-            var oldPage = document.body.innerHTML;
 
-            //Reset the page's HTML with div's HTML only
-            document.body.innerHTML = 
-              "<html><head><title></title></head><body>" + 
-              divElements + "</body>";
+// function printContent(div_id)
+// {
+// var DocumentContainer = document.getElementById(div_id);
+// var html = '<html><head>'+
+//                '<link href="css/template.css" rel="stylesheet" type="text/css" />'+
+//                '</head><body style="background:#ffffff;">'+
+//                DocumentContainer.innerHTML+
+//                '</body></html>';
 
-            //Print Page
-            window.print();
+//     var WindowObject = window.open("http://192.168.1.136:3000/po_shipments/new", "PrintWindow",
+//     "width=750,height=650,top=50,left=50,toolbars=no,scrollbars=yes,status=no,resizable=yes");
+//     WindowObject.document.writeln(html);
+//     WindowObject.document.close();
+//    // WindowObject.focus();
+//     WindowObject.print();
+//     WindowObject.close();
+ 
+// }
+function printContent(div_id)
+{
+// var divContents = $("#div_id").html();
+// var DocumentContainer = document.getElementById(div_id);
+// var html = '<html><head>'+
+              
+              
+//                '</head><body style="background:#ffffff;">'+
+//                DocumentContainer.innerHTML+
+//                '</body></html>';
 
-            //Restore orignal HTML
-            var timer = 1000;
-            setTimeout(function(){
-            main_load();
-            }, timer);
-            document.body.innerHTML = oldPage; 
+//             var printWindow = window.open('','',  'height=400,width=800');
+//             printWindow.document.write('<html><head><title>DIV Contents</title>');
+//             printWindow.document.write('</head><body >');
+//             printWindow.document.write(html);
+//             printWindow.document.write('</body></html>');
+//             printWindow.document.close();
+//             printWindow.print();
+//printWindow.close();
+
+//alert("Hello world");
+ var content = "<html>";
+ content +="<head> </head>  <style type='text/css'>  body {font-family: Arial, Helvetica, sans-serif;font-size: 14px;}.clear {clear: both;}.ms_wrapper{height: auto;}.ms_wrapper section {float: left;height: auto;width: 640px;}.ms_wrapper .ms_heading {border-bottom: 2px solid #999;font-size:16px;margin: 30px 0 4px;padding: 0 0 10px;width: 100%;}td {padding: 2px 0;}.ms_image-2 > h4 {margin: 24px 0 0;}.ms_wrapper .ms_image {float: left;font-size: 22px;text-align: center;width: 310px;height: 90px;}.ms_wrapper .ms_image-2 {float: right;font-size: 22px;text-align: right;width: 310px;height: 90px;}.ms_wrapper article {float: left;width: 100%;}.ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px;width: 262px;margin: 0;color: #666;}.ms_wrapper .ms_offers {float: left;margin: 12px 0 0;padding: 10px 0 0;text-align: center;}.bor {padding: 12px 0;}.ms_wrapper .ms_sub-heading {font-size: 22px;margin: 20px 0 6px;color: #000;}.ms_text strong,.ms_text-2 strong {float: left;font-size: 14px;font-weight: normal;line-height: 19px;width: 100%;}.ms_text1 strong {float: left;font-size: 14px;font-weight: normal;line-height: 19px;width: 100%;margin: 1px 0;text-align: center;font-weight: bold;}.ms_image-2 h3 {color: #000080;font-size: 16px;font-weight: normal;margin: 17px 0 0;text-decoration: underline;}.ms_image-2 h2 {color: #800000;font-size: 20px;font-weight: bold;margin: 2px 0;}.ms_image-2 h5 {font-size: 16px;font-weight: bold;margin: 2px 0;}.ms_text-3-wrapper {float: left;width: 310px;}.ms_text-3-wrapper .ms_text-3 {width: 152px;float: left;}.ms_text-3-wrapper .ms_text-4 {width: 152px;float: right;}.ms_text-3-wrapper .ms_text-4 strong {float: left;font-size: 14px;font-weight: normal;line-height: 19px;width: 100%;margin: 6px 0;text-align: center;}.ms_text-3-wrapper .ms_text-3 strong {color: #800000;float: left;font-size: 14px;font-weight: normal;line-height: 19px;margin: 6px 0;text-align: center;width: 100%;}.ms_text-3.text-5 strong {color: #000 !important;}.ms_text-3-wrapper .ms_sub-heading {font-size: 16px;text-align: center;margin: 30px 0 12px;}.ms_sub {font-size: 15px;text-align: center;text-decoration: underline;margin: 2px 0 10px 0;}.fon-004 > td {font-size: 16px;font-weight: bold;padding: 20px 0 8px;}.bor td {border: 1px solid #111;padding: 2px 37px;}.bor-2 td {border: 1px solid #111;padding: 5px 7px;}.bord-no{padding:0 !important;}.bor-3 td {border-top: 1px solid #111;border-bottom: none;padding: 4px 7px;border-left:none;border-right:none;}.ms_text {border-bottom: 2px solid #999;float: left;padding: 0 0 16px;width: 310px;}.ms_text-2 {border-bottom: 2px solid #999;float: right;padding: 0 0 16px;width: 310px;}.ms_text1 {float: left;margin: 12px 28px 0;width: 42%;}.ms_wrapper .ms_image2 {margin: 0 20px 0 0;border: 1px solid #ccc;padding: 20px 0;text-align: center;font-size: 22px;}.ms_image2 h2 {font-size: 17px;margin: 0;}.ms_image2 strong {color: #800000;float: left;font-size: 22px;margin: 0 0 8px;width: 100%;}.ms_image2 p {font-size: 18px;margin: 0;color: #000080;}.footer {border: 2px solid #444;float: left;margin: 8px 0 0;width: 100%;}.page {float: left;margin: 0 0 0 20px;}.page h3 {font-size: 14px;font-weight: bold;margin: 12px 0 0;}.page h4 {font-size: 12px;font-weight: normal;margin: 5px 0 12px 0;text-align: center;}.original {float: right;margin: 0 20px 0 0;}.original h3 {font-size: 14px;font-weight: bold;margin: 12px 0 0;}.original h4 {color: #800000;font-size: 12px;font-weight: normal;margin: 5px 0 12px;text-align: center;}.ms_image-wrapper {float: left;height: 69px;margin: 6px 0 0 3px;width: 150px;}.ms_image-wrapper img {width: 150px;}.ms_image-text {float: right;margin: 6px 10px 0 0;width: 120px;}.ms_image-text h2 {font-size: 13px;margin: 19px 0 8px 0;text-decoration: underline;}.ms_image-text h3 {font-size: 13px;font-weight: normal;margin: 3px 0;}.ms_image-text h5 {font-size: 9px;font-weight: normal;width: 120px;}.page-center {text-align: center;}.page-center h3 {font-size: 12px;font-weight: bold;}.page-center h4 {font-size: 12px;font-weight: normal;margin: 5px 0 12px 0;text-align: center;}.original h4 span{color: #000;}.original h4 span {color: #000;margin: 0 4px 0 0;}.text-6 {color: #800000;margin: 0 14px 0 0 !important;width: auto !important;}.text-7 {float: left;margin: 22px 0 0;width: 100%;}.lin {border-bottom: 2px solid #111;}th {padding: 0 0 9px;}</style>";
+ content += "<body>";
+ content += document.getElementById(div_id).innerHTML ;
+ content += "</body>";
+ content += "</html>";
+
+
+ var printWin = window.open('','','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=0,status =0');
+
+ printWin.document.write(content);
+ printWin.document.close();
+ printWin.focus();
+ printWin.print();
+
+ printPage(printWin);
+ 
+}
+function printPage(win_id){
+    setTimeout(function(){
+        win_id.close();
+    }, 1000);
+}
+
+	 // function printDiv(divID) {
+  //           //Get the HTML of div            
+  //           var divElements = document.getElementById(divID).innerHTML;
+  //           //Get the HTML of whole page
+  //           var oldPage = document.body.innerHTML;
+  //             alert(divElements);
+  //           //Reset the page's HTML with div's HTML only
+  //           document.body.innerHTML = 
+  //             "<html><head><title></title></head><body>" + 
+  //             divElements + "</body>";
+
+  //           //Print Page
+  //           window.print();
+
+  //           //Restore orignal HTML
+  //           // var timer = 1000;
+  //           // setTimeout(function(){
+  //           // main_load();
+  //           // }, timer);
+  //           document.body.innerHTML = oldPage; 
            
            
-    }    
-    function main_load()
-    {
-       location.reload();
-    }           
+  //   }    
+  //   function main_load()
+  //   {
+  //      location.reload();
+  //   }           
    
 
 	$(document).on("click", ".btn_save_shipped", function(){
