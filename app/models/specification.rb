@@ -31,5 +31,19 @@ class Specification < ActiveRecord::Base
   def before_save_values
       self.specification_identifier = self.attachment.attachment_name
   end
+  def self.item_specification(item)
+    specifications=[]
+    Item.find(item).item_revisions.each do |item_revision|
+      if item_revision.present?
+        item_revision.item_specifications.each do |process|
+          if process.present?
+            specifications<<process.specification
+          end
+        end
+      end
+    end
+    specifications = specifications.uniq
+    return specifications
+  end
   
 end
