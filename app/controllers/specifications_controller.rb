@@ -24,8 +24,11 @@ class SpecificationsController < ApplicationController
   # GET /specifications
   # GET /specifications.json
   def index
-    @specifications = Specification.joins(:attachment).all
-
+    if params[:item_id].present?
+      @specifications =Specification.item_specification(params[:item_id])
+    else
+      @specifications = Specification.joins(:attachment).all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
