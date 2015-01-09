@@ -30,6 +30,7 @@
   <%= @reconcile.reconcile_status %>
 </p>
 
-
+<% if can? :edit, Reconcile %> 
 <%= link_to 'Edit', edit_reconcile_path(@reconcile) %> |
+<% end %>
 <%= link_to 'Back', reconciles_path %>

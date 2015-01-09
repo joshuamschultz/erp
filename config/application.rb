@@ -48,7 +48,6 @@ module AllianceFasteners
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
-
     # Enforce whitelist mode for mass assignment.
     # This will create an empty whitelist of attributes available for mass-assignment for all models
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
@@ -61,7 +60,7 @@ module AllianceFasteners
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js", "jr100.css"]
+    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js","pk100.css", "jr100.css"]
 
     config.middleware.use PDFKit::Middleware, :print_media_type => true
     
@@ -69,7 +68,6 @@ module AllianceFasteners
     # In `config/environments/development.rb`
     #  config.action_controller.asset_host = "http://localhost:3001"
     
-
     # # In `config/environments/production.rb`
     # config.action_controller.asset_host = "http://erp.chessgroupinc.com"
   end

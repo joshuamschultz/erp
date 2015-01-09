@@ -4,6 +4,22 @@ class ReceivablesController < ApplicationController
 
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Receivable
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Receivable
+    end 
+  end 
+
   def set_page_info
       @menus[:accounts][:active] = "active"
   end
@@ -35,9 +51,16 @@ class ReceivablesController < ApplicationController
               receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
-              receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
+              if can? :edit, Receivable 
+                receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
                 [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
               )
+              else
+                receivable[:links] = CommonActions.object_crud_paths(nil, nil, nil,
+                [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
+              )
+              end  
+
         }
         render json: {:aaData => @receivables}
       }

@@ -123,7 +123,7 @@
     }  
 
     function set_current_quantity(response, callback_params, api_params){
-      $("#inventory_adjustment_inventory_adjustment_quantity").val(response["aaData"]["quantity_on_hand"]);
+      $("#inventory_adjustment_inventory_adjustment_quantity").val(response["aaData"]["lot_quantity"]);
       page_initial = false;
     }
   </script>

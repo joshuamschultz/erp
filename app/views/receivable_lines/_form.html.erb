@@ -41,3 +41,8 @@
 <%= render :partial => 'receivable_lines/line_items' %>
 
 <%= render :partial => 'so_lines/line_items' if @so_header %>
+
+<%= simple_form_for(@receivable, :html => {:id => "form_for_receivables",:class => "form-horizontal"}) do |f| %>
+<% gl_accounts = GlAccount.order(:gl_account_title) %>
+<%= render :partial => 'layouts/app_layouts/accounts', locals: {f: f, object: @receivable, fields: [:receivable_accounts, :gl_account, :receivable_account_description, :receivable_account_amount], accounts: @receivable.receivable_accounts, gl_accounts:gl_accounts, form_name: "form_for_receivables", default_account: (GlAccount.find_by_gl_account_identifier("11050") rescue GlAccount.first), account_type: "receivable"} %>
+<% end %>

@@ -11,12 +11,14 @@
                 <%= link_to 'All', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(1); return false;" %>
                 <%= link_to 'Open', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(2); return false;" %>
                 <%= link_to 'Closed', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(3); return false;" %>
-                <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>
+                <% if can? :edit, PoHeader %>
+                    <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>
+                <% end %>
             </span>
         </div> 
     </div>
     <!-- // Widget heading END -->
-    <div class="widget-body">
+    <div class="widget-body search-box">
         <table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
                 <tr>

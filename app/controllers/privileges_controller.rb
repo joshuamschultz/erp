@@ -1,4 +1,25 @@
 class PrivilegesController < ApplicationController
+
+  before_filter :manager_permissions,  :except => :index
+  before_filter :user_permissions
+
+
+  def manager_permissions
+   if  user_signed_in? && current_user.is_manager?
+        authorize! :edit, User
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, User
+    end 
+  end
+
+
+
+
+
 # include Devise::Controllers::InternalHelpers
   # GET /users
   # GET /users.json
@@ -9,9 +30,15 @@ class PrivilegesController < ApplicationController
       format.html # index.html.erb
       format.json { 
       	 @users = @users.select{ |user| 
+
           user[:user_email] = "<a href='mailto:#{user.email}' target='_top'>#{user.email}</a>"
-          user[:user_name] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
-          user[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
+          if can? :edit, user
+            user[:user_name] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
+            user[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
+          else
+            user[:user_name] = user.name
+            user[:links] = CommonActions.object_crud_paths(nil,nil, nil)
+          end    
           user[:role] = user.role_symbols[0].to_s
         }
         render json: {:aaData => @users}

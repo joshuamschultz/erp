@@ -3,7 +3,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Payments</h4>
             <span class="span6 heading right">
+              <% if can? :edit, Payment %>  
                 <%= link_to 'New Payment', new_payment_path, :class => "btn btn-mini btn-success" %>
+               <% end %> 
                 <%= link_to 'Checks', check_entries_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Open', payments_path(payment_status: "open"), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', payments_path(payment_status: "closed"), :class => "btn btn-mini btn-success" %>

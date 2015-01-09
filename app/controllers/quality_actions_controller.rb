@@ -4,6 +4,14 @@ class QualityActionsController < ApplicationController
 
   autocomplete :quality_action, :quality_action_no, :full => true
 
+  before_filter :view_permissions, except: [:index, :show]
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, QualityAction
+    end 
+  end
+
 
   def set_page_info
       @menus[:quality][:active] = "active"
@@ -24,11 +32,26 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions
   # GET /quality_actions.json
   def index
-    if params[:status]
-      @quality_actions = QualityAction.status_based_quality_action(params[:status])
-      @status = params[:status]
+    if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+
+      if params[:status]
+
+        @quality_actions = QualityAction.quality_action_filtering_status(params[:status])
+        @quality_actions = QualityAction.status_based_quality_action(params[:status])
+        @status = params[:status]
+      else
+        @quality_actions = QualityAction.quality_action_filtering
+      end
+    
     else
-      @quality_actions = QualityAction.all
+
+      if params[:status]
+        @quality_actions = QualityAction.status_based_quality_action(params[:status])
+        @status = params[:status]
+      else
+        @quality_actions = QualityAction.all
+      end
+
     end
 
     respond_to do |format|
@@ -36,7 +59,12 @@ class QualityActionsController < ApplicationController
       format.json { 
          @quality_actions = @quality_actions.select{|quality_action|
             quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
-            quality_action[:links] = quality_action.get_link
+            
+            if (can? :edit , quality_action)
+              quality_action[:links] = quality_action.get_link
+            else
+              quality_action[:links] = nil
+            end
             quality_action[:user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
             quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
             quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
