@@ -97,6 +97,14 @@ class CommonActionsController < ApplicationController
               @vendor_email = @contact.contact_email
               UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
               result = "success"
+
+            when "send_so_order_mail"
+              val =  params[:organizations]
+              @so_header = SoHeader.find(params[:so_header_id])
+              @contact = Contact.find(val["0"]["value"].to_i)
+              @customer_email = @contact.contact_email
+              UserMailer.sales_order_mail(@so_header, @customer_email).deliver
+              result = "success"
               
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
