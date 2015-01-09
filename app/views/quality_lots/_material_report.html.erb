@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+
+<title>Material Report</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+<style type="text/css">
+    @charset "utf-8";
+    body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+    }
+    /* New Style */
+    .clear {
+        clear: both;
+    }
+
+    .ms_wrapper {
+        float: left;
+        height: auto;
+        width: 640px;
+    }
+table {
+    border-collapse: collapse;
+} 
+table tr {
+border:1px solid #111;
+} 
+.bor td {
+border:1px solid #111;
+} 
+.bor-2 td {
+ padding: 2px 8px;
+} 
+td {
+    padding: 3px 8px;
+}
+.no-b tr{
+border:none;
+} 
+
+img {
+    width: 180px;
+}
+.color{color:#f40303;}
+
+</style>
+<% @company_info = CompanyInfo.first %>
+
+<div class="ms_wrapper">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+    <tr align="left" valign="top" style="border-bottom:none;" >
+      <td scope="row" style="padding:0;"  ><table width="100%" border="0"  cellspacing="0" cellpadding="0" class="no-b bor-2">
+        <tr align="left" valign="top">
+          <td width="43%" scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center" valign="top ">
+              <td style="padding:28px 0; border-right:1px solid #111;" scope="row">
+                  <%= image_tag(@company_info.image.image.url(:original)) if @company_info.image %>
+              </td>
+            </tr>
+            <tr align="center" valign="top">
+              <td style=" border-right:1px solid #111;font-size:13px;padding-top:20px; text-transform:uppercase;" scope="row"><strong>FIRST ARTICLE INSPECTION
+MATERIAL TEST RESULTS </strong></td>
+            </tr>
+          </table></td>
+          <td width="57%" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+              <td scope="row" style="border-bottom:1px solid #111;  "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Date </td>
+                  <td align="center" class="color"><%= Time.now.strftime("%m/%d/%Y") %></td>
+                </tr>
+              </table></td>
+            </tr>
+                       <tr>
+              <td scope="row" style="border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Part Number </td>
+                  <td align="center" class="color" ><%= @quality_lot.item_revision.item.item_part_no%></td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Part Name</td>
+                  <td align="center" class="color"><%= @quality_lot.item_revision.item_name %></td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Material</td>
+                  <td align="center" class="color"><%= @quality_lot.item_revision.material.material_short_name if @quality_lot.item_revision.material %> </td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111; padding:0 8px 0 8px ; "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center">
+                  <td align="left" style=" border-right:1px solid #111;" scope="row">Drawing  Rev Level</td>
+                  <td style=" border-right:1px solid #111;" class="color"><%= @quality_lot.item_revision.item_name%></td>
+                  <td style=" border-right:1px solid #111;">Rev Date</td>
+                  <td class="color"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
+                </tr>
+              </table></td>
+            </tr>
+                                    <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Supplier</td>
+                  <td align="center" class="color"><%= @company_info.company_name %><br>
+                     </td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr>
+              <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">Po No: </td>
+                  <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
+                </tr>
+              </table></td>
+            </tr>
+            </table></td>
+        </tr>
+    </table>      
+    </tr>
+    <tr style="border:none;">
+      <td scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bor">
+        <tr align="center" valign="top">
+          <td width="28%" bgcolor="#b8cce4" scope="row">MATERIAL SPEC.NO./REV / DATE </td>
+          <td width="13%" bgcolor="#b8cce4">SPECIFICATION LIMIT </td>
+          <td width="10%" bgcolor="#b8cce4">TEST DATA</td>
+          <td width="10%" bgcolor="#b8cce4">QTY TESTED</td>
+          <td width="13%" bgcolor="#b8cce4">Supplier Test Result Data </td>
+          <td width="16%" bgcolor="#b8cce4">OK</td>
+          <td width="10%" bgcolor="#b8cce4">NOT OK</td>
+        </tr>
+
+
+        <% @quality_lot.quality_lot_materials.each do |element| %>
+
+              <tr align="center">
+                <td scope="row" class="color"><%= element.material_element.element.element_name.to_s + " (" + element.material_element.element.element_symbol.to_s + ")" %></td>
+                <td><%= (element.material_element.element_low_range)-(element.material_element.element_high_range) %></td>
+                <td><%= element.lot_element_low_range %></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <% if element.lot_material_result =="accepted" %>
+                  <td><%= element.lot_material_result %></td>
+                <% else %>
+                   <td>&nbsp;</td>
+                <% end %>
+                <% if element.lot_material_result =="rejected" %>
+                  <td><%= element.lot_material_result %></td>
+                <% else %>
+                   <td>&nbsp;</td>
+                <% end %>
+              </tr>
+        <% end %>
+
+
+
+
+
+
+
+      </table></td>
+    </tr>
+    <tr align="center" style="border-top:none; border-bottom:none;" >
+      <td scope="row"><strong>SIGNATURES</strong></td>
+    </tr>
+    <tr style="border:none;">
+      <td scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center">
+          <td align="left" style=" border-right:1px solid #111;" scope="row">Supplier Quality Engineer, Date</td>
+          <td style=" border-right:1px solid #111;">Other as requested</td>
+          </tr>
+        <tr align="center">
+          <td align="left" style=" border-right:1px solid #111;" scope="row">PRINTED NAME Aphrodite</td>
+          <td style=" border-right:1px solid #111;">PRINTED NAME</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr style="border-top:none;">
+      <td scope="row">ADDITIONAL REMARKS<br>
+       <br>
+       </td>
+    </tr>
+    <tr>
+      <td scope="row">First Article Inspection -Material Test Results</td>
+    </tr>
+  </table>
+
+</div>
+
+
+

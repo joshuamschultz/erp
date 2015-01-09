@@ -28,7 +28,11 @@ class ItemRevisionsController < ApplicationController
       format.json { 
         @item_revisions = @item_revisions.select{|revision|
             revision[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id)}'>#{revision.item_revision_name}</a>"
+           if can? :edit, Item 
             revision[:links] = CommonActions.object_crud_paths(nil, edit_item_item_revision_path(@item, revision), nil)
+           else 
+            revision[:links] = ""
+           end 
         }
         render json: {:aaData => @item_revisions}
       }

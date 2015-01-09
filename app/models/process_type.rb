@@ -62,6 +62,7 @@ class ProcessType < ActiveRecord::Base
           end
         end
       end
+      process_types = process_types.uniq
       return process_types
   end
   

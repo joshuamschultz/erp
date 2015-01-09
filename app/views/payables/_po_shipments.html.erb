@@ -17,7 +17,12 @@
                 <td><%= po_shipment.po_shipped_count %></td>
                 <td><%= po_shipment.po_line.po_line_cost %></td>
                 <td><%= po_shipment.po_shipped_cost %></td>
-                <td><%= link_to "<i></i>".html_safe, payable_po_shipment_path(po_shipment.payable_po_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn-action btn glyphicons remove_2 btn-danger" %></td>
+                
+                <td><% if can? :edit, Payable %>
+                    <%= link_to "<i></i>".html_safe, payable_po_shipment_path(po_shipment.payable_po_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn-action btn glyphicons remove_2 btn-danger" %>
+                    <% end %>
+                </td>
+                
             </tr>
         <% end %>
     </tbody>

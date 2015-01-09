@@ -11,7 +11,9 @@
             <%= link_to "Checklist", checklist_path(@quality_lot.checklist), :class => "btn btn-small" if @quality_lot.checklist %>
                 <%= link_to "New PSW", new_ppap_path(:quality_lot_id => @quality_lot.id), :class => "btn btn-small" unless @quality_lot.ppap %>                
                 <%= link_to "PSW", ppap_path(@quality_lot.ppap), :class => "btn btn-small" if @quality_lot.ppap %>
-                <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>     
+                <% if can? :edit, QualityLot %>
+                  <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>  
+                <% end %>   
                 <%= link_to "Back", quality_lots_path, :class =>"btn btn-small" %>
             </span>
         </div>
@@ -25,7 +27,11 @@
 
           <tr>
             <td>PO: </td>
-            <td><%= link_to(@quality_lot.po_header.po_identifier, po_header_path(@quality_lot.po_header)) %></td>
+            <% if can? :view, PoHeader %>
+              <td><%= link_to(@quality_lot.po_header.po_identifier, po_header_path(@quality_lot.po_header)) %></td>
+            <% else %>
+               <td><%= @quality_lot.po_header.po_identifier %></td>
+            <% end%> 
           </tr>
 
           <tr>
@@ -175,7 +181,7 @@
 
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
-            <a class="widget-stats" href="#" id="">
+            <a class="widget-stats" href="#" id="" onclick="material_report()">
                 <h5><strong>Inspection <br />  Report</strong></h5>
                 <!-- <span class="txt"><strong>Process Capability</strong></span> -->
                 <div class="clearfix"></div>
@@ -221,3 +227,24 @@
 
 <%= render :partial => 'comments/comments', 
 :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+
+
+
+<script type="text/javascript">
+function material_report() {
+    var quality_iframe = $("#lot_material")[0];
+    quality_iframe.contentWindow.focus();
+    quality_iframe.contentWindow.print();
+    dimension_report();
+
+}
+function dimension_report() {
+    var dimension_iframe = $("#lot_dimension")[0];
+    dimension_iframe.contentWindow.focus();
+    dimension_iframe.contentWindow.print();
+
+}
+</script>
+<iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
+
+<iframe src="<%= dimension_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_dimension" width="10" height= "10"></iframe>

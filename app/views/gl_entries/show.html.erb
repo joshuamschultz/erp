@@ -1,7 +1,9 @@
 <div class="row-fluid">
     <h4 class="span3 left">Journal Entry Info</h4>
     <span class="span9 right">
+        <% if can? :edit, GlEntry %>
         <%= link_to 'Edit', edit_gl_entry_path(@gl_entry), :class => "btn btn-small" %>       
+        <% end %>
         <%= link_to 'Back', gl_entries_path, :class => "btn btn-small" %>
     </span>
 </div>

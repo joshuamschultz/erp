@@ -115,8 +115,8 @@ class Organization < ActiveRecord::Base
 	has_many :po_lines, :dependent => :destroy #For Customers
 	has_many :attachments, :as => :attachable, :dependent => :destroy
 	has_many :item_alt_names, :dependent => :destroy
-	has_many :so_headers
-    has_many :so_lines
+	has_many :so_headers, :dependent => :destroy 
+    has_many :so_lines, :dependent => :destroy
     has_many :payables, :dependent => :destroy
     has_many :receivables, :dependent => :destroy
     has_many :quote_vendors, :dependent => :destroy
