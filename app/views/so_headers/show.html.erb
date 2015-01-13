@@ -80,8 +80,10 @@ function packing_report()
 <iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
 
 <script type="text/javascript">
-    function after_send(){
-        alert("sucess")
+    function after_send(response){
+        //alert("sucess");
+
+          alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
     function send_mail_customer(){
 

@@ -103,8 +103,12 @@ class CommonActionsController < ApplicationController
               @so_header = SoHeader.find(params[:so_header_id])
               @contact = Contact.find(val["0"]["value"].to_i)
               @customer_email = @contact.contact_email
-              UserMailer.sales_order_mail(@so_header, @customer_email).deliver
-              result = "success"
+              if @customer_email.present?
+                UserMailer.sales_order_mail(@so_header, @customer_email).deliver
+                result = "success"
+              else
+                result = "fail"
+              end 
               
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
