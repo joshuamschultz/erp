@@ -105,7 +105,7 @@ class CommonActionsController < ApplicationController
               @customer_email = @contact.contact_email
               if @customer_email.present?
                 UserMailer.sales_order_mail(@so_header, @customer_email).deliver
-                result = "success"
+                result = "sucess"
               else
                 result = "fail"
               end 
