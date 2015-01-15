@@ -102,14 +102,12 @@ class QualityLot < ActiveRecord::Base
 	def set_lot_control_no
 		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
 		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
-		quality_lot_id = self.po_line.item.quality_lots.maximum(:id)
-
-		p "====================================="
-
-				p quality_lot_id
-		p "========================================"
-		maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-		current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		current_count = 0
+		if self.po_line.item.quality_lots.present?
+			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
+			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+			current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		end
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (current_count + 1).to_s
 
