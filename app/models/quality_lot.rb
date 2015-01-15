@@ -110,7 +110,6 @@ class QualityLot < ActiveRecord::Base
 		end
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (current_count + 1).to_s
-
 	end
 
 	def lot_with_part_no
