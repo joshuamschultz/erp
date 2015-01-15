@@ -3,7 +3,7 @@ class PoShipment < ActiveRecord::Base
 
   has_one :payable_po_shipment, :dependent => :destroy
   has_one :payable, through: :payable_po_shipment
-  belongs_to :quality_lot
+  belongs_to :quality_lot, :dependent => :destroy
 
   
   attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
