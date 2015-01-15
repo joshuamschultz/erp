@@ -89,8 +89,9 @@ class Item < ActiveRecord::Base
   end 
 
   def qty_on_order
-      # self.po_lines.sum(:po_line_quantity) - self.po_lines.sum(:po_line_shipped)
-      self.quality_lots.sum(:lot_quantity)
+    # self.po_lines.sum(:po_line_quantity)
+    # self.last.po_lines.joins(:po_header).where(po_headers: {po_status: "open"}).sum(:po_line_quantity)
+    self.po_lines.where(:po_line_status => "open").includes(:po_header).where(po_headers: {po_status: "open"}).sum(:po_line_quantity)
   end
 
   def qty_on_hand
