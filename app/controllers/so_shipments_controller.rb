@@ -152,7 +152,7 @@ class SoShipmentsController < ApplicationController
           @so_shipment["so_b_c_address_2"] = @so_shipment.so_line.so_header.bill_to_address.contact_address_2 
           @so_shipment["so_b_c_state"] = @so_shipment.so_line.so_header.bill_to_address.contact_state 
           @so_shipment["so_b_c_country"] = @so_shipment.so_line.so_header.bill_to_address.contact_country 
-          @so_shipment["so_b_c_zipcode"] == @so_shipment.so_line.so_header.bill_to_address.contact_zipcode
+          @so_shipment["so_b_c_zipcode"] = @so_shipment.so_line.so_header.bill_to_address.contact_zipcode
         end 
         if @so_shipment.so_line.so_header.ship_to_address.present? 
           @so_shipment["so_s_c_title"]= @so_shipment.so_line.so_header.ship_to_address.contact_title 
@@ -160,10 +160,10 @@ class SoShipmentsController < ApplicationController
           @so_shipment["so_s_c_address_2"] = @so_shipment.so_line.so_header.ship_to_address.contact_address_2 
           @so_shipment["so_s_c_state"] = @so_shipment.so_line.so_header.ship_to_address.contact_state 
           @so_shipment["so_s_c_country"] = @so_shipment.so_line.so_header.ship_to_address.contact_country 
-          @so_shipment["so_s_c_zipcode"] == @so_shipment.so_line.so_header.ship_to_address.contact_zipcode
+          @so_shipment["so_s_c_zipcode"] = @so_shipment.so_line.so_header.ship_to_address.contact_zipcode
         end 
         @so_shipment["so_notes"] = @so_shipment.so_line.so_header.so_notes if @so_shipment.so_line.so_header.so_notes
-        @so_shipment["so_date"] = @so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
+        @so_shipment["so_date"] = "Sales Order Date :"+@so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
         @so_shipment["part_number"] = @so_shipment.so_line.item.item_part_no
         @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description
         @so_shipment["alt_part_number"] = @so_shipment.so_line.item_alt_name.item_alt_identifier if @so_shipment.so_line.item.item_part_no != @so_shipment.so_line.item_alt_name.item_alt_identifier 
