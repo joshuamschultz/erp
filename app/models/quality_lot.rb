@@ -44,6 +44,7 @@ class QualityLot < ActiveRecord::Base
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy
   	has_many :inventory_adjustments, :dependent => :destroy
+  	# has_one :po_shipment, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
@@ -102,6 +103,11 @@ class QualityLot < ActiveRecord::Base
 		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
 		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
 		quality_lot_id = self.po_line.item.quality_lots.maximum(:id)
+
+		p "====================================="
+
+				p quality_lot_id
+		p "========================================"
 		maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
 		current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
