@@ -144,6 +144,7 @@ class SoShipmentsController < ApplicationController
     respond_to do |format|
       if @so_shipment.save
         @so_shipment.set_quality_on_hand
+        @so_shipment.so_line.update_so_total
         @so_shipment["so"] = @so_shipment.so_line.so_header.so_identifier
         @so_shipment["so_total"] = @so_shipment.so_line.so_header.so_total.to_f
         if @so_shipment.so_line.so_header.bill_to_address.present? 
