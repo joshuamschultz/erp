@@ -95,8 +95,14 @@ class CommonActionsController < ApplicationController
               @po_header = PoHeader.find(params[:po_header_id])
               @contact = Contact.find(val["0"]["value"].to_i)
               @vendor_email = @contact.contact_email
-              UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
-              result = "success"
+              if @vendor_email.present?
+                UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
+                result = "success"
+              else
+                   result = "fail"
+              end 
+              
+
 
             when "send_so_order_mail"
               val =  params[:organizations]

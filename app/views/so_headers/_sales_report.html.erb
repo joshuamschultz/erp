@@ -359,11 +359,10 @@
                 <div class="ms_text-4">
                     <h2 class="ms_sub-heading">  Shipped </h2> 
                     <% @so_header.so_lines.each do |so_line| %>
-                        <% if shipment = SoShipment.find_by_so_line_id(so_line) %>
-                            <strong><%= shipment.so_shipped_count %> </strong>
-                        <% else %>
-                            <strong><%= shipped_val = 0 %></strong>
-                        <% end %>
+                 
+                            <strong><%= so_line.so_line_shipped %> </strong>
+                      
+                    
                     <% end %>
                 </div>
             </div>
