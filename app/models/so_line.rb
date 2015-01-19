@@ -85,19 +85,13 @@ class SoLine < ActiveRecord::Base
 
         so_line_shipped = so_line.so_line_shipped
 
-        p "============================"
-
-          p so_line_shipped
-        p "=================================="
- 
-
         if so_line.item_revision.present?
           item_description = so_line.item_revision.item_description
         end
                                                   
-        if so_line.organization.present? 
-          organization_name = so_line.organization.organization_name
-        end 
+        # if so_line.organization.present? 
+        #   organization_name = so_line.organization.organization_name
+        # end 
 
         if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier 
           item_part_no = so_line.item.item_part_no 
