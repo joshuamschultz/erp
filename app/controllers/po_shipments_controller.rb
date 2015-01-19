@@ -138,6 +138,7 @@ class PoShipmentsController < ApplicationController
         @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
         @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
         @po_shipment["control_number"] = quality_lot.lot_control_no if quality_lot.present?
+        @po_shipment["company_name"] =  CompanyInfo.first.company_name
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }
       else
