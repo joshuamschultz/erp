@@ -1,7 +1,7 @@
 class ItemRevision < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  belongs_to :item
+  belongs_to :item, :dependent => :destroy
   belongs_to :owner
   belongs_to :print
   belongs_to :material
