@@ -33,7 +33,7 @@
         text-align: center;
         width: 310px;
         height: 85px;
-        padding: 50px 0 0;
+        padding: 25px 0 ;
     }
     .ms_wrapper .ms_image-2 {
         border: 1px solid #ccc;
@@ -264,16 +264,21 @@
     width: 100%;
 }
 
+.ms_image img {
+    width: 196px;
+}
+
 </style>
 
-
+<% @company_info = CompanyInfo.first%>
 
 <div class="ms_wrapper">
 
     <section>
 
         <article>
-            <div class="ms_image">Chess Group Inc</div>
+            <div class="ms_image"><%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
+</div>
             <div class="ms_image-2">
                 <h3> Sales Order Number </h3>
                 <h2> <%= @so_header.so_identifier %> </h2>
