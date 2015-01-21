@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
-  default from: "Alliance Fastners <do-not-reply@alliance-fastners.com>"
+   @companyinfo = CompanyInfo.first
+   default from: "#{@companyinfo.company_name} <do-not-reply@alliance-fastners.com>"
 
 
 
