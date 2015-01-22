@@ -143,10 +143,10 @@ class PoLine < ActiveRecord::Base
  product1 = product2 = product_description =po_line_comment  = product_notes = source =''      
   self.po_header.po_lines.each do |po_line| 
     if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
-      product1= "<tr><th width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
+      product1= "<tr><td width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</td></tr>"
     else 
-      product1="<tr><th width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
-      product2= "<tr><th width='150' scope='row'>"+(po_line.item_alt_name.item_alt_identifier).to_s+ "</th></tr>"
+      product1="<tr><td width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</td></tr>"
+      product2= "<tr><td width='150' scope='row'>"+(po_line.item_alt_name.item_alt_identifier).to_s+ "</td></tr>"
     end 
     if po_line.item_revision.present?
       product_description= ""+po_line.item_revision.item_description.to_s+""
@@ -156,7 +156,9 @@ class PoLine < ActiveRecord::Base
     source+="
 
 
-
+ <div class='ff'>
+    <table cellspacing='0' cellpadding='0' width='678px' border='0'>
+        <tbody>
 
     <tr valign='top' align='left' class='h-pad'>
 
@@ -193,7 +195,7 @@ class PoLine < ActiveRecord::Base
             </tr>
          </tbody>
         </table>
-</div></div>"
+</div></div></div>"
 
          
   end 
@@ -283,11 +285,12 @@ article.art-01 {
     text-decoration: underline;
 }
 
+
 .ms_text-6 > h3 {
     float: left;
+    font-size: 12px;
     margin: 0;
-    padding: 18px 0 0;
-    font-size: 14px;
+    padding: 0;
 }
 
 
@@ -515,7 +518,6 @@ width: 134px;
     border: 1px solid #000;
 }
 .h-pad {
-    float: left;
     width: 100%;
 }
 
@@ -545,7 +547,7 @@ width: 134px;
 
 
 
-<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr>#{source}</tbody>
+<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>#{source}</tbody>
 
 
 
