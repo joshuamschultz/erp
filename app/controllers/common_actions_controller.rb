@@ -330,7 +330,7 @@ class CommonActionsController < ApplicationController
                 receipt.update_transactions
                 @reconcile = Reconcile.where(:receipt_id => receipt.id).first
                 if @reconcile.nil?                                  
-                  Reconcile.create(tag: "not reconciled",reconcile_type: deposit_check.receipt_type, receipt_id: receipt.id, deposit_check_id: params[:id])                                             
+                  Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: receipt.id, deposit_check_id: params[:id])                                             
                 end  
                 check_register = CheckRegister.where(receipt_id: receipt.id).first
                 unless  check_register.present? 
