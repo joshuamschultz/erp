@@ -242,9 +242,35 @@ function dimension_report() {
     var dimension_iframe = $("#lot_dimension")[0];
     dimension_iframe.contentWindow.focus();
     dimension_iframe.contentWindow.print();
+    gage_report();
+}
+function gage_report() {
+    var gage_iframe = $("#lot_gage")[0];
+    gage_iframe.contentWindow.focus();
+    gage_iframe.contentWindow.print();
+    psw_report();
+}
+function psw_report() {
+    var psw_iframe = $("#lot_psw")[0];
+    psw_iframe.contentWindow.focus();
+    psw_iframe.contentWindow.print();
+    csk_report();
+
+}
+function csk_report() {
+    var csk_iframe = $("#lot_csk")[0];
+    csk_iframe.contentWindow.focus();
+    csk_iframe.contentWindow.print();
 
 }
 </script>
 <iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
 
 <iframe src="<%= dimension_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_dimension" width="10" height= "10"></iframe>
+
+<iframe src="<%= gage_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_gage" width="10" height= "10"></iframe>
+
+<iframe src="<%= psw_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_psw" width="10" height= "10" ></iframe>
+
+<iframe src="<%= csk_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_csk" width="10" height= "10"></iframe>
+
