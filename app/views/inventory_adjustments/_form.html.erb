@@ -60,7 +60,7 @@
 
         jQuery("#inventory_adjustment_quality_lot_id").on('change', function() {
 
-            initiate_current_quantity();
+           // initiate_current_quantity();
         });
 
 
@@ -96,7 +96,7 @@
         var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
         $("#inventory_adjustment_quality_lot_id").html(html);
         set_val_selectbox();
-        initiate_current_quantity();
+       // initiate_current_quantity();
 
     }
 

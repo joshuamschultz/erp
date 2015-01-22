@@ -71,28 +71,27 @@ class PoLine < ActiveRecord::Base
   def po_line_data_list(object, shipment)
     po_line = shipment ? object.po_line : object
     # if User.current_user.present? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
-    object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
-    object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-    object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
-    object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || "" 
-    object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-    object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
-    object[:po_line_quantity] = po_line.po_line_quantity      
-    object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
-    object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
-    unless shipment
-      object[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
-      object[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
-      object[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
-      object[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
-      object[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
-
-      object[:links] = "<a po_line_id='#{po_line.id}' po_shipped_status='rejected' class='pull-right btn_save_shipped btn-action glyphicons ban btn-danger' href='#'><i></i></a> "
-      object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='on hold' class='pull-right btn_save_shipped btn-action glyphicons circle_exclamation_mark btn-warning' href='#'><i></i></a> "
-      object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='received' class='pull-right btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> "
-      object[:links] += " <div class='pull-right shipping_status'></div>"
-    end
-    object
+      object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
+      object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+      object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
+      object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || "" 
+      object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
+      object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+      object[:po_line_quantity] = po_line.po_line_quantity      
+      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
+      object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
+      unless shipment
+        object[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
+        object[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
+        object[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
+        object[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
+        object[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
+        
+        object[:links] = "<a po_line_id='#{po_line.id}' po_shipped_status='rejected' class='pull-right btn_save_shipped btn-action glyphicons ban btn-danger' href='#'><i></i></a> "
+        object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='on hold' class='pull-right btn_save_shipped btn-action glyphicons circle_exclamation_mark btn-warning' href='#'><i></i></a> "
+        object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='received' class='pull-right btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> "
+        object[:links] += " <div class='pull-right shipping_status'></div>"
+      end
     # else
     #   object[:po_identifier] = po_line.po_header.po_identifier
     #   object[:item_part_no] = po_line.item_alt_name.item_alt_identifier
@@ -116,7 +115,7 @@ class PoLine < ActiveRecord::Base
     #     object[:links] += ""
     #   end
   
- 
+    object
   end
 
   before_save :process_before_save
@@ -144,10 +143,10 @@ class PoLine < ActiveRecord::Base
  product1 = product2 = product_description =po_line_comment  = product_notes = source =''      
   self.po_header.po_lines.each do |po_line| 
     if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
-      product1= "<tr><th width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
+      product1= "<tr><td width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</td></tr>"
     else 
-      product1="<tr><th width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</th></tr>"
-      product2= "<tr><th width='150' scope='row'>"+(po_line.item_alt_name.item_alt_identifier).to_s+ "</th></tr>"
+      product1="<tr><td width='150' scope='row'>" +(po_line.item.item_part_no).to_s+"</td></tr>"
+      product2= "<tr><td width='150' scope='row'>"+(po_line.item_alt_name.item_alt_identifier).to_s+ "</td></tr>"
     end 
     if po_line.item_revision.present?
       product_description= ""+po_line.item_revision.item_description.to_s+""
@@ -157,7 +156,9 @@ class PoLine < ActiveRecord::Base
     source+="
 
 
-
+ <div class='ff'>
+    <table cellspacing='0' cellpadding='0' width='678px' border='0'>
+        <tbody>
 
     <tr valign='top' align='left' class='h-pad'>
 
@@ -171,28 +172,30 @@ class PoLine < ActiveRecord::Base
 
 
       </td>
-      <td>
-        <table border='0' width='100%''>
-          <tbody>
-            <tr>
-              <td>"+product_description+"</td>
-            </tr> 
-            <tr>
-              <td colspan='6' class='h-pad-04'>"+product_notes+"</td>
-            </tr>    
-            <tr>
-              <td colspan='6' class='h-pad-04'>"+po_line_comment+"</td>
-            </tr>
-         </tbody>
-        </table>
-      </td>
+
+ <td>"+product_description+"</td>
+
       <td>"+(po_line.po_line_cost.to_f).to_s+"</td>
       <td>"+(po_line.po_line_total.to_f).to_s+"</td>
 
-    </tr>"
+    </tr>         </tbody>
+        </table>
 
 
-
+            <div class='sd'>
+                <div class='sd1'>
+        <table cellspacing='0' cellpadding='0' border='0' width='100%'' border-collapse='collapse'>
+          <tbody>
+    
+            <tr>
+              <td>"+product_notes+"</td>
+            </tr>    
+            <tr>
+              <td>"+po_line_comment+"</td>
+            </tr>
+         </tbody>
+        </table>
+</div></div></div>"
 
          
   end 
@@ -282,11 +285,12 @@ article.art-01 {
     text-decoration: underline;
 }
 
+
 .ms_text-6 > h3 {
     float: left;
+    font-size: 12px;
     margin: 0;
-    padding: 18px 0 0;
-    font-size: 14px;
+    padding: 0;
 }
 
 
@@ -498,13 +502,12 @@ margin: 2px 0 10px 0;}
 border-bottom: 1px solid #222;
 float: left;
 font-weight: bold;
-padding: 11px 0;
 width: 100%;
 }
 .hea.art-002 > td {
-float: left;
 padding: 0;
 width: 134px;
+    border: 1px solid;
 }
 
 
@@ -512,9 +515,9 @@ width: 134px;
     padding: 9px 12px;
     text-align: center;
     width: 109px;
+    border: 1px solid #000;
 }
 .h-pad {
-    float: left;
     width: 100%;
 }
 
@@ -527,8 +530,37 @@ width: 134px;
     width: 128px;
 }
 
+.sd1 {
+    text-align: center;
+    width: 100%;
+}
+
+.sd1 td {
+    border: 1px solid #000;
+    color: #800000;
+}
 </style>
-</head><body><div class="ms_wrapper"><section><article><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} /></div><div class="ms_image-text"><h5>#{@company_info.company_address1}<br/>#{@company_info.company_address2}<hr><b>P:&nbsp;</b> #{@company_info.company_phone1}<br/>&nbsp;<b>F:&nbsp;</b> #{@company_info.company_fax}<hr></h5></div></div><div class="ms_image-2"><h3> Purchase Order Number</h3><h2> #{self.po_header.po_identifier}</h2><h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5></div></article><article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">#{self.po_header.organization.organization_name}<br>#{self.po_header.organization.organization_address_1}#{self.po_header.organization.organization_address_2}</h2> <h3> #{self.po_header.organization.organization_city}#{self.po_header.organization.organization_state} #{self.po_header.organization.organization_country}#{self.po_header.organization.organization_zipcode}</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong></div></div></article><article><article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr>#{source}</tbody></table></article></article><article class="art-02"><div class="ms_text-55"><h1 class="ms_heading-3">Comments:</h1> <div class="ms_text-6">                <strong class="ms-5">#{self.po_header.po_notes}</strong> </div></div><div class="ms_text-2"><div class="ms_text-6"><div class="ms_text-7 ms_text-8 "></div><div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"> #{self.po_header.po_total.to_f}</strong> </div></div></div></article><article><div class="footer"><div class="page"><h3>Date</h3><h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4></div><div class="page-center"><h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page regulatory agencies reserve the right to audit Seller"s books and records and the right to inspect at the Seller"s plant any and all materials and systems.</h4></div><div class="original"><h3>Page </h3><h4>1</h4></div></article></div></div></body></html>'
+</head><body><div class="ms_wrapper"><section><article><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/#{@company_info.logo.joint.url(:original)} /></div><div class="ms_image-text"><h5>#{@company_info.company_address1}<br/>#{@company_info.company_address2}<hr><b>P:&nbsp;</b> #{@company_info.company_phone1}<br/>&nbsp;<b>F:&nbsp;</b> #{@company_info.company_fax}<hr></h5></div></div><div class="ms_image-2"><h3> Purchase Order Number</h3><h2> #{self.po_header.po_identifier}</h2><h5>Purchase Order Date :  #{self.po_header.created_at.strftime("%m/%d/%Y")} </h5></div></article><article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">#{self.po_header.organization.organization_name}<br>#{self.po_header.organization.organization_address_1}#{self.po_header.organization.organization_address_2}</h2> <h3> #{self.po_header.organization.organization_city}#{self.po_header.organization.organization_state} #{self.po_header.organization.organization_country}#{self.po_header.organization.organization_zipcode}</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>#{@company_info.company_address1}</strong><strong>#{@company_info.company_address2}</strong></div></div></article><article>
+
+
+
+
+
+
+<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>#{source}</tbody>
+
+
+
+
+</table></article>
+
+
+
+
+
+
+
+</article><article class="art-02"><div class="ms_text-55"><h1 class="ms_heading-3">Comments:</h1> <div class="ms_text-6">                <strong class="ms-5">#{self.po_header.po_notes}</strong> </div></div><div class="ms_text-2"><div class="ms_text-6"><div class="ms_text-7 ms_text-8 "></div><div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2"> #{self.po_header.po_total.to_f}</strong> </div></div></div></article><article><div class="footer"><div class="page"><h3>Date</h3><h4>#{self.po_header.created_at.strftime("%m/%d/%Y")}</h4></div><div class="page-center"><h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page regulatory agencies reserve the right to audit Seller"s books and records and the right to inspect at the Seller"s plant any and all materials and systems.</h4></div><div class="original"><h3>Page </h3><h4>1</h4></div></article></div></div></body></html>'
 
  
 

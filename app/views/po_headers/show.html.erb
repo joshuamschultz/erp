@@ -86,7 +86,8 @@ function purchase_report() {
 <iframe src="<%= purchase_report_po_header_path(@po_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
 
 <script type="text/javascript">
-    function after_send(){
+    function after_send(response){
+      
        alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
     function send_mail_vendor(){
