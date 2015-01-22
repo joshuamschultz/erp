@@ -97,7 +97,7 @@ class Payment < ActiveRecord::Base
         end
         if self.payment_type.present? && (self.payment_type.type_value == "credit" || self.payment_type.type_value == "ach" )
             Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) 
-            self.update_transactions if self.payment_type.type_value == "ach"
+            self.update_transactions # if self.payment_type.type_value == "ach"
             # payable = Payable.find (self.payment_lines.collect(&:payable_id).first)
             
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
