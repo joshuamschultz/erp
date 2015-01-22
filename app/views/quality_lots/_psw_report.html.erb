@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+
+<title>Packing Report</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+<style type="text/css">
+    @charset "utf-8";
+    body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	background-color: #FFF;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+    }
+    /* New Style */
+    .clear {
+        clear: both;
+    }
+
+    #main-wrapper {
+        float: left;
+        height: auto;
+        width: 640px;
+		border:1px solid #000;
+    }
+.wrapper {
+float: left;
+height: auto;
+width: 100%;
+}
+.wrapper-1 {
+float: left;
+height: auto;
+width: 100%;
+}
+.wrapper-2 {
+float: left;
+height: auto;
+width: 100%;
+}
+.wrapper-none.pa td {
+    padding: 4px 0;
+}
+.wrapper-none.pa-1 td {
+    padding: 1px 0;
+}
+
+table {
+    border-collapse: collapse;
+}
+.t_bor tr{border-bottom:1px dashed #111;}
+body,td,th {
+	color: #000;
+}
+
+.logo {
+    width: 180px;
+}
+
+.wrapper-none td {
+    border: none !important;
+}
+
+
+.wrapper-1 td {
+    border: 1px solid #000;
+}
+
+.wrapper-2 td {
+    float: left;
+    margin: 4px 11px 1px;
+    width: 137px;
+}
+
+.ff {
+    float: left;
+}
+
+.ff-2 {
+    float: left;
+    width: 110px;
+}
+.ff-3 {
+    float: left;
+    width: 312px;
+}
+.ff-4 {
+    float: left;
+    width: 180px;
+}
+.ff-5 {
+    float: left;
+    width: 133px;
+}
+.ff-6 {
+    float: left;
+    width: 22px;
+}
+
+</style>
+
+<% @company_info = CompanyInfo.first %>
+<div id="main-wrapper">
+
+<div class="wrapper">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top">
+      <td width="50%" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" scope="row">
+            
+
+                    <%= image_tag(@company_info.image.image.url(:original), :class => "logo" ) if @company_info.image %>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="middle" scope="row" style="padding:40px 0 0 0">SUPPLIER<br>
+            PART SUBMISSION WARRANT (PSW)</td>
+        </tr>
+      </table></td>
+      <td width="82%" align="center" valign="middle">
+      
+      <div class="wrapper-1">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="25%" scope="row">Date</td>
+            <td width="75%" align="center" style="color:#000;"><%= Time.now.strftime("%m/%d/%Y") %></td>
+          </tr>
+          <tr>
+            <td scope="row">FAI #</td>
+            <td align="center" style="color:#000;"></td>
+          </tr>
+          <tr>
+            <td scope="row">Part Number</td>
+            <td align="center" style="color:#000;"><%= @quality_lot.item_revision.item.item_part_no %></td>
+          </tr>
+          <tr>
+            <td scope="row">Part Name</td>
+            <td align="center" style="color:#000;"><%= @quality_lot.item_revision.item_name %></td>
+          </tr>
+          <tr>
+            <td scope="row">Drawing No.</td>
+            <td align="center" style="color:#000;"></td>
+          </tr>
+          <tr>
+            <td colspan="2" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr align="center">
+                <td align="left" scope="row">Drawing Rev Level</td>
+                <td style="color:#000;"><%= @quality_lot.item_revision.item_revision_name %></td>
+                <td>Rev Date</td>
+                <td style="color:#000;"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
+              </tr>
+            </table></td>
+            </tr>
+          <tr>
+            <td scope="row">Supplier</td>
+            <td align="center" style="color:#000;"><%= @company_info.company_name %></td>
+          </tr>
+          <tr>
+            <td scope="row">PO No.</td>
+            <td align="center" style="color:#000;"><%= @quality_lot.po_header.po_identifier %></td>
+          </tr>
+        </table>
+      
+      </div>
+      
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="wrapper-1">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top">
+      <td width="100%" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center" valign="middle">
+          <td width="32%" scope="row">Reason for Submission<br></td>
+          <td width="68%">
+            
+            <div class="wrapper-none">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox" id="checkbox">
+                    <label for="checkbox">Initial submission</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                   <input type="checkbox" name="checkbox2" id="checkbox2">
+                    <label for="checkbox2">Re-Submission</label>
+                  </form></td>
+                  <td width="31%"><form name="form1" method="post" action="">
+                     <div class="ff"><input type="checkbox" name="checkbox3" id="checkbox3"></div>
+                   <div class="ff-2"> <label for="checkbox3">Change to materials used</label></div>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox" id="checkbox">
+                    <label for="checkbox">Revision Change</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox2" id="checkbox2">
+                    <label for="checkbox2">Camo pattern new to part</label>
+                  </form></td>
+                  <td width="31%"><form name="form1" method="post" action="">
+                     <div class="ff"><input type="checkbox" name="checkbox3" id="checkbox3"></div>
+                      <div class="ff-2"><label for="checkbox3">Tooling transfer, refurbishment, replacement or additional</label></div>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox" id="checkbox">
+                    <label for="checkbox">Process Change</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox2" id="checkbox2">
+                    <label for="checkbox2">Change in mfg source</label>
+                  </form></td>
+             
+                  </tr>
+                  
+              
+                </table>
+              
+              </div>
+              
+            
+            </td>
+        </tr>
+        <tr align="center" valign="middle">
+          <td scope="row">Requested Submission Level<br></td>
+          <td>
+           <div class="wrapper-none">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="20%" scope="row" align="center">Level 1</td>
+              <td width="66%"><form name="form1" method="post" action="">
+                <input type="checkbox" name="checkbox4" id="checkbox5">
+                <label for="checkbox5">Warrant only</label>
+              </form></td>
+              </tr>
+            <tr>
+              <td width="20%" scope="row" align="center">Level 2</td>
+              <td width="66%"><form name="form1" method="post" action="">
+               <div class="ff"> <input type="checkbox" name="checkbox4" id="checkbox5"></div>
+                <div class="ff-3">  <label for="checkbox5">Warrant with product samples and limited supporting data submitted to customer</label></div>
+              </form></td>
+              </tr>
+            <tr>
+              <td width="20%" scope="row" align="center">Level 3</td>
+              <td width="66%"><form name="form1" method="post" action="">
+               <div class="ff"> <input type="checkbox" name="checkbox4" id="checkbox5"></div>
+               <div class="ff-3"> <label for="checkbox5">Warrant with product samples and complete supporting data submitted to customer</label></div>
+              </form></td>
+              </tr>
+            <tr>
+              <td width="20%" scope="row" align="center">Level 4</td>
+              <td width="66%"><form name="form1" method="post" action="">
+                <div class="ff"><input type="checkbox" name="checkbox4" id="checkbox5"></div>
+               <div class="ff-3"> <label for="checkbox5">Warrant and other requirements as defined by customer</label></div>
+              </form></td>
+              </tr>
+                          <tr>
+              <td width="20%" scope="row" align="center">Level 5</td>
+              <td width="66%"><form name="form1" method="post" action="">
+                <div class="ff"><input type="checkbox" name="checkbox4" id="checkbox5"></div>
+                <div class="ff-3"><label for="checkbox5">Warrant with product samples and complete supporting data reviewed at Mfg location</label></div>
+              </form></td>
+              </tr>
+                          <tr>
+              <td width="20%" scope="row">&nbsp;</td>
+     
+              </tr>
+          </table>
+          
+          </div></td>
+        </tr>
+        <tr align="center" valign="middle">
+          <td scope="row">Submission Results (check items
+included on the submission - must follow
+PPAP level requirements)<br></td>
+          <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td scope="row">
+               <div class="wrapper-none">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Purchasing Agreement</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">First Article Parts (labelled)</label>
+                  </form></td>
+                  </tr>
+                <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Part Submission Warrant</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <div class="ff"><input type="checkbox" name="checkbox5" id="checkbox6"></div>
+                   <div class="ff-4"> <label for="checkbox6">FAI - Dimensional Inspection Results/ Eng Dwg</label></div>
+                  </form></td>
+                  </tr>
+                <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Packaging/Shipping</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">FAI - Material Test Results</label>
+                  </form></td>
+                  </tr>
+                <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Component Review Meeting</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">Gage Review</label>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                   <div class="ff"> <input type="checkbox" name="checkbox5" id="checkbox4"></div>
+                   <div class="ff-4"> <label for="checkbox4">DFMEA- Design Failure Mode & Effect Analysis</label></div>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">Measurement Analysis Study (Gage R&R)</label>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Process Flow Diagram</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">Process Capability Study</label>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <div class="ff"><input type="checkbox" name="checkbox5" id="checkbox4"></div>
+                    <div class="ff-4"><label for="checkbox4">PFMEA - Process Failure Mode & Effect Analysis</label></div>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">Production Run at Rate</label>
+                  </form></td>
+                  </tr>
+                                  <tr>
+                  <td width="34%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox4">
+                    <label for="checkbox4">Control Plan</label>
+                  </form></td>
+                  <td width="35%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox6">
+                    <label for="checkbox6">Appearance Approval Report</label>
+                  </form></td>
+                  </tr>
+              </table></div></td>
+            </tr>
+            <tr>
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox6" id="checkbox7">
+                    <label for="checkbox7">Other</label>
+                    ______________________________________________
+                  </form></td>
+                </tr>
+                <tr>
+                  <td scope="row">
+                   <div class="wrapper-none">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="53%" scope="row">These results meet all drawing & specification requirements: </td>
+                      <td width="10%"><form name="form1" method="post" action="">
+                        <input type="checkbox" name="checkbox7" id="checkbox8">
+                        <label for="checkbox8">Yes</label>
+                      </form></td>
+                      <td width="21%"><form name="form1" method="post" action="">
+                        <input type="checkbox" name="checkbox8" id="checkbox9">
+                        <label for="checkbox9">No if "No" explain</label>
+                      </form></td>
+                    </tr>
+                  </table></div>
+                  
+                  </td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td scope="row">
+                 <div class="wrapper-none">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="17%" scope="row">Is this a multicavity tool?</td>
+                  <td width="29%"><form name="form1" method="post" action="">
+                    <div class="ff"> <input type="checkbox" name="checkbox9" id="checkbox10"></div>
+                    <div class="ff-6"> <label for="checkbox10">Yes</label></div>
+                  &nbsp;
+                <div class="ff"> <input type="checkbox" name="checkbox10" id="checkbox11"></div>
+                   <div class="ff-5"><label for="checkbox11">No How many cavities/spindle?</label></div>
+                  </form></td>
+                  <td width="12%">________________</td>
+                </tr>
+              </table>
+              </div>
+              </td>
+            </tr>
+          </table></td>
+        </tr>
+        </table></td>
+      </tr>
+  </table>
+</div>
+
+    <div class="wrapper-1">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" scope="row" style="background-color:#ddd;"><strong>DECLARATION</strong></td>
+        </tr>
+        <tr>
+          <td scope="row">I affirm that the samples represented by this warrant are representative of our parts, have been made to the applicable Production Part Approval Process requirements. I further warrant these samples were produced with specified materials on regular production tooling with no operations other then the regular process. The data and samples were produced at the production rate of:</td>
+        </tr>
+        <tr align="left" valign="top">
+          <td scope="row">
+           <div class="wrapper-none pa">
+          
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+              <td width="12%" align="left" scope="row"># parts/hr:</td>
+              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;">300PCS</td>
+              <td width="17%" scope="row"># hours run:</td>
+              <td width="19%" scope="row">16 hours/daily</td>
+              <td width="18%" scope="row" style="border-bottom:1px solid #000 !important;">Date:</td>
+              <td width="19%" scope="row">9/10/2014</td>
+            </tr>
+            <tr align="center">
+              <td width="12%" align="left" scope="row">Committed weekly capacity:</td>
+              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;">80 hours/ weekly</td>
+              <td colspan="2" scope="row">Maximim weekly capacity:</td>
+              <td width="18%" scope="row" style="border-bottom:1px solid #000 !important;">ESTIMATE: 24,000</td>
+              <td width="19%" scope="row">Dummy</td>
+            </tr>
+            <tr>
+              <td scope="row">Identify the constraint operation(s):</td>
+              <td colspan="5" scope="row">___________________________________________________________________________________________________</td>
+              </tr>
+            <tr>
+              <td scope="row">Explanation/Comments:</td>
+              <td colspan="5" scope="row"> ___________________________________________________________________________________________________</td>
+              </tr>
+                       <tr>
+          
+               <td scope="row" style="padding:0 0 10px 0">___________________</td>
+              <td colspan="5" scope="row" style="padding:0 0 10px 0"> ___________________________________________________________________________________________________</td>
+              </tr>
+          </table>
+          </div>
+          </td>
+        </tr>
+      </table>
+    
+    
+    </div>
+    
+        <div class="wrapper-1 pa">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" scope="row">&nbsp;</td>
+        </tr>
+        <tr align="left" valign="top">
+          <td scope="row">
+           <div class="wrapper-none pa">
+          
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+              <td width="12%" align="left" scope="row">Supplier Autorized Signature:</td>
+              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;">&nbsp;</td>
+              <td width="17%" scope="row">&nbsp;</td>
+              <td width="19%" scope="row">&nbsp;</td>
+              <td width="18%" scope="row" >Date</td>
+              <td width="19%" scope="row" style="border-bottom:1px solid #000 !important;"> 12/9/2014</td>
+            </tr>
+            <tr align="center">
+              <td width="12%" align="left" scope="row"></td>
+              <td colspan="3" style="border-bottom:1px solid #000 !important;" scope="row">DummyDummy Dummy</td>
+              <td width="18%" scope="row" >Phone:</td>
+              <td width="19%" scope="row" style="border-bottom:1px solid #000 !important;">e56543543543</td>
+            </tr>
+            <tr align="center">
+              <td width="12%" align="left" scope="row">Print Name:</td>
+              <td colspan="3" style="border-bottom:1px solid #000 !important;" scope="row">DummyDummy Dummy</td>
+              <td width="18%" scope="row" >email:</td>
+              <td width="19%" scope="row" style="border-bottom:1px solid #000 !important;">aphrodite@chessgroupinc.com</td>
+            </tr>
+            <tr>
+              <td scope="row">Title::</td>
+              <td colspan="5" scope="row">______________________________________________________________________</td>
+              </tr>
+          </table>
+          </div>
+          </td>
+        </tr>
+      </table>
+    
+    
+    </div>
+    
+    <div class="wrapper-1 pa">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td scope="row" align="center" style="background-color:#ddd;">REMINGTON USE ONLY</td>
+        </tr>
+        <tr>
+          <td scope="row">
+          
+           <div class="wrapper-none pa-1">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="19%" scope="row">PPAP DISPOSITION</td>
+              <td width="15%"><form name="form1" method="post" action="">
+                <input type="checkbox" name="checkbox11" id="checkbox12">
+                <label for="checkbox12">Accepted</label>
+              </form></td>
+              <td width="22%"><form name="form1" method="post" action="">
+                <input type="checkbox" name="checkbox12" id="checkbox13">
+                <label for="checkbox13">Rejected</label>
+              </form></td>
+              <td width="44%"><form name="form1" method="post" action="">
+                <input type="checkbox" name="checkbox13" id="checkbox14">
+                <label for="checkbox14">Other</label>
+              _____________________________________
+              </form></td>
+            </tr>
+            <tr>
+              <td scope="row">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td align="left" valign="top">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td scope="row">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_____________________________________</td>
+                  </tr>
+                  <tr>
+                    <td scope="row"> <form name="form1" method="post" action="">
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" name="checkbox14" id="checkbox15">
+                      <label for="checkbox15">Check if PSW Addendum is included</label>
+                    </form></td>
+                  </tr>
+                </table></td>
+            </tr>
+            <tr>
+              <td scope="row">ROC Supplier Quality Representative Signature:</td>
+                   <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="22%" scope="row"> </th>
+                  <td width="78%">_____________________</td>
+                </tr>
+              </table></td>
+              <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="27%" scope="row">Date</th>
+                  <td width="73%">___________________________________</td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td scope="row">&nbsp;</td>
+              <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="22%" scope="row">Print Name</th>
+                  <td width="78%">_____________________</td>
+                </tr>
+              </table></td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td scope="row">ROC Engineering Representative Signature:</td>
+                    <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="22%" scope="row"> </th>
+                  <td width="78%">_____________________</td>
+                </tr>
+              </table></td>
+              <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="27%" scope="row">Date</th>
+                  <td width="73%">___________________________________</td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr>
+            <tr>
+              <td scope="row">&nbsp;</td>
+              <td colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <th width="22%" scope="row">Print Name</th>
+                  <td width="78%">_____________________</td>
+                </tr>
+              </table></td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+          
+          </div></td>
+        </tr>
+                <tr>
+          <td scope="row">ROC - Supplier Production Part Approval Submission Form</td>
+        </tr>
+      </table>
+    </div>
+
+</div>
+
+
+

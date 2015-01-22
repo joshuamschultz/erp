@@ -260,6 +260,9 @@ AllianceFasteners::Application.routes.draw do
       get 'populate'
       get 'material_report'
       get 'dimension_report'
+      get 'gage_report'
+      get 'psw_report'
+      get 'csk_report'
     end
   end
 
