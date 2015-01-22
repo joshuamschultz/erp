@@ -83,11 +83,12 @@ article.art-01 {
     text-decoration: underline;
 }
 
+
 .ms_text-6 > h3 {
     float: left;
+    font-size: 12px;
     margin: 0;
-    padding: 18px 0 0;
-    font-size: 14px;
+    padding: 0;
 }
 
 
@@ -315,7 +316,7 @@ width: 134px;
     border: 1px solid #000;
 }
 .h-pad {
-    float: left;
+
     width: 100%;
 }
 
@@ -394,6 +395,8 @@ width: 134px;
                     <h2 class="ms_sub-heading">Chess Group Inc </h2> 
                     <strong><%= @company_info.company_address1 %></strong>
                     <strong><%= @company_info.company_address2 %></strong>
+                    
+                    
                 </div>
             </div>
 
@@ -404,6 +407,7 @@ width: 134px;
         <article>
 
 <article class="art-01 art-04">
+
     <table cellspacing="0" cellpadding="0" width="678px" border="0">
         <tbody>
             <tr align="center" class="hea art-002">
@@ -412,8 +416,15 @@ width: 134px;
                 <td>DESCRIPTION</td>
                 <td>COST</td>
                 <td>TOTAL</td>
-            </tr>
-                <% @po_header.po_lines.each do |po_line| %>
+            </tr></tbody></table>
+
+
+    <% @po_header.po_lines.each do |po_line| %>
+ <div class="ff">
+    <table cellspacing="0" cellpadding="0" width="678px" border="0">
+        <tbody>
+           
+          
 
                 <tr valign="top" align="center" class="h-pad">
 
@@ -424,15 +435,15 @@ width: 134px;
 
                             <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
                                 <tr >
-                                    <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
+                                    <td width="150" scope="row"><%= po_line.item.item_part_no %></td>
                                 </tr>                            
                             <%  else %>
 
                                 <tr>
-                                    <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
+                                    <td width="150" scope="row"><%= po_line.item.item_part_no %></td>
                                 </tr>
                                 <tr>
-                                    <th width="150" scope="row"><%= po_line.item_alt_name.item_alt_identifier %></th>
+                                    <td width="150" scope="row"><%= po_line.item_alt_name.item_alt_identifier %></td>
                                 </tr>
                             <%  end %>
 
@@ -470,10 +481,12 @@ width: 134px;
                             <td ><%= po_line.po_line_notes %></td>
                         </tr>                           
                     </table>
-                <% end %>
+                
             </div>
         </div>
 
+
+<% end %>
 
 </article>
 
