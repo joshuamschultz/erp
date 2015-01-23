@@ -174,6 +174,7 @@ class Organization < ActiveRecord::Base
 		po_items = po_items.collect(& :item_id)
 		Item.where(:id => po_items)
   	end
+  	
   	def so_items
   		
 		# so_items = self.so_headers.joins(:so_lines).select("so_lines.item_id").where("so_headers.organization_id = ?",self.id).order("so_lines.created_at DESC")
