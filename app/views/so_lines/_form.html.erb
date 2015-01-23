@@ -62,7 +62,7 @@
           
                 <div class="actions">
                     <%= f.submit "ADD", :class =>"btn" %>
-                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>z
+                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
                     <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
                </div>
             <% end %>
