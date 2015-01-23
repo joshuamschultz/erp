@@ -27,7 +27,6 @@ class SoLine < ActiveRecord::Base
   def create_level_default
     	self.so_line_status = "open"
   end
-
   before_save :update_item_total
 
   def update_item_total
