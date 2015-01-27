@@ -264,12 +264,12 @@ module CommonActions
 
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
 		if  user_signed_in? && !current_user.is_vendor?  && !current_user.is_customer? 
-		menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
-		menus[:logistics][:sub_menu] = 	[
-			{:path => new_po_shipment_path, :name => "Shipments"},
-			{:path => po_shipments_path(type: "history"), :name => "History"}
-		]
-	end
+			menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
+			menus[:logistics][:sub_menu] = 	[
+				{:path => new_po_shipment_path, :name => "Shipments"},
+				{:path => po_shipments_path(type: "history"), :name => "History"}
+			]
+		end
 
 		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
 
@@ -286,11 +286,14 @@ module CommonActions
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
-			{:path => company_infos_path, :name => "Home Info"},
 			{:path => commodities_path, :name => "Commodities"},
 			{:path => check_code_path(CheckCode.first), :name => "Counters"},
 			# {:path => }
 		]
+		if can? :view, CompanyInfo
+			menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"}) 
+		end 
+
 		if can? :view, Territory
 			menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"}) 
 		end 

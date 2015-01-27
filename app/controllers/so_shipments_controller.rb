@@ -18,7 +18,9 @@ class SoShipmentsController < ApplicationController
   end
 
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:logistics][:active] = "active"
+    end
   end
 
   # GET /so_shipments
