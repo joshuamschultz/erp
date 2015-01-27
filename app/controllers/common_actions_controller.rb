@@ -36,6 +36,11 @@ class CommonActionsController < ApplicationController
                 quality_lot = QualityLot.find(params[:id])
                 result = quality_lot
               end
+            when "get_org"
+              if params[:so_value].present?
+                organization =  Organization.find_by_organization_name(params[:so_value])
+                result = organization
+              end
 
 
             when "lot_item_material_elements"
