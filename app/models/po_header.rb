@@ -30,7 +30,7 @@ class PoHeader < ActiveRecord::Base
       if self.po_is?("direct")
           self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
           so_header = self.so_header.present? ? self.so_header : SoHeader.new
-          so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po)
+          so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po, so_due_date: Time.now)
           self.so_header_id = so_header.id
           so_header.so_lines.update_all(organization_id: self.organization_id)
       end
