@@ -40,7 +40,9 @@ class SoLine < ActiveRecord::Base
 
   def update_so_total
       so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier : self.so_header.so_identifier
-      self.so_header.update_attributes(so_identifier: so_identifier, so_total: self.so_header.so_lines.sum(:so_line_price))
+      so_status_count = self.so_header.so_lines.where("so_line_status = ?", "open").count
+      so_header_status = (so_status_count == 0) ? "closed" : "open"
+      self.so_header.update_attributes(so_identifier: so_identifier,so_status: so_header_status, so_total: self.so_header.so_lines.sum(:so_line_price))
       generate_pdf
   end
 
