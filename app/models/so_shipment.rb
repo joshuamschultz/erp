@@ -49,6 +49,9 @@ class SoShipment < ActiveRecord::Base
       so_shipped = self.so_total_shipped
       so_status = (so_shipped == self.so_line.so_line_quantity) ? "closed" : "open"
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
+      so_status_count = self.so_line.so_header.so_lines.where("so_line_status = ?", "open").count
+      so_header_status = (so_status_count == 0) ? "closed" : "open"
+      self.so_line.so_header.update_attributes(:so_status => so_header_status) 
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
     end
