@@ -268,6 +268,9 @@ class CommonActionsController < ApplicationController
                 tags = tags.collect(&:strip).compact
                 tags = tags.reject(&:empty?)
                 Comment.process_comments(current_user, organization, tags, "tag")
+                if organization.organization_type.type_value == 'vendor'
+                  Commodity.auto_save(tags)
+                end
                 result ="Success"   
               end
             when "set_process"
