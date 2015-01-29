@@ -46,7 +46,7 @@
     .ms_wrapper article {
         float: left;
         width: 100%;
-    }
+ }
 }
 .ms_wrapper .ms_text {
     float: left;
@@ -191,7 +191,6 @@
     color: #000080;
 }
 .footer {
-    margin: 330px 0 0 0;
     width: 630px;
     border: 2px solid #444;
     float: left;
@@ -268,6 +267,27 @@
     width: 196px;
 }
 
+
+.h-pad > td {
+
+  font-size: 14px;
+
+    margin: 30px 0 12px;
+    padding: 0;
+    text-align: center;
+    width: 90px;
+}
+
+
+.hea.art-002 > td {
+    float: left;
+    font-size: 14px;
+    padding: 6px 0;
+    text-align: center;
+    width: 167px;
+}
+.de{margin: 35px 0 0; min-height: 430px;}
+
 </style>
 
 <% @company_info = CompanyInfo.first%>
@@ -316,56 +336,59 @@
 
 
 
-                <article>
 
-            <div class="ms_text-3-wrapper">
-                <div class="ms_text-3 text-5">
-                    <h2 class="ms_sub-heading">CUST P/N - ALL P/N</h2> 
-                        <% @so_header.so_lines.each do |so_line| %>
-                            <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
-                                <strong><%= so_line.item.item_part_no %></strong>
-                            <%  else %>
-                                  <strong><%= so_line.item.item_part_no %></strong>
-                                  <strong><%= so_line.item_alt_name.item_alt_identifier %></strong>
-                            <%  end %>
-                        <% end %>  
-                </div>
 
-                <div class="ms_text-4">
-                    <h2 class="ms_sub-heading"> Description </h2> 
-                        <% @so_header.so_lines.each do |so_line| %>
-                            <% if so_line.item_revision.present? %>
-                                <strong><%= so_line.item_revision.item_description %> </strong>
-                            <% end %>
-                        <% end %>   
-                            <div class="text-7">
-  
-                                <% if @so_header.po_header.present? %>
-                                    <strong class="text-6"><%= @so_header.po_header.po_identifier %></strong>
-                                <% end %> 
-                            </div>                      
-                </div>
-            </div>
 
-            <div class="ms_text-3-wrapper">
-                <div class="ms_text-3">
-                    <h2 class="ms_sub-heading">QTY</h2> 
-                         <% @so_header.so_lines.each do |note| %>
-                            <strong><%= note.so_line_quantity %> </strong>
-                        <% end %>   
-                </div>
 
-                <div class="ms_text-4">
-                    <h2 class="ms_sub-heading">  Shipped </h2> 
-                    <% @so_header.so_lines.each do |so_line| %>
-                 
-                            <strong><%= so_line.so_line_shipped %> </strong>
-                      
-                    
-                    <% end %>
-                </div>
-            </div>
-        </article>
+<article class="art-01 art-04 de">
+
+    <div class="ff">
+        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+            <tbody>
+                <tr align="center" class="hea art-002">
+                    <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">CUST P/N - ALL P/N</td>
+                    <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Description</td>
+                    <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">QTY</td>
+                    <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Shipped</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+  <% @so_header.so_lines.each do |so_line| %>
+    <div class="fff">
+        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+            <tbody>
+                <tr align="center" class="hea art-002">
+                   <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
+                        <td><%= so_line.item.item_part_no %></td>
+                    <%  else %>
+                          <td><%= so_line.item.item_part_no %></td>
+                          <td><%= so_line.item_alt_name.item_alt_identifier %></td>
+                    <%  end %>
+                    <td>
+                    <table border="0" width="100%">
+                    <tbody>
+                        <tr><td width="150" scope="row"><%= so_line.item_revision.item_description if so_line.item_revision.present? %></td></tr>   
+                        <tr><td width="150" scope="row"  style="color: #800000;"><%= @so_header.po_header.po_identifier if @so_header.po_header.present? %></td></tr>                             
+                    </tbody>
+                    </table>
+                    </td>
+                    <td  style="color: #800000;"><%= so_line.so_line_quantity %></td>
+                    <td><%= so_line.so_line_shipped %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ <% end %>
+
+
+
+</article>   
+
+
 
         <article>
             <div class="footer">
