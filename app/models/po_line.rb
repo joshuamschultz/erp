@@ -153,7 +153,10 @@ class PoLine < ActiveRecord::Base
       product_description= ""+po_line.item_revision.item_description.to_s+""
       product_notes= po_line.item_revision.item_notes.to_s
       po_line_comment = po_line.po_line_notes
-    end 
+    else
+      product_description = '&nbsp'
+    end
+
     source+="
 
 
@@ -196,7 +199,7 @@ class PoLine < ActiveRecord::Base
             </tr>
          </tbody>
         </table>
-</div></div></div>"
+</div></div></div></div>"
 
          
   end 
