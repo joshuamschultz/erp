@@ -168,7 +168,7 @@ class SoShipmentsController < ApplicationController
         @so_shipment["so_notes"] = @so_shipment.so_line.so_header.so_notes if @so_shipment.so_line.so_header.so_notes
         @so_shipment["so_date"] = "Sales Order Date :"+@so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
         @so_shipment["part_number"] = @so_shipment.so_line.item.item_part_no
-        @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description
+        @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description.present? ? @so_shipment.so_line.item_revision.item_description : ''
         @so_shipment["alt_part_number"] = @so_shipment.so_line.item_alt_name.item_alt_identifier if @so_shipment.so_line.item.item_part_no != @so_shipment.so_line.item_alt_name.item_alt_identifier 
         @so_shipment["so_line_quantity"] = @so_shipment.so_line.so_line_quantity
         @so_shipment["control_number"] = @so_shipment.quality_lot.lot_control_no if @so_shipment.quality_lot
