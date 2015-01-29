@@ -110,7 +110,10 @@ class QualityLot < ActiveRecord::Base
 		end
 		o = [('A'..'Z')].map { |i| i.to_a }.flatten
 		random_letter = (0...1).map { o[rand(o.length)] }.join		
-		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
+		p "------------------------------------------------------------------------------"
+		p Time.now.min.to_i
+		p min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
+		p "--------------------------------------------------------------------------"
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s + "#{random_letter}-" + (current_count + 1).to_s
 
