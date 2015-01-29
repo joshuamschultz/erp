@@ -475,7 +475,11 @@ width: 134px;
                 <div class="sd1">
                     <table cellspacing="0" cellpadding="0" border="0" width="100%" border-collapse="collapse">
                         <tr>
-                            <td ><%= po_line.item_revision.item_notes if po_line.item_revision %></td>
+                            <%  if po_line.item_revision.present? %>
+                                <td ><%= po_line.item_revision.item_notes  %> </td>
+                            <% else %>
+                                <td > &nbsp</td>
+                            <% end %>
                         </tr>    
                         <tr>
                             <td ><%= po_line.po_line_notes %></td>
