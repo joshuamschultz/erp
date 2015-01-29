@@ -455,6 +455,8 @@ width: 134px;
                          
                     <% if po_line.item_revision.present? %>
                         <td><%= po_line.item_revision.item_description %> </td>
+                    <% else %>
+                         <td > &nbsp</td>
                     <% end %>
                                 
                     
