@@ -9,6 +9,7 @@
 body {
     font-family: Arial,Helvetica,sans-serif;
     font-size: 12px;
+
 }
 /* New Style */
 .clear{clear: both;}
@@ -17,7 +18,7 @@ body {
     line-height: 10px;
 }
 
-.ms_wrapper{float: left;height: auto;width:678px;}
+.ms_wrapper{float: left;height: auto;width:660px;}
 .form-bold {
     font-size: 12px;
 }
@@ -54,7 +55,7 @@ body {
     padding: 0 0 0 71px;
     text-transform: none;
 }
-.font-04{font-size:12px;}
+.font-04{font-size:12px;font-weight: bold;}
 .pad-02.bor {
     border-bottom: 2px solid #000;
     padding: 20px 0 19px;
@@ -77,7 +78,7 @@ body {
 .fon-10 {
     font-size: 17px;
 }
-.spac{height:40px;}
+.spac{height:80px;}
 .spac2{height:300px;}
 
 
@@ -100,14 +101,24 @@ body {
 .foot {
     float: left;
     width: 100%;
+    padding: 0 0 0 5px;
 }
 
 .foot-2 {
     float: left;
     
-    height: 445px;
+    height: 274px;
     width: 100%;
 }
+.ms_main{ page-break-after: always;min-height: 200px;}
+
+.ms_main:last-child {
+     page-break-after: avoid !important;
+}
+
+
+
+
 </style>
 
 
@@ -117,26 +128,46 @@ body {
 <body>
 
 <% payment = Payment.find_by_check_entry_id(check_entry.id) %>
+
+<div class="ms_main">
 <div class="ms_wrapper">
+
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
       <th scope="row" class="spac"></th>
     </tr>
     <tr>
       <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="pad-02">
+
+
         <tr align="left" valign="top">
-          <th width="13%" scope="row">&nbsp;</th>
-          <td width="27%" class="fontw"><%= payment.organization.organization_name %></td>
+          <th width="12%" scope="row">&nbsp;</th>
+          <td width="27%" class="fontw">&nbsp;</td>
   
           <td width="60%" align="right" class="fontw"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="right">
-              <th scope="row"><%= check_entry.created_at.strftime("%m/%d/%Y") %></th>
+              <th scope="row" style="padding:0 15px 22px 0"><%= check_entry.created_at.strftime("%m/%d/%Y") %></th>
+            </tr>
+
+          </table></td>
+        </tr>
+
+
+        <tr align="left" valign="top">
+          <th width="12%" scope="row">&nbsp;</th>
+          <td width="27%" class="fontw" ><%= payment.organization.organization_name %></td>
+  
+          <td width="60%" align="right" class="fontw"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="right">
+              <th scope="row" style="padding:0 15px 0 0"><%= payment.payment_check_amount %></th>
             </tr>
             <tr align="right">
-              <th scope="row"><%= payment.payment_check_amount %></th>
+              <th scope="row"></th>
             </tr>
           </table></td>
         </tr>
+
+
         <tr align="left" valign="top">
           <th scope="row">&nbsp;</th>
           <td class="fontw">&nbsp;</td>
@@ -145,8 +176,8 @@ body {
     
         <tr align="left" valign="top">
           <th scope="row">&nbsp;</th>
-          <td class="fontw"><%= payment.payment_description if payment.payment_description.present? %> </td>
-          <td align="right" class="fontw fontw-003">&nbsp;</td>
+          <td class="fontw" style="font-size:13px !important; padding:66px 0 0 0;" colspan="2"> &nbsp; <%= payment.payment_description if payment.payment_description.present? %> </td>
+         
         </tr>
 
 
@@ -154,16 +185,14 @@ body {
         <tr align="left" valign="top">
           <th colspan="4" scope="row" class="pad-02"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
             <tr>
-              <th width="54%" class="fon-03" scope="row"></th>
+              <th width="54%" class="fon-03" scope="row" style="padding:6px 0 0 0;"></th>
               <td width="2%"></td>
               </tr>
           </table></th>
           </tr>
       </table></th>
     </tr>
-    <tr>
-      <th scope="row" class="pad-02">&nbsp;</th>
-    </tr>
+
     <tr>
       <th scope="row" class="pad-02">&nbsp;</th>
     </tr>
@@ -215,14 +244,14 @@ body {
           <td align="right">&nbsp;</td>
         </tr>
         <tr>
-          <th scope="row">&nbsp;</th>
+          <th scope="row" style="height:50px;">&nbsp;</th>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
         <tr align="right">
           <th scope="row">&nbsp;</th>
           <td>&nbsp;</td>
-          <td align="left"><span class="font-04"><%= check_entry.created_at.strftime("%m/%d/%Y") %></span></td>
+          <td align="left" width="93px"> <span class="font-04"><%= check_entry.created_at.strftime("%m/%d/%Y") %></span></td>
         </tr>
         <tr align="right">
           <th align="left" width="570px" scope="row">&nbsp;</th>
@@ -230,16 +259,16 @@ body {
           <td>&nbsp;</td>
         </tr>
         <tr align="right">
-          <th align="left" scope="row"><span class="font-04"><%= payment.organization.id %></span></th>
+          <th  style="padding: 4px 0 32px 10px" align="left" scope="row"><span class="font-04"><%= payment.organization.id %></span></th>
           <td>&nbsp;</td>
-          <td align="left"><span class="font-04"><%= payment.payment_check_amount %></span></td>
+          <td style="padding: 2px 0 32px 0" align="left" scope="row"><span class="font-04"><%= payment.payment_check_amount %></span></td>
         </tr>
 
 
     <tr>
       <th scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <th width="30%" align="left" scope="row"><span class="font-04"><%= payment.organization.organization_address_1 %><br>
+          <th width="30%" align="left" scope="row" style="padding:0 0 0 10px"><span class="font-04"><%= payment.organization.organization_address_1 %><br>
              <%= payment.organization.organization_address_2 %><br>
              <%= payment.organization.organization_city %>, <%= payment.organization.organization_state %><br>
                     <%= payment.organization.organization_country %>, <%= payment.organization.organization_zipcode %></span></th>
@@ -249,7 +278,12 @@ body {
     </tr>
 
   </table></div>
+  </div>
 </div>
-<div style="display: block; page-break-before: always"> &nbsp</div> 
+
+
+
+
+
 </body>
 </html>
