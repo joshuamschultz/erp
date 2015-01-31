@@ -69,10 +69,10 @@
         <% end %> 
     </div>
 </div>
-<% if can? :read, ProcessType %>
+<% if can? :view, ProcessType %>
     <%= render :partial => 'process_types/item_process_type' %>
 <% end %>
-<% if can? :read, Specification %>
+<% if can? :view, Specification %>
 <%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
 <% end %>
 <div id="send_quote">
