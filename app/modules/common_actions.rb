@@ -204,9 +204,6 @@ module CommonActions
 		        	if can? :view, GlEntry
 	                        menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
 	                end
-	                if can? :view, GlType
-	                        menus[:general_ledger][:sub_menu].push({:path => gl_types_path, :name => "Types"})
-	                end
 	                if can? :view, GlAccount
 	                        menus[:general_ledger][:sub_menu].push({:path => gl_accounts_path, :name => "Accounts"})
 	                end
