@@ -71,13 +71,13 @@ class PoLine < ActiveRecord::Base
 
   def po_line_data_list(object, shipment)
     po_line = shipment ? object.po_line : object
-    # if User.current_user.present? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
+     if User.current_user.present? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
       object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
       object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
       object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
       object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || "" 
       object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-      object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+       object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
       object[:po_line_quantity] = po_line.po_line_quantity      
       object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
       object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
@@ -93,31 +93,34 @@ class PoLine < ActiveRecord::Base
         object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='received' class='pull-right btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> "
         object[:links] += " <div class='pull-right shipping_status'></div>"
       end
-    # else
-    #   object[:po_identifier] = po_line.po_header.po_identifier
-    #   object[:item_part_no] = po_line.item_alt_name.item_alt_identifier
-    #   object[:vendor_name] = (po_line.po_header.organization.organization_name if po_line.po_header.organization) || ""
-    #   object[:customer_name] = (po_line.organization.organization_name if po_line.organization) || ""
-    #   object[:quality_id_name] = (po_line.po_header.organization.vendor_quality.quality_name if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-    #   # object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
-    #   object[:po_line_quantity] = po_line.po_line_quantity      
-    #   object[:po_line_quantity_shipped] = ""
-    #   object[:po_line_quantity_open] = ""
-    #   unless shipment
-    #     object[:po_line_shipping] = ""
-    #     object[:po_line_shelf] = ""
-    #     object[:po_line_unit] =  ""
-    #     object[:po_identifier] += ""
-    #     object[:po_identifier] += ""
+    else
+      object[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
+      object[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+      object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
+      object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || "" 
+      object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
+        object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+      object[:po_line_quantity] = po_line.po_line_quantity      
+      object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
+      object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
+   
+      unless shipment
+        object[:po_line_shipping] = ""
+        object[:po_line_shelf] = ""
+        object[:po_line_unit] =  ""
+        object[:po_identifier] += ""
+        object[:po_identifier] += ""
+       
         
-    #     object[:links] = ""
-    #     object[:links] += ""
-    #     object[:links] += ""
-    #     object[:links] += ""
-    #   end
+        object[:links] = ""
+        object[:links] += ""
+        object[:links] += ""
+        object[:links] += ""
+      end
   
     object
   end
+end
 
   before_save :process_before_save
 
