@@ -193,23 +193,27 @@ module CommonActions
 				{:path => receipts_path, :name => "Receipts"}
 			]
 		end 
-
-		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
-		menus[:general_ledger][:sub_menu] = 	[			
-			{:path => gl_types_path, :name => "Types"},			
-			{:path => check_registers_path, :name => "Check Register"},
-			{:path => credit_registers_path, :name => "Credit Register"}
-		]
-		
-	        if can? :view, GlEntry
-                        menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
-                end
-                if can? :view, GlAccount
-                        menus[:general_ledger][:sub_menu].push({:path => gl_accounts_path, :name => "Accounts"})
-                end
-                if can? :view, Reconcile
-                        menus[:general_ledger][:sub_menu].push({:path => reconciles_path, :name => "Reconcile"},)
-                end
+		if  user_signed_in? && !current_user.is_customer? 
+			menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
+			menus[:general_ledger][:sub_menu] = 	[			
+				{:path => gl_types_path, :name => "Types"},			
+				{:path => check_registers_path, :name => "Check Register"},
+				{:path => credit_registers_path, :name => "Credit Register"}
+			]
+			
+		        	if can? :view, GlEntry
+	                        menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
+	                end
+	                if can? :view, GlType
+	                        menus[:general_ledger][:sub_menu].push({:path => gl_types_path, :name => "Types"})
+	                end
+	                if can? :view, GlAccount
+	                        menus[:general_ledger][:sub_menu].push({:path => gl_accounts_path, :name => "Accounts"})
+	                end
+	                if can? :view, Reconcile
+	                        menus[:general_ledger][:sub_menu].push({:path => reconciles_path, :name => "Reconcile"},)
+	                end
+        end 
 
 
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
