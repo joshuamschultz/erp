@@ -161,7 +161,7 @@ body,td,th {
           </tr>
           <tr>
             <td scope="row">PO No.</td>
-            <td align="center" style="color:#000;"><%= @quality_lot.po_header.po_identifier %></td>
+            <td align="center" style="color:#000;"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
           </tr>
         </table>
       
