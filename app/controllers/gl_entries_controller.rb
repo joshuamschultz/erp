@@ -5,7 +5,7 @@ class GlEntriesController < ApplicationController
   before_filter :user_permissions
 
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? && current_user.is_vendor?
+   if  user_signed_in? && (current_user.is_customer? || current_user.is_vendor?)
         authorize! :edit, GlEntry
     end 
   end
