@@ -2,8 +2,18 @@ class GlEntriesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_customer? && current_user.is_vendor?
+        authorize! :edit, GlEntry
+    end 
+  end
+
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:general_ledger][:active] = "active"
+    end 
   end
 
   def set_autocomplete_values
