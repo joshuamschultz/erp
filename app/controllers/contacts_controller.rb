@@ -21,7 +21,9 @@ class ContactsController < ApplicationController
   end
 
   def set_page_info
+    unless user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
       @menus[:contacts][:active] = "active"
+    end
   end
 
 
