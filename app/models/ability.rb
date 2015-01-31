@@ -67,6 +67,10 @@ class Ability
 
             can :manage, Receipt
 
+            can :manage, CheckEntry
+
+            can :manage, DepositCheck
+
             can :manage, SoHeader
 
             can :manage, SoLine
@@ -272,6 +276,10 @@ class Ability
             can :manage, Receivable
 
             can :manage, Receipt
+
+            can :manage, CheckEntry
+
+            can :manage, DepositCheck
 
             can :manage, SoHeader
 
