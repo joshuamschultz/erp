@@ -105,7 +105,7 @@ Updated:</td>
       <td>PART NUMBER</td>
       <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.item.item_part_no %></td>
       <td>P.O. NUMBER</td>
-      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.po_header.po_identifier %></td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
     </tr>
         <tr>
       <td scope="row">DRAWING NUMBER</td>

@@ -122,7 +122,7 @@ MATERIAL TEST RESULTS </strong></td>
                         <tr>
               <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td scope="row">Po No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= @quality_lot.po_header.po_identifier %> </td>
+                  <td scope="row">Po No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %> </td>
                   <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
                 </tr>
               </table></td>

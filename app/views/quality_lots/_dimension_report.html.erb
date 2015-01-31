@@ -211,7 +211,7 @@ form {
                                       <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                           <td style="border-right:1px solid #111; width:122px;" scope="row" >PO No.</td>
-                                          <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
+                                          <td align="center" class="color"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
                                         </tr>
 
 
@@ -223,7 +223,8 @@ form {
                  <tr style=" border-bottom:1px solid #111;">
                                       <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                          <td style="border-right:1px solid #111; width:122px;  scope="row" >Report completed by:</td>
+                                          <td style="border-right:1px solid #111; width:122px;  scope="row" >Report completed by:
+                                          </td>
                                           <td align="center" class="color"><%= @quality_lot.lot_inspector.name %></td>
                                         </tr>
                                         
