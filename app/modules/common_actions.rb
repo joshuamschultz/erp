@@ -257,7 +257,7 @@ module CommonActions
 	    if can? :view, Dimension
                  menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
     	end
-        if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
+        if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_clerical?  &&  !current_user.is_vendor? && !current_user.is_customer? 
          menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
         end
 
