@@ -51,6 +51,8 @@ class Ability
 
             can :manage, GlAccount
 
+            can :manage, GlEntry
+
             can :manage, PoShipment
 
             can :manage, SoShipment
