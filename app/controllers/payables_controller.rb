@@ -21,7 +21,9 @@ class PayablesController < ApplicationController
   end 
 
   def set_page_info
+    unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
       @menus[:accounts][:active] = "active"
+    end
   end
 
    def set_autocomplete_values
@@ -76,9 +78,7 @@ class PayablesController < ApplicationController
               )
               end    
               else
-                payable[:links] = CommonActions.object_crud_paths(nil, nil, nil, 
-                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
-              )
+                payable[:links] = ''
              end     
 
           }

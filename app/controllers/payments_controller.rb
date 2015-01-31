@@ -19,7 +19,9 @@ class PaymentsController < ApplicationController
   end 
 
   def set_page_info
-    @menus[:accounts][:active] = "active"
+    unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+      @menus[:accounts][:active] = "active"
+    end
   end
 
   def set_autocomplete_values

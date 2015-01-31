@@ -21,7 +21,9 @@ class ReceivablesController < ApplicationController
   end 
 
   def set_page_info
+    unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
       @menus[:accounts][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -56,9 +58,7 @@ class ReceivablesController < ApplicationController
                 [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
               )
               else
-                receivable[:links] = CommonActions.object_crud_paths(nil, nil, nil,
-                [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
-              )
+                receivable[:links] = ''
               end  
 
         }
