@@ -19,7 +19,9 @@ class CustomerQuotesController < ApplicationController
     end
 
     def set_page_info
+      unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  )
         @menus[:quotes][:active] = "active"
+      end
     end
 
     def set_autocomplete_values

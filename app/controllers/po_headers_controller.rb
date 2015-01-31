@@ -21,7 +21,9 @@ class PoHeadersController < ApplicationController
   end
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_customer? 
       @menus[:purchases][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
