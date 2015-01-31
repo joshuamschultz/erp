@@ -86,17 +86,12 @@ class SoShipmentsController < ApplicationController
   def so_line_data_list(object, shipment)
     so_line = shipment ? object.so_line : object
 
-    if can? :edit, SoShipment
+
       object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)    
       object[:item_part_no] = CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)
       object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
-       object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
-    else
-      object[:so_identifier] = so_line.so_header.so_identifier
-      object[:item_part_no] =  so_line.item_alt_name.item_alt_identifier
-      object[:customer_name] = so_line.so_header.organization ? so_line.so_header.organization.organization_name : ""
-      object[:vendor_name] = so_line.organization ? so_line.organization.organization_name : "CHESS"
-    end
+      object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
+
     object[:lot] = "" 
     
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
