@@ -227,7 +227,6 @@ module CommonActions
 			# {:path => customer_feedbacks_path, :name => "Customer Response"},
 			{:path => quality_actions_path, :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
-			{:path => customer_qualities_path, :name => "Quality Level"}
 		]
 
 		if can? :view, QualityLot
@@ -259,6 +258,9 @@ module CommonActions
     	end
         if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_clerical?  &&  !current_user.is_vendor? && !current_user.is_customer? 
          menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
+        end
+        if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 
+         menus[:quality][:sub_menu].push({:path => customer_qualities_path, :name => "Quality Level"})
         end
 
 
