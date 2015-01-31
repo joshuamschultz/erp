@@ -1,4 +1,12 @@
 class CheckEntriesController < ApplicationController
+  before_filter :user_permissions
+
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, CheckEntry
+    end 
+  end 
   # GET /check_entries
   # GET /check_entries.json
   def index
