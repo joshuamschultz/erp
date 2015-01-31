@@ -23,7 +23,9 @@ class SoHeadersController < ApplicationController
 
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_vendor? 
       @menus[:sales][:active] = "active"
+    end
   end
 
   def set_autocomplete_values

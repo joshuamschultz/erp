@@ -38,7 +38,7 @@ class SoShipmentsController < ApplicationController
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
-                if can? :edit, so_line
+                if can? :edit, SoShipment
 
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
@@ -68,7 +68,7 @@ class SoShipmentsController < ApplicationController
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
-                if can? :edit, so_shipment  
+                if can? :edit, SoShipment  
                   so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
                   so_shipment[:links] = ""
@@ -86,7 +86,7 @@ class SoShipmentsController < ApplicationController
   def so_line_data_list(object, shipment)
     so_line = shipment ? object.so_line : object
 
-    if can? :edit, so_line
+    if can? :edit, SoShipment
       object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)    
       object[:item_part_no] = CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)
       object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
