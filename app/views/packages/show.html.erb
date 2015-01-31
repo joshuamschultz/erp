@@ -16,10 +16,8 @@
                 <td><%= @package.updated_at.strftime("%d/%m/%Y") %></td>
                 <td>&nbsp;</td>
 
-                <% if can? :edit , Package %>
+                <% if can? :view , Package %>
                     <td><%= link_to(@package.quality_lot.po_line.item_alt_name.item_alt_identifier, item_path(@package.quality_lot.item_revision.item, revision_id: @package.quality_lot.item_revision_id)) if @package.quality_lot.item_revision %> </td>
-                <% else %>
-                    <td><%= @package.quality_lot.po_line.item_alt_name.item_alt_identifier %></td>
                 <% end %>
                 <td rowspan="7">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
