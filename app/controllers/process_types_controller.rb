@@ -24,10 +24,7 @@ class ProcessTypesController < ApplicationController
   # GET /process_types.json
   def index
     if params[:item_id].present?
-
       @process_types =ProcessType.item_process_type(params[:item_id])
-
-
     else
       @process_types = ProcessType.joins(:attachment).all
     end
