@@ -127,12 +127,12 @@
 <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
 <div class="new_widget">
     <div class="row-fluid">
-         <% unless  user_signed_in? &&  current_user.is_customer? %>   
+         <% if can? :view, PoShipment %>   
             <div class="span6">
             <%= render :partial => 'po_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
             </div>
         <% end %>
-         <% unless  user_signed_in? &&  current_user.is_vendor? %>
+         <% if can? :view, SoShipment %>
             <div class="span6">
             <%= render :partial => 'so_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
             </div>
@@ -142,17 +142,17 @@
 </div>
 <div class="new_widget">
     <div class="row-fluid">
-        <% unless  user_signed_in? &&  current_user.is_customer? %>        
+         <% if can? :view, Payable %>        
             <div class="span6">
                 <%= render :partial => 'payables/item_payables' %>
             </div>
         <% end %>
 
-<% unless  user_signed_in? &&  current_user.is_vendor? %>  
-    <div class="span6">
-    <%= render :partial => 'receivables/item_receivables' %>
-    </div>
-<% end %>        
+        <% if can? :view, Receivable %>  
+            <div class="span6">
+            <%= render :partial => 'receivables/item_receivables' %>
+            </div>
+        <% end %>        
     </div>
 </div>
 <!-- Revisions -->
