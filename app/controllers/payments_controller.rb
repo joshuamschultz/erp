@@ -24,6 +24,7 @@ class PaymentsController < ApplicationController
     end
   end
 
+
   def set_autocomplete_values
     params[:payment][:organization_id], params[:organization_id] = params[:organization_id], params[:payment][:organization_id]
     params[:payment][:organization_id] = params[:org_organization_id] if params[:payment][:organization_id] == ""
