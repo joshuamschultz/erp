@@ -79,22 +79,26 @@ class QualityAction < ActiveRecord::Base
     end
 
     def self.quality_action_filtering
-            quality_action = []
-         
+            quality_actions = []
+        p "========================================================="
         if User.current_user.organization.present?
-           organization_quality_type = User.current_user.organization.organization_type 
-           quality_actions = QualityAction.where(:organization_quality_type_id => organization_quality_type.id )
+            organization_quality_type = User.current_user.organization.organization_type 
+            quality_actions = QualityAction.where(:organization_quality_type_id => organization_quality_type.id )
            return quality_actions
+        else
+            return quality_actions
         end 
     end
 
     def self.quality_action_filtering_status(status_param)
-        quality_action = []
+        quality_actions = []
          
         if User.current_user.organization.present?
            organization_quality_type = User.current_user.organization.organization_type 
            quality_actions = QualityAction.where("organization_quality_type_id = ? AND quality_action_status = ?", organization_quality_type, status_param)
            return quality_actions
+        else
+            return quality_actions
         end 
     end
 
