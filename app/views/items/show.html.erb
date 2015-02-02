@@ -81,11 +81,15 @@
 
     <% if @quote_type_item == "vendor" %> 
         <% unless  user_signed_in? &&  current_user.is_customer? %>  
-            <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+           <% if can? :view, CustomerQuote %>
+                <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+            <% end %>
         <% end %>
     <% else %>
        <% unless  user_signed_in? &&  current_user.is_vendor? %>
-        <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+        <% if can? :view, CustomerQuote %>
+            <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+        <% end %>
         <% end %>
     <% end %>
    
