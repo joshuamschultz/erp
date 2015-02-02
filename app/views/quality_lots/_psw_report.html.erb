@@ -103,6 +103,9 @@ body,td,th {
 </style>
 
 <% @company_info = CompanyInfo.first %>
+
+
+<% @ppap = @quality_lot.ppap %>
 <div id="main-wrapper">
 
 <div class="wrapper">
@@ -143,7 +146,7 @@ body,td,th {
           </tr>
           <tr>
             <td scope="row">Drawing No.</td>
-            <td align="center" style="color:#000;"></td>
+            <td align="center" style="color:#000;"><%= @quality_lot.item_revision.item.item_part_no %> </td>
           </tr>
           <tr>
             <td colspan="2" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -185,40 +188,34 @@ body,td,th {
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox" id="checkbox">
-                    <label for="checkbox">Initial submission</label>
+                    <label> <%= check_box_tag 'initial_submission', "true", @ppap.initial_submission , :disabled => false %> Initial submission</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                   <input type="checkbox" name="checkbox2" id="checkbox2">
-                    <label for="checkbox2">Re-Submission</label>
+                     <label><%= check_box_tag 're_submission', "true", @ppap.re_submission , :disabled => false %> Re-Submission </label>
                   </form></td>
                   <td width="31%"><form name="form1" method="post" action="">
-                     <div class="ff"><input type="checkbox" name="checkbox3" id="checkbox3"></div>
-                   <div class="ff-2"> <label for="checkbox3">Change to materials used</label></div>
+                     <div class="ff"><label><%= check_box_tag 'change_to_materials_used', "true", @ppap.change_to_materials_used , :disabled => false %>Change to materials used</label><br></div>
+           
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox" id="checkbox">
-                    <label for="checkbox">Revision Change</label>
+                    <label><%= check_box_tag 'revision_change', "true", @ppap.revision_change , :disabled => false %>Revision Change</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox2" id="checkbox2">
-                    <label for="checkbox2">Camo pattern new to part</label>
+                    <label><%= check_box_tag 'camo_pattern_new_to_part', "true", @ppap.camo_pattern_new_to_part , :disabled => false %>Camo pattern new to part </label>
                   </form></td>
                   <td width="31%"><form name="form1" method="post" action="">
-                     <div class="ff"><input type="checkbox" name="checkbox3" id="checkbox3"></div>
-                      <div class="ff-2"><label for="checkbox3">Tooling transfer, refurbishment, replacement or additional</label></div>
+                     <div class="ff"><label><%= check_box_tag 'tooling_replacement', "true", @ppap.tooling_replacement , :disabled => false %>Tooling transfer, refurbishment,replacement or additional</label></div>
+                  
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox" id="checkbox">
-                    <label for="checkbox">Process Change</label>
+                    <label><%= check_box_tag 'process_change', "true", @ppap.process_change , :disabled => false %> Process Change</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox2" id="checkbox2">
-                    <label for="checkbox2">Change in mfg source</label>
+                    <label><%= check_box_tag 'Change_in_mfg_source', "true", @ppap.Change_in_mfg_source , :disabled => false %>Change in mfg source </label>
                   </form></td>
              
                   </tr>
@@ -239,36 +236,34 @@ body,td,th {
             <tr>
               <td width="20%" scope="row" align="center">Level 1</td>
               <td width="66%"><form name="form1" method="post" action="">
-                <input type="checkbox" name="checkbox4" id="checkbox5">
-                <label for="checkbox5">Warrant only</label>
+                <label> <%= radio_button_tag 'level', "true", @ppap.level1, :id => "level1" %> &nbsp;Warrant only </label>
               </form></td>
               </tr>
             <tr>
               <td width="20%" scope="row" align="center">Level 2</td>
               <td width="66%"><form name="form1" method="post" action="">
-               <div class="ff"> <input type="checkbox" name="checkbox4" id="checkbox5"></div>
-                <div class="ff-3">  <label for="checkbox5">Warrant with product samples and limited supporting data submitted to customer</label></div>
+               <div class="ff"><label> <%= radio_button_tag 'level', "true", @ppap.level2, :id => "level2" %> &nbsp; Warrant with product samples and limited supporting data submitted to customer </label><br></div>
+                
               </form></td>
               </tr>
             <tr>
               <td width="20%" scope="row" align="center">Level 3</td>
               <td width="66%"><form name="form1" method="post" action="">
-               <div class="ff"> <input type="checkbox" name="checkbox4" id="checkbox5"></div>
-               <div class="ff-3"> <label for="checkbox5">Warrant with product samples and complete supporting data submitted to customer</label></div>
+               <div class="ff"><label> <%= radio_button_tag 'level', "true", @ppap.level3, :id => "level3" %> &nbsp; Warrant with product samples and complete supporting data submitted to customer </label><br></div>
+       
               </form></td>
               </tr>
             <tr>
               <td width="20%" scope="row" align="center">Level 4</td>
               <td width="66%"><form name="form1" method="post" action="">
-                <div class="ff"><input type="checkbox" name="checkbox4" id="checkbox5"></div>
-               <div class="ff-3"> <label for="checkbox5">Warrant and other requirements as defined by customer</label></div>
+                <div class="ff"> <label> <%= radio_button_tag 'level', "true", @ppap.level4, :id => "level4" %> &nbsp;Warrant and other requirements as defined by customer </label><br></div>
               </form></td>
               </tr>
                           <tr>
               <td width="20%" scope="row" align="center">Level 5</td>
               <td width="66%"><form name="form1" method="post" action="">
-                <div class="ff"><input type="checkbox" name="checkbox4" id="checkbox5"></div>
-                <div class="ff-3"><label for="checkbox5">Warrant with product samples and complete supporting data reviewed at Mfg location</label></div>
+                <div class="ff"><label><%= radio_button_tag 'level', "true", @ppap.level5, :id => "level5" %> &nbsp;Warrant with product samples and complete supporting data reviewed at Mfg location  </label></div>
+      
               </form></td>
               </tr>
                           <tr>
@@ -290,82 +285,98 @@ PPAP level requirements)<br></td>
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Purchasing Agreement</label>
+                   <label><%= check_box_tag 'purchasing_agreement', "true",@ppap.purchasing_agreement %>
+                            Purchasing Agreement</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">First Article Parts (labelled)</label>
+                    <label><%= check_box_tag 'first_article_parts', "true",@ppap.first_article_parts , :disabled => false %>
+                                First Article Parts (labelled)</label>
                   </form></td>
                   </tr>
                 <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Part Submission Warrant</label>
+                    <label><%= check_box_tag 'part_submission_warrant', "true",@ppap.part_submission_warrant %>
+                            Part Submission Warrant  </label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <div class="ff"><input type="checkbox" name="checkbox5" id="checkbox6"></div>
-                   <div class="ff-4"> <label for="checkbox6">FAI - Dimensional Inspection Results/ Eng Dwg</label></div>
+                    <div class="ff">       <label>
+                                <%= check_box_tag 'fai_dimensional_inspection', "true",@ppap.fai_dimensional_inspection , :disabled => false %>
+                                FAI - Dimensional Inspection Results/ Eng Dwg</label></div>
+               
                   </form></td>
                   </tr>
                 <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Packaging/Shipping</label>
+                            <label>
+                            <%= check_box_tag 'packaging_shipping', "true",@ppap.packaging_shipping  %>
+                            Packaging/Shipping </label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">FAI - Material Test Results</label>
+                                    <label>
+                                <%= check_box_tag 'fai_material_test_result', "true",@ppap.fai_material_test_result , :disabled => false %>
+                                FAI - Material Test Results</label>
                   </form></td>
                   </tr>
                 <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Component Review Meeting</label>
+                        <label>
+                            <%= check_box_tag 'component_review_meeting', "true",@ppap.component_review_meeting  %>
+                            Component Review Meeting </label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">Gage Review</label>
+                <label>
+                                <%= check_box_tag 'guage_review', "true",@ppap.guage_review , :disabled => false %>
+                                Gage Review</label>
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                   <div class="ff"> <input type="checkbox" name="checkbox5" id="checkbox4"></div>
-                   <div class="ff-4"> <label for="checkbox4">DFMEA- Design Failure Mode & Effect Analysis</label></div>
+                   <div class="ff">                             <label>
+                            <%= check_box_tag 'dfmea_desing', "true",@ppap.dfmea_desing %>
+                            DFMEA- Design Failure Mode & Effect Analysis</label></div>
+
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">Measurement Analysis Study (Gage R&R)</label>
+               <label>
+                                <%= check_box_tag 'measurement_analysis', "true",@ppap.measurement_analysis , :disabled => false %>
+                                Measurement Analysis Study (Gage R&R)</label>
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Process Flow Diagram</label>
+                         <label>
+                            <%= check_box_tag 'process_flow_diagram', "true",@ppap.process_flow_diagram %>
+                            Process Flow Diagram</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">Process Capability Study</label>
+                        <label>
+                                <%= check_box_tag 'process_capabilty_study', "true",@ppap.process_capabilty_study , :disabled => false %>
+                                Process Capability Study</label>
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <div class="ff"><input type="checkbox" name="checkbox5" id="checkbox4"></div>
-                    <div class="ff-4"><label for="checkbox4">PFMEA - Process Failure Mode & Effect Analysis</label></div>
+                    <div class="ff">                   <label>
+                            <%= check_box_tag 'pfmea_analysis', "true",@ppap.pfmea_analysis %>
+                            PFMEA - Process Failure Mode & Effect Analysis</label></div>
+
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">Production Run at Rate</label>
+                 <label>
+                                <%= check_box_tag 'production_run_rate', "true",@ppap.production_run_rate , :disabled => false %>
+                                Production Run at Rate</label>
                   </form></td>
                   </tr>
                                   <tr>
                   <td width="34%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox4">
-                    <label for="checkbox4">Control Plan</label>
+                            <label>
+                            <%= check_box_tag 'control_plan', "true",@ppap.control_plan %>
+                            Control Plan</label>
                   </form></td>
                   <td width="35%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox6">
-                    <label for="checkbox6">Appearance Approval Report</label>
+                               <label>
+                                <%= check_box_tag 'appearance_report', "true",@ppap.appearance_report , :disabled => false %>
+                                Appearance Approval Report</label>
                   </form></td>
                   </tr>
               </table></div></td>
@@ -374,8 +385,9 @@ PPAP level requirements)<br></td>
               <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox6" id="checkbox7">
-                    <label for="checkbox7">Other</label>
+         <label>
+                            <%= check_box_tag 'Other', "true",@ppap.Other %>
+                            Other:</label>
                     ______________________________________________
                   </form></td>
                 </tr>
@@ -384,15 +396,9 @@ PPAP level requirements)<br></td>
                    <div class="wrapper-none">
                   <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td width="53%" scope="row">These results meet all drawing & specification requirements: </td>
-                      <td width="10%"><form name="form1" method="post" action="">
-                        <input type="checkbox" name="checkbox7" id="checkbox8">
-                        <label for="checkbox8">Yes</label>
-                      </form></td>
-                      <td width="21%"><form name="form1" method="post" action="">
-                        <input type="checkbox" name="checkbox8" id="checkbox9">
-                        <label for="checkbox9">No if "No" explain</label>
-                      </form></td>
+                      <td> <label for="checkbox11">These results meet all drawing & specification requirements:  &nbsp;&nbsp;&nbsp; 
+                         <%= radio_button_tag :result_meeting_yes, true, checked = @ppap.result_meeting_yes, :disabled =>  false, :id => "result_meeting_yes"%>&nbsp; 
+                            Yes    <%= radio_button_tag :result_meeting_yes, true, checked = !@ppap.result_meeting_yes, :disabled => false, :id => "result_meeting_no" %>&nbsp;  No if "No" explain</label></td>
                     </tr>
                   </table></div>
                   
@@ -441,17 +447,17 @@ PPAP level requirements)<br></td>
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="center">
               <td width="12%" align="left" scope="row"># parts/hr:</td>
-              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;">300PCS</td>
+              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;"><%= @ppap.past_hour %></td>
               <td width="17%" scope="row"># hours run:</td>
-              <td width="19%" scope="row">16 hours/daily</td>
+              <td width="19%" scope="row"><%= @ppap.hour_run %></td>
               <td width="18%" scope="row" style="border-bottom:1px solid #000 !important;">Date:</td>
-              <td width="19%" scope="row">9/10/2014</td>
+              <td width="19%" scope="row"><%=@ppap.date%></td>
             </tr>
             <tr align="center">
               <td width="12%" align="left" scope="row">Committed weekly capacity:</td>
-              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;">80 hours/ weekly</td>
+              <td width="15%" scope="row" style="border-bottom:1px solid #000 !important;"><%= @ppap.commited_weekly_capacity %></td>
               <td colspan="2" scope="row">Maximim weekly capacity:</td>
-              <td width="18%" scope="row" style="border-bottom:1px solid #000 !important;">ESTIMATE: 24,000</td>
+              <td width="18%" scope="row" style="border-bottom:1px solid #000 !important;"><%= @ppap.maximum_weekly_capacity %></td>
               <td width="19%" scope="row">Dummy</td>
             </tr>
             <tr>
@@ -625,5 +631,32 @@ PPAP level requirements)<br></td>
 
 </div>
 
+<script type="text/javascript">
+   
+           
+    
+    $(function() {
+        $(":checkbox").change(function(){
+            set_value(this, "check");
+            // $.post("index.php", { id: this.id, checked: this.checked });
+        });
+
+
+        $("input:radio").click(function (){
+            set_value(this, "level");
+          });
+        function set_value(this1, type){
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_psw_value", "psw_id": <%= @ppap.id %>, "value": this1.checked, "field": this1.id, "type": type}}, "results", {});
+        }
+    });
+    function results(response, callback_params, api_params){
+        if(response["aaData"] ==  "fail"){
+            location.reload(true);
+        }
+    };
+
+    // Disabling all the form elements if the user is cusotmer
+    // $(".ppap :input").attr("disabled", true);
+</script>
 
 
