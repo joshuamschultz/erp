@@ -71,7 +71,7 @@
 </div>
 
 <% if can? :view, ProcessType %>
-    <%= render :partial => 'process_types/item_process_type' %>
+<%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
 <% end %>
 <% if can? :view, Specification %>
 <%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
