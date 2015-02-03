@@ -6,7 +6,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Shipping</h4>
             <span class="span6 heading right">
+            <% if can? :edit ,SoShipment %>
             	<%= link_to 'Ship', "#", :class => "btn btn-small btn-success", onclick: "initiate_shipping_inputs(); return false" %>
+            <% end %>
             </span>
         </div> 
     </div>

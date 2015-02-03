@@ -4,7 +4,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Revisions</h4>
             <span class="span6 heading right">
+               <%   if can? :edit, Item %>
                 <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
+               <% end %>  
             </span>
         </div> 
     </div>

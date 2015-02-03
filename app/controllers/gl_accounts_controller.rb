@@ -1,11 +1,18 @@
 class GlAccountsController < ApplicationController
   before_filter :set_page_info  
   autocomplete :gl_account, :gl_account_title, :full => true
+  before_filter :user_permissions
 
-  def set_page_info
-    @menus[:general_ledger][:active] = "active"
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, GlAccount
+    end 
   end
-
+  def set_page_info
+    unless user_signed_in? && (current_user.is_customer? || current_user.is_vendor? )
+      @menus[:general_ledger][:active] = "active"
+    end
+  end
   # GET /gl_accounts
   # GET /gl_accounts.json
   def index
@@ -13,7 +20,11 @@ class GlAccountsController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @gl_accounts = GlAccount.order(:gl_account_identifier).select{|gl_account| 
+           if can? :edit, GlAccount 
             gl_account[:links] = CommonActions.object_crud_paths(nil, edit_gl_account_path(gl_account),gl_account_path(gl_account))
+           else
+             gl_account[:links] = ""
+           end  
             gl_account[:gl_account_title] =   CommonActions.linkable(gl_entries_path({:gl_account => gl_account.id}), gl_account.gl_account_title)         
             gl_account[:gl_type_name] = CommonActions.linkable(gl_type_path(gl_account.gl_type), gl_account.gl_type.gl_name)
             gl_account[:gl_type_side] = gl_account.gl_type.gl_side

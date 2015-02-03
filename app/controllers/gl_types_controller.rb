@@ -1,9 +1,19 @@
 class GlTypesController < ApplicationController
   before_filter :set_page_info
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_customer? 
+        authorize! :edit, GlType
+    end 
+  end
 
   def set_page_info
-    @menus[:general_ledger][:active] = "active"
+     unless user_signed_in? && current_user.is_customer?
+      @menus[:general_ledger][:active] = "active"
+    end 
   end
+
 
   # GET /gl_types
   # GET /gl_types.json

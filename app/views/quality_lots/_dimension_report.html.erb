@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+
+<title>Dimension Report</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+<style type="text/css">
+    @charset "utf-8";
+    body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7px;
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  line-height: 16px;
+    }
+    /* New Style */
+    .clear {
+        clear: both;
+    }
+
+    .ms_wrapper {
+        float: left;
+        height: auto;
+        width: 640px;
+    }
+table {
+    border-collapse: collapse;
+} 
+label {
+    line-height: 14px;
+}
+table tr {
+border:1px solid #111;
+} 
+.bor td {
+border:1px solid #111;
+} 
+
+.bor-2 td {
+    height: 19px;
+
+}
+
+.bor-3 td {
+    padding: 0px 3px;
+}
+td {
+    padding: 1px 3px;
+}
+.no-b tr{
+border:none;
+} 
+
+img {
+    width: 150px;
+}
+form {
+    line-height: 13px;
+}
+.color{color:#000;}
+
+</style>
+
+<% @company_info = CompanyInfo.first %>
+<div class="ms_wrapper">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+    <tr align="left" valign="top" style="border-bottom:none;" >
+      <td scope="row" style="padding:0;"  ><table width="100%" border="0"  cellspacing="0" cellpadding="0" class="no-b bor-2">
+        <tr align="left" valign="top">
+          <td width="49%" scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="left" valign="top">
+              <td style="padding:5px 0 5px 5px; border-right:1px solid #111;" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center" valign="top">
+                  <td width="50%" scope="row">
+
+
+        <%= image_tag(@company_info.image.image.url(:original)) if @company_info.image %>
+
+                  </td>
+                  <td width="50%"><strong>FIRST ARTICLE INSPECTION<br>
+                      DIMENSIONAL INSPECTION REPORT </strong></td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr align="left" valign="top">
+              <td style=" border-right:1px solid #111;" scope="row">Reason for Data Submission ()check all that apply</td>
+            </tr>
+            <tr align="center" valign="top">
+              <td style=" border-right:1px solid #111; " scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bor-3">
+                <tr align="left" valign="top">
+                  <td width="65%" scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox" id="checkbox">
+                    <label for="checkbox">nitial submission</label>
+                  </form></td>
+                  <td width="50%"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox2" id="checkbox2">
+                    <label for="checkbox2">New Supplier</label>
+                  </form></td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox3" id="checkbox3">
+                    <label for="checkbox3">Correction of NCMR</label>
+                  </form></td>
+                  <td><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox8" id="checkbox8">
+                    <label for="checkbox8">Other- please specify</label>
+                  </form></td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox4" id="checkbox4">
+                    <label for="checkbox4">New / Revised drawing or spec</label>
+                  </form></td>
+                  <td>__________________________</td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox5" id="checkbox5">
+                    <label for="checkbox5">Tooling: transfer, replacement, addl.</label>
+                  </form></td>
+                  <td>__________________________</td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox6" id="checkbox6">
+                    <label for="checkbox6">New or significantly modified process or routing</label>
+                  </form></td>
+                  <td>__________________________</td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <input type="checkbox" name="checkbox7" id="checkbox7">
+                    <label for="checkbox7">Change of location, sub-supplier or material</label>
+                  </form></td>
+                  <td>&nbsp;</td>
+                </tr>
+              </table></td>
+            </tr>
+          </table></td>
+          <td width="51%" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+              <td scope="row" style="border-bottom:1px solid #111;  "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;" scope="row">Date</td>
+                  <td align="center" class="color"><%= Time.now.strftime("%m/%d/%Y") %></td>
+                </tr>
+              </table></td>
+            </tr>
+                       <tr>
+              <td scope="row" style="border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;" scope="row">Part Number</td>
+                  <td align="center" class="color"><%= @quality_lot.item_revision.item.item_part_no%></td>
+                </tr>
+              </table></td>
+            </tr>
+            <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;" scope="row">Part Name</td>
+                  <td align="center" class="color"><%= @quality_lot.item_revision.item_name %></td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;" scope="row">Drawing No.</td>
+                  <td align="center"><%= @quality_lot.item_revision.item.item_part_no%></td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr>
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111; padding:0 8px 0 8px ; "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center">
+                  <td align="left" style="border-right:1px solid #111; width:117px;" scope="row">Drawing Rev Level</td>
+                  <td  class="color" style=" border-right:1px solid #111;"><%= @quality_lot.item_revision.item_revision_name %></td>
+                  <td style=" border-right:1px solid #111;">Rev Date</td>
+                  <td  class="color"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
+                </tr>
+              </table></td>
+            </tr>
+                                    <tr >
+              <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;"  scope="row">Supplier</td>
+                  <td align="center"><%= @company_info.company_name %></td>
+                </tr>
+              </table></td>
+            </tr>
+                        <tr style=" border-bottom:1px solid #111;">
+              <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111;" scope="row">Supplier Representative</td>
+                  <td align="center">Joshua Schultz</td>
+                </tr>
+              </table></td>
+            </tr>
+                                    <tr style=" border-bottom:1px solid #111;">
+              <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="border-right:1px solid #111; width:122px;" scope="row">E-mail</td>
+                  <td align="center" class="color">joshua@chessgroupinc.com</td>
+                </tr>
+              </table></td>
+            </tr>
+                                    <tr style=" border-bottom:1px solid #111;">
+                                      <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td style="border-right:1px solid #111; width:122px;" scope="row" >PO No.</td>
+                                          <td align="center" class="color"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
+                                        </tr>
+
+
+
+
+                                      </table></td>
+                </tr>
+
+                 <tr style=" border-bottom:1px solid #111;">
+                                      <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td style="border-right:1px solid #111; width:122px;  scope="row" >Report completed by:
+                                          </td>
+                                          <td align="center" class="color"><%= @quality_lot.lot_inspector.name %></td>
+                                        </tr>
+                                        
+
+
+
+                                      </table></td>
+                </tr>
+            </table></td>
+        </tr>
+    </table>      
+    </tr>
+        <tr align="center" style="border-bottom:none;" >
+      <td scope="row"><strong>DIMENSIONAL INSPECTION RESULTS</strong></td>
+    </tr>
+        <tr align="center" style="border-bottom:none;" >
+      <td scope="row"><strong>ACTUAL DIMENSION</strong></td>
+    </tr>
+    <tr style="border:none;">
+      <td scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bor">
+        <tr align="center" valign="top">
+          <td width="7%" scope="row">Item</td>
+          <td width="6%">Print zone</td>
+          <td width="7%">Dwg Dim</td>
+          <td width="6%">Plus Tol</td>
+          <td width="4%">Minus Tol</td>
+          <td width="4%">1</td>
+          <td width="4%">2</td>
+          <td width="3%">3</td>
+          <td width="3%">4</td>
+          <td width="3%">5</td>
+          <td width="4%">6</td>
+          <td width="5%">7</td>
+          <td width="4%">8</td>
+          <td width="5%">9</td>
+          <td width="4%">10</td>
+          <td width="4%">Average</td>
+          <td width="4%">std dev</td>
+          <td width="4%">Min</td>
+          <td width="4%">Min</td>
+          <td width="4%">GAGE</td>
+          <td width="4%">ACC</td>
+          <td width="4%">REJ</td>
+          <td width="3%">Final disposition</td>
+        </tr>
+        <% i = 0 %>
+        <% @quality_lot.quality_lot_dimensions.each do |dimension| %>
+        
+        <tr>
+          <td scope="row"><%= i=i+1 %></td>
+          <td>&nbsp;</td>
+          <td>Dim Letter</td>
+          <td> + Tol</td>
+          <td>- Tol</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>input</td>
+          <td>Average</td>
+          <td>STD Dev</td>
+          <td>Min</td>
+          <td>Max</td>
+          <td>Gage Serial</td>
+          <% if dimension.lot_dimension_status == "accepted" %>
+            <td>X</td>
+          <% else %>
+            <td>&nbsp;</td>
+          <% end %>
+          <% if dimension.lot_dimension_status == "rejected" %>
+            <td>X</td>
+          <% else %>
+            <td>&nbsp;</td>
+          <% end %>
+          <td>&nbsp;</td>
+        </tr>
+    
+        <% end %>
+ 
+      </table></td>
+    </tr>
+    <tr align="center" style="border-top:none; border-bottom:none;" >
+      <td scope="row"><strong>SIGNATURES</strong></td>
+    </tr>
+    <tr style="border:none;">
+      <td scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center">
+          <td width="21%" align="left" style=" border-right:1px solid #111;" scope="row">Quality responsible - Printed name/date</td>
+          <td width="22%" style=" border-right:1px solid #111;">Aphrodite Rose</td>
+          <td width="20%" style=" border-right:1px solid #111;">Design responsible - printed name/date</td>
+          <td width="37%" style=" border-right:1px solid #111;">&nbsp;</td>
+          </tr>
+        <tr align="center">
+          <td align="left" style=" border-right:1px solid #111;" scope="row">Quality responsible - Signature</td>
+          <td style=" border-right:1px solid #111;"></td>
+          <td style=" border-right:1px solid #111;">Desing responsible - Signature</td>
+          <td style=" border-right:1px solid #111;">&nbsp;</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr style="border-top:none;">
+      <td scope="row">ADDITIONAL REMARKS:<br>
+       <br>
+       </td>
+    </tr>
+    <tr>
+      <td scope="row">First Article Inspection - Dimensional Inspection Results</td>
+    </tr>
+  </table>
+</div>
+
+
+

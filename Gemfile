@@ -60,7 +60,7 @@ gem 'aws-sdk', '1.8.5'
 
 gem 'nested_scaffold'
 
-gem 'cancan'
+gem 'cancancan', '~> 1.9'
 gem 'role_model'
 
 gem 'rails_admin'

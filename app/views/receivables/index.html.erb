@@ -1,27 +1,30 @@
-
-<div class="row-fluid">
-    <div class="span4 well well-002">
-          <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
-              <span class="glyphicons message_out"><i></i></span>
-              <span class="txt">Send All</span>
-              <div class="clearfix"></div>
-          </a>
+ <%   if can? :edit, Receivable %>
+    <div class="row-fluid">
+        <div class="span4 well well-002">
+              <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
+                  <span class="glyphicons message_out"><i></i></span>
+                  <span class="txt">Send All</span>
+                  <div class="clearfix"></div>
+              </a>
+        </div>
+        <div class="span4 well well-002">
+              <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
+                  <span class="glyphicons print"><i></i></span>
+                  <span class="txt">Print All</span>
+                  <div class="clearfix"></div>
+              </a>
+        </div>
     </div>
-    <div class="span4 well well-002">
-          <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
-              <span class="glyphicons print"><i></i></span>
-              <span class="txt">Print All</span>
-              <div class="clearfix"></div>
-          </a>
-    </div>
-</div>
+<% end %>
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
             <h4 class="span6 heading">Receivables</h4>
             <span class="span6 heading right">
+               <% if can? :edit, Receivable %> 
                 <%= link_to 'New Receivable From Shipped', so_shipments_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to 'New Receivable', new_receivable_path, :class => "btn btn-mini btn-success" %>
+               <% end %> 
                 <%= link_to 'Open', receivables_path(receivable_status: "open"), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', receivables_path(receivable_status: "closed"), :class => "btn btn-mini btn-success" %>
             </span>

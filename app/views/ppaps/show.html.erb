@@ -2,7 +2,9 @@
     <div class="row-fluid">
         <h4 class="span3 left">Lot Info</h4>
         <span class="span9 right">
-        <%= link_to "Edit", edit_ppap_path(@ppap), :class => "btn btn-small" %>     
+        <% if can? :edit , Ppap %>
+            <%= link_to "Edit", edit_ppap_path(@ppap), :class => "btn btn-small" %>   
+        <% end %>  
         <%= link_to "Back", ppaps_path, :class =>"btn btn-small" %>
         </span>
     </div>
@@ -273,6 +275,9 @@ p{text-align: center !important;}
     }
 </style>
 <script type="text/javascript">
+    <% if can? :edit , Ppap %>
+           
+    
     $(function() {
         $(":checkbox").change(function(){
             set_value(this, "check");
@@ -292,7 +297,7 @@ p{text-align: center !important;}
             location.reload(true);
         }
     };
-
+    <% end %>  
     // Disabling all the form elements if the user is cusotmer
     // $(".ppap :input").attr("disabled", true);
 </script>

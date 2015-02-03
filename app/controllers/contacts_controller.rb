@@ -4,8 +4,26 @@ class ContactsController < ApplicationController
 
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_logistics?
+        authorize! :edit, Contact
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Contact
+    end 
+  end
+
   def set_page_info
+    unless user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
       @menus[:contacts][:active] = "active"
+    end
   end
 
 
@@ -31,7 +49,11 @@ class ContactsController < ApplicationController
             contact[:contact_name] = contact.contact_title
             contact[:contact_default] = contact.default_address.present? ? "selected" : ""
             contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
-            contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
+            if can? :edit, Contact
+              contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
+            else
+               contact[:links] = ""
+            end   
           }
           render json: {:aaData => @contacts}        
       }

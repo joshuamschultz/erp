@@ -49,6 +49,9 @@ class SoShipment < ActiveRecord::Base
       so_shipped = self.so_total_shipped
       so_status = (so_shipped == self.so_line.so_line_quantity) ? "closed" : "open"
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
+      so_status_count = self.so_line.so_header.so_lines.where("so_line_status = ?", "open").count
+      so_header_status = (so_status_count == 0) ? "closed" : "open"
+      self.so_line.so_header.update_attributes(:so_status => so_header_status) 
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
     end
@@ -70,22 +73,43 @@ class SoShipment < ActiveRecord::Base
       shipments ||= SoShipment
       shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end
+  def self.all_shipments(itemId)
+    SoShipment.joins(:so_line).where(:so_lines => {:item_id => itemId})
+  end 
+  # def set_quality_on_hand
+  #   if self.quality_lot.present?
+  #     quality_lotss = self.quality_lot
+  #     p '---------------------'
+  #     p quality_lotss.quantity_on_hand
+  #     p self.so_shipped_count
+  #     # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
+  #     quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.so_shipped_count
+  #     if quality_lotss.quantity_on_hand <= 0
+  #       quality_lotss.finished = true
+  #       quality_lotss.lot_finalized_at = Date.today.to_s
+  #     end
+  #     if quality_lotss.save(:validate => false)
+  #       p quality_lotss.to_yaml
+  #     end
+  #   end    
+  # end
 
-  def set_quality_on_hand
+    def set_quality_on_hand
     if self.quality_lot.present?
-      quality_lotss = self.quality_lot
-      p '---------------------'
-      p quality_lotss.quantity_on_hand
-      p self.so_shipped_count
+      quality_lot = self.quality_lot
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
-      quality_lotss.quantity_on_hand = quality_lotss.quantity_on_hand - self.so_shipped_count
-      if quality_lotss.quantity_on_hand <= 0
-        quality_lotss.finished = true
-        quality_lotss.lot_finalized_at = Date.today.to_s
+      quality_lot.quantity_on_hand = quality_lot.quantity_on_hand - self.so_shipped_count
+      if quality_lot.quantity_on_hand <= 0
+        quality_lot.finished = true
+        quality_lot.lot_finalized_at = Date.today.to_s
       end
-      if quality_lotss.save(:validate => false)
-        p quality_lotss.to_yaml
+      if quality_lot.save(:validate => false)
+        p quality_lot.to_yaml
       end
     end    
   end
+
+
+
+  
 end

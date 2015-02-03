@@ -2,8 +2,26 @@ class PoShipmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:new,:index]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+        authorize! :edit, PoShipment
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, PoShipment
+    end 
+  end
+
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:logistics][:active] = "active"
+    end 
   end
 
   # GET /po_shipments
@@ -22,7 +40,11 @@ class PoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             if @item
+               if params[:type].present?
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
+               else
+                @po_shipments = PoShipment.all_shipments(@item.id)
+                end  
             else
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
             end
@@ -33,11 +55,20 @@ class PoShipmentsController < ApplicationController
 
                 # po_shipment = so_line_data_list(po_shipment, true)  
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
-                po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                if can? :edit, PoShipment
+                  po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                else
+                  po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, nil, nil)
+                end
                 po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
-                if po_shipment.quality_lot_id.present?
-                  quality_lot = QualityLot.find(po_shipment.quality_lot_id) 
-                  po_shipment[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot
+                if po_shipment
+                  quality_lot = po_shipment.quality_lot
+                if can? :edit, PoShipment
+
+                  po_shipment[:lot] =  quality_lot.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : "" 
+                else
+                  po_shipment[:lot]= ""
+                end
                 else
                    po_shipment[:lot]= ""
                 end
@@ -96,12 +127,20 @@ class PoShipmentsController < ApplicationController
         inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]                       
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
-        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)    
+        @quality_lot = QualityLot.create(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)    
         @quality_lot.lot_inspector = current_user
-        @quality_lot.save
-        @po_shipment.set_quality_on_hand
+        @quality_lot.save 
+
+        @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
+        # @po_shipment.set_quality_on_hand           
+        quality_lot = @po_shipment.quality_lot 
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status        
+        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
+        @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
+        @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
+        @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
+        @po_shipment["control_number"] = quality_lot.lot_control_no if quality_lot.present?
+        @po_shipment["company_name"] =  CompanyInfo.first.company_name
         format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
         format.json { render json: @po_shipment, status: :created, location: @po_shipment }
       else

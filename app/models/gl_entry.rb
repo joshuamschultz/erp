@@ -26,7 +26,7 @@ class GlEntry < ActiveRecord::Base
 
    def process_before_destory
      if self.gl_entry_debit_was != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', self.gl_entry_debit_was)
+       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', self.gl_entry_debit_was)
      end
      if self.gl_entry_credit_was != 0
        CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', self.gl_entry_credit_was)

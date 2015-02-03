@@ -3,6 +3,16 @@ class ItemsController < ApplicationController
   autocomplete :item, :item_part_no, :full => true
   before_filter :set_autocomplete_values, only: [:create] 
 
+  before_filter :view_permissions, except: [:index, :show]
+
+  def view_permissions
+   if  user_signed_in? && ( current_user.is_logistics?  || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, Item
+    end 
+  end
+
+
+
   def set_autocomplete_values
       params[:item][:item_revisions_attributes]["0"][:print_id], params[:print_id] = params[:print_id], params[:item][:item_revisions_attributes]["0"][:print_id]
       params[:item][:item_revisions_attributes]["0"][:print_id] = params[:org_print_id] if params[:item][:print_id] == ""
@@ -27,14 +37,19 @@ class ItemsController < ApplicationController
           @items = @organization.present? ? @organization.po_items : []
         elsif @organization.type_name == "customer"
           @items = @organization.present? ? @organization.so_items : []
+        elsif @organization.type_name == "support"
+          @items =  []  
         end
     else
-        @items = Item.order('item_part_no asc')
+  
+         @items = Item.order('item_part_no asc')
+
     end
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
+        if @items.present?
         @items = @items.select{|item|
             item_revision = item.current_revision
             item[:item_part_no] = "<a href='#{item_path(item)}'><strong>#{item.item_part_no}</strong></a>"            
@@ -46,7 +61,7 @@ class ItemsController < ApplicationController
               item[:item_revision_name] = item_revision.item_revision_name
               item[:item_revision_date] = item_revision.item_revision_date
               item[:item_tooling] = item_revision.item_tooling
-              item[:item_cost] = item_revision.item_cost
+              item[:item_cost] = item.weighted_cost
               item[:item_notes] = item_revision.item_notes
               item[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
               item[:item_quantity_in_hand] = item.qty_on_hand
@@ -66,7 +81,9 @@ class ItemsController < ApplicationController
             end
             item[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
         }
-        render json: {:aaData => @items} 
+      end
+        render json: {:aaData => @items}
+
       }        
     end
   end

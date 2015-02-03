@@ -2,8 +2,26 @@ class CustomerQuotesController < ApplicationController
     before_filter :set_autocomplete_values, only: [:create, :update]
     before_filter :set_page_info
 
+    before_filter :view_permissions, except: [:index, :show]
+    before_filter :user_permissions
+
+
+    def view_permissions
+     if  user_signed_in? &&  current_user.is_customer?
+          authorize! :edit, CustomerQuote
+      end 
+    end
+
+    def user_permissions
+     if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor?  )
+          authorize! :edit, CustomerQuote
+      end 
+    end
+
     def set_page_info
+      unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  )
         @menus[:quotes][:active] = "active"
+      end
     end
 
     def set_autocomplete_values
@@ -54,9 +72,15 @@ class CustomerQuotesController < ApplicationController
             format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
                      customer_quote[:index] = i
                      customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
-                     customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name)
-                     customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
-                     customer_quote[:links] = CommonActions.object_crud_paths(nil, customer_quote_customer_quote_lines_path(customer_quote), customer_quote_path(customer_quote))
+                     customer_quote[:customer_name] = customer_quote.organization.present? ? CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name) : ''
+                     if can? :edit, CustomerQuote
+                      customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
+                      customer_quote[:links] = CommonActions.object_crud_paths(nil, customer_quote_customer_quote_lines_path(customer_quote), customer_quote_path(customer_quote))
+                    else
+                      customer_quote[:links] = nil
+                      customer_quote[:links] = nil
+                    end 
+
                      customer_quote[:quote_status] = CommonActions.status_color(customer_quote.customer_quote_status)
                       i = i+1
                  }

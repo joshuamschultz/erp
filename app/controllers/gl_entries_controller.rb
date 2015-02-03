@@ -2,8 +2,18 @@ class GlEntriesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :user_permissions
+
+  def user_permissions
+     if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, GlEntry
+    end 
+  end
+
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:general_ledger][:active] = "active"
+    end 
   end
 
   def set_autocomplete_values
@@ -26,7 +36,11 @@ class GlEntriesController < ApplicationController
       format.html # index.html.erb
       format.json {         
           @gl_entries.select{|gl_entry| 
-            gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
+            if can? :edit, GlEntry
+              gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
+            else
+              gl_entry[:links] =  ""
+            end   
             gl_entry[:gl_entry_identifier] = CommonActions.linkable(gl_entry_path(gl_entry), gl_entry.gl_entry_identifier)
             gl_entry[:gl_account_name] = CommonActions.linkable(gl_account_path(gl_entry.gl_account), gl_entry.gl_account.gl_account_title)
             gl_entry[:gl_entry_description] = gl_entry.get_description_link

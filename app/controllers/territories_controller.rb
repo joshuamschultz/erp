@@ -1,8 +1,12 @@
 class TerritoriesController < ApplicationController
   before_filter :set_page_info
-
+  before_filter :check_permissions
   def set_page_info
       @menus[:system][:active] = "active"
+  end
+
+  def check_permissions
+        authorize! :view, Territory
   end
   
   # GET /territories

@@ -70,7 +70,9 @@
             </tbody>
         </table>
         <% if @reconciles.length > 0 %>
+        <% if can? :edit, Reconcile %>
         <input type="button" class="btn btn-mini btn-success" value="Reconcile" onclick="set_quote_status();"></input>
+       <% end %> 
         <% end %>
     </div>
     
@@ -105,22 +107,22 @@
 
         if(($('#'+i).is(':checked') && (type == "credit" || type == "check")) || (!($('#'+i).is(':checked')) &&(type == "deposit check")))
         {
-                tot = parseInt(toatalAmount)-parseInt(changeInAmount);
+                tot = (parseFloat(toatalAmount)-parseFloat(changeInAmount)).toFixed(2);
                 $('#reconciled').html(tot);
                 if(!($('#'+i).is(':checked')))
-                   $('#credit').html(parseInt($('#credit').html()) + parseInt(changeInAmount) );
+                   $('#credit').html((parseFloat($('#credit').html()) + parseFloat(changeInAmount)).toFixed(2) );
                 if($('#'+i).is(':checked'))
-                   $('#debit').html(parseInt($('#debit').html()) + parseInt(changeInAmount) );  
+                   $('#debit').html((parseFloat($('#debit').html()) + parseFloat(changeInAmount)).toFixed(2) );  
         }
 
         else if(($('#'+i).is(':checked') &&(type == "deposit check")) || (!($('#'+i).is(':checked')) && (type == "credit" || type == "check"))) 
         {    
-                tot = parseInt(toatalAmount)+parseInt(changeInAmount);
+                tot = (parseFloat(toatalAmount)+parseFloat(changeInAmount)).toFixed(2);
                 $('#reconciled').html(tot);
                 if($('#'+i).is(':checked'))
-                   $('#credit').html(parseInt($('#credit').html()) - parseInt(changeInAmount) );
+                   $('#credit').html((parseFloat($('#credit').html()) - parseFloat(changeInAmount)).toFixed(2));
                 if(!($('#'+i).is(':checked')))
-                   $('#debit').html(parseInt($('#debit').html()) - parseInt(changeInAmount) );  
+                   $('#debit').html((parseFloat($('#debit').html()) - parseFloat(changeInAmount)).toFixed(2) );  
 
 
         }      
@@ -133,7 +135,7 @@
              selected.push($(this).attr('id'));
         });
        
-       var balance = parseInt($('#reconciled').html());
+       var balance = parseFloat($('#reconciled').html()).toFixed(2);
  
        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "process_reconcile", "reconcile_ids" : selected, 'balance' : balance}}, "reconcile_result", {});
     }

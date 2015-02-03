@@ -2,9 +2,26 @@ class OrganizationsController < ApplicationController
   before_filter :set_page_info
 
   autocomplete :organization, :organization_name, :full => true
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_logistics?
+        authorize! :edit, Organization
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+        authorize! :edit, Organization
+    end 
+  end
 
   def set_page_info
+    unless user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
       @menus[:contacts][:active] = "active"
+    end
   end
 
   def get_autocomplete_items(parameters)
@@ -27,7 +44,11 @@ class OrganizationsController < ApplicationController
       format.json {
         @organizations = @organizations.select{|organization| 
           organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
-          organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
+          if can? :edit, Organization
+            organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
+           else
+             organization[:links] = ""
+           end 
         }
         render json: {:aaData => @organizations}  }
     end
