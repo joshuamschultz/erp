@@ -10,9 +10,12 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	before_create :before_create_values
-	
+	before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
+	end
+	
+	def  before_save_values
 		self.quantity_on_hand = self.lot_quantity
 	end
 
