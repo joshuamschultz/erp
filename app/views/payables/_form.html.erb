@@ -13,8 +13,12 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+     <div class="control-group select optional payable_payable_to_address">
     <% if @payable.persisted? %>
-        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Vendor" %>
+        <%= f.label :Vendor %>
+        <div class="controls">
+        <%= f.text_field :organization_id, :readonly => true, input_html: { class: 'special_font' } %>
+    </div>
     <% else %>
         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>        
     <% end %>
@@ -22,12 +26,17 @@
     <%= hidden_field_tag :organization_id, (@payable.organization.id if @payable.organization) %>
     <%= hidden_field_tag :org_organization_id, (@payable.organization.id if @payable.organization) %>
     <%= hidden_field_tag :payable_id, @payable.id %>
-
+</div>
+<div class="control-group select optional payable_payable_to_address">
     <% if @payable.po_header %>
-        <%= f.input :po_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "PO" %>   
+        <%= f.label :PO %>
+        <div class="controls">
+        <%= f.text_field :po_header_id, :disabled => true, input_html: { class: 'special_font' }%>   
         <%= hidden_field_tag :po_header_id, @payable.po_header.id %>
         <%= hidden_field_tag :org_po_header_id, @payable.po_header.id %>
+    </div>
     <% end %>
+</div>
 
     <div class="control-group select optional payable_payable_to_address">
         <label for="payable_payable_to_id" class="select optional control-label">Payable To</label>
