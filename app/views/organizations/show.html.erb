@@ -98,9 +98,10 @@
 
     <!-- if @organization.organization_type.type_value == "vendor" -->
 <% end %>
-
-<%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
-<%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
+<%  if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality?  %>
+    <%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
+    <%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
+<% end %>
 
 
 
