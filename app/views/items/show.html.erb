@@ -81,7 +81,7 @@
 
     <% if @quote_type_item == "vendor" %> 
         <% unless  user_signed_in? &&  current_user.is_customer? %>  
-           <% if can? :view, CustomerQuote %>
+           <% if can? :view, Quote %>
                 <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
             <% end %>
         <% end %>
@@ -127,7 +127,9 @@
 <% end %>
 
 
-<%= render :partial => 'quality_lots/lots' %>
+<% if can? :view, QualityLot %>
+    <%= render :partial => 'quality_lots/lots' %>
+<% end %>
 <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
 <div class="new_widget">
     <div class="row-fluid">
