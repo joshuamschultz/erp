@@ -19,7 +19,7 @@ class SoHeader < ActiveRecord::Base
 	has_many :so_lines, :dependent => :destroy
   has_many :receivables, :dependent => :destroy
 
-  default_scope order('created_at ASC')
+  default_scope order('created_at DESC')
 	before_create :before_create_level_defaults
 
 
@@ -61,5 +61,7 @@ class SoHeader < ActiveRecord::Base
           Receivable.new
       end
   end
+
+
   
 end
