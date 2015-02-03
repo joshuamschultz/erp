@@ -1,1 +1,1 @@
-<%= render :partial => 'attachments/relational_attachments', :locals => {list_path: specifications_path, new_path: new_specification_path, name: "specification"} %>
+<%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_specification_path, name: "specification"} %>

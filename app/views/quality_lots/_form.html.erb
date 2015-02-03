@@ -62,7 +62,9 @@
 
           <%#= f.input :lot_control_no, label: "Control No" %>
 
-          <%= f.input :lot_quantity, label: "Quantity" %>
+          <%= f.input :lot_quantity, label: "Quantity"  if @quality_lot.new_record?%>
+
+          <%= f.input :lot_quantity,label: "Quantity", :disabled => true, input_html: { class: 'special_font' } unless @quality_lot.new_record? %>
 
           <%= f.association :inspection_level, label_method: :type_name, label_value: :id, label: "Inspection Level", :include_blank => false %>
 
@@ -108,8 +110,12 @@
       <div class="separator bottom"></div>
 
       <div class="form-actions">
+        <% if can? :new, @quality_lot %>
           <%= f.button :submit, :class => 'btn' %>
+        <% end %>
+        <% if can? :destroy, @quality_lot %>
           <%= link_to 'Delete', quality_lot_path(@quality_lot), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @quality_lot.new_record? %>
+        <% end %>
           <%= link_to 'Back', quality_lots_path, :class => "btn" %>
       </div>
     <% end %>

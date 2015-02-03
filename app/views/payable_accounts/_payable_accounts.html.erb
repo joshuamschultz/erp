@@ -27,7 +27,9 @@
                         <td><%= account.payable_account_description %></td>
                         <td><%= account.payable_account_amount %></td>
                         <td>
+                        <% if can? :edit, Payable %>    
                             <a rel="nofollow" data-method="delete" data-confirm="Are you sure?" class="btn-action btn glyphicons remove_2 btn-danger" href="<%= payable_payable_account_path(@payable, account) %>"><i></i></a>
+                         <% end %>   
                         </td>
                     </tr>
                 <% end %>

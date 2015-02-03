@@ -1,9 +1,13 @@
 <!-- Wells -->
+
 <div class="row-fluid">
     <h4 class="span3 left">SO Info</h4>
     <span class="span9 right">
-        <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
+        <% if can? :edit , SoHeader %>
+          <%= link_to 'Edit', edit_so_header_path(@so_header), :class => "btn btn-small" %>
+        <% end %>
         <%= link_to 'Back', so_headers_path, :class => "btn btn-small" %>
+
     
 
     </span>
@@ -16,7 +20,7 @@
     <div class="span9">
         <div class="row-fluid">
             <div class="span4 well">
-                  <a class="widget-stats" href="#" id="alt_address_btn">
+                <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
                       <span class="glyphicons message_out"><i></i></span>
                       <span class="txt">Send</span>
                       <div class="clearfix"></div>
@@ -58,13 +62,15 @@
 :locals => {:extras => {:link => populate_so_header_path(type: "note", id: @so_header.id)}} %>
 
 <script type="text/javascript">
+<% if can? :edit , SoHeader %>
 function sales_report() {
     var sales_iframe = $("#myPrintView")[0];
     sales_iframe.contentWindow.focus();
     sales_iframe.contentWindow.print();
 
-    packing_report();
+    //packing_report();
 }
+<% end %>
 function packing_report()
 {
     var packing_iframe = $("#myPrintView1")[0];
@@ -74,6 +80,54 @@ function packing_report()
 </script>
 <iframe src="<%= report_so_header_path(@so_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
 <iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
+
+<script type="text/javascript">
+    function after_send(response){
+        //alert("sucess");
+
+          alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
+    }
+    function send_mail_customer(){
+
+        var so_id = <%= @so_header.id %>; 
+        so_id = parseInt(so_id, 10)
+
+     
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_so_order_mail","so_header_id": so_id,
+         "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
+    }
+</script>
+<% if can? :edit , SoHeader %>
+  <div class="modal hide fade" id="modal-simple">
+      <div class="modal-header">
+          <h3>Send Sales Order</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="send_mail">
+              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                  <thead>
+                      <tr>
+                          <th>Customer Name</th>
+                          <th>Contacts</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      
+                          <tr>
+                              <td><%= @so_header.organization.organization_name %></td>
+                              <td><%= select_tag "#{@so_header.organization.id}", options_for_select(@so_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
+                          </tr>
+                  </tbody>
+              </table>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_customer();">Send</button>
+      </div>
+  </div>
+<% end %>
+
 
 <style>
 

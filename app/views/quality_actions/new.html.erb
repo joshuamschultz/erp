@@ -1,3 +1,17 @@
 <h4 class="heading">New Quality Action</h1>
 
 <%= render 'form' %>
+<script>
+$(function() 
+{
+
+  $("#quality_action_due_date").datepicker().on("keydown", function(e){ 
+  	if (e.which == 13) {  		
+      var n=$(this).closest("form").attr("id");
+      var s=tab_field_forms[n].indexOf($(this).attr("id"));      
+      $($("#"+tab_field_forms[n][s]).selector).datepicker('hide');
+  	}	
+  });
+});
+
+</script>

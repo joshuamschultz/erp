@@ -4,8 +4,26 @@ class ReceivablesController < ApplicationController
 
   before_filter :set_page_info
 
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Receivable
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Receivable
+    end 
+  end 
+
   def set_page_info
+    unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
       @menus[:accounts][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -14,6 +32,7 @@ class ReceivablesController < ApplicationController
       params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
       params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
       params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
+      
       # params[:receivable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:receivable][:gl_account_id]
       # params[:receivable][:gl_account_id] = params[:org_gl_account_id] if params[:receivable][:gl_account_id] == ""
     end
@@ -35,9 +54,14 @@ class ReceivablesController < ApplicationController
               receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
-              receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
+              if can? :edit, Receivable 
+                receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
                 [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
               )
+              else
+                receivable[:links] = ''
+              end  
+
         }
         render json: {:aaData => @receivables}
       }

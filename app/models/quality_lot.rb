@@ -44,6 +44,7 @@ class QualityLot < ActiveRecord::Base
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy
   	has_many :inventory_adjustments, :dependent => :destroy
+  	# has_one :po_shipment, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
@@ -100,11 +101,19 @@ class QualityLot < ActiveRecord::Base
 
 	def set_lot_control_no
 		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
-		maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
-		current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-
+		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
+		current_count = 0
+		if self.po_line.item.quality_lots.present?
+			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
+			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+			p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		end
+		o = [('A'..'Z')].map { |i| i.to_a }.flatten
+		random_letter = (0...1).map { o[rand(o.length)] }.join		
+		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s + "#{random_letter}-" + (current_count + 1).to_s
+
 	end
 
 	def lot_with_part_no
@@ -161,8 +170,10 @@ class QualityLot < ActiveRecord::Base
  		so_line = SoLine.find_by_so_line_vendor_po_and_item_id(self.po_header.po_identifier, self.po_line.item.id)
  		if so_line && so_line.customer_quality.present?
  			so_line.customer_quality
- 		elsif po_line.customer_quality.present?
+ 		elsif po_line.organization.present?
  			po_line.customer_quality 
+ 		elsif CustomerQuality.first
+ 			CustomerQuality.first
  		else
  			default = MasterType.find_by_type_category("default_customer_quality").type_value
  			CustomerQuality.find(default)

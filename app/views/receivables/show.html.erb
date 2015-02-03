@@ -1,8 +1,10 @@
 <div class="row-fluid">
     <h4 class="span3 left">Receivable Info</h4>
     <span class="span9 right">
+    <% if can? :edit, Receivable %>
         <%= link_to 'Edit', edit_receivable_path(@receivable), :class => "btn btn-small" %>
         <%= link_to 'Pay', new_receipt_path(receivable_id: @receivable.id), :class => "btn btn-small" if @receivable.receivable_status == "open" %>
+    <% end %>
         <%= link_to 'Back', receivables_path, :class => "btn btn-small" %>
     </span>
 </div>
@@ -12,20 +14,22 @@
 
     <div class="span9">
             <div class="row-fluid">
-            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
-                      <span class="glyphicons message_out"><i></i></span>
-                      <span class="txt">Send</span>
-                      <div class="clearfix"></div>
-                  </a>
-            </div>
-            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
-                      <span class="glyphicons print"><i></i></span>
-                      <span class="txt">Print</span>
-                      <div class="clearfix"></div>
-                  </a>
-            </div>
+          <%   if can? :edit, Receivable %>
+              <div class="span4 well">
+                    <a class="widget-stats" href="#" id="alt_address_btn" onclick="send_mail_vendor()">
+                        <span class="glyphicons message_out"><i></i></span>
+                        <span class="txt">Send</span>
+                        <div class="clearfix"></div>
+                    </a>
+              </div>
+              <div class="span4 well">
+                    <a class="widget-stats" href="#" id="contacts_btn" onclick="invoice_report()"ra>
+                        <span class="glyphicons print"><i></i></span>
+                        <span class="txt">Print</span>
+                        <div class="clearfix"></div>
+                    </a>
+              </div>
+          <% end %>
 
             <div class="span4 well">
                     <% if @receipt.present? %>

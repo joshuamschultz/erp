@@ -6,7 +6,9 @@
             <h4 class="span6 heading">GL Accounts</h4>
             <span class="span6 heading right">
                 <%= link_to 'GL Types', gl_types_path, :class => "btn btn-mini btn-success" %>
+                <% if can? :edit, GlAccount %>
                 <%= link_to 'New GL Account', new_gl_account_path, :class => "btn btn-mini btn-success" %>
+               <% end %> 
             </span>
         </div> 
     </div>

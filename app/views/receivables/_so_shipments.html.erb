@@ -19,7 +19,10 @@
                 <td><%= so_shipment.so_line.so_line_cost %></td>
                 <td><%= so_shipment.so_line.so_line_sell %></td>
                 <td><%= so_shipment.so_shipped_cost %></td>
-                <td><%= link_to "<i></i>".html_safe, receivable_so_shipment_path(so_shipment.receivable_so_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn-action btn glyphicons remove_2 btn-danger" %></td>
+                <td><% if can? :edit, Receivable %>
+                    <%= link_to "<i></i>".html_safe, receivable_so_shipment_path(so_shipment.receivable_so_shipment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn-action btn glyphicons remove_2 btn-danger" %>
+                    <% end %>
+                </td>
             </tr>
         <% end %>
     </tbody>
