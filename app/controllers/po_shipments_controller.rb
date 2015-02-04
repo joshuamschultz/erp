@@ -158,8 +158,10 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.update_attributes(params[:po_shipment])
-        @quality_lot = QualityLot.find(@po_shipment.quality_lot_id)
-        @quality_lot.update_attribute(:lot_quantity , @po_shipment.po_shipped_count)
+        if  @po_shipment.quality_lot_id
+          @quality_lot = QualityLot.find(@po_shipment.quality_lot_id)
+          @quality_lot.update_attribute(:lot_quantity , @po_shipment.po_shipped_count)
+        end  
         format.html { redirect_to po_shipments_path, notice: 'PO shipment was successfully updated.' }
         format.json { head :no_content }
       else
