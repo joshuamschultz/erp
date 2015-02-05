@@ -111,7 +111,7 @@ class QualityLot < ActiveRecord::Base
 			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
 			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
 			current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-			p current_letter = maximum_lot.nil? ? "A" : maximum_lot.split("-")[0].split(//).last(1)[0]			
+			p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
 		    p maximum_lot[0, 8]
 		end
 		# o = [('A'..'Z')].map { |i| i.to_a }.flatten
@@ -121,9 +121,11 @@ class QualityLot < ActiveRecord::Base
 
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s
-		current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter.next! : "A"
+		unless  maximum_lot.nil?
+			current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@'
+		end	
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s + "#{current_letter}-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s + "#{current_letter.next!}-" + (current_count + 1).to_s
 
 	end
 
