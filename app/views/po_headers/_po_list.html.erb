@@ -45,7 +45,7 @@
 
 <% if @item.present? %>
         <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+        {:name => "table_report_po_header_list", :path => open_path, :extras => {:slno => false, :order => "desc"},
             :columns => '[
                             { "mData": "index","bVisible": false },
                             { "mData": "po_id" },
@@ -64,7 +64,7 @@
     %>
 <% else %>
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false},
+        {:name => "table_report_po_header_list", :path => open_path, :extras => {:slno => false},
             :columns => '[
                             { "mData": "index","bVisible": false },
                             { "mData": "po_id" },
