@@ -218,7 +218,10 @@
         });
 
         <% if @po_line.new_record? %>
-            $("#po_line_item_alt_name_id").on("focusout", function(){
+            $("#po_line_item_alt_name_id").on("focusout", function(){                
+                if($("#alt_name_id").val() == "" && $("#po_line_item_alt_name_id").val() != "" )                
+                 initialize_api_call({"url": "/item_alt_names/autocomplete_item_alt_name_item_alt_identifier" + $("#alt_name_id").val(), "type": "GET", "params": {"term":$("#po_line_item_alt_name_id").val()}, "data_type": "json"}, "set_alt_name_id", {});                  
+
                 if($("#alt_name_id").val() != "")
                     initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
                 else if($("#org_alt_name_id").val() != "")
@@ -271,6 +274,14 @@
         calculate_line_item_total();
         return false;
     }
+   function set_alt_name_id(response, callback_params, api_params){
+    $.each( response, function() {
+       if ($("#po_line_item_alt_name_id").val() == this.value)
+        $("#alt_name_id").val(this.id) 
+    });
+    
+        return false;
+    } 
 
     function check_customer_min_quality(response, callback_params, api_params){
         if(response.min_vendor_quality != undefined && response.min_vendor_quality != ""){
