@@ -120,10 +120,20 @@ class QualityLot < ActiveRecord::Base
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s
+		CommonActions.current_hour_letter + min.to_s		
 		unless  maximum_lot.nil?
-			current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@'
-		end	
+			if MaxControlString.first && MaxControlString.first.control_string
+				current_letter =  (control_string == MaxControlString.first.control_string) ? current_letter : '@'	
+			else		
+				current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@'
+			end				
+		end					
+		if MaxControlString.first
+			MaxControlString.first.update_attributes(:control_string => control_string) 
+		else
+		    MaxControlString.create(:control_string => control_string)	 
+		end   	
+
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s + "#{current_letter.next!}-" + (current_count + 1).to_s
 
