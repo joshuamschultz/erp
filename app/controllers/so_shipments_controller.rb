@@ -141,6 +141,14 @@ class SoShipmentsController < ApplicationController
     respond_to do |format|
       if @so_shipment.save
         @so_shipment.set_quality_on_hand
+        if @so_shipment.quality_lot_id
+          @quality_lot = QualityLot.find(@so_shipment.quality_lot_id)
+          quantity = @quality_lot.quantity_on_hand - @so_shipment.so_shipped_count
+          @quality_lot.update_attribute(:lot_quantity ,quantity )
+          if quantity <= 0
+            @quality_lot.update_attributes(:finished => true, :lot_finalized_at => Date.today.to_s)
+          end  
+        end  
         @so_shipment.so_line.update_so_total
         @so_shipment["so"] = @so_shipment.so_line.so_header.so_identifier
         @so_shipment["so_total"] = @so_shipment.so_line.so_header.so_total.to_f

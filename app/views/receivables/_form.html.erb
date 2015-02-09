@@ -13,20 +13,30 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <div class="control-group select optional receivable_receivable_to_address">
     <% if @receivable.persisted? %>
-        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" %>
+        <%= f.label :Customer %>
+         <div class="controls">
+        <%= f.text_field :organization_id, :readonly => true, input_html: { class: 'special_font' } %>
+    </div>
     <% else %>
         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
     <% end %>
     <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :receivable_id, @receivable.id %>
+    </div>
 
+    <div class="control-group select optional receivable_receivable_to_address">
     <% if @receivable.so_header %>
-        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" %>   
+        <%= f.label :SO %>
+         <div class="controls">
+        <%= f.text_field :so_header_id, :disabled => true, input_html: { class: 'special_font' }%>          
         <%= hidden_field_tag :so_header_id, @receivable.so_header.id %>
         <%= hidden_field_tag :org_so_header_id, @receivable.so_header.id %>
+        </div>
     <% end %>
+    </div>
     
     <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %>
 
