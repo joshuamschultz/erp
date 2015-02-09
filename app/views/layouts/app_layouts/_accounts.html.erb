@@ -30,8 +30,15 @@
 <% end %>
 
 <% if @receivable %>
-<% inventory_amount = @receivable.receivable_lines.sum(:receivable_line_cost) %>   
-<% inventory_amount += @receivable.so_shipments.sum(:so_shipped_cost) if  @receivable.so_header %>
+<% inventory_amount = 0 %>
+
+<% @receivable.so_shipments.each do |so_shipment| %>
+  <% if so_shipment.quality_lot && so_shipment.quality_lot.po_line %>
+    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f %>   
+  
+  <% end %>  
+<% end %>  
+
 <%= hidden_field_tag :receivable_cost,  inventory_amount     %>
 <%= hidden_field_tag :receivable_freight, @receivable.receivable_freight  %>
 <%= hidden_field_tag :receivable_discount, @receivable.receivable_discount_val  %>

@@ -106,16 +106,41 @@ class QualityLot < ActiveRecord::Base
 		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
 		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
 		current_count = 0
+		current_letter = '@'
 		if self.po_line.item.quality_lots.present?
 			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
 			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-			p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+			current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+			# p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
+		 #    p maximum_lot[0, 8]
 		end
-		o = [('A'..'Z')].map { |i| i.to_a }.flatten
-		random_letter = (0...1).map { o[rand(o.length)] }.join		
+		# o = [('A'..'Z')].map { |i| i.to_a }.flatten
+		# random_letter = (0...1).map { o[rand(o.length)] }.join	
+
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
+
+		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		CommonActions.current_hour_letter + min.to_s		
+		# unless  maximum_lot.nil?			
+			if MaxControlString.first && MaxControlString.first.control_string
+				current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s					
+				current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
+			else 		
+				current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@' unless maximum_lot.nil?	
+			end				
+		# end		
+		
+		next_letter = current_letter.next!
+		p next_letter			
+
+		if MaxControlString.first
+			MaxControlString.first.update_attributes(:control_string => control_string+next_letter) 
+		else
+		    MaxControlString.create(:control_string => control_string+next_letter)	 
+		end   	
+
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s + "#{random_letter}-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s + "#{next_letter}-" + (current_count + 1).to_s
 
 	end
 

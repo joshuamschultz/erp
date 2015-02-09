@@ -91,7 +91,7 @@
                             <td class="color-02 align-table"><i>In Packaging Position</i></td>
                         </tr>
                     </table>
-                    <h2 class="img-02"><img src="<%= @package.part %>" height="353" width="516"></h2>
+                    <h2 class="img-02"><img src="<%= @package.part %>" height="353px !important" width="516"></h2>
                 </td>
                 <td width="48%">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -338,7 +338,8 @@
     .span6.item_detail_view tr{    border: 1px solid #FFFFFF;}
     .span6.item_detail_view.packaging tr{ border: 1px solid #FFFFFF;}
     .span6.item_detail_view.packaging td{ border: 1px solid #FFFFFF;}
-    .img-02{height: 350px;}
+    .img-02{margin: 0;}
+    .img-02 img {height: 329px;width: 570px;}
     .color-02{background-color:  #555; font-weight: bold; text-align: center; }
     .align-table{}
     .r-align{ text-align: right;}
