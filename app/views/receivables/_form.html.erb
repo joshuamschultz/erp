@@ -26,11 +26,17 @@
     <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :receivable_id, @receivable.id %>
     </div>
+
+    <div class="control-group select optional receivable_receivable_to_address">
     <% if @receivable.so_header %>
-        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" %>   
+        <%= f.label :SO %>
+         <div class="controls">
+        <%= f.text_field :so_header_id, :disabled => true, input_html: { class: 'special_font' }%>          
         <%= hidden_field_tag :so_header_id, @receivable.so_header.id %>
         <%= hidden_field_tag :org_so_header_id, @receivable.so_header.id %>
+        </div>
     <% end %>
+    </div>
     
     <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %>
 
