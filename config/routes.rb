@@ -253,7 +253,7 @@ AllianceFasteners::Application.routes.draw do
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
   end
-
+  resources :quality_lots,  except: :new
   resources :quality_lots do
     get :autocomplete_quality_lot_lot_control_no, :on => :collection
     member do
