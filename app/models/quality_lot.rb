@@ -111,8 +111,8 @@ class QualityLot < ActiveRecord::Base
 			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
 			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
 			current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-			p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
-		    p maximum_lot[0, 8]
+			# p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
+		 #    p maximum_lot[0, 8]
 		end
 		# o = [('A'..'Z')].map { |i| i.to_a }.flatten
 		# random_letter = (0...1).map { o[rand(o.length)] }.join	
@@ -121,14 +121,14 @@ class QualityLot < ActiveRecord::Base
 
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s		
-		unless  maximum_lot.nil?			
+		# unless  maximum_lot.nil?			
 			if MaxControlString.first && MaxControlString.first.control_string
 				current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s					
 				current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
-			else		
-				current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@'
+			else 		
+				current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@' unless maximum_lot.nil?	
 			end				
-		end		
+		# end		
 		
 		next_letter = current_letter.next!
 		p next_letter			
