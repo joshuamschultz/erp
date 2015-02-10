@@ -10,14 +10,14 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	before_create :before_create_values
-	before_save :before_save_values
+	# before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
 	end
 	
-	def  before_save_values
-		self.quantity_on_hand = self.lot_quantity
-	end
+	# def  before_save_values
+	# 	self.quantity_on_hand = self.lot_quantity
+	# end
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
