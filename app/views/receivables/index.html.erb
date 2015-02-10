@@ -52,7 +52,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_receivable_list", :path => receivables_path(receivable_status: params[:receivable_status]), :extras => {:slno => false},
+    {:name => "table_report_receivable_list", :path => receivables_path(receivable_status: params[:receivable_status]), :extras => {:slno => false, :currency_format => [4]},
         :columns => '[
                         { "mData": "receivable_identifier" },
                         { "mData": "customer_name" },
