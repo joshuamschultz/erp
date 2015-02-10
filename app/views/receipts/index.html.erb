@@ -32,7 +32,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_receipt_list", :path => receipts_path(receipt_status: params[:receipt_status]), :extras => {:slno => false},
+    {:name => "table_report_receipt_list", :path => receipts_path(receipt_status: params[:receipt_status]), :extras => {:slno => false, :currency_format => [4]},
         :columns => '[
                         { "mData": "receipt_identifier" },
                         { "mData": "customer_name" },
