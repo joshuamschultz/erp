@@ -127,8 +127,11 @@
 
     function update()
     {
-      add_freight ();
-      add_discount ();
+      // add_freight ();
+      freight_result();
+      // add_discount ();
+      discount_result();
+
       $("#update_invoice").attr('disabled',false);          
     } 
      function get_rowcount(){
