@@ -284,9 +284,15 @@
     font-size: 14px;
     padding: 6px 0;
     text-align: center;
-    width: 167px;
+    width: 159px;
 }
 .de{margin: 35px 0 0; min-height: 430px;}
+.ww-01 {
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    text-align: center;
+    padding: 2px 0;
+}
 
 </style>
 
@@ -343,7 +349,7 @@
 <article class="art-01 art-04 de">
 
     <div class="ff">
-        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+        <table border="0" width="640px" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr align="center" class="hea art-002">
                     <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">CUST P/N - ALL P/N</td>
@@ -359,15 +365,24 @@
 
   <% @so_header.so_lines.each do |so_line| %>
     <div class="fff">
-        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+        <table border="0" width="640px" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr align="center" class="hea art-002">
-                   <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
-                        <td><%= so_line.item.item_part_no %></td>
-                    <%  else %>
-                          <td><%= so_line.item.item_part_no %></td>
-                          <td><%= so_line.item_alt_name.item_alt_identifier %></td>
-                    <%  end %>
+            
+                         <td>
+                    <table border="0" width="100%">
+                    <tbody>
+
+                        <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
+                              <tr><td width="150" scope="row"><%= so_line.item.item_part_no %></td></tr> 
+                        <%  else %>
+                          <tr><td width="150" scope="row"><%= so_line.item.item_part_no %></td></tr> 
+                            <tr><td width="150" scope="row" ><%= so_line.item_alt_name.item_alt_identifier %></td></tr> 
+                        <%  end %>                          
+                    </tbody>
+                    </table>
+                    </td>
+
                     <td>
                     <table border="0" width="100%">
                     <tbody>
@@ -376,9 +391,14 @@
                     </tbody>
                     </table>
                     </td>
-                    <td  style="color: #800000;"><%= so_line.so_line_quantity %></td>
+                    <td ><%= so_line.so_line_quantity %></td>
                     <td><%= so_line.so_line_shipped %></td>
                 </tr>
+
+                <tr>
+                <td class="ww-01" style="color: #800000;"><%= so_line.so_line_notes%></td>
+                </tr>
+
             </tbody>
         </table>
     </div>
