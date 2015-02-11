@@ -205,6 +205,13 @@
     var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
 
     $(document).ready(function(){ 
+
+        $('#po_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) {  
+                $('#po_line_po_line_quantity').val("");
+            }
+        });  
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
 
         $("#po_line_organization_id").on("focusout", function(){
