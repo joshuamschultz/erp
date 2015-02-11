@@ -226,11 +226,8 @@
             }    
         }
         for ( var i = 0; i < account_row_count; i++ ) {                 
-            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theSalesText) {
-                alert($("#receivable_total").val() );
-                alert(discount_val);
-                var sales_val = parseFloat($("#receivable_sales").val()) + parseFloat(discount_val);
-                alert(sales_val);
+            if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theSalesText) {                
+                var sales_val = parseFloat($("#receivable_sales").val()) + parseFloat(discount_val);                
                 $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val(sales_val); 
             }
         }
