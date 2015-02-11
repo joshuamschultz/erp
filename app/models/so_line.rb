@@ -54,7 +54,7 @@ class SoLine < ActiveRecord::Base
     b_c_title = b_c_address_1 = b_c_address_2 = b_c_state = b_c_country = b_c_zipcode =''
     s_c_title = s_c_address_1 = s_c_address_2 = s_c_state = s_c_country = s_c_zipcode = ''
     item_part_no = item_alt_name = po_identifier  = item_description = ''
-    so_line_quantity = so_line_shipped = source = ''
+    so_line_quantity = so_line_shipped = source = so_line_notes=''
 
     @so_header = self.so_header
 
@@ -82,7 +82,7 @@ class SoLine < ActiveRecord::Base
 
       @so_header.so_lines.each do |so_line|
 
-        so_line_quantity = '<td style="color: #800000;">'+so_line.so_line_quantity.to_s+'</td>'
+        so_line_quantity = '<td>'+so_line.so_line_quantity.to_s+'</td>'
 
         so_line_shipped = '<td>'+so_line.so_line_shipped.to_s+'</td>'
 
@@ -95,21 +95,36 @@ class SoLine < ActiveRecord::Base
         # end 
 
         if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier 
-            item_part_no = '<td>'+so_line.item.item_part_no+'</td>'
+            item_part_no ='<tr><td width="150" scope="row">'+so_line.item.item_part_no+'</td></tr> '
         else 
-          item_part_no = '<td>'+so_line.item.item_part_no+'</td>'
-          item_alt_name = '<td>'+so_line.item_alt_name.item_alt_identifier+'</td>'
+          item_part_no = '<tr><td width="150" scope="row">'+so_line.item.item_part_no+'</td></tr> '
+          item_alt_name = '<tr><td width="150" scope="row" >'+so_line.item_alt_name.item_alt_identifier+'</td></tr>'
         end 
+        so_line_notes = ' <td class="ww-01" style="color: #800000;">'+so_line.so_line_notes+'</td>' if so_line.so_line_notes.present?
         source += '
 
 
+
+
+
+
+
+
+
     <div class="fff">
-        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+        <table border="0" width="640px" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr align="center" class="hea art-002">
                 
-                      '+item_part_no+'
-                      '+item_alt_name+'
+                    <td>
+                    <table border="0" width="100%">
+                    <tbody>
+                    '+item_part_no+'
+                    '+item_alt_name+'                     
+                    </tbody>
+                    </table>
+                    </td>
+
                     <td>
                     <table border="0" width="100%">
                     <tbody>
@@ -121,6 +136,11 @@ class SoLine < ActiveRecord::Base
                     '+so_line_quantity.to_s+'
                     '+so_line_shipped.to_s+'
                 </tr>
+
+                <tr>
+                  '+so_line_notes+'
+                </tr>
+
             </tbody>
         </table>
     </div>
@@ -433,9 +453,15 @@ class SoLine < ActiveRecord::Base
     font-size: 14px;
     padding: 6px 0;
     text-align: center;
-    width: 167px;
+    width: 159px;
 }
 .de{margin: 35px 0 0; min-height: 450px;}
+.ww-01 {
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    text-align: center;
+    padding: 2px 0;
+}
 
 
   </style>
@@ -459,7 +485,7 @@ class SoLine < ActiveRecord::Base
 
 
       <div class="ff">
-        <table border="0" width="678px" cellspacing="0" cellpadding="0">
+        <table border="0" width="640px" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr align="center" class="hea art-002">
                     <td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">CUST P/N - ALL P/N</td>
