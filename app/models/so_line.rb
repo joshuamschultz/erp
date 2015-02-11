@@ -94,12 +94,10 @@ class SoLine < ActiveRecord::Base
         #   organization_name = so_line.organization.organization_name
         # end 
 
-        if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier 
-            item_part_no ='<tr><td width="150" scope="row">'+so_line.item.item_part_no+'</td></tr> '
-        else 
+     
           item_part_no = '<tr><td width="150" scope="row">'+so_line.item.item_part_no+'</td></tr> '
-          item_alt_name = '<tr><td width="150" scope="row" >'+so_line.item_alt_name.item_alt_identifier+'</td></tr>'
-        end 
+          item_alt_name = so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier ? '<tr><td width="150" scope="row" >'+so_line.item_alt_name.item_alt_identifier+'</td></tr>': ''
+      
         so_line_notes = ' <td class="ww-01" style="color: #800000;">'+so_line.so_line_notes+'</td>' if so_line.so_line_notes.present?
         source += '
 
