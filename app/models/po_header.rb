@@ -65,7 +65,7 @@ class PoHeader < ActiveRecord::Base
     po_header_path(self)
   end
 
-  default_scope order('created_at DESC')
+  # default_scope order('created_at DESC')
 
 
   scope :status_based_pos, lambda{|status| where(:po_status => status) }
