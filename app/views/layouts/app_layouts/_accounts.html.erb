@@ -30,11 +30,11 @@
 <% end %>
 
 <% if @receivable %>
-<% inventory_amount = 0 %>
 
+<% inventory_amount = 0 %>
 <% @receivable.so_shipments.each do |so_shipment| %>
   <% if so_shipment.quality_lot && so_shipment.quality_lot.po_line %>
-    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f %>   
+    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f * so_shipment.so_shipped_count %>   
   
   <% end %>  
 <% end %>  
@@ -42,11 +42,16 @@
 <%= hidden_field_tag :receivable_cost,  inventory_amount     %>
 <%= hidden_field_tag :receivable_freight, @receivable.receivable_freight  %>
 <%= hidden_field_tag :receivable_discount, @receivable.receivable_discount_val  %>
+<%= hidden_field_tag :receivable_sales,  @receivable.receivable_total     %>
+<%= hidden_field_tag :receivable_total,  @receivable.so_shipments.sum(:so_shipped_cost)     %>
 <% end %>
 <%= hidden_field_tag :inventory_text %>
 <%= hidden_field_tag :freight_text %>
 <%= hidden_field_tag :discount_text %>
+<%= hidden_field_tag :sales_discount_text %>
 <%= hidden_field_tag :expense_text %>
+<%= hidden_field_tag :sales_text %>
+<%= hidden_field_tag :cogs_text %>
 <div class="separator bottom"></div>
 
  <div class="form-actions">
@@ -72,10 +77,17 @@
         $("#inventory_text").val(inventory);        
         discount = response["aaData"]["51010020"];
         $("#discount_text").val(discount);
+        sales_discount = response["aaData"]["41025010"];
+        $("#sales_discount_text").val(sales_discount);        
         freight = response["aaData"]["51020020"]; 
         $("#freight_text").val(freight);
         expense = response["aaData"]["71107"]; 
         $("#expense_text").val(expense);
+        sales = response["aaData"]["41010010"]; 
+        $("#sales_text").val(sales);
+        cogs = response["aaData"]["51010010"]; 
+        $("#cogs_text").val(cogs);
+
 
         //Dispersing Amounts to Inventory and Freight
 
@@ -86,23 +98,32 @@
         var receivable_cost = $("#receivable_cost").val();
         var receivable_freight = $("#receivable_freight").val();
         var receivable_discount = parseFloat($("#receivable_discount").val()) * -1 ;
+        var receivable_sales = parseFloat($("#receivable_sales").val());        
+
         var account_row_count = $(".account_new").length + $(".account_edit").length;
 
 
         if(payable_cost > 0 || receivable_cost > 0) {            
-            var cost = payable_cost ? payable_cost : receivable_cost ;
-            disperse_amount($("#inventory_text").val(), cost);
+            var cost = payable_cost ? payable_cost : receivable_cost * -1 ;
+            disperse_amount($("#inventory_text").val(), parseFloat(cost).toFixed(2));
+            if (receivable_cost > 0 ){
+                disperse_amount($("#cogs_text").val(), parseFloat(receivable_cost).toFixed(2)); 
+                disperse_amount($("#sales_text").val(), parseFloat(receivable_sales).toFixed(2));
+            }    
             
         }
         if( payable_freight > 0 ||  receivable_freight > 0) {
-            var freight = payable_freight ? payable_freight : receivable_freight;
+            var freight = payable_freight ? payable_freight : receivable_freight * -1;
             disperse_amount($("#freight_text").val(), freight);
             
         }           
         if(payable_discount < parseFloat(0) || receivable_discount < parseFloat(0)) {
 
             var discount = payable_discount ? payable_discount : receivable_discount ;
-            disperse_amount($("#discount_text").val(), discount);
+            if (payable_discount)
+                disperse_amount($("#discount_text").val(), discount) ;
+            if (receivable_discount)
+            disperse_amount($("#sales_discount_text").val(), discount) ;
              
         }            
 

@@ -39,7 +39,7 @@ class CommonActionsController < ApplicationController
             when "get_org"
               if params[:so_value].present?
                 organization =  Organization.find_by_organization_name(params[:so_value])
-                result = organization
+                result = organization              
               end
 
 
@@ -302,6 +302,14 @@ class CommonActionsController < ApplicationController
               gl_account_titles["51020020"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "71107").first
               gl_account_titles["71107"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41010010").first
+              gl_account_titles["41010010"] = @gl_account["gl_account_title"]                       
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010010").first
+              gl_account_titles["51010010"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41025010").first
+              gl_account_titles["41025010"] = @gl_account["gl_account_title"]
+              
+              
               result = gl_account_titles 
 
             when "after_print_checks"
