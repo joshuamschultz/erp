@@ -23,9 +23,10 @@
                 <th>Vendor</th>
                 <th>Quantity Ordered</th>
                 <th>Quantity Open</th>
+                    <th>Due Date</th>
                 <th>Shipping</th>
                 <th>Lot</th>
-                <th></th>
+            
                 <!-- <th>Shelf</th>
                 <th>Unit</th> -->
                 <th></th>
@@ -39,7 +40,7 @@
 </div>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback",:order => "desc",:sorting => 7, :hide_column => 7, :grouping => true, :column_index => 0},
+    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback",:order => "desc", :grouping => true, :column_index => 0},
         :columns => '[
         				
                         { "mData": "so_identifier" }, 
@@ -47,9 +48,10 @@
                         { "mData": "vendor_name" },
                         { "mData": "so_line_quantity" },
                         { "mData": "so_line_quantity_open" },
+                           { "mData": "so_due_date"  },  
                         { "mData": "so_line_shipping" },   
                         { "mData": "so_line_lot" },
-                        { "mData": "so_due_date","bVisible": false },                    
+                                       
                         { "mData": "links", "bSortable": false, "bSearchable": false }                        
                     ]'
     } 
