@@ -5,7 +5,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading"><%= name.titlecase.pluralize %></h4>
             <span class="span6 heading right">
-                <%= link_to "New #{name.titlecase}", new_path, :class => "btn btn-mini btn-success" %>                
+            <% if can? :edit, ProcessType %>
+                <%= link_to "New #{name.titlecase}", new_path, :class => "btn btn-mini btn-success" %>
+            <% end %>                
             </span>
         </div> 
     </div>
@@ -14,11 +16,7 @@
             <thead>
               <tr>                
                 <th>Name</th>
-<<<<<<< HEAD
-              
-=======
-             
->>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
+                <th>Revision</th>
                 <th>Effective Date</th>
                 <th>Description</th>
                 <th>Notes</th>
@@ -41,11 +39,7 @@
         :extras => {:slno => false}, 
         :columns => '[                        
                         { "mData": "attachment_name" },
-<<<<<<< HEAD
-                    
-=======
-                     
->>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
+                        { "mData": "attachment_revision_title" },
                         { "mData": "effective_date" },
                         { "mData": "attachment_description", "bVisible": false },
                         { "mData": "attachment_notes", "bVisible": false },

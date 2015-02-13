@@ -184,7 +184,11 @@ module CommonActions
 		if can? :view, Specification
 			menus[:inventory][:sub_menu].push({:path => specifications_path, :name => "Specifications"})	
 		end	
+<<<<<<< HEAD
+		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality?  &&  !current_user.is_customer? && !current_user.is_vendor? 
+=======
 		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? && !current_user.is_customer? && !current_user.is_vendor?  
+>>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
 			menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
 			menus[:accounts][:sub_menu] = 	[
 				{:path => payables_path, :name => "Payables"},

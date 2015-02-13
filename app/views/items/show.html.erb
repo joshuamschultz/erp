@@ -69,12 +69,26 @@
         <% end %> 
     </div>
 </div>
+<<<<<<< HEAD
+<% if can? :view, ProcessType %>
+ <%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
+<% end %>
+<% if can? :view, Specification %>
+<%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
+<% end %>
+<div id="send_quote">
+
+    <% if @quote_type_item == "vendor" %> 
+        <% unless  user_signed_in? &&  current_user.is_customer? %>  
+            <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+=======
 <div class="new_widget">
     <div class="row-fluid">
         <% if can? :view, ProcessType %>
             <div class="span6">
                 <%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
             </div>
+>>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
         <% end %>
         <% if can? :view, Specification %>
             <div class="span6">

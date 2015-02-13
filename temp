@@ -1,0 +1,50 @@
+    <article>
+
+            <div class="ms_text-3-wrapper">
+                <div class="ms_text-3 text-5">
+                    <h2 class="ms_sub-heading">CUST P/N - ALL P/N</h2> 
+                        <% @so_header.so_lines.each do |so_line| %>
+                            <%  if so_line.item.item_part_no == so_line.item_alt_name.item_alt_identifier %>
+                                <strong><%= so_line.item.item_part_no %></strong>
+                            <%  else %>
+                                  <strong><%= so_line.item.item_part_no %></strong>
+                                  <strong><%= so_line.item_alt_name.item_alt_identifier %></strong>
+                            <%  end %>
+                        <% end %>  
+                </div>
+
+                <div class="ms_text-4">
+                    <h2 class="ms_sub-heading"> Description </h2> 
+                        <% @so_header.so_lines.each do |so_line| %>
+                            <% if so_line.item_revision.present? %>
+                                <strong><%= so_line.item_revision.item_description %> </strong>
+                            <% end %>
+                        <% end %>   
+                            <div class="text-7">
+  
+                                <% if @so_header.po_header.present? %>
+                                    <strong class="text-6"><%= @so_header.po_header.po_identifier %></strong>
+                                <% end %> 
+                            </div>                      
+                </div>
+            </div>
+
+            <div class="ms_text-3-wrapper">
+                <div class="ms_text-3">
+                    <h2 class="ms_sub-heading">QTY</h2> 
+                         <% @so_header.so_lines.each do |note| %>
+                            <strong><%= note.so_line_quantity %> </strong>
+                        <% end %>   
+                </div>
+
+                <div class="ms_text-4">
+                    <h2 class="ms_sub-heading">  Shipped </h2> 
+                    <% @so_header.so_lines.each do |so_line| %>
+                 
+                            <strong><%= so_line.so_line_shipped %> </strong>
+                      
+                    
+                    <% end %>
+                </div>
+            </div>
+        </article>

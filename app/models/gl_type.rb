@@ -8,6 +8,7 @@ class GlType < ActiveRecord::Base
   end
 
   has_many :gl_accounts, dependent: :destroy
+  default_scope :order => 'gl_report DESC'
 
   validates_presence_of :gl_name
 
