@@ -14,11 +14,6 @@
             <thead>
               <tr>                
                 <th>Name</th>
-<<<<<<< HEAD
-              
-=======
-             
->>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
                 <th>Effective Date</th>
                 <th>Description</th>
                 <th>Notes</th>
@@ -37,15 +32,10 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_#{name}", :path => process_types_path(item_id:  (@item.nil? ? nil : @item.id)),
+    {:name => "table_report_#{name}", :path => specifications_path(item_id:  (@item.nil? ? nil : @item.id)),
         :extras => {:slno => false}, 
         :columns => '[                        
                         { "mData": "attachment_name" },
-<<<<<<< HEAD
-                    
-=======
-                     
->>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
                         { "mData": "effective_date" },
                         { "mData": "attachment_description", "bVisible": false },
                         { "mData": "attachment_notes", "bVisible": false },

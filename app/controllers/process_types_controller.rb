@@ -22,12 +22,14 @@ class ProcessTypesController < ApplicationController
   end
   # GET /process_types
   # GET /process_types.json
-  def index
+   def index
     if params[:item_id].present?
       @process_types =ProcessType.item_process_type(params[:item_id])
     else
       @process_types = ProcessType.joins(:attachment).all
     end
+<<<<<<< HEAD
+=======
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
@@ -44,7 +46,24 @@ class ProcessTypesController < ApplicationController
         render json: {:aaData => @process_types} 
       }
     end
+>>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
 
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { 
+        @process_types = @process_types.collect{|process_type| 
+          attachment = process_type.attachment.attachment_fields
+          attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
+          if can? :edit, ProcessType
+            attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
+          else
+             attachment[:links] = ''
+          end
+          attachment
+        }
+        render json: {:aaData => @process_types} 
+      }
+    end
   end
 
   # GET /process_types/1
@@ -85,7 +104,10 @@ class ProcessTypesController < ApplicationController
     respond_to do |format|
       @process_type.attachment.created_by = current_user
       if @process_type.save
+<<<<<<< HEAD
+=======
         ProcessType.process_item_associations(@process_type, params)
+>>>>>>> d9ceff3901c335ba3bd90e4159b7d0194ccf9018
         format.html { redirect_to process_types_url, notice: 'Process type was successfully created.' }
         format.json { render json: @process_type, status: :created, location: @process_type }
       else
