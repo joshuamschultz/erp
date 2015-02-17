@@ -239,5 +239,9 @@ class QualityLotsController < ApplicationController
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
   end
+  def package_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
 
 end
