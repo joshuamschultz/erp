@@ -1,136 +1,210 @@
 <!DOCTYPE html>
-<html>
-<head>
+
+
+<title>Packing Report</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <style type="text/css">
-body {
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 14px;
-    line-height: 17px;
-}
-/* New Style */
-.clear{clear: both;}
+    @charset "utf-8";
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+    }
+    /* New Style */
+    .clear {
+        clear: both;
+    }
 
-.ms_wrapper{float: left;height: auto;width:640px;}
-.form-bold {
-    font-size: 18px;
+    .ms_wrapper {
+        float: left;
+        height: auto;
+        width: 640px;
+    }
+	
+ .ms_wrapper td {
+    padding: 2px 0;
+	line-height:20px;
 }
-.ms_wrapper td {
-    padding: 5px 0;
-    width: 640px;
+table {
+    border-collapse: collapse;
 }
-.pay-heading {
-    font-size: 19px;
-    font-weight: bold;
-}
-.tab-02 td {
-    border: 1px solid #111;
-    float: left;
-    padding: 11px 0;
-    width: 103px;
-}
-.tab-head-02 > td {
-    padding: 0;
-}
-.tab-head td {
-    background-color: #111;
-    border: 1px solid #111;
-    color: #fff;
-    float: left;
-    font-weight: bold;
-    padding: 11px 0;
-    width: 103px;
-}
+.t_bor tr{border-bottom:1px dashed #111;}
 
-.line-02 {
-    border-bottom: 1px solid #111;
-    float: left;
-    width: 640px;
-}
-
+.container{width:100%;float:left;}
 </style>
 
-</head>
-
-<body>
 
 <div class="ms_wrapper">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr class="line-02">
+
+  
+  <div class="container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  
+    <tr align="left" valign="top">
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center" valign="top">
+          <td width="27%" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="center" scope="row">&nbsp;</td>
+            </tr>
+            <tr align="center" valign="top">
+              <td scope="row">&nbsp;</td>
+            </tr>
+            <tr>
+              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                  <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                  <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                    <tr>
+                  <td align="center" scope="row"><%= Date.today.to_s %></td>
+                </tr>
+              </table></td>
+            </tr>
+          </table></td>
+          <td width="83%"><table id="cash" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+              <td id="check1" width="30%" scope="row">&nbsp;</td>
+              <td id="check7" width="31%">&nbsp;</td>
+              <td id="check13" width="39%">&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td id="check2" width="30%" scope="row">&nbsp;</td>
+              <td id="check8" width="31%">&nbsp;</td>
+              <td id="check14" width="39%">&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td id="check3" width="30%" scope="row">&nbsp;</td>
+              <td id="check9" width="31%">&nbsp;</td>
+              <td id="check15" width="39%">&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td id="check4" width="30%" scope="row">&nbsp;</td>
+              <td id="check10" width="31%">&nbsp;</td>
+              <td id="check16" width="39%">&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td id="check5" scope="row">&nbsp;</td>
+              <td id="check11" >&nbsp;</td>
+              <td id="check17" >&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td id="check6" scope="row">&nbsp;</td>
+              <td id="check12"  >&nbsp;</td>
+              <td id="check18"  >&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+              <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+              <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+
+            <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td id ="tot_count">&nbsp;</td>
+              <td id ="tot_amt">&nbsp;</td>
+            </tr>
+            </table></td>
+        </tr>
+      </table></td>
+    </tr>
+    </table><br> <br>
+
+    
+    </div>
+ 
+    
+    <div class="container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="t_bor">
+        <% @deposit_checks.each do |d| %>
+          <% if d.active == 1 %>
+          <% receipt = Receipt.find_by_deposit_check_id(d.id) %>
+           <% receipt.receipt_lines.each do |receipt_line| %>
+            <tr align="center">
+              <td width="12%" scope="row"><%= receipt.organization.id %></td>
+              <td width="28%"><%= receipt.organization.organization_name %></td>
+              <td width="15%"><%= Date.today.to_s %></td>
+              <td width="16%"><%= receipt_line.receivable.receivable_identifier %></td>
+              <td width="16%"><%= d.check_identifier %></td>
+              <td width="13%"><%= receipt_line.receipt_line_amount %></td>
+            </tr>
+          <% end %>
+         <% end %> 
+        <% end %>  
+      </table></td>
+    </tr>
+    </table>
+        <br>   <br>
+    </div>
+    
+
+    
+    
+    <div class="container">
+    
+    
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
       <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Check Code:</td>
-                  <td width="50%"><%= deposit_check.check_identifier %></td>
-                </tr>
-              </table></td>
-              </tr>
-              <% receipt = Receipt.find_by_deposit_check_id(deposit_check.id) %>
-            <tr align="left" valign="top">
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Receipt Identifier:</td>
-                  <td width="50%"><%= receipt.receipt_identifier %></td>
-                </tr>
-              </table></td>
-              </tr>
-            </table></td>
-          <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr align="left" valign="top">
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Receipt Amount:</td>
-                  <td width="50%"><%= receipt.receipt_check_amount %></td>
-                </tr>
-              </table></td>
-              </tr>
-            <tr>
-              <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr align="left" valign="top">
-                  <td width="50%" scope="row">Vendor : </td>
-                  <td width="50%"><%= receipt.organization.organization_name %></td>
-                </tr>
-              </table></td>
-              </tr>
-            </table></td>
+          <td width="45%" scope="row"><strong>Date:&nbsp;&nbsp;&nbsp; &nbsp;<%= Date.today.to_s  %></strong></td>
+          <td width="41%"><strong>DEPOSIT #:&nbsp;&nbsp;&nbsp; &nbsp; </strong></td>
+          <td width="14%"><strong>Page: &nbsp;&nbsp;&nbsp; &nbsp;  1</strong></td>
         </tr>
       </table></td>
     </tr>
-    <tr>
-      <td scope="row">&nbsp;</td>
-    </tr>
-    <tr>
-      <td align="center" scope="row" class="pay-heading">Receipt Lines </td>
-    </tr>
-    <tr>
-      <td scope="row">&nbsp;</td>
-    </tr>
-        <tr class="tab-head-02">
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-head">
-        <tr align="center" valign="middle">
-          <td scope="row">Invoice</td>         
-          <td>Total</td>
-          <td>Balance</td>
-          <td>Amount</td>
-        </tr>
-      </table></td>
-    </tr>
-    <% receipt.receipt_lines.each do |receipt_line| %>
-    <tr class="tab-head-02">
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab-02">
-        <tr align="center" valign="middle">
-          <td scope="row"><%= receipt_line.receivable.receivable_identifier %></td>
-          <td><%= receipt_line.receivable.receivable_total %></td>
-          <td><%= receipt_line.receivable.receivable_current_balance %></td>
-          <td><%= receipt_line.receipt_line_amount %></td>
-        </tr>        
-      </table></td>
-    </tr>
-    <% end %>
-  </table> 
+    </table>
+    </div>
+  </table>
+
+
+
+
+
+
 </div>
-</body>
-</html>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var i =1;
+  var tot_amount = 0;
+<% @deposit_checks.each do |d| %>
+  <% if d.active == 1 %>
+   <% receipt = Receipt.find_by_deposit_check_id(d.id) %>
+   tot_amount += parseFloat(<%=   receipt.receipt_lines.sum(:receipt_line_amount).to_f %>);
+   $("#cash #check"+i).text("<%= receipt.receipt_lines.sum(:receipt_line_amount) %>");
+   i++;
+  <% end %>
+<% end %>
+$("#cash #tot_count").text(--i);
+$("#cash #tot_amt").text(tot_amount.toFixed(2) );
+
+});
+</script>
