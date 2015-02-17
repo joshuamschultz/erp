@@ -268,6 +268,13 @@ function csk_report() {
     var csk_iframe = $("#lot_csk")[0];
     csk_iframe.contentWindow.focus();
     csk_iframe.contentWindow.print();
+    package_report();
+
+}
+function package_report() {
+    var package_iframe = $("#lot_package")[0];
+    package_iframe.contentWindow.focus();
+    package_iframe.contentWindow.print();
 
 }
 <% end %>
@@ -281,4 +288,9 @@ function csk_report() {
 <iframe src="<%= psw_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_psw" width="10" height= "10" ></iframe>
 
 <iframe src="<%= csk_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_csk" width="10" height= "10"></iframe>
+
+
+<iframe src="<%= package_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_package" width="10" height= "10"></iframe>
+
+
 
