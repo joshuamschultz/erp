@@ -86,7 +86,7 @@ class Receipt < ActiveRecord::Base
 
   def update_transactions       
         self.update_transaction("11012","credit") # Cash
-        self.update_transaction("11080", "debit")  # Receivable
+        self.update_transaction("11030", "debit")  # Receivable
   end
 
   def  update_transaction(account, type)      
