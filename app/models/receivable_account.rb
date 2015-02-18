@@ -15,7 +15,7 @@ class ReceivableAccount < ActiveRecord::Base
   before_destroy :process_before_destory
   
   def process_after_save 
-    @gl_account_to_update = GlAccount.where(:gl_account_identifier=> "11080").first
+    @gl_account_to_update = GlAccount.where(:gl_account_identifier=> "11030").first
     @gl_account_id_to_update = @gl_account_to_update.id
   	if self.gl_entry_id
   		@gl_entry = GlEntry.where(:id => self.gl_entry_id, :gl_account_id => self.gl_account_id).first       
