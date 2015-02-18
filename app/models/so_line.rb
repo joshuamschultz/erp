@@ -456,7 +456,6 @@ class SoLine < ActiveRecord::Base
 .de{margin: 35px 0 0; min-height: 450px;}
 .ww-01 {
     border-bottom: 1px solid #000;
-    border-top: 1px solid #000;
     text-align: center;
     padding: 2px 0;
 }
