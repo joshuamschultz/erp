@@ -386,7 +386,6 @@
                     <table border="0" width="100%">
                     <tbody>
                         <tr><td width="150" scope="row"><%= so_line.item_revision.item_description if so_line.item_revision.present? %></td></tr>   
-                        <tr><td width="150" scope="row"  style="color: #800000;"><%= @so_header.po_header.po_identifier if @so_header.po_header.present? %></td></tr>                             
                     </tbody>
                     </table>
                     </td>
@@ -395,8 +394,10 @@
                 </tr>
 
                 <tr>
-                <td class="ww-01" style="color: #800000;"><%= so_line.so_line_notes%></td>
+                <td class="ww-01" style="color: #800000;"><%= so_line.so_line_notes%> &nbsp </td>
                 </tr>
+
+
 
             </tbody>
         </table>
