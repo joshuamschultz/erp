@@ -6,7 +6,6 @@
 
 <style>
 
-
 @charset "utf-8";
 
 body {
@@ -168,17 +167,17 @@ font-size:20px;
   </tr>
     <tr align="left" valign="top">
     <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="8%" rowspan="6"  style="background-color:#c5d9f1;" scope="row"><div class="side"> <strong>PACKAGE DATA<br>
+      <tr style="background-color:#c5d9f1;">
+        <td width="8%" rowspan="7"  style="background-color:#c5d9f1;" scope="row"><div class="side"> <strong>PACKAGE DATA<br>
         </strong></div></td>
-        <td width="13%">Component</td>
-        <td width="11%">L (in)</td>
-        <td width="9%">W (in)</td>
-        <td width="10%">H (in)</td>
-        <td width="15%">Component</td>
-        <td width="8%">Wt (lb)</td>
-        <td width="14%">Quantities</td>
-        <td width="12%">300</td>
+        <td width="13%"><strong>Component</strong></td>
+        <td width="11%"><strong>L (in)</strong></td>
+        <td width="9%"><strong>W (in)<strong></td>
+        <td width="10%"><strong>H (in)</strong></td>
+        <td width="15%"><strong>Component</strong></td>
+        <td width="8%"><strong>Wt (lb)</strong></td>
+        <td width="14%"><strong>Quantities</strong></td>
+        <td width="12%"></td>
       </tr>
       <tr>
         <td>Part Size</td>
@@ -222,20 +221,33 @@ font-size:20px;
         <td><%= @package.container_per_pallet %></td>
       </tr>
       <tr>
-        <td colspan="4"  style="background-color:#c5d9f1;"></td>
-        <td rowspan="2">&nbsp;</td>
-        <td>Container Gross (Inc Parts)</td>
+        <td colspan="3"  style="background-color:#c5d9f1;"></td>
+        <td>&nbsp;</td>  
+<td>Container Gross (Inc Parts)</td>  
         <td><%= @package.container_gross_inc_weight %></td>
-        <td>&nbsp;</td>
+        <td></td>
+        <td ></td>
+    
       </tr>
       <tr>
-        <td  style="background-color:#c5d9f1;" scope="row">&nbsp;</td>
-        <td> </td>
-        <td>Part Size</td>
-        <td>5</td>
-        <td>5</td>
+  
+        <td> 
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+<td><%= @package.in_to_mm1 %></td>
+<td><%= @package.in_to_mm2 %></td>
+</tr></table>
+        </td>
+
+
+        <td><%= @package.lbs_to_kg1 %></td>
+        <td ><%= @package.lbs_to_kg2 %></td>
+        <td style="background-color:#c0c0c0;"></td>
         <td>Unit Load Gross (Inc Parts)</td>
-        <td colspan="2" style="background-color:#c0c0c0;" >&nbsp;</td>
+        <td>&nbsp;</td>
+             <td colspan="2" style="background-color:#c0c0c0;">&nbsp;</td>
+            
         </tr>
     </table></td>
   </tr>
@@ -267,15 +279,15 @@ font-size:20px;
   </tr>
     <tr align="left" valign="top">
     <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="6%" rowspan="5"  style="background-color:#c5d9f1;" scope="row"><div class="side"> <strong>PACKAGING MATERIALS<br>
+      <tr style="background-color:#c5d9f1;">
+        <td width="6%" rowspan="9"  style="background-color:#c5d9f1;" scope="row"><div class="side"> <strong>PACKAGING MATERIALS<br>
         </strong></div></td>
-        <td width="21%">Description</td>
-        <td width="15%">Manufacturer</td>
-        <td width="13%">Material</td>
-        <td width="14%">Lead Time</td>
-        <td width="19%">RET/EXP</td>
-        <td width="12%">COMMENTS</td>
+        <td width="21%"><strong>Description</strong></td>
+        <td width="15%"><strong>Manufacturer</strong></td>
+        <td width="13%"><strong>Material</strong></td>
+        <td width="14%"><strong>Lead Time</strong></td>
+        <td width="19%"><strong>RET/EXP</strong></td>
+        <td width="12%"><strong>COMMENTS</strong></td>
         </tr>
       <tr>
         <td>Dunnage</td>
