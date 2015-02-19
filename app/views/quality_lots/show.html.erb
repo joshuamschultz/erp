@@ -222,10 +222,11 @@
 <!-- Attachments -->
 <!-- Attachments -->
 <div class="row-fluid">
-    <div class="attachment-pulp">
+    <div class="attachment-pulp ee-10">
         <%= render :partial => 'attachments/droppable_form_plup_less' %>
     </div>
-    <div class="span8">
+
+    <div class="span8 ee-17">
         <%= render 'attachments/attachments_less' %>
     </div>
 </div>
@@ -255,7 +256,12 @@ function gage_report() {
     var gage_iframe = $("#lot_gage")[0];
     gage_iframe.contentWindow.focus();
     gage_iframe.contentWindow.print();
-    psw_report();
+    <% if @quality_lot.ppap %>
+      psw_report();
+    <% else %>
+      alert("Please create psw report");
+      csk_report();
+    <% end %>
 }
 function psw_report() {
     var psw_iframe = $("#lot_psw")[0];
@@ -268,13 +274,18 @@ function csk_report() {
     var csk_iframe = $("#lot_csk")[0];
     csk_iframe.contentWindow.focus();
     csk_iframe.contentWindow.print();
-    package_report();
-
+    <% if @quality_lot.package %>
+      package_report();
+    <% else %>
+      alert("Please create package report");
+    <% end %>
 }
 function package_report() {
+
     var package_iframe = $("#lot_package")[0];
     package_iframe.contentWindow.focus();
     package_iframe.contentWindow.print();
+
 
 }
 <% end %>
@@ -292,5 +303,13 @@ function package_report() {
 
 <iframe src="<%= package_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_package" width="10" height= "10"></iframe>
 
+<style>
+
+.ee-17{width: 61% !important;}
+iframe {
+    width: 0;
+}
+
+</style>
 
 

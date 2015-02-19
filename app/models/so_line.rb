@@ -97,8 +97,11 @@ class SoLine < ActiveRecord::Base
      
           item_part_no = '<tr><td width="150" scope="row">'+so_line.item.item_part_no+'</td></tr> '
           item_alt_name = so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier ? '<tr><td width="150" scope="row" >'+so_line.item_alt_name.item_alt_identifier+'</td></tr>': ''
-      
-        so_line_notes = ' <td class="ww-01" style="color: #800000;">'+so_line.so_line_notes+'</td>' if so_line.so_line_notes.present?
+        if so_line.so_line_notes.present?
+          so_line_notes = ' <td class="ww-01" style="color: #800000;">'+so_line.so_line_notes+'</td>' 
+        else
+          so_line_notes = ' <td class="ww-01" style="color: #800000;">&nbsp</td>' 
+        end 
         source += '
 
 
@@ -127,7 +130,6 @@ class SoLine < ActiveRecord::Base
                     <table border="0" width="100%">
                     <tbody>
                         <tr>'+item_description+'</tr>   
-                        <tr><td width="150" scope="row"  style="color: #800000;">'+po_identifier+'</td></tr>                             
                     </tbody>
                     </table>
                     </td>
