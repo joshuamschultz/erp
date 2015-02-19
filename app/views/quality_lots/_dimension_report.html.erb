@@ -3,7 +3,6 @@
 
 <title>Dimension Report</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
-
 <style type="text/css">
     @charset "utf-8";
     body {
@@ -64,6 +63,7 @@ form {
 </style>
 
 <% @company_info = CompanyInfo.first %>
+<% @ppap = @quality_lot.ppap %>
 <div class="ms_wrapper">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" >
     <tr align="left" valign="top" style="border-bottom:none;" >
@@ -91,49 +91,43 @@ form {
               <td style=" border-right:1px solid #111; " scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bor-3">
                 <tr align="left" valign="top">
                   <td width="65%" scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox" id="checkbox">
-                    <label for="checkbox">nitial submission</label>
+                     <label> <%= check_box_tag 'initial_submission', "true", @ppap.initial_submission , :disabled => false %> Initial submission</label>
                   </form></td>
                   <td width="50%"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox2" id="checkbox2">
-                    <label for="checkbox2">New Supplier</label>
+                    <label><%= check_box_tag 're_submission', "true", @ppap.re_submission , :disabled => false %> Re-Submission </label>
                   </form></td>
                 </tr>
                 <tr align="left" valign="top">
                   <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox3" id="checkbox3">
-                    <label for="checkbox3">Correction of NCMR</label>
+                    <label><%= check_box_tag 'change_to_materials_used', "true", @ppap.change_to_materials_used , :disabled => false %>Change to materials used</label>
                   </form></td>
                   <td><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox8" id="checkbox8">
-                    <label for="checkbox8">Other- please specify</label>
+                      <label><%= check_box_tag 'revision_change', "true", @ppap.revision_change , :disabled => false %>Revision Change</label>
+                  </form>
                   </form></td>
                 </tr>
                 <tr align="left" valign="top">
                   <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox4" id="checkbox4">
-                    <label for="checkbox4">New / Revised drawing or spec</label>
+                    <label><%= check_box_tag 'camo_pattern_new_to_part', "true", @ppap.camo_pattern_new_to_part , :disabled => false %>Camo pattern new to part </label></form>
+                  </td>
+                  <td>__________________________</td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <label><%= check_box_tag 'tooling_replacement', "true", @ppap.tooling_replacement , :disabled => false %>Tooling transfer, refurbishment,replacement or additional</label>
+                  </td>
+                  <td>__________________________</td>
+                </tr>
+                <tr align="left" valign="top">
+                  <td scope="row"><form name="form1" method="post" action="">
+                    <label><%= check_box_tag 'process_change', "true", @ppap.process_change , :disabled => false %> Process Change</label>
+
                   </form></td>
                   <td>__________________________</td>
                 </tr>
                 <tr align="left" valign="top">
                   <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox5" id="checkbox5">
-                    <label for="checkbox5">Tooling: transfer, replacement, addl.</label>
-                  </form></td>
-                  <td>__________________________</td>
-                </tr>
-                <tr align="left" valign="top">
-                  <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox6" id="checkbox6">
-                    <label for="checkbox6">New or significantly modified process or routing</label>
-                  </form></td>
-                  <td>__________________________</td>
-                </tr>
-                <tr align="left" valign="top">
-                  <td scope="row"><form name="form1" method="post" action="">
-                    <input type="checkbox" name="checkbox7" id="checkbox7">
-                    <label for="checkbox7">Change of location, sub-supplier or material</label>
+                    <label><%= check_box_tag 'Change_in_mfg_source', "true", @ppap.Change_in_mfg_source , :disabled => false %>Change in mfg source </label>
                   </form></td>
                   <td>&nbsp;</td>
                 </tr>
@@ -203,7 +197,7 @@ form {
               <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td style="border-right:1px solid #111; width:122px;" scope="row">E-mail</td>
-                  <td align="center" class="color">joshua@chessgroupinc.com</td>
+                  <td align="center" class="color"><%= @quality_lot.lot_inspector.email %></td>
                 </tr>
               </table></td>
             </tr>
@@ -263,7 +257,7 @@ form {
           <td width="4%">10</td>
           <td width="4%">Average</td>
           <td width="4%">std dev</td>
-          <td width="4%">Min</td>
+          <td width="4%">Max</td>
           <td width="4%">Min</td>
           <td width="4%">GAGE</td>
           <td width="4%">ACC</td>
@@ -271,44 +265,66 @@ form {
           <td width="3%">Final disposition</td>
         </tr>
         <% i = 0 %>
-        <% @quality_lot.quality_lot_dimensions.each do |dimension| %>
-        
-        <tr>
-          <td scope="row"><%= i=i+1 %></td>
-          <td>&nbsp;</td>
-          <td>Dim Letter</td>
-          <td> + Tol</td>
-          <td>- Tol</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>input</td>
-          <td>Average</td>
-          <td>STD Dev</td>
-          <td>Min</td>
-          <td>Max</td>
-          <td>Gage Serial</td>
-          <% if dimension.lot_dimension_status == "accepted" %>
-            <td>X</td>
-          <% else %>
-            <td>&nbsp;</td>
+        <% objects = @quality_lot.lot_item_dimensions.order(:id) %>
+
+
+  
+        <% objects.each do |object| %>
+           <tr>
+           <% j= 1 %>
+           <% length = object.quality_lot_dimensions.where(:quality_lot_id => @quality_lot.id).order(:item_part_dimension_id).all.length %>
+            <% object.quality_lot_dimensions.where(:quality_lot_id => @quality_lot.id).order(:item_part_dimension_id).all.each do |lot_dimension| %>
+
+
+            
+     
+                    <%  go_non_go_status = lot_dimension.item_part_dimension.go_non_go %>
+                    <% lot_dimension_values = [] %>
+                    <% lot_dimension.all_lot_dimensions.collect(&:lot_dimension_value).each do |value|%>
+                      <% lot_dimension_values << value.to_f%>
+                    <% end %>
+                    <% if  j ==1 %>
+                        <td scope="row"><%= i=i+1 %></td>
+                        <td>&nbsp;</td>
+                        <td><%= go_non_go_status ? " " : lot_dimension.item_part_dimension.item_part_dimension.round(4)  %> </td>
+                        <td><%=  go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension + lot_dimension.item_part_dimension.item_part_pos_tolerance).to_f.round(4) %></td>
+                        <td><%= go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension - lot_dimension.item_part_dimension.item_part_neg_tolerance).to_f.round(4) %></td>
+
+                    <% end %>
+            
+                    <td><%= lot_dimension.lot_dimension_value.to_f %></td>
+                     
+                
+                    <% if  j == length %>
+                      <% while length != 10 %>
+                        <td>0.0</td>
+                        <% length = length + 1 %>
+                      <% end %>
+
+                      <td><%= go_non_go_status ? " " : (lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count).to_f.round(4) %></td>
+                      <td><%= go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0)  %></td>
+                      <td><%= go_non_go_status ? " " : lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value).to_f.round(4) %></td>
+                      <td><%= go_non_go_status ? " " : lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value).to_f.round(4) %></td>
+                      <td><%=  lot_dimension.item_part_dimension.gauge.present? ?  lot_dimension.item_part_dimension.gauge.gauge_tool_name : ""%> </td>
+                      <% if lot_dimension.lot_dimension_status == "accepted" %>
+                        <td>X</td>
+                      <% else %>
+                        <td>&nbsp;</td>
+                      <% end %>
+                      <% if lot_dimension.lot_dimension_status == "rejected" %>
+                        <td>X</td>
+                      <% else %>
+                        <td>&nbsp;</td>
+                      <% end %>
+                      <td>&nbsp;</td>                      
+                    <% end %>
+
+                    <% j = j+1 %>
+              
           <% end %>
-          <% if dimension.lot_dimension_status == "rejected" %>
-            <td>X</td>
-          <% else %>
-            <td>&nbsp;</td>
-          <% end %>
-          <td>&nbsp;</td>
-        </tr>
-    
-        <% end %>
+          </tr>
  
+        <% end %>
       </table></td>
     </tr>
     <tr align="center" style="border-top:none; border-bottom:none;" >
@@ -340,6 +356,3 @@ form {
     </tr>
   </table>
 </div>
-
-
-

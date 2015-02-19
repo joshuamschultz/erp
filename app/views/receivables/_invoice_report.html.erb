@@ -86,6 +86,7 @@
         .ms_wrapper article {
             float: left;
             width: 100%;
+            min-height: 121px;
         }
     }
     .ms_text-6 > h2 {
@@ -449,233 +450,144 @@
      .h-pad th {
    font-weight: normal;
 }
-.art-01.art-04 {
-    min-height: 455px;
+
+
+.breakAfter{
+page-break-after: always;
+} 
+.foot{position: fixed;bottom: 0;background-color: #fff;}
+   
+
+
+
+.top-003 {
+    position: fixed;
+    top: 0;
+    background-color: #fff;}
+
+.art-01.to-003 {
+    padding: 130px 0 0;
 }
-    </style>
+
+/* Firefox 3.0+ */
+.art-01.art-04 {
+    height: 540px;
+    padding: 0 0 20px;
+
+}
+
+
+.art-01.hei {
+    height: 680px;
+
+}
+
+
+
+
+</style>
+
+
+
 </head>
 
 <body>
 
 <% @company_info = CompanyInfo.first %>
 
-<div style="page-break-inside:auto; position:relative">&nbsp;</div> 
-
-    <div class="ms_wrapper" >
-
-        <section>
-
-            <article>
-                <div class="ms_image">
-                    <div class="ms_image-wrapper">
-                          <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
-                    </div>
-
-                    <div class="ms_image-text">
-                        <h3><%= @company_info.company_address1 %>
-                        <br><%= @company_info.company_address2 %></h3>
-                        <h5><span> P:</span> <%= @company_info.company_phone1 %> <br>
-                        <span> F:&nbsp;</span><%= @company_info.company_fax %></h5>
-                    </div>
-
-                </div>
-
-
-                <div class="ms_image-2">
-                    <h2> Invoice</h2>
-                    <div class="ms_image-5">
-
-                        <div class="ms_image-6">
-                            <h4> Date</h4>
-                            <h5> <%= @receivable.created_at.strftime("%m/%d/%Y") %> </h5>
-                            <div class="space"></div>
-                            <h4> Chess S.O.#</h4>
-                            <% if @so_header.present? %>
-                                <h5><%= @so_header.so_identifier %></h5>
-                            <% end %>
-                        </div>
-
-                        <div class="ms_image-6 ms_image-7">
-                            <h4> Inv No</h4>
-                            <h5> <%= @receivable.receivable_identifier %></h5>
-                            <div class="space"></div>
-                            <h4> Costomer P.O.#</h4>
-                            <% if @so_header.present? %>
-                                <h5> <%= @so_header.so_header_customer_po %></h5>
-                            <% end %>
-                        </div>
-
-                        <div class="clear"></div>
-
-                    </div>
-
-                </div>
-
-
-            </article>
-
-            <article class="art-01">
-
-                <div class="ms_text-wra">
-                    <h2></h2>
-                    <div class="ms_text">
-                        <h1 class="ms_heading">Bill To :</h1> 
-                        <div class="ms_text-6">
-                            <h2 class="ms_sub-heading">
-                            <% if @so_header.present? %>
-                                <% if @so_header.bill_to_address.present? %>
-                                <span><%= @so_header.bill_to_address.contact_title %></span>
-                                <%= @so_header.bill_to_address.contact_address_1 %>
-                                <%= @so_header.bill_to_address.contact_address_2 %>
-                                <%= @so_header.bill_to_address.contact_state %>
-                                <%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></h2> 
-                                <% end %>
-                            <% end %>
-                        </div>
-                    </div>
-                </div>
 
 
 
-                <div class="ms_text-wra-02">
-                    <h2></h2>
-                    <div class="ms_text-2">
-                        <h1 class="ms_heading">Ship To : </h1> 
-                        <div class="ms_text-6">
-                            <h2 class="ms_sub-heading">
-                            <% if @so_header.present? %>
-                                <% if @so_header.ship_to_address.present? %>
-
-                                <span><%= @so_header.ship_to_address.contact_title %></span>
-                                <%= @so_header.ship_to_address.contact_address_1 %>
-                                <%= @so_header.ship_to_address.contact_address_2 %>
-                                <%= @so_header.ship_to_address.contact_state %>
-                                <%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> 
-                                <% end %>
-                            <% end %>
-                        </div>
-                    </div>
-                </div>
-
-            </article>
 
 
-            <article class="art-01 art-08">
-
-                <table width="640" border="0" cellpadding="0" cellspacing="0">
-                    <tr align="center">
-                        <td width="124">TERMS</td>
-                        <td width="132">ORDER DATE</td>
-                        <td width="146">SHIP VIA</td>
-                    </tr>
-                    <tr align="center">
-
-                        <td><%= @so_header.organization.organization_name if @so_header %></td>
-                        <td><%= @so_header.created_at.strftime("%m/%d/%Y") if @so_header %></td>
-                        <td>&nbsp;</td>
-
-                    </tr>
-                </table>
-
-            </article>
-
-
-            <article class="art-01 art-04">
-
-
-                <table width="640" border="0" cellpadding="0" cellspacing="0">
-                    <tr align="center" class="hea">
-                        <td width="72">ORDERED</td>
-                        <td width="75">SHIPPED</td>
-                        <td width="67">P/N</td>
-                        <td width="224">DESCRIPTION</td>
-                        <td width="95">PRICE/E</td>
-                        <td width="107">TOTAL</td>
-                    </tr>
-
-
-            <% sub_total = 0.0 %>
-
-            <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
-                    <tr tr class="h-pad" valign="top" align="left">
-
-
-                           <td><%= so_shipment.so_line.so_line_quantity %></td>
-                           <td><%= so_shipment.so_shipped_count %></td>
-                            
-                            <%  if so_shipment.so_line.item.item_part_no == so_shipment.so_line.item_alt_name.item_alt_identifier %>
-                                <td>
-                                    <table width="100%" border="0">
-                                        <tr>
-                                            <th scope="row"><%= so_shipment.so_line.item.item_part_no %></th>
-                                        </tr>
-
-                                    </table>
-                                </td>
-                            <%  else %>
-                                <td>
-                                    <table width="100%" border="0">
-                                        <tr>
-                                            <th scope="row"><%= so_shipment.so_line.item.item_part_no %></th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row"><%= so_shipment.so_line.item_alt_name.item_alt_identifier %></th>
-                                        </tr>
-                                    </table>
-                                </td>
-                            <%  end %>
-                            <% if so_shipment.so_line.item_revision.present? %>
-                                <td><%= so_shipment.so_line.item_revision.item_description %> </td>
-                            <% end %>
-                            <td><%= so_shipment.so_line.so_line_cost %></td>
-                            <td><%= so_shipment.so_shipped_cost %></td>
-                            <% sub_total+= so_shipment.so_shipped_cost %>
-                    </tr>
-
-                <% end %>
-
-
-                </table>
-
-            </article>
-
-
-
-            <article>
-                <div class="footer">
-
-                    <div class="page">
-                        <h3>Page</h3>
-                        <span>1 </span>
-                    </div>
-
-
-
-                    <div class="original">
-                        <table width="250" border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <th width="169" align="right" scope="row">SUB TOTAL :</th>
-                                <td width="131" align="right"><%= sub_total.to_f %></td>
-                            </tr>
-                            <tr>
-                                <th align="right" scope="row">FREIGHT :</th>
-                                <td align="right"><%= @receivable.receivable_freight.to_f %></td>
-                            </tr>
-                            <tr>
-                                <th align="right" scope="row">TOTAL :</th>
-                                <td align="right"><%= sub_total.to_f + @receivable.receivable_freight.to_f  %></td>
-                            </tr>
-                        </table>
-                    </div>
-
-            </div>
-            </article>
-
-  </section>
-            </div>
-
+<div class="ms_wrapper" >
+   
 </div>
-<div style="page-break-before:always; position:relative"> </div> 
+
+
+ <div style="page-break-after: always; page-break-inside: avoid;">  </div>
+
+
+
 </body>
 
 </html>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+
+  
+
+    printContent();
+
+
+
+function printContent()
+{
+ var content='';   
+ var i = 1;
+ var flag = 1;
+ var flag2 = 1;
+ <% len = @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).length %>
+<% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each_with_index do |so_shipment, index| %>
+ if (i== 1) {    
+ content = ' <section><article><div class="ms_image"><div class="ms_image-wrapper"><%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %></div><div class="ms_image-text"><h3><%= @company_info.company_address1 %><br><%= @company_info.company_address2 %></h3><h5><span> P:</span> <%= @company_info.company_phone1 %> <br><span> F:&nbsp;</span><%= @company_info.company_fax %></h5></div></div><div class="ms_image-2"><h2> Invoice</h2><div class="ms_image-5"><div class="ms_image-6"><h4> Date</h4><h5> <%= @receivable.created_at.strftime("%m/%d/%Y") %> </h5><div class="space"></div><h4> Chess S.O.#</h4><% if @so_header.present? %><h5><%= @so_header.so_identifier %></h5><% end %></div><div class="ms_image-6 ms_image-7"><h4> Inv No</h4><h5> <%= @receivable.receivable_identifier %></h5><div class="space"></div><h4> Costomer P.O.#</h4><% if @so_header.present? %><h5> <%= @so_header.so_header_customer_po %></h5><% end %></div><div class="clear"></div></div></div></article>';
+
+ if (flag ==1)
+ {
+ content += ' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.bill_to_address.present? %><span><%= @so_header.bill_to_address.contact_title %></span><%= @so_header.bill_to_address.contact_address_1 %><%= @so_header.bill_to_address.contact_address_2 %><%= @so_header.bill_to_address.contact_state %><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' 
+ flag =0;
+}
+     if (flag2 ==1)
+     {
+        content += '<article class="art-01 art-04 "><table width="640" border="0" cellpadding="0" cellspacing="0"><tr align="center" class="hea"><td width="72">ORDERED</td><td width="75">SHIPPED</td><td width="67">P/N</td><td width="224">DESCRIPTION</td><td width="95">PRICE/E</td><td width="107">TOTAL</td></tr><% sub_total = 0.0 %>'
+    flag2=0;
+    }
+    else
+    {
+        
+        content += '<article class="art-01 hei "><table width="640" border="0" cellpadding="0" cellspacing="0"><tr align="center" class="hea"><td width="72">ORDERED</td><td width="75">SHIPPED</td><td width="67">P/N</td><td width="224">DESCRIPTION</td><td width="95">PRICE/E</td><td width="107">TOTAL</td></tr><% sub_total = 0.0 %>'
+    }
+}
+
+ content += ' <tr class="h-pad" valign="top" align="left"><td><%= so_shipment.so_line.so_line_quantity %></td><td><%= so_shipment.so_shipped_count %></td><%  if so_shipment.so_line.item.item_part_no == so_shipment.so_line.item_alt_name.item_alt_identifier %><td><table width="100%" border="0"><tr><th scope="row"><%= so_shipment.so_line.item.item_part_no %></th></tr></table></td><% else %><td><table width="100%" border="0"><tr><th scope="row"><%= so_shipment.so_line.item.item_part_no %></th></tr><tr><th scope="row"><%= so_shipment.so_line.item_alt_name.item_alt_identifier %></th></tr></table></td><%  end %><% if so_shipment.so_line.item_revision.present? %><td><%= so_shipment.so_line.item_revision.item_description %> </td><% end %><td><%= so_shipment.so_line.so_line_cost %></td><td><%= so_shipment.so_shipped_cost %></td><% sub_total+= so_shipment.so_shipped_cost %></tr>'
+
+
+if(i==10){    
+ content += '</table></article> </div> ';
+
+ content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span>1 </span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right"><%= sub_total.to_f %></td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right"><%= @receivable.receivable_freight.to_f %></td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right"><%= sub_total.to_f + @receivable.receivable_freight.to_f  %></td></tr></table></div></div></article> </section>';
+  content += ' <div style="page-break-after: always; page-break-inside: avoid;">  </div>'
+
+}
+<% if len == index+1 %>
+content += '</table></article>';
+
+ content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span>1 </span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right"><%= sub_total.to_f %></td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right"><%= @receivable.receivable_freight.to_f %></td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right"><%= sub_total.to_f + @receivable.receivable_freight.to_f  %></td></tr></table></div></div></article> </section> ';
+
+  content += ' <div style="page-break-after: always; page-break-inside: avoid;">  </div>'  
+
+
+<% end %>
+i = i+ 1; 
+if(i==11 ){
+     i= 1;
+    $( ".ms_wrapper" ).append( $( content ) );  
+    } 
+ 
+ <% end %>
+  
+  $( ".ms_wrapper" ).append( $( content ) );  
+
+}
+
+// $( ".header10" ).append( "<tr class='h-pad' valign='top' align='left'><td>Welcome </td> </tr>" );
+
+
+
+</script>
