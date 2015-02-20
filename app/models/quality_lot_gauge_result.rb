@@ -88,7 +88,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           gauge_tvp = gauge_tv / gauge_dev * 100
           gauge_rrtp = gauge_rr / gauge_dev * 100
 
-
+        unless gauge_rrtp.nan?
           if gauge_rrtp <= 10
               gauge_status = "Acceped"
           elsif gauge_rrtp.to_f.between?(10, 30)
@@ -96,6 +96,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           elsif gauge_rrtp > 30
               gauge_status = "Rejected"
           end
+        end
           
           dimension_results << { item_part_letter: gauge_dimension.item_part_dimension.item_part_letter, 
           gv: gauge_gv.round(6).to_s, ov: gauge_ov.round(6).to_s, rr: gauge_rr.round(6).to_s, pv: gauge_pv.round(6).to_s, 
