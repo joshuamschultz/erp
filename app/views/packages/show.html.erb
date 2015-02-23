@@ -1,6 +1,8 @@
 <div class="row-fluid span12  ">
     <%= render :partial => 'package_info' %>    
 </div>
+<% @company_info = CompanyInfo.first %>
+
 <div class="row-fluid span12 well packaging ">
     <div class="span6  item_detail_view packaging">
         <h5 style="text-align:center; font-size:20px">Package Form<span></span></h5><br>
@@ -13,7 +15,7 @@
                 <td>Supplier Responsibilities Completed?</td>
             </tr>
             <tr align="left" valign="top">
-                <td><%= @package.updated_at.strftime("%d/%m/%Y") %></td>
+                <td><%= @package.updated_at.strftime("%d/%m/%Y") %>Part Number</td>
                 <td>&nbsp;</td>
 
                 <% if can? :view , Package %>
@@ -46,11 +48,11 @@
             </tr>
             <tr>
             <% if can? :edit , Package %>
-                <td><%= CommonActions.linkable(organization_path(@package.quality_lot.po_header.organization), @package.quality_lot.po_header.organization.organization_name).html_safe %></td>
+                <td><%= @company_info.company_name %></td>
             <% else %>
-                <td><%= @package.quality_lot.po_header.organization.organization_name %></td>
+                <td><%= @company_info.company_name %></td>
             <% end %>
-                <td><%= @package.quality_lot.po_header.organization.organization_telephone %></td>
+                <td><%= @company_info.company_phone1 %></td>
                 <td><%= @package.quality_lot.po_line.item_revision.item_revision_name %></td>
             </tr>
             <tr>
@@ -60,7 +62,7 @@
             </tr>
             <tr>
                 <td><%= @package.supplier_code %></td>
-                <td><%= @package.quality_lot.po_header.organization.organization_fax %></td>
+                <td><%= @company_info.company_fax %></td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
@@ -69,8 +71,10 @@
                 <td class="color-02"><%=@package.quality_lot.po_line.item_alt_name.item_alt_description if  @package.quality_lot.item_revision%></td>
             </tr>
             <tr>
-                <td><%= (@package.quality_lot.po_header.organization.organization_city + ', ').html_safe if @package.quality_lot.po_header.organization.organization_city.present? %>
-                    <%= (@package.quality_lot.po_header.organization.organization_state + ', ').html_safe if @package.quality_lot.po_header.organization.organization_state.present? %>
+                <td>
+
+ <!--                <%= (@package.quality_lot.po_header.organization.organization_city + ', ').html_safe if @package.quality_lot.po_header.organization.organization_city.present? %>
+                    <%= (@package.quality_lot.po_header.organization.organization_state + ', ').html_safe if @package.quality_lot.po_header.organization.organization_state.present? %> -->
                 </td>
                 <td><a href="mailto:#"><%= @package.quality_lot.po_header.organization.organization_email %></td>
                 <td>&nbsp;</td>
@@ -197,7 +201,7 @@
                             <td class="r-align" colspan="2">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td class="color-02"><%= @package.lbs_to_kg1 %></td>
+                                        <td class="color-02">raj</td>
                                         <td class="color-02"><%= @package.lbs_to_kg2 %></td>
                                     </tr>
                                 </table>
