@@ -11,8 +11,8 @@
     <tbody id="accounts_dispersal_table_body">
          
         
-        <%= f.fields_for fields[0], accounts do |account| %>
-            <tr>
+        <%= f.fields_for fields[0], accounts do |account| %>        
+            <tr>               
                 <td><%= account.association fields[1], label: false, label_method: :gl_account_title, label_value: :id, :include_blank => false, collection: gl_accounts, input_html: { class: (object.new_record? ? "account_new " : "account_edit ") + fields[1].to_s } %></td>
                 <td><%= account.input fields[2], label: false, :input_html => {class: fields[2].to_s} %></td>
                 <td><%= account.input fields[3], label: false, :input_html => {class: fields[3].to_s} %></td>
@@ -114,7 +114,8 @@
         }
         if( payable_freight > 0 ||  receivable_freight > 0) {
             var freight = payable_freight ? payable_freight : receivable_freight * -1;
-            disperse_amount($("#freight_text").val(), freight);
+            var hide = receivable_freight ? 1 : 0;
+            disperse_amount($("#freight_text").val(), freight, hide);
             
         }           
         if(payable_discount < parseFloat(0) || receivable_discount < parseFloat(0)) {
@@ -122,15 +123,15 @@
             var discount = payable_discount ? payable_discount : receivable_discount ;
             if (payable_discount)
                 disperse_amount($("#discount_text").val(), discount) ;
-            if (receivable_discount)
-            disperse_amount($("#sales_discount_text").val(), discount) ;
+            // if (receivable_discount)
+            // disperse_amount($("#sales_discount_text").val(), discount) ;
              
         }            
 
 
     }
     function get_rowcount(){
-        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));      
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:last'));      
         var last_id = $last.children('td:first').children().find('select').attr('id');
         var getNum;
         if(typeof  last_id != 'undefined'){
@@ -144,21 +145,24 @@
             return parseInt(0);
         } 
     }  
-    function disperse_amount(theText, amt){        
+    function disperse_amount(theText, amt, hide){           
         account_row_count = $(".account_new").length + $(".account_edit").length;        
         for ( var i = 0; i < account_row_count; i++ ) {                    
             if ($("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
 
                     if(amt > 0 || amt < 0){                    
-                        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
+                        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt);
+                        if (hide)                           
+                          $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+i+"_<%= account_type %>_account_amount").closest("tr").hide();                      
+                        
                     }
                     else{
                         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").closest("tr").remove();   
                     }    
                     break;
                 } 
-        }        
+        }         
         if(i ==account_row_count && (amt > 0 || amt < 0) && $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").length == 0){         
         var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
         $("#accounts_dispersal_table_body").append(html); 
@@ -168,16 +172,18 @@
                 $(this).attr('selected', 'selected');            
             }                        
         });        
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt); 
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").val(amt);
+        if (hide)                        
+                          $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_<%= account_type %>_account_amount").closest("tr").hide();  
         }  
 
     }     
 
     function add_account_row(){
         var account_row_count = get_rowcount();
-        var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));
+        var html = $.trim(Mustache.render($(".account-row-html-template").html(), {"row_count" : account_row_count, "row_data" : []}));        
         $("#accounts_dispersal_table_body").append(html);
-        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);
+        $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").html(account_select_html);        
         $("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+account_row_count+"_gl_account_id").val(<%= default_account.id %>);
     }
 

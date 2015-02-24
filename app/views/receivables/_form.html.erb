@@ -45,13 +45,11 @@
     <%#= hidden_field_tag :org_gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
 
     <%= f.input :receivable_description, :label => "Description" %>
-    <%= f.input :receivable_notes, :label => "Notes" %>
-    <%= f.input :receivable_discount, :label => "Discount (%)" %>
+    <%= f.input :receivable_notes, :label => "Notes" %>   
     <%= f.input :receivable_freight, :label => "Freight" %>
   </div>
 
-  <div class="separator bottom"></div>
-  <div class="span disperse" style="margin-left:300px;"><%= link_to 'Disperse', '#', :class => "btn btn-mini btn-success", :onclick => "update(); return false", :id => "disperse" unless @receivable.new_record?%></div><br>
+  
   <div class="separator bottom"></div>
   
   <div class="form-actions">
@@ -82,13 +80,12 @@
 
     var receivable_fine_to_submit = true;
 
-    $(document).ready(function(){
-        $("#update_invoice").attr('disabled',true); 
-        $("#receivable_receivable_discount " ).on("focusout", function(){
-          $("#update_invoice").attr('disabled',true);  
-         });   
+    $(document).ready(function(){       
+        // $("#receivable_receivable_discount " ).on("focusout", function(){
+        //   $("#update_invoice").attr('disabled',true);  
+        //  });   
         $("#receivable_receivable_freight" ).on("focusout", function(){
-          $("#update_invoice").attr('disabled',true);  
+          freight_result(); 
          });   
         $("#receivable_organization_id").on("focusout", function(){
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
@@ -135,7 +132,7 @@
       $("#update_invoice").attr('disabled',false);          
     } 
      function get_rowcount(){
-        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:last'));        
         var last_id = $last.children('td:first').children().find('select').attr('id');
         if(typeof last_id != 'undefined')    
         {
@@ -182,6 +179,7 @@
             });
             if($("#receivable_receivable_freight").val() > 0){
             $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val($("#receivable_receivable_freight").val() * -1);
+             $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").closest("tr").hide();  
             }
         }         
     }
