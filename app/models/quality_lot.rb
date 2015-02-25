@@ -133,11 +133,16 @@ class QualityLot < ActiveRecord::Base
 		next_letter = current_letter.next!
 		p next_letter			
 
+		while (not QualityLot.find_by_lot_control_no("%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		CommonActions.current_hour_letter + min.to_s + "#{next_letter}-" + (current_count + 1).to_s).blank?)
+        	next_letter = next_letter.next!
+		end 
+        
 		if MaxControlString.first
-			MaxControlString.first.update_attributes(:control_string => control_string+next_letter) 
+			MaxControlString.first.update_attributes(:control_string => control_string+next_letter) 			
 		else
 		    MaxControlString.create(:control_string => control_string+next_letter)	 
-		end   	
+		end  		 	
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s + "#{next_letter}-" + (current_count + 1).to_s
