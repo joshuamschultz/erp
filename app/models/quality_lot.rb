@@ -123,23 +123,29 @@ class QualityLot < ActiveRecord::Base
 		CommonActions.current_hour_letter + min.to_s		
 		# unless  maximum_lot.nil?			
 		letter = '@'
-		if MaxControlString.first && MaxControlString.first.control_string
-				# current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s
+		# if MaxControlString.first && MaxControlString.first.control_string
+		# 		# current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s
 		
-				begin
-					letter = letter.next!
-				end while (not MaxControlString.find_by_control_string("%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s + "#{letter}".to_s).blank?)
+		# 		begin
+		# 			letter = letter.next!
+		# 		end while (not MaxControlString.find_by_control_string("%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		# CommonActions.current_hour_letter + min.to_s + "#{letter}".to_s).blank?)
         			
 
-				# current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
-		else 		
-				letter = letter.next!
-		end				
+		# 		# current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
+		# else 		
+		# 		letter = letter.next!
+		# end				
 		# end		
+		begin
+			letter = letter.next!
+			@max_control_string = MaxControlString.new(:control_string => control_string+letter)
+		end while(not @max_control_string.valid?)	
+		if @max_control_string.valid?
+			@max_control_string.save
+		end	
+
 		
-		
-		MaxControlString.create(:control_string => control_string+letter)	 
 		  		 	
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
