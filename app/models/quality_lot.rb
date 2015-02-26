@@ -122,25 +122,34 @@ class QualityLot < ActiveRecord::Base
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s		
 		# unless  maximum_lot.nil?			
-			if MaxControlString.first && MaxControlString.first.control_string
-				current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s					
-				current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
-			else 		
-				current_letter =  (control_string == maximum_lot[0, 8]) ? current_letter : '@' unless maximum_lot.nil?	
-			end				
-		# end		
+		letter = '@'
+		# if MaxControlString.first && MaxControlString.first.control_string
+		# 		# current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s
 		
-		next_letter = current_letter.next!
-		p next_letter			
+		# 		begin
+		# 			letter = letter.next!
+		# 		end while (not MaxControlString.find_by_control_string("%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		# CommonActions.current_hour_letter + min.to_s + "#{letter}".to_s).blank?)
+        			
 
-		if MaxControlString.first
-			MaxControlString.first.update_attributes(:control_string => control_string+next_letter) 
-		else
-		    MaxControlString.create(:control_string => control_string+next_letter)	 
-		end   	
+		# 		# current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
+		# else 		
+		# 		letter = letter.next!
+		# end				
+		# end		
+		begin
+			letter = letter.next!
+			@max_control_string = MaxControlString.new(:control_string => control_string+letter)
+		end while(not @max_control_string.valid?)	
+		if @max_control_string.valid?
+			@max_control_string.save
+		end	
+
+		
+		  		 	
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s + "#{next_letter}-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s + "#{letter}-" + (current_count + 1).to_s
 
 	end
 
