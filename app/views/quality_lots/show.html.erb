@@ -243,7 +243,12 @@ function material_report() {
     var quality_iframe = $("#lot_material")[0];
     quality_iframe.contentWindow.focus();
     quality_iframe.contentWindow.print();
-    dimension_report();
+    <% if @quality_lot.ppap %>
+       dimension_report();
+    <% else %>
+      alert("Please create psw for dimension_report");
+      gage_report();
+    <% end %>
 }
 function dimension_report() {
     var dimension_iframe = $("#lot_dimension")[0];
