@@ -15,7 +15,7 @@ class QualityLot < ActiveRecord::Base
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
 	end
-	validates_uniqueness_of :lot_control_no
+
 	
 	# def  before_save_values
 	# 	self.quantity_on_hand = self.lot_quantity
