@@ -148,6 +148,7 @@ class QualityLotsController < ApplicationController
 
     respond_to do |format|
       if @quality_lot.save
+        @quality_lot.after_create_values
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully created.') }
         format.json { render :json => @quality_lot, :status => :created }
       else
