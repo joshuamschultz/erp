@@ -117,10 +117,12 @@ class QualityLot < ActiveRecord::Base
 		# o = [('A'..'Z')].map { |i| i.to_a }.flatten
 		# random_letter = (0...1).map { o[rand(o.length)] }.join	
 
+        
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 
+
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s		
+		CommonActions.current_hour_letter + min.to_s
 		# unless  maximum_lot.nil?			
 		letter = '@'
 		# if MaxControlString.first && MaxControlString.first.control_string
@@ -139,17 +141,16 @@ class QualityLot < ActiveRecord::Base
 		# end		
 		begin
 			letter = letter.next!
-			@max_control_string = MaxControlString.new(:control_string => control_string+letter)
-		end while(not @max_control_string.valid?)	
-		if @max_control_string.valid?
-			@max_control_string.save
-		end	
+			@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+		end while(@max_control_string.present?)			
+		MaxControlString.create(:control_string => control_string+letter)	
+		
 
 		
 		  		 	
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s + "#{letter}-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count + 1).to_s
 
 	end
 
