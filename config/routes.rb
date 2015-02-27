@@ -264,6 +264,8 @@ AllianceFasteners::Application.routes.draw do
       get 'psw_report'
       get 'csk_report'
       get 'package_report'
+      get 'process_flow_report'
+      get 'fmea_report'
     end
   end
 
