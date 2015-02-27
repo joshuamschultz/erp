@@ -244,4 +244,14 @@ class QualityLotsController < ApplicationController
       render :layout => false
   end
 
+  def process_flow_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def fmea_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
 end
