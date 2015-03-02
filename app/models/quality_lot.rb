@@ -145,6 +145,7 @@ class QualityLot < ActiveRecord::Base
 		# end		
 		begin
 			letter = letter.next!
+			count = current_count + 1
 			@max_control_string = MaxControlString.where(:control_string => control_string+letter)
 		end while(@max_control_string.present?)			
 		MaxControlString.create(:control_string => control_string+letter)	
@@ -154,7 +155,7 @@ class QualityLot < ActiveRecord::Base
 		  		 	
 
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count + 1).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
 
 	end
 
