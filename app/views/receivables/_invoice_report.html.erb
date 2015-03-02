@@ -521,15 +521,22 @@ function printContent()
             if (flag ==1)
 
             { 
-                var contact = '';
+                var in_contact =  '';
               <% if @so_header.present? %>
                     <% if @receivable.so_header.bill_to_address.present? %>
                       contact=  '<span><%= @receivable.so_header.bill_to_address.contact_title %> </span>';
                     <% end %>
                 <% end %>
-                alert(' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+contact+'</div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' );
 
-                content += ' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+contact+'</div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' 
+                 <% if @receivable.so_header.present? %>
+                   <%  if @receivable.so_header.bill_to_address.present? %>
+                      in_contact = '<span><%= @receivable.so_header.bill_to_address.contact_title %> </span><%= @receivable.so_header.bill_to_address.contact_address_1 %>&nbsp;<%= @receivable.so_header.bill_to_address.contact_address_2 %>&nbsp;<%= @receivable.so_header.bill_to_address.contact_state %> &nbsp;<%= @receivable.so_header.bill_to_address.contact_country %>&nbsp;<%= @receivable.so_header.bill_to_address.contact_zipcode %>';
+                  <%  end %>
+
+                <% end %>
+                alert(' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+in_contact+'</div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' );
+
+                content += ' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+in_contact+'</div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' 
                 flag =0;
             }
             if (flag2 ==1)
