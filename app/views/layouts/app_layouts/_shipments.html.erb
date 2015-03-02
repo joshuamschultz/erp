@@ -227,6 +227,7 @@ function printPage(win_id){
 		
 		$(".shipping_input_field").each(function(){
 			if(parseFloat($(this).val()) > 0){
+				setInterval(function(){ var i =0; }, 3000);
 				process_shipping_inputs($(this));
 			}				
 		});		
