@@ -125,7 +125,9 @@ class CommonActionsController < ApplicationController
               @receivable = Receivable.find(params[:receivable_id])
               if @receivable.so_header.present?
                 if @receivable.so_header.bill_to_address.present?
-                  @customer_eamil = @receivable.so_header.bill_to_address.contact_email
+                  p "============================================================"
+                  p @customer_eamil = @receivable.so_header.bill_to_address.contact_email
+                  p "==========================="
                   UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
                 end
                 result = "success" 
