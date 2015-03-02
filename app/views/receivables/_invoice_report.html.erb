@@ -490,20 +490,6 @@ page-break-after: always;
     <body>
 
         <% @company_info = CompanyInfo.first %>
-   <% in_contact_title = in_contact_address1 = in_contact_address2 = in_contact_state = in_contact_country = in_contact_zip = '' %>
-   <% ship_contact_title = ship_contact_address1 = ship_contact_address2 = ship_contact_state = ship_contact_czip = '' %>
-
-   <% if @receivable.so_header.present?%>
-        <% if @so_header.bill_to_address.present? %>
-         <% in_contact_title = @receivable.so_header.bill_to_address.contact_title %>
-         <% in_contact_address1= @receivable.so_header.bill_to_address.contact_address_1 %>
-         <% in_contact_address2 = @receivable.so_header.bill_to_address.contact_address_2 %>
-         <% in_contact_state = @receivable.so_header.bill_to_address.contact_state %>
-         <% in_contact_country = @receivable.so_header.bill_to_address.contact_country %> 
-         <% in_contact_zip + @receivable.so_header.bill_to_address.contact_zipcode %>
-        <%end %>
-
-   <% end %>
         <div class="ms_wrapper" >
            
         </div>
@@ -534,7 +520,7 @@ function printContent()
 
             if (flag ==1)
             {
-                content += '<article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><span>hai hai hai  </span><%= in_contact_address1 %><%= in_contact_address2 %><%= in_contact_state %><%= in_contact_country %>&nbsp;<%= in_contact_zip %></h2></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' 
+                content += ' <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.bill_to_address.present? %><span><%= @receivable.so_header.bill_to_address.contact_title %></span><%= @so_header.bill_to_address.contact_address_1 %><%= @so_header.bill_to_address.contact_address_2 %><%= @so_header.bill_to_address.contact_state %><%= @so_header.bill_to_address.contact_country %>&nbsp;<%= @so_header.bill_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading"><% if @so_header.present? %><% if @so_header.ship_to_address.present? %><span><%= @so_header.ship_to_address.contact_title %></span><%= @so_header.ship_to_address.contact_address_1 %><%= @so_header.ship_to_address.contact_address_2 %><%= @so_header.ship_to_address.contact_state %><%= @so_header.ship_to_address.contact_country %>&nbsp;<%= @so_header.ship_to_address.contact_zipcode%></h2> <% end %><% end %></div></div></div></article>' 
                 flag =0;
             }
             if (flag2 ==1)
