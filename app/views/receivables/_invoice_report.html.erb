@@ -514,6 +514,8 @@ function printContent()
         <% if @receivable.so_header.present? %>
         <%  if @receivable.so_header.bill_to_address.present? %>
              j_title = '<%= @receivable.so_header.bill_to_address.contact_title %>';
+             alert("hai");
+             alert(j_title);
         <% end %>
     <% end %>
     <% sub_total = @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).sum("so_shipped_cost").to_f %>
