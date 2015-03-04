@@ -75,7 +75,8 @@ class QualityLot < ActiveRecord::Base
 					CheckListLine.create(:checklist_id => self.checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
 				end
 			end
-		end		
+		end
+
 	end
 
 
@@ -154,6 +155,11 @@ class QualityLot < ActiveRecord::Base
 		
 		  		 	
 
+		temp ="%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
+		final = QualityLot.last.lot_control_no
+		if temp == final
+			count = count + 1
+		end
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
 
@@ -176,7 +182,10 @@ class QualityLot < ActiveRecord::Base
 		end		
 		MaxControlString.create(:control_string => control_string+letter)	 
 		self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
-	
+
+
+		
+
 	end
 
 	def lot_with_part_no
