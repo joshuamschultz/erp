@@ -179,13 +179,7 @@ class QualityLot < ActiveRecord::Base
 		self.po_line.item.quality_lots.each do |quality_lot|
 			lots_no << quality_lot.lot_control_no.split("-")[1].to_i
 		end
-		flag = lots_no.include? current_count
-		p "============================="
-			p lots_no
-			p "-------------------"
-			p flag
-		p "================================="
-		if flag == true
+		if lots_no.include? current_count == true
 			self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count+1).to_s)
 		else
 			self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
