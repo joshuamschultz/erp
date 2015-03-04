@@ -64,10 +64,14 @@ class PoShipment < ActiveRecord::Base
       PoLine.set_callback("save", :before, :update_item_total)
       PoLine.set_callback("save", :after, :update_po_total)
     end
+ 
+
+  end
+  after_commit :after_commit_process
+  def after_commit_process
     if self.quality_lot
       QualityLot.summa(self.quality_lot)
     end
-
   end
 
   def self.open_shipments(po_shipments)
