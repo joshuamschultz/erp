@@ -175,21 +175,21 @@ class QualityLot < ActiveRecord::Base
 			end while(@max_control_string.present?)		
 		end		
 		MaxControlString.create(:control_string => control_string+letter)	 
-		lots_no = []		 	
-		self.po_line.item.quality_lots.each do |quality_lot|
-			lots_no << quality_lot.lot_control_no.split("-")[1].to_i
-		end
+		# lots_no = []		 	
+		# self.po_line.item.quality_lots.each do |quality_lot|
+		# 	lots_no << quality_lot.lot_control_no.split("-")[1].to_i
+		# end
 
-		flag = lots_no.include? current_count
-		p "=========================="
-			p flag
-		p "============================="
-		if flag == true
-			current_count = current_count +1
-			p "--------------------------"
-				p current_count
-			p "--------------------------"
-		end
+		# flag = lots_no.include? current_count
+		# p "=========================="
+		# 	p flag
+		# p "============================="
+		# if flag == true
+		# 	current_count = current_count +1
+		# 	p "--------------------------"
+		# 		p current_count
+		# 	p "--------------------------"
+		# end
 		self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
 		
 
