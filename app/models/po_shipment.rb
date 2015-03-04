@@ -50,12 +50,7 @@ class PoShipment < ActiveRecord::Base
 
   after_save :set_po_line_status
   after_destroy :set_po_line_status
-  after_commit :after_process_lot
 
-  def after_process_lot
-    self.quality_lot.after_create_values
-    p "mohanrajjfkdjfkjdfkjdkfjkdsfkjdsfkjkj"
-  end
   def set_po_line_status
     if self.po_line
       PoLine.skip_callback("save", :before, :update_item_total)
@@ -68,9 +63,11 @@ class PoShipment < ActiveRecord::Base
       self.po_line.po_header.update_attributes(:po_status => po_header_status)  
       PoLine.set_callback("save", :before, :update_item_total)
       PoLine.set_callback("save", :after, :update_po_total)
-
-
     end
+    if self.quality_lot
+      QualityLot.summa(self.quality_lot)
+    end
+
   end
 
   def self.open_shipments(po_shipments)
