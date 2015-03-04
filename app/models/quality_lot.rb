@@ -188,7 +188,7 @@ class QualityLot < ActiveRecord::Base
 
 	end
 	def self.summa(lot)
-
+		p "po_shipment lot"
 		control_no = lot.lot_control_no		
 		current_count = control_no.split("-")[1].to_i
 		letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
@@ -202,7 +202,23 @@ class QualityLot < ActiveRecord::Base
 				@max_control_string = MaxControlString.where(:control_string => control_string+letter)
 			end while(@max_control_string.present?)		
 		end		
-		MaxControlString.create(:control_string => control_string+letter)	 
+		MaxControlString.create(:control_string => control_string+letter)	
+		previous_lot = lot.id
+		previous_lot = previous_lot-1
+		pre_control_no = QualityLot.find(previous_lot).lot_control_no 
+		if lot.lot_control_no == pre_control_no
+			letter = letter.next!
+			current_count = current_count +1
+			p "=========================  control_no and letter"
+			p letter
+			p current_count
+
+		elsif lot.lot_control_no.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
+			current_count = current_count +1
+			p "=========================  control_no "
+		
+			p current_count
+		end
 		lot.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
 
 
