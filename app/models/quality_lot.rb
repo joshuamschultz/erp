@@ -167,21 +167,21 @@ class QualityLot < ActiveRecord::Base
 
 
 	def after_create_values
-	    control_no = self.lot_control_no		
-		current_count = control_no.split("-")[1].to_i
-		letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
-		control_string = control_no[0,8]
+	 #    control_no = self.lot_control_no		
+		# current_count = control_no.split("-")[1].to_i
+		# letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
+		# control_string = control_no[0,8]
 
-		@quality_lot =QualityLot.where("lot_control_no = :lot_control_no AND id != :lot_id ", {lot_control_no: self.lot_control_no, lot_id: self.id }).first		
-		if @quality_lot.present?			
-			begin
-				letter = letter.next!
-				current_count = current_count +1
-				@max_control_string = MaxControlString.where(:control_string => control_string+letter)
-			end while(@max_control_string.present?)		
-		end		
-		MaxControlString.create(:control_string => control_string+letter)	 
-		self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
+		# @quality_lot =QualityLot.where("lot_control_no = :lot_control_no AND id != :lot_id ", {lot_control_no: self.lot_control_no, lot_id: self.id }).first		
+		# if @quality_lot.present?			
+		# 	begin
+		# 		letter = letter.next!
+		# 		current_count = current_count +1
+		# 		@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+		# 	end while(@max_control_string.present?)		
+		# end		
+		# MaxControlString.create(:control_string => control_string+letter)	 
+		# self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
 
 
 		
