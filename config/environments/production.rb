@@ -1,7 +1,6 @@
 AllianceFasteners::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-ActiveRecord::Base.logger = Logger.new(STDOUT)
-ActiveRecord::Base.logger = Log4r::Logger.new("Application Log")
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
