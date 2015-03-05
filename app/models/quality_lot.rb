@@ -159,11 +159,24 @@ class QualityLot < ActiveRecord::Base
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
 		c_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s
 		c_count = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" 
+		puts "============================================="
+
+				puts temp
+				puts c_letter
+				puts c_count
+		puts "=========================================="
 		self.po_line.item.quality_lots.each do |quality_lot|
 			if quality_lot.lot_control_no == temp
 				letter = letter.next!
 				count = current_count + 1
 				temp = c_no + "#{letter}-" + (count).to_s
+
+						puts "============================================="
+
+				puts "letter"+ letter
+				puts "count" + count
+				puts "temp var"+ temp
+		puts "=========================================="
 
 			elsif quality_lot.lot_control_no.split("-")[1].to_i == count
 				count = current_count + 1
