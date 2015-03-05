@@ -211,7 +211,9 @@ class QualityLot < ActiveRecord::Base
 			current_count = current_count +1
 
 		elsif lot.lot_control_no.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
-			current_count = current_count +1
+		p "============================================"
+		puts 	current_count = current_count +1
+		p "=================================="
 		end
 		lot.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
 		lot.po_line.item.quality_lots.each do |quality_lot|
