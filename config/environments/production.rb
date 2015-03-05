@@ -1,6 +1,7 @@
 AllianceFasteners::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-
+ActiveRecord::Base.logger = Logger.new(STDOUT)
+ActiveRecord::Base.logger = Log4r::Logger.new("Application Log")
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -82,4 +83,15 @@ AllianceFasteners::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = false
+
+    config.log_formatter = ::Logger::Formatter.new
+
+  # config.assets.precompile += %w( *.js *.css )
+
+   config.middleware.insert_after Rails::Rack::Logger, Rack::Cors, :logger => Rails.logger do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
+      end
+    end
 end
