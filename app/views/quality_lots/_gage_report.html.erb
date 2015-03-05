@@ -175,9 +175,10 @@ Question 18)</td>
       <% gauge.item_part_dimensions.each do |item_letter| %>
         <% temp << item_letter.item_part_letter %>
       <% end %>
-      <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
+<!--       <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
+ -->
 
-
+      <td width="13%"><%= gauge.gauge_tool_name %></td>
       <td width="10%"></td>
       <td width="9%"></td>
     </tr>
