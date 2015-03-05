@@ -82,15 +82,4 @@ AllianceFasteners::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = false
-
-    config.log_formatter = ::Logger::Formatter.new
-
-  # config.assets.precompile += %w( *.js *.css )
-
-   config.middleware.insert_after Rails::Rack::Logger, Rack::Cors, :logger => Rails.logger do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
-      end
-    end
 end
