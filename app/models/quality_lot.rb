@@ -183,6 +183,16 @@ class QualityLot < ActiveRecord::Base
 				temp = c_count + (count).to_s
 			end
 		end
+
+		last_lot = QualityLot.last.lot_control_no
+		if temp == last_lot
+			letter = letter.next!
+			count = current_count + 1
+			temp = c_no + "#{letter}-" + (count).to_s
+		elsif count ==  last_lot.split("-")[1].to_i
+			count = current_count + 1
+			temp = c_count + (count).to_s
+		end
 		temp
 	end
 
