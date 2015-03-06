@@ -161,8 +161,23 @@ class QualityLot < ActiveRecord::Base
 		# if temp == final
 		# 	count = count + 1
 		# end
-		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
+		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
+		control_count = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" 
+		countrol_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s 
+
+		check_lot = QualityLot.where(:lot_control_no => temp)
+		p "===================="
+		p checklist 
+		p "=================="
+		if check_lot.present?
+			if check_lot == temp
+				letter = letter.next!
+				count = current_count + 1
+				temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
+			end
+		end
+		temp
+
 
 	end
 
