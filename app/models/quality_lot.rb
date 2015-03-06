@@ -148,9 +148,9 @@ class QualityLot < ActiveRecord::Base
 		begin
 			letter = letter.next!
 			count = current_count + 1
-			@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+			@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+count.to_s)
 		end while(@max_control_string.present?)			
-		MaxControlString.create(:control_string => control_string+letter)	
+		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s)	
 		
 
 		
