@@ -502,7 +502,10 @@ page-break-after: always;
 <script type="text/javascript">
 
 
+    printContent();
 
+function printContent()
+{
 
     <% sub_total = 0.0 %>
     var content='';   
@@ -575,5 +578,5 @@ page-break-after: always;
     <% end %>
     $( ".ms_wrapper" ).append( $( content ) );  
 
-
+}
 </script>
