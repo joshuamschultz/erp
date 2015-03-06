@@ -225,7 +225,7 @@ n=</td>
     <%  @quality_lot.quality_lot_capabilities.order(:item_part_dimension_id).group(:quality_lot_id, :item_part_dimension_id).each do |lot_capability| %>
       <tr>
         <td scope="row">&nbsp;</td>
-        <% val = lot_capability.item_part_dimension.item_part_letter+'-'+lot_capability.item_part_dimension.item_part_dimension.round(4).to_s %>
+        <% val = lot_capability.item_part_dimension.item_part_letter+'-'+lot_capability.item_part_dimension.dimension.dimension_identifier %>
         <td><%= val %></td>
 
         <td> <%= (lot_capability.item_part_dimension.item_part_dimension + lot_capability.item_part_dimension.item_part_pos_tolerance).to_f.round(4) %></td>
