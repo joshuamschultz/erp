@@ -144,13 +144,28 @@ class QualityLot < ActiveRecord::Base
 		# else 		
 		# 		letter = letter.next!
 		# end				
-		# end		
-		begin
-			letter = letter.next!
-			count = current_count + 1
-			@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+count.to_s)
-		end while(@max_control_string.present?)			
-		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s)	
+		# end	
+		letter = letter.next!
+		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
+		letter = letter.next!
+		control_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s
+		if MaxControlString.last.present?
+			if MaxControlString.last.control_string == temp 
+				letter = letter.next!
+				current_count = current_count + 1
+				temp = control_letter + "#{letter}-" + (current_count).to_s
+			end
+		end
+		MaxControlString.create(:control_string => temp)
+
+		temp 	
+		
+		# begin
+		# 	letter = letter.next!
+		# 	count = current_count + 1
+		# 	@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+		# end while(@max_control_string.present?)			
+		# MaxControlString.create(:control_string => control_string+letter)	
 		
 
 		
@@ -161,28 +176,6 @@ class QualityLot < ActiveRecord::Base
 		# if temp == final
 		# 	count = count + 1
 		# end
-		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-		control_count = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" 
-		countrol_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s 
-
-		check_lot = QualityLot.where(:lot_control_no => temp)
-		p "===================="
-		p checklist 
-		p "=================="
-		if check_lot.present?
-			if check_lot == temp
-				letter = letter.next!
-				count = current_count + 1
-				temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-			end
-		end
-		if MaxControlString.last.control_string == temp 
-			letter = letter.next!
-			count = current_count + 1
-			temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-		end
-		temp
-
 
 	end
 
