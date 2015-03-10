@@ -145,20 +145,20 @@ class QualityLot < ActiveRecord::Base
 		# end				
 		# end	
 		
-		begin
-			letter = letter.next!
-			count = current_count + 1
-			@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+count.to_s)
-		end while(@max_control_string.present?)			
-		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s, :control_string_second =>  DateTime.now.strftime('%Q'))	
+			
+		# MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s, :control_string_second =>  DateTime.now.strftime('%Q'))	
 		 
 
-		if MaxControlString.last.control_string_second.present?
-			if MaxControlString.last.control_string_second == DateTime.now.strftime('%Q')	
+		# if MaxControlString.last.control_string_second.present?
+		# 	if MaxControlString.last.control_string_second == DateTime.now.strftime('%Q')	
+	
+				begin
 					letter = letter.next!
 					count = current_count + 1
-			end
-		end
+					@max_control_string = MaxControlString.where(:control_string_second => DateTime.now.strftime('%Q'))
+				end while(@max_control_string.present?)	
+		# 	end
+		# end
 		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s, :control_string_second =>  DateTime.now.strftime('%Q'))	
 
 		# temp ="%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
