@@ -170,22 +170,26 @@ class PoShipmentsController < ApplicationController
 
           temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
           CommonActions.current_hour_letter + min.to_s
-          pre_control_no=  QualityLot.last.id-1
+
+           @quality_lot.update_attribute(:lot_control_no , temp)
+
+                     pre_control_no=  QualityLot.last.id-1
           pre_control_no = QualityLot.find(pre_control_no).lot_control_no
           
           if pre_control_no .present?
 
-          if  temp == pre_control_no
+          if  @quality_lot.lot_control_no == pre_control_no
               letter = letter.next!
               current_count = current_count +1
               temp = temp_letter+"#{letter}-"+current_count.to_s  
-            elsif temp.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
+            elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
               current_count = current_count +1
               temp = temp_number+current_count.to_s
             end
           end
-
+          
            @quality_lot.update_attribute(:lot_control_no , temp)
+
         end
         # @quality_lot.save 
         # @quality_lot.after_create_values
