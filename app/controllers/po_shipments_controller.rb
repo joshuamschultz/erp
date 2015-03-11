@@ -133,19 +133,17 @@ class PoShipmentsController < ApplicationController
         if     @quality_lot.save
           current_count = 0
           if   @quality_lot.po_line.item.quality_lots.present?
-            p "--------------------------"
+    
             p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
 
-            p "---------------------"
-            p "============="
+ 
             p  maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
 
-            p "=================="
-            p "========================="
+        
             p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-            p "=================="
+     
 
-            current_count = current_count+1
+        
           end
 
 
@@ -165,35 +163,27 @@ class PoShipmentsController < ApplicationController
           MaxControlString.create(:control_string => control_string+letter)  
 
            temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
+           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count+1).to_s
 
-          # temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          # CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
+          temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+          CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
 
-          # temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          # CommonActions.current_hour_letter + min.to_s
-          # pre_control_no=  QualityLot.last.id-1
-          # pre_control_no = QualityLot.find(pre_control_no).lot_control_no
+          temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+          CommonActions.current_hour_letter + min.to_s
+          pre_control_no=  QualityLot.last.id-1
+          pre_control_no = QualityLot.find(pre_control_no).lot_control_no
           
-          # if pre_control_no .present?
-          # p "==========="
-          #   p QualityLot.last.lot_control_no
-          # p temp
+          if pre_control_no .present?
 
-          # p "--------------"
-
-          #   p pre_control_no
-
-          # p "============"
-          # if  temp == pre_control_no
-          #     letter = letter.next!
-          #     count = count +1
-          #     temp = temp_letter+"#{letter}-"+current_count.to_s  
-          #   elsif temp.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
-          #     count = count +1
-          #     temp = temp_number+current_count.to_s
-          #   end
-          # end
+          if  temp == pre_control_no
+              letter = letter.next!
+              current_count = current_count +1
+              temp = temp_letter+"#{letter}-"+current_count.to_s  
+            elsif temp.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
+              current_count = current_count +1
+              temp = temp_number+current_count.to_s
+            end
+          end
 
            @quality_lot.update_attribute(:lot_control_no , temp)
         end
