@@ -9,7 +9,7 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :process_flow
 	belongs_to :run_at_rate
 
-	before_create :before_create_values
+	# before_create :before_create_values
 	after_create :after_create_values
 	# before_save :before_save_values
 	def before_create_values
@@ -107,15 +107,20 @@ class QualityLot < ActiveRecord::Base
 		end
 	end
 
-	def set_lot_control_no
+	def set_lot_control_no(lot)
 		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
 		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
 		current_count = 0
 		current_letter = '@'
 		if self.po_line.item.quality_lots.present?
-			quality_lot_id = self.po_line.item.quality_lots.maximum(:id) 
+			quality_lot_id = lot.po_line.item.quality_lots.maximum(:id) 
 			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-			current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+			p "======================="
+		 p	current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+
+		 p "============================="
+
+
 			# p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
 		 #    p maximum_lot[0, 8]
 		end
@@ -125,9 +130,9 @@ class QualityLot < ActiveRecord::Base
         
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 
-		sec =  Time.now.strftime("%L")
+
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s+sec.to_s
+		CommonActions.current_hour_letter + min.to_s
 		# unless  maximum_lot.nil?			
 		letter = '@'
 		# if MaxControlString.first && MaxControlString.first.control_string
@@ -151,7 +156,7 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)			
 		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s)	
 	
-				 	
+		  		 	
 
 		# temp ="%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
 		# final = QualityLot.last.lot_control_no
@@ -159,7 +164,7 @@ class QualityLot < ActiveRecord::Base
 		# 	count = count + 1
 		# end
 		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s+sec.to_s + "#{letter}-" + (count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
 
 	end
 
