@@ -68,11 +68,11 @@ class PoShipment < ActiveRecord::Base
 
   end
   # after_commit :after_commit_process
-  def after_commit_process
-    if self.quality_lot
-      QualityLot.summa(self.quality_lot)
-    end
-  end
+  # def after_commit_process
+  #   if self.quality_lot
+  #     QualityLot.summa(self.quality_lot)
+  #   end
+  # end
 
   def self.open_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
