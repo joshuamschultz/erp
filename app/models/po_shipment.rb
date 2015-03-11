@@ -67,7 +67,7 @@ class PoShipment < ActiveRecord::Base
  
 
   end
-  after_commit :after_commit_process
+  # after_commit :after_commit_process
   def after_commit_process
     if self.quality_lot
       QualityLot.summa(self.quality_lot)
