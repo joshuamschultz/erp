@@ -177,19 +177,25 @@ class PoShipmentsController < ApplicationController
           pre_control_no = QualityLot.find(pre_control_no).lot_control_no
           
           if pre_control_no .present?
+            @quality_lot.po_line.item.quality_lots.each do |quality_lot|
+              if quality_lot.lot_control_no.present?
+                p "=============="
 
-          if  @quality_lot.lot_control_no == pre_control_no
-              letter = letter.next!
-              current_count = current_count +1
-              temp = temp_letter+"#{letter}-"+current_count.to_s  
-            elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
-              current_count = current_count +1
-              temp = temp_number+current_count.to_s
-            end
-          end
-          
-           @quality_lot.update_attribute(:lot_control_no , temp)
+                  p quality_lot.lot_control_no
+                p "======"
+                if  @quality_lot.lot_control_no == quality_lot.lot_control_no
+                    letter = letter.next!
+                    current_count = current_count +1
+                    temp = temp_letter+"#{letter}-"+current_count.to_s  
+                  elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  quality_lot.lot_control_no.split("-")[1].to_i
+                    current_count = current_count +1
+                    temp = temp_number+current_count.to_s
+                  end
+                end
+              end
 
+            @quality_lot.update_attribute(:lot_control_no , temp)
+            end 
         end
         # @quality_lot.save 
         # @quality_lot.after_create_values
