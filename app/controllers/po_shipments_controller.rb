@@ -134,16 +134,10 @@ class PoShipmentsController < ApplicationController
           current_count = 0
           if   @quality_lot.po_line.item.quality_lots.present?
     
-            p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
-
- 
-            p  maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-
-        
-            p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+              quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
+              maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+             current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
      
-
-        
           end
 
 
@@ -157,45 +151,45 @@ class PoShipmentsController < ApplicationController
 
           begin
             letter = letter.next!
-            # current_count = current_count + 1
-            @max_control_string = MaxControlString.where(:control_string => control_string+letter)
+            current_count = current_count + 1
+            @max_control_string = MaxControlString.where(:control_string => control_string+letter+current_count.to_s)
           end while(@max_control_string.present?)     
-          MaxControlString.create(:control_string => control_string+letter)  
+          MaxControlString.create(:control_string => control_string+letter+current_count.to_s)  
 
            temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count+1).to_s
+           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
 
-          temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
+          # temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+          # CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
 
-          temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          CommonActions.current_hour_letter + min.to_s
+          # temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+          # CommonActions.current_hour_letter + min.to_s
 
-           @quality_lot.update_attribute(:lot_control_no , temp)
+          #  @quality_lot.update_attribute(:lot_control_no , temp)
 
-                     pre_control_no=  QualityLot.last.id-1
-          pre_control_no = QualityLot.find(pre_control_no).lot_control_no
+          #            pre_control_no=  QualityLot.last.id-1
+          # pre_control_no = QualityLot.find(pre_control_no).lot_control_no
           
-          if pre_control_no .present?
-            @quality_lot.po_line.item.quality_lots.each do |quality_lot|
-              if quality_lot.lot_control_no.present?
-                p "=============="
+          # if pre_control_no .present?
+          #   @quality_lot.po_line.item.quality_lots.each do |quality_lot|
+          #     if quality_lot.lot_control_no.present?
+          #       p "=============="
 
-                  p quality_lot.lot_control_no
-                p "======"
-                if  @quality_lot.lot_control_no == quality_lot.lot_control_no
-                    letter = letter.next!
-                    current_count = current_count +1
-                    temp = temp_letter+"#{letter}-"+current_count.to_s  
-                  elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  quality_lot.lot_control_no.split("-")[1].to_i
-                    current_count = current_count +1
-                    temp = temp_number+current_count.to_s
-                  end
-                end
-              end
+          #         p quality_lot.lot_control_no
+          #       p "======"
+          #       if  @quality_lot.lot_control_no == quality_lot.lot_control_no
+          #           letter = letter.next!
+          #           current_count = current_count +1
+          #           temp = temp_letter+"#{letter}-"+current_count.to_s  
+          #         elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  quality_lot.lot_control_no.split("-")[1].to_i
+          #           current_count = current_count +1
+          #           temp = temp_number+current_count.to_s
+          #         end
+          #       end
+          #     end
 
             @quality_lot.update_attribute(:lot_control_no , temp)
-            end 
+          #   end 
         end
         # @quality_lot.save 
         # @quality_lot.after_create_values
