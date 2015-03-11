@@ -133,9 +133,19 @@ class PoShipmentsController < ApplicationController
         if     @quality_lot.save
           current_count = 0
           if   @quality_lot.po_line.item.quality_lots.present?
-            quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id) 
-            maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-            current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+            p "--------------------------"
+            p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
+
+            p "---------------------"
+            p "============="
+            p  maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+
+            p "=================="
+            p "========================="
+            p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+            p "=================="
+
+            current_count = current_count+1
           end
 
 
@@ -149,7 +159,7 @@ class PoShipmentsController < ApplicationController
 
           begin
             letter = letter.next!
-            current_count = current_count + 1
+            # current_count = current_count + 1
             @max_control_string = MaxControlString.where(:control_string => control_string+letter)
           end while(@max_control_string.present?)     
           MaxControlString.create(:control_string => control_string+letter)  
