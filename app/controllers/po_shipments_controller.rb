@@ -145,7 +145,7 @@ class PoShipmentsController < ApplicationController
             p current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
             p "=================="
 
-            current_count = current_count+1
+        
           end
 
 
@@ -165,7 +165,7 @@ class PoShipmentsController < ApplicationController
           MaxControlString.create(:control_string => control_string+letter)  
 
            temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
+           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count+1).to_s
 
           # temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
           # CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
