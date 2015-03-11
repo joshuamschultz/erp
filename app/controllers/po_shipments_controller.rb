@@ -127,17 +127,21 @@ class PoShipmentsController < ApplicationController
         inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]                       
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
-        @quality_lot = QualityLot.create(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
+        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
         @quality_lot.lot_inspector = current_user
 
         if     @quality_lot.save
           current_count = 0
+          current_letter = '@'
           if   @quality_lot.po_line.item.quality_lots.present?
-    
-              quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
-              maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-             current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-     
+            p "============="
+           p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
+           p "================="
+            maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+            p "======================="
+            p  current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+
+            p "============================="
           end
 
 
@@ -151,45 +155,17 @@ class PoShipmentsController < ApplicationController
 
           begin
             letter = letter.next!
-            current_count = current_count + 1
-            @max_control_string = MaxControlString.where(:control_string => control_string+letter+current_count.to_s)
+            count = current_count + 1
+            @max_control_string = MaxControlString.where(:control_string => control_string+letter)
           end while(@max_control_string.present?)     
-          MaxControlString.create(:control_string => control_string+letter+current_count.to_s)  
+          MaxControlString.create(:control_string => control_string+letter)  
 
-           temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
-
-          # temp_number = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          # CommonActions.current_hour_letter + min.to_s  + "#{letter}-"
-
-          # temp_letter = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          # CommonActions.current_hour_letter + min.to_s
-
-          #  @quality_lot.update_attribute(:lot_control_no , temp)
-
-          #            pre_control_no=  QualityLot.last.id-1
-          # pre_control_no = QualityLot.find(pre_control_no).lot_control_no
+          temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+          CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
           
-          # if pre_control_no .present?
-          #   @quality_lot.po_line.item.quality_lots.each do |quality_lot|
-          #     if quality_lot.lot_control_no.present?
-          #       p "=============="
 
-          #         p quality_lot.lot_control_no
-          #       p "======"
-          #       if  @quality_lot.lot_control_no == quality_lot.lot_control_no
-          #           letter = letter.next!
-          #           current_count = current_count +1
-          #           temp = temp_letter+"#{letter}-"+current_count.to_s  
-          #         elsif     @quality_lot.lot_control_no.split("-")[1].to_i ==  quality_lot.lot_control_no.split("-")[1].to_i
-          #           current_count = current_count +1
-          #           temp = temp_number+current_count.to_s
-          #         end
-          #       end
-          #     end
 
-            @quality_lot.update_attribute(:lot_control_no , temp)
-          #   end 
+           @quality_lot.update_attribute(:lot_control_no , temp)
         end
         # @quality_lot.save 
         # @quality_lot.after_create_values
