@@ -129,9 +129,10 @@ class PoShipmentsController < ApplicationController
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
         @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
         @quality_lot.lot_inspector = current_user
-
-        if     @quality_lot.save
-          current_count = 0
+        
+        current_count = 0
+        if @quality_lot.save
+        
           current_letter = '@'
           if   @quality_lot.po_line.item.quality_lots.present?
             p "============="
@@ -162,10 +163,8 @@ class PoShipmentsController < ApplicationController
 
           temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
           CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-          
 
-
-           @quality_lot.update_attribute(:lot_control_no , temp)
+          @quality_lot.update_attribute(:lot_control_no , temp)
         end
         # @quality_lot.save 
         # @quality_lot.after_create_values
