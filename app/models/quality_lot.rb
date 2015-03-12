@@ -10,7 +10,7 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	# before_create :before_create_values
-	after_create :after_create_values
+	# after_create :after_create_values
 	# before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
@@ -107,65 +107,42 @@ class QualityLot < ActiveRecord::Base
 		end
 	end
 
-	def set_lot_control_no(lot)
-		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
-		# maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
+	def set_lot_control_no
 		current_count = 0
 		current_letter = '@'
-		if self.po_line.item.quality_lots.present?
-			quality_lot_id = lot.po_line.item.quality_lots.maximum(:id) 
-			maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-			p "======================="
-		 p	current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-
-		 p "============================="
+		# if  self.po_line.item.quality_lots.present?
+		# p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
+		# maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+		# p  current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		# end
 
 
-			# p current_letter = maximum_lot.nil? ? '@' : maximum_lot.split("-")[0].split(//).last(1)[0]			
-		 #    p maximum_lot[0, 8]
+		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
+			quality_lot =  self.id - 1
+			p quality_lot
+			maximum_lot = QualityLot.find(quality_lot).lot_control_no
+	     	current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+
 		end
-		# o = [('A'..'Z')].map { |i| i.to_a }.flatten
-		# random_letter = (0...1).map { o[rand(o.length)] }.join	
 
-        
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 
 
 		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s
-		# unless  maximum_lot.nil?			
+		# unless  maximum_lot.nil?      
 		letter = '@'
-		# if MaxControlString.first && MaxControlString.first.control_string
-		# 		# current_letter = MaxControlString.first.control_string.split(//).last(1)[0].to_s
-		
-		# 		begin
-		# 			letter = letter.next!
-		# 		end while (not MaxControlString.find_by_control_string("%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		# CommonActions.current_hour_letter + min.to_s + "#{letter}".to_s).blank?)
-        			
 
-		# 		# current_letter =  (control_string == MaxControlString.first.control_string[0, 8]) ? current_letter : '@'	
-		# else 		
-		# 		letter = letter.next!
-		# end				
-		# end		
 		begin
-			letter = letter.next!
-			count = current_count + 1
-			@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+count.to_s)
-		end while(@max_control_string.present?)			
-		MaxControlString.create(:control_string => control_string+letter+'-'+count.to_s)	
-	
-		  		 	
+		letter = letter.next!
+		count = current_count + 1
+		@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+		end while(@max_control_string.present?)     
+		MaxControlString.create(:control_string => control_string+letter)  
 
-		# temp ="%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-		# final = QualityLot.last.lot_control_no
-		# if temp == final
-		# 	count = count + 1
-		# end
-		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-
+		self.update_column(:lot_control_no, temp)
 	end
 
 
