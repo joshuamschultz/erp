@@ -16,7 +16,6 @@ class QualityLot < ActiveRecord::Base
 		self.lot_control_no = self.set_lot_control_no
 	end
 
-	
 	# def  before_save_values
 	# 	self.quantity_on_hand = self.lot_quantity
 	# end
