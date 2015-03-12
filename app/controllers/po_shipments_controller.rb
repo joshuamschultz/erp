@@ -129,45 +129,12 @@ class PoShipmentsController < ApplicationController
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
         @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
         @quality_lot.lot_inspector = current_user
-        
-        current_count = 0
+
         if @quality_lot.save
-        
-          current_letter = '@'
-          if   @quality_lot.po_line.item.quality_lots.present?
-            p "============="
-           p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
-           p "================="
-            maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
-            p "======================="
-            p  current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
-
-            p "============================="
-          end
-
-
-          min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
-
-
-          control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          CommonActions.current_hour_letter + min.to_s
-          # unless  maximum_lot.nil?      
-          letter = '@'
-
-          begin
-            letter = letter.next!
-            count = current_count + 1
-            @max_control_string = MaxControlString.where(:control_string => control_string+letter)
-          end while(@max_control_string.present?)     
-          MaxControlString.create(:control_string => control_string+letter)  
-
-          temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-          CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
-
-          @quality_lot.update_attribute(:lot_control_no , temp)
+          @quality_lot.set_lot_control_no
         end
-        # @quality_lot.save 
-        # @quality_lot.after_create_values
+
+
         
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
         # @po_shipment.set_quality_on_hand           
