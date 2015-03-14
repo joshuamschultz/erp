@@ -116,13 +116,20 @@ class QualityLot < ActiveRecord::Base
 		# end
 
 
-		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
-			quality_lot =  self.id - 1
-			p quality_lot
-			maximum_lot = QualityLot.find(quality_lot).lot_control_no
-	     	current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		# if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
+		# 	quality_lot =  self.id - 1
+		# 	p quality_lot
+		# 	maximum_lot = QualityLot.find(quality_lot).lot_control_no
+	 #     	# current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+	 #     	current_count = self.id
 
+		# end
+		if self.po_line.item.lot_count.present?
+			current_count = self.po_line.item.lot_count+1
+		else
+			current_count =current_count+1
 		end
+
 
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
 
@@ -139,8 +146,10 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
 
+		self.po_line.item.update_attribute(:lot_count , current_count)
+
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
