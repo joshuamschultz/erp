@@ -124,8 +124,8 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if self.po_line.item.lot_count.present?
-			current_count = self.po_line.item.lot_count+1
+		if self.po_line.item.quality_lots.present?
+			current_count = self.po_line.item.quality_lots.count+1
 		else
 			current_count =current_count+1
 		end
