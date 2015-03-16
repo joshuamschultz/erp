@@ -129,6 +129,7 @@ class QualityLot < ActiveRecord::Base
 		else
 			current_count =current_count+1
 		end
+		self.po_line.item.update_attribute(:lot_count , current_count)
 
 
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
@@ -146,7 +147,7 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
 
-		self.po_line.item.update_attribute(:lot_count , current_count)
+		
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
