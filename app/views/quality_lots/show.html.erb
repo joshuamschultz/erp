@@ -282,6 +282,7 @@ function csk_report() {
       package_report();
     <% else %>
       alert("Please create package report");
+      control_plan_report();
     <% end %>
 }
 function package_report() {
@@ -289,9 +290,107 @@ function package_report() {
     var package_iframe = $("#lot_package")[0];
     package_iframe.contentWindow.focus();
     package_iframe.contentWindow.print();
-
+    control_plan_report();
+  
+  
 
 }
+function control_plan_report() {
+  <% if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %>
+    var url = "<%= @quality_lot.control_plan.attachment.attachment.url(:original) %>";
+    var printWin = window.open(url);
+    printcontrolplan(printWin);
+  <% else %>
+    alert("Please create control_plan ");
+    process_flow_report();
+  <% end %>
+}
+function process_flow_report() {
+  <% if  @quality_lot.process_flow && @quality_lot.process_flow.attachment.present? %>
+    var url = "<%= @quality_lot.process_flow.attachment.attachment.url(:original) %>";
+    var printWin = window.open(url);
+    printprocessflow(printWin);
+   <% else %>
+    alert("Please create process_flow ");
+    fmea_report();
+  <% end %>
+ }
+function fmea_report() {
+  <% if @quality_lot.fmea_type && @quality_lot.fmea_type.attachment.present? %>
+    var url = "<%= @quality_lot.fmea_type.attachment.attachment.url(:original) %>";
+    var printWin = window.open(url);
+    printfmea(printWin);
+  <% else %>
+    alert()"please create fmea";
+  <% end %>
+}
+
+
+
+function printcontrolplan(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+    return false;
+
+  }, 1000);
+  setTimeout(function(){
+      win_id.close();
+  }, 1000);
+  setTimeout(function(){
+     process_flow_report();
+  }, 1000);
+ 
+
+}
+function printprocessflow(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+    return false;
+
+  }, 1000);
+  setTimeout(function(){
+      win_id.close();
+  }, 1000);
+  setTimeout(function(){
+     fmea_report();
+  }, 1000);
+
+}
+function printfmea(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+    return false;
+
+  }, 1000);
+  setTimeout(function(){
+      win_id.close();
+  }, 1000);
+
+}
+
+
+
 <% end %>
 </script>
 <iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
