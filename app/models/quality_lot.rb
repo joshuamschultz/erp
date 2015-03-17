@@ -125,11 +125,12 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if self.po_line.item.lot_count.present?
-			current_count = self.po_line.item.lot_count+1
+		if self.po_line.item.quality_lots.present?
+			current_count = self.po_line.item.quality_lots.count+1
 		else
 			current_count =current_count+1
 		end
+		self.po_line.item.update_attribute(:lot_count , current_count)
 
 
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
@@ -151,6 +152,7 @@ class QualityLot < ActiveRecord::Base
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.item_revision.lot_count).to_s
+
 		self.update_column(:lot_control_no, temp)
 	end
 
