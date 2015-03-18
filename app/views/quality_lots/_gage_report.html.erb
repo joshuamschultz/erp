@@ -167,18 +167,17 @@ Question 18)</td>
       <td width="9%" scope="row"></td>
       <td width="6%"></td>
       <td width="18%"><strong></strong></td>
-      <td width="10%"><strong><%= gauge.id%></strong></td>
+      <td width="10%"><strong><%= gauge.gauge_tool_no %></strong></td>
    
      
-      <td width="17%"><strong>   <%= gauge.item_part_dimensions.last.dimension.dimension_identifier %> </strong></td>
+      <td width="17%"><strong>   <%=  gauge.gauge_tool_name %> </strong></td>
       <td width="8%"><strong></strong></td>
       <% gauge.item_part_dimensions.each do |item_letter| %>
         <% temp << item_letter.item_part_letter %>
       <% end %>
-<!--       <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
- -->
-
-      <td width="13%"><%= gauge.gauge_tool_name %></td>
+  <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
+ <!-- 
+      <td width="13%"><%= gauge.gauge_tool_name %></td> -->
       <td width="10%"></td>
       <td width="9%"></td>
     </tr>
