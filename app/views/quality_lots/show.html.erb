@@ -239,63 +239,63 @@
 
 <script type="text/javascript">
 <% if can? :edit, QualityLot %>
-// function material_report() {
-//     var quality_iframe = $("#lot_material")[0];
-//     quality_iframe.contentWindow.focus();
-//     quality_iframe.contentWindow.print();
-//     <% if @quality_lot.ppap %>
-//        dimension_report();
-//     <% else %>
-//       alert("Please create psw for dimension_report");
-//       gage_report();
-//     <% end %>
-// }
-// function dimension_report() {
-//     var dimension_iframe = $("#lot_dimension")[0];
-//     dimension_iframe.contentWindow.focus();
-//     dimension_iframe.contentWindow.print();
-//     gage_report();
-// }
-// function gage_report() {
-//     var gage_iframe = $("#lot_gage")[0];
-//     gage_iframe.contentWindow.focus();
-//     gage_iframe.contentWindow.print();
-//     <% if @quality_lot.ppap %>
-//       psw_report();
-//     <% else %>
-//       alert("Please create psw report");
-//       csk_report();
-//     <% end %>
-// }
-// function psw_report() {
-//     var psw_iframe = $("#lot_psw")[0];
-//     psw_iframe.contentWindow.focus();
-//     psw_iframe.contentWindow.print();
-//     csk_report();
-
-// }
-// function csk_report() {
-//     var csk_iframe = $("#lot_csk")[0];
-//     csk_iframe.contentWindow.focus();
-//     csk_iframe.contentWindow.print();
-//     <% if @quality_lot.package %>
-//       package_report();
-//     <% else %>
-//       alert("Please create package report");
-//       control_plan_report();
-//     <% end %>
-// }
-// function package_report() {
-
-//     var package_iframe = $("#lot_package")[0];
-//     package_iframe.contentWindow.focus();
-//     package_iframe.contentWindow.print();
-//     control_plan_report();
-  
-  
-
-// }
 function material_report() {
+    var quality_iframe = $("#lot_material")[0];
+    quality_iframe.contentWindow.focus();
+    quality_iframe.contentWindow.print();
+    <% if @quality_lot.ppap %>
+       dimension_report();
+    <% else %>
+      alert("Please create psw for dimension_report");
+      gage_report();
+    <% end %>
+}
+function dimension_report() {
+    var dimension_iframe = $("#lot_dimension")[0];
+    dimension_iframe.contentWindow.focus();
+    dimension_iframe.contentWindow.print();
+    gage_report();
+}
+function gage_report() {
+    var gage_iframe = $("#lot_gage")[0];
+    gage_iframe.contentWindow.focus();
+    gage_iframe.contentWindow.print();
+    <% if @quality_lot.ppap %>
+      psw_report();
+    <% else %>
+      alert("Please create psw report");
+      csk_report();
+    <% end %>
+}
+function psw_report() {
+    var psw_iframe = $("#lot_psw")[0];
+    psw_iframe.contentWindow.focus();
+    psw_iframe.contentWindow.print();
+    csk_report();
+
+}
+function csk_report() {
+    var csk_iframe = $("#lot_csk")[0];
+    csk_iframe.contentWindow.focus();
+    csk_iframe.contentWindow.print();
+    <% if @quality_lot.package %>
+      package_report();
+    <% else %>
+      alert("Please create package report");
+      control_plan_report();
+    <% end %>
+}
+function package_report() {
+
+    var package_iframe = $("#lot_package")[0];
+    package_iframe.contentWindow.focus();
+    package_iframe.contentWindow.print();
+    control_plan_report();
+  
+  
+
+}
+function control_plan_report() {
   <% if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %>
     var url = "<%= @quality_lot.control_plan.attachment.attachment.url(:original) %>";
 
