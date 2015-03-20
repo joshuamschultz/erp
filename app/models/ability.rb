@@ -177,7 +177,7 @@ class Ability
 
             can :manage, CauseAnalysis
 
-            can :view, Package
+            can :edit, Package
 
             can :manage, Ppap
 
