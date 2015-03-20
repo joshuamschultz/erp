@@ -90,13 +90,13 @@ body,td,th {
 <div class="wrapper-1">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-      <td scope="row">ROC PLANT(s)</td>
+<!--       <td scope="row">ROC PLANT(s)</td>
       <td align="center" valign="middle" style="color:#000;" colspan="3"><%= @quality_lot.po_header.organization.organization_address_1
-%></td>
+%></td> -->
      
       <td>Document
 Updated:</td>
-      <td align="center" valign="middle" style="color:#000;">Lorem</td>
+      <td align="center" valign="middle" style="color:#000;"><%= Time.now.strftime("%m/%d/%Y") %></td>
     </tr>
     
         <tr>
@@ -148,9 +148,8 @@ Variable</td>
       <td width="13%">Dimension/ Spec<br>
 </td>
       <td width="10%">Supplier Approval*<br>
-(supplier rep. name)</td>
-      <td width="9%">Gage ID details (ref. to<br>
-Question 18)</td>
+</td>
+      <td width="9%">Gage ID details </td>
 <% temp  = [] %>
 <% gauges  = [] %>
 
@@ -164,9 +163,9 @@ Question 18)</td>
 
     </tr>
         <tr align="center" valign="middle">
-      <td width="9%" scope="row"></td>
-      <td width="6%"></td>
-      <td width="18%"><strong></strong></td>
+      <td width="9%" scope="row"><%= @quality_lot.item_revision.item.item_part_no %></td>
+      <td width="6%"><%= @quality_lot.item_revision.item_revision_name %></td>
+      <td width="18%"><strong><%= @quality_lot.item_revision.item_description %></strong></td>
       <td width="10%"><strong><%= gauge.gauge_tool_no %></strong></td>
    
      
@@ -178,7 +177,7 @@ Question 18)</td>
   <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
  <!-- 
       <td width="13%"><%= gauge.gauge_tool_name %></td> -->
-      <td width="10%"></td>
+      <td width="10%"><%= User.where(:roles_mask => 4).first.name %> </td>
       <td width="9%"></td>
     </tr>
 
@@ -215,21 +214,21 @@ correlation issues between supplier and ROC.</strong>
     </tr>
     <tr align="center" valign="middle">
       <td scope="row" style=" border-top: 1px solid #000;">Date</td>
-      <td style=" border-top: 1px solid #000;">ROC Engineering Representative
+      <td style=" border-top: 1px solid #000;"> Engineering Representative
 (Print name & Signature)</td>
       <td style=" border-top: 1px solid #000;">Date</td>
-      <td style=" border-top: 1px solid #000;">ROC Plant Quality Representative
+      <td style=" border-top: 1px solid #000;"> Plant Quality Representative
 (Print name & Signature)</td>
     </tr>
     <tr>
       <td scope="row">&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <td>&nbsp;</td>
+      <td align="center"><%= User.where(:roles_mask => 4).first.name %></td>
     </tr>
     <tr align="center" valign="middle">
       <td scope="row" style=" border-top: 1px solid #000;">Date</td>
-      <td style=" border-top: 1px solid #000;">ROC Supplier Quality
+      <td style=" border-top: 1px solid #000;"> Supplier Quality
 (Print name & Signature)</td>
       <td style=" border-top: 1px solid #000;">Date</td>
       <td style=" border-top: 1px solid #000;">Supplier Representative
