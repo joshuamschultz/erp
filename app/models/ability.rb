@@ -229,7 +229,7 @@ class Ability
 
             can :view, CauseAnalysis
 
-            can :view, Package
+            can :manage, Package
 
             can :manage, PoShipment
 
