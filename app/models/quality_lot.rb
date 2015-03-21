@@ -3,8 +3,7 @@ class QualityLot < ActiveRecord::Base
 	
 	belongs_to :po_header
 	belongs_to :po_line
-	belongs_to :item_revision, :counter_cache => :lot_count
-
+	belongs_to :item_revision
 	belongs_to :fmea_type
 	belongs_to :control_plan
 	belongs_to :process_flow
@@ -153,7 +152,7 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
 
-		# self.po_line.item.update_attribute(:lot_count , current_count)
+		
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
 		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
