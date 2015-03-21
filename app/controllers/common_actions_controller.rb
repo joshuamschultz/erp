@@ -291,8 +291,13 @@ class CommonActionsController < ApplicationController
 
             when "get_quality_lots_po"
               if params[:id].present?
-                quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
-                result = quality_lots
+                # quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                quality_lot = QualityLot.find(params[:id])
+
+        
+                control_number = QualityLot.set_lot_control_no(quality_lot)
+            
+                result = control_number
               end
             when "get_gl_account_title" 
               gl_account_titles = Hash.new 

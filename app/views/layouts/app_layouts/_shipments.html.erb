@@ -51,14 +51,25 @@ var current_field_temp;
         $("#jr100_quantity").html(response.po_shipped_count);
         $("#jr100_po").html(response.po);
         $("#jr100_customer").html(response.customer);
-        $("#jr100_controlno").text(response.control_number);        
-        printContent($("#jr100").attr('id'));
+        $("#jr100_controlno").text(response.control_number);
+        var lot_id= response.q_id;
+        alert(lot_id)
+   		get_quality_lots(lot_id);
 
 
 			}
 		}
 	}
+     function get_quality_lots(l_id){
+    	initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_po", "id": l_id}}, "set_quality_lots_option", {});
+    }
+    function set_quality_lots_option(response) {
+    	
+    	       $("#jr100_controlno").text(response["aaData"]);
+    	         printContent($("#jr100").attr('id'));
 
+  
+    }
 // function printContent(div_id){
 // var win = window.open('http://google.com', '_blank');
 // if(win){
@@ -246,25 +257,25 @@ function printPage(win_id){
             $(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());
         });
     }
-	function get_quality_lots(id){
-    	initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_po", "id": id}}, "set_quality_lots_option", {});
-    }
-    function set_quality_lots_option(response, callback_params, api_params) {
-    	if(response["aaData"].length == 0){
-	 		after_quality_lot_select();
-	    }
-    	else{
-    		$('#modal-simple').modal('show');
-	    	$('#quality_lot').empty();
-	    	$.each(response["aaData"], function (i,item) {
-			    $('#quality_lot').append($('<option>', { 
-			        value: item[0],
-			        text : item[1] 
-			    }));
-			});
-			$("#quality_lot").prepend("<option value='' selected='selected'></option>");
-    	}    
-    }
+	// function get_quality_lots(id){
+ //    	initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_po", "id": id}}, "set_quality_lots_option", {});
+ //    }
+ //    function set_quality_lots_option(response, callback_params, api_params) {
+ //    	if(response["aaData"].length == 0){
+	//  		after_quality_lot_select();
+	//     }
+ //    	else{
+ //    		$('#modal-simple').modal('show');
+	//     	$('#quality_lot').empty();
+	//     	$.each(response["aaData"], function (i,item) {
+	// 		    $('#quality_lot').append($('<option>', { 
+	// 		        value: item[0],
+	// 		        text : item[1] 
+	// 		    }));
+	// 		});
+	// 		$("#quality_lot").prepend("<option value='' selected='selected'></option>");
+ //    	}    
+ //    }
    
     // set quality id from popup
     function set_quality_lot_id(){

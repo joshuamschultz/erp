@@ -107,7 +107,7 @@ class QualityLot < ActiveRecord::Base
 		end
 	end
 
-	def set_lot_control_no
+	def self.set_lot_control_no(lot)
 		current_count = 0
 		current_letter = '@'
 		# if  self.po_line.item.quality_lots.present?
@@ -117,7 +117,12 @@ class QualityLot < ActiveRecord::Base
 		# end
 
 
-		# if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
+		if  lot.po_line.item.quality_lots.present? && lot.po_line.item.quality_lots.count > 1
+			p "------------------------------------------"
+			p current_count = lot.po_line.quality_lots.count
+
+			p "-----------------------------------------"
+		end
 		# 	quality_lot =  self.id - 1
 		# 	p quality_lot
 		# 	maximum_lot = QualityLot.find(quality_lot).lot_control_no
@@ -125,12 +130,12 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if self.po_line.item.quality_lots.present?
-			current_count = self.po_line.item.quality_lots.count+1
-		else
-			current_count =current_count+1
-		end
-		self.po_line.item.update_attribute(:lot_count , current_count)
+		# if self.po_line.item.quality_lots.present?
+		# 	current_count = self.po_line.item.quality_lots.count+1
+		# else
+		# 	current_count =current_count+1
+		# end
+		# self.po_line.item.update_attribute(:lot_count , current_count)
 
 
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
@@ -151,9 +156,10 @@ class QualityLot < ActiveRecord::Base
 		# self.po_line.item.update_attribute(:lot_count , current_count)
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.item_revision.lot_count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
 
-		self.update_column(:lot_control_no, temp)
+		lot.update_column(:lot_control_no, temp)
+		lot.lot_control_no
 	end
 
 
