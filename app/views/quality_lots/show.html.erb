@@ -298,36 +298,86 @@ function package_report() {
 function control_plan_report() {
   <% if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %>
     var url = "<%= @quality_lot.control_plan.attachment.attachment.url(:original) %>";
-    var printWin = window.open(url);
-    printcontrolplan(printWin);
+
+
+
+     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+
+    printControlplan(printWin);
   <% else %>
     alert("Please create control_plan ");
     process_flow_report();
   <% end %>
 }
+
+function printControlplan(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+     return false;
+
+  }, 2000);
+  setTimeout(function(){
+      win_id.close();
+  }, 4000);
+  setTimeout(function(){
+     process_flow_report();
+  }, 4000);
+ 
+
+}
+
+
 function process_flow_report() {
   <% if  @quality_lot.process_flow && @quality_lot.process_flow.attachment.present? %>
     var url = "<%= @quality_lot.process_flow.attachment.attachment.url(:original) %>";
-    var printWin = window.open(url);
-    printprocessflow(printWin);
+
+     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+
+    printProcess(printWin);
    <% else %>
     alert("Please create process_flow ");
     fmea_report();
   <% end %>
  }
+function printProcess(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+    return false;
+
+  }, 2000);
+  setTimeout(function(){
+      win_id.close();
+  }, 4000);
+  setTimeout(function(){
+     fmea_report();
+  }, 4000);
+
+}
+
 function fmea_report() {
   <% if @quality_lot.fmea_type && @quality_lot.fmea_type.attachment.present? %>
     var url = "<%= @quality_lot.fmea_type.attachment.attachment.url(:original) %>";
-    var printWin = window.open(url);
-    printfmea(printWin);
+     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+    printFmea(printWin);
   <% else %>
     alert()"please create fmea";
   <% end %>
 }
-
-
-
-function printcontrolplan(win_id){
+function printFmea(win_id){
   setTimeout(function(){
     try {
       win_id.focus();
@@ -339,53 +389,10 @@ function printcontrolplan(win_id){
 
     return false;
 
-  }, 1000);
+  }, 2000);
   setTimeout(function(){
       win_id.close();
-  }, 1000);
-  setTimeout(function(){
-     process_flow_report();
-  }, 1000);
- 
-
-}
-function printprocessflow(win_id){
-  setTimeout(function(){
-    try {
-      win_id.focus();
-      win_id.print();
-    }
-    catch(e) {
-      window.print(false);
-    }
-
-    return false;
-
-  }, 1000);
-  setTimeout(function(){
-      win_id.close();
-  }, 1000);
-  setTimeout(function(){
-     fmea_report();
-  }, 1000);
-
-}
-function printfmea(win_id){
-  setTimeout(function(){
-    try {
-      win_id.focus();
-      win_id.print();
-    }
-    catch(e) {
-      window.print(false);
-    }
-
-    return false;
-
-  }, 1000);
-  setTimeout(function(){
-      win_id.close();
-  }, 1000);
+  }, 4000);
 
 }
 
