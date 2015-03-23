@@ -375,6 +375,7 @@ function fmea_report() {
     printFmea(printWin);
   <% else %>
     alert()"please create fmea";
+    quality_docs_report
   <% end %>
 }
 function printFmea(win_id){
@@ -393,8 +394,56 @@ function printFmea(win_id){
   setTimeout(function(){
       win_id.close();
   }, 4000);
+  setTimeout(function(){
+     quality_docs_report();
+  }, 4000);
 
 }
+
+function quality_docs_report() {
+  <% master_type = MasterType.where(:type_value => "qualified_laboratory_docs") %>
+  <% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(master_type).present? %>
+
+    <% @quality_lot.attachments.where(:attachment_public => true).each do |lab_doc| %>
+     
+
+      <% if lab_doc.present? %>
+        var url = "<%= lab_doc.attachment.url(:original) %>";
+        var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+
+        printLab(printWin);
+      <% end %>
+    
+    <% end %> 
+    
+
+
+
+  <% else %>
+    alert("please create qualified_laboratory_docs");
+  <% end %>
+}
+function printLab(win_id){
+  setTimeout(function(){
+    try {
+      win_id.focus();
+      win_id.print();
+    }
+    catch(e) {
+      window.print(false);
+    }
+
+    return false;
+
+  }, 2000);
+  setTimeout(function(){
+      win_id.close();
+  }, 4000);
+
+}
+
+
+
 
 
 

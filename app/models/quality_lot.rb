@@ -301,4 +301,9 @@ class QualityLot < ActiveRecord::Base
  		temp
  	end
   	
+
+  	require 'open-uri'
+  	def pdfreader
+			a ="hai".html_safe
+	end
 end
