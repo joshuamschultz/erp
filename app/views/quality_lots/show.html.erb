@@ -296,18 +296,22 @@ function package_report() {
 
 }
 function control_plan_report() {
-  <% if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %>
-    var url = "<%= @quality_lot.control_plan.attachment.attachment.url(:original) %>";
+  <% master_type = MasterType.where(:type_value => "control_plan") %>
+  <% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(master_type).present? %>
+      <% if @quality_lot.control_plan && @quality_lot.control_plan.attachment.present? %>
+        var url = "<%= @quality_lot.control_plan.attachment.attachment.url(:original) %>";
+        var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
 
+        printControlplan(printWin);
+      <% else %>
+        alert("Please create control_plan ");
+        process_flow_report();
+      <% end %>
+    <% else %>
+      alert("Please create control_plan ");
+      process_flow_report();
+    <% end %>
 
-
-     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
-
-    printControlplan(printWin);
-  <% else %>
-    alert("Please create control_plan ");
-    process_flow_report();
-  <% end %>
 }
 
 function printControlplan(win_id){
@@ -335,13 +339,17 @@ function printControlplan(win_id){
 
 
 function process_flow_report() {
-  <% if  @quality_lot.process_flow && @quality_lot.process_flow.attachment.present? %>
-    var url = "<%= @quality_lot.process_flow.attachment.attachment.url(:original) %>";
-
-     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
-
-    printProcess(printWin);
-   <% else %>
+  <% master_type = MasterType.where(:type_value => "process_flow_diagram") %>
+  <% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(master_type).present? %>
+    <% if  @quality_lot.process_flow && @quality_lot.process_flow.attachment.present? %>
+      var url = "<%= @quality_lot.process_flow.attachment.attachment.url(:original) %>";
+      var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+      printProcess(printWin);
+    <% else %>
+      alert("Please create process_flow ");
+      fmea_report();
+    <% end %>
+  <% else %>
     alert("Please create process_flow ");
     fmea_report();
   <% end %>
@@ -369,10 +377,16 @@ function printProcess(win_id){
 }
 
 function fmea_report() {
-  <% if @quality_lot.fmea_type && @quality_lot.fmea_type.attachment.present? %>
-    var url = "<%= @quality_lot.fmea_type.attachment.attachment.url(:original) %>";
-     var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
-    printFmea(printWin);
+  <% master_type = MasterType.where(:type_value => "pfmea") %>
+  <% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(master_type).present? %>
+    <% if @quality_lot.fmea_type && @quality_lot.fmea_type.attachment.present? %>
+      var url = "<%= @quality_lot.fmea_type.attachment.attachment.url(:original) %>";
+       var printWin = window.open(url,'','left=0,top=0,width=1000,height=500,toolbar=0,scrollbars=1,status =0');
+      printFmea(printWin);
+    <% else %>
+      alert()"please create fmea";
+      quality_docs_report
+    <% end %>
   <% else %>
     alert()"please create fmea";
     quality_docs_report
