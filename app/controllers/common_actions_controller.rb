@@ -125,9 +125,7 @@ class CommonActionsController < ApplicationController
               @receivable = Receivable.find(params[:receivable_id])
               if @receivable.so_header.present?
                 if @receivable.so_header.bill_to_address.present?
-                  p "============================================================"
-                  p @customer_eamil = @receivable.so_header.bill_to_address.contact_email
-                  p "==========================="
+                  @customer_eamil = @receivable.so_header.bill_to_address.contact_email
                   UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
                 end
                 result = "success" 
@@ -291,13 +289,8 @@ class CommonActionsController < ApplicationController
 
             when "get_quality_lots_po"
               if params[:id].present?
-                # quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
-                quality_lot = QualityLot.find(params[:id])
-
-        
-                control_number = QualityLot.set_lot_control_no(quality_lot)
-            
-                result = control_number
+                quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                result = quality_lots
               end
             when "get_gl_account_title" 
               gl_account_titles = Hash.new 
