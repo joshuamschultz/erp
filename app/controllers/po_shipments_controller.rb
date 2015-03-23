@@ -131,7 +131,7 @@ class PoShipmentsController < ApplicationController
         @quality_lot.lot_inspector = current_user
 
         if @quality_lot.save
-        
+          @quality_lot.set_lot_control_no
         end
 
 
@@ -139,7 +139,6 @@ class PoShipmentsController < ApplicationController
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
         # @po_shipment.set_quality_on_hand           
         quality_lot = @po_shipment.quality_lot 
-        @po_shipment["q_id"] = @po_shipment.quality_lot.id
         @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
         @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
         @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
