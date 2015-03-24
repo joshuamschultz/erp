@@ -78,8 +78,21 @@ class CommonActionsController < ApplicationController
               result = organization.present? ? organization.purchase_orders.where(:po_status => "open") : []
 
             when "create_payable"
+              if params[:id].present?
+                payable = Payable.find(params[:id])
+                if payable.update_attributes(:payable_disperse => "unassigned")
+                  result = "success"  
+                end             
+              end
               # puts params[:shipments].to_s
               # PoHeader.process_payable_po_lines(params)
+            when "create_receivable"
+              if params[:id].present?
+                receivable = Receivable.find(params[:id])
+                if receivable.update_attributes(:receivable_disperse => "unassigned")
+                  result = "success"  
+                end             
+              end
 
             when "send_quotes_mail"
 
