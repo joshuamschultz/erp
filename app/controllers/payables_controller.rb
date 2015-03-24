@@ -41,14 +41,18 @@ class PayablesController < ApplicationController
   # GET /payables
   # GET /payables.json
   def index
-    if params[:item_id].present?
+      if payable = Payable.find_by_payable_disperse("unassigned").present?
+        payable = Payable.find_by_payable_disperse("unassigned")
+        PayablePoShipment.find_by_payable_id(payable).delete
+        payable.delete
+      end
+      if params[:item_id].present?
+        @payables =Payable.all_payables(params[:item_id])
+      else  
+
+      @payables = Payable.status_based_payables(params[:payable_status] || "open")
+      end
  
-      @payables =Payable.all_payables(params[:item_id])
-
-
-    else
-    @payables = Payable.status_based_payables(params[:payable_status] || "open")
-    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -182,6 +186,10 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
+        if Payable.find_by_payable_disperse("unassigned").present?
+          payable = Payable.find_by_payable_disperse("unassigned")
+          payable.update_attributes(:payable_disperse => "assigned")
+        end
         # @payable.update_gl_account
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }
         format.json { head :no_content }
