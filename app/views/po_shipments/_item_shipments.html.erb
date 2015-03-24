@@ -133,7 +133,7 @@
     function create_payable_for_items(){
         var selected_payable_po_lines = $(".payable_po_lines:checked");
         if(selected_payable_po_lines.length == 0)
-            alert("Please select items in any PO.")
+            alert("Pl")
         else{
             var selected_shipments = $(".payable_po_lines:checked").map(function(){
                 return $(this).val();
@@ -145,7 +145,11 @@
 
     function redirect_to_payable(response, callback_params, api_params){
         if(response.id){
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_payable", "id": response.id}}, "set_quality_lots", {});
             window.location = "/payables/" + response.id + "/edit";
+
         }
+
+     
     }
 </script>
