@@ -5,7 +5,7 @@ class Payable < ActiveRecord::Base
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date, 
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
   :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice, 
-  :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type
+  :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type, :payable_disperse
 
   # belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
