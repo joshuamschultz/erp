@@ -162,7 +162,22 @@
             if (code === 9 || code ===13 ) {  
                 $('#so_line_so_line_quantity').val("");
             }
-        });      
+        });    
+        $('#so_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9 ) {  
+                $('#so_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#so_line_item_alt_name_id').val()}}, "get_alt_name_id", {}); 
+            }
+        });   
+        $('#so_line_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 ) {  
+               alert($( "#ui-id-1 li a" ).first().html());  
+                // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
 
         $("#so_line_so_line_cost").change(function(){
             calculate_line_item_total();
@@ -207,7 +222,10 @@
         });
         get_vendor_po();
     });    
-
+    function get_alt_name_id(response){
+        var alt_id_val = JSON.stringify(response.aaData.id);
+        $("#alt_name_id").val(alt_id_val);
+    }
     function calculate_line_item_total(){
         var so_line_total = parseFloat($("#so_line_so_line_cost").val()) * parseFloat($("#so_line_so_line_quantity").val());
         
