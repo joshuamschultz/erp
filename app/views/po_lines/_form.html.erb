@@ -209,10 +209,23 @@
         $('#po_line_item_alt_name_id').keydown(function(e) {
             var code = e.keyCode || e.which;
             if (code === 9 || code ===13 ) {  
+                $('#po_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
                 $('#po_line_po_line_quantity').val("");
             }
         });  
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
+
+        $('#po_line_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 ) {  
+                var widget = $(this).data('ui-autocomplete'),
+                menu   = widget.menu,
+                $ul    = menu.element,
+                id     = $ul.attr('id'); // or $ul[0].id
+                $('#po_line_organization_id').val($( "#"+id+" li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
 
         $("#po_line_organization_id").on("focusout", function(){
             if($("#organization_id").val() == ""){
@@ -264,7 +277,10 @@
         // $("#po_line_organization_id").focus();  
         $("#po_line_item_alt_name_id").focus();       
     });
-
+    function get_org_id(response){
+        var org_id_val = JSON.stringify(response.aaData.id);
+        $("#organization_id").val(org_id_val);
+    }
     function calculate_line_item_total(){
         var po_line_total = parseFloat($("#po_line_po_line_cost").val()) * parseInt($("#po_line_po_line_quantity").val());
 
