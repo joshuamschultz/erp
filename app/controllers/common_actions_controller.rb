@@ -41,6 +41,12 @@ class CommonActionsController < ApplicationController
                 organization =  Organization.find_by_organization_name(params[:so_value])
                 result = organization              
               end
+            when "get_alt_name"
+              if params[:value].present?
+                item =  Item.find_by_item_part_no(params[:value])
+                alt_name_item = item.item_alt_names.first
+                result = alt_name_item              
+              end
 
 
             when "lot_item_material_elements"
