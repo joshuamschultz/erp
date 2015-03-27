@@ -217,7 +217,7 @@
 
         $('#po_line_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
-            if (code === 9 ) {  
+            if (code === 9 || code ===13) {  
                 var widget = $(this).data('ui-autocomplete'),
                 menu   = widget.menu,
                 $ul    = menu.element,
