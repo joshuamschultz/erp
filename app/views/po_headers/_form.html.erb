@@ -86,7 +86,7 @@
         $('#po_header_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
 
-            if (code === 9) {  
+            if (code === 9 || code ===13 ) {  
                 
                 $('#po_header_organization_id').val($( "#ui-id-1 li a" ).first().html());  
  
