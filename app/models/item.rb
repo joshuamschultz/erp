@@ -95,6 +95,10 @@ class Item < ActiveRecord::Base
 
   end
 
+  def qty_on_committed
+   self.so_lines.where(:so_line_status => "open").includes(:so_header).where(so_headers: {so_status: "open"}).sum("so_line_quantity - so_line_shipped")
+  end
+
   def qty_on_hand
       self.quality_lots.sum(:quantity_on_hand).to_f
   end
@@ -107,7 +111,7 @@ class Item < ActiveRecord::Base
       self.quality_lots.each do |quality_lot|
       cost += (quality_lot.quantity_on_hand.to_f/total)*quality_lot.po_line.po_line_cost.to_f
     end
-      return  cost.round(6)
+      return  cost.round(5)
     end
   end
 
