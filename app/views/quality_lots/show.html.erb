@@ -5,6 +5,47 @@
     </div>
   <%  end %>
 
+  <div class="span9 well">
+      <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
+            <br>
+            <span class="txt"><strong>Location</strong></span>
+            <div class="clearfix"></div>
+        </a>
+  </div>
+
+  <div class="modal hide fade" id="modal-simple">
+      <div class="modal-header">
+          <h3>Location and lots</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="send_mail">
+              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                  <thead>
+                      <tr>
+                          <th>Lots </th>
+                          <th>Locations</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% @quality_lot.item_revision.item.po_shipments.each do |po_shipment| %>
+                        <% if po_shipment.present? %>
+                          <% if po_shipment.quality_lot.present? %>
+                            <%  quality_lot= po_shipment.quality_lot.id %>
+                            <tr>
+                                <td><%= QualityLot.find(quality_lot).lot_control_no %> </td>
+                                <td><%= po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf %></td>
+                            </tr>
+                             <% end %>
+                          <% end %>
+                      <% end %>
+                  </tbody>
+              </table>
+          </form>
+      </div>
+ 
+  </div>
+
   <div class="span7">
     <div class="row-fluid">
         <div class="row-fluid">
