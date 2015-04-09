@@ -50,7 +50,11 @@ class PoLinesController < ApplicationController
               po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "CHESS"
               po_line[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"              
               if can? :edit , PoLine
-                po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+                if po_line.po_line_status == "open"
+                  po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+                else
+                  po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
+                end
               else
                 po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
               end
