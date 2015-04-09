@@ -5,13 +5,20 @@
     </div>
   <%  end %>
 
-  <div class="span9 well">
+  <div class="span4 well">
       <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
             <br>
             <span class="txt"><strong>Location</strong></span>
             <div class="clearfix"></div>
         </a>
   </div>
+  <div class="span4 well">
+      <a class="widget-stats" href="#" id="">
+          <h5><strong><%= @quality_lot.shipped_qty %></strong></h5>
+          <span class="txt"><strong>Shipped Quantity</strong></span>
+          <div class="clearfix"></div>
+      </a>
+  </div> 
 
   <div class="modal hide fade" id="modal-simple">
       <div class="modal-header">
