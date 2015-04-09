@@ -39,7 +39,7 @@
                     <div class="clearfix"></div>
                 </a>
             </div>
-            
+
         <% unless  user_signed_in? &&  (current_user.is_vendor? || current_user.is_customer? )%>
 
             <div class="span2 well">
@@ -54,13 +54,7 @@
 
 
 
-<!--             <div class="span3 well">
-                <a class="widget-stats" href="#" id="">
-                    <h5><strong><%= @item.current_location %></strong></h5>
-                    <span class="txt"><strong>quantity committed.</strong></span>
-                    <div class="clearfix"></div>
-                </a>
-            </div> -->
+
 
             <div class="span1 well">
                 <a class="widget-stats" href="<%= quality_lots_path(:item_id => @item.id) %>" id="">
