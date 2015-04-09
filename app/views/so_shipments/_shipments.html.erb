@@ -9,7 +9,7 @@
 
 
                 <% if can? :edit, Receivable %>
-                <%= link_to 'Create Receivable', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
+                <%= link_to 'Create Invoice', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
                 <% end %>
 
 
