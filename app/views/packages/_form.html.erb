@@ -99,13 +99,13 @@
             </tr>
             <tr>
                 <td>
-                    <%= f.input :part_size_length, :label => "L (mm)" %>
+                    <%= f.input :part_size_length, :label => "L (in)" %>
                 </td>
                 <td>
-                    <%= f.input :part_size_width,  :label => "W (mm)"  %>
+                    <%= f.input :part_size_width,  :label => "W (in)"  %>
                 </td>
                 <td>
-                    <%= f.input :part_size_height, :label => "H (mm)" %>
+                    <%= f.input :part_size_height, :label => "H (in)" %>
                 </td>
             </tr>
             <tr class="bottom-line">
@@ -127,13 +127,13 @@
             </tr>            
             <tr>
                 <td>
-                    <%= f.input :container_length, :label => "L (mm)"  %>
+                    <%= f.input :container_length, :label => "L (in)"  %>
                 </td>
                 <td>
-                    <%= f.input :container_width,  :label => "W (mm)" %>
+                    <%= f.input :container_width,  :label => "W (in)" %>
                 </td>
                 <td>
-                    <%= f.input :container_height, :label => "H (mm)"  %>
+                    <%= f.input :container_height, :label => "H (in)"  %>
                 </td>
             </tr>
             <tr class="bottom-line">
@@ -155,13 +155,13 @@
             </tr>
             <tr>
                 <td>
-                    <%= f.input :pallet_length, :label => "L (mm)"  %>
+                    <%= f.input :pallet_length, :label => "L (in)"  %>
                 </td>
                 <td>
-                    <%= f.input :pallet_width,  :label => "W (mm)" %>
+                    <%= f.input :pallet_width,  :label => "W (in)" %>
                 </td>
                 <td>
-                    <%= f.input :pallet_height, :label => "H (mm)"  %>
+                    <%= f.input :pallet_height, :label => "H (in)"  %>
                 </td>
             </tr>
             <tr class="bottom-line">
@@ -183,13 +183,13 @@
             </tr>
             <tr>                
                 <td>
-                    <%= f.input :load_shipped_length, :label => "L (mm)"  %>
+                    <%= f.input :load_shipped_length, :label => "L (in)"  %>
                 </td>
                 <td>
-                    <%= f.input :load_shipped_width,  :label => "W (mm)" %>
+                    <%= f.input :load_shipped_width,  :label => "W (in)" %>
                 </td>
                 <td>
-                    <%= f.input :load_shipped_height, :label => "H (mm)"  %>
+                    <%= f.input :load_shipped_height, :label => "H (in)"  %>
                 </td>
             </tr>
             <tr class="bottom-line">
@@ -211,10 +211,10 @@
             </tr>
             <tr>                
                 <td>
-                    <%= f.input :in_to_mm1, :label => " "  %>
+                    <%= f.input :in_to_mm1, :label => "in_to_in1"  %>
                 </td>
                 <td>
-                    <%= f.input :in_to_mm2,  :label => " ", :value => @package.in_to_mm2.present? ? @package.in_to_mm2 : 0 %>
+                    <%= f.input :in_to_mm2,  :label => "in_to_in2", :value => @package.in_to_mm2.present? ? @package.in_to_mm2 : 0 %>
                 </td>
                 <td>
                     
