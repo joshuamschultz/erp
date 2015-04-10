@@ -1,3 +1,23 @@
+<% if (shipment_type == "history") %>   
+    <div class="row-fluid">
+        <div class="span6 well">
+            <a class="widget-stats" href="<%= po_shipments_path(type: "history") %>" id="alt_address_btn">
+                <span class="glyphicons inbox_out"><i></i></span>
+                <span class="txt">Received</span>
+                <div class="clearfix"></div>
+            </a>
+        </div>
+
+        <div class="span6 well">
+            <a class="widget-stats" href="<%= so_shipments_path(type: "history") %>" id="contacts_btn">
+                <span class="glyphicons inbox_minus"><i></i></span>
+                <span class="txt">Shipped</span>
+                <div class="clearfix"></div>
+            </a>
+        </div>   
+    </div>
+<% end %>
+
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -12,8 +32,8 @@
                 <%= link_to 'Create Invoice', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
                 <% end %>
 
-
-                <%= link_to 'Received - History', po_shipments_path(type: "history"), class: "btn btn-mini btn-success" if (shipment_type == "history") %>
+<!-- 
+                <%= link_to 'Received - History', po_shipments_path(type: "history"), class: "btn btn-mini btn-success" if (shipment_type == "history") %> -->
             </span>
         </div> 
     </div>
