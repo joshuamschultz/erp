@@ -306,6 +306,9 @@ class QualityLot < ActiveRecord::Base
  	def shipped_qty
 		self.so_shipments.sum(:so_shipped_count)
  	end
-
+ 	def current_location
+      po_shipment = self.po_shipment
+      po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+  	end
   	
 end
