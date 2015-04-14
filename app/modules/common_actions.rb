@@ -125,12 +125,10 @@ module CommonActions
 		menus = {}
 		menus[:dashboard] = {:class => "glyphicons dashboard", :path => account_dashboard_path, :name => "Dashboard", :type => "single"}
 		if  user_signed_in? &&  !current_user.is_customer? && !current_user.is_vendor? 
-			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Contacts", :type => "multiple"}
+			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Organizations", :type => "multiple"}
 			menus[:contacts][:sub_menu] = 	[
-				{:path => organizations_path, :name => "Organizations"},
-				{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
-				{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
-				{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
+				{:path => organizations_path, :name => "Companies"},
+				{:path => contacts_path, :name => "Contacts"},
 				{:path => groups_path, :name => "Group"},
 
 			]
@@ -269,7 +267,8 @@ module CommonActions
 		if  user_signed_in? && !current_user.is_vendor?  && !current_user.is_customer? 
 			menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
 			menus[:logistics][:sub_menu] = 	[
-				{:path => new_po_shipment_path, :name => "Shipments"},
+				{:path => new_po_shipment_path, :name => "Receiving"},
+				{:path => new_so_shipment_path, :name => "Shipping"},
 				{:path => po_shipments_path(type: "history"), :name => "History"}
 			]
 		end
