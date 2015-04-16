@@ -1,4 +1,4 @@
-<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipping_header"} %>
 
 <div class="widget">
     <!-- Widget heading -->
@@ -51,6 +51,7 @@
                            { "mData": "so_due_date"  },  
                         { "mData": "so_line_shipping" },   
                         { "mData": "so_line_lot" },
+
                                        
                         { "mData": "links", "bSortable": false, "bSearchable": false }                        
                     ]'
@@ -59,5 +60,37 @@
 
 <%= render :partial => 'layouts/app_layouts/so_shipments', :locals => {type: "so"} %>
 
+
+  <div class="modal hide fade" id="modal-simple">
+      <div class="modal-header">
+          <h3>Location and lots</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="send_mail">
+              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                  <thead>
+                      <tr>
+                          <th>Lots </th>
+                          <th>Locations</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% QualityLot.all.each do |quality_lot| %>
+                        <% if quality_lot.lot_control_no.present? %>
+                          <% if quality_lot.po_shipment.present? %>
+                            <tr>
+                                <td><%= quality_lot.lot_control_no %> </td>
+                                <td><%= quality_lot.po_shipment.po_shipped_unit.to_s + " - " + quality_lot.po_shipment.po_shipped_shelf %></td>
+                            </tr>
+                             <% end %>
+                          <% end %>
+                      <% end %>
+                  </tbody>
+              </table>
+          </form>
+      </div>
+ 
+  </div>
 <!-- { "mData": "so_line_shelf" },
 { "mData": "so_line_unit" }, -->

@@ -48,6 +48,9 @@ class QualityLot < ActiveRecord::Base
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy
   	has_many :inventory_adjustments, :dependent => :destroy
+  	has_many :so_shipments
+  	has_one :po_shipment
+
   	# has_one :po_shipment, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
@@ -300,10 +303,12 @@ class QualityLot < ActiveRecord::Base
  		p temp
  		temp
  	end
+ 	def shipped_qty
+		self.so_shipments.sum(:so_shipped_count)
+ 	end
+ 	def current_location
+      po_shipment = self.po_shipment
+      po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+  	end
   	
-
-  	require 'open-uri'
-  	def pdfreader
-			a ="hai".html_safe
-	end
 end

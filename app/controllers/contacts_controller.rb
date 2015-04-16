@@ -29,15 +29,19 @@ class ContactsController < ApplicationController
 
   def index  
     @contact_type = params[:contact_type] || "address"
-
     @contactable = Organization.find_organization(params)
 
     if @contactable
-        @contacts = @contactable.contacts.where(:contact_type => @contact_type)
+        p  @contacts = @contactable.contacts.where(:contact_type => @contact_type)
     else
+        if params[:org_type]
         @org_type = MasterType.find_by_type_value(params[:org_type] ||= "vendor")
+
         @organizations = @org_type.type_based_organizations
         @contacts = Contact.where(:contact_type => @contact_type, :contactable_id => @organizations.collect(&:id), :contactable_type => "Organization")
+        else
+          @contacts = Contact.all
+        end
     end
 
     respond_to do |format|
