@@ -3,7 +3,9 @@
     <h4 class="span3 left">PO Info</h4>
     <span class="span9 right">
         <% if can? :edit, PoHeader %>
-          <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+          <% unless @po_header.po_status == "closed" %>
+            <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+          <% end %>
         <% end %>
         <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
     </span>
