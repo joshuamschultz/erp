@@ -41,7 +41,6 @@
             </div>
 
         <% unless  user_signed_in? &&  (current_user.is_vendor? || current_user.is_customer? )%>
-
             <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong>$<%= @item.weighted_cost %></strong></h5>
