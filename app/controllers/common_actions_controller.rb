@@ -126,8 +126,64 @@ class CommonActionsController < ApplicationController
                    result = "fail"
               end 
               
+            when "shipment_process_complete"
+              if params[:so_header_id].present?
+                  @so_header = SoHeader.find(params[:so_header_id])
+                  so_shipment = {}
+                  so_shipment["so_date"] = "Sales Order Date :"+@so_header.created_at.strftime("%m/%d/%Y")
+                  so_shipment["so"] = @so_header.so_identifier
+                  so_shipment["cusomter_po"] = @so_header.so_header_customer_po.present? ?  "Customer P.O:"+ @so_header.so_header_customer_po : "Customer P.O:"
+                  item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = ""
+                  SoShipment.where("so_header_id=? AND so_shipped_status=? ",@so_header.id,'process').group(:so_line_id).each do |shipment| 
+                    item_part = shipment.so_line.item.item_part_no
+                    item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
+                    item_qty = shipment.so_line.so_line_quantity.to_s
+                    item_shipped = SoShipment.where("so_line_id=? AND so_shipped_status=?",shipment.so_line,'process').sum(:so_shipped_count).to_s
+                    item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
+                    item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
+                    temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
+                    source += temp
+                  end
+                  so_shipment["part_number"] = source
+                  so_shipment["notes"] = @so_header.so_notes if @so_header.so_notes
+                  so_shipment["so_header_total"] ='<span> $</span>'+(@so_header.so_total.to_f).to_s
 
 
+                  
+                  if @so_header.bill_to_address.present? 
+                    so_shipment["so_b_c_title"]= @so_header.bill_to_address.contact_title 
+                    so_shipment["so_b_c_address_1"] = @so_header.bill_to_address.contact_address_1 
+                    so_shipment["so_b_c_address_2"] = @so_header.bill_to_address.contact_address_2 
+                    so_shipment["so_b_c_state"] = @so_header.bill_to_address.contact_state 
+                    so_shipment["so_b_c_country"] = @so_header.bill_to_address.contact_country 
+                    so_shipment["so_b_c_zipcode"] = @so_header.bill_to_address.contact_zipcode
+                  end 
+                  if @so_header.ship_to_address.present? 
+                    so_shipment["so_s_c_title"]= @so_header.ship_to_address.contact_title 
+                    so_shipment["so_s_c_address_1"] = @so_header.ship_to_address.contact_address_1 
+                    so_shipment["so_s_c_address_2"] = @so_header.ship_to_address.contact_address_2 
+                    so_shipment["so_s_c_state"] = @so_header.ship_to_address.contact_state 
+                    so_shipment["so_s_c_country"] = @so_header.ship_to_address.contact_country 
+                    so_shipment["so_s_c_zipcode"] = @so_header.ship_to_address.contact_zipcode
+                  end 
+
+                  # @so_shipment["alt_part_number"] = item_alt_part
+
+                  process_shipment = SoShipment.complete_shipment(params[:so_header_id])
+                  if process_shipment > 0
+                    result = so_shipment
+                  end
+              else
+                result = "fail"
+              end  
+            when "item_lot_locations"
+              if params[:id].present?
+                @item = Item.find(params[:id])
+                locations = Item.find(params[:id]).quality_lots.map { |x| (x.po_shipment.present? ) ? [x.lot_control_no,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
+                result = locations
+              else
+                result = "fail"
+              end
             when "send_so_order_mail"
               val =  params[:organizations]
               @so_header = SoHeader.find(params[:so_header_id])
