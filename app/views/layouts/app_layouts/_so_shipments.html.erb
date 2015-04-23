@@ -95,9 +95,8 @@ function printContent(div_id,shipment_id)
  printWin.document.write(content);
  printWin.document.close();
  printWin.focus();
- // printWin.print();
-
- // printPage(printWin);
+ printWin.print();
+ printPage(printWin);
  
 }
 function printPage(win_id){
@@ -252,8 +251,9 @@ function set_quality_lots(response, callback_params, api_params){
     $("#pk100_so_s_c_country").html(response.aaData['so_s_c_country']);
     $("#pk100_so_s_c_zipcode").html(response.aaData['so_s_c_zipcode']);
     $("#so_total").html(response.aaData['so_header_total']);
-
-    printContent($("#pk100").attr('id'));
+    for(i=1; i<3; i++){
+        printContent($("#pk100").attr('id'));
+    }
 
 
 }
