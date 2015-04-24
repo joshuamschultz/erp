@@ -46,7 +46,7 @@ class SoShipment < ActiveRecord::Base
                 self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
               else
                 p "==============="
-                   p so_shipment.shipment_process_id
+                Rails.logger.info "Year: #{so_shipment.shipment_process_id}"
                 p "=============="
                 self.shipment_process_id = 'S'+so_shipment.shipment_process_id.split('',2)[1]
               end
