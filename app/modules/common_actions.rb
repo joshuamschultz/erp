@@ -269,7 +269,7 @@ module CommonActions
 			menus[:logistics][:sub_menu] = 	[
 				{:path => new_po_shipment_path, :name => "Receiving"},
 				{:path => new_so_shipment_path, :name => "Shipping"},
-				{:path => so_shipments_path(type: "process"), :name => "Shippment and Process"},
+				{:path => so_shipments_path(type: "process"), :name => "Shipment and Process"},
 				{:path => po_shipments_path(type: "history"), :name => "History"}
 			]
 		end
