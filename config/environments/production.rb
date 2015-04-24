@@ -66,8 +66,6 @@ AllianceFasteners::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   #Mail configuration for the development 
-  config.consider_all_requests_local = true
-  
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { :host => "erp.chessgroupinc.com" }
 
@@ -84,4 +82,7 @@ AllianceFasteners::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = false
+
+  # Enable to show log error in browser....
+  config.consider_all_requests_local = false
 end
