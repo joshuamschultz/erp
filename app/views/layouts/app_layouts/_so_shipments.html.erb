@@ -16,30 +16,30 @@ var current_field_temp;
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
 				<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
 				<%= type %>_line_row.hide(1000, arguments.callee);
-                $("#pk100_date").html(response.so_date);
-                $("#pk100_so").html(response.so);
-                $("#pk100_part_no").html(response.part_number);
-                $("#pk100_control_no").html(response.control_number);
-                $("#pk100_part_description").html(response.part_desc);
-                $("#pk100_alt_part_no").html(response.alt_part_number);
-                $("#pk100_shipped_part").html(response.so_shipped_count);
-                $("#pk100_so_qty").html(response.so_line_quantity);
-                $("#pk100_so_notes").html(response.so_notes);
+                // $("#pk100_date").html(response.so_date);
+                // $("#pk100_so").html(response.so);
+                // $("#pk100_part_no").html(response.part_number);
+                // $("#pk100_control_no").html(response.control_number);
+                // $("#pk100_part_description").html(response.part_desc);
+                // $("#pk100_alt_part_no").html(response.alt_part_number);
+                // $("#pk100_shipped_part").html(response.so_shipped_count);
+                // $("#pk100_so_qty").html(response.so_line_quantity);
+                // $("#pk100_so_notes").html(response.so_notes);
 
-                $("#pk100_so_b_c_title").html(response.so_b_c_title);
-                $("#pk100_so_b_c_address_1").html(response.so_b_c_address_1o);
-                $("#pk100_so_b_c_address_2").html(response.so_b_c_address_2);
-                $("#pk100_so_b_c_state").html(response.so_b_c_state);
-                $("#pk100_so_b_c_country").html(response.so_b_c_country);
-                $("#pk100_so_b_c_zipcode").html(response.so_b_c_zipcode);
+                // $("#pk100_so_b_c_title").html(response.so_b_c_title);
+                // $("#pk100_so_b_c_address_1").html(response.so_b_c_address_1o);
+                // $("#pk100_so_b_c_address_2").html(response.so_b_c_address_2);
+                // $("#pk100_so_b_c_state").html(response.so_b_c_state);
+                // $("#pk100_so_b_c_country").html(response.so_b_c_country);
+                // $("#pk100_so_b_c_zipcode").html(response.so_b_c_zipcode);
 
-                $("#pk100_so_s_c_title").html(response.so_s_c_title);
-                $("#pk100_so_s_c_address_1").html(response.so_s_c_address_1o);
-                $("#pk100_so_s_c_address_2").html(response.so_s_c_address_2);
-                $("#pk100_so_s_c_state").html(response.so_s_c_state);
-                $("#pk100_so_s_c_country").html(response.so_s_c_country);
-                $("#pk100_so_s_c_zipcode").html(response.so_s_c_zipcode);
-                printContent($("#pk100").attr('id'));
+                // $("#pk100_so_s_c_title").html(response.so_s_c_title);
+                // $("#pk100_so_s_c_address_1").html(response.so_s_c_address_1o);
+                // $("#pk100_so_s_c_address_2").html(response.so_s_c_address_2);
+                // $("#pk100_so_s_c_state").html(response.so_s_c_state);
+                // $("#pk100_so_s_c_country").html(response.so_s_c_country);
+                // $("#pk100_so_s_c_zipcode").html(response.so_s_c_zipcode);
+                // printContent($("#pk100").attr('id'));
 
 				setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
 			}
@@ -50,38 +50,38 @@ var current_field_temp;
 				<%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
 				<%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
 				<%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
-                $("#pk100_date").html(response.so_date);
-                $("#pk100_so").html(response.so);
-                $("#pk100_part_no").html(response.part_number);
-                $("#pk100_control_no").html(response.control_number);
-                $("#pk100_part_description").html(response.part_desc);
-                $("#pk100_alt_part_no").html(response.alt_part_number);
-                $("#pk100_shipped_part").html(response.so_shipped_count);
-                $("#pk100_so_qty").html(response.so_line_quantity);
-                $("#pk100_so_notes").html(response.so_notes);
+                // $("#pk100_date").html(response.so_date);
+                // $("#pk100_so").html(response.so);
+                // $("#pk100_part_no").html(response.part_number);
+                // $("#pk100_control_no").html(response.control_number);
+                // $("#pk100_part_description").html(response.part_desc);
+                // $("#pk100_alt_part_no").html(response.alt_part_number);
+                // $("#pk100_shipped_part").html(response.so_shipped_count);
+                // $("#pk100_so_qty").html(response.so_line_quantity);
+                // $("#pk100_so_notes").html(response.so_notes);
 
-                $("#pk100_so_b_c_title").html(response.so_b_c_title);
-                $("#pk100_so_b_c_address_1").html(response.so_b_c_address_1);
-                $("#pk100_so_b_c_address_2").html(response.so_b_c_address_2);
-                $("#pk100_so_b_c_state").html(response.so_b_c_state);
-                $("#pk100_so_b_c_country").html(response.so_b_c_country);
-                $("#pk100_so_b_c_zipcode").html(response.so_b_c_zipcode);
+                // $("#pk100_so_b_c_title").html(response.so_b_c_title);
+                // $("#pk100_so_b_c_address_1").html(response.so_b_c_address_1);
+                // $("#pk100_so_b_c_address_2").html(response.so_b_c_address_2);
+                // $("#pk100_so_b_c_state").html(response.so_b_c_state);
+                // $("#pk100_so_b_c_country").html(response.so_b_c_country);
+                // $("#pk100_so_b_c_zipcode").html(response.so_b_c_zipcode);
 
-                $("#pk100_so_s_c_title").html(response.so_s_c_title);
-                $("#pk100_so_s_c_address_1").html(response.so_s_c_address_1);
-                $("#pk100_so_s_c_address_2").html(response.so_s_c_address_2);
-                $("#pk100_so_s_c_state").html(response.so_s_c_state);
-                $("#pk100_so_s_c_country").html(response.so_s_c_country);
-                $("#pk100_so_s_c_zipcode").html(response.so_s_c_zipcode);
-                printContent($("#pk100").attr('id'));
+                // $("#pk100_so_s_c_title").html(response.so_s_c_title);
+                // $("#pk100_so_s_c_address_1").html(response.so_s_c_address_1);
+                // $("#pk100_so_s_c_address_2").html(response.so_s_c_address_2);
+                // $("#pk100_so_s_c_state").html(response.so_s_c_state);
+                // $("#pk100_so_s_c_country").html(response.so_s_c_country);
+                // $("#pk100_so_s_c_zipcode").html(response.so_s_c_zipcode);
+                // printContent($("#pk100").attr('id'));
 
 			}
 		}
 	}
 
 
-function printContent(div_id)
-{
+function printContent(div_id,shipment_id)
+{   
  var content = "<html>";
  content +="<head> </head> <style type='text/css'>body{font-family:Arial, Helvetica, sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}td{padding:2px 0}.ms_wrapper .ms_image-5{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:110px}.ms_wrapper .ms_image-3{border:1px solid #ccc;float:right;font-size:22px;height:110px;text-align:center;width:310px}.ms_image-3>h3{font-size:17px;color:#000080; text-decoration:underline}.ms_image-3>h2{font-size:20px; color: #800000;margin:0;}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;min-height:185px;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:bold}.ms_image-2 h3{color:#fff;font-size:16px;font-weight:normal;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:#fff;font-size:20px;font-weight:bold;margin:2px 0}.ms_image-2 h5{font-size:15px;font-weight:bold;margin:0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:#800000;float:left;font-size:14px;font-weight:normal;line-height:19px;margin:6px 0;text-align:center;width:100%}.ms_text-3.text-5 strong{color:#000 !important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px 0}.fon-004>td{font-size:16px;font-weight:bold;padding:20px 0 8px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;min-height:185px;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image-5{border:1px solid #ccc;float:left;font-size:22px;height:110px;text-align:center;width:310px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:#800000;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:#000080}.footer-2{margin:330px 0 0 0;width:630px;border:2px solid #444;float:left}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:bold;margin:12px 0 0}.page h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:bold;margin:12px 0 0}.original h4{color:#800000;font-size:12px;font-weight:normal;margin:5px 0 12px;text-align:center}.ms_image-wrapper{float:left;height:69px;margin:6px 0 0 3px;width:150px}.ms_image-wrapper img{width:150px}.ms_image-text{float:right;margin:6px 10px 0 0;width:120px}.ms_image-text h2{font-size:13px;margin:19px 0 8px 0;text-decoration:underline}.ms_image-text h3{font-size:13px;font-weight:normal;margin:3px 0}.ms_image-text h5{font-size:9px;font-weight:normal;line-height:9px;margin:12px 0 0;width:120px}.page-center-2{float:left;text-align:center;width:411px}.page-center h6{color:#800000;font-size:14px;font-weight:bold;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original h4 span{color:#000}.original h4 span{color:#000;margin:0 4px 0 0}.text-6{color:#800000;margin:0 14px 0 0 !important;padding:0 15px 0 0;width:auto !important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image-3 > h5 {font-size: 16px;margin:0;padding: 0;}.ms_image-3 > h3 {color: #000080;font-size: 17px;text-decoration: underline; margin:11px 0 5px;}.ms_text h6,.ms_text-2 h6{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:0;}.ds {float: left;margin: 0 11px 0 0 !important;width: auto !important;}.ss {line-height:20px;}</style>";
  content += "<body>";
@@ -96,7 +96,6 @@ function printContent(div_id)
  printWin.document.close();
  printWin.focus();
  printWin.print();
-
  printPage(printWin);
  
 }
@@ -141,7 +140,9 @@ function printPage(win_id){
 	$(document).on("click", ".btn_save_shipped", function(){
 		process_shipping_inputs($(this));
 	});
-
+    $(document).on("click", ".btn_save_shipped_close", function(){
+        process_shipping_inputs($(this));
+    });
 	function process_shipping_inputs(current_field){
 		var so_line_id = current_field.attr("<%= type %>_line_id");
 		current_field_temp = current_field;
@@ -204,7 +205,6 @@ function printPage(win_id){
 		var <%= type %>_line_row = current_field_temp.closest("tr");
 		var <%= type %>_line_id = current_field_temp.attr("<%= type %>_line_id");
 		var <%= type %>_shipped_status = current_field_temp.attr("<%= type %>_shipped_status");
-
 		var <%= type %>_line_shipping = <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val();
 		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
 		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();		
@@ -223,21 +223,100 @@ function printPage(win_id){
        $("#pk100").hide();
 	});
    
+function shipment_process(so_id){
+
+    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "shipment_process_complete", "so_header_id": so_id}}, "set_quality_lots", {});
+     
+}
+function set_quality_lots(response, callback_params, api_params){
+  // var so = JSON.stringify(response.aaData).replace(/\"/g, ' ');
+    $("#pk100_date").html(response.aaData['so_date']);
+    $("#pk100_so").html(response.aaData['so']);
+    $("#pk100_part_no").html(response.aaData['part_number']);
+    $("#pk100_so_notes").html(response.aaData['notes']);
+    $("#pk100_customer_po").html(response.aaData['customer_po']);
+   
+
+    $("#pk100_so_b_c_title").html(response.aaData['so_b_c_title']);
+    $("#pk100_so_b_c_address_1").html(response.aaData['so_b_c_address_1']);
+    $("#pk100_so_b_c_address_2").html(response.aaData['so_b_c_address_2']);
+    $("#pk100_so_b_c_state").html(response.aaData['so_b_c_state']);
+    $("#pk100_so_b_c_country").html(response.aaData['so_b_c_country']);
+    $("#pk100_so_b_c_zipcode").html(response.aaData['so_b_c_zipcode']);
+
+    $("#pk100_so_s_c_title").html(response.aaData['so_s_c_title']);
+    $("#pk100_so_s_c_address_1").html(response.aaData['so_s_c_address_1']);
+    $("#pk100_so_s_c_address_2").html(response.aaData['so_s_c_address_2']);
+    $("#pk100_so_s_c_state").html(response.aaData['so_s_c_state']);
+    $("#pk100_so_s_c_country").html(response.aaData['so_s_c_country']);
+    $("#pk100_so_s_c_zipcode").html(response.aaData['so_s_c_zipcode']);
+    $("#so_total").html(response.aaData['so_header_total']);
+    if (response.aaData != 0){
+        for(i=1; i<3; i++){
+            printContent($("#pk100").attr('id'));
+        }
+    }
+    else{
+        alert("There is no items ");
+    }
+
+
+}
+function item_locations(item_id){
+    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "item_lot_locations", "id": item_id}}, "set_lots", {});    
+}
+function set_lots(response, callback_params, api_params){
+    $("#my_lot").html("");
+    $("#my_id").html("");
+    var obj = {};
+    var obj1 = {};
+    for (var i=0; i<response.aaData.length; i++) {
+    obj = response.aaData[i][0]+"<br>";
+    obj1 = response.aaData[i][1]+"<br>";
+    $("#my_lot").append(obj); //hide button and show thank you
+    $("#my_id").append(obj1); //hide button and show thank you
+    }
+
+}
 
 </script>
 
+<div class="modal hide fade" id="modal-simple">
+  <div class="modal-header">
+      <h3>Location and lots</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+      <form id="send_mail">
+          <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+              <thead>
+                  <tr>
+                    <th>Lots</th>
+                    <th>Locations</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td  id="my_lot"> </td>
+                    <td id= "my_id"></td>
+                </tr>
+              </tbody>
+          </table>
+      </form>
+  </div>
+
+</div>
 
 
 <div id="pk100">
 
 <div class="ms_wrapper">
-<% @so_header = SoHeader.last %> 
     <section>
 
         <article>
             <div class="ms_image-5">
                 <div class="ms_image-wrapper">
-                	<% @company_info = CompanyInfo.first %>
+                    <% @company_info = CompanyInfo.first %>
                     <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
                 </div>
 
@@ -256,7 +335,7 @@ function printPage(win_id){
                 <h3>Packing Slip Number</h3>
                 <h2 id="pk100_so"></h2>
                 <h5 id ="pk100_date">  </h5>
-                <h5> Customer P.O:<%= @so_header.so_header_customer_po %></h5>
+                <h5 id="pk100_customer_po"> </h5>
 
             </div>
         </article>
@@ -266,7 +345,7 @@ function printPage(win_id){
             <div class="ms_text">
                 <h1 class="ms_heading">Bill To :</h1> 
 
-                     <h2 class="ms_sub-heading" id="pk100_so_b_c_title"></h2> 
+                    <h2 class="ms_sub-heading" id="pk100_so_b_c_title"></h2> 
                     <h6 id ="pk100_so_b_c_address_1"> </h6> 
                     <h6 id="pk100_so_b_c_address_2"></h6>
                     <h6 id="pk100_so_b_c_state"></h6>
@@ -302,23 +381,8 @@ function printPage(win_id){
             <td width="29%">QTY</td>
             <td width="30%">Shipped</td>
           </tr>
-              <tr align="center">
-                <td scope="row" id="pk100_part_no">
-                    <table>       
-                    <tr><td align="center" id="pk100_alt_part_no"></td></tr>
-                    <tr> <td align="center" id="pk100_control_no"></td></tr>
-                    </table>
-                </td>
-                <td id="pk100_part_description"></td>
-                <td class="text-6" id="pk100_so_qty"></td>
-                <td id="pk100_shipped_part"> </td>
-
-              </tr>
-
-
-                               
-         
-    
+            <td scope="row" id="pk100_part_no">
+            </td>
       </table>
         <article>
             <div class="footer-2">
@@ -333,7 +397,7 @@ function printPage(win_id){
                 </div>
                 <div class="original">
                     <h3>Customer Copy </h3>
-                    <h4><span> $</span> <%= @so_header.so_total.to_f %></h4>
+                    <h4 id="so_total"></h4>
                 </div>
 
         </article>
