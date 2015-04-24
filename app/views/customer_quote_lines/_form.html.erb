@@ -1,4 +1,4 @@
-<div class="row-fluid">
+        <div class="row-fluid">
   <%= render :partial => 'customer_quotes/customer_quote_info', :locals => { show_item_info: true } %>
 
   <div class="span8 well item_detail_view">
@@ -30,7 +30,7 @@
                 </div>
 
 
-
+                <%= f.hidden_field :quote_id, :id => 'head_quote_id' %>
                 <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
                 <%= hidden_field_tag :alt_name_id, (@customer_quote_line.item_alt_name.id if @customer_quote_line.present? && @customer_quote_line.item_alt_name.present?) %>
@@ -118,6 +118,7 @@ var item_name;
     tab_field_forms["form_for_customer_quote_line"] = ["quote_id","quote_item","customer_quote_line_item_alt_name_id","customer_quote_line_customer_quote_line_description","customer_quote_line_customer_quote_line_quantity","customer_quote_line_customer_quote_line_cost", "customer_quote_line_customer_quote_line_tooling_cost", "customer_quote_line_lead_time","customer_quote_line_customer_quote_line_notes"];
 
     $(document).ready(function(){
+        $("#head_quote_id").val($("#quote_id").val());
         get_quote_info();
         $("#quote_line_item_alt_name_id").val("<%= @customer_quote_line.item_alt_name.alt_item_name if @customer_quote_line.item_alt_name %>");
 
@@ -132,6 +133,7 @@ var item_name;
 
     $(document).on("change", "#quote_id", function(){         
         get_quote_info();
+        $("#head_quote_id").val($("#quote_id").val());
     });
     function get_quote_info(){
         var quote_id = $("#quote_id").val();
