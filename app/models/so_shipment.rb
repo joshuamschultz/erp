@@ -41,13 +41,10 @@ class SoShipment < ActiveRecord::Base
 
            if so_shipment >= 1
               so_shipment = so_shipment_process.first
-              unless so_shipment.present?
+              unless so_shipment.shipment_process_id.present?
                 shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
                 self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
               else
-                p "==============="
-                Rails.logger.info "Year: #{so_shipment.shipment_process_id}"
-                p "=============="
                 self.shipment_process_id = 'S'+so_shipment.shipment_process_id.split('',2)[1]
               end
             else
