@@ -84,4 +84,7 @@ AllianceFasteners::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = false
+
+  # Enable to show log error in browser....
+  config.consider_all_requests_local = false
 end
