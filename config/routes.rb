@@ -362,7 +362,11 @@ AllianceFasteners::Application.routes.draw do
   resources :master_types
 
 
-  resources :process_types
+  resources :process_types  do 
+    collection do
+      get 'process_specs'
+    end
+  end
 
 
   resources :materials do

@@ -16,6 +16,10 @@ class Specification < ActiveRecord::Base
 
   has_many :item_specifications, :dependent => :destroy
   has_many :item_revisions, :through => :item_specifications
+
+  has_many :process_type_specifications, :dependent => :destroy
+  has_many :process_types, :through => :process_type_specifications
+
   has_one :attachment, :as => :attachable, :dependent => :destroy
   
   default_scope :order => 'specification_identifier ASC'
