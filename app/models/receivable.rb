@@ -63,7 +63,7 @@ class Receivable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier)
+      self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier, "I")
       self.receivable_status = "open"     
   end  
 
