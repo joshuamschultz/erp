@@ -46,8 +46,12 @@ class Specification < ActiveRecord::Base
         end
       end
     end
-    specifications = specifications.uniq
-    return specifications
-  end
-  
+    process_types =ProcessType.item_process_type(item)
+    process_specifications = ProcessType.process_type_specifications(process_types)
+    process_specifications.each do |process_spec|
+      specifications << process_spec
+    end
+
+    specifications.uniq
+  end     
 end
