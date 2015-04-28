@@ -21,7 +21,7 @@ class GlEntry < ActiveRecord::Base
   before_destroy :process_before_destory
 
   def process_before_create
-      self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier)
+      self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier, "A")
   end
 
    def process_before_destory

@@ -77,7 +77,7 @@ class Payment < ActiveRecord::Base
     before_create :process_before_create
 
     def process_before_create
-        self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier)
+        self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier, "C")
         self.payment_status = "open"
     end
 
