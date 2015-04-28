@@ -137,7 +137,7 @@ class ItemRevision < ActiveRecord::Base
           #     end
           # end
 
-          item_part_dimension_ids = ItemPartDimension.all.collect(&:id)
+          item_part_dimension_ids = item_revision.item.item_part_dimensions.collect(&:id)
 
             if item_part_dimension_ids.present?
               item_part_dimension_ids.each do |item_part_dimension_id|
