@@ -47,8 +47,20 @@
 :locals => {:extras => {:link => populate_customer_quote_path(type: "note", id: @customer_quote.id)}} %>
 
 <script type="text/javascript">
+    $(document).ready(function(){ 
+        initiate_org_mail();
+    });
+
+
+
+    function initiate_org_mail()
+    {   
+        var newOption = "<option selected='selected' value='<%= @customer_quote.organization.id %>'><%= @customer_quote.organization.organization_email %></option>"; 
+        $("#contact_id").append(newOption);
+    }
+
     function send_customer_quote(){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_customer_quotes_mail", "contact": $('#contact_id').val(), "customer_quote_id": <%= @customer_quote.id %> }}, "after_send", {});
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "send_customer_quotes_mail", "contact": $('#contact_id').val(), "organization_id": <%= @customer_quote.organization.id %>, "customer_quote_id": <%= @customer_quote.id %> }}, "after_send", {});
     }
     
     function after_send(response, callback_params, api_params){
