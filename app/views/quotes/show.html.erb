@@ -84,6 +84,17 @@
     function set_contact_emails(response, callback_params, api_params){
         var html = $.trim(Mustache.render($(".contact-email-select-box-template").html(), response));
         $("#inventory_adjustment_quality_lot_id").html(html);
+        initiate_org_mail();
+
+
+    }
+    function initiate_org_mail()
+    {
+         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "org_head_mail","organization_id":  $( "#set_status" ).val() }}, "set_org_email", {});
+    }
+    function set_org_email(response, callback_params, api_params){
+        var newOption = "<option selected='selected' value='"+response.aaData['id']+"'>"+response.aaData['Email']+"</option>"; 
+        $("#inventory_adjustment_quality_lot_id").append(newOption);
 
     }
 

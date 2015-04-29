@@ -55,12 +55,14 @@ class UserMailer < ActionMailer::Base
   end
 
 
-  def send_quote(quote, quote_vendor,contact_id)
+  def send_quote(quote, quote_vendor,contact_email)
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     # to_address = quote_vendor.oraganzition.organization_email
     @quote = quote
     @quote_vendor = quote_vendor
-    @contact_id = contact_id 
+    @contact_email = contact_email 
+    @path = '<a href="http://localhost:3000/quotes/'+@quote.id.to_s+'/quote_lines/new">Click here to fill your quote</a>'
+  
     if @quote.attachments
       @quote.attachments.each do |attachmen|
         file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
@@ -68,7 +70,7 @@ class UserMailer < ActionMailer::Base
         attachments[file_name] = File.read(file_path)
       end
     end
-    mail(:to => Contact.find(@contact_id).contact_email, :subject => "Quotes").deliver
+    mail(:to => @contact_email, :subject => "Quotes").deliver
     puts "Mail Send!"
 
   end
@@ -78,8 +80,9 @@ class UserMailer < ActionMailer::Base
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     @customer_quote = CustomerQuote.find(customer_quote_id)
     organization = @customer_quote.organization    
+    @path = '<a href="http://localhost:3000/customer_quotes/'+@customer_quote.id.to_s+'/customer_quote_lines/new">Click here to fill your quote</a>'
     if organization.contact_type.type_value == 'email'
-        to_address = address.present? ? organization.contacts.find(address).contact_email : organization.organization_email    
+        to_address = address
       if @customer_quote.attachments
         @customer_quote.attachments.each do |attachmen|
           file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
