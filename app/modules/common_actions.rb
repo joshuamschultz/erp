@@ -187,7 +187,7 @@ module CommonActions
 			menus[:accounts][:sub_menu] = 	[
 				{:path => payables_path, :name => "Payables"},
 				{:path => payments_path, :name => "Payments"},
-				{:path => receivables_path, :name => "Receivables"},
+				{:path => receivables_path, :name => "Invoice"},
 				{:path => receipts_path, :name => "Receipts"}
 			]
 		end 
