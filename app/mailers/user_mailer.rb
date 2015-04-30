@@ -61,7 +61,7 @@ class UserMailer < ActionMailer::Base
     @quote = quote
     # @quote_vendor = quote_vendor
     @contact_email = contact_email 
-    @path = '<a href="http://localhost:3000/quotes/'+@quote.id.to_s+'/quote_lines/new">Click here to fill your quote</a>'
+    @path = '<a href="http://erp.chessgroupinc.com/quotes/'+@quote.id.to_s+'/quote_lines/new">Click here to fill your quote</a>'
   
     if @quote.attachments
       @quote.attachments.each do |attachmen|
@@ -80,7 +80,7 @@ class UserMailer < ActionMailer::Base
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     @customer_quote = CustomerQuote.find(customer_quote_id)
     organization = @customer_quote.organization    
-    @path = '<a href="http://localhost:3000/customer_quotes/'+@customer_quote.id.to_s+'/customer_quote_lines/new">Click here to fill your quote</a>'
+    @path = '<a href="http://erp.chessgroupinc.com/customer_quotes/'+@customer_quote.id.to_s+'/customer_quote_lines/new">Click here to fill your quote</a>'
     if organization.contact_type.type_value == 'email'
         to_address = address
       if @customer_quote.attachments
