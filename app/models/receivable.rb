@@ -25,7 +25,7 @@ class Receivable < ActiveRecord::Base
   accepts_nested_attributes_for :receivable_shipments
   accepts_nested_attributes_for :receivable_accounts
 
-  validates_presence_of :receivable_invoice, :organization
+  # validates_presence_of :receivable_invoice, :organization
   # validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
   # validates_uniqueness_of :receivable_identifier
 
