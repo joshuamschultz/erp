@@ -130,24 +130,24 @@
             <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
                 <thead>
                     <tr>
-                        Vendor Name
-                 
+                    <th>Vendor Name</th>                 
+                    <th><label for="inventory_adjustment_quality_lot_id" class="select required control-label">
+                                    <abbr title="required">*</abbr> Contacts
+                                </label></th>                 
                     </tr>
                 </thead>
                 <tbody>
                         <tr>
-                          <%= select_tag "#{}", options_for_select(@quote.quote_vendors.map{ |quote_vendor| [  quote_vendor.organization.organization_name, quote_vendor.organization.id  ] }), :class => "status-select", :id => "set_status" %>
+                         <td> <%= select_tag "#{}", options_for_select(@quote.quote_vendors.map{ |quote_vendor| [  quote_vendor.organization.organization_name, quote_vendor.organization.id  ] }), :class => "status-select", :id => "set_status" %></td>
 
-                            <div class="control-group select required quality_lot_po_line">
-                                <label for="inventory_adjustment_quality_lot_id" class="select required control-label">
-                                    <abbr title="required">*</abbr> Contacts
-                                </label>
+                         <td>   <div class="control-group select required quality_lot_po_line">
+                                
                                 <div class="controls">
                                     <select name="inventory_adjustment[quality_lot_id]" id="inventory_adjustment_quality_lot_id" class="select required" autofocus="autofocus">
 
                                     </select>
                                 </div>
-                            </div>
+                            </div></td>
                        </tr>
          
                 </tbody>
