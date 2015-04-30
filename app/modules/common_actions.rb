@@ -187,7 +187,7 @@ module CommonActions
 			menus[:accounts][:sub_menu] = 	[
 				{:path => payables_path, :name => "Payables"},
 				{:path => payments_path, :name => "Payments"},
-				{:path => receivables_path, :name => "Receivables"},
+				{:path => receivables_path, :name => "Invoice"},
 				{:path => receipts_path, :name => "Receipts"}
 			]
 		end 
@@ -331,14 +331,14 @@ module CommonActions
 	end
 
 
-	def self.get_new_identifier(model, field)
+	def self.get_new_identifier(model, field, letter)
 		max_identifier = model.maximum(field)
 		if max_identifier.nil?
-			"A0001"
+			letter + "0001"
 		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
-			max_identifier[0].next + "0001"
+			letter + "0001"
 		else
-			max_identifier[0] + "%04d" % cur_identifier
+			letter + "%04d" % cur_identifier
 		end
 	end
 
