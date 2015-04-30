@@ -116,12 +116,12 @@ class CommonActionsController < ApplicationController
               if params[:contact_id].present? && params[:quote_id].present? && params[:organization_id].present?                  
                 quote = Quote.find(params[:quote_id])
                 organization = Organization.find(params[:organization_id])
-                quote.quote_vendors.each do |quote_vendor|
-                  if quote_vendor.organization.contact_type.type_name == "Email"
+                # quote.quote_vendors.each do |quote_vendor|
+                  if organization.contact_type.type_name == "Email"
                     email = (params[:contact_id] == params[:organization_id]) ? organization.organization_email : Contact.find(params[:contact_id]).contact_email
-                    UserMailer.send_quote(quote, quote_vendor,email).deliver
+                    UserMailer.send_quote(quote,email).deliver
                   end
-                end
+                # end
                 result = "success"
 
                else

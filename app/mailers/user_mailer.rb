@@ -55,11 +55,11 @@ class UserMailer < ActionMailer::Base
   end
 
 
-  def send_quote(quote, quote_vendor,contact_email)
+  def send_quote(quote, contact_email)
     to_address = (ENV['RAILS_ENV'] == "development") ? "kannanstays@gmail.com" : ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
     # to_address = quote_vendor.oraganzition.organization_email
     @quote = quote
-    @quote_vendor = quote_vendor
+    # @quote_vendor = quote_vendor
     @contact_email = contact_email 
     @path = '<a href="http://localhost:3000/quotes/'+@quote.id.to_s+'/quote_lines/new">Click here to fill your quote</a>'
   
