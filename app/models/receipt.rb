@@ -59,7 +59,7 @@ class Receipt < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-    self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier)
+    self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier, "R")
     self.receipt_status = "open"
   end
   

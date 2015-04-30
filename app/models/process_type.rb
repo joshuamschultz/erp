@@ -20,6 +20,9 @@ class ProcessType < ActiveRecord::Base
   has_many :item_revisions, :through => :item_processes
   has_many :specifications, :through => :process_type_specifications
 
+  has_many :process_type_specifications, :dependent => :destroy
+  has_many :specifications, :through => :process_type_specifications
+
   has_one :attachment, :as => :attachable, :dependent => :destroy
 
   default_scope :order => 'process_short_name ASC'
@@ -31,7 +34,7 @@ class ProcessType < ActiveRecord::Base
         if process_type
 
           specs = params[:specs] || []
-         # process_type.process_type_specifications.where(:specification_id != specs).destroy_all
+          process_type.process_type_specifications.where(:specification_id != specs).destroy_all
           if specs
               specs.each do |specification_id|
                 unless process_type.process_type_specifications.find_by_specification_id(specification_id)
@@ -64,6 +67,18 @@ class ProcessType < ActiveRecord::Base
       end
       process_types = process_types.uniq
       return process_types
+  end
+
+  def self.process_type_specifications(process_types)
+    specifications = []
+    process_types.each do |process_type|
+      if process_type.present?
+         process_type.specifications.each do |pro_spec|
+          specifications<<pro_spec
+        end
+      end
+    end
+    specifications.uniq
   end
   
 end

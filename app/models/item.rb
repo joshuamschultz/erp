@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
   attr_accessible :item_part_no, :item_quantity_in_hand, :item_quantity_on_order, :item_active,
-  :item_created_id, :item_updated_id, :item_revisions_attributes
+  :item_created_id, :item_updated_id, :item_revisions_attributes, :item_alt_part_no
 
   has_many :item_revisions, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
@@ -53,6 +53,9 @@ class Item < ActiveRecord::Base
         customer_quote_line.item_alt_name_id = item_alt_name.id
         customer_quote_line.item_name_sub = ""
         customer_quote_line.save(:validate => false)
+      end
+      unless self.item_alt_part_no == ""
+        self.item_alt_names.new(:item_alt_identifier => self.item_alt_part_no).save(:validate => false)  
       end
       
   end

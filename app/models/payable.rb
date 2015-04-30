@@ -79,7 +79,7 @@ class Payable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.payable_identifier = CommonActions.get_new_identifier(Payable, :payable_identifier)
+      self.payable_identifier = CommonActions.get_new_identifier(Payable, :payable_identifier, "O")
       self.payable_status = "open"     
   end  
 

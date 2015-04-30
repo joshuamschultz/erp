@@ -3,7 +3,8 @@
 
   <div class="form-inputs">
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
-
+    <%= f.input :item_alt_part_no, :label => "Alt Part No" %>
+    
     <% unless @item.persisted? %>
     <%= f.simple_fields_for :item_revisions do |g| %>
             <%#= g.input :item_name, :label => "Name" %>

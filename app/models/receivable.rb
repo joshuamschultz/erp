@@ -25,7 +25,7 @@ class Receivable < ActiveRecord::Base
   accepts_nested_attributes_for :receivable_shipments
   accepts_nested_attributes_for :receivable_accounts
 
-  validates_presence_of :receivable_invoice, :organization
+  # validates_presence_of :receivable_invoice, :organization
   # validates_presence_of :receivable_identifier, :if => Proc.new { |o| o.so_header.nil? }
   # validates_uniqueness_of :receivable_identifier
 
@@ -63,7 +63,7 @@ class Receivable < ActiveRecord::Base
   before_create :process_before_create
 
   def process_before_create
-      self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier)
+      self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier, "I")
       self.receivable_status = "open"     
   end  
 
