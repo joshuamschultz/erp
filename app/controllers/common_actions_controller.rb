@@ -195,7 +195,7 @@ class CommonActionsController < ApplicationController
             when "item_lot_locations"
               if params[:id].present?
                 @item = Item.find(params[:id])
-                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? ) ? [x.lot_control_no,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
+                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
                 result = locations
               else
                 result = "fail"
