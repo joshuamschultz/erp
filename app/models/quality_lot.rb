@@ -153,7 +153,7 @@ class QualityLot < ActiveRecord::Base
 		
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.id).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
