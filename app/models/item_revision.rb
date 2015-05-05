@@ -1,7 +1,7 @@
 class ItemRevision < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  belongs_to :item, :dependent => :destroy
+  belongs_to :item
   belongs_to :owner
   belongs_to :print
   belongs_to :material
@@ -40,6 +40,8 @@ class ItemRevision < ActiveRecord::Base
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
+  validates :item_revision_name, uniqueness: {scope: :item_id}
+  
   after_save :update_recent_revision
 
   def update_recent_revision    

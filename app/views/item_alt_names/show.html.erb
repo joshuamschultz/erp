@@ -16,7 +16,7 @@
 
       <tr>
         <td>Customer:</td>
-        <td><%= link_to @item_alt_name.organization.organization_name, @item_alt_name.organization %></td>
+        <td><%= link_to @item_alt_name.organization.organization_name, @item_alt_name.organization if @item_alt_name.organization.present? %></td>
       </tr>
 
       <tr>

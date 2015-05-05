@@ -80,7 +80,13 @@ class Item < ActiveRecord::Base
   scope :item_with_recent_revisions, joins(:item_revisions).where("item_revisions.latest_revision = ?", true)
 
   def customer_alt_names
-      self.item_alt_names.where("organization_id is not NULL")
+      alt_names = []
+      self.item_alt_names.each do |alt_name|
+        if alt_name.item_alt_identifier != self.item_part_no
+          alt_names << alt_name
+        end
+      end
+      alt_names
   end
 
   def purchase_orders
