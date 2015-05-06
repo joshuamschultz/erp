@@ -5,10 +5,11 @@ class QualityAction < ActiveRecord::Base
     belongs_to :item_alt_name
     belongs_to :po_header
     belongs_to :cause_analysis
+    belongs_to :quality_lot
     attr_accessible :definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
                 :quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
                 :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
-                :created_user_id, :root_cause
+                :created_user_id, :root_cause, :quality_lot_id
 
     has_many :quality_actions_users, :dependent => :destroy
     has_many :users, :through => :quality_actions_users
