@@ -334,11 +334,11 @@ module CommonActions
 	def self.get_new_identifier(model, field, letter)
 		max_identifier = model.maximum(field)
 		if max_identifier.nil?
-			letter + "0001"
-		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
-			letter + "0001"
+			letter + "00001"
+		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 99999
+			letter + "00001"
 		else
-			letter + "%04d" % cur_identifier
+			letter + "%05d" % cur_identifier
 		end
 	end
 
@@ -363,5 +363,25 @@ module CommonActions
 		elsif status == "finished"
 			"<div style='color:green'>#{status.capitalize}</div>".html_safe
 		end	
+	end
+
+	def self.process_application_notifications(user_id)
+		temp = source = ''
+		user = User.find(user_id)
+		user.quality_actions.each do |quality_action|
+			notification = notification_check_status(quality_action,"QualityAction",user)
+			if notification.present? 
+				temp = "<li id="+notification.first.id.to_s+"><a href='/quality_actions/"+quality_action.id.to_s+"' class='glyphicons envelope'><i></i>"+quality_action.quality_action_no.to_s+"-Quality Action Assigned to you </a></li>"
+				source += temp
+			end
+		end
+		source
+
+	end
+
+	def self.notification_check_status(note_id,note_type,u_id)
+		if Notification.where(:notable_id => note_id.id).present?
+			Notification.where("notable_id =? AND notable_type =? AND user_id =? AND note_status =? ", note_id.id, note_type, u_id.id, "unread")
+		end
 	end
 end

@@ -21,8 +21,27 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
+            when "set_notification_status"
+              if params[:id].present?
+                Notification.find(params[:id]).update_attributes(:note_status => "read")
+                result = "success"
+              end
+
+            when "initiate_notifications"
+              if params[:user_id].present?
 
 
+                # notification_list = {}
+                # source = temp = ''
+                # User.find(params[:user_id]).quality_actions.each do |quality_action|
+                #   temp = '<li><a href="/quality_actions/'+quality_action.id.to_s+'" class="glyphicons envelope"><i></i>Quality Action #1234 Assigned to you</a></li>'
+                #   source += temp
+                # end
+
+                # notification_list["list"] = source
+
+                # result =  notification_list["list"] 
+              end
             when "org_contact_mail"
               if params[:organization_id].present?
                 organization = Organization.find(params[:organization_id])
