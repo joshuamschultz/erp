@@ -9,16 +9,20 @@ class QualityAction < ActiveRecord::Base
     attr_accessible :definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
                 :quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
                 :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
-                :created_user_id, :root_cause, :quality_lot_id
+                :created_user_id, :root_cause, :quality_lot_id, :notification_attributes
 
     has_many :quality_actions_users, :dependent => :destroy
     has_many :users, :through => :quality_actions_users
     has_many :customer_feedbacks, :dependent => :destroy
     has_many :attachments, :as => :attachable, :dependent => :destroy
 
+    has_many :notification, :as => :notable
+
+    accepts_nested_attributes_for :notification, :allow_destroy => true
+
     before_save :before_save_process
     before_validation :before_save_validate
-
+    # before_create :process_after_creates
     def before_save_validate
         unless self.persisted?
             self.quality_action_no = CheckCode.get_next_quality_action_number
@@ -80,8 +84,7 @@ class QualityAction < ActiveRecord::Base
     end
 
     def self.quality_action_filtering
-            quality_actions = []
-        p "========================================================="
+        quality_actions = []
         if User.current_user.organization.present?
             organization_quality_type = User.current_user.organization.organization_type 
             quality_actions = QualityAction.where(:organization_quality_type_id => organization_quality_type.id )

@@ -124,6 +124,12 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.save
         @quality_action.set_user(params)
+        if @quality_action.users.present?
+            @quality_action.users.each do |user|
+              notification =  Notification.create(notable_id: @quality_action.id, notable_type:  "QualityAction", note_status:  "unread", user_id:  user.id)
+              notification.save
+            end
+        end
         format.html { redirect_to quality_action_path(@quality_action), notice: 'Quality action was successfully created.' }
         format.json { render json: @quality_action, status: :created, location: @quality_action }
       else

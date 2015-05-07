@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :notifications
+
+
   resources :credit_registers
 
 
