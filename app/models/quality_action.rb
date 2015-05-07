@@ -22,7 +22,7 @@ class QualityAction < ActiveRecord::Base
 
     before_save :before_save_process
     before_validation :before_save_validate
-    # before_create :process_after_creates
+    # before_create :notification_process
     def before_save_validate
         unless self.persisted?
             self.quality_action_no = CheckCode.get_next_quality_action_number
@@ -34,6 +34,7 @@ class QualityAction < ActiveRecord::Base
             self.item = self.item_alt_name.item
             self.item_revision = self.item_alt_name.item.current_revision
         end
+        notification_process();
     end
 
     validates_presence_of :quality_action_no, :ic_action_id, :organization_quality_type_id
@@ -104,6 +105,15 @@ class QualityAction < ActiveRecord::Base
         else
             return quality_actions
         end 
+    end
+
+    def notification_process()
+        if self.users.present?
+            self.users.each do |user|
+                notification =  Notification.create(notable_id: self.id, notable_type:  "QualityAction", note_status:  "unread", user_id:  user.id)
+                notification.save
+            end
+        end
     end
 
 end
