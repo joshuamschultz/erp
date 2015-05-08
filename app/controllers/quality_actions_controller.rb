@@ -124,7 +124,7 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.save
         @quality_action.set_user(params)
-        # QualityAction.notification_process()
+        CommonActions.notification_process("QualityAction", @quality_action)
         format.html { redirect_to quality_action_path(@quality_action), notice: 'Quality action was successfully created.' }
         format.json { render json: @quality_action, status: :created, location: @quality_action }
       else
@@ -150,7 +150,7 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.update_attributes(params[:quality_action])
          @quality_action.set_user(params)
-
+        CommonActions.notification_process("QualityAction", @quality_action)
         format.html { redirect_to quality_actions_url, notice: 'Quality action was successfully updated.' }
         format.json { head :no_content }
       else

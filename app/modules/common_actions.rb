@@ -375,8 +375,20 @@ module CommonActions
 				source += temp
 			end
 		end
-		source
 
+		if User.current_user.present? && User.current_user.is_quality? 
+		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
+		 	vendor_organizations.each do |vendor_organization|
+		 		if vendor_organization.present?
+		 			notification = notification_check_status(vendor_organization,"Organization",User.where(:roles_mask => 4).first)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/organizations/"+vendor_organization.id.to_s+"' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+		 end
+		 source
 	end
 
 	def self.notification_check_status(note_id,note_type,u_id)
@@ -384,4 +396,32 @@ module CommonActions
 			Notification.where("notable_id =? AND notable_type =? AND user_id =? AND note_status =? ", note_id.id, note_type, u_id.id, "unread")
 		end
 	end
+
+	def self.notification_process(model_type, model_id)
+
+        if model_type == "Organization" && model_id.organization_type_id == 6
+         	user = User.where(:roles_mask => 4).first
+         	if user.present?
+        		notification_set_status(model_id,model_type,user.id)
+        	end
+
+        elsif model_type == "QualityAction"
+        	if model_id.users.present?
+	            model_id.users.each do |user|
+	                notification_set_status(model_id,model_type,user.id)
+	            end
+        	end
+        end   
+         
+    end
+
+    def self.notification_set_status(model_identifier,model_type_name,user_id)
+    	notification = Notification.find_by_notable_id(model_identifier.id)
+    	unless notification.present?
+    		notification = Notification.create(notable_id: model_identifier.id, notable_type:  model_type_name, note_status:  "unread", user_id:  user_id)
+    		notification.save
+    	else
+    		notification.update_attributes(:note_status => "unread")
+    	end
+    end
 end

@@ -54,6 +54,18 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def mobile_api
+ 
+      @organizations = Organization.all
+      respond_to do |format|
+      format.html # index.html.erb
+      format.json {
+ 
+      render json:  @organizations  }
+      end
+
+  end
+
   # GET /organizations/1
   # GET /organizations/1.json
   def show
@@ -105,6 +117,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.save
+        CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
         format.json { render json: @organization, status: :created, location: @organization }
       else
@@ -123,6 +136,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.update_attributes(params[:organization])
+        CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { head :no_content }
       else
