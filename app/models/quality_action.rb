@@ -16,7 +16,7 @@ class QualityAction < ActiveRecord::Base
     has_many :customer_feedbacks, :dependent => :destroy
     has_many :attachments, :as => :attachable, :dependent => :destroy
 
-    has_many :notification, :as => :notable
+    has_one :notification, :as => :notable,  dependent: :destroy
 
     accepts_nested_attributes_for :notification, :allow_destroy => true
 
@@ -34,7 +34,7 @@ class QualityAction < ActiveRecord::Base
             self.item = self.item_alt_name.item
             self.item_revision = self.item_alt_name.item.current_revision
         end
-        notification_process();
+        # notification_process();
     end
 
     validates_presence_of :quality_action_no, :ic_action_id, :organization_quality_type_id
@@ -106,14 +106,4 @@ class QualityAction < ActiveRecord::Base
             return quality_actions
         end 
     end
-
-    def notification_process()
-        if self.users.present?
-            self.users.each do |user|
-                notification =  Notification.create(notable_id: self.id, notable_type:  "QualityAction", note_status:  "unread", user_id:  user.id)
-                notification.save
-            end
-        end
-    end
-
 end

@@ -7,7 +7,7 @@ class Organization < ActiveRecord::Base
 	:organization_name, :organization_notes, :organization_short_name, :organization_state, 
 	:organization_telephone, :organization_type_id, :organization_updated_id, :organization_website, 
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
-	:vendor_quality_id, :organization_complete, :organization_active
+	:vendor_quality_id, :organization_complete, :organization_active,  :notification_attributes
 
 	scope :organizations, lambda{|type| 
 		case(type)
@@ -94,6 +94,12 @@ class Organization < ActiveRecord::Base
 	belongs_to :territory
 	belongs_to :customer_quality
 	belongs_to :vendor_quality
+
+
+    has_one :notification, :as => :notable,  dependent: :destroy
+
+    accepts_nested_attributes_for :notification, :allow_destroy => true
+
 
   	belongs_to :organization_type, :class_name => "MasterType", :foreign_key => "organization_type_id", 
   	:conditions => ['type_category = ?', 'organization_type']
