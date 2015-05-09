@@ -279,8 +279,8 @@ module CommonActions
 
 		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
 		menus[:reports][:sub_menu] = 	[
-			{:path => gauges_path(type: "gauge"), :name => "Instruments"}
-
+			{:path => gauges_path(type: "gauge"), :name => "Gage Calibrated"},
+			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"}
 
 		]
 
