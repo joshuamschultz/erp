@@ -2,12 +2,19 @@ class Print < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessible :print_active, :print_created_id, :print_description, :print_identifier, 
-  :print_notes, :print_updated_id, :attachment_attributes
+  :print_notes, :print_updated_id, :attachment_attributes, :notification_attributes
+
   
   # has_one :item_print, :dependent => :destroy
   # has_one :item_revision, :through => :item_print
   has_many :item_revisions
   has_one :attachment, :as => :attachable, :dependent => :destroy
+
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
+
 
   after_initialize :default_values
 
