@@ -19,4 +19,9 @@ class Gauge < ActiveRecord::Base
   	def redirect_path
       	gauge_path(self)
 	end
+
+  def self.get_this_week_gauges
+     Gauge.where("gage_caliberation_due_at >= ? AND gage_caliberation_due_at <= ?", Date.today,Date.today+6)
+  end
+
 end

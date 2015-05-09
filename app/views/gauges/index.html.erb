@@ -35,7 +35,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gauges_path, :extras => {:slno => false}, 
+        :name => "table_report", :path => gauges_path(type: "gauge"), :extras => {:slno => false}, 
         :columns => '[
                         { "mData": "gauge_tool_name" },
                         { "mData": "gauge_tool_category" },
