@@ -7,20 +7,14 @@
 
 
 
-  <div class="span4 well">
+  <div class="span9 well">
       <a class="widget-stats" href="#" id="">
           <h5 style='color:#8ec657'><strong><%= @quality_lot.current_location %></strong></h5>
           <span class="txt"><strong>Location</strong></span>
           <div class="clearfix"></div>
       </a>
   </div>
-  <div class="span4 well">
-      <a class="widget-stats" href="#" id="">
-          <h5 style='color:#8ec657'><strong><%= @quality_lot.shipped_qty %></strong></h5>
-          <span class="txt"><strong>Shipped Quantity</strong></span>
-          <div class="clearfix"></div>
-      </a>
-  </div> 
+
 
   <div class="modal hide fade" id="modal-simple">
       <div class="modal-header">
@@ -281,9 +275,20 @@
     </div>
 </div>
 
+<div class="new_widget">
+  <div class="row-fluid">
+    
+    <div class="span6">
+      <%= render :partial => 'so_shipments/quality_lot_shipments', :locals => {open_path: quality_lot_path(@quality_lot, :shipment_type => "shipped"), closed_path: quality_lot_path(@quality_lot, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
+    </div>
 
-<%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+    <div class="span6">
+      <%= render :partial => 'comments/comments', 
+      :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+    </div>
+
+  </div>
+</div>
 
 
 
