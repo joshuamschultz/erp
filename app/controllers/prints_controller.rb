@@ -64,6 +64,7 @@ class PrintsController < ApplicationController
     respond_to do |format|
       @print.attachment.created_by = current_user
       if @print.save
+        CommonActions.notification_process("Print", @print)
         format.html { redirect_to prints_path, notice: 'Print was successfully created.' }
         format.json { render json: @print, status: :created, location: @print }
       else
@@ -81,6 +82,7 @@ class PrintsController < ApplicationController
     respond_to do |format|
       @print.attachment.updated_by = current_user
       if @print.update_attributes(params[:print])
+        CommonActions.notification_process("Print", @print)
         format.html { redirect_to prints_path, notice: 'Print was successfully updated.' }
         format.json { head :no_content }
       else

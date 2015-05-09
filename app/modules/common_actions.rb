@@ -368,6 +368,7 @@ module CommonActions
 	def self.process_application_notifications(user_id)
 		temp = source = ''
 		user = User.find(user_id)
+		quality_user = User.where(:roles_mask => 4).first
 		user.quality_actions.each do |quality_action|
 			notification = notification_check_status(quality_action,"QualityAction",user)
 			if notification.present? 
@@ -380,14 +381,49 @@ module CommonActions
 		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
 		 	vendor_organizations.each do |vendor_organization|
 		 		if vendor_organization.present?
-		 			notification = notification_check_status(vendor_organization,"Organization",User.where(:roles_mask => 4).first)
+		 			notification = notification_check_status(vendor_organization,"Organization",quality_user)
 		 			if notification.present? 
 		 				temp = "<li id="+notification.first.id.to_s+"><a href='/organizations/"+vendor_organization.id.to_s+"' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
 						source += temp
 					end
 		 		end
 		 	end
-		 end
+
+		 	prints = Print.all
+		 	prints.each do |print|
+		 		if print.present?
+		 			notification = notification_check_status(print,"Print",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/prints/"+print.id.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	specifications = Specification.all
+		 	specifications.each do |specification|
+		 		if specification.present?
+		 			notification = notification_check_status(specification,"Specification",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/specifications/"+specification.id.to_s+"' class='glyphicons envelope'><i></i>"+specification.specification_identifier+"-specification created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	process_types = ProcessType.all
+		 	process_types.each do |process_type|
+		 		if process_type.present?
+		 			notification = notification_check_status(process_type,"ProcessType",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/process_types/"+process_type.id.to_s+"' class='glyphicons envelope'><i></i>"+process_type.process_short_name+"-process_type created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+		end
+		
+
 		 source
 	end
 
@@ -398,12 +434,10 @@ module CommonActions
 	end
 
 	def self.notification_process(model_type, model_id)
-
+		quality_user = User.where(:roles_mask => 4).first
+        
         if model_type == "Organization" && model_id.organization_type_id == 6
-         	user = User.where(:roles_mask => 4).first
-         	if user.present?
-        		notification_set_status(model_id,model_type,user.id)
-        	end
+        	common_process_model(model_type,model_id,quality_user)
 
         elsif model_type == "QualityAction"
         	if model_id.users.present?
@@ -411,8 +445,23 @@ module CommonActions
 	                notification_set_status(model_id,model_type,user.id)
 	            end
         	end
+
+        elsif model_type == "Print"
+       		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "Specification"
+      		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "ProcessType"
+       		common_process_model(model_type,model_id,quality_user)
         end   
          
+    end
+  
+    def self.common_process_model(model, model_note, user)
+    	if user.present?
+        	notification_set_status(model_note,model,user.id)
+       	end    	 
     end
 
     def self.notification_set_status(model_identifier,model_type_name,user_id)
