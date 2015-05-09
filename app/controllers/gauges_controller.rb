@@ -17,13 +17,18 @@ class GaugesController < ApplicationController
   end
 
   def set_page_info
-      @menus[:quality][:active] = "active"
+      @menus[:quality][:active] = "active" unless (params[:type] == "gauge").present?
+      @menus[:reports][:active] = "active"  if (params[:type] == "gauge").present?
   end
 
   # GET /gauges
   # GET /gauges.json  
   def index
-    @gauges = Gauge.all
+    if(params[:type] == "gauge").present?
+      @gauges = Gauge.get_this_week_gauges()
+    else
+      @gauges = Gauge.all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json{

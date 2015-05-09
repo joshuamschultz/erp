@@ -274,7 +274,15 @@ module CommonActions
 			]
 		end
 
-		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
+
+
+
+		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
+		menus[:reports][:sub_menu] = 	[
+			{:path => gauges_path(type: "gauge"), :name => "Instruments"}
+
+
+		]
 
 		menus[:documentation] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Documentation", :type => "multiple"}
 		menus[:documentation][:sub_menu] = 	[
