@@ -50,6 +50,7 @@ class QualityLot < ActiveRecord::Base
   	has_many :inventory_adjustments, :dependent => :destroy
   	has_many :so_shipments
   	has_one :po_shipment
+  	has_many :quality_histories, :dependent => :destroy
 
   	# has_one :po_shipment, :dependent => :destroy
 
