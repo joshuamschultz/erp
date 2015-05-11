@@ -18,8 +18,8 @@ class GlTypesController < ApplicationController
   # GET /gl_types
   # GET /gl_types.json
   def index
-    @gl_types = GlType.all
-
+    @gl_types = GlType.where(:gl_report => "B").order("gl_side DESC") + GlType.where(:gl_report => "T").order("gl_side DESC")
+    # @gl_types = @gl_types + @gl_types2
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
