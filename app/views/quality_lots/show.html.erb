@@ -222,6 +222,15 @@
     </div>
        <% end %>
     <br>
+    <div class="row-fluid">
+      <span class="span12">
+        <ul class="n_no">
+          <li id="accepted"><a href="#" class="span12 color-005">Accept</a></li>                
+          <li id="rejected"> <a href="#" class="span12 color-006">Reject</a> </li> 
+          <li id="on hold"><a href="#" class="span12 color-007">On hold</a></li>
+        </ul>
+      </span>
+    </div>
     <br>
     <br>
     <br>
@@ -513,6 +522,66 @@ iframe {
     width: 0;
 }
 
+.color-005 {
+    background-color: #810901 !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+.color-006{
+    background-color: #b1a700 !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    margin: 10px 0;
+        font-weight: bold;
+}
+.color-007 {
+    background-color: #127601 !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+        font-weight: bold;
+}
+
+
+.color-005:hover, .color-006:hover, .color-007:hover {
+color: #fff;
+font-size: 17px;}
+.n_no{margin: 0 ! important;}
+.n_no li{list-style: none ! important;}
+
+
+
+
 </style>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){    
+  
+        initiate_notifications();
+        $(".n_no li").click(function() {
+          lot_status_history($(this).attr('id'));
+        });
+
+    });
+
+    function lot_status_history(status){
+ 
+      initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_status_history", "id": <%= @quality_lot.id%>, "user_id": <%= current_user.id %>, "lot_status": status}}, "lot_status_msg", {});
+
+    }
+    function lot_status_msg(response, callback_params, api_params){
+      alert("You are"+JSON.stringify(response.aaData).replace(/\"/g, ' ')+"the lot"); 
+    }
+</script>
+
+
+
 
 

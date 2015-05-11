@@ -66,6 +66,13 @@ class CommonActionsController < ApplicationController
                 quality_lot = QualityLot.find(params[:id])
                 result = quality_lot
               end
+            when "set_lot_status_history"
+              if params[:id].present? && params[:user_id].present? && params[:lot_status].present?
+                quality_history = QualityHistory.create(quality_lot_id: params[:id], quality_status: params[:lot_status], user_id: params[:user_id])
+                result = quality_history.quality_status if quality_history.quality_status
+              else
+                result = "fail"
+              end
             when "get_org"
               if params[:so_value].present?
                 organization =  Organization.find_by_organization_name(params[:so_value])
