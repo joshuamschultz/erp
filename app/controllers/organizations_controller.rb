@@ -52,7 +52,8 @@ class OrganizationsController < ApplicationController
         @organizations = @organizations.select{|organization| 
           organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
           organization[:organization_expiration_date] = organization.vendor_expiration_date
-          organization[:quality_rating] = organization. vendor_quality.quality_name
+          organization[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
+
           if can? :edit, Organization
             organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
            else
