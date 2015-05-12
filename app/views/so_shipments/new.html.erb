@@ -1,4 +1,4 @@
-<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipping_header"} %>
+ <%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipping_header"} unless params[:type1].present?  && params[:type2].present? %>
 
 <div class="widget">
     <!-- Widget heading -->
@@ -7,7 +7,7 @@
             <h4 class="span6 heading">Shipping</h4>
             <span class="span6 heading right">
             <% if can? :edit ,SoShipment %>
-            	<%= link_to 'Ship', "#", :class => "btn btn-small btn-success", onclick: "initiate_shipping_inputs(); return false" %>
+            	<%= link_to 'Ship', "#", :class => "btn btn-small btn-success", onclick: "initiate_shipping_inputs(); return false" unless params[:type1].present?  && params[:type2].present?%>
             <% end %>
             </span>
         </div> 
@@ -22,11 +22,14 @@
                 <th>Part No</th>
                 <th>Vendor</th>
                 <th>Quantity Ordered</th>
-                <th>Quantity Open</th>
+                <% unless params[:type1].present? && params[:type2].present? %>
+                    <th>Quantity Open</th>
+                <% end %>
                     <th>Due Date</th>
-                <th>Shipping</th>
-                <th>Lot</th>
-            
+                <% unless params[:type1].present? && params[:type2].present? %>
+                    <th>Shipping</th>
+                    <th>Lot</th>
+                <% end %>            
                 <!-- <th>Shelf</th>
                 <th>Unit</th> -->
                 <th></th>
@@ -38,9 +41,24 @@
         </table>
     </div>
 </div>
-
+<% if params[:type1].present? && params[:type2].present? %>
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback",:order => "desc", :grouping => true, :column_index => 0},
+    {:name => "table_report_shipping_items", :path => so_shipments_path(type1: "shipping_to" , type2: "due_date"),  :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback", :sorted => 5, :order => 'desc'},
+        :columns => '[
+                        
+                        { "mData": "so_identifier" }, 
+                        { "mData": "item_part_no" },
+                        { "mData": "vendor_name" },
+                        { "mData": "so_line_quantity" },
+                           { "mData": "so_due_date"  } 
+
+                                       
+                    ]'
+    } 
+%>
+<% else %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback", :sorted => 5, :order => 'desc', :grouping => true, :column_index => 0},
         :columns => '[
         				
                         { "mData": "so_identifier" }, 
@@ -57,6 +75,8 @@
                     ]'
     } 
 %>
+<% end %>
+
 
 <%= render :partial => 'layouts/app_layouts/so_shipments', :locals => {type: "so"} %>
 

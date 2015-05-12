@@ -24,10 +24,13 @@ module CommonActions
 		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id'>"
         if soLineId.present?
             # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
-                        quality_lots = SoLine.find(soLineId).item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no]  } 
-            quality_lots.each do |quality_lot|
-            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
-            end
+             so_line =  SoLine.find(soLineId)
+             if so_line.item.present?
+	            quality_lots = so_line.item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no]  } 
+	            quality_lots.each do |quality_lot|
+	            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
+	            end
+       		end
         end
 		divdata += "</select></div>"
 		divdata
@@ -280,7 +283,8 @@ module CommonActions
 		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
 		menus[:reports][:sub_menu] = 	[
 			{:path => gauges_path(type: "gauge"), :name => "Gage Calibrated"},
-			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"}
+			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"},
+			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "To ship today"}
 
 		]
 
