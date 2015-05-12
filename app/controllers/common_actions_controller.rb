@@ -73,6 +73,12 @@ class CommonActionsController < ApplicationController
               else
                 result = "fail"
               end
+            when "get_lot_status_history"
+              if params[:id].present?
+                quality_histories = QualityHistory.lot_all_status(params[:id])
+                result = quality_histories
+              end
+
             when "get_org"
               if params[:so_value].present?
                 organization =  Organization.find_by_organization_name(params[:so_value])
