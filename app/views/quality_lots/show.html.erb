@@ -1,7 +1,28 @@
 <div class="row-fluid">
   <% if  user_signed_in? &&  !current_user.is_customer? %>
-    <div class="span3 well item_detail_view">
+
+     <div class="test span3">
+    <div class="span12 well item_detail_view">
+
+      
+    
           <%= render :partial => 'po_headers/po_header_info' %>       
+  </div>
+      <div class="span12 well item_detail_view">
+      <div class="row-fluid">
+      <span class="span12">
+        <ul class="n_no p_l">
+          <li id="accepted"><a class="span12 color-005" href="#">Accept</a></li>                
+          <li id="rejected"> <a class="span12 color-006" href="#">Reject</a> </li> 
+          <li id="on hold"><a class="span12 color-007" href="#">On hold</a></li>
+        </ul>
+      </span>
+    </div>
+      <div class="span4" id="id_link">
+   
+      </div>
+
+    </div>
     </div>
   <%  end %>
 
@@ -16,36 +37,8 @@
   </div>
 
 
-  <div class="modal hide fade" id="modal-simple">
-      <div class="modal-header">
-          <h3>Location and lots</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-          <form id="send_mail">
-              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
-                  <thead>
-                      <tr>
-                          <th>Lots </th>
-                          <th>Locations</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <% @quality_lot.item_revision.item.po_shipments.each do |po_shipment| %>
-                        <% if po_shipment.present? %>
-                          <% if po_shipment.quality_lot.present? %>
-                            <%  quality_lot= po_shipment.quality_lot.id %>
-                            <tr>
-                                <td><%= QualityLot.find(quality_lot).lot_control_no %> </td>
-                                <td><%= po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf %></td>
-                            </tr>
-                             <% end %>
-                          <% end %>
-                      <% end %>
-                  </tbody>
-              </table>
-          </form>
-      </div>
+  <div class="modal hide fade all_status" id="modal-simple">
+
  
   </div>
 
@@ -222,21 +215,13 @@
     </div>
        <% end %>
     <br>
-    <div class="row-fluid">
-      <span class="span12">
-        <ul class="n_no">
-          <li id="accepted"><a href="#" class="span12 color-005">Accept</a></li>                
-          <li id="rejected"> <a href="#" class="span12 color-006">Reject</a> </li> 
-          <li id="on hold"><a href="#" class="span12 color-007">On hold</a></li>
-        </ul>
-      </span>
-    </div>
     <br>
     <br>
     <br>
     <br>
     <br>
 
+   
 
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
@@ -523,7 +508,7 @@ iframe {
 }
 
 .color-005 {
-    background-color: #810901 !important;
+    background-color: #127601 !important;
     border-radius: 5px;
     color: #fff;
     padding: 8px;
@@ -531,16 +516,15 @@ iframe {
     font-weight: bold;
 }
 .color-006{
-    background-color: #b1a700 !important;
+    background-color: #810901  !important;
     border-radius: 5px;
     color: #fff;
     padding: 8px;
     text-align: center;
-    margin: 10px 0;
         font-weight: bold;
 }
 .color-007 {
-    background-color: #127601 !important;
+    background-color: #b1a700 !important;
     border-radius: 5px;
     color: #fff;
     padding: 8px;
@@ -551,20 +535,32 @@ iframe {
 
 .color-005:hover, .color-006:hover, .color-007:hover {
 color: #fff;
-font-size: 17px;}
+font-size: 13px;}
 .n_no{margin: 0 ! important;}
 .n_no li{list-style: none ! important;}
 
 
+.n_no.p_l > li {
+    float: left;
+    font-size: 12px;
+    margin: 0 11px 0 0;
+    width: 70px;
+}
 
 
+.d_ss {
+
+    float: left;
+    margin: 21px 0 0;
+    padding: 32px 85px;
+    color: #fff !important;
+}
 </style>
 
 <script type="text/javascript">
 
     $(document).ready(function(){    
-  
-        initiate_notifications();
+        $(".span4").hide();
         $(".n_no li").click(function() {
           lot_status_history($(this).attr('id'));
         });
@@ -577,8 +573,33 @@ font-size: 17px;}
 
     }
     function lot_status_msg(response, callback_params, api_params){
-      alert("You are"+JSON.stringify(response.aaData).replace(/\"/g, ' ')+"the lot"); 
+      var n = JSON.stringify(response.aaData);
+      switch(n) {
+       case '"accepted"':
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #127601;"><div class="clearfix"></div><span class="txt">Accepted</span></a>');   
+            break;
+       case '"rejected"':
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #810901;"><div class="clearfix"></div><span class="txt">Rejected</span></a>');   
+            break;
+       default:
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #b1a700;"><div class="clearfix"></div><span class="txt">On hold</span></a>');   
+      }   
+
+       get_quality_status();
     }
+    function get_quality_status(){
+           initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_lot_status_history", "id": <%= @quality_lot.id%>}}, "lot_all_status", {});
+
+    }
+    function lot_all_status(response, callback_params, api_params){
+      $(".all_status").html('');
+      $(".all_status").append('<div class="modal-header"><h3>Lot status</h3><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><form id="send_mail"><table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2"><thead><tr><th>Status</th><th>User</th><th>Time</th></tr></thead><tbody>'+JSON.stringify(response.aaData).replace(/\"/g, ' '));
+      $(".span4").show();
+    }
+
 </script>
 
 
