@@ -15,13 +15,17 @@ class PoLine < ActiveRecord::Base
   :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
   :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id, :po_line_shipped,
-  :alt_name_transfer_id, :po_line_sell
+  :alt_name_transfer_id, :po_line_sell, :notification_attributes
 
   has_many :quality_lots, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
   has_many :po_shipments, :dependent => :destroy
   has_one :quote_line
   has_many :checklists
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
 
   belongs_to :item_transfer_name, :foreign_key => "alt_name_transfer_id", :class_name => "ItemAltName"
 
@@ -77,7 +81,7 @@ class PoLine < ActiveRecord::Base
       object[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
       object[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || "" 
       object[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-      object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+       object[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
       object[:po_line_quantity] = po_line.po_line_quantity      
       object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
       object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
@@ -132,7 +136,15 @@ end
             customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost, 
             so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
           self.so_line_id = so_line.id
+          
+      # elsif self.po_header.po_is?("transer")
+      #     so_line = self.so_line.present? ? self.so_line : SoLine.new
+      #     so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, 
+      #       customer_quality_id: 25, so_line_cost: self.po_line_cost, 
+      #       so_line_sell: 1, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+      #     self.so_line_id = so_line.id
       end
+
   end
 
 
