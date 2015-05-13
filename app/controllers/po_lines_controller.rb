@@ -109,6 +109,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.save
+        CommonActions.notification_process("PoLine", @po_line)
         # genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
@@ -127,6 +128,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
+        CommonActions.notification_process("PoLine", @po_line)
         # genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }

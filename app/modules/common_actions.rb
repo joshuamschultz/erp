@@ -433,10 +433,20 @@ module CommonActions
 					end
 		 		end
 		 	end
+
+		 	po_lines = PoLine.all
+		 	po_lines.each do |po_line|
+		 		if po_line.present?
+		 			notification = notification_check_status(po_line,"PoLine",quality_user)
+		 			if notification.present? 
+	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO XXXXXX bypassed supplier requirements</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
 		end
 		
-
-		 source
+		source
 	end
 
 	def self.notification_check_status(note_id,note_type,u_id)
@@ -447,7 +457,7 @@ module CommonActions
 
 	def self.notification_process(model_type, model_id)
 		quality_user = User.where(:roles_mask => 4).first
-        
+
         if model_type == "Organization" && model_id.organization_type_id == 6
         	common_process_model(model_type,model_id,quality_user)
 
@@ -466,6 +476,11 @@ module CommonActions
 
         elsif model_type == "ProcessType"
        		common_process_model(model_type,model_id,quality_user)
+
+       	elsif model_type == "PoLine"	 
+       		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+       			common_process_model(model_type,model_id,quality_user)
+       		end
         end   
          
     end
