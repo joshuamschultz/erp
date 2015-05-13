@@ -1,7 +1,18 @@
+<% if params[:type].present? %>
+    <div class="ms_image"> 
+        <div style="background-color:#ffffff; width:250px;margin: 0 auto 10px;padding: 5px; ">
+        <%= image_tag(CompanyInfo.first.image.image.url(:original), :size => "250x250") if CompanyInfo.first.image %>
+        </div>  
+    </div>
+<% end %>
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Lots</h4>
+            <% if params[:type].present? %>
+                <h4 class="span6 heading">Lot missing location</h4> 
+            <% else %>
+                <h4 class="span6 heading">Lots</h4> 
+            <% end %>
             <span class="span6 heading right">
            <!--  <% if can? :new, QualityLot %>
                 <!%= link_to 'New Lot', new_quality_lot_path, :class => "btn btn-mini btn-success" %>
@@ -17,16 +28,20 @@
                 <th>index</th>
                 <th>Control No</th>
                 <th>Part No</th>
-                <th>Revision</th>
+                <% unless params[:type].present? %>
+                    <th>Revision</th>
+                <% end %>
                 <th>Quantity</th>
                 <th>Lots/PO</th>
                 <th>PO</th>
                 <th>Inspection Level</th>
                 <th>Inspection Method</th>
                 <th>Inspection Type</th>
-                <th>Inspector</th>
-                <th>Date Created</th>
-                <th></th>
+                <% unless params[:type].present? %>
+                    <th>Inspector</th>
+                    <th>Date Created</th>
+                    <th></th>
+                <% end %>
               </tr>
             </thead>
 
@@ -36,24 +51,42 @@
         </table>
     </div>
 </div>
-
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
-        :columns => '[
-                        { "mData": "index","bVisible": false },
-                        { "mData": "lot_control_no" },
-                        { "mData": "item_part_no" },
-                        { "mData": "item_revision_name" },                        
-                        { "mData": "lot_quantity" },
-                        { "mData": "total_lots", "bVisible": false },
-                        { "mData": "po_identifier" },
-                        { "mData": "inspection_level_name", "bVisible": false },
-                        { "mData": "inspection_method_name", "bVisible": false },
-                        { "mData": "inspection_type_name", "bVisible": false },     
-                        { "mData": "inspector_name"},
-                        { "mData": "created_date"},
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
+<% unless params[:type].present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id)), :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "lot_control_no" },
+                            { "mData": "item_part_no" },
+                            { "mData": "item_revision_name" },                        
+                            { "mData": "lot_quantity" },
+                            { "mData": "total_lots", "bVisible": false },
+                            { "mData": "po_identifier" },
+                            { "mData": "inspection_level_name", "bVisible": false },
+                            { "mData": "inspection_method_name", "bVisible": false },
+                            { "mData": "inspection_type_name", "bVisible": false },     
+                            { "mData": "inspector_name"},
+                            { "mData": "created_date"},
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]'
+        } 
+    %>
+<% else %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report_lots", :path => quality_lots_path(:type => "lot_missing_location"), :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "lot_control_no" },
+                            { "mData": "item_part_no" },
+                            { "mData": "lot_quantity" },
+                            { "mData": "total_lots", "bVisible": false },
+                            { "mData": "po_identifier" },
+                            { "mData": "inspection_level_name", "bVisible": false },
+                            { "mData": "inspection_method_name", "bVisible": false },
+                            { "mData": "inspection_type_name", "bVisible": false }     
+                        ]'
+        } 
+    %>
+<% end %>
