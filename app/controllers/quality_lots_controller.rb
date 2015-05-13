@@ -20,7 +20,11 @@ class QualityLotsController < ApplicationController
   end
 
   def set_page_info
+    unless params[:type].present?
       @menus[:quality][:active] = "active"
+    else
+      @menus[:reports][:active] = "active"
+    end
   end
 
   def set_autocomplete_values     
@@ -58,6 +62,8 @@ class QualityLotsController < ApplicationController
     if params[:item_id].present?
         @item = Item.find(params[:item_id])
         @quality_lots = @item.quality_lots.order('created_at desc')
+    elsif params[:type].present?
+      @quality_lots = QualityLot.lot_missing_location
     else
         @quality_lots = QualityLot.order('created_at desc')
     end

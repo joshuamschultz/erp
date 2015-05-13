@@ -311,5 +311,9 @@ class QualityLot < ActiveRecord::Base
       po_shipment = self.po_shipment
       po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
   	end
+  	def self.lot_missing_location
+  		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')
+
+  	end
   	
 end

@@ -284,7 +284,8 @@ module CommonActions
 		menus[:reports][:sub_menu] = 	[
 			{:path => gauges_path(type: "gauge"), :name => "Gage Calibrated"},
 			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"},
-			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "To ship today"}
+			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "To ship today"},
+			{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lot missing location"}
 
 		]
 
