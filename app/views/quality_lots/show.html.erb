@@ -18,7 +18,7 @@
         </ul>
       </span>
     </div>
-      <div class="span4" id="id_link">
+      <div class="span12 s_hi" id="id_link">
    
       </div>
 
@@ -337,9 +337,9 @@ function csk_report() {
 function package_report() {
 
     var package_iframe = $("#lot_package")[0];
-    package_iframe.contentWindow.focus();
-    package_iframe.contentWindow.print();
-    control_plan_report();
+      package_iframe.contentWindow.focus();
+      package_iframe.contentWindow.print();
+      control_plan_report();
   
 
 }
@@ -552,7 +552,7 @@ font-size: 13px;}
 
     float: left;
     margin: 21px 0 0;
-    padding: 32px 85px;
+    padding: 32px 88px;
     color: #fff !important;
 }
 </style>
@@ -560,7 +560,7 @@ font-size: 13px;}
 <script type="text/javascript">
 
     $(document).ready(function(){    
-        $(".span4").hide();
+        $(".s_hi").hide();
         $(".n_no li").click(function() {
           lot_status_history($(this).attr('id'));
         });
@@ -597,7 +597,7 @@ font-size: 13px;}
     function lot_all_status(response, callback_params, api_params){
       $(".all_status").html('');
       $(".all_status").append('<div class="modal-header"><h3>Lot status</h3><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><form id="send_mail"><table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2"><thead><tr><th>Status</th><th>User</th><th>Time</th></tr></thead><tbody>'+JSON.stringify(response.aaData).replace(/\"/g, ' '));
-      $(".span4").show();
+      $(".s_hi").show();
     }
 
 </script>
