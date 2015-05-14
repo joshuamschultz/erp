@@ -133,6 +133,7 @@ class QualityLot < ActiveRecord::Base
 		else
 			current_count =current_count+1
 		end
+		Item.skip_callback("update", :after, :update_alt_name)
 		self.po_line.item.update_attribute(:lot_count , current_count)
 
 
