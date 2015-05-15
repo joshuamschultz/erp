@@ -1,4 +1,9 @@
 class EventsController < ApplicationController
+  before_filter :set_page_info
+
+  def set_page_info
+    @menus[:system][:active] = "active"
+  end
   # GET /events
   # GET /events.json
   def index
