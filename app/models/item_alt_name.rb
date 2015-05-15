@@ -44,5 +44,4 @@ class ItemAltName < ActiveRecord::Base
     end
     item_alt_names
   end
-
 end
