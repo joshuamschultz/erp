@@ -1,21 +1,47 @@
-<h1>Listing events</h1>
+<%= javascript_include_tag "application", "calendar.js","fullcalendar.js" %>
+<%= stylesheet_link_tag "application", "fullcalendar.css" %>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<!-- Main Container Fluid -->
+<div class="container-fluid fluid menu-left">
+  <div class="innerLR innerT">
+    <div class="widget">
+      <div class="widget-head">
+        <h4 class="heading">Calendar</h4>
+      </div>
 
-<% @events.each do |event| %>
-  <tr>
-    <td><%= link_to 'Show', event %></td>
-    <td><%= link_to 'Edit', edit_event_path(event) %></td>
-    <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+      <div class="widget-body">
+        <div id="calendar"></div>
+      </div>
+    </div>
 
-<br />
+    <div class="uniformjs" id="external-events">
 
-<%= link_to 'New Event', new_event_path %>
+      <div class="widget">
+        <div class="widget-head">
+          <h3 class="heading">Draggable Events</h3>
+        </div>
+
+        <div class="widget-body">
+          <!-- Events list -->
+          <ul>
+            <li class="glyphicons move"><i></i> My Event 1</li>
+            <li class="glyphicons move"><i></i> My Event 2</li>
+            <li class="glyphicons move"><i></i> My Event 3</li>
+            <li class="glyphicons move"><i></i> My Event 4</li>
+            <li class="glyphicons move"><i></i> My Event 5</li>
+          </ul>
+          <!-- Events list END -->
+
+          <label for="drop-remove" class="checkbox">
+            <input type="checkbox" class="checkbox" id="drop-remove" /> 
+            remove after drop
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>
+
+<script>
+  var basePath = '';
+</script>
