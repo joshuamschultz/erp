@@ -1,5 +1,13 @@
 AllianceFasteners::Application.routes.draw do
 
+  get "permissions/error"
+
+  resources :quality_histories
+
+
+  resources :notifications
+
+
   resources :credit_registers
 
 

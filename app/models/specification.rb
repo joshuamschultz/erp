@@ -8,7 +8,7 @@ class Specification < ActiveRecord::Base
   end
 
   attr_accessible :specification_active, :specification_created_id, :specification_description, 
-  :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes
+  :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes
 
   # (validates_uniqueness_of :specification_identifier if validates_length_of :specification_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :specification_identifier
 
@@ -21,6 +21,12 @@ class Specification < ActiveRecord::Base
   has_many :process_types, :through => :process_type_specifications
 
   has_one :attachment, :as => :attachable, :dependent => :destroy
+
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
+
   
   default_scope :order => 'specification_identifier ASC'
 

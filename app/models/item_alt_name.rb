@@ -31,4 +31,18 @@ class ItemAltName < ActiveRecord::Base
       self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
   end
 
+  def self.get_alt_names
+    # alt_names = ItemAltName.where("organization_id is not NULL")
+    alt_names = ItemAltName.all
+    item_alt_names = []
+    alt_names.each do |alt_item|
+      if  alt_item.item.present? 
+        if alt_item.item_alt_identifier != alt_item.item.item_part_no 
+          item_alt_names << alt_item
+        end
+      end
+    end
+    item_alt_names
+  end
+
 end

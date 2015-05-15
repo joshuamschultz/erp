@@ -86,6 +86,7 @@ class ProcessTypesController < ApplicationController
       @process_type.attachment.created_by = current_user
       if @process_type.save
         ProcessType.process_item_associations(@process_type, params)
+        CommonActions.notification_process("ProcessType", @process_type)
         format.html { redirect_to process_types_url, notice: 'Process type was successfully created.' }
         format.json { render json: @process_type, status: :created, location: @process_type }
       else
@@ -103,6 +104,7 @@ class ProcessTypesController < ApplicationController
     respond_to do |format|
       @process_type.attachment.updated_by = current_user
       if @process_type.update_attributes(params[:process_type])
+        CommonActions.notification_process("ProcessType", @process_type)
         format.html { redirect_to process_types_url, notice: 'Process type was successfully updated.' }
         format.json { head :no_content }
       else

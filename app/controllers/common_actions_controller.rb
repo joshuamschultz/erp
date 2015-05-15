@@ -21,8 +21,27 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
+            when "set_notification_status"
+              if params[:id].present?
+                Notification.find(params[:id]).update_attributes(:note_status => "read")
+                result = "success"
+              end
+
+            when "initiate_notifications"
+              if params[:user_id].present?
 
 
+                # notification_list = {}
+                # source = temp = ''
+                # User.find(params[:user_id]).quality_actions.each do |quality_action|
+                #   temp = '<li><a href="/quality_actions/'+quality_action.id.to_s+'" class="glyphicons envelope"><i></i>Quality Action #1234 Assigned to you</a></li>'
+                #   source += temp
+                # end
+
+                # notification_list["list"] = source
+
+                # result =  notification_list["list"] 
+              end
             when "org_contact_mail"
               if params[:organization_id].present?
                 organization = Organization.find(params[:organization_id])
@@ -47,6 +66,19 @@ class CommonActionsController < ApplicationController
                 quality_lot = QualityLot.find(params[:id])
                 result = quality_lot
               end
+            when "set_lot_status_history"
+              if params[:id].present? && params[:user_id].present? && params[:lot_status].present?
+                quality_history = QualityHistory.create(quality_lot_id: params[:id], quality_status: params[:lot_status], user_id: params[:user_id])
+                result = quality_history.quality_status if quality_history.quality_status
+              else
+                result = "fail"
+              end
+            when "get_lot_status_history"
+              if params[:id].present?
+                quality_histories = QualityHistory.lot_all_status(params[:id])
+                result = quality_histories
+              end
+
             when "get_org"
               if params[:so_value].present?
                 organization =  Organization.find_by_organization_name(params[:so_value])

@@ -1,57 +1,44 @@
 <div class="row-fluid">
   <% if  user_signed_in? &&  !current_user.is_customer? %>
-    <div class="span3 well item_detail_view">
+
+     <div class="test span3">
+    <div class="span12 well item_detail_view">
+
+      
+    
           <%= render :partial => 'po_headers/po_header_info' %>       
+  </div>
+      <div class="span12 well item_detail_view">
+      <div class="row-fluid">
+      <span class="span12">
+        <ul class="n_no p_l">
+          <li id="accepted"><a class="span12 color-005" href="#">Accept</a></li>                
+          <li id="rejected"> <a class="span12 color-006" href="#">Reject</a> </li> 
+          <li id="on hold"><a class="span12 color-007" href="#">On hold</a></li>
+        </ul>
+      </span>
+    </div>
+      <div class="span12 s_hi" id="id_link">
+   
+      </div>
+
+    </div>
     </div>
   <%  end %>
 
 
 
-  <div class="span4 well">
+  <div class="span9 well">
       <a class="widget-stats" href="#" id="">
           <h5 style='color:#8ec657'><strong><%= @quality_lot.current_location %></strong></h5>
           <span class="txt"><strong>Location</strong></span>
           <div class="clearfix"></div>
       </a>
   </div>
-  <div class="span4 well">
-      <a class="widget-stats" href="#" id="">
-          <h5 style='color:#8ec657'><strong><%= @quality_lot.shipped_qty %></strong></h5>
-          <span class="txt"><strong>Shipped Quantity</strong></span>
-          <div class="clearfix"></div>
-      </a>
-  </div> 
 
-  <div class="modal hide fade" id="modal-simple">
-      <div class="modal-header">
-          <h3>Location and lots</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      </div>
-      <div class="modal-body">
-          <form id="send_mail">
-              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
-                  <thead>
-                      <tr>
-                          <th>Lots </th>
-                          <th>Locations</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <% @quality_lot.item_revision.item.po_shipments.each do |po_shipment| %>
-                        <% if po_shipment.present? %>
-                          <% if po_shipment.quality_lot.present? %>
-                            <%  quality_lot= po_shipment.quality_lot.id %>
-                            <tr>
-                                <td><%= QualityLot.find(quality_lot).lot_control_no %> </td>
-                                <td><%= po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf %></td>
-                            </tr>
-                             <% end %>
-                          <% end %>
-                      <% end %>
-                  </tbody>
-              </table>
-          </form>
-      </div>
+
+  <div class="modal hide fade all_status" id="modal-simple">
+
  
   </div>
 
@@ -234,6 +221,7 @@
     <br>
     <br>
 
+   
 
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
@@ -281,9 +269,20 @@
     </div>
 </div>
 
+<div class="new_widget">
+  <div class="row-fluid">
+    
+    <div class="span6">
+      <%= render :partial => 'so_shipments/quality_lot_shipments', :locals => {open_path: quality_lot_path(@quality_lot, :shipment_type => "shipped"), closed_path: quality_lot_path(@quality_lot, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
+    </div>
 
-<%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+    <div class="span6">
+      <%= render :partial => 'comments/comments', 
+      :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+    </div>
+
+  </div>
+</div>
 
 
 
@@ -338,9 +337,9 @@ function csk_report() {
 function package_report() {
 
     var package_iframe = $("#lot_package")[0];
-    package_iframe.contentWindow.focus();
-    package_iframe.contentWindow.print();
-    control_plan_report();
+      package_iframe.contentWindow.focus();
+      package_iframe.contentWindow.print();
+      control_plan_report();
   
 
 }
@@ -508,6 +507,102 @@ iframe {
     width: 0;
 }
 
+.color-005 {
+    background-color: #127601 !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+.color-006{
+    background-color: #810901  !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+        font-weight: bold;
+}
+.color-007 {
+    background-color: #b1a700 !important;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px;
+    text-align: center;
+        font-weight: bold;
+}
+
+
+.color-005:hover, .color-006:hover, .color-007:hover {
+color: #fff;
+font-size: 13px;}
+.n_no{margin: 0 ! important;}
+.n_no li{list-style: none ! important;}
+
+
+.n_no.p_l > li {
+    float: left;
+    font-size: 12px;
+    margin: 0 11px 0 0;
+    width: 70px;
+}
+
+
+.d_ss {
+
+    float: left;
+    margin: 21px 0 0;
+    padding: 32px 88px;
+    color: #fff !important;
+}
 </style>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){    
+        $(".s_hi").hide();
+        $(".n_no li").click(function() {
+          lot_status_history($(this).attr('id'));
+        });
+
+    });
+
+    function lot_status_history(status){
+ 
+      initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_status_history", "id": <%= @quality_lot.id%>, "user_id": <%= current_user.id %>, "lot_status": status}}, "lot_status_msg", {});
+
+    }
+    function lot_status_msg(response, callback_params, api_params){
+      var n = JSON.stringify(response.aaData);
+      switch(n) {
+       case '"accepted"':
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #127601;"><div class="clearfix"></div><span class="txt">Accepted</span></a>');   
+            break;
+       case '"rejected"':
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #810901;"><div class="clearfix"></div><span class="txt">Rejected</span></a>');   
+            break;
+       default:
+            $("#id_link").html('');
+            $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #b1a700;"><div class="clearfix"></div><span class="txt">On hold</span></a>');   
+      }   
+
+       get_quality_status();
+    }
+    function get_quality_status(){
+           initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_lot_status_history", "id": <%= @quality_lot.id%>}}, "lot_all_status", {});
+
+    }
+    function lot_all_status(response, callback_params, api_params){
+      $(".all_status").html('');
+      $(".all_status").append('<div class="modal-header"><h3>Lot status</h3><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><form id="send_mail"><table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2"><thead><tr><th>Status</th><th>User</th><th>Time</th></tr></thead><tbody>'+JSON.stringify(response.aaData).replace(/\"/g, ' '));
+      $(".s_hi").show();
+    }
+
+</script>
+
+
+
 
 

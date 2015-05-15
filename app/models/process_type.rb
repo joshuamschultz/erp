@@ -2,7 +2,7 @@ class ProcessType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessible :process_active, :process_created_id, :process_description, 
-  :process_notes, :process_short_name, :process_updated_id, :attachment_attributes
+  :process_notes, :process_short_name, :process_updated_id, :attachment_attributes, :notification_attributes
 
   after_initialize :default_values
 
@@ -27,6 +27,11 @@ class ProcessType < ActiveRecord::Base
 
   default_scope :order => 'process_short_name ASC'
   accepts_nested_attributes_for :attachment, :allow_destroy => true
+
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
 
 
 
