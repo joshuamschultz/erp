@@ -302,6 +302,7 @@ module CommonActions
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
+			{:path => events_path, :name => "Calendar"},
 			{:path => commodities_path, :name => "Commodities"},
 			{:path => check_code_path(CheckCode.first), :name => "Counters"},
 			# {:path => }
