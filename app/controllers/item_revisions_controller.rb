@@ -122,14 +122,14 @@ class ItemRevisionsController < ApplicationController
     @item_revision.destroy
 
     respond_to do |format|
-      # if @item.item_revisions.count == 0
-      #   @item.delete
-      #   format.html { redirect_to items_path, :notice => 'Item was successfully deleted.' }
-      #   format.json { head :ok }
-      # else
-      format.html { redirect_to items_path, :notice => 'Item revision was successfully deleted.' }
-      format.json { head :ok }
-      # end
+      if @item.item_revisions.count == 0
+        @item.delete
+        format.html { redirect_to items_path, :notice => 'Item was successfully deleted.' }
+        format.json { head :ok }
+      else
+        format.html { redirect_to item_path(@item), :notice => 'Item revision was successfully deleted.' }
+        format.json { head :ok }
+      end
     end
   end
 end
