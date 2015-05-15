@@ -132,5 +132,4 @@ class ItemRevisionsController < ApplicationController
       # end
     end
   end
-  
 end
