@@ -26,15 +26,8 @@ class ItemAltNamesController < ApplicationController
   def index
 
     # @item_alt_names = ItemAltName.where("organization_id is not NULL")
-    @item_alt_names = []
-        @alt_names = ItemAltName.all
-         @alt_names.each do |alt_item|
-          if alt_item.item_alt_identifier != alt_item.item.item_part_no
-            @item_alt_names << alt_item
-          end
-        end
-    @item_alt_names
-    
+    @item_alt_names = ItemAltName.get_alt_names
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { 

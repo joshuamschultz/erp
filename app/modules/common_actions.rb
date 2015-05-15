@@ -24,10 +24,13 @@ module CommonActions
 		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id'>"
         if soLineId.present?
             # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
-                        quality_lots = SoLine.find(soLineId).item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no]  } 
-            quality_lots.each do |quality_lot|
-            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
-            end
+             so_line =  SoLine.find(soLineId)
+             if so_line.item.present?
+	            quality_lots = so_line.item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no]  } 
+	            quality_lots.each do |quality_lot|
+	            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
+	            end
+       		end
         end
 		divdata += "</select></div>"
 		divdata
@@ -274,7 +277,17 @@ module CommonActions
 			]
 		end
 
-		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
+
+
+
+		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
+		menus[:reports][:sub_menu] = 	[
+			{:path => gauges_path(type: "gauge"), :name => "Gage Calibrated"},
+			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"},
+			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "To ship today"},
+			{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lot missing location"}
+
+		]
 
 		menus[:documentation] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Documentation", :type => "multiple"}
 		menus[:documentation][:sub_menu] = 	[
@@ -289,6 +302,7 @@ module CommonActions
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
+			{:path => events_path, :name => "Calendar"},
 			{:path => commodities_path, :name => "Commodities"},
 			{:path => check_code_path(CheckCode.first), :name => "Counters"},
 			# {:path => }
@@ -334,11 +348,11 @@ module CommonActions
 	def self.get_new_identifier(model, field, letter)
 		max_identifier = model.maximum(field)
 		if max_identifier.nil?
-			letter + "0001"
-		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
-			letter + "0001"
+			letter + "00001"
+		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 99999
+			letter + "00001"
 		else
-			letter + "%04d" % cur_identifier
+			letter + "%05d" % cur_identifier
 		end
 	end
 
@@ -364,4 +378,128 @@ module CommonActions
 			"<div style='color:green'>#{status.capitalize}</div>".html_safe
 		end	
 	end
+
+	def self.process_application_notifications(user_id)
+		temp = source = ''
+		user = User.find(user_id)
+		quality_user = User.where(:roles_mask => 4).first
+		user.quality_actions.each do |quality_action|
+			notification = notification_check_status(quality_action,"QualityAction",user)
+			if notification.present? 
+				temp = "<li id="+notification.first.id.to_s+"><a href='/quality_actions/"+quality_action.id.to_s+"' class='glyphicons envelope'><i></i>"+quality_action.quality_action_no.to_s+"-Quality Action Assigned to you </a></li>"
+				source += temp
+			end
+		end
+
+		if User.current_user.present? && User.current_user.is_quality? 
+		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
+		 	vendor_organizations.each do |vendor_organization|
+		 		if vendor_organization.present?
+		 			notification = notification_check_status(vendor_organization,"Organization",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/organizations/"+vendor_organization.id.to_s+"' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	prints = Print.all
+		 	prints.each do |print|
+		 		if print.present?
+		 			notification = notification_check_status(print,"Print",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/prints/"+print.id.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	specifications = Specification.all
+		 	specifications.each do |specification|
+		 		if specification.present?
+		 			notification = notification_check_status(specification,"Specification",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/specifications/"+specification.id.to_s+"' class='glyphicons envelope'><i></i>"+specification.specification_identifier+"-specification created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	process_types = ProcessType.all
+		 	process_types.each do |process_type|
+		 		if process_type.present?
+		 			notification = notification_check_status(process_type,"ProcessType",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/process_types/"+process_type.id.to_s+"' class='glyphicons envelope'><i></i>"+process_type.process_short_name+"-process_type created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	po_lines = PoLine.all
+		 	po_lines.each do |po_line|
+		 		if po_line.present?
+		 			notification = notification_check_status(po_line,"PoLine",quality_user)
+		 			if notification.present? 
+	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO XXXXXX bypassed supplier requirements</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+		end
+		
+		source
+	end
+
+	def self.notification_check_status(note_id,note_type,u_id)
+		if Notification.where(:notable_id => note_id.id).present?
+			Notification.where("notable_id =? AND notable_type =? AND user_id =? AND note_status =? ", note_id.id, note_type, u_id.id, "unread")
+		end
+	end
+
+	def self.notification_process(model_type, model_id)
+		quality_user = User.where(:roles_mask => 4).first
+
+        if model_type == "Organization" && model_id.organization_type_id == 6
+        	common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "QualityAction"
+        	if model_id.users.present?
+	            model_id.users.each do |user|
+	                notification_set_status(model_id,model_type,user.id)
+	            end
+        	end
+
+        elsif model_type == "Print"
+       		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "Specification"
+      		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "ProcessType"
+       		common_process_model(model_type,model_id,quality_user)
+
+       	elsif model_type == "PoLine"	 
+       		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+       			common_process_model(model_type,model_id,quality_user)
+       		end
+        end   
+         
+    end
+  
+    def self.common_process_model(model, model_note, user)
+    	if user.present?
+        	notification_set_status(model_note,model,user.id)
+       	end    	 
+    end
+
+    def self.notification_set_status(model_identifier,model_type_name,user_id)
+    	notification = Notification.find_by_notable_id(model_identifier.id)
+    	unless notification.present?
+    		notification = Notification.create(notable_id: model_identifier.id, notable_type:  model_type_name, note_status:  "unread", user_id:  user_id)
+    		notification.save
+    	else
+    		notification.update_attributes(:note_status => "unread")
+    	end
+    end
 end

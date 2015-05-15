@@ -20,7 +20,11 @@ class OrganizationsController < ApplicationController
 
   def set_page_info
     unless user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-      @menus[:contacts][:active] = "active"
+      unless params[:type1].present? && params[:type2].present?
+        @menus[:contacts][:active] = "active" 
+      else
+        @menus[:reports][:active] = "active"
+      end
     end
   end
 
@@ -33,10 +37,13 @@ class OrganizationsController < ApplicationController
   # GET /organizations.json
   def index
     if params[:type]
-        @org_type = MasterType.find_by_type_value(params[:type])
-        @organizations = @org_type.type_based_organizations
+      @org_type = MasterType.find_by_type_value(params[:type])
+      @organizations = @org_type.type_based_organizations
+    elsif params[:type1].present? && params[:type2].present?
+      @org_type = MasterType.find_by_type_value(params[:type1])
+      @organizations = @org_type.type_based_organizations.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ?", Date.today, Date.today+11.month)
     else
-        @organizations = Organization.all
+      @organizations = Organization.all
     end
 
     respond_to do |format|
@@ -44,6 +51,9 @@ class OrganizationsController < ApplicationController
       format.json {
         @organizations = @organizations.select{|organization| 
           organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
+          organization[:organization_expiration_date] = organization.vendor_expiration_date
+          organization[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
+
           if can? :edit, Organization
             organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
            else
@@ -52,6 +62,18 @@ class OrganizationsController < ApplicationController
         }
         render json: {:aaData => @organizations}  }
     end
+  end
+
+  def mobile_api
+ 
+      @organizations = Organization.all
+      respond_to do |format|
+      format.html # index.html.erb
+      format.json {
+ 
+      render json:  @organizations  }
+      end
+
   end
 
   # GET /organizations/1
@@ -105,6 +127,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.save
+        CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
         format.json { render json: @organization, status: :created, location: @organization }
       else
@@ -123,6 +146,7 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.update_attributes(params[:organization])
+        CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { head :no_content }
       else

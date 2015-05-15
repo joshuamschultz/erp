@@ -16,10 +16,9 @@
                 <a href="#themer" data-toggle="collapse" class="glyphicons eyedropper single-icon"><i></i></a>
             </li> -->                                   
                                 
-            <li class="dropdown dd-1 dd-2">
-                <a href="" data-toggle="dropdown">Notifications <span class="count">0</span></a>
-                <ul class="dropdown-menu pull-left">
-                    <li><a href="#" class="glyphicons envelope"><i></i>0 New Notifications</a></li>
+            <li class="dropdown dd-1 dd-2 alarm">
+                <ul class="dropdown-menu pull-left w_width" id="notify_count" >
+          
                     <!-- <li><a href="#" class="glyphicons chat"><i></i> 5 Messages</a></li>
                     <li><a href="#" class="glyphicons conversation"><i></i> 1 New Reply</a></li> -->
                 </ul>
@@ -93,3 +92,49 @@
 
 </div>
 <!-- Top navbar END -->
+
+<script type="text/javascript">
+
+    $(document).ready(function(){    
+  
+        initiate_notifications();
+        $("#notify_count li").click(function() {
+            notification_status_change($(this).attr('id'));
+        });
+
+    });
+
+    function notification_status_change(notify_id){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_notification_status", "id": notify_id}}, "set_quality_lots", {});
+    }
+
+    function initiate_notifications(){
+
+            var load_me = "<%= CommonActions.process_application_notifications(current_user.id).html_safe %>" ;
+            $("#notify_count").append(load_me);
+            set_notifications();
+    }
+
+    function set_notifications(){
+        var count_val = $("#notify_count li").length;
+        if(count_val != 0){
+         
+            $(".alarm").append('<a href="" data-toggle="dropdown">Notifications <span class="count" id="count_no">'+count_val+'</span></a>');
+        }
+        else{
+            $("#notify_count").append( "<li><a href='' class='glyphicons envelope'><i></i>No messages</a></li>");
+            $(".alarm").append('<a href="" data-toggle="dropdown">Notifications <span class="count" id="count_no">'+count_val+'</span></a>');
+        }        
+        
+
+    }
+  
+
+
+</script>
+
+<style>
+.w_width {
+width: 330px !important;
+}
+</style>

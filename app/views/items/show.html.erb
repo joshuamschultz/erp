@@ -12,9 +12,9 @@
 </div>
 
 <div class="row-fluid">
-    <%= render :partial => 'items/item_info' %>
+    <%# render :partial => 'items/item_info' %>
 
-    <div class="span9"> 
+    <div class="span12"> 
         <div class="row-fluid item_detail_classic_btn">
             <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
@@ -24,7 +24,7 @@
                 </a>
             </div>
 
-            <div class="span3 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong><%= @item.qty_on_order %></strong></h5>
                     <span class="txt"><strong>Quantity On Order</strong></span>
@@ -32,7 +32,7 @@
                 </a>
             </div> 
 
-            <div class="span3 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong><%= @item.qty_on_committed %></strong></h5>
                     <span class="txt"><strong>Quantity Committed</strong></span>
@@ -41,7 +41,7 @@
             </div>
 
         <% unless  user_signed_in? &&  (current_user.is_vendor? || current_user.is_customer? )%>
-            <div class="span2 well">
+            <div class="span3 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong>$<%= @item.weighted_cost %></strong></h5>
                     <span class="txt"><strong>Weighted Cost</strong></span>
@@ -55,7 +55,7 @@
 
 
 
-            <div class="span1 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="<%= quality_lots_path(:item_id => @item.id) %>" id="">
                     <h5><strong><%= @item.quality_lots.count %></strong></h5>
                     <span class="txt"><strong>Lots</strong></span>
@@ -65,26 +65,193 @@
         </div>
 
         <div class="separator bottom"></div>
-       <% if can? :view, Dimension %>
-        <!-- Dimensions -->
-        <%= render 'item_part_dimensions/item_dimensions' %>
-        <% end %> 
+
     </div>
 </div>
-<div class="new_widget">
-    <div class="row-fluid">
-        <% if can? :view, ProcessType %>
-            <div class="span6">
-                <%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
+
+
+<!-- Tabs -->
+    <div class="box-generic">
+    
+        <!-- Tabs Heading -->
+        <div class="tabsbar">
+            <ul>
+                <li class="glyphicons camera active"><a href="#tab1-3" data-toggle="tab"><i></i>Part Information<strong></strong></a></li>
+                <li class="glyphicons folder_open"><a href="#tab2-3" data-toggle="tab"><i></i>Part Specifications<strong></strong></a></li>
+                <li class="glyphicons circle_plus tab-stacked"><a href="#tab3-3" data-toggle="tab"><i></i> <span>Part History
+</span></a></li>
+ 
+            </ul>
+        </div>
+        <!-- // Tabs Heading END -->
+        
+        <div class="tab-content">
+                
+            <!-- Tab content -->
+            <div class="tab-pane active" id="tab1-3">
+                <%= render :partial => 'items/item_info' %>
+
+                <div class="new_widget">
+                    <div class="row-fluid">
+                        <div class="span9 ee-10">
+                            <%= render :partial => 'attachments/droppable_form_plup' if @item_revision  %>
+                        </div>
+                        <div class="span8 ee-11">
+                            <%= render 'attachments/attachments'  if @item_revision  %>
+                        </div>
+                    </div>
+                </div>
+
+                <% if can? :view, QualityLot %>
+                    <%= render :partial => 'quality_lots/lots' %>
+                <% end %>
+
+                <%= render 'item_revisions/item_revisions' %>
+
+
+                <div id="send_quote">
+                    <% if @quote_type_item == "vendor" %> 
+                        <% unless  user_signed_in? &&  current_user.is_customer? %>  
+                            <% if can? :view, Quote %>
+                                <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
+                            <% end %>
+                        <% end %>
+                        <% else %>
+                        <% unless  user_signed_in? &&  current_user.is_vendor? %>
+                            <% if can? :view, CustomerQuote %>
+                                <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </div>
+
             </div>
-        <% end %>
-        <% if can? :view, Specification %>
-            <div class="span6">
-                <%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
+            <!-- // Tab content END -->
+            
+            <!-- Tab content -->
+            <div class="tab-pane" id="tab2-3">
+                <% if can? :view, Dimension %>
+                    <!-- Dimensions -->
+                    <%= render 'item_part_dimensions/item_dimensions' %>
+                <% end %> 
+
+                <div class="new_widget">
+                    <div class="row-fluid">
+                        <% if can? :view, ProcessType %>
+                            <div class="span6">
+                                <%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
+                            </div>
+                        <% end %>
+                        <% if can? :view, Specification %>
+                            <div class="span6">
+                                <%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(:item_id => @item.id), new_path: new_specification_path, name: "specification"} %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+
             </div>
-        <% end %>
+            <!-- // Tab content END -->
+            
+            <!-- Tab content -->
+            <div class="tab-pane" id="tab3-3">
+                <div class="new_widget">
+                    <div class="row-fluid">
+                         <% if can? :view, PoShipment %>   
+                            <div class="span6">
+                            <%= render :partial => 'po_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
+                            </div>
+                        <% end %>
+                         <% if can? :view, SoShipment %>
+                            <div class="span6">
+                            <%= render :partial => 'so_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
+                            </div>
+                        <% end %>
+
+                    </div>
+                </div>
+
+                <div class="new_widget">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div id="po_header">
+                                <% if can? :manage, PoHeader %>
+                                <%= render :partial => 'po_headers/po_list', locals: {
+                                    all_path: item_path(@item, :revision_id => @item_revision.id),
+                                    open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
+                                    closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
+                                    index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id),
+                                    new_path: new_po_header_path
+                                    }
+                                %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <% unless  user_signed_in? &&  current_user.is_vendor? %>
+                                <div id="so_header">
+                                    <%= render :partial => 'so_headers/so_list', locals: {
+                                        all_path: item_path(@item, :revision_id => @item_revision.id),
+                                        open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
+                                        closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
+                                        index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id),
+                                        new_path: new_so_header_path
+                                        }
+                                    %>
+                                </div>
+
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="new_widget">
+                    <div class="row-fluid">
+                         <% if can? :view, Payable %>        
+                            <div class="span6">
+                                <%= render :partial => 'payables/item_payables' %>
+                            </div>
+                        <% end %>
+
+                        <% if can? :view, Receivable %>  
+                            <div class="span6">
+                            <%= render :partial => 'receivables/item_receivables' %>
+                            </div>
+                        <% end %>        
+                    </div>
+                </div>
+
+                <!-- Inventory Adjustments -->
+                <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
+
+            </div>
+            <!-- // Tab content END -->
+            
+
+            
+        </div>
+
     </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <% #render :partial => 'process_types/process_specs', :locals => {item_id:  @item.nil? ? nil : @item.id, :process_types => "1"} %>
@@ -92,111 +259,16 @@
 
 
 
-<div class="new_widget">
-    <div class="row-fluid">
-       <div class="span6 ee-10">
-  <%= render :partial => 'attachments/droppable_form_plup' if @item_revision  %>
-  </div>
-     <div class="span6 ee-11">
-  <%= render 'attachments/attachments'  if @item_revision  %>
-</div>
-</div>
 
 
-</div>
 
 
-<% if can? :view, QualityLot %>
-    <%= render :partial => 'quality_lots/lots' %>
-<% end %>
 
-<div class="new_widget">
-    <div class="row-fluid">
-         <% if can? :view, PoShipment %>   
-            <div class="span6">
-            <%= render :partial => 'po_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_payable: false} %>
-            </div>
-        <% end %>
-         <% if can? :view, SoShipment %>
-            <div class="span6">
-            <%= render :partial => 'so_shipments/item_shipments', :locals => {open_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "shipped"), closed_path: item_path(@item, :revision_id => @item_revision.id, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
-            </div>
-        <% end %>
 
-    </div>
-</div>
 
-<div class="new_widget">
-    <div class="row-fluid">
-        <div class="span6">
-            <div id="po_header">
-                <% if can? :manage, PoHeader %>
-                <%= render :partial => 'po_headers/po_list', locals: {
-                    all_path: item_path(@item, :revision_id => @item_revision.id),
-                    open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
-                    closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"),
-                    index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id),
-                    new_path: new_po_header_path
-                    }
-                %>
-                <% end %>
-            </div>
-        </div>
-        <div class="span6">
-            <% unless  user_signed_in? &&  current_user.is_vendor? %>
-                <div id="so_header">
-                    <%= render :partial => 'so_headers/so_list', locals: {
-                        all_path: item_path(@item, :revision_id => @item_revision.id),
-                        open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"),
-                        closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"),
-                        index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id),
-                        new_path: new_so_header_path
-                        }
-                    %>
-                </div>
 
-            <% end %>
-        </div>
-    </div>
-</div>
 
-<div class="new_widget">
-    <div class="row-fluid">
-         <% if can? :view, Payable %>        
-            <div class="span6">
-                <%= render :partial => 'payables/item_payables' %>
-            </div>
-        <% end %>
 
-        <% if can? :view, Receivable %>  
-            <div class="span6">
-            <%= render :partial => 'receivables/item_receivables' %>
-            </div>
-        <% end %>        
-    </div>
-</div>
-
-<div id="send_quote">
-
-    <% if @quote_type_item == "vendor" %> 
-        <% unless  user_signed_in? &&  current_user.is_customer? %>  
-           <% if can? :view, Quote %>
-                <%= render :partial => 'quotes/quote_list', locals: { :show_quote_types => true} %>
-            <% end %>
-        <% end %>
-    <% else %>
-       <% unless  user_signed_in? &&  current_user.is_vendor? %>
-        <% if can? :view, CustomerQuote %>
-            <%= render :partial => 'customer_quotes/customer_quote_list', :locals => { :show_quote_types => true } %>
-        <% end %>
-        <% end %>
-    <% end %>
-   
-</div>
-<!-- Revisions -->
-<%= render 'item_revisions/item_revisions' %>
-
-<%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
 
 
 <script type="text/javascript">
@@ -342,5 +414,13 @@ function get_so_header(status){
 
 .span6.ee-11 {
     width: 64%;
+}
+
+
+.span9.ee-10 {
+    padding: 0 0 0 20px;
+}
+.span8.ee-11 {
+    width: 73%;
 }
 </style>

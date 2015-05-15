@@ -5,6 +5,7 @@
         <div class="row-fluid">
             <h4 class="span6 heading"><%= @org_type.type_name if @org_type %> Organizations</h4>
             <span class="span6 heading right">
+            <% unless params[:type1].present? && params[:type2].present?  %>
                 <%= link_to 'All', organizations_path, :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Customer', organizations_path(type: "customer"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Vendor', organizations_path(type: "vendor"), :class => "btn btn-mini btn-info" %>
@@ -12,6 +13,7 @@
                  <% if can? :edit, Organization %>
                     <%= link_to 'New Organization', new_organization_path, :class => "btn btn-mini btn-success" %>
                 <% end %>
+            <% end %>
             </span>
         </div> 
     </div>
@@ -21,24 +23,36 @@
         <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
               <tr>
-                <th>ID</th>
+                <%  unless params[:type1].present? && params[:type2].present?   %>
+                <th>ID </th> 
+                <% end %>
                 <th>Name</th>
+                <% if params[:type1].present? && params[:type2].present? %>
+                    <th>Quality Rating</th>
+                    <th>Expiration Date</th>
+                <% end %>
                 <th>Short Name</th>
                 <th>Description</th>
-                <th>Telephone</th>
+                <% unless params[:type1].present? && params[:type2].present? %>
+                    <th>Telephone</th>
+                <% end %>
                 <th>Website</th>
                 <th>Active</th>
                 <th>Address_1</th>
                 <th>Address_2</th>
                 <th>City</th>
                 <th>Country</th>
-                <th>Email</th>
-                <th>Fax</th>
+                <% unless params[:type1].present? && params[:type2].present?   %>
+                    <th>Email</th>
+                    <th>Fax</th>
+                <% end %>
                 <th>Notes</th>
                 <th>State</th>
                 <th>Zipcode</th>
                 <th>Expiration Date</th>
-                <th></th>
+                <% unless params[:type1].present? && params[:type2].present?   %>
+                    <th></th>
+                <% end %>
               </tr>
             </thead>
 
@@ -48,7 +62,31 @@
         </table>
     </div>
 </div>
-
+<% if params[:type1].present? && params[:type2].present? %>
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
+        :name => "table_report", :path => organizations_path(type1: (@org_type.type_value if @org_type), type2: "certification"),
+        :extras => {:slno => false}, 
+        :columns => '[
+                     
+                        { "mData": "organization_name" },
+                        { "mData": "quality_rating" },
+                        { "mData": "organization_expiration_date" },
+                        { "mData": "organization_short_name", "bVisible": false },
+                        { "mData": "organization_description", "bVisible": false },
+                        { "mData": "organization_website", "bVisible": false },
+                        { "mData": "organization_active", "bVisible": false },
+                        { "mData": "organization_address_1", "bVisible": false },
+                        { "mData": "organization_address_2", "bVisible": false },
+                        { "mData": "organization_city", "bVisible": false },
+                        { "mData": "organization_country", "bVisible": false },
+                        { "mData": "organization_notes", "bVisible": false },
+                        { "mData": "organization_state", "bVisible": false },
+                        { "mData": "organization_zipcode", "bVisible": false },
+                        { "mData": "vendor_expiration_date", "bVisible": false }
+                    ]'
+    } 
+%>
+<% else %>
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>     {
         :name => "table_report", :path => organizations_path(type: (@org_type.type_value if @org_type)),
         :extras => {:slno => false}, 
@@ -74,3 +112,4 @@
                     ]'
     } 
 %>
+<% end %>
