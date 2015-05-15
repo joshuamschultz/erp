@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :events
+
+
   get "permissions/error"
 
   resources :quality_histories
