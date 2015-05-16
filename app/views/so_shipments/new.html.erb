@@ -58,7 +58,7 @@
 %>
 <% else %>
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback", :sorted => 5, :order => 'desc', :grouping => true, :column_index => 0},
+    {:name => "table_report_shipping_items", :path => so_shipments_path(type: "shipping"), :extras => {:slno => false, :fnDrawCallback => "shipping_fnDrawCallback",  :grouping => true, :column_index => 0, :bSort => false},
         :columns => '[
         				
                         { "mData": "so_identifier" }, 

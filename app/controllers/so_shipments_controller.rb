@@ -34,11 +34,8 @@ class SoShipmentsController < ApplicationController
       format.html # index.html.erb
       format.json { 
         if(params[:type] == "shipping")
-            @so_lines =  SoLine.where(:so_line_status => "open").select{|so_line|
-        
-                
-
-                so_line = so_line_data_list(so_line, false)
+            @so_lines =   SoLine.where(:so_line_status => "open").joins(:so_header).order("so_headers.so_due_date DESC").select{|so_line|
+              so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
