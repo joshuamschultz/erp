@@ -9,8 +9,8 @@
 <% extras[:blenghchange] = true if extras[:blenghchange].nil? %>
 <% extras[:hide_column] = false if extras[:hide_column].nil? %>
 <% extras[:currency_format] = false if extras[:currency_format].nil? %>
+<% extras[:bSort] = true if extras[:bSort].nil? %>
 <%# extras[:fnDrawCallback] ||= nil %>
-
 <script type="text/javascript">
     var data_<%= name %>;
     
@@ -39,6 +39,7 @@
             "bProcessing": true,
             "sAjaxSource": '<%= path %>',
             "aaSorting": [[<%= extras[:sorted] %>, "<%= extras[:order] %>"]],
+            "bSort":  <%= extras[:bSort] %>,
             "aoColumns": <%= columns.html_safe %>,
             "bFilter": <%= extras[:bfilter] %>,
             "bLengthChange": <%= extras[:blenghchange] %>,
@@ -51,6 +52,7 @@
                "aTargets": <%= extras[:currency_format] %>
                 
             }]
+
         });
 
         <% if extras[:grouping] %>
