@@ -48,7 +48,8 @@ class SoShipment < ActiveRecord::Base
                 self.shipment_process_id = 'S'+so_shipment.shipment_process_id.split('',2)[1]
               end
             else
-              if SoShipment.last.shipment_process_id.present?
+              last_shipment = SoShipment.last
+              if last_shipment.present? && last_shipment.shipment_process_id.present?
                 shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
                 self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
               else
