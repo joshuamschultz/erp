@@ -22,7 +22,8 @@ class Item < ActiveRecord::Base
 
   has_many :inventory_adjustments, :dependent => :destroy
 
-
+  has_many :item_lots
+  
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 
   after_initialize :default_values
