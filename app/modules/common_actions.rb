@@ -441,7 +441,7 @@ module CommonActions
 		 		if po_line.present?
 		 			notification = notification_check_status(po_line,"PoLine",quality_user)
 		 			if notification.present? 
-	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO XXXXXX bypassed supplier requirements</a></li>"
+	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO "+po_line.po_header.po_identifier+" bypassed supplier requirements</a></li>"
 						source += temp
 					end
 		 		end

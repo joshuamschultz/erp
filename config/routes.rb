@@ -1,5 +1,8 @@
 AllianceFasteners::Application.routes.draw do
 
+  resources :item_lots
+
+
   resources :events
 
 

@@ -52,6 +52,7 @@ class QualityLot < ActiveRecord::Base
   	has_one :po_shipment
   	has_many :quality_histories, :dependent => :destroy
 
+  	has_one :item_lot
   	# has_one :po_shipment, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
@@ -128,14 +129,17 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if self.po_line.item.quality_lots.present?
-			current_count = self.po_line.item.quality_lots.count+1
+		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
+			lot_count = self.po_line.item.quality_lots.count
+
+			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
+			current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
 		else
 			current_count =current_count+1
 		end
-		Item.skip_callback("update", :after, :update_alt_name)
+		# Item.skip_callback("update", :after, :update_alt_name)
 		
-		self.po_line.item.update_attribute(:lot_count , current_count)
+		# self.po_line.item.update_attribute(:lot_count , current_count)
 
 
 		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
@@ -156,7 +160,7 @@ class QualityLot < ActiveRecord::Base
 		
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.id).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
