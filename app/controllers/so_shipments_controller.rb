@@ -127,7 +127,7 @@ class SoShipmentsController < ApplicationController
       object[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
       object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
       object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
-
+      object[:customer_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
     object[:lot] = "" 
     
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
