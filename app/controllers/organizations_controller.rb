@@ -41,7 +41,7 @@ class OrganizationsController < ApplicationController
       @organizations = @org_type.type_based_organizations
     elsif params[:type1].present? && params[:type2].present?
       @org_type = MasterType.find_by_type_value(params[:type1])
-      @organizations = @org_type.type_based_organizations.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ?", Date.today, Date.today+11.month)
+      @organizations = @org_type.type_based_organizations.where("vendor_expiration_date > ? ", Date.today+11.month)
     else
       @organizations = Organization.all
     end

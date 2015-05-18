@@ -1,0 +1,27 @@
+<h1>Listing item_lots</h1>
+
+<table>
+  <tr>
+    <th>Quality lot</th>
+    <th>Item</th>
+    <th>Item lot count</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @item_lots.each do |item_lot| %>
+  <tr>
+    <td><%= item_lot.quality_lot_id %></td>
+    <td><%= item_lot.item_id %></td>
+    <td><%= item_lot.item_lot_count %></td>
+    <td><%= link_to 'Show', item_lot %></td>
+    <td><%= link_to 'Edit', edit_item_lot_path(item_lot) %></td>
+    <td><%= link_to 'Destroy', item_lot, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Item lot', new_item_lot_path %>
