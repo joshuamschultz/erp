@@ -130,9 +130,9 @@ class QualityLot < ActiveRecord::Base
 
 		# end
 		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
-			lot_count = self.po_line.item.quality_lots.count
+			# lot_count = self.po_line.item.quality_lots.count
 
-			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
+			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id)  
 			current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
 		else
 			current_count =current_count+1
@@ -160,7 +160,7 @@ class QualityLot < ActiveRecord::Base
 		
 
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.item_lot.item_lot_count).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
