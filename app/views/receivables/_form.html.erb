@@ -53,7 +53,7 @@
   <div class="form-actions">
     <%= f.button :submit, 'Create Invoice' if @receivable.new_record? %>
     <%= f.button :submit, 'Update Invoice', :id =>'update_invoice'  unless @receivable.new_record? %>
-    <%= link_to 'Invoices', '/receivables', :class => "btn" %>
+    <%= link_to 'Invoice', '/receivables', :class => "btn" %>
     <%= link_to 'Delete', receivable_path(@receivable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable.new_record? %>    
   </div>
 </div>
