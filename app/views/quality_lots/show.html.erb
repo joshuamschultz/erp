@@ -377,12 +377,26 @@ function fmea_report() {
     if (typeof fmea_report_iframe != "undefined"){
       fmea_report_iframe.contentWindow.focus();
       fmea_report_iframe.contentWindow.print();
-      quality_docs_report();
+      design_report();
     }
     else
     { 
-      quality_docs_report();
+      design_report();
     }
+
+}
+
+function design_report(){
+  var design_report_iframe = $("#lot_design")[0];
+  if (typeof design_report_iframe != "undefined"){
+    design_report_iframe.contentWindow.focus();
+    design_report_iframe.contentWindow.print();
+    quality_docs_report();
+  }
+  else
+  { 
+    quality_docs_report();
+  }
 
 }
 
@@ -486,6 +500,15 @@ function printLab(win_id){
     <iframe src="<%= @quality_lot.fmea_type.attachment.attachment.url(:original) %>" style="border:0;" id="lot_fmea" width="10" height= "10"></iframe>
   <% end %>
 <% end %>
+
+<% master_type =  MasterType.where(:type_value => "design_records") %>
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(master_type).present? %>
+  <% if @quality_lot.item_revision.print && @quality_lot.item_revision.print.attachment.present? %>
+    <iframe src="<%= @quality_lot.item_revision.print.attachment.attachment.url(:original) %>" style="border:0;" id="lot_design" width="10" height= "10"></iframe>
+  <% end %>
+<% end %>
+
+
 
 <iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
 
@@ -592,17 +615,21 @@ font-size: 13px;}
 
     function current_lot_status(current_status){
       switch(current_status) {
-       case '"accepted"':
+        case '"accepted"':
             $("#id_link").html('');
             $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #127601;"><div class="clearfix"></div><span class="txt">Accepted</span></a>');   
             break;
-       case '"rejected"':
+        case '"rejected"':
             $("#id_link").html('');
             $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #810901;"><div class="clearfix"></div><span class="txt">Rejected</span></a>');   
             break;
-       default:
-            $("#id_link").html('');
+        case '"on hold"':
+           $("#id_link").html('');
             $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #b1a700;"><div class="clearfix"></div><span class="txt">On hold</span></a>');   
+            break;
+       default:
+
+         
       }   
 
        get_quality_status();
