@@ -130,9 +130,7 @@ class QualityLot < ActiveRecord::Base
 
 		# end
 		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
-			sleep(2)
 			lot_count = self.po_line.item.quality_lots.count
-			sleep(2)
 			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
 			# current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
 		else
