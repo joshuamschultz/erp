@@ -564,6 +564,7 @@ font-size: 13px;}
         $(".n_no li").click(function() {
           lot_status_history($(this).attr('id'));
         });
+        current_lot_status('"<%= @quality_lot.quality_histories.last.quality_status if @quality_lot.quality_histories.last %>"');
 
     });
 
@@ -572,9 +573,25 @@ font-size: 13px;}
       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_status_history", "id": <%= @quality_lot.id%>, "user_id": <%= current_user.id %>, "lot_status": status}}, "lot_status_msg", {});
 
     }
+
     function lot_status_msg(response, callback_params, api_params){
-      var n = JSON.stringify(response.aaData);
-      switch(n) {
+      var status = JSON.stringify(response.aaData);
+      current_lot_status(status);
+    }
+
+    function get_quality_status(){
+           initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_lot_status_history", "id": <%= @quality_lot.id%>}}, "lot_all_status", {});
+
+    }
+
+    function lot_all_status(response, callback_params, api_params){
+      $(".all_status").html('');
+      $(".all_status").append('<div class="modal-header"><h3>Lot status</h3><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><form id="send_mail"><table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2"><thead><tr><th>Status</th><th>Person</th><th>Time</th></tr></thead><tbody>'+JSON.stringify(response.aaData).replace(/\"/g, ' '));
+      $(".s_hi").show();
+    }
+
+    function current_lot_status(current_status){
+      switch(current_status) {
        case '"accepted"':
             $("#id_link").html('');
             $("#id_link").append('<a class="d_ss" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success" style=" background-color: #127601;"><div class="clearfix"></div><span class="txt">Accepted</span></a>');   
@@ -589,15 +606,6 @@ font-size: 13px;}
       }   
 
        get_quality_status();
-    }
-    function get_quality_status(){
-           initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_lot_status_history", "id": <%= @quality_lot.id%>}}, "lot_all_status", {});
-
-    }
-    function lot_all_status(response, callback_params, api_params){
-      $(".all_status").html('');
-      $(".all_status").append('<div class="modal-header"><h3>Lot status</h3><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button></div><div class="modal-body"><form id="send_mail"><table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2"><thead><tr><th>Status</th><th>User</th><th>Time</th></tr></thead><tbody>'+JSON.stringify(response.aaData).replace(/\"/g, ' '));
-      $(".s_hi").show();
     }
 
 </script>

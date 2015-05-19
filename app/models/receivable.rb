@@ -106,7 +106,12 @@ class Receivable < ActiveRecord::Base
   end 
 
   def receivable_current_balance
-      self.receivable_total - self.receipt_lines.sum(:receipt_line_amount)
+      receipt_lines_discount = 0
+      self.receipt_lines.each do |receipt_line|
+        receipt_lines_discount += ((receipt_line.receipt_line_amount * 100 ).to_f / (100 - receipt_line.receipt.receipt_discount).to_f).to_f  -   receipt_line.receipt_line_amount.to_f   
+        p receipt_lines_discount
+      end
+      self.receivable_total - self.receipt_lines.sum(:receipt_line_amount) - receipt_lines_discount
   end
 
   def redirect_path
