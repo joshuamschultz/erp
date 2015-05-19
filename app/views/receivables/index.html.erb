@@ -19,11 +19,11 @@
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Receivables</h4>
+            <h4 class="span6 heading">Invoice</h4>
             <span class="span6 heading right">
                <% if can? :edit, Receivable %> 
-                <%= link_to 'New Receivable From Shipped', so_shipments_path, :class => "btn btn-mini btn-success" %>
-                <%= link_to 'New Receivable', new_receivable_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Invoice From Shipped', so_shipments_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to 'New Invoice', new_receivable_path, :class => "btn btn-mini btn-success" %>
                <% end %> 
                 <%= link_to 'Open', receivables_path(receivable_status: "open"), :class => "btn btn-mini btn-success" %>
                 <%= link_to 'Closed', receivables_path(receivable_status: "closed"), :class => "btn btn-mini btn-success" %>
