@@ -34,7 +34,7 @@ class SoShipmentsController < ApplicationController
       format.html # index.html.erb
       format.json { 
         if(params[:type] == "shipping")
-            @so_lines =   SoLine.where(:so_line_status => "open").joins(:so_header).order("so_headers.so_due_date DESC").select{|so_line|
+            @so_lines =   SoLine.where(:so_line_status => "open").joins(:so_header).order("so_headers.so_due_date ASC").select{|so_line|
               so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
@@ -127,7 +127,7 @@ class SoShipmentsController < ApplicationController
       object[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
       object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
       object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
-
+      object[:customer_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
     object[:lot] = "" 
     
       if shipment && object.quality_lot_id && object.quality_lot_id > 0

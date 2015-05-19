@@ -36,7 +36,7 @@
 
         <div class="row-fluid">
             <div id="organization_table_data" class="span12 well">
-                <div id="org_contact">
+                <div id="org_contact" class="widget" >
                     <%= render 'contacts/org_contacts' %>
                 </div>
             </div>
@@ -197,7 +197,7 @@
 
     function get_address(type){
         $('#org_contact').html("");
-        var adress = '<div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>escription</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
+        var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Addresses</h4><span class="span6 heading right"><a href="/contacts/new?contact_type='+type+'&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New Address</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>escription</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
         $('#org_contact').html(adress);
 
        
