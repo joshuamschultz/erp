@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Quality lot:</b>
+  <%= @item_lot.quality_lot_id %>
+</p>
+
+<p>
+  <b>Item:</b>
+  <%= @item_lot.item_id %>
+</p>
+
+<p>
+  <b>Item lot count:</b>
+  <%= @item_lot.item_lot_count %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_lot_path(@item_lot) %> |
+<%= link_to 'Back', item_lots_path %>
