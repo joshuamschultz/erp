@@ -12,23 +12,15 @@ class ItemLot < ActiveRecord::Base
   before_create :before_create_process
 
   def before_create_process
- #  	p "====================="
 
- #  	p  self.item_lot_count
- #  	p "=================="
-	# item_lot = ItemLot.where(:item_id => self.item_id)
-	# if item_lot.last.present?
-	# 	if item_lot.last.item_lot_count == self.item_lot_count 
+  item_lot = ItemLot.where(:item_id => self.item_id)
+  if item_lot.last.present?
+    if item_lot.last.item_lot_count == self.item_lot_count 
 
-	# 		self.item_lot_count += 1
-	# 	end
-	# end
-	max_code = ItemLot.where(:item_id => self.item_id).count
-
-  	self.item_lot_count = (max_code ==0) ? max_code +1 : max_code 
+      self.item_lot_count += 1
+    end
   end
 
+  end
 
-
-  		
 end
