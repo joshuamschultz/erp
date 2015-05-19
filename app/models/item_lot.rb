@@ -14,6 +14,7 @@ class ItemLot < ActiveRecord::Base
   def before_create_process
 
   item_lot = ItemLot.where(:item_id => self.item_id)
+  sleep(3)
   if item_lot.last.present?
     if item_lot.last.item_lot_count == self.item_lot_count 
 
