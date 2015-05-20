@@ -143,8 +143,8 @@ class PoShipmentsController < ApplicationController
         if quality_lot.lot_control_no.split("-")[1].to_i == 0
           quality_lot.delete
           @po_shipment.delete
-        end          
-        # @po_shipment.set_quality_on_hand           
+        else
+                  # @po_shipment.set_quality_on_hand           
           quality_lot = @po_shipment.quality_lot 
           @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
           @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
@@ -155,6 +155,8 @@ class PoShipmentsController < ApplicationController
           @po_shipment["company_name"] =  CompanyInfo.first.company_name
           format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
           format.json { render json: @po_shipment, status: :created, location: @po_shipment }
+        end          
+
       else
         format.html { render action: "new" }
         format.json { render json: {errors:  @po_shipment.errors.first} }
