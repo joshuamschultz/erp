@@ -143,8 +143,6 @@ class PoShipmentsController < ApplicationController
         if quality_lot.lot_control_no.split("-")[1].to_i == 0
           quality_lot.delete
           @po_shipment.delete
-          format.html { render action: "new" }
-          format.json { render json: {errors:  @po_shipment.errors.first} }
         end          
         # @po_shipment.set_quality_on_hand           
           quality_lot = @po_shipment.quality_lot 
