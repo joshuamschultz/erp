@@ -124,6 +124,9 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.save 
+
+
+        @item_lot = ItemLot.create(item_id: @po_shipment.po_line.item_id)  
         inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]                       
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
@@ -132,6 +135,8 @@ class PoShipmentsController < ApplicationController
         @quality_lot.lot_inspector = current_user
 
         if @quality_lot.save
+          lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
+          @item_lot.update_attribute(:quality_lot_id , @quality_lot.id)
           @quality_lot.set_lot_control_no
         end
 
@@ -140,9 +145,10 @@ class PoShipmentsController < ApplicationController
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
         quality_lot = @po_shipment.quality_lot
 
-        # if quality_lot.lot_control_no.split("-")[1].to_i == 0
+        # unless quality_lot.lot_control_no.present?
         #   quality_lot.delete
         #   @po_shipment.delete
+        # end
         # else
                   # @po_shipment.set_quality_on_hand           
           quality_lot = @po_shipment.quality_lot 

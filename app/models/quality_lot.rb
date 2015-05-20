@@ -130,9 +130,9 @@ class QualityLot < ActiveRecord::Base
 
 		# end
 		# if  self.po_line.item.quality_lots.count == 0
-			lot_count = (self.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
+			# lot_count = (self.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
 
-			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
+			# ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
 			# current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
 		# else
 			# current_count =current_count+1
