@@ -6,13 +6,7 @@ var current_field_temp;
 	}
 
 	function shipment_row_callback(response, callback_params, api_params){
-        var error_lot = JSON.stringify(response['errors']).replace(/\"/g, ' ');
-        if (error_lot == 0)
-        {
-        	alert("Please try again");
-    		location.reload();
-        }
-        else{
+
 
 			if(callback_params){
 				var <%= type %>_line_row = callback_params.<%= type %>_line_row;	
@@ -61,7 +55,7 @@ var current_field_temp;
 	        $("#jr100_customer").html(response.customer);
 	        $("#jr100_controlno").text(response.control_number);        
 	        printContent($("#jr100").attr('id'));
-	    }
+	  
 
 
 			}
