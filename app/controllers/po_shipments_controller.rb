@@ -135,7 +135,7 @@ class PoShipmentsController < ApplicationController
         @quality_lot.lot_inspector = current_user
 
         if @quality_lot.save
-          lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
+          # lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
           @item_lot.update_attribute(:quality_lot_id , @quality_lot.id)
           @quality_lot.set_lot_control_no
         end
