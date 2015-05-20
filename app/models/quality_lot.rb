@@ -10,7 +10,7 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	# before_create :before_create_values
-	# after_create :after_create_values
+	after_create :after_create_values
 	# before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
@@ -112,6 +112,13 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def set_lot_control_no
+
+		p "=====================================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6666666"
+
+
+				p self.id
+
+		p "=========================================555555555555555555555555555444444444444444333333333333333333333"
 		current_count = 0
 		current_letter = '@'
 		# if  self.po_line.item.quality_lots.present?
@@ -129,13 +136,17 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
-			lot_count = self.po_line.item.quality_lots.count
+		# if  self.po_line.item.quality_lots.count == 0
+			lot_count = (self.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
+			p "================"
+				p  lot_count
+
+			p "===================="
 			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
 			# current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
-		else
-			current_count =current_count+1
-		end
+		# else
+			# current_count =current_count+1
+		# end
 		# Item.skip_callback("update", :after, :update_alt_name)
 		
 		# self.po_line.item.update_attribute(:lot_count , current_count)
@@ -156,15 +167,18 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
 
-		
-
+			
+		if self.item_lot.present?
+			lot_no = self.item_lot.item_lot_count
+		end
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (self.item_lot.item_lot_count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (lot_no).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
 
 	def after_create_values
+
 	 #    control_no = self.lot_control_no		
 		# current_count = control_no.split("-")[1].to_i
 		# letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
