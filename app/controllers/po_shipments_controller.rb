@@ -144,6 +144,7 @@ class PoShipmentsController < ApplicationController
           quality_lot.delete
           @po_shipment.delete
           format.html { render action: "new" }
+          format.json { render json: {errors: 0} }
         else
           # @po_shipment.set_quality_on_hand           
           quality_lot = @po_shipment.quality_lot 
