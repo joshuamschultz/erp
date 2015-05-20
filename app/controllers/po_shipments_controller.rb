@@ -128,7 +128,6 @@ class PoShipmentsController < ApplicationController
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
         
-        sleep(5)
         @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
         @quality_lot.lot_inspector = current_user
 
@@ -139,17 +138,25 @@ class PoShipmentsController < ApplicationController
 
         
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
-        # @po_shipment.set_quality_on_hand           
-        quality_lot = @po_shipment.quality_lot 
-        @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-        @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
-        @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
-        @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
-        @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
-        @po_shipment["control_number"] = quality_lot.lot_control_no if quality_lot.present?
-        @po_shipment["company_name"] =  CompanyInfo.first.company_name
-        format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
-        format.json { render json: @po_shipment, status: :created, location: @po_shipment }
+        quality_lot = @po_shipment.quality_lot
+
+        if quality_lot.lot_control_no.split("-")[1].to_i == 0
+          quality_lot.delete
+          @po_shipment.delete
+          format.html { render action: "new" }
+        else
+          # @po_shipment.set_quality_on_hand           
+          quality_lot = @po_shipment.quality_lot 
+          @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
+          @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
+          @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
+          @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
+          @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
+          @po_shipment["control_number"] = quality_lot.lot_control_no if quality_lot.present?
+          @po_shipment["company_name"] =  CompanyInfo.first.company_name
+          format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
+          format.json { render json: @po_shipment, status: :created, location: @po_shipment }
+        end
       else
         format.html { render action: "new" }
         format.json { render json: {errors:  @po_shipment.errors.first} }
