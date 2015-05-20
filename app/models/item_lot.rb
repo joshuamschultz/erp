@@ -9,7 +9,7 @@ class ItemLot < ActiveRecord::Base
 
   validates_presence_of :item_id
 
-  # before_create :before_create_process
+  before_create :before_create_process
 
   def before_create_process
 
