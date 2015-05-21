@@ -350,13 +350,13 @@ class QualityLot < ActiveRecord::Base
 				content += '<div id="main-wrapper">'
 				content += '<div class="wrapper-1"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><th align="center" valign="middle">Control no</th><th align="center" valign="middle">Part No</th><th align="center" valign="middle">Quantity</th><th align="center" valign="middle">PO</th></tr>'
 			end
-			if j <= 10
+			if j <= 20
 				content += temp
 			end
 
 			j+=1
 
-			if i==10 
+			if i==20
 				content += '</tbody></table></div></div>'
 				content +='<div style="page-break-after: always; "> &nbsp;  </div>'  
 			end
@@ -367,7 +367,7 @@ class QualityLot < ActiveRecord::Base
 
 			i+=1
 
-			if i==11 
+			if i==21 
 	          i= 1
 	          j = 1
 	          content 
