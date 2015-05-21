@@ -324,5 +324,61 @@ class QualityLot < ActiveRecord::Base
   		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')
 
   	end
+
+  	def self.report_data
+		quality_lots = lot_missing_location
+		len = quality_lots.length
+		i = 1
+		j = 1
+		flag = 1
+		report_control_no = report_part_no = report_po =  report_qty = source  = temp =  ''
+		content = '' 
+
+		quality_lots.each_with_index do |quality_lot, index|
+
+			report_control_no = quality_lot.lot_control_no if quality_lot.lot_control_no.present?
+			report_part_no = quality_lot.item_revision.item.item_part_no 	
+			report_qty =  quality_lot.lot_quantity.to_s
+			report_po = quality_lot.po_header.po_identifier
+			temp = '<tr><td align="center" valign="middle">'+report_control_no+'</td><td align="center" valign="middle">'+report_part_no+'</td><td align="center" valign="middle">'+report_qty+'</td><td align="center" valign="middle">'+report_po+'</tr>'
+
+			if flag ==1
+				content = '<div class="wrapper"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="left" valign="top"><td align="center"><img class="logo" alt=Smallest  src=http://erp.chessgroupinc.com/'+CompanyInfo.first.image.image.url(:original)+' /></td></tr></table></div>'
+				flag = 0
+			end
+			if i == 1
+				content += '<div id="main-wrapper">'
+				content += '<div class="wrapper-1"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><th align="center" valign="middle">Control no</th><th align="center" valign="middle">Part No</th><th align="center" valign="middle">Quantity</th><th align="center" valign="middle">PO</th></tr>'
+			end
+			if j <= 10
+				content += temp
+			end
+
+			j+=1
+
+			if i==10 
+				content += '</tbody></table></div></div>'
+				content +='<div style="page-break-after: always; "> &nbsp;  </div>'  
+			end
+
+			if len == index+1
+				
+			end
+
+			i+=1
+
+			if i==11 
+	          i= 1
+	          j = 1
+	          content 
+	        end
+		end
+		content
+		# source  = header_content + source
+		# source = top_source+source+bottom_source
+		html = '<!DOCTYPE html><title>Quality_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 16px;padding: 6px;} .wrapper {width: 640px;</style>
+					'+content+'
+				'
+  	end
   	
 end
