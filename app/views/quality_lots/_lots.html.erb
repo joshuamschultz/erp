@@ -1,10 +1,4 @@
-<% if params[:type].present? %>
-    <div class="ms_image"> 
-        <div style="background-color:#ffffff; width:250px;margin: 0 auto 10px;padding: 5px; ">
-        <%= image_tag(CompanyInfo.first.image.image.url(:original), :size => "250x250") if CompanyInfo.first.image %>
-        </div>  
-    </div>
-<% end %>
+
 <div class="widget">
     <div class="widget-head">
         <div class="row-fluid">
@@ -90,3 +84,5 @@
         } 
     %>
 <% end %>
+
+

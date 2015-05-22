@@ -92,8 +92,8 @@ class QualityLotsController < ApplicationController
             quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
             revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
 
-            quality_lot[:item_revision_name] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
-            revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)
+            quality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)  : ""
             if  user_signed_in? && current_user.is_customer? 
               if can? :edit , quality_lot
                 quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
@@ -259,6 +259,13 @@ class QualityLotsController < ApplicationController
   def fmea_report
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
+  end
+
+  def report
+    @quality_lots = QualityLot.report_data
+    render :layout => false
+
+
   end
 
 end
