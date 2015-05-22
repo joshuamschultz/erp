@@ -122,12 +122,28 @@ var item_name;
         // $("#customer_quote_line_customer_quote_line_cost").focusin(function(){
         //     $("#customer_quote_line_customer_quote_line_cost").select();
         // })
+
+
+        $('#customer_quote_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#customer_quote_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#customer_quote_line_item_alt_name_id').val()}}, "get_item_id", {}); 
+            }
+        });  
     });
 
     $(document).on("change", "#quote_id", function(){         
         get_quote_info();
         $("#head_quote_id").val($("#quote_id").val());
     });
+
+    function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#alt_name_id").val(item_id_val);                     
+    }
+
     function get_quote_info(){
         var quote_id = $("#quote_id").val();
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quote_info", "quote_id": quote_id }}, "set_quote_info", {});
