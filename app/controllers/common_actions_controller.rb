@@ -464,7 +464,22 @@ class CommonActionsController < ApplicationController
                     CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: amount, rec: false, payment_id: payment.id, balance: balance)
                 end          
                 result = "success"
-              end 
+              end
+
+
+            when "generate_check_code"
+              c = CheckEntry.find(params[:id])
+              check_code = CheckCode.find_by_counter_type('check_code').counter 
+              c.update_attributes(:check_code => check_code) 
+              temp = CheckCode.find_by_counter_type("check_code") 
+              temp.update_attributes(:counter => check_code ) 
+              CheckCode.get_next_check_code 
+              res = Hash.new 
+              res["id"] = params[:id]
+              res["check_code"] = check_code
+              result = res
+
+
             when "after_print_deposits"
               if params[:id].present? 
                 deposit_check = DepositCheck.find(params[:id]) 
