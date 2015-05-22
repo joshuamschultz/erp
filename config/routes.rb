@@ -281,6 +281,9 @@ AllianceFasteners::Application.routes.draw do
       get 'process_flow_report'
       get 'fmea_report'
     end
+    collection do
+      get 'report'
+    end
   end
 
   resources :items do

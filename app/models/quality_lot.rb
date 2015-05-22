@@ -10,7 +10,7 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :run_at_rate
 
 	# before_create :before_create_values
-	# after_create :after_create_values
+	after_create :after_create_values
 	# before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
@@ -129,14 +129,14 @@ class QualityLot < ActiveRecord::Base
 	 #     	current_count = self.id
 
 		# end
-		if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
-			lot_count = self.po_line.item.quality_lots.count
+		# if  self.po_line.item.quality_lots.count == 0
+			# lot_count = (self.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
 
-			ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
-			current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
-		else
-			current_count =current_count+1
-		end
+			# ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
+			# current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
+		# else
+			# current_count =current_count+1
+		# end
 		# Item.skip_callback("update", :after, :update_alt_name)
 		
 		# self.po_line.item.update_attribute(:lot_count , current_count)
@@ -157,15 +157,18 @@ class QualityLot < ActiveRecord::Base
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
 
-		
-
+			
+		if self.item_lot.present?
+			lot_no = self.item_lot.item_lot_count
+		end
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (current_count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (ItemLot.where(:item_id => self.item_lot.item_id).count).to_s
 		self.update_column(:lot_control_no, temp)
 	end
 
 
 	def after_create_values
+
 	 #    control_no = self.lot_control_no		
 		# current_count = control_no.split("-")[1].to_i
 		# letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
@@ -320,6 +323,62 @@ class QualityLot < ActiveRecord::Base
   	def self.lot_missing_location
   		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')
 
+  	end
+
+  	def self.report_data
+		quality_lots = lot_missing_location
+		len = quality_lots.length
+		i = 1
+		j = 1
+		flag = 1
+		report_control_no = report_part_no = report_po =  report_qty = source  = temp =  ''
+		content = '' 
+
+		quality_lots.each_with_index do |quality_lot, index|
+
+			report_control_no = quality_lot.lot_control_no if quality_lot.lot_control_no.present?
+			report_part_no = quality_lot.item_revision.item.item_part_no 	
+			report_qty =  quality_lot.lot_quantity.to_s
+			report_po = quality_lot.po_header.po_identifier
+			temp = '<tr><td align="center" valign="middle">'+report_control_no+'</td><td align="center" valign="middle">'+report_part_no+'</td><td align="center" valign="middle">'+report_qty+'</td><td align="center" valign="middle">'+report_po+'</tr>'
+
+			if flag ==1
+				content = '<div class="wrapper"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="left" valign="top"><td align="center"><img class="logo" alt=Smallest  src=http://erp.chessgroupinc.com/'+CompanyInfo.first.image.image.url(:original)+' /></td></tr></table></div>'
+				flag = 0
+			end
+			if i == 1
+				content += '<div id="main-wrapper">'
+				content += '<div class="wrapper-1"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><th align="center" valign="middle">Control no</th><th align="center" valign="middle">Part No</th><th align="center" valign="middle">Quantity</th><th align="center" valign="middle">PO</th></tr>'
+			end
+			if j <= 20
+				content += temp
+			end
+
+			j+=1
+
+			if i==20
+				content += '</tbody></table></div></div>'
+				content +='<div style="page-break-after: always; "> &nbsp;  </div>'  
+			end
+
+			if len == index+1
+				
+			end
+
+			i+=1
+
+			if i==21 
+	          i= 1
+	          j = 1
+	          content 
+	        end
+		end
+		content
+		# source  = header_content + source
+		# source = top_source+source+bottom_source
+		html = '<!DOCTYPE html><title>Quality_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 16px;padding: 6px;} .wrapper {width: 640px;</style>
+					'+content+'
+				'
   	end
   	
 end

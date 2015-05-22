@@ -93,10 +93,10 @@
 
                 <div class="new_widget">
                     <div class="row-fluid">
-                        <div class="span9 ee-10">
+                        <div class="span3 ee-10 e_rr1">
                             <%= render :partial => 'attachments/droppable_form_plup' if @item_revision  %>
                         </div>
-                        <div class="span8 ee-11">
+                        <div class="span5 ee-11 e_rr">
                             <%= render 'attachments/attachments'  if @item_revision  %>
                         </div>
                     </div>
@@ -423,4 +423,20 @@ function get_so_header(status){
 .span8.ee-11 {
     width: 73%;
 }
+.e_rr1 {
+    margin: 0 0 0 17px !important;
+}
+.e_rr {
+    margin: 0 0 0 17px !important;
+    width: 49% !important;
+}
+
+.e_rr1 .default.message {
+    display: block;
+    margin-left: -178px;
+    width: 256px;
+}
+
+.e_rr1 .widget-003{height: 275px;}
+
 </style>
