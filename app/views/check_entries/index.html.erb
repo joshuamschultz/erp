@@ -1,7 +1,7 @@
  <div class="row-fluid">
         <div class="span9">
            <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn" onclick="checks_report();return false;">
+                  <a class="widget-stats" href="#" id="print_check" >
                       <span class="glyphicons print"><i></i></span>
                       <span class="txt">Print Checks</span>
                       <div class="clearfix"></div>
@@ -48,36 +48,121 @@
     } 
 %>
 
+
+<div class="modal hide" id="modal-simple">
+    <div class="modal-header">
+        <h3>Send To Reconcile</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div class="modal-body">
+        <form id="send_mail">
+            <table class="dynamicTable table table-striped table-bordered" id="check_code_tab">
+                <thead>
+                    <tr>
+                    <th>Check Code</th>                 
+                    <th>Printed</th>                 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td class="c_all">Check All</td>
+                         <td class="c_all"><input type="checkbox" id="check_all" /></td>
+                   </tr>
+                    <% @check_entries =  CheckEntry.where(:check_active => 1) %>
+                    <% @check_entries.each do |c| %>
+                    <tr>
+                         <td id="c<%= c.id %>"><%= c.check_code %> </td>
+                         <td><input type="checkbox" id="<%=c.id%>" /></td>
+                   </tr>
+                   <% end %>         
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="reconcile_printed_checks();">Send</button>
+    </div>
+</div>
+
+
+
+
 <script type="text/javascript">
-function checks_report() { 
+$("#print_check").click(function() {
     var flag = 0;
     var count =0;
     var checks_iframe = $("#myPrintView")[0];   
     <% @check_entries =  CheckEntry.where(:check_active => 1) %>         
-        <% @check_entries.each do |c| %>
-            <% unless c.check_belongs_to.nil? %> 
-               flag = 1; 
-               count = count + 1;
-               checkEntryId = <%= c.id %>
-                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "after_print_checks", "id" : checkEntryId  }}, "", {});
-            <% end %>
-        <% end %> 
-    if (flag == 1){             
+    <% @check_entries.each do |c| %>
+        <% unless c.check_belongs_to.nil? %> 
+           flag = 1; 
+           count = count + 1;               
+           checkEntryId = <%= c.id %>
+           initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "id" : checkEntryId  }}, "set_check_code", {});
+        <% end %>
+    <% end %> 
+    if (flag == 1)
+    {             
         checks_iframe.contentWindow.print();
     }    
-    else {
+    else
+    {
         alert("There are no Checks to Print");
     }  
-
     var timer = ((count/2) + 2) * 1000
-    setTimeout(function(){
-       reload_the_page();
+    setTimeout(function()
+    {         
+        $("#modal-simple").show();      
     }, timer);
 
-}  
+});  
+function set_check_code(response, callback_params, api_params)
+{
+    var id =response["aaData"]["id"]; 
+    $("#c"+id).html(response["aaData"]["check_code"]);
+}
 function reload_the_page()
 {
     location.reload();
 }
+function reconcile_printed_checks()
+{
+    var CheckEntryIds = $(":checkbox:checked").map(function() {
+        return this.id;
+    }).get();   
+    var length = CheckEntryIds.length;
+    for (var i = 0; i < length; i++) 
+    {
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "after_print_checks", "id" : CheckEntryIds[i]  }}, "", {});
+        $("#modal-simple").hide();
+        reload_the_page();    
+    }
+}
+
+
+
+$(document).ready(function() {
+    $('#check_all').click(function(event)
+     {  //on click 
+        if(this.checked) 
+        { // check select status
+           $("#check_code_tab input[type=checkbox]").each(function () {
+                $(this).attr("checked", true);
+            });
+        }else
+        {
+            $("#check_code_tab input[type=checkbox]").each(function () {
+                $(this).attr("checked", false);
+            });                     
+        }        
+    });    
+});
 </script>
+<style type="text/css">
+.c_all {
+background-color: #a9c68b !important;
+font-weight: bold;
+}
+</style>
+
 <iframe src="<%= report_check_entries_path%>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>

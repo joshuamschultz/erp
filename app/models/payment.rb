@@ -84,16 +84,19 @@ class Payment < ActiveRecord::Base
     after_save :process_after_save
 
     def process_after_save        
-        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"                         
-            if self.payment_check_code_type == "Manual"
+        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"                                     
+            if self.payment_check_code_type == "Manual"                
                 Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) if self.payment_check_code_type == "Manual"
                 self.update_transactions
             else
-               CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+               @check_entry = CheckEntry.new(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+               if @check_entry.save                
+                self.update_attributes(:check_entry_id => @check_entry.id)
+               end 
             end    
-            temp = CheckCode.find_by_counter_type("check_code")
-            temp.update_attributes(:counter => self.payment_check_code)
-            CheckCode.get_next_check_code
+            # temp = CheckCode.find_by_counter_type("check_code")
+            # temp.update_attributes(:counter => self.payment_check_code)
+            # CheckCode.get_next_check_code
         end
         if self.payment_type.present? && (self.payment_type.type_value == "credit" || self.payment_type.type_value == "ach" )
             Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) 
