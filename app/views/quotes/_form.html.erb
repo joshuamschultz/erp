@@ -67,15 +67,29 @@
     tab_field_forms["form_for_quote"] = ["quote_customer_id","quote_quote_description","vendor_type_Vendor","vendor_type_Group","quote_organizations" ];
     $(document).ready(function(){ 
         $("#quote_customer_id").val("<%= @quote.customer.organization_name if @quote.customer %>");       
-
         $("#quote_customer_id").focus();
-
         vendor_type_changed();
+
+        $('#quote_customer_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#quote_customer_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#quote_customer_id').val()}}, "get_org_id", {}); 
+            }
+        });  
+
+
+
     });
 
     $(document).on("change", "#radio_button_val", function(){
         vendor_type_changed();
     });
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);      
+        $("#customer_id").val(org_id_val);
+    }
 
     function vendor_type_changed(){
         var vendor_type = $('input[name=vendor_type]:checked').val();

@@ -85,10 +85,20 @@
         // $("#quote_line_organization_id").val("<%#= @quote_line.organization.organization_name if @quote_line.organization %>");
 
         $("#quote_line_item_alt_name_id").focus();
+
+        $('#quote_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#quote_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#quote_line_item_alt_name_id').val()}}, "get_item_id", {}); 
+            }
+        });  
+
     });
 
     $("#quote_line_item_alt_name_id").blur(function(){
-        var a = $("#alt_name_id").val()
+        var a = $("#alt_name_id").val();        
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": a, "organization_id": <%= @quote.customer.id %> }}, "after_get_desc", {});
     });
     function after_get_desc(response, callback_params, api_params){
@@ -118,6 +128,13 @@
         // });
 
     }
+
+     function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#alt_name_id").val(item_id_val);              
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_description", "item_id": item_id_val, "organization_id": <%= @quote.customer.id %> }}, "after_get_desc", {});
+    }
+   
 </script>
 
 <style>
