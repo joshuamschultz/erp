@@ -97,6 +97,22 @@ class CommonActionsController < ApplicationController
                 account =  GlAccount.find_by_gl_account_title(params[:gl_name])
                 result = account              
               end
+            when "get_po"
+              if params[:po_name].present?
+                po_header =  PoHeader.find_by_po_identifier(params[:po_name])
+                result = po_header              
+              end
+            when "get_cause"
+              if params[:cause_name].present?
+                cause_analysis = CauseAnalysis.find_by_name(params[:cause_name])
+                result = cause_analysis              
+              end
+             when "get_lot"
+              if params[:lot_name].present?
+                quality_lot = QualityLot.find_by_lot_control_number(params[:lot_name])
+                result =  quality_lot             
+              end
+
               
               
 
