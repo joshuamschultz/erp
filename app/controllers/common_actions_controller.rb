@@ -90,6 +90,15 @@ class CommonActionsController < ApplicationController
                 item =  Item.find_by_item_part_no(params[:item_name])
                 result = item              
               end
+              
+
+            when "get_account"
+              if params[:gl_name].present?
+                account =  GlAccount.find_by_gl_account_title(params[:gl_name])
+                result = account              
+              end
+              
+              
 
             when "get_alt_name"
               if params[:value].present?
