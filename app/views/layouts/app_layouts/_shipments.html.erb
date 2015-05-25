@@ -22,6 +22,7 @@ var current_field_temp;
         var month = currentDate.getMonth() + 1
         var year = currentDate.getFullYear()
         shipment_date = day + "/" + month + "/" + year ;
+        $("#jr100_company_name").html(response.company_name);
         $("#jr100_date").html(shipment_date);
         $("#jr100_partno").html(response.part_number);
         $("#jr100_quantity").html(response.po_shipped_count);
@@ -44,6 +45,7 @@ var current_field_temp;
         var month = currentDate.getMonth() + 1
         var year = currentDate.getFullYear()
         shipment_date = day + "/" + month + "/" + year ;
+        $("#jr100_company_name").html(response.company_name);
         $("#jr100_date").html(shipment_date);
         $("#jr100_partno").html(response.part_number);
         $("#jr100_quantity").html(response.po_shipped_count);
@@ -383,7 +385,7 @@ function printPage(win_id){
         <td scope="row">Retreive and Verify Alliance Purchase Order:</td>
       </tr>
       <tr>
-        <td scope="row">Inspect to Alliance's PO Specifications </td>
+        <td scope="row">Inspect to <span id = "jr100_company_name"></span> PO Specifications </td>
       </tr>
       <tr>
         <td scope="row">Retreive and Verify Customer Purchase Order: </td>

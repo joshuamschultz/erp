@@ -62,7 +62,7 @@
           
                 <div class="actions">
                     <%= f.submit "ADD", :class =>"btn" %>
-                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>z
+                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
                     <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
                </div>
             <% end %>
@@ -154,7 +154,15 @@
 <script type="text/javascript">
     tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_vendor_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
-    $(document).ready(function(){       
+    $(document).ready(function(){  
+
+        $('#so_line_so_line_sell').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9 || code ===13 ) {  
+                $('#so_line_so_line_quantity').val("");
+            }
+        });      
 
         $("#so_line_so_line_cost").change(function(){
             calculate_line_item_total();

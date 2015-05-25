@@ -225,5 +225,19 @@ class QualityLotsController < ApplicationController
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
   end
+  
+  def gage_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def psw_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+  def csk_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
 
 end

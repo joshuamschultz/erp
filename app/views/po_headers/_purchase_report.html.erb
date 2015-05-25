@@ -83,11 +83,12 @@ article.art-01 {
     text-decoration: underline;
 }
 
+
 .ms_text-6 > h3 {
     float: left;
+    font-size: 12px;
     margin: 0;
-    padding: 18px 0 0;
-    font-size: 14px;
+    padding: 0;
 }
 
 
@@ -299,13 +300,12 @@ margin: 2px 0 10px 0;}
 border-bottom: 1px solid #222;
 float: left;
 font-weight: bold;
-padding: 11px 0;
 width: 100%;
 }
 .hea.art-002 > td {
-float: left;
 padding: 0;
 width: 134px;
+    border: 1px solid;
 }
 
 
@@ -313,9 +313,10 @@ width: 134px;
     padding: 9px 12px;
     text-align: center;
     width: 109px;
+    border: 1px solid #000;
 }
 .h-pad {
-    float: left;
+
     width: 100%;
 }
 
@@ -328,6 +329,15 @@ width: 134px;
     width: 128px;
 }
 
+.sd1 {
+    text-align: center;
+    width: 100%;
+}
+
+.sd1 td {
+    border: 1px solid #000;
+    color: #800000;
+}
 </style>
 </head>
 <body>
@@ -385,6 +395,8 @@ width: 134px;
                     <h2 class="ms_sub-heading">Chess Group Inc </h2> 
                     <strong><%= @company_info.company_address1 %></strong>
                     <strong><%= @company_info.company_address2 %></strong>
+                    
+                    
                 </div>
             </div>
 
@@ -395,6 +407,7 @@ width: 134px;
         <article>
 
 <article class="art-01 art-04">
+
     <table cellspacing="0" cellpadding="0" width="678px" border="0">
         <tbody>
             <tr align="center" class="hea art-002">
@@ -403,70 +416,81 @@ width: 134px;
                 <td>DESCRIPTION</td>
                 <td>COST</td>
                 <td>TOTAL</td>
-            </tr>
-                    <% @po_header.po_lines.each do |po_line| %>
+            </tr></tbody></table>
 
-            <tr valign="top" align="center" class="h-pad">
 
-                <td><%= po_line.po_line_quantity %> </td>
-                <td>
-                    <table width="100%" border="0">
-                        <tbody>
+    <% @po_header.po_lines.each do |po_line| %>
+ <div class="ff">
+    <table cellspacing="0" cellpadding="0" width="678px" border="0">
+        <tbody>
+           
+          
 
-                        <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
-                            <tr >
-                                <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
-                            </tr>                            
-                        <%  else %>
+                <tr valign="top" align="center" class="h-pad">
 
-                            <tr>
-                                <th width="150" scope="row"><%= po_line.item.item_part_no %></th>
-                            </tr>
-                            <tr>
-                                <th width="150" scope="row"><%= po_line.item_alt_name.item_alt_identifier %></th>
-                            </tr>
-                        <%  end %>
-
-                        </tbody>
-                    </table>
-                </td>
-
+                    <td><%= po_line.po_line_quantity %> </td>
                     <td>
-                        <table border="0" width="100%">
+                        <table width="100%" border="0">
                             <tbody>
+
+                            <%  if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier %>
+                                <tr >
+                                    <td width="150" scope="row"><%= po_line.item.item_part_no %></td>
+                                </tr>                            
+                            <%  else %>
+
                                 <tr>
-                                    <% if po_line.item_revision.present? %>
-                                    <td><%= po_line.item_revision.item_description %> </td>
-                                    <% end %>
-                                </tr> 
+                                    <td width="150" scope="row"><%= po_line.item.item_part_no %></td>
+                                </tr>
                                 <tr>
-                                    <td colspan="6" class="h-pad-04"><%= po_line.item_revision.item_notes%></td>
-                                </tr>    
-                                <tr>
-                                    <td colspan="6" class="h-pad-04"><%= po_line.po_line_notes %></td>
-                                </tr>                           
+                                    <td width="150" scope="row"><%= po_line.item_alt_name.item_alt_identifier %></td>
+                                </tr>
+                            <%  end %>
+
                             </tbody>
                         </table>
                     </td>
 
-
-                <td><%= po_line.po_line_cost.to_f %></td>
-                <td><%= po_line.po_line_total.to_f %></td>
-            </tr>
-
-
-
-
-
-
-
+                    
+                         
+                    <% if po_line.item_revision.present? %>
+                        <td><%= po_line.item_revision.item_description %> </td>
+                    <% else %>
+                         <td > &nbsp</td>
+                    <% end %>
+                                
+                    
 
 
-    
-        <% end %>
+                    <td><%= po_line.po_line_cost.to_f %></td>
+                    <td><%= po_line.po_line_total.to_f %></td>
+                </tr>
+      
+      
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+
+
+            <div class="sd">
+                <div class="sd1">
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" border-collapse="collapse">
+                        <tr>
+                       
+                                <td ><%= po_line.item_revision.item_notes if po_line.item_revision %> </td>
+                         
+                        </tr>    
+                        <tr>
+                            <td ><%= po_line.po_line_notes %></td>
+                        </tr>                           
+                    </table>
+                
+            </div>
+        </div>
+
+</div>
+<% end %>
 
 </article>
 

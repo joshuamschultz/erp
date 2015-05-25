@@ -32,6 +32,7 @@ class PayablesController < ApplicationController
       params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
       params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
       params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
+      
       # params[:payable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:payable][:gl_account_id]
       # params[:payable][:gl_account_id] = params[:org_gl_account_id] if params[:payable][:gl_account_id] == ""
     end
@@ -78,9 +79,7 @@ class PayablesController < ApplicationController
               )
               end    
               else
-                payable[:links] = CommonActions.object_crud_paths(nil, nil, nil, 
-                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
-              )
+                payable[:links] = ''
              end     
 
           }

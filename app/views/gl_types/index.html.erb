@@ -17,6 +17,7 @@
             <thead>
               <tr>
                 <th>Type</th>
+                <th>Report</th>
                 <th>Side</th>
                 <th>Report</th>
                 <th>Description</th>
@@ -34,11 +35,11 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_types_path, :extras => {:slno => false, :order => "desc"},
+        :name => "table_report", :path => gl_types_path, :extras => {:slno => false},
         :columns => '[
                         { "mData": "gl_name" },
-                        { "mData": "gl_side" },
                         { "mData": "gl_report" },
+                        { "mData": "gl_side" },
                         { "mData": "gl_description"},
                         { "mData": "gl_active" },
                         { "mData": "links", "bSortable": false, "bSearchable": false }

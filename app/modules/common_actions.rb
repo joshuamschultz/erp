@@ -24,10 +24,13 @@ module CommonActions
 		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id'>"
         if soLineId.present?
             # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
-                        quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x|  [x.id,x.lot_control_no]  } 
-            quality_lots.each do |quality_lot|
-            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
-            end
+             so_line =  SoLine.find(soLineId)
+             if so_line.item.present?
+	            quality_lots = so_line.item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no]  } 
+	            quality_lots.each do |quality_lot|
+	            	divdata += "<option value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
+	            end
+       		end
         end
 		divdata += "</select></div>"
 		divdata
@@ -125,12 +128,10 @@ module CommonActions
 		menus = {}
 		menus[:dashboard] = {:class => "glyphicons dashboard", :path => account_dashboard_path, :name => "Dashboard", :type => "single"}
 		if  user_signed_in? &&  !current_user.is_customer? && !current_user.is_vendor? 
-			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Contacts", :type => "multiple"}
+			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Organizations", :type => "multiple"}
 			menus[:contacts][:sub_menu] = 	[
-				{:path => organizations_path, :name => "Organizations"},
-				{:path => contacts_path(org_type: "vendor", :contact_type => "contact"), :name => "Vendor"},
-				{:path => contacts_path(org_type: "customer", :contact_type => "contact"), :name => "Customer"},
-				{:path => contacts_path(org_type: "support", :contact_type => "contact"), :name => "Support"},
+				{:path => organizations_path, :name => "Companies"},
+				{:path => contacts_path, :name => "Contacts"},
 				{:path => groups_path, :name => "Group"},
 
 			]
@@ -184,32 +185,33 @@ module CommonActions
 		if can? :view, Specification
 			menus[:inventory][:sub_menu].push({:path => specifications_path, :name => "Specifications"})	
 		end	
-		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality?  &&  !current_user.is_customer? && !current_user.is_vendor? 
+		if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? && !current_user.is_customer? && !current_user.is_vendor?  
 			menus[:accounts] = {:class => "hasSubmenu glyphicons book", :path => "#", :name => "Accounts", :type => "multiple"}
 			menus[:accounts][:sub_menu] = 	[
 				{:path => payables_path, :name => "Payables"},
 				{:path => payments_path, :name => "Payments"},
-				{:path => receivables_path, :name => "Receivables"},
+				{:path => receivables_path, :name => "Invoice"},
 				{:path => receipts_path, :name => "Receipts"}
 			]
 		end 
-
-		menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
-		menus[:general_ledger][:sub_menu] = 	[			
-			{:path => gl_types_path, :name => "Types"},			
-			{:path => check_registers_path, :name => "Check Register"},
-			{:path => credit_registers_path, :name => "Credit Register"}
-		]
-		
-	        if can? :view, GlEntry
-                        menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
-                end
-                if can? :view, GlAccount
-                        menus[:general_ledger][:sub_menu].push({:path => gl_accounts_path, :name => "Accounts"})
-                end
-                if can? :view, Reconcile
-                        menus[:general_ledger][:sub_menu].push({:path => reconciles_path, :name => "Reconcile"},)
-                end
+		if  user_signed_in? && !current_user.is_customer? 
+			menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
+			menus[:general_ledger][:sub_menu] = 	[			
+				{:path => gl_types_path, :name => "Types"},			
+				{:path => check_registers_path, :name => "Check Register"},
+				{:path => credit_registers_path, :name => "Credit Register"}
+			]
+			
+		        	if can? :view, GlEntry
+	                        menus[:general_ledger][:sub_menu].push({:path => new_gl_entry_path, :name => "Journal Entries"})
+	                end
+	                if can? :view, GlAccount
+	                        menus[:general_ledger][:sub_menu].push({:path => gl_accounts_path, :name => "Accounts"})
+	                end
+	                if can? :view, Reconcile
+	                        menus[:general_ledger][:sub_menu].push({:path => reconciles_path, :name => "Reconcile"},)
+	                end
+        end 
 
 
 		menus[:quality] = {:class => "hasSubmenu glyphicons log_book", :path => "#", :name => "Quality", :type => "multiple"}
@@ -226,7 +228,6 @@ module CommonActions
 			# {:path => customer_feedbacks_path, :name => "Customer Response"},
 			{:path => quality_actions_path, :name => "Quality Action"},
 			{:path => vendor_qualities_path, :name => "Quality ID"},
-			{:path => customer_qualities_path, :name => "Quality Level"}
 		]
 
 		if can? :view, QualityLot
@@ -246,9 +247,9 @@ module CommonActions
 			menus[:quality][:sub_menu].push({:path => gauges_path, :name => "Instruments"}) 
 		end 
 
-		if can? :view, Ppap
-			menus[:quality][:sub_menu].push({:path => ppaps_path, :name => "PSW"}) 
-		end 
+		# if can? :view, Ppap
+		# 	menus[:quality][:sub_menu].push({:path => ppaps_path, :name => "PSW"}) 
+		# end 
 		
 		if can? :view, RunAtRate
 			menus[:quality][:sub_menu].push({:path => run_at_rates_path, :name => "Run at Rate"}) 
@@ -256,22 +257,37 @@ module CommonActions
 	    if can? :view, Dimension
                  menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"}) 
     	end
-        if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality? 
-         menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
+        # if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_clerical?  &&  !current_user.is_vendor? && !current_user.is_customer? 
+        #  menus[:quality][:sub_menu].push({:path => checklists_path, :name => "Checklist"})
+        # end
+        if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 
+         menus[:quality][:sub_menu].push({:path => customer_qualities_path, :name => "Quality Level"})
         end
 
 
 
 		# menus[:shipments] = {:class => "glyphicons boat", :path => new_po_shipment_path, :name => "Shipments", :type => "single"}
 		if  user_signed_in? && !current_user.is_vendor?  && !current_user.is_customer? 
-		menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
-		menus[:logistics][:sub_menu] = 	[
-			{:path => new_po_shipment_path, :name => "Shipments"},
-			{:path => po_shipments_path(type: "history"), :name => "History"}
-		]
-	end
+			menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
+			menus[:logistics][:sub_menu] = 	[
+				{:path => new_po_shipment_path, :name => "Receiving"},
+				{:path => new_so_shipment_path, :name => "Shipping"},
+				{:path => so_shipments_path(type: "process"), :name => "Shipment and Process"},
+				{:path => po_shipments_path(type: "history"), :name => "History"}
+			]
+		end
 
-		menus[:reports] = {:class => "glyphicons charts", :path => "#", :name => "Reports", :type => "single"}
+
+
+
+		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
+		menus[:reports][:sub_menu] = 	[
+			{:path => gauges_path(type: "gauge"), :name => "Gage Calibrated"},
+			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Rating"},
+			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "To ship today"},
+			{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lot missing location"}
+
+		]
 
 		menus[:documentation] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Documentation", :type => "multiple"}
 		menus[:documentation][:sub_menu] = 	[
@@ -286,11 +302,15 @@ module CommonActions
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 		menus[:system][:sub_menu] = 	[
-			{:path => company_infos_path, :name => "Home Info"},
+			{:path => events_path, :name => "Calendar"},
 			{:path => commodities_path, :name => "Commodities"},
 			{:path => check_code_path(CheckCode.first), :name => "Counters"},
 			# {:path => }
 		]
+		if can? :view, CompanyInfo
+			menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"}) 
+		end 
+
 		if can? :view, Territory
 			menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"}) 
 		end 
@@ -325,14 +345,14 @@ module CommonActions
 	end
 
 
-	def self.get_new_identifier(model, field)
+	def self.get_new_identifier(model, field, letter)
 		max_identifier = model.maximum(field)
 		if max_identifier.nil?
-			"A0001"
-		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 9999
-			max_identifier[0].next + "0001"
+			letter + "00001"
+		elsif (cur_identifier = max_identifier[1..5].to_i + 1) > 99999
+			letter + "00001"
 		else
-			max_identifier[0] + "%04d" % cur_identifier
+			letter + "%05d" % cur_identifier
 		end
 	end
 
@@ -358,4 +378,128 @@ module CommonActions
 			"<div style='color:green'>#{status.capitalize}</div>".html_safe
 		end	
 	end
+
+	def self.process_application_notifications(user_id)
+		temp = source = ''
+		user = User.find(user_id)
+		quality_user = User.where(:roles_mask => 4).first
+		user.quality_actions.each do |quality_action|
+			notification = notification_check_status(quality_action,"QualityAction",user)
+			if notification.present? 
+				temp = "<li id="+notification.first.id.to_s+"><a href='/quality_actions/"+quality_action.id.to_s+"' class='glyphicons envelope'><i></i>"+quality_action.quality_action_no.to_s+"-Quality Action Assigned to you </a></li>"
+				source += temp
+			end
+		end
+
+		if User.current_user.present? && User.current_user.is_quality? 
+		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
+		 	vendor_organizations.each do |vendor_organization|
+		 		if vendor_organization.present?
+		 			notification = notification_check_status(vendor_organization,"Organization",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/organizations/"+vendor_organization.id.to_s+"' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	prints = Print.all
+		 	prints.each do |print|
+		 		if print.present?
+		 			notification = notification_check_status(print,"Print",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/prints/"+print.id.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	specifications = Specification.all
+		 	specifications.each do |specification|
+		 		if specification.present?
+		 			notification = notification_check_status(specification,"Specification",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/specifications/"+specification.id.to_s+"' class='glyphicons envelope'><i></i>"+specification.specification_identifier+"-specification created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	process_types = ProcessType.all
+		 	process_types.each do |process_type|
+		 		if process_type.present?
+		 			notification = notification_check_status(process_type,"ProcessType",quality_user)
+		 			if notification.present? 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='/process_types/"+process_type.id.to_s+"' class='glyphicons envelope'><i></i>"+process_type.process_short_name+"-process_type created</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+
+		 	po_lines = PoLine.all
+		 	po_lines.each do |po_line|
+		 		if po_line.present?
+		 			notification = notification_check_status(po_line,"PoLine",quality_user)
+		 			if notification.present? 
+	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO "+po_line.po_header.po_identifier+" bypassed supplier requirements</a></li>"
+						source += temp
+					end
+		 		end
+		 	end
+		end
+		
+		source
+	end
+
+	def self.notification_check_status(note_id,note_type,u_id)
+		if Notification.where(:notable_id => note_id.id).present?
+			Notification.where("notable_id =? AND notable_type =? AND user_id =? AND note_status =? ", note_id.id, note_type, u_id.id, "unread")
+		end
+	end
+
+	def self.notification_process(model_type, model_id)
+		quality_user = User.where(:roles_mask => 4).first
+
+        if model_type == "Organization" && model_id.organization_type_id == 6
+        	common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "QualityAction"
+        	if model_id.users.present?
+	            model_id.users.each do |user|
+	                notification_set_status(model_id,model_type,user.id)
+	            end
+        	end
+
+        elsif model_type == "Print"
+       		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "Specification"
+      		common_process_model(model_type,model_id,quality_user)
+
+        elsif model_type == "ProcessType"
+       		common_process_model(model_type,model_id,quality_user)
+
+       	elsif model_type == "PoLine"	 
+       		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+       			common_process_model(model_type,model_id,quality_user)
+       		end
+        end   
+         
+    end
+  
+    def self.common_process_model(model, model_note, user)
+    	if user.present?
+        	notification_set_status(model_note,model,user.id)
+       	end    	 
+    end
+
+    def self.notification_set_status(model_identifier,model_type_name,user_id)
+    	notification = Notification.find_by_notable_id(model_identifier.id)
+    	unless notification.present?
+    		notification = Notification.create(notable_id: model_identifier.id, notable_type:  model_type_name, note_status:  "unread", user_id:  user_id)
+    		notification.save
+    	else
+    		notification.update_attributes(:note_status => "unread")
+    	end
+    end
 end

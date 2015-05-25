@@ -32,7 +32,7 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions
   # GET /quality_actions.json
   def index
-    if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && (current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
 
       if params[:status]
 
@@ -40,7 +40,7 @@ class QualityActionsController < ApplicationController
         @quality_actions = QualityAction.status_based_quality_action(params[:status])
         @status = params[:status]
       else
-        @quality_actions = QualityAction.quality_action_filtering
+        @quality_actions = QualityAction.quality_action_filtering 
       end
     
     else
@@ -53,6 +53,9 @@ class QualityActionsController < ApplicationController
       end
 
     end
+
+
+
 
     respond_to do |format|
       format.html # index.html.erb

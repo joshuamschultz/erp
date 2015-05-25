@@ -1,3 +1,75 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo</title>
+  
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+  <style type="text/css">
+    .container { height:100px; background:red; padding:0 10px; overflow:hidden; }
+.content { background:#eee; }
+  </style>
+  
 
 
-<%= render :partial => 'so_headers/sales_report' %>
+<script type="text/javascript">//<![CDATA[ 
+$(window).load(function(){
+$(document).ready(function() {
+    
+    if ($('.content').height() > $('.container').height()) {
+        $("#down").hover(function () {
+            animateContent("down");
+        }, function() { $('.content').stop(); });
+    
+        $("#up").hover(function () {
+            animateContent("up");
+        }, function() { $('.content').stop(); });
+    }
+});
+
+function animateContent(direction) {  
+    var animationOffset = $('.container').height() - $('.content').height();
+    if (direction == 'up') {
+        animationOffset = 0;
+    }
+    
+    $('.content').animate({ "marginTop": animationOffset + "px" }, "fast");
+}
+
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+
+<%= @res.body %>
+  <div class="container">
+    <div class="content" style="margin-top: -80px;">
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+        <p>string</p>
+    </div>
+</div>
+
+<a href="#" id="up">Up</a>
+<a href="#" id="down">down</a>
+  
+
+
+
+
+
+</body></html>

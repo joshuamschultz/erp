@@ -23,7 +23,9 @@ class SoHeadersController < ApplicationController
 
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_vendor? 
       @menus[:sales][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -74,7 +76,7 @@ class SoHeadersController < ApplicationController
             so_header[:index] = i
             so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
             so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
-            so_header[:so_line_price] = so_header.so_lines.find_by_item_id(@item.id).so_line_cost if params[:item_id].present?
+            so_header[:so_line_price] = so_header.so_lines.find_by_item_id(@item.id).so_line_sell if params[:item_id].present?
             so_header[:so_type_qty] =  so_header.so_lines.find_by_item_id(@item.id).so_line_quantity if params[:item_id].present?
 
             if so_header.bill_to_address

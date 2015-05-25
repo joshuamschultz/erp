@@ -1,17 +1,20 @@
 <div class="row-fluid">
-  <div class="span3 well item_detail_view">
-        <%= render :partial => 'po_headers/po_header_info' %>
-  </div>
+  <% if  user_signed_in? &&  !current_user.is_customer? %>
+    <div class="span3 well item_detail_view">
+          <%= render :partial => 'po_headers/po_header_info' %>       
+    </div>
+  <%  end %>
 
   <div class="span7">
     <div class="row-fluid">
         <div class="row-fluid">
             <h4 class="span3 left">Lot Info</h4>
             <span class="span9 right">
-            <%= link_to "Checklist", checklist_path(@quality_lot.checklist), :class => "btn btn-small" if @quality_lot.checklist %>
+              <% if can? :edit, QualityLot %>
+                <%= link_to "Checklist", checklist_path(@quality_lot.checklist), :class => "btn btn-small" if @quality_lot.checklist %>
                 <%= link_to "New PSW", new_ppap_path(:quality_lot_id => @quality_lot.id), :class => "btn btn-small" unless @quality_lot.ppap %>                
                 <%= link_to "PSW", ppap_path(@quality_lot.ppap), :class => "btn btn-small" if @quality_lot.ppap %>
-                <% if can? :edit, QualityLot %>
+               
                   <%= link_to "Edit", edit_quality_lot_path(@quality_lot), :class => "btn btn-small" %>  
                 <% end %>   
                 <%= link_to "Back", quality_lots_path, :class =>"btn btn-small" %>
@@ -132,6 +135,7 @@
 
 
   <div class="span2"> 
+  <% if can? :edit, QualityLot %>
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
             <a class="widget-stats" href="<%= quality_lot_materials_path(quality_lot_id: @quality_lot.id) %>" id="">
@@ -141,6 +145,7 @@
             </a>
         </div>
     </div>
+
 
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
@@ -171,6 +176,7 @@
             </a>
         </div>
     </div>
+       <% end %>
     <br>
     <br>
     <br>
@@ -231,6 +237,7 @@
 
 
 <script type="text/javascript">
+<% if can? :edit, QualityLot %>
 function material_report() {
     var quality_iframe = $("#lot_material")[0];
     quality_iframe.contentWindow.focus();
@@ -242,9 +249,36 @@ function dimension_report() {
     var dimension_iframe = $("#lot_dimension")[0];
     dimension_iframe.contentWindow.focus();
     dimension_iframe.contentWindow.print();
+    gage_report();
+}
+function gage_report() {
+    var gage_iframe = $("#lot_gage")[0];
+    gage_iframe.contentWindow.focus();
+    gage_iframe.contentWindow.print();
+    psw_report();
+}
+function psw_report() {
+    var psw_iframe = $("#lot_psw")[0];
+    psw_iframe.contentWindow.focus();
+    psw_iframe.contentWindow.print();
+    csk_report();
 
 }
+function csk_report() {
+    var csk_iframe = $("#lot_csk")[0];
+    csk_iframe.contentWindow.focus();
+    csk_iframe.contentWindow.print();
+
+}
+<% end %>
 </script>
 <iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
 
 <iframe src="<%= dimension_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_dimension" width="10" height= "10"></iframe>
+
+<iframe src="<%= gage_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_gage" width="10" height= "10"></iframe>
+
+<iframe src="<%= psw_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_psw" width="10" height= "10" ></iframe>
+
+<iframe src="<%= csk_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_csk" width="10" height= "10"></iframe>
+
