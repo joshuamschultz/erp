@@ -51,8 +51,9 @@
         $('#item_alt_name_item_id').keydown(function(e) {
             var code = e.keyCode || e.which;
             if (code === 9 || code ===13 ) 
-            {                  
-                $('#item_alt_name_item_id').val($( "#ui-id-1 li a" ).first().html());                                
+            {   
+              var ui_id = $(this).autocomplete('widget').attr('id');               
+                $('#item_alt_name_item_id').val($(  "#"+ui_id +" li a" ).first().html());                                
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#item_alt_name_item_id').val()}}, "get_item_id", {}); 
             }
         });
@@ -60,8 +61,9 @@
         $('#item_alt_name_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
             if (code === 9 || code ===13 ) 
-            {                  
-                $('#item_alt_name_organization_id').val($( "#ui-id-2 li a" ).first().html());
+            {      
+                var ui_id = $(this).autocomplete('widget').attr('id');            
+                $('#item_alt_name_organization_id').val($( "#"+ui_id +" li a" ).first().html());
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#item_alt_name_organization_id').val()}}, "get_org_id", {}); 
             }
         });  
