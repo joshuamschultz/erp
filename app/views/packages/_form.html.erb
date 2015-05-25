@@ -676,11 +676,24 @@
 
     $(document).ready(function(){    
          $("#package_quality_lot_id").val("<%= @package.quality_lot.lot_control_no if @package.quality_lot %>");
+         $('#package_quality_lot_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {    
+                var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#package_quality_lot_id').val($( "#"+ui_id +" li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_lot", "lot_value": $('#package_quality_lot_id').val()}}, "get_lot_id", {}); 
+            }
+          });
 
     });
     $('input').on('focus', function() {
         $(this).select();
-    })  
+    }) 
+     function get_lot_id(response){
+       var lot_id = JSON.stringify(response.aaData.id);      
+        $("#quality_lot_id").val(lot_id);                          
+    } 
  </script>
 
 <style type="text/css">
