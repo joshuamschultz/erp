@@ -52,6 +52,18 @@
 
         jQuery("#inventory_adjustment_item_alt_name_id").on('change', function() {
             initiate_line_items();
+
+
+         $('#inventory_adjustment_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#inventory_adjustment_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#inventory_adjustment_item_alt_name_id').val()}}, "get_item_id", {}); 
+            }
+        });   
+
+         
         });
 
         jQuery(".ui-corner-all").live('click', function() {
@@ -125,6 +137,11 @@
     function set_current_quantity(response, callback_params, api_params){
       $("#inventory_adjustment_inventory_adjustment_quantity").val(response["aaData"]["lot_quantity"]);
       page_initial = false;
+    }
+     function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#alt_name_id").val(item_id_val);
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_inventory", "id": $("#alt_name_id").val()}}, "set_quality_lots", {});                      
     }
   </script>
 
