@@ -36,6 +36,11 @@ class CommonActionsController < ApplicationController
                 quality_lot = QualityLot.find(params[:id])
                 result = quality_lot
               end
+            when "get_org"
+              if params[:so_value].present?
+                organization =  Organization.find_by_organization_name(params[:so_value])
+                result = organization              
+              end
 
 
             when "lot_item_material_elements"
@@ -95,16 +100,26 @@ class CommonActionsController < ApplicationController
               @po_header = PoHeader.find(params[:po_header_id])
               @contact = Contact.find(val["0"]["value"].to_i)
               @vendor_email = @contact.contact_email
-              UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
-              result = "success"
+              if @vendor_email.present?
+                UserMailer.purchase_order_mail(@po_header, @vendor_email).deliver
+                result = "success"
+              else
+                   result = "fail"
+              end 
+              
+
 
             when "send_so_order_mail"
               val =  params[:organizations]
               @so_header = SoHeader.find(params[:so_header_id])
               @contact = Contact.find(val["0"]["value"].to_i)
               @customer_email = @contact.contact_email
-              UserMailer.sales_order_mail(@so_header, @customer_email).deliver
-              result = "success"
+              if @customer_email.present?
+                UserMailer.sales_order_mail(@so_header, @customer_email).deliver
+                result = "success"
+              else
+                result = "fail"
+              end 
               
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
@@ -253,6 +268,9 @@ class CommonActionsController < ApplicationController
                 tags = tags.collect(&:strip).compact
                 tags = tags.reject(&:empty?)
                 Comment.process_comments(current_user, organization, tags, "tag")
+                if organization.organization_type.type_value == 'vendor'
+                  Commodity.auto_save(tags)
+                end
                 result ="Success"   
               end
             when "set_process"
@@ -284,6 +302,14 @@ class CommonActionsController < ApplicationController
               gl_account_titles["51020020"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "71107").first
               gl_account_titles["71107"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41010010").first
+              gl_account_titles["41010010"] = @gl_account["gl_account_title"]                       
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010010").first
+              gl_account_titles["51010010"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41025010").first
+              gl_account_titles["41025010"] = @gl_account["gl_account_title"]
+              
+              
               result = gl_account_titles 
 
             when "after_print_checks"
@@ -320,7 +346,7 @@ class CommonActionsController < ApplicationController
                 receipt.update_transactions
                 @reconcile = Reconcile.where(:receipt_id => receipt.id).first
                 if @reconcile.nil?                                  
-                  Reconcile.create(tag: "not reconciled",reconcile_type: deposit_check.receipt_type, receipt_id: receipt.id, deposit_check_id: params[:id])                                             
+                  Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: receipt.id, deposit_check_id: params[:id])                                             
                 end  
                 check_register = CheckRegister.where(receipt_id: receipt.id).first
                 unless  check_register.present? 

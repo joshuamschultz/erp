@@ -13,20 +13,30 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <div class="control-group select optional receivable_receivable_to_address">
     <% if @receivable.persisted? %>
-        <%= f.input :organization_id, :disabled => true, input_html: { class: 'special_font' }, :label => "Customer" %>
+        <%= f.label :Customer %>
+         <div class="controls">
+        <%= f.text_field :organization_id, :readonly => true, input_html: { class: 'special_font' } %>
+    </div>
     <% else %>
         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
     <% end %>
     <%= hidden_field_tag :organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :org_organization_id, (@receivable.organization.id if @receivable.organization) %>
     <%= hidden_field_tag :receivable_id, @receivable.id %>
+    </div>
 
+    <div class="control-group select optional receivable_receivable_to_address">
     <% if @receivable.so_header %>
-        <%= f.input :so_header_id, :disabled => true, input_html: { class: 'special_font' }, :label => "SO" %>   
+        <%= f.label :SO %>
+         <div class="controls">
+        <%= f.text_field :so_header_id, :disabled => true, input_html: { class: 'special_font' }%>          
         <%= hidden_field_tag :so_header_id, @receivable.so_header.id %>
         <%= hidden_field_tag :org_so_header_id, @receivable.so_header.id %>
+        </div>
     <% end %>
+    </div>
     
     <%= f.input :receivable_invoice, :label => "Customer Invoice", required: true %>
 
@@ -117,8 +127,11 @@
 
     function update()
     {
-      add_freight ();
-      add_discount ();
+      // add_freight ();
+      freight_result();
+      // add_discount ();
+      discount_result();
+
       $("#update_invoice").attr('disabled',false);          
     } 
      function get_rowcount(){
@@ -150,7 +163,7 @@
             if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
                     if($("#receivable_receivable_freight").val() > 0){
-                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val($("#receivable_receivable_freight").val());
+                        $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val($("#receivable_receivable_freight").val() * -1);
                     }
                     else{
                         $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").closest("tr").remove();   
@@ -168,7 +181,7 @@
                 }                        
             });
             if($("#receivable_receivable_freight").val() > 0){
-            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val($("#receivable_receivable_freight").val());
+            $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val($("#receivable_receivable_freight").val() * -1);
             }
         }         
     }
@@ -182,7 +195,8 @@
 
     function  discount_result ()     
     {
-        var theText = $("#discount_text").val();
+        var theText = $("#sales_discount_text").val();
+        var theSalesText = $("#sales_text").val();
         var account_row_count = get_rowcount();         
         var discount_val = ($("#receivable_cost").val() /100 * $("#receivable_receivable_discount").val()) * -1;        
         for ( var i = 0; i < account_row_count; i++ ) {             
@@ -211,6 +225,12 @@
                 $("#receivable_receivable_accounts_attributes_"+account_row_count+"_receivable_account_amount").val(discount_val);
             }    
         }
+        // for ( var i = 0; i < account_row_count; i++ ) {                 
+        //     if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theSalesText) {                
+        //         var sales_val = parseFloat($("#receivable_sales").val()) + parseFloat(discount_val);                
+        //         $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val(sales_val); 
+        //     }
+        // }
         
     }
 </script>

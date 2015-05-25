@@ -62,13 +62,15 @@
 :locals => {:extras => {:link => populate_so_header_path(type: "note", id: @so_header.id)}} %>
 
 <script type="text/javascript">
+<% if can? :edit , SoHeader %>
 function sales_report() {
     var sales_iframe = $("#myPrintView")[0];
     sales_iframe.contentWindow.focus();
     sales_iframe.contentWindow.print();
 
-    packing_report();
+    //packing_report();
 }
+<% end %>
 function packing_report()
 {
     var packing_iframe = $("#myPrintView1")[0];
@@ -80,8 +82,10 @@ function packing_report()
 <iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
 
 <script type="text/javascript">
-    function after_send(){
-        alert("sucess")
+    function after_send(response){
+        //alert("sucess");
+
+          alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
     function send_mail_customer(){
 
@@ -93,35 +97,36 @@ function packing_report()
          "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
     }
 </script>
-
-<div class="modal hide fade" id="modal-simple">
-    <div class="modal-header">
-        <h3>Send Sales Order</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    </div>
-    <div class="modal-body">
-        <form id="send_mail">
-            <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Contacts</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        <tr>
-                            <td><%= @so_header.organization.organization_name %></td>
-                            <td><%= select_tag "#{@so_header.organization.id}", options_for_select(@so_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
-                        </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_customer();">Send</button>
-    </div>
-</div>
+<% if can? :edit , SoHeader %>
+  <div class="modal hide fade" id="modal-simple">
+      <div class="modal-header">
+          <h3>Send Sales Order</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="send_mail">
+              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                  <thead>
+                      <tr>
+                          <th>Customer Name</th>
+                          <th>Contacts</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      
+                          <tr>
+                              <td><%= @so_header.organization.organization_name %></td>
+                              <td><%= select_tag "#{@so_header.organization.id}", options_for_select(@so_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
+                          </tr>
+                  </tbody>
+              </table>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_customer();">Send</button>
+      </div>
+  </div>
+<% end %>
 
 
 <style>

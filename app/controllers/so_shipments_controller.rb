@@ -18,7 +18,9 @@ class SoShipmentsController < ApplicationController
   end
 
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:logistics][:active] = "active"
+    end
   end
 
   # GET /so_shipments
@@ -36,7 +38,7 @@ class SoShipmentsController < ApplicationController
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)
                 so_line[:so_line_shelf] = "<div class='so_line_shelf_input'><input type='text'></div>"
                 so_line[:so_line_unit] =  "<div class='so_line_unit_input'><input type='text'></div>"
-                if can? :edit, so_line
+                if can? :edit, SoShipment
 
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
@@ -66,7 +68,7 @@ class SoShipmentsController < ApplicationController
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
-                if can? :edit, so_shipment  
+                if can? :edit, SoShipment  
                   so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
                   so_shipment[:links] = ""
@@ -84,17 +86,12 @@ class SoShipmentsController < ApplicationController
   def so_line_data_list(object, shipment)
     so_line = shipment ? object.so_line : object
 
-    if can? :edit, so_line
+
       object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)    
       object[:item_part_no] = CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)
       object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : ""
-       object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
-    else
-      object[:so_identifier] = so_line.so_header.so_identifier
-      object[:item_part_no] =  so_line.item_alt_name.item_alt_identifier
-      object[:customer_name] = so_line.so_header.organization ? so_line.so_header.organization.organization_name : ""
-      object[:vendor_name] = so_line.organization ? so_line.organization.organization_name : "CHESS"
-    end
+      object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
+
     object[:lot] = "" 
     
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
@@ -143,7 +140,8 @@ class SoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @so_shipment.save
-        @so_shipment.set_quality_on_hand
+        @so_shipment.set_quality_on_hand        
+        @so_shipment.so_line.update_so_total
         @so_shipment["so"] = @so_shipment.so_line.so_header.so_identifier
         @so_shipment["so_total"] = @so_shipment.so_line.so_header.so_total.to_f
         if @so_shipment.so_line.so_header.bill_to_address.present? 
@@ -152,7 +150,7 @@ class SoShipmentsController < ApplicationController
           @so_shipment["so_b_c_address_2"] = @so_shipment.so_line.so_header.bill_to_address.contact_address_2 
           @so_shipment["so_b_c_state"] = @so_shipment.so_line.so_header.bill_to_address.contact_state 
           @so_shipment["so_b_c_country"] = @so_shipment.so_line.so_header.bill_to_address.contact_country 
-          @so_shipment["so_b_c_zipcode"] == @so_shipment.so_line.so_header.bill_to_address.contact_zipcode
+          @so_shipment["so_b_c_zipcode"] = @so_shipment.so_line.so_header.bill_to_address.contact_zipcode
         end 
         if @so_shipment.so_line.so_header.ship_to_address.present? 
           @so_shipment["so_s_c_title"]= @so_shipment.so_line.so_header.ship_to_address.contact_title 
@@ -160,12 +158,12 @@ class SoShipmentsController < ApplicationController
           @so_shipment["so_s_c_address_2"] = @so_shipment.so_line.so_header.ship_to_address.contact_address_2 
           @so_shipment["so_s_c_state"] = @so_shipment.so_line.so_header.ship_to_address.contact_state 
           @so_shipment["so_s_c_country"] = @so_shipment.so_line.so_header.ship_to_address.contact_country 
-          @so_shipment["so_s_c_zipcode"] == @so_shipment.so_line.so_header.ship_to_address.contact_zipcode
+          @so_shipment["so_s_c_zipcode"] = @so_shipment.so_line.so_header.ship_to_address.contact_zipcode
         end 
         @so_shipment["so_notes"] = @so_shipment.so_line.so_header.so_notes if @so_shipment.so_line.so_header.so_notes
-        @so_shipment["so_date"] = @so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
+        @so_shipment["so_date"] = "Sales Order Date :"+@so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
         @so_shipment["part_number"] = @so_shipment.so_line.item.item_part_no
-        @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description
+        @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description.present? ? @so_shipment.so_line.item_revision.item_description : ''
         @so_shipment["alt_part_number"] = @so_shipment.so_line.item_alt_name.item_alt_identifier if @so_shipment.so_line.item.item_part_no != @so_shipment.so_line.item_alt_name.item_alt_identifier 
         @so_shipment["so_line_quantity"] = @so_shipment.so_line.so_line_quantity
         @so_shipment["control_number"] = @so_shipment.quality_lot.lot_control_no if @so_shipment.quality_lot

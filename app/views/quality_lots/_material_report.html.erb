@@ -46,7 +46,7 @@ border:none;
 img {
     width: 180px;
 }
-.color{color:#f40303;}
+.color{color:#000;}
 
 </style>
 <% @company_info = CompanyInfo.first %>
@@ -104,7 +104,7 @@ MATERIAL TEST RESULTS </strong></td>
               <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111; padding:0 8px 0 8px ; "><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr align="center">
                   <td align="left" style=" border-right:1px solid #111;" scope="row">Drawing  Rev Level</td>
-                  <td style=" border-right:1px solid #111;" class="color"><%= @quality_lot.item_revision.item_name%></td>
+                  <td style=" border-right:1px solid #111;" class="color"><%= @quality_lot.item_revision.item_revision_name %></td>
                   <td style=" border-right:1px solid #111;">Rev Date</td>
                   <td class="color"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
                 </tr>
@@ -122,7 +122,7 @@ MATERIAL TEST RESULTS </strong></td>
                         <tr>
               <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td scope="row">Po No: </td>
+                  <td scope="row">Po No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %> </td>
                   <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
                 </tr>
               </table></td>

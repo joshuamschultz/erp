@@ -124,7 +124,7 @@ class Organization < ActiveRecord::Base
     has_many :quote_lines
     has_many :groups, :through => :group_organizations
   	has_many :group_organizations, :dependent => :destroy
-  	has_many :customer_quotes
+  	has_many :customer_quotes, :dependent => :destroy
 
 
     # has_many :quotes, :through => :quotes_organizations
@@ -169,13 +169,16 @@ class Organization < ActiveRecord::Base
   	end
 
   	def po_items
-		po_items = self.po_headers.joins(:po_lines).select("po_lines.item_id").where("po_headers.organization_id = ?",self.id).order("po_lines.created_at DESC")
+		# po_items = self.po_headers.joins(:po_lines).select("po_lines.item_id").where("po_headers.organization_id = ?",self.id).order("po_lines.created_at DESC")
+		po_items= PoLine.includes(:po_header).where("po_headers.organization_id = ?", self.id).order("po_headers.created_at DESC")
 		po_items = po_items.collect(& :item_id)
 		Item.where(:id => po_items)
   	end
-
+  	
   	def so_items
-		so_items = self.so_headers.joins(:so_lines).select("so_lines.item_id").where("so_headers.organization_id = ?",self.id).order("so_lines.created_at DESC")
+  		
+		# so_items = self.so_headers.joins(:so_lines).select("so_lines.item_id").where("so_headers.organization_id = ?",self.id).order("so_lines.created_at DESC")
+		so_items= SoLine.includes(:so_header).where("so_headers.organization_id = ?", self.id).order("so_headers.created_at DESC")
 		so_items = so_items.collect(& :item_id)
 		Item.where(:id => so_items)
   	end

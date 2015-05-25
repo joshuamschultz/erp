@@ -59,7 +59,7 @@ img {
 form {
     line-height: 13px;
 }
-.color{color:#f40303;}
+.color{color:#000;}
 
 </style>
 
@@ -169,7 +169,7 @@ form {
               <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td style="border-right:1px solid #111; width:122px;" scope="row">Drawing No.</td>
-                  <td align="center">-</td>
+                  <td align="center"><%= @quality_lot.item_revision.item.item_part_no%></td>
                 </tr>
               </table></td>
             </tr>
@@ -177,7 +177,7 @@ form {
               <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111; padding:0 8px 0 8px ; "><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr align="center">
                   <td align="left" style="border-right:1px solid #111; width:117px;" scope="row">Drawing Rev Level</td>
-                  <td  class="color" style=" border-right:1px solid #111;">Lorem</td>
+                  <td  class="color" style=" border-right:1px solid #111;"><%= @quality_lot.item_revision.item_revision_name %></td>
                   <td style=" border-right:1px solid #111;">Rev Date</td>
                   <td  class="color"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
                 </tr>
@@ -211,7 +211,7 @@ form {
                                       <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                           <td style="border-right:1px solid #111; width:122px;" scope="row" >PO No.</td>
-                                          <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
+                                          <td align="center" class="color"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
                                         </tr>
 
 
@@ -223,7 +223,8 @@ form {
                  <tr style=" border-bottom:1px solid #111;">
                                       <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                          <td style="border-right:1px solid #111; width:122px;  scope="row" >Report completed by:</td>
+                                          <td style="border-right:1px solid #111; width:122px;  scope="row" >Report completed by:
+                                          </td>
                                           <td align="center" class="color"><%= @quality_lot.lot_inspector.name %></td>
                                         </tr>
                                         

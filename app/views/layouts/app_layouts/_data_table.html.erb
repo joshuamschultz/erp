@@ -8,14 +8,15 @@
 <% extras[:bfilter] = true if extras[:bfilter].nil? %>
 <% extras[:blenghchange] = true if extras[:blenghchange].nil? %>
 <% extras[:hide_column] = false if extras[:hide_column].nil? %>
-
+<% extras[:currency_format] = false if extras[:currency_format].nil? %>
 <%# extras[:fnDrawCallback] ||= nil %>
 
 <script type="text/javascript">
     var data_<%= name %>;
     
-    $(document).ready(function(){ 
+    $(document).ready(function(){        
         data_<%= name %> = $('#<%= name %>').dataTable({
+
             <% if extras[:slno] %>
                 "aaSorting": [[ 1, 'asc' ]],
                 "fnDrawCallback": function ( oSettings ) {
@@ -41,7 +42,15 @@
             "aoColumns": <%= columns.html_safe %>,
             "bFilter": <%= extras[:bfilter] %>,
             "bLengthChange": <%= extras[:blenghchange] %>,
-            "aoColumnDefs": [{ "bVisible": false, "aTargets": [<%= extras[:hide_column] %>] }]
+            "aoColumnDefs": [{ "bVisible": false, "aTargets": [<%= extras[:hide_column] %>]},
+               {"mRender": function ( source, type, val )                 
+                {                
+                    return Number(source).toFixed(2);                    
+                }, 
+
+               "aTargets": <%= extras[:currency_format] %>
+                
+            }]
         });
 
         <% if extras[:grouping] %>

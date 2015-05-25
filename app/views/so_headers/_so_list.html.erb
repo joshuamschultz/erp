@@ -25,7 +25,7 @@
                 <th>Bill To</th>
                 <th>Ship To</th>
                 <% if @item.present? %> 
-                    <th>Cost</th> 
+                    <th>Sell</th> 
                     <th>Quantity Ordered</th>
                 <% end %>                
                 <th>Cofc</th>
@@ -43,7 +43,7 @@
 <% if @item.present? %>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
@@ -64,7 +64,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+    {:name => "table_report_so_header_list", :path => open_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
