@@ -95,6 +95,15 @@
                 $(".receipt_receivable_new").html("");
                 receivable_select_html = "";
             }
+
+            $('#receipt_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#receipt_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#receipt_organization_id').val()}}, "get_org_id", {}); 
+            }
+        }); 
         });
 
         <% unless @receipt.nil? %>
@@ -230,6 +239,11 @@
                 call_receipt_receivable_info($(this));
             });
         }
+    }
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);
+       initialize_api_call({"url": "/organizations/" + org_id_val + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_receivables", "id": org_id_val}}, "set_receipt_receivables", {});
     }
 
 </script>

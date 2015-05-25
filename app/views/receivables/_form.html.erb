@@ -115,6 +115,15 @@
             else
                 receivable_fine_to_submit = true;
         });
+
+        $('#receivable_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#receivable_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#receivable_organization_id').val()}}, "get_org_id", {}); 
+            }
+        }); 
     });
 
     function set_customer_info(response, callback_params, api_params){
@@ -230,6 +239,11 @@
         //     }
         // }
         
+    }
+
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);
+       initialize_api_call({"url": "/organizations/" + org_id_val + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
     }
 </script>
 

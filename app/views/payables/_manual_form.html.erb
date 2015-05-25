@@ -102,6 +102,19 @@
                 $("#payable_vendor_info").html("");
                 $("#payable_payable_to_id").html("");
             }
+
+           
+          $('#payable_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#payable_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payable_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
+
+
+
         });
         add_expense ();
         <% unless @payable.nil? %>
@@ -193,6 +206,14 @@
             $("#payable_payable_accounts_attributes_"+account_row_count+"_payable_account_amount").val($("#payable_payable_total").val());
             }
         }         
+    }
+
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);      
+        $("#organization_id").val(org_id_val);
+        initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+
+        initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
     }
 
 </script>
