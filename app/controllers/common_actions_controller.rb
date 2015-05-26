@@ -107,13 +107,12 @@ class CommonActionsController < ApplicationController
                 cause_analysis = CauseAnalysis.find_by_name(params[:cause_name])
                 result = cause_analysis              
               end
+
              when "get_lot"
               if params[:lot_name].present?
                 quality_lot = QualityLot.find_by_lot_control_number(params[:lot_name])
                 result =  quality_lot             
-              end
-
-              
+              end             
               
 
             when "get_alt_name"
@@ -121,6 +120,17 @@ class CommonActionsController < ApplicationController
                 item =  Item.find_by_item_part_no(params[:value])
                 alt_name_item = item.item_alt_names.first
                 result = alt_name_item              
+              end
+
+            when "get_location"
+              if params[:lot_id] && params[:line_id]
+                res = Hash.new
+                quality_lot = QualityLot.find(params[:lot_id])
+                po_shipment = quality_lot.po_shipment if quality_lot
+                location = po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+                res["location"] = location
+                res["line_id"] = params[:line_id]
+                result = res
               end
 
 
