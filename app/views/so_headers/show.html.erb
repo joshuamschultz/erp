@@ -35,9 +35,9 @@
             </div>
 
             <div class="span4 well">
-                  <a class="widget-stats" href="#" id="contacts_btn">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick = "pick_report(); return false;">
                       <span class="glyphicons notes_2"><i></i></span>
-                      <span class="txt">Add Quote</span>
+                      <span class="txt">Pick Report</span>
                       <div class="clearfix"></div>
                   </a>
             </div>
@@ -80,8 +80,15 @@ function packing_report()
 </script>
 <iframe src="<%= report_so_header_path(@so_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
 <iframe src="<%= packing_report_so_header_path(@so_header) %>" style="border:0;"  id="myPrintView1" width="10" height= "10"></iframe>
+<iframe src="<%= pick_report_so_header_path(@so_header) %>" style="border:0;" id="pick" width="10" height= "10" ></iframe>
 
 <script type="text/javascript">
+
+    function pick_report() {
+      var pick_iframe = $("#pick")[0];
+      pick_iframe.contentWindow.focus();
+      pick_iframe.contentWindow.print();
+    }
     function after_send(response){
         //alert("sucess");
 
