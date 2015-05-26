@@ -221,6 +221,11 @@ class SoHeadersController < ApplicationController
       render :layout => false
 
   end
+  def pick_report
+      @so_header = SoHeader.find(params[:id])
+      @company_info = CompanyInfo.first
+      render :layout => false
+  end
 
 
 private
