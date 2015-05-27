@@ -3,9 +3,10 @@ class CheckEntry < ActiveRecord::Base
 
   attr_accessible :check_active, :check_code, :check_identifier, :status
 
-  validates_presence_of :check_code
+  # validates_presence_of :check_code
 
-  validates_uniqueness_of :check_code
+  validates  :check_code,
+             :uniqueness => { :allow_blank => true }
 
   def self.get_next_check_code
       #   Payment.joins(:check_entry)

@@ -84,11 +84,53 @@ class CommonActionsController < ApplicationController
                 organization =  Organization.find_by_organization_name(params[:so_value])
                 result = organization              
               end
+
+            when "get_item"
+              if params[:item_name].present?
+                item =  Item.find_by_item_part_no(params[:item_name])
+                result = item              
+              end
+              
+
+            when "get_account"
+              if params[:gl_name].present?
+                account =  GlAccount.find_by_gl_account_title(params[:gl_name])
+                result = account              
+              end
+            when "get_po"
+              if params[:po_name].present?
+                po_header =  PoHeader.find_by_po_identifier(params[:po_name])
+                result = po_header              
+              end
+            when "get_cause"
+              if params[:cause_name].present?
+                cause_analysis = CauseAnalysis.find_by_name(params[:cause_name])
+                result = cause_analysis              
+              end
+
+             when "get_lot"
+              if params[:lot_name].present?
+                quality_lot = QualityLot.find_by_lot_control_number(params[:lot_name])
+                result =  quality_lot             
+              end             
+              
+
             when "get_alt_name"
               if params[:value].present?
                 item =  Item.find_by_item_part_no(params[:value])
                 alt_name_item = item.item_alt_names.first
                 result = alt_name_item              
+              end
+
+            when "get_location"
+              if params[:lot_id] && params[:line_id]
+                res = Hash.new
+                quality_lot = QualityLot.find(params[:lot_id])
+                po_shipment = quality_lot.po_shipment if quality_lot
+                location = po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+                res["location"] = location
+                res["line_id"] = params[:line_id]
+                result = res
               end
 
 
@@ -464,7 +506,22 @@ class CommonActionsController < ApplicationController
                     CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: amount, rec: false, payment_id: payment.id, balance: balance)
                 end          
                 result = "success"
-              end 
+              end
+
+
+            when "generate_check_code"
+              c = CheckEntry.find(params[:id])
+              check_code = CheckCode.find_by_counter_type('check_code').counter 
+              c.update_attributes(:check_code => check_code) 
+              temp = CheckCode.find_by_counter_type("check_code") 
+              temp.update_attributes(:counter => check_code ) 
+              CheckCode.get_next_check_code 
+              res = Hash.new 
+              res["id"] = params[:id]
+              res["check_code"] = check_code
+              result = res
+
+
             when "after_print_deposits"
               if params[:id].present? 
                 deposit_check = DepositCheck.find(params[:id]) 

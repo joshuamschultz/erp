@@ -67,7 +67,7 @@ class CheckCodesController < ApplicationController
 
     respond_to do |format|
       if @check_code.update_attributes(params[:check_code])
-        format.html { redirect_to @check_code, notice: 'Check code was successfully updated.' }
+        format.html { redirect_to check_entries_path, notice: 'Check code was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

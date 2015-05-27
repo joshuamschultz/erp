@@ -21,7 +21,7 @@ module CommonActions
 	end
 
 	def self.get_quality_lot_div(soLineId)		
-		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id'>"
+		divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id' onchange='setLocation(this, #{soLineId})'>"
         if soLineId.present?
             # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
              so_line =  SoLine.find(soLineId)
@@ -34,6 +34,19 @@ module CommonActions
         end
 		divdata += "</select></div>"
 		divdata
+	end
+	def self.get_location_div(soLineId)				
+        if soLineId.present?
+            # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
+             so_line =  SoLine.find(soLineId)
+             if so_line.item.present?
+	            quality_lot = so_line.item.quality_lots.where('finished not in (?)', [true]).first
+	            po_shipment = quality_lot.po_shipment if quality_lot
+      			location = po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+				location_div =  "<div id='location_#{soLineId}'>#{location}</div>"     			
+       		end
+        end
+		location_div
 	end
   
     def self.check_boxes(val, chkId, funct)

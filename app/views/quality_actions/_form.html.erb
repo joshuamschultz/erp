@@ -106,6 +106,37 @@
         $("#quality_action_cause_analysis_id").val("<%= @quality_action.cause_analysis.name if @quality_action.cause_analysis %>");
 
         $("#quality_action_due_date").val("<%= @quality_action.due_date if @quality_action.due_date %>");
+        
+        $('#quality_action_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {   
+                var ui_id = $(this).autocomplete('widget').attr('id');               
+                $('#quality_action_item_alt_name_id').val($( "#"+ui_id +" li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#quality_action_item_alt_name_id').val()}}, "get_item_id", {}); 
+            }
+        }); 
+         
+        $('#quality_action_po_header_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {     
+                 var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#quality_action_po_header_id').val($( "#"+ui_id +" li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_po", "po_name":  $('#quality_action_po_header_id').val()}}, "get_po_id", {}); 
+            }
+        });
+        
+        $('#quality_action_cause_analysis_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {     
+                 var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#quality_action_cause_analysis_id').val($( "#"+ui_id +" li a" ).first().html());                               
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_cause", "cause_name":  $('#quality_action_cause_analysis_id').val()}}, "get_cause_id", {}); 
+            }
+        });
+
     });
 
     <% date_box_date = @quality_action.new_record? ? Date.today : @quality_action.due_date %> 
@@ -130,7 +161,19 @@
         var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
         $("#quality_action_quality_lot_id").html(html);
     }
-
+    function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#alt_name_id").val(item_id_val); 
+         initiate_line_items();                     
+    }
+    function get_po_id(response){
+       var po_id = JSON.stringify(response.aaData.id);      
+        $("#po_header_id").val(po_id);                          
+    }
+    function get_cause_id(response){
+       var cause_id = JSON.stringify(response.aaData.id);      
+        $("#cause_analysis_id").val(cause_id);                          
+    }
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "lot-control-select-box"} %>

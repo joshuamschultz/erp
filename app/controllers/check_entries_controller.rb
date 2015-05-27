@@ -15,8 +15,8 @@ class CheckEntriesController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @check_entries = @check_entries.select{|check_entry| 
-            check_data = check_entry.check_belongs_to
-            check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
+            # check_data = check_entry.check_belongs_to
+            # check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
             check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
             payables = check_entry.get_payables
             check_entry[:payables] = payables["payableIds"]
