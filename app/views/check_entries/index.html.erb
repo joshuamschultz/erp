@@ -100,15 +100,11 @@ $("#print_check").click(function() {
     <% @check_entries.each do |c| %>
         <% unless c.check_belongs_to.nil? %> 
            flag = 1; 
-           count = count + 1;               
+           count = count + 1; 
+           console.log(<%= c.id %>);              
            checkEntryId = <%= c.id %>
-            setTimeout(function()
-             {         
-                console.log(<%= c.id %>); 
-            }, 2000);
            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "id" : checkEntryId  }}, "set_check_code", {});
         <% end %>
-       
     <% end %> 
     if (flag == 1)
     {             
@@ -127,12 +123,8 @@ $("#print_check").click(function() {
 });  
 function set_check_code(response, callback_params, api_params)
 {
-    var id =response["aaData"]["id"];
-    setTimeout(function()
-             {         
-               $("#c"+id).html(response["aaData"]["check_code"]);
-            }, 2000); 
-    
+    var id =response["aaData"]["id"]; 
+    $("#c"+id).html(response["aaData"]["check_code"]);
 }
 function reload_the_page()
 {
