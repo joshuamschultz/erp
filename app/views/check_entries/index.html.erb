@@ -103,9 +103,9 @@ $("#print_check").click(function() {
            count = count + 1;               
            checkEntryId = <%= c.id %>
             setTimeout(function()
-        {         
-           console.log(<%= c.id %>); 
-        }, 2000);
+             {         
+                console.log(<%= c.id %>); 
+            }, 2000);
            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "id" : checkEntryId  }}, "set_check_code", {});
         <% end %>
        
@@ -127,8 +127,12 @@ $("#print_check").click(function() {
 });  
 function set_check_code(response, callback_params, api_params)
 {
-    var id =response["aaData"]["id"]; 
-    $("#c"+id).html(response["aaData"]["check_code"]);
+    var id =response["aaData"]["id"];
+    setTimeout(function()
+             {         
+               $("#c"+id).html(response["aaData"]["check_code"]);
+            }, 2000); 
+    
 }
 function reload_the_page()
 {
