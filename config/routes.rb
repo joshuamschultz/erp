@@ -235,8 +235,9 @@ AllianceFasteners::Application.routes.draw do
   resources :so_headers do
     member do 
       get 'report'
-      get 'packing_report'
-    end
+      get 'packing_report' 
+      get 'pick_report'     
+    end    
     resources :so_lines
     member do
       get 'populate'

@@ -35,6 +35,22 @@
     $(document).ready(function(){ 
       $("#customer_quote_organization_id").val("<%= @customer_quote.organization.organization_name if @customer_quote.organization %>");
         $("#customer_quote_organization_id").focus();
+
+        $('#customer_quote_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#customer_quote_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#customer_quote_organization_id').val()}}, "get_org_id", {}); 
+            }
+        }); 
+
+
     });
+
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);      
+        $("#organization_id").val(org_id_val);
+    }
 
 </script>

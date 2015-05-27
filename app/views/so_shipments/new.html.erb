@@ -29,6 +29,8 @@
                 <% unless params[:type1].present? && params[:type2].present? %>
                     <th>Shipping</th>
                     <th>Lot</th>
+                    <th >Location</th>
+
                 <% end %>            
                 <!-- <th>Shelf</th>
                 <th>Unit</th> -->
@@ -70,6 +72,8 @@
                         { "mData": "so_line_shipping" },   
                         { "mData": "so_line_lot" },
 
+                        { "mData": "so_line_location" },
+                       
                                        
                         { "mData": "links", "bSortable": false, "bSearchable": false }                        
                     ]'
@@ -84,3 +88,22 @@
 
 <!-- { "mData": "so_line_shelf" },
 { "mData": "so_line_unit" }, -->
+<script>
+
+function setLocation(lot, SoLineId)
+{    
+    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_location", "lot_id":  lot.value, "line_id" : SoLineId}}, "diplay_location", {}); 
+}
+
+function diplay_location(response)
+{
+    var location = JSON.stringify(response.aaData.location);
+    var div_id = JSON.stringify(response.aaData.line_id);
+    console.log(location);
+    console.log(div_id);
+    div_id =  div_id.replace(/\"/g, "");
+    location = location.replace(/\"/g, "");    
+    div_id = '#location_' + div_id
+    $(div_id).text(location);
+}
+</script>
