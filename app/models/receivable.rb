@@ -341,7 +341,7 @@ class Receivable < ActiveRecord::Base
           j = 1
           j+=1
           content += '</table></article>'
-          content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span> '+ index.to_s+''+j.to_s+'</span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>'
+          content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span> '+len.to_s+'-' + index.to_s+''+j.to_s+'</span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>'
           content += '<div style="page-break-after: always;"> &nbsp; </div>'
        
         end 
