@@ -98,6 +98,7 @@ $("#print_check").click(function() {
     var checks_iframe = $("#myPrintView")[0];   
     <% @check_entries =  CheckEntry.where(:check_active => 1) %>         
     <% @check_entries.each do |c| %>
+        <% sleep 2 %>
         <% unless c.check_belongs_to.nil? %> 
            flag = 1; 
            count = count + 1; 
