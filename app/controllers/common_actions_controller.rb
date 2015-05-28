@@ -509,15 +509,13 @@ class CommonActionsController < ApplicationController
               end
 
 
-            when "generate_check_code"              
+            when "generate_check_code"                           
               c = CheckEntry.find(params[:id])
               check_code = CheckCode.find_by_counter_type('check_code').counter 
               c.update_attributes(:check_code => check_code) 
               temp = CheckCode.find_by_counter_type("check_code") 
-              temp.update_attributes(:counter => check_code ) 
-              sleep 2
-              CheckCode.get_next_check_code 
-              sleep 2
+              temp.update_attributes(:counter => check_code )               
+              CheckCode.get_next_check_code               
               res = Hash.new 
               res["id"] = params[:id]
               res["check_code"] = check_code
