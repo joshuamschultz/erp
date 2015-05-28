@@ -97,8 +97,7 @@ $("#print_check").click(function() {
     var count =0;
     var checks_iframe = $("#myPrintView")[0];   
     <% @check_entries =  CheckEntry.where(:check_active => 1) %>         
-    <% @check_entries.each do |c| %>
-        <% sleep 2 %>
+    <% @check_entries.each do |c| %>        
         <% unless c.check_belongs_to.nil? %> 
            flag = 1; 
            count = count + 1; 
@@ -106,6 +105,7 @@ $("#print_check").click(function() {
            checkEntryId = <%= c.id %>
            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "id" : checkEntryId  }}, "set_check_code", {});
         <% end %>
+        <% sleep 5 %>
     <% end %> 
     if (flag == 1)
     {             
