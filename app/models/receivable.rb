@@ -334,7 +334,7 @@ class Receivable < ActiveRecord::Base
         if i==10 
           content += '</table></article>'
           content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span>1 </span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>'
-          content += ' <div style="page-break-after:always;">111111111111111111111111111111111</div>'  
+          content += ' <div style="page-break-after:always;">&nbsp; </div>'  
         end
 
         if len == index+1 && i != 10 
@@ -342,7 +342,7 @@ class Receivable < ActiveRecord::Base
           j+=1
           content += '</table></article>'
           content += '<article ><div class="footer"><div class="page"><h3>Page</h3><span> '+j.to_s+'</span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>'
-          content += ' <div style="page-break-after:always;">22222222222222222222222222222222222222222222222</div>'  
+          content += ' <div style="page-break-after:always;">&nbsp; </div>'  
        
         end 
 
@@ -363,7 +363,7 @@ class Receivable < ActiveRecord::Base
         <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+in_contact_title.to_s+''+in_contact_address1.to_s+''+in_contact_address2.to_s+''+in_contact_state.to_s+''+in_contact_czip.to_s+'</h2></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+ship_contact_title.to_s+''+ship_contact_address1.to_s+''+ship_contact_address2.to_s+''+ship_contact_state.to_s+''+ship_contact_czip.to_s+'</div></div></div></article>
         <article class="art-01 art-04 "><table cellspacing="0" cellpadding="0" border="0" width="640"><tbody><tr align="center" class="hea"><td width="72">ORDERED</td><td width="75">SHIPPED</td><td width="67">P/N</td><td width="224">DESCRIPTION</td><td width="95">PRICE/E</td><td width="107">TOTAL</td></tr> <tr valign="top" align="left" class="h-pad"><td></td><td></td><td><table border="0" width="100%"><tbody><tr><th scope="row"></th></tr></tbody></table></td><td></td><td></td><td></td></tr></tbody></table></article>
         <article ><div class="footer"><div class="page"><h3>Page</h3><span>1 </span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>
-        </section><div style=\"page-break-after: always;\"> &nbsp; </div>'.html_safe
+        </section><div style="page-break-after:always;">&nbsp; </div>'.html_safe
 
        
 
