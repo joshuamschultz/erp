@@ -100,10 +100,10 @@
             }
             else{
                 $("#payable_vendor_info").html("");
-                $("#payable_payable_to_id").html("");
+                // $("#payable_payable_to_id").html("");
             }
 
-           
+          }); 
           $('#payable_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
             if (code === 9 || code ===13 ) 
@@ -115,7 +115,7 @@
 
 
 
-        });
+        
         add_expense ();
         <% unless @payable.nil? %>
             $("#payable_po_header_id").val("<%= @payable.po_header.po_identifier if @payable.po_header %>");
