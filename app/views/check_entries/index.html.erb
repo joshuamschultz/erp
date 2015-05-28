@@ -130,7 +130,7 @@ function set_check_code(response, callback_params, api_params)
     {    
         var id =response["aaData"]["id"]; 
         $("#c"+id).html(response["aaData"]["check_code"]);
-    },2000);
+    },10000);
 }
 function reload_the_page()
 {
