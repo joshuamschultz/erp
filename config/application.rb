@@ -71,6 +71,8 @@ module AllianceFasteners
     # # In `config/environments/production.rb`
     # config.action_controller.asset_host = "http://erp.chessgroupinc.com"
 
+    config.cache_counts_by_default = true
+
     #add these lines
         config.generators do |g|
           g.stylesheets false
