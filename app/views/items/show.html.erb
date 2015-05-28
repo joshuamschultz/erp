@@ -175,7 +175,7 @@
                     <div class="row-fluid">
                         <div class="span6">
                             <div id="po_header">
-                                <% if can? :manage, PoHeader %>
+                                <% if can? :view, PoHeader %>
                                 <%= render :partial => 'po_headers/po_list', locals: {
                                     all_path: item_path(@item, :revision_id => @item_revision.id),
                                     open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),
