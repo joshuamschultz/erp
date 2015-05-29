@@ -78,7 +78,7 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_payments"] = [];
+    tab_field_forms["form_for_payments"] = ["payment_organization_id", "payment_payment_description", "payment_payment_notes", "payment_payment_lines_attributes_0_payable_id"];
 
     var payable_select_html = "";
 
@@ -86,15 +86,6 @@
 
     $(document).ready(function(){
         
-        $('#payment_organization_id').keydown(function(e) {
-            var code = e.keyCode || e.which;
-            if (code === 9 || code ===13 ) 
-            {                  
-                $('#payment_organization_id').val($( "#ui-id-1 li a" ).first().html());
-                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {}); 
-            }
-        });  
-
         if (!$("input:radio[name='payment[payment_check_code_type]']").is(":checked")) {
             $('.check_code_type_rad:first').attr('checked', true);
         }    
@@ -119,6 +110,19 @@
                 payable_select_html = "";
             }
         });
+        
+        $('#payment_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 )                 
+            {                  
+                e.preventDefault();
+                $('#payment_payment_description').focus();
+                
+                $('#payment_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
+
 
         <% unless @payment.nil? %>
             $("#payment_organization_id").val("<%= @payment.organization.organization_name if @payment.organization %>");
