@@ -43,7 +43,7 @@ class ReceivablesController < ApplicationController
   def index
     if Receivable.find_by_receivable_disperse("unassigned").present?
       receivable = Receivable.find_by_receivable_disperse("unassigned")
-      ReceivableSoShipment.find_by_receivable_id(receivable).delete
+      receivable.receivable_so_shipments.destroy_all
       receivable.delete
     end
     if params[:item_id].present?
