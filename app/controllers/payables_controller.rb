@@ -43,7 +43,7 @@ class PayablesController < ApplicationController
   def index
       if payable = Payable.find_by_payable_disperse("unassigned").present?
         payable = Payable.find_by_payable_disperse("unassigned")
-        PayablePoShipment.find_by_payable_id(payable).delete
+        payable.payable_po_shipments.destroy_all
         payable.delete
       end
       if params[:item_id].present?
