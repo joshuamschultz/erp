@@ -511,6 +511,7 @@ class CommonActionsController < ApplicationController
 
             when "generate_check_code"                  
               ids = params[:ids]
+              res = Hash.new 
               ids.each do |id|
                 sleep 1
                 c = CheckEntry.find(id)
@@ -518,8 +519,7 @@ class CommonActionsController < ApplicationController
                 c.update_attributes(:check_code => check_code) 
                 temp = CheckCode.find_by_counter_type("check_code") 
                 temp.update_attributes(:counter => check_code )               
-                CheckCode.get_next_check_code               
-                res = Hash.new 
+                CheckCode.get_next_check_code                               
                 res[id] = check_code
               end 
               result = res
