@@ -65,7 +65,7 @@ class PoShipmentsController < ApplicationController
                   quality_lot = po_shipment.quality_lot
                 if can? :edit, PoShipment
 
-                  po_shipment[:lot] =  quality_lot.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : "" 
+                  po_shipment[:lot] =  quality_lot.present? && quality_lot.lot_control_no.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : "" 
                 else
                   po_shipment[:lot]= ""
                 end
