@@ -152,7 +152,15 @@ class QualityLot < ActiveRecord::Base
 
 		begin
 		letter = letter.next!
-		count = current_count + 1
+		count = 0
+		@item_lots =ItemLot.where(:item_id => self.item_lot.item_id)
+		@item_lots.each do |item_lot|		
+
+			if item_lot.quality_lot.present? && item_lot.quality_lot.lot_control_no.present?
+				count = count + 1
+			end 
+		end
+		
 		@max_control_string = MaxControlString.where(:control_string => control_string+letter)
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
@@ -162,7 +170,7 @@ class QualityLot < ActiveRecord::Base
 			lot_no = self.item_lot.item_lot_count
 		end
 		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + (ItemLot.where(:item_id => self.item_lot.item_id).count).to_s
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + count.to_s		
 		self.update_column(:lot_control_no, temp)
 	end
 
