@@ -524,6 +524,35 @@ class CommonActionsController < ApplicationController
               end 
               result = res
 
+            when "set_lot_numbers"              
+              params["ids"].each do |id|
+                sleep 1
+                quality_lot = QualityLot.find(id)
+                if quality_lot.present?
+                  quality_lot.set_lot_control_no
+                end
+              end
+              result = params["ids"]
+
+            when "get_jr100_print_data"
+              @quality_lot = QualityLot.find(params["id"])
+              res = Hash.new
+              if @quality_lot.present?
+                @po_shipment = @quality_lot.po_shipment
+                if @po_shipment.present?
+                  res["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
+                  res["shipped_status"] = @po_shipment.po_line.po_line_status   
+                  res["part_number"] = @po_shipment.po_line.item.item_part_no
+                  res["po"]   = @po_shipment.po_line.po_header.po_identifier
+                  res["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization                  
+                  res["company_name"] =  CompanyInfo.first.company_name
+                  res["control_number"] = @quality_lot.lot_control_no
+                  result = res
+                end
+              else                
+                result = "Failure"                
+              end
+
 
             when "after_print_deposits"
               if params[:id].present? 
