@@ -160,7 +160,7 @@ class Payment < ActiveRecord::Base
             else
                 desc = self.payment_type.type_name
                 if self.payment_type.type_value == "check"  
-                    desc = "Check "+ self.payment_check_code                
+                    desc = "Check "               
                 end
                 @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)
                 @gl_entry.save 
