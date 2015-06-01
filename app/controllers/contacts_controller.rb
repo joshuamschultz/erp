@@ -11,13 +11,13 @@ class ContactsController < ApplicationController
   def view_permissions
    if  user_signed_in? && current_user.is_logistics?
         authorize! :edit, Contact
-    end 
+    end
   end
 
   def user_permissions
    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, Contact
-    end 
+    end
   end
 
   def set_page_info
@@ -27,7 +27,7 @@ class ContactsController < ApplicationController
   end
 
 
-  def index  
+  def index
     @contact_type = params[:contact_type] || "address"
     @contactable = Organization.find_organization(params)
 
@@ -46,7 +46,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
           @contacts = @contacts.select{|contact|
             contact[:organization] = CommonActions.linkable(organization_path(contact.contactable), "Organization : " + contact.contactable.organization_short_name)
             contact[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == "contact"
@@ -57,9 +57,9 @@ class ContactsController < ApplicationController
               contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
             else
                contact[:links] = ""
-            end   
+            end
           }
-          render json: {:aaData => @contacts}        
+          render json: {:aaData => @contacts}
       }
     end
   end
@@ -96,7 +96,7 @@ class ContactsController < ApplicationController
   end
 
   # GET /contacts/1/edit
-  def edit     
+  def edit
     @contact = Contact.find(params[:id])
     @contactable = @contact.contactable
   end
@@ -109,7 +109,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
-        format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully created.' }
+        format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully created.' }
         format.json { render json: @contact, status: :created, location: @contact }
       else
         format.html { render action: "new" }
@@ -126,7 +126,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.update_attributes(params[:contact])
-        format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
+        format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -144,7 +144,7 @@ class ContactsController < ApplicationController
     @contact.destroy
 
     respond_to do |format|
-      format.html { 
+      format.html {
         case(params[:redirect_to])
             when "index"
                 redirect_to contacts_path(:object_id => @contactable.id, :contact_type => @contact_type)
