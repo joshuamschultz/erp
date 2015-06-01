@@ -137,7 +137,7 @@ class PoShipmentsController < ApplicationController
         if @quality_lot.save
           # lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
           @item_lot.update_attribute(:quality_lot_id , @quality_lot.id)
-          @quality_lot.set_lot_control_no
+          # @quality_lot.set_lot_control_no
         end
 
 
@@ -157,7 +157,7 @@ class PoShipmentsController < ApplicationController
           @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
           @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
           @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
-          @po_shipment["control_number"] = quality_lot.lot_control_no if quality_lot.present?
+          @po_shipment["lot_id"] = quality_lot.id if quality_lot.present?
           @po_shipment["company_name"] =  CompanyInfo.first.company_name
           format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
           format.json { render json: @po_shipment, status: :created, location: @po_shipment }
