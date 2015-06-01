@@ -1,5 +1,11 @@
 AllianceFasteners::Application.routes.draw do
 
+  namespace :api do
+  namespace :vi do
+    resources :organizations
+  end
+end
+
   resources :item_lots
 
 
