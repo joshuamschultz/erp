@@ -141,7 +141,7 @@ module CommonActions
 		menus = {}
 		menus[:dashboard] = {:class => "glyphicons dashboard", :path => account_dashboard_path, :name => "Dashboard", :type => "single"}
 
-    if  user_signed_in? &&  !current_user.is_customer? && !current_user.is_vendor?
+		if  user_signed_in? &&  !current_user.is_customer? && !current_user.is_vendor?
 			menus[:contacts] = {:class => "hasSubmenu glyphicons adress_book", :path => "#", :name => "Organizations", :type => "multiple"}
 			menus[:contacts][:sub_menu] = 	[
 				{:path => organizations_path, :name => "Companies"},
@@ -309,27 +309,31 @@ module CommonActions
 		]
 
 		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
-		menus[:system][:sub_menu] = 	[
-			{:path => events_path, :name => "Calendar"},
-			{:path => commodities_path, :name => "Commodities"},
-			{:path => check_code_path(CheckCode.first), :name => "Counters"},
-			# {:path => }
-		]
-		if can? :view, CompanyInfo
-			menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"})
-		end
 
-		if can? :view, Territory
-			menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"})
-		end
+		menus[:system][:sub_menu] = 	[]
 
-		if can? :view, Owner
-			menus[:system][:sub_menu].push({:path => owners_path, :name => "Owners"})
-		end
+      menus[:system][:sub_menu].push({:path => events_path, :name => "Calendar"})
 
-		if can? :view, User
-			menus[:system][:sub_menu].push({:path => privileges_path, :name => "Privileges"})
-		end
+      menus[:system][:sub_menu].push({:path => commodities_path, :name => "Commodities"})
+
+
+  		if can? :view, Territory
+  			menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"})
+  		end
+
+  		if can? :view, Owner
+  			menus[:system][:sub_menu].push({:path => owners_path, :name => "Owners"})
+  		end
+
+      menus[:system][:sub_menu].push({:path => check_code_path(CheckCode.first), :name => "Counters"})
+
+  		if can? :view, User
+  			menus[:system][:sub_menu].push({:path => privileges_path, :name => "Privileges"})
+  		end
+
+  		if can? :view, CompanyInfo
+  			menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"})
+  		end
 
 		menus
 	end
@@ -468,31 +472,30 @@ module CommonActions
 	def self.notification_process(model_type, model_id)
 		quality_user = User.where(:roles_mask => 4).first
 
-        if model_type == "Organization" && model_id.organization_type_id == 6
-        	common_process_model(model_type,model_id,quality_user)
+      if model_type == "Organization" && model_id.organization_type_id == 6
+      	common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "QualityAction"
-        	if model_id.users.present?
-	            model_id.users.each do |user|
-	                notification_set_status(model_id,model_type,user.id)
-	            end
-        	end
+      elsif model_type == "QualityAction"
+      	if model_id.users.present?
+            model_id.users.each do |user|
+                notification_set_status(model_id,model_type,user.id)
+            end
+      	end
 
-        elsif model_type == "Print"
-       		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "Print"
+     		common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "Specification"
-      		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "Specification"
+    		common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "ProcessType"
-       		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "ProcessType"
+     		common_process_model(model_type,model_id,quality_user)
 
-       	elsif model_type == "PoLine"
-       		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
-       			common_process_model(model_type,model_id,quality_user)
-       		end
-        end
-
+     	elsif model_type == "PoLine"
+     		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+     			common_process_model(model_type,model_id,quality_user)
+     		end
+      end
     end
 
     def self.common_process_model(model, model_note, user)
