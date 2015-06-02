@@ -532,6 +532,7 @@ class CommonActionsController < ApplicationController
                   if quality_lot.present?
                     quality_lot.set_lot_control_no
                   end
+                end
               end
               result = params["ids"]
 
