@@ -71,10 +71,12 @@
         vendor_type_changed();
 
         $('#quote_customer_id').keydown(function(e) {
+            var ui_id = $(this).autocomplete('widget').attr('id');
             var code = e.keyCode || e.which;
-            if (code === 9 || code ===13 ) 
-            {                  
-                $('#quote_customer_id').val($( "#ui-id-1 li a" ).first().html());
+            if ((code === 9 || code ===13) &&  $( "#"+ui_id +" li").length == 1) 
+            {   
+                $('#quote_customer_id').val($( "#"+ui_id +" li a" ).first().html());
+                
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#quote_customer_id').val()}}, "get_org_id", {}); 
             }
         });  
