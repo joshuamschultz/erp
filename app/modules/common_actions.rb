@@ -476,30 +476,30 @@ module CommonActions
 	def self.notification_process(model_type, model_id)
 		quality_user = User.where(:roles_mask => 4).first
 
-        if model_type == "Organization" && model_id.organization_type_id == 6
-        	common_process_model(model_type,model_id,quality_user)
+      if model_type == "Organization" && model_id.organization_type_id == 6
+      	common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "QualityAction"
-        	if model_id.users.present?
-	            model_id.users.each do |user|
-	                notification_set_status(model_id,model_type,user.id)
-	            end
-        	end
+      elsif model_type == "QualityAction"
+      	if model_id.users.present?
+            model_id.users.each do |user|
+                notification_set_status(model_id,model_type,user.id)
+            end
+      	end
 
-        elsif model_type == "Print"
-       		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "Print"
+     		common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "Specification"
-      		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "Specification"
+    		common_process_model(model_type,model_id,quality_user)
 
-        elsif model_type == "ProcessType"
-       		common_process_model(model_type,model_id,quality_user)
+      elsif model_type == "ProcessType"
+     		common_process_model(model_type,model_id,quality_user)
 
-       	elsif model_type == "PoLine"
-       		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
-       			common_process_model(model_type,model_id,quality_user)
-       		end
-        end
+     	elsif model_type == "PoLine"
+     		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+     			common_process_model(model_type,model_id,quality_user)
+     		end
+      end
 
     end
 
