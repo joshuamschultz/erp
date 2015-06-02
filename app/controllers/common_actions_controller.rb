@@ -527,10 +527,11 @@ class CommonActionsController < ApplicationController
             when "set_lot_numbers"              
               params["ids"].each do |id|
                 sleep 1
-                quality_lot = QualityLot.find(id)
-                if quality_lot.present?
-                  quality_lot.set_lot_control_no
-                end
+                if id != "undefined"
+                  quality_lot = QualityLot.find(id)
+                  if quality_lot.present?
+                    quality_lot.set_lot_control_no
+                  end
               end
               result = params["ids"]
 
