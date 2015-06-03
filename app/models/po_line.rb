@@ -61,7 +61,7 @@ class PoLine < ActiveRecord::Base
   after_save :update_po_total
   after_destroy :update_po_total
 
-  def update_po_total
+  def update_po_total    
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(1) : self.po_header.po_identifier
     po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
     po_header_status = (po_status_count == 0) ? "closed" : "open"     
@@ -69,7 +69,7 @@ class PoLine < ActiveRecord::Base
     loop do
       po_header = PoHeader.find_by_po_identifier(po_identifier)
       break unless(po_header.present?)        
-      po_identifier = PoHeader.new_po_identifier(2)
+      po_identifier = PoHeader.new_po_identifier(i)
     end
     self.po_header.update_attributes(po_identifier: po_identifier,po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
     generate_pdf
