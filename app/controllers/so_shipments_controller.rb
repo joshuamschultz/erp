@@ -45,7 +45,7 @@ class SoShipmentsController < ApplicationController
 
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
-                  so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
+                  # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                   so_line[:links] = "<a so_line_id='#{so_line.id}' so_shipped_status='process' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
                   so_line[:links] += "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
                   so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Ship and Close</a>"
@@ -99,6 +99,9 @@ class SoShipmentsController < ApplicationController
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
                 so_shipment[:shipment_process_id] = so_shipment.shipment_process_id if params[:type] == "process"
+              
+                ship_id = '"'+so_shipment.shipment_process_id+'"'
+                so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                 if can? :edit, SoShipment  
                   so_shipment[:links] = params[:type] == "history" || "process" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
