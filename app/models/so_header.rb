@@ -38,8 +38,8 @@ class SoHeader < ActiveRecord::Base
 
   scope :status_based_sos, lambda{|status| where(:so_status => status) }
 
-  def self.new_so_identifier
-      so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+  def self.new_so_identifier(i)
+      so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + i))
       so_identifier.slice!(2)
       "S" + so_identifier
   end
