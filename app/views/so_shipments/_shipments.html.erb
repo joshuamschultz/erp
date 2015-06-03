@@ -101,6 +101,9 @@
                     ]'
     } 
 %>
+
+<%= render :partial => 'layouts/app_layouts/so_shipments', :locals => {type: "so"} %>
+
 <% else %>
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {

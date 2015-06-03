@@ -215,13 +215,15 @@ class CommonActionsController < ApplicationController
               end 
               
             when "shipment_process_complete"
-              if params[:so_header_id].present?
-                  @so_header = SoHeader.find(params[:so_header_id])
+              if params[:shipment_process_id].present?
+                  @so_header = ''
+                  so_shipment_process = SoShipment.where("shipment_process_id=? AND so_shipped_status=? ",params[:shipment_process_id],'process')
                   so_shipment = {}
                   item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = ""
                
-                  if SoShipment.where("so_header_id=? AND so_shipped_status=? ",@so_header.id,'process').count > 0
-                    SoShipment.where("so_header_id=? AND so_shipped_status=? ",@so_header.id,'process').group(:so_line_id).each do |shipment| 
+                  if so_shipment_process.count > 0
+                    @so_header = SoHeader.find(so_shipment_process.last.so_header_id)
+                    so_shipment_process.group(:so_line_id).each do |shipment| 
                       item_part = shipment.so_line.item.item_part_no
                       item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
                       item_qty = shipment.so_line.so_line_quantity.to_s
@@ -258,7 +260,7 @@ class CommonActionsController < ApplicationController
 
                     # @so_shipment["alt_part_number"] = item_alt_part
 
-                    SoShipment.complete_shipment(params[:so_header_id])
+                    SoShipment.complete_shipment(params[:shipment_process_id])
                     result = so_shipment
                   else
                      result = 0
