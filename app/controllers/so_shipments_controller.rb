@@ -98,10 +98,11 @@ class SoShipmentsController < ApplicationController
 
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
-                so_shipment[:shipment_process_id] = so_shipment.shipment_process_id if params[:type] == "process"
-              
-                ship_id = '"'+so_shipment.shipment_process_id+'"'
-                so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
+                if params[:type] == "process"
+                  so_shipment[:shipment_process_id] = so_shipment.shipment_process_id 
+                  ship_id = '"'+so_shipment.shipment_process_id+'"'
+                  so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
+                end
                 if can? :edit, SoShipment  
                   so_shipment[:links] = params[:type] == "history" || "process" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
