@@ -37,11 +37,14 @@ class SoShipment < ActiveRecord::Base
       unless ["ship_close","shipped", "on hold", "rejected"].include?(self.so_shipped_status)
           self.so_shipped_status = "process"
           so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id)
+
           so_shipment = so_shipment_process.count
 
            if so_shipment >= 1
-              so_shipment = so_shipment_process.first
+              so_shipment = so_shipment_process.last
+
               unless so_shipment.shipment_process_id.present?
+
                 shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
                 self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
               else
@@ -129,8 +132,8 @@ class SoShipment < ActiveRecord::Base
     end    
   end
 
-  def self.complete_shipment(so_id) 
-    SoShipment.where("so_header_id=? AND so_shipped_status=?",so_id,"process").update_all(:so_shipped_status => "shipped")
+  def self.complete_shipment(shipment_process_id) 
+    SoShipment.where("shipment_process_id=? AND so_shipped_status=?",shipment_process_id,"process").update_all(:so_shipped_status => "shipped")
   end
 
   
