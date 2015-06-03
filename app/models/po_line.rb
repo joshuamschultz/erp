@@ -62,6 +62,7 @@ class PoLine < ActiveRecord::Base
   after_destroy :update_po_total
 
   def update_po_total
+    sleep 2
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(1) : self.po_header.po_identifier
     po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
     po_header_status = (po_status_count == 0) ? "closed" : "open"     
