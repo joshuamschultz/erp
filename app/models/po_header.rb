@@ -70,8 +70,8 @@ class PoHeader < ActiveRecord::Base
 
   scope :status_based_pos, lambda{|status| where(:po_status => status) }
 
-  def self.new_po_identifier
-      po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+  def self.new_po_identifier(i)
+      po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + i))
       po_identifier.slice!(2)
       "P" + po_identifier
   end
