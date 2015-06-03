@@ -41,7 +41,7 @@ class SoShipment < ActiveRecord::Base
           so_shipment = so_shipment_process.count
 
            if so_shipment >= 1
-              so_shipment = so_shipment_process.first
+              so_shipment = so_shipment_process.last
 
               unless so_shipment.shipment_process_id.present?
 
