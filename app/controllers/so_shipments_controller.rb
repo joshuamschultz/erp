@@ -46,9 +46,9 @@ class SoShipmentsController < ApplicationController
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
                   # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
-                  so_line[:links] = "<a so_line_id='#{so_line.id}' so_shipped_status='process' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
-                  so_line[:links] += "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
-                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Ship and Close</a>"
+                  so_line[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
+                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='process' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
+                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Close</a>"
                 else
                   so_line[:so_identifier] += ""
                   so_line[:so_identifier] += ""
@@ -99,8 +99,8 @@ class SoShipmentsController < ApplicationController
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
                 if params[:type] == "process"
-                  so_shipment[:shipment_process_id] = so_shipment.shipment_process_id 
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
+                  so_shipment[:shipment_process_id] = so_shipment.shipment_process_id
                   so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                 end
                 if can? :edit, SoShipment  
@@ -179,6 +179,7 @@ class SoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @so_shipment.save
+
         @so_shipment.set_quality_on_hand        
         @so_shipment.so_line.update_so_total
         @so_shipment["so"] = @so_shipment.so_line.so_header.so_identifier
