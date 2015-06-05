@@ -70,6 +70,7 @@ class PoLine < ActiveRecord::Base
       po_header = PoHeader.find_by_po_identifier(po_identifier)
       break unless(po_header.present?)        
       po_identifier = PoHeader.new_po_identifier(i)
+      i++
     end
     self.po_header.update_attributes(po_identifier: po_identifier,po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
     generate_pdf
