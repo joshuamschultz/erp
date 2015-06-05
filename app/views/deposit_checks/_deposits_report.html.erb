@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 
 
-<title>Packing Report</title>
+<title>Deposit Report</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <style type="text/css">
     @charset "utf-8";
@@ -36,7 +35,7 @@ table {
 
 
 <div class="ms_wrapper">
-
+      <% receipt = Receipt.find_by_deposit_check_id(deposit_check.id) %>
   
   <div class="container">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -67,6 +66,12 @@ table {
                 </tr>
                     <tr>
                   <td align="center" scope="row"><%= Date.today.to_s %></td>
+                </tr>
+                <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                    <tr>
+                  <td align="center" scope="row"><%= receipt.receipt_lines.last.receivable.created_at.strftime("%m/%d/%Y") %></td>
                 </tr>
               </table></td>
             </tr>
@@ -101,6 +106,21 @@ table {
               <td id="check6" scope="row">&nbsp;</td>
               <td id="check12"  >&nbsp;</td>
               <td id="check18"  >&nbsp;</td>
+          <td width="83%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr align="center">
+              <td width="30%" scope="row">334,556</td>
+              <td width="31%">.................</td>
+              <td width="39%">.................</td>
+            </tr>
+            <tr align="center">
+              <td scope="row">334,556</td>
+              <td>.................</td>
+              <td>.................</td>
+            </tr>
+            <tr align="center">
+              <td scope="row">334,556</td>
+              <td>.................</td>
+              <td>.................</td>
             </tr>
             <tr align="center">
               <td scope="row">&nbsp;</td>
@@ -127,6 +147,10 @@ table {
               <td scope="row">&nbsp;</td>
               <td id ="tot_count">&nbsp;</td>
               <td id ="tot_amt">&nbsp;</td>
+            <tr align="center">
+              <td scope="row">&nbsp;</td>
+              <td>3</td>
+              <td ><%= receipt.receipt_lines.last.receivable.receivable_total.to_s %></td>
             </tr>
             </table></td>
         </tr>
@@ -176,6 +200,114 @@ table {
           <td width="45%" scope="row"><strong>Date:&nbsp;&nbsp;&nbsp; &nbsp;<%= Date.today.to_s  %></strong></td>
           <td width="41%"><strong>DEPOSIT #:&nbsp;&nbsp;&nbsp; &nbsp; </strong></td>
           <td width="14%"><strong>Page: &nbsp;&nbsp;&nbsp; &nbsp;  1</strong></td>
+        <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+        
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+                <tr align="center">
+          <td width="12%" scope="row">Lorem </td>
+          <td width="28%">Lorem Ipsum</td>
+          <td width="15%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="16%">Lorem </td>
+          <td width="13%">Lorem </td>
+        </tr>
+      </table></td>
+    </tr>
+    </table>
+        <br>   <br>
+    </div>
+    
+
+    
+    
+    <div class="container">
+    
+    
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="45%" scope="row"><strong>Date:&nbsp;&nbsp;&nbsp; &nbsp;<%= deposit_check.created_at.strftime("%m/%d/%Y") %></strong></td>
+          <td width="41%"><strong>Deposit :&nbsp;&nbsp;&nbsp; &nbsp; 5433</strong></td>
+          <td width="14%"><strong>Page: &nbsp;&nbsp;&nbsp; &nbsp;  1</strong></td>
         </tr>
       </table></td>
     </tr>
@@ -208,3 +340,4 @@ $("#cash #tot_amt").text(tot_amount.toFixed(2) );
 
 });
 </script>
+

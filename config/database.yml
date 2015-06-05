@@ -8,17 +8,37 @@
 #
 # And be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+<<<<<<< HEAD
+=======
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: alliance_fastners_development
+  pool: 5
+  username: root
+  password: redhat
+  socket: /var/run/mysqld/mysqld.sock
+  
+>>>>>>> 0e82d710c29f2083091184fffb09ad92b9879019
 development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
+<<<<<<< HEAD
   database: alliance_fasteners
+=======
+  database: fastner
+>>>>>>> 0e82d710c29f2083091184fffb09ad92b9879019
   pool: 5
   username: root
   password: redhat
   socket: /var/run/mysqld/mysqld.sock
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0e82d710c29f2083091184fffb09ad92b9879019
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.

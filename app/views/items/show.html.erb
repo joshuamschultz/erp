@@ -1,4 +1,4 @@
-<div class="row-fluid">
+	<div class="row-fluid">
     <h4 class="span3 left">Item Info<%#= @item.item_part_no %><span></span></h4>
     <span class="span9 right">
         <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
@@ -65,7 +65,6 @@
         </div>
 
         <div class="separator bottom"></div>
-<<<<<<< HEAD
        <% if can? :view, Dimension %>
         <!-- Dimensions -->
         <%= render 'item_part_dimensions/item_dimensions' %>
@@ -91,8 +90,6 @@
     <% end %>
    
 </div>
-=======
->>>>>>> ed77a2514831e1b319026935ff072392cd9c7d0c
 
     </div>
 </div>
@@ -203,7 +200,7 @@
                     <div class="row-fluid">
                         <div class="span6">
                             <div id="po_header">
-                                <% if can? :view, PoHeader %>
+                                <% if can? :manage, PoHeader %>
                                 <%= render :partial => 'po_headers/po_list', locals: {
                                     all_path: item_path(@item, :revision_id => @item_revision.id),
                                     open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"),

@@ -22,7 +22,7 @@ class ProcessTypesController < ApplicationController
   end
   # GET /process_types
   # GET /process_types.json
-   def index
+  def index
     if params[:item_id].present?
       @process_types =ProcessType.item_process_type(params[:item_id])
     else
@@ -45,22 +45,6 @@ class ProcessTypesController < ApplicationController
       }
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { 
-        @process_types = @process_types.collect{|process_type| 
-          attachment = process_type.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
-          if can? :edit, ProcessType
-            attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
-          else
-             attachment[:links] = ''
-          end
-          attachment
-        }
-        render json: {:aaData => @process_types} 
-      }
-    end
   end
 
   # GET /process_types/1
