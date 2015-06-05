@@ -44,6 +44,7 @@ class SoLine < ActiveRecord::Base
       so_header_status = (so_status_count == 0) ? "closed" : "open"
       i= 2
       loop do
+        i+=1
         so_header = SoHeader.find_by_so_identifier(so_identifier)
         break unless(so_header.present?)        
         so_identifier = SoHeader.new_so_identifier(i)
