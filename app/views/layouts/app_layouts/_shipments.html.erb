@@ -127,6 +127,7 @@ function printPage(win_id){
 	<% end %>
 
 	function initiate_shipping_inputs(){
+    $(".loading").show();
 		$(".shipping_status").html("");
 		$(".shipping_status").removeClass("success");
 		$(".shipping_status").removeClass("error");				 
@@ -197,6 +198,7 @@ function printPage(win_id){
 
 function print_data(response, callback_params, api_params)
 {
+  $(".loading").hide();
  	console.log(response["aaData"])
   $("#lot_ids").text("");
 		var currentDate = new Date()
