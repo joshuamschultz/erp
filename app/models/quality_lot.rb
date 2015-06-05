@@ -9,12 +9,16 @@ class QualityLot < ActiveRecord::Base
 	belongs_to :process_flow
 	belongs_to :run_at_rate
 
-	before_create :before_create_values
-	
+	# before_create :before_create_values
+	after_create :after_create_values
+	# before_save :before_save_values
 	def before_create_values
 		self.lot_control_no = self.set_lot_control_no
-		self.quantity_on_hand = self.lot_quantity
 	end
+
+	# def  before_save_values
+	# 	self.quantity_on_hand = self.lot_quantity
+	# end
 
   	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
@@ -44,6 +48,12 @@ class QualityLot < ActiveRecord::Base
 	has_one :checklist, :dependent => :destroy
 	has_one :ppap, :dependent => :destroy
   	has_many :inventory_adjustments, :dependent => :destroy
+  	has_many :so_shipments
+  	has_one :po_shipment
+  	has_many :quality_histories, :dependent => :destroy
+
+  	has_one :item_lot
+  	# has_one :po_shipment, :dependent => :destroy
 
 	accepts_nested_attributes_for :quality_lot_materials, :reject_if => lambda { |b| b[:lot_element_low_range].blank? }
 
@@ -69,8 +79,11 @@ class QualityLot < ActiveRecord::Base
 					CheckListLine.create(:checklist_id => self.checklist.id, :master_type_id => quality_level.master_type_id, :check_list_status => false)		
 				end
 			end
-		end		
+		end
+
 	end
+
+
 
 	def redirect_path
       	quality_lot_path(self)
@@ -99,13 +112,135 @@ class QualityLot < ActiveRecord::Base
 	end
 
 	def set_lot_control_no
-		# current_count = self.po_line.quality_lots.where("month(created_at) = ?", Date.today.month).count
-		maximum_lot = self.po_line.item.quality_lots.maximum(:lot_control_no)
-		current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		current_count = 0
+		current_letter = '@'
+		# if  self.po_line.item.quality_lots.present?
+		# p  quality_lot_id =   @quality_lot.po_line.item.quality_lots.maximum(:id)-1 
+		# maximum_lot = QualityLot.find(quality_lot_id).lot_control_no
+		# p  current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+		# end
 
-		"%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
-		CommonActions.current_hour_letter + Time.now.min.to_s + "-" + (current_count + 1).to_s
+
+		# if  self.po_line.item.quality_lots.present? && self.po_line.item.quality_lots.count > 1
+		# 	quality_lot =  self.id - 1
+		# 	p quality_lot
+		# 	maximum_lot = QualityLot.find(quality_lot).lot_control_no
+	 #     	# current_count = maximum_lot.nil? ? 0 : maximum_lot.split("-")[1].to_i
+	 #     	current_count = self.id
+
+		# end
+		# if  self.po_line.item.quality_lots.count == 0
+			# lot_count = (self.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
+
+			# ItemLot.create(quality_lot_id: self.id, item_id: self.item_revision.item_id, item_lot_count: lot_count)  
+			# current_count = self.item_lot.present? ? self.item_lot.item_lot_count+1 : current_count+1
+		# else
+			# current_count =current_count+1
+		# end
+		# Item.skip_callback("update", :after, :update_alt_name)
+		
+		# self.po_line.item.update_attribute(:lot_count , current_count)
+
+
+		min = (Time.now.min.to_i <10 ) ? "0"+Time.now.min.to_s : Time.now.min.to_s
+
+
+		control_string = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		CommonActions.current_hour_letter + min.to_s
+		# unless  maximum_lot.nil?      
+		letter = '@'
+
+		begin
+		letter = letter.next!
+		count = 1
+		@item_lots =ItemLot.where(:item_id => self.item_lot.item_id)
+		@item_lots.each do |item_lot|		
+
+			if item_lot.quality_lot.present? && item_lot.quality_lot.lot_control_no.present?
+				count = count + 1
+			end 
+		end		
+		@max_control_string = MaxControlString.where(:control_string => control_string+letter)
+		end while(@max_control_string.present?)     
+		MaxControlString.create(:control_string => control_string+letter)  
+
+			
+		if self.item_lot.present?
+			lot_no = self.item_lot.item_lot_count
+		end
+		temp = "%02d" % Date.today.month + "%02d" % Date.today.day + (Date.today.year % 10).to_s + 
+		CommonActions.current_hour_letter + min.to_s  + "#{letter}-" + count.to_s		
+		self.update_column(:lot_control_no, temp)
 	end
+
+
+	def after_create_values
+
+	 #    control_no = self.lot_control_no		
+		# current_count = control_no.split("-")[1].to_i
+		# letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
+		# control_string = control_no[0,8]
+
+		# @quality_lot =QualityLot.where("lot_control_no = :lot_control_no AND id != :lot_id ", {lot_control_no: self.lot_control_no, lot_id: self.id }).first		
+		# if @quality_lot.present?			
+		# 	begin
+		# 		letter = letter.next!
+		# 		current_count = current_count +1
+		# 		@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+current_count.to_s)
+		# 	end while(@max_control_string.present?)		
+		# end		
+		# MaxControlString.create(:control_string => control_string+letter+'-'+current_count.to_s)	 
+		# self.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
+
+
+		
+
+	end
+	def self.summa(lot)
+		
+		# control_no = lot.lot_control_no		
+		# current_count = control_no.split("-")[1].to_i
+		# letter = control_no.split("-")[0].split(//).last(1)[0].to_s	
+		# control_string = control_no[0,8]
+
+		# @quality_lot =QualityLot.where("lot_control_no = :lot_control_no AND id != :lot_id ", {lot_control_no: lot.lot_control_no, lot_id: lot.id }).first		
+		# if @quality_lot.present?			
+		# 	begin
+		# 		letter = letter.next!
+		# 		current_count = current_count +1
+		# 		@max_control_string = MaxControlString.where(:control_string => control_string+letter+'-'+current_count.to_s)
+		# 	end while(@max_control_string.present?)		
+		# end		
+		# MaxControlString.create(:control_string => control_string+letter+'-'+current_count.to_s)	 
+		# previous_lot = lot.id
+		# previous_lot = previous_lot-1
+		# pre_control_no = QualityLot.find(previous_lot).lot_control_no 
+		# if lot.lot_control_no == pre_control_no
+		# 	letter = letter.next!
+		# 	current_count = current_count +1
+		# 	p "=========================  control_no and letter"
+		# 	p letter
+		# 	p current_count
+
+		# elsif lot.lot_control_no.split("-")[1].to_i ==  pre_control_no.split("-")[1].to_i
+		# 	current_count = current_count +1
+		# 	p "=========================  control_no "
+		
+		# 	p current_count
+		# end
+		# lot.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
+
+		# if MaxControlString.last.control_string == lot.lot_control_no 
+		# 	letter = letter.next!
+		# 	current_count = current_count +1
+		# end
+		# lot.update_attributes(:lot_control_no => control_string+"#{letter}-"+ (current_count).to_s)
+
+
+	end
+
+
+
 
 	def lot_with_part_no
 		"#{self.lot_control_no} / #{self.po_line.po_line_item_name}"
@@ -185,5 +320,72 @@ class QualityLot < ActiveRecord::Base
  		p temp
  		temp
  	end
+ 	def shipped_qty
+		self.so_shipments.sum(:so_shipped_count)
+ 	end
+ 	def current_location
+      po_shipment = self.po_shipment
+      po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+  	end
+  	def self.lot_missing_location
+  		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')
+
+  	end
+
+  	def self.report_data
+		quality_lots = lot_missing_location
+		len = quality_lots.length
+		i = 1
+		j = 1
+		flag = 1
+		report_control_no = report_part_no = report_po =  report_qty = source  = temp =  ''
+		content = '' 
+
+		quality_lots.each_with_index do |quality_lot, index|
+
+			report_control_no = quality_lot.lot_control_no if quality_lot.lot_control_no.present?
+			report_part_no = quality_lot.item_revision.item.item_part_no 	
+			report_qty =  quality_lot.lot_quantity.to_s
+			report_po = quality_lot.po_header.po_identifier
+			temp = '<tr><td align="center" valign="middle">'+report_control_no+'</td><td align="center" valign="middle">'+report_part_no+'</td><td align="center" valign="middle">'+report_qty+'</td><td align="center" valign="middle">'+report_po+'</tr>'
+
+			if flag ==1
+				content = '<div class="wrapper"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="left" valign="top"><td align="center"><img class="logo" alt=Smallest  src=http://erp.chessgroupinc.com/'+CompanyInfo.first.image.image.url(:original)+' /></td></tr></table></div>'
+				flag = 0
+			end
+			if i == 1
+				content += '<div id="main-wrapper">'
+				content += '<div class="wrapper-1"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><th align="center" valign="middle">Control no</th><th align="center" valign="middle">Part No</th><th align="center" valign="middle">Quantity</th><th align="center" valign="middle">PO</th></tr>'
+			end
+			if j <= 20
+				content += temp
+			end
+
+			j+=1
+
+			if i==20
+				content += '</tbody></table></div></div>'
+				content +='<div style="page-break-after: always; "> &nbsp;  </div>'  
+			end
+
+			if len == index+1
+				
+			end
+
+			i+=1
+
+			if i==21 
+	          i= 1
+	          j = 1
+	          content 
+	        end
+		end
+		content
+		# source  = header_content + source
+		# source = top_source+source+bottom_source
+		html = '<!DOCTYPE html><title>Quality_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 16px;padding: 6px;} .wrapper {width: 640px;</style>
+					'+content+'
+				'
+  	end
   	
 end

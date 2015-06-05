@@ -3,7 +3,9 @@
     <h4 class="span3 left">PO Info</h4>
     <span class="span9 right">
         <% if can? :edit, PoHeader %>
-          <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+          <% unless @po_header.po_status == "closed" %>
+            <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
+          <% end %>
         <% end %>
         <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
     </span>
@@ -76,22 +78,25 @@
 :locals => {:extras => {:link => populate_po_header_path(type: "note", id: @po_header.id)}} %>
 
 <script type="text/javascript">
-function purchase_report() {
-    var purchase_iframe = $("#myPrintView")[0];
-    purchase_iframe.contentWindow.focus();
-    purchase_iframe.contentWindow.print();
+<% if can? :edit, PoHeader %>
+  function purchase_report() {
+      var purchase_iframe = $("#myPrintView")[0];
+      purchase_iframe.contentWindow.focus();
+      purchase_iframe.contentWindow.print();
 
-}
+  }
+<% end %>
 </script>
 <iframe src="<%= purchase_report_po_header_path(@po_header) %>" style="border:0;" id="myPrintView" width="10" height= "10"></iframe>
 
 <script type="text/javascript">
-    function after_send(){
-        alert("sucess")
+    function after_send(response){
+      
+       alert(JSON.stringify(response.aaData).replace(/\"/g, ' '));
     }
     function send_mail_vendor(){
 
-        var po_id = $( '#attachment_dropzone' ).attr( 'action' ).replace ( /[^\d.]/g, '' ); 
+        var po_id = <%= @po_header.id %>; 
         po_id = parseInt(po_id, 10)
 
      
@@ -99,35 +104,36 @@ function purchase_report() {
          "organizations": $('#send_mail').serializeArray() }}, "after_send", {});
     }
 </script>
-
-<div class="modal hide fade" id="modal-simple">
-    <div class="modal-header">
-        <h3>Send Purchase Order</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    </div>
-    <div class="modal-body">
-        <form id="send_mail">
-            <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
-                <thead>
-                    <tr>
-                        <th>Vendor Name</th>
-                        <th>Contacts</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        <tr>
-                            <td><%= @po_header.organization.organization_name %></td>
-                            <td><%= select_tag "#{@po_header.organization.id}", options_for_select(@po_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
-                        </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
-    </div>
-</div>
+<% if can? :edit, PoHeader %>
+  <div class="modal hide fade" id="modal-simple">
+      <div class="modal-header">
+          <h3>Send Purchase Order</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+          <form id="send_mail">
+              <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+                  <thead>
+                      <tr>
+                          <th>Vendor Name</th>
+                          <th>Contacts</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      
+                          <tr>
+                              <td><%= @po_header.organization.organization_name %></td>
+                              <td><%= select_tag "#{@po_header.organization.id}", options_for_select(@po_header.organization.contacts.map{ |contact| [ contact.contact_email, contact.id ] }), :class => "status-select", :id => "set_status" %></td>
+                          </tr>
+                  </tbody>
+              </table>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-small btn-success" data-dismiss="modal" aria-hidden="true" onclick="send_mail_vendor();">Send</button>
+      </div>
+  </div>
+<% end %>
 
 
 <style>

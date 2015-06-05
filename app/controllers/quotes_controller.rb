@@ -10,7 +10,9 @@ class QuotesController < ApplicationController
     end
 
     def set_page_info
-        @menus[:quotes][:active] = "active"
+        unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  )
+             @menus[:quotes][:active] = "active"
+        end 
     end
 
     def set_autocomplete_values
@@ -75,7 +77,7 @@ class QuotesController < ApplicationController
                                  quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
                                  quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
                                  quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
-                                 quote[:links] = CommonActions.object_crud_paths(nil, quote_quote_lines_path(quote), quote_path(quote))
+                                 quote[:links] = CommonActions.object_crud_paths(nil, new_quote_quote_line_path(quote), quote_path(quote))
                                  quote[:created] = quote.created_at.strftime("%d %b %Y")
                                  quote[:quote_status] = CommonActions.status_color(quote.quote_status)
                                  i += 1

@@ -7,7 +7,7 @@
     <div class="control-group string optional user_state">
       <label for="user_state" class="string optional control-label">Designation</label>
       <div class="controls">
-        <%= select_tag 'role', options_for_select([["Super Admin", "superadmin"], ["Planet Manager", "plant_manager"], ["Sales Manager","sales_manager"], ["Operations Manager", "operations_manager"], ["Quality Manager", "quality_manager"], ["Logistics Manager", "logistics_manager"]]), :class => "string optional" %>
+        <%= select_tag 'role', options_for_select([["Super Admin", "superadmin"], ["Manager", "manager"], ["Quality", "quality"], ["Operations", "operations"], ["Clerical", "clerical"], ["Logistics", "logistics"], ["Vendor", "vendor"], ["Customer", "customer"]]), :class => "string optional" %>
       </div>
     </div>
     <%= f.input :gender, label: 'Gender', collection: [['Male'], ['Female']], as: :radio_buttons, :checked => "Male"  %>

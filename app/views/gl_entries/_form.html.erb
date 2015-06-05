@@ -30,7 +30,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false, :order => "desc"},
+        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false, :order => "desc",:currency_format => [4,5]},
         :columns => '[
                         { "mData": "gl_entry_identifier" },
                         { "mData": "gl_account_name" },
@@ -93,12 +93,29 @@
         <% unless @gl_entry.nil? %>
             $("#gl_entry_gl_account_id").val("<%= @gl_entry.gl_account.gl_account_title if @gl_entry.gl_account %>");
         <% end %>
+
+        
+        $('#gl_entry_gl_account_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {                  
+                $('#gl_entry_gl_account_id').val($( "#ui-id-1 li a" ).first().html());                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_account", "gl_name": $('#gl_entry_gl_account_id').val()}}, "get_acc_id", {}); 
+            }
+          });  
+
     });
 
     function set_gl_account_info(response, callback_params, api_params){
       $("#gl_entry_gl_account_info").html(response);
       return false;
     }
+
+    function get_acc_id(response){       
+       var acc_id_val = JSON.stringify(response.aaData.id);      
+        $("#gl_account_id").val(acc_id_val);       
+        initialize_api_call({"url": "/gl_accounts/" + acc_id_val + "/gl_account_info", "type": "GET", "params": {}}, "set_gl_account_info", {});      
+     }
 </script>
 <style>
  .row-fluid.row-fluid-02 {

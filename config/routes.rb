@@ -1,5 +1,25 @@
 AllianceFasteners::Application.routes.draw do
 
+  namespace :api do
+  namespace :vi do
+    resources :organizations
+  end
+end
+
+  resources :item_lots
+
+
+  resources :events
+
+
+  get "permissions/error"
+
+  resources :quality_histories
+
+
+  resources :notifications
+
+
   resources :credit_registers
 
 
@@ -221,8 +241,9 @@ AllianceFasteners::Application.routes.draw do
   resources :so_headers do
     member do 
       get 'report'
-      get 'packing_report'
-    end
+      get 'packing_report' 
+      get 'pick_report'     
+    end    
     resources :so_lines
     member do
       get 'populate'
@@ -253,13 +274,22 @@ AllianceFasteners::Application.routes.draw do
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
   end
-
-  resources :quality_lots do
+  
+  resources :quality_lots, except: :new do
     get :autocomplete_quality_lot_lot_control_no, :on => :collection
     member do
       get 'populate'
       get 'material_report'
       get 'dimension_report'
+      get 'gage_report'
+      get 'psw_report'
+      get 'csk_report'
+      get 'package_report'
+      get 'process_flow_report'
+      get 'fmea_report'
+    end
+    collection do
+      get 'report'
     end
   end
 
@@ -356,7 +386,11 @@ AllianceFasteners::Application.routes.draw do
   resources :master_types
 
 
-  resources :process_types
+  resources :process_types  do 
+    collection do
+      get 'process_specs'
+    end
+  end
 
 
   resources :materials do

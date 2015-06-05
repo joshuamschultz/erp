@@ -36,7 +36,7 @@
 
         <div class="row-fluid">
             <div id="organization_table_data" class="span12 well">
-                <div id="org_contact">
+                <div id="org_contact" class="widget" >
                     <%= render 'contacts/org_contacts' %>
                 </div>
             </div>
@@ -51,7 +51,7 @@
     <div class="attachment-pulp">
         <%= render :partial => 'attachments/droppable_form_plup_less' %>
     </div>
-    <div class="span8">
+    <div class="span8 ed">
         <%= render 'attachments/attachments_less' %>
     </div>
 </div>
@@ -98,9 +98,10 @@
 
     <!-- if @organization.organization_type.type_value == "vendor" -->
 <% end %>
-
-<%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
-<%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
+<%  if  user_signed_in? &&  !current_user.is_logistics? && !current_user.is_quality?  %>
+    <%= render :partial => 'quotes/quote_list' if @organization.type_name == "vendor"%>
+    <%= render :partial => 'customer_quotes/customer_quote_list' if @organization.type_name == "customer" %>
+<% end %>
 
 
 
@@ -196,10 +197,20 @@
 
     function get_address(type){
         $('#org_contact').html("");
-        var adress = '<div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>escription</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
+         var address_label = "Addresses";
+         var address_button = "Address"
+        if(type === 'address'){
+           address_label = "Addresses";
+           address_button = "Address"
+        }
+        else if(type === 'contact'){
+            address_label = "Contacts";
+            address_button = "Contact"
+        }
+        var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">'+address_label+'</h4><span class="span6 heading right"><a href="/contacts/new?contact_type='+type+'&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New '+address_button+'</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>Description</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
         $('#org_contact').html(adress);
 
-       
+        
             data_table_report_contacts = $('#table_report_contacts').dataTable({
                 "bAutoWidth": false,
                 "bProcessing": true,
@@ -222,3 +233,8 @@
 </script>
 
 
+<style> .span8.ed {
+    float: left;
+    width: 60%;
+}
+</style>

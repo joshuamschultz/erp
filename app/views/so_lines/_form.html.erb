@@ -62,7 +62,7 @@
           
                 <div class="actions">
                     <%= f.submit "ADD", :class =>"btn" %>
-                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>z
+                    <%= link_to 'Delete', so_header_so_line_path(@so_header, @so_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @so_line.new_record? %>
                     <%= link_to 'SAVE', so_header_path(@so_header), :class =>"btn" %>
                </div>
             <% end %>
@@ -154,7 +154,30 @@
 <script type="text/javascript">
     tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_vendor_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
 
-    $(document).ready(function(){       
+    $(document).ready(function(){  
+
+        $('#so_line_so_line_sell').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9 || code ===13 ) {  
+                $('#so_line_so_line_quantity').val("");
+            }
+        });    
+        $('#so_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9 || code ===13) {  
+                $('#so_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#so_line_item_alt_name_id').val()}}, "get_alt_name_id", {}); 
+            }
+        });   
+        $('#so_line_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 ) {  
+               alert($( "#ui-id-1 li a" ).first().html());  
+                // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
 
         $("#so_line_so_line_cost").change(function(){
             calculate_line_item_total();
@@ -199,7 +222,10 @@
         });
         get_vendor_po();
     });    
-
+    function get_alt_name_id(response){
+        var alt_id_val = JSON.stringify(response.aaData.id);
+        $("#alt_name_id").val(alt_id_val);
+    }
     function calculate_line_item_total(){
         var so_line_total = parseFloat($("#so_line_so_line_cost").val()) * parseFloat($("#so_line_so_line_quantity").val());
         
@@ -254,8 +280,9 @@
 }
 
 .odd td {
-    padding: 2px 3px;
+    padding: 2px 10px !important;
 }
+
 @media all and (min-width: 800px) and (max-width: 1024px) {
 
 .row-fluid .span4 {

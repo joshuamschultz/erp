@@ -77,27 +77,30 @@ class Payment < ActiveRecord::Base
     before_create :process_before_create
 
     def process_before_create
-        self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier)
+        self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier, "C")
         self.payment_status = "open"
     end
 
     after_save :process_after_save
 
     def process_after_save        
-        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"                         
-            if self.payment_check_code_type == "Manual"
+        if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"                                     
+            if self.payment_check_code_type == "Manual"                
                 Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) if self.payment_check_code_type == "Manual"
                 self.update_transactions
             else
-               CheckEntry.create(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+               @check_entry = CheckEntry.new(check_active: true, check_code: self.payment_check_code, check_identifier: "Check")
+               if @check_entry.save                
+                self.update_attributes(:check_entry_id => @check_entry.id)
+               end 
             end    
-            temp = CheckCode.find_by_counter_type("check_code")
-            temp.update_attributes(:counter => self.payment_check_code)
-            CheckCode.get_next_check_code
+            # temp = CheckCode.find_by_counter_type("check_code")
+            # temp.update_attributes(:counter => self.payment_check_code)
+            # CheckCode.get_next_check_code
         end
         if self.payment_type.present? && (self.payment_type.type_value == "credit" || self.payment_type.type_value == "ach" )
             Reconcile.create(tag: "not reconciled", reconcile_type: self.payment_type.type_value, payment_id: self.id) 
-            self.update_transactions if self.payment_type.type_value == "ach"
+            self.update_transactions # if self.payment_type.type_value == "ach"
             # payable = Payable.find (self.payment_lines.collect(&:payable_id).first)
             
             # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',self.payment_check_amount - payable.payable_freight )
@@ -128,8 +131,8 @@ class Payment < ActiveRecord::Base
         if  self.payment_type.present? &&  self.payment_type.type_value == "credit"  
             credit_register = CreditRegister.where(payment_id: self.id).first
             unless  credit_register.present?                
-                 balance = 0                  
-                 balance += CreditRegister.calculate_balance.to_f  if  CreditRegister.exists?                                        
+                 balance = self.payment_check_amount * -1                  
+                 balance += CreditRegister.calculate_balance.to_f  if  CreditRegister.exists?                                                         
                 CreditRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.payment_check_amount, rec: false, payment_id: self.id, balance: balance)
             end
         end 
@@ -157,7 +160,7 @@ class Payment < ActiveRecord::Base
             else
                 desc = self.payment_type.type_name
                 if self.payment_type.type_value == "check"  
-                    desc = "Check "+ self.payment_check_code                
+                    desc = "Check "               
                 end
                 @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.payment_check_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :payment_id => self.id)
                 @gl_entry.save 

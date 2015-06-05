@@ -20,13 +20,13 @@ class GlEntry < ActiveRecord::Base
  # after_save :process_after_save
   before_destroy :process_before_destory
 
-  def process_before_create
-      self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier)
+  def process_before_create    
+      self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier, "A")
   end
 
    def process_before_destory
      if self.gl_entry_debit_was != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', self.gl_entry_debit_was)
+       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', self.gl_entry_debit_was)
      end
      if self.gl_entry_credit_was != 0
        CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', self.gl_entry_credit_was)
@@ -41,7 +41,7 @@ class GlEntry < ActiveRecord::Base
       result = CommonActions.linkable(payable_path(self.payable_id), self.gl_entry_description)
     elsif self.payment_id
       result = CommonActions.linkable(payment_path(self.payment_id), self.gl_entry_description)
-    elsif receipt_id
+    elsif self.receipt_id
       result = CommonActions.linkable(receipt_path(self.receipt_id), self.gl_entry_description)
     end
     result      

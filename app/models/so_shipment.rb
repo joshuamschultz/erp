@@ -2,7 +2,7 @@ class SoShipment < ActiveRecord::Base
   belongs_to :so_line
 
   attr_accessible :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
-  :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status
+  :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id
 
   validate :check_total_shipped
 
@@ -33,9 +33,34 @@ class SoShipment < ActiveRecord::Base
 
   def process_before_save
       self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
+      self.so_header_id = self.so_line.so_header.id
+      unless ["ship_close","shipped", "on hold", "rejected"].include?(self.so_shipped_status)
+        self.so_shipped_status = "process"
+        so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id)
+        if so_shipment_process.count >= 1
+          so_shipment = so_shipment_process.last
+          unless so_shipment.shipment_process_id.present?
+            shipment_process_id = SoShipment.order("shipment_process_id DESC").first.shipment_process_id.split('',2)[1].to_i
+            self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
+          else
+            self.shipment_process_id = 'S'+so_shipment.shipment_process_id.split('',2)[1]
+          end
+        else
+          shipment_process_id = SoShipment.order("shipment_process_id DESC").first.shipment_process_id.split('',2)[1].to_i
+          if shipment_process_id >=1
+            self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
+          else
+            self.shipment_process_id = 'S'+1.to_s
+          end
 
-      unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
-          self.so_shipped_status = "shipped"
+          # last_shipment = SoShipment.last
+          # if last_shipment.present? && last_shipment.shipment_process_id.present?
+          #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
+          #   self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
+          # else
+          #   self.shipment_process_id = 'S'+1.to_s
+          # end
+        end
       end
   end
 
@@ -46,9 +71,12 @@ class SoShipment < ActiveRecord::Base
     if self.so_line
       SoLine.skip_callback("save", :before, :update_item_total)
       SoLine.skip_callback("save", :after, :update_so_total)
-      so_shipped = self.so_total_shipped
+      so_shipped = (self.so_shipped_status == "ship_close") ? self.so_line.so_line_quantity : self.so_total_shipped
       so_status = (so_shipped == self.so_line.so_line_quantity) ? "closed" : "open"
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
+      so_status_count = self.so_line.so_header.so_lines.where("so_line_status = ?", "open").count
+      so_header_status = (so_status_count == 0) ? "closed" : "open"
+      self.so_line.so_header.update_attributes(:so_status => so_header_status) 
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
     end
@@ -106,7 +134,9 @@ class SoShipment < ActiveRecord::Base
     end    
   end
 
-
+  def self.complete_shipment(shipment_process_id) 
+    SoShipment.where("shipment_process_id=? AND so_shipped_status=?",shipment_process_id,"process").update_all(:so_shipped_status => "shipped")
+  end
 
   
 end

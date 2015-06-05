@@ -2,7 +2,7 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Sales Orders <%= @organization.organization_type_title if @organization %> <%#= "With Selected Revision" if @item_revision %> 
+            <h4 class="span6 heading">Sales Orders <%= @organization.organization_type_title if @organization %> <%#= "With Selected Revision" if @item_revision %>
             </h4>
             <span class="span6 heading right">
                 <%= link_to 'All', '#', :class => "btn btn-mini btn-success", :onclick => "get_so_header(1); return false;" %>
@@ -12,7 +12,7 @@
                     <%= link_to 'New SO', new_path, :class => "btn btn-mini btn-success" %>
                 <% end %>
             </span>
-        </div> 
+        </div>
     </div>
     <!-- // Widget heading END -->
     <div class="widget-body">
@@ -24,59 +24,47 @@
                 <th>Customer</th>
                 <th>Bill To</th>
                 <th>Ship To</th>
-                <% if @item.present? %> 
-                    <th>Cost</th> 
-                    <th>Quantity Ordered</th>
-                <% end %>                
-                <th>Cofc</th>
-                <th>Squality</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
             <body>
-                
+
             </body>
         </table>
     </div>
 </div>
 <% if @item.present? %>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
                         { "mData": "bill_to_address_name" },
                         { "mData": "ship_to_address_name" },
-                        { "mData": "so_line_price" },
-                        { "mData": "so_type_qty" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
-                        
+
                     ]'
-    } 
+    }
 %>
 <% else %>
 
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+    {:name => "table_report_so_header_list", :path => open_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
                         { "mData": "bill_to_address_name" },
                         { "mData": "ship_to_address_name" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
-                        
+
                     ]'
-    } 
+    }
 %>
 <% end %>

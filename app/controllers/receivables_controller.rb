@@ -32,6 +32,7 @@ class ReceivablesController < ApplicationController
       params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
       params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
       params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
+      
       # params[:receivable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:receivable][:gl_account_id]
       # params[:receivable][:gl_account_id] = params[:org_gl_account_id] if params[:receivable][:gl_account_id] == ""
     end
@@ -40,6 +41,11 @@ class ReceivablesController < ApplicationController
   # GET /receivables
   # GET /receivables.json
   def index
+    if Receivable.find_by_receivable_disperse("unassigned").present?
+      receivable = Receivable.find_by_receivable_disperse("unassigned")
+      receivable.receivable_so_shipments.destroy_all
+      receivable.delete
+    end
     if params[:item_id].present?
       @receivables =Receivable.open_receivables(params[:item_id],params[:receivable_status])
     else
@@ -58,9 +64,7 @@ class ReceivablesController < ApplicationController
                 [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
               )
               else
-                receivable[:links] = CommonActions.object_crud_paths(nil, nil, nil,
-                [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
-              )
+                receivable[:links] = ''
               end  
 
         }
@@ -155,6 +159,10 @@ class ReceivablesController < ApplicationController
       if @receivable.update_attributes(params[:receivable])
         # @so_header = @receivable.so_header rescue nil
         # genarate_pdf
+        if Receivable.find_by_receivable_disperse("unassigned").present?
+          receivable = Receivable.find_by_receivable_disperse("unassigned")
+          receivable.update_attributes(:receivable_disperse => "assigned")
+        end
         format.html { redirect_to @receivable, notice: 'Receivable was successfully updated.' }
         format.json { head :no_content }
       else

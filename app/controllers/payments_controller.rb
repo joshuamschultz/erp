@@ -24,6 +24,7 @@ class PaymentsController < ApplicationController
     end
   end
 
+
   def set_autocomplete_values
     params[:payment][:organization_id], params[:organization_id] = params[:organization_id], params[:payment][:organization_id]
     params[:payment][:organization_id] = params[:org_organization_id] if params[:payment][:organization_id] == ""
@@ -82,7 +83,7 @@ class PaymentsController < ApplicationController
     @payable = Payable.find(params[:payable_id]) if params[:payable_id].present?
     @payment.organization = @payable.organization if @payable
 
-    @payment.build_check_entry
+    # @payment.build_check_entry
 
     respond_to do |format|
       format.html # new.html.erb
@@ -93,7 +94,7 @@ class PaymentsController < ApplicationController
   # GET /payments/1/edit
   def edit
     @payment = Payment.find(params[:id])
-    @payment.build_check_entry if @payment.check_entry.nil?
+    # @payment.build_check_entry if @payment.check_entry.nil?
   end
 
   # POST /payments
@@ -103,8 +104,8 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       if @payment.save
-        check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
-        @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
+        # check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
+        # @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
 
         format.html { redirect_to @payment, notice: 'Payment was successfully created.' }
         format.json { render json: @payment, status: :created, location: @payment }
@@ -124,8 +125,8 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       if @payment.update_attributes(params[:payment])
-        check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
-        @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
+        # check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
+        # @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
         format.html { redirect_to @payment, notice: 'Payment was successfully updated.' }
         format.json { head :no_content }
       else

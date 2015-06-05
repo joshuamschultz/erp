@@ -6,7 +6,9 @@
             <h4 class="span6 heading">Instruments</h4>
             <span class="span6 heading right">
             <% if can? :edit, Gauge %>
-                <%= link_to 'New Instrument', new_gauge_path, :class => "btn btn-mini btn-success" %>   
+                <% unless params[:type].present?  %>
+                    <%= link_to 'New Instrument', new_gauge_path, :class => "btn btn-mini btn-success" %>   
+                <% end %>
             <% end %>                
             </span>
         </div> 
@@ -18,12 +20,16 @@
                 <tr>
                     <!-- <th>SLNO</th> -->
                     <th>Tool Name</th>
-                    <th>Tool Category</th>
+                    <% unless params[:type].present? %>
+                        <th>Tool Category</th>
+                    <% end %>
                     <th>Tool No</th>
                     <th>Caliberator</th>
                     <th>Caliberation Last At</th>
                     <th>Caliberaion Due At</th>
-                    <th>Active</th>                  
+                    <% unless params[:type].present? %>
+                        <th>Active</th>             
+                    <% end %>     
                     <th></th>                  
                 </tr>
             </thead>
@@ -32,23 +38,40 @@
         </table>
     </div>
 </div>
+<% if params[:type].present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report", :path => gauges_path(type: "gauge"), :extras => {:slno => false}, 
+            :columns => '[
+                            { "mData": "gauge_tool_name" },
+                            { "mData": "gauge_tool_no" },
+                            { "mData": "gauge_caliberator" },
+                            { "mData": "gage_caliberation_last_at" },
+                            { "mData": "gage_caliberation_due_at" },
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]'
+        } 
+    %>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => gauges_path, :extras => {:slno => false}, 
-        :columns => '[
-                        { "mData": "gauge_tool_name" },
-                        { "mData": "gauge_tool_category" },
-                        { "mData": "gauge_tool_no" },
-                        { "mData": "gauge_caliberator" },
-                        { "mData": "gage_caliberation_last_at" },
-                        { "mData": "gage_caliberation_due_at" },
-                        { "mData": "gauge_active"},
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
 
+<% else %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report", :path => gauges_path, :extras => {:slno => false}, 
+            :columns => '[
+                            { "mData": "gauge_tool_name" },
+                            { "mData": "gauge_tool_category" },
+                            { "mData": "gauge_tool_no" },
+                            { "mData": "gauge_caliberator" },
+                            { "mData": "gage_caliberation_last_at" },
+                            { "mData": "gage_caliberation_due_at" },
+                            { "mData": "gauge_active"},
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                        ]'
+        } 
+    %>
+
+<% end %>
 
 
 

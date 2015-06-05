@@ -2,7 +2,7 @@ class ProcessType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessible :process_active, :process_created_id, :process_description, 
-  :process_notes, :process_short_name, :process_updated_id, :attachment_attributes
+  :process_notes, :process_short_name, :process_updated_id, :attachment_attributes, :notification_attributes
 
   after_initialize :default_values
 
@@ -20,10 +20,18 @@ class ProcessType < ActiveRecord::Base
   has_many :item_revisions, :through => :item_processes
   has_many :specifications, :through => :process_type_specifications
 
+  has_many :process_type_specifications, :dependent => :destroy
+  has_many :specifications, :through => :process_type_specifications
+
   has_one :attachment, :as => :attachable, :dependent => :destroy
 
   default_scope :order => 'process_short_name ASC'
   accepts_nested_attributes_for :attachment, :allow_destroy => true
+
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
 
 
 
@@ -31,7 +39,7 @@ class ProcessType < ActiveRecord::Base
         if process_type
 
           specs = params[:specs] || []
-         # process_type.process_type_specifications.where(:specification_id != specs).destroy_all
+          process_type.process_type_specifications.where(:specification_id != specs).destroy_all
           if specs
               specs.each do |specification_id|
                 unless process_type.process_type_specifications.find_by_specification_id(specification_id)
@@ -64,6 +72,18 @@ class ProcessType < ActiveRecord::Base
       end
       process_types = process_types.uniq
       return process_types
+  end
+
+  def self.process_type_specifications(process_types)
+    specifications = []
+    process_types.each do |process_type|
+      if process_type.present?
+         process_type.specifications.each do |pro_spec|
+          specifications<<pro_spec
+        end
+      end
+    end
+    specifications.uniq
   end
   
 end

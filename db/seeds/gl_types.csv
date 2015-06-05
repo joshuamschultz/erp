@@ -1,0 +1,10 @@
+Current Assets,D,B,current-assets
+Fixed Assets,D,B,fixed-assets
+Other Assets,D,B,other-assets
+Current Liabilities,C,B,current-liabilities
+Long Term Liabilities,C,B,long-term-liabilities
+Stockholder Equity,C,B,stockholder-equity
+Sales,C,T,sales
+Cost of Sales,D,T,cost-of-sales
+Selling Expenses,D,T,selling-expenses
+Administration Expenses,C,T,administration-expenses
