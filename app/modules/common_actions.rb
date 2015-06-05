@@ -491,8 +491,8 @@ module CommonActions
       elsif model_type == "ProcessType"
      		common_process_model(model_type,model_id,quality_user)
 
-     elsif model_type == "PoLine"
-     		if model_id.organization.present? && model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+     	elsif model_type == "PoLine"
+     		if model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
      			common_process_model(model_type,model_id,quality_user)
      		end
       end
