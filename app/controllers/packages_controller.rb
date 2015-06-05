@@ -6,7 +6,7 @@ class PackagesController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer?)
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer?)
         authorize! :edit, Package
     end 
   end
@@ -43,11 +43,8 @@ class PackagesController < ApplicationController
             end
             package[:id_link] = CommonActions.linkable(package_path(package), package.id)
            
-            if can? :edit , package
+            if can? :view , Package
               package[:lot_control_no] = CommonActions.linkable(quality_lot_path(package.quality_lot), package.quality_lot.lot_control_no)
-
-            else
-              package[:lot_control_no] = package.quality_lot.lot_control_no
             end
 
         }

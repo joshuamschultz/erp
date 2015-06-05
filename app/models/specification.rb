@@ -8,7 +8,7 @@ class Specification < ActiveRecord::Base
   end
 
   attr_accessible :specification_active, :specification_created_id, :specification_description, 
-  :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes
+  :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes
 
   # (validates_uniqueness_of :specification_identifier if validates_length_of :specification_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :specification_identifier
 
@@ -16,7 +16,17 @@ class Specification < ActiveRecord::Base
 
   has_many :item_specifications, :dependent => :destroy
   has_many :item_revisions, :through => :item_specifications
+
+  has_many :process_type_specifications, :dependent => :destroy
+  has_many :process_types, :through => :process_type_specifications
+
   has_one :attachment, :as => :attachable, :dependent => :destroy
+
+
+  has_one :notification, :as => :notable,  dependent: :destroy
+
+  accepts_nested_attributes_for :notification, :allow_destroy => true
+
   
   default_scope :order => 'specification_identifier ASC'
 
@@ -42,8 +52,12 @@ class Specification < ActiveRecord::Base
         end
       end
     end
-    specifications = specifications.uniq
-    return specifications
-  end
-  
+    process_types =ProcessType.item_process_type(item)
+    process_specifications = ProcessType.process_type_specifications(process_types)
+    process_specifications.each do |process_spec|
+      specifications << process_spec
+    end
+
+    specifications.uniq
+  end     
 end

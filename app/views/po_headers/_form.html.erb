@@ -80,15 +80,40 @@
 
 
 <script type="text/javascript"> 
-    tab_field_forms["form_for_po_header"] = ["po_header_organization_id", "po_header_customer_id", "po_header_cusotmer_po", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
+    tab_field_forms["form_for_po_header"] = ["po_header_organization_id","po_header_po_notes", "po_header_customer_id", "po_header_cusotmer_po", "po_header_po_bill_to_id", "po_header_po_ship_to_id"];
 
-    $(document).ready(function(){        
+
+
+
+    $(document).ready(function(){
+
+        $('#po_header_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13){
+                $("#po_header_organization_id").on("change", function(){
+                    if($("#organization_id").val() != "")
+                        initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+                    else{
+                        var ui_id = $(this).autocomplete('widget').attr('id');
+                        $('#po_header_organization_id').val($(  "#"+ui_id +" li a" ).first().html());  
+                        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#po_header_organization_id').val()}}, "get_org_id", {}); 
+                    }
+                });
+
+            }
+            if (code === 9 ) {  
+                var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#po_header_organization_id').val($(  "#"+ui_id +" li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#po_header_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
+                
         $("#po_header_organization_id").on("change", function(){
             if($("#organization_id").val() != "")
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
             else{
                 $("#po_header_vendor_info").html("");
-                $("#po_header_organization_id").val("");
+                // $("#po_header_organization_id").val("");
             }
         });
 
@@ -142,7 +167,16 @@
         //         $("#form_for_po_header").submit();
         // });
     });
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);
 
+        $("#organization_id").val(org_id_val);
+  
+         initialize_api_call({"url": "/organizations/" + org_id_val + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+
+  
+         
+    } 
     function set_vendor_info(response, callback_params, api_params){
         $("#po_header_vendor_info").html(response);
         return false;

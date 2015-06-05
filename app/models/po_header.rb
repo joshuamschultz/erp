@@ -30,7 +30,7 @@ class PoHeader < ActiveRecord::Base
       if self.po_is?("direct")
           self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
           so_header = self.so_header.present? ? self.so_header : SoHeader.new
-          so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po)
+          so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po, so_due_date: Time.now)
           self.so_header_id = so_header.id
           so_header.so_lines.update_all(organization_id: self.organization_id)
       end
@@ -65,13 +65,13 @@ class PoHeader < ActiveRecord::Base
     po_header_path(self)
   end
 
-  default_scope order('created_at DESC')
+  # default_scope order('created_at DESC')
 
 
   scope :status_based_pos, lambda{|status| where(:po_status => status) }
 
-  def self.new_po_identifier
-      po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
+  def self.new_po_identifier(i)
+      po_identifier = Time.now.strftime("%m%y") + ("%03d" % (PoHeader.where("month(created_at) = ?", Date.today.month).count + i))
       po_identifier.slice!(2)
       "P" + po_identifier
   end

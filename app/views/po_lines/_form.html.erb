@@ -205,7 +205,27 @@
     var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
 
     $(document).ready(function(){ 
+
+        $('#po_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) {  
+                $('#po_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
+                $('#po_line_po_line_quantity').val("");
+            }
+        });  
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
+
+        $('#po_line_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13) {  
+                var widget = $(this).data('ui-autocomplete'),
+                menu   = widget.menu,
+                $ul    = menu.element,
+                id     = $ul.attr('id'); // or $ul[0].id
+                $('#po_line_organization_id').val($( "#"+id+" li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
 
         $("#po_line_organization_id").on("focusout", function(){
             if($("#organization_id").val() == ""){
@@ -218,7 +238,10 @@
         });
 
         <% if @po_line.new_record? %>
-            $("#po_line_item_alt_name_id").on("focusout", function(){
+            $("#po_line_item_alt_name_id").on("focusout", function(){                
+                if($("#alt_name_id").val() == "" && $("#po_line_item_alt_name_id").val() != "" )                
+                 initialize_api_call({"url": "/item_alt_names/autocomplete_item_alt_name_item_alt_identifier" + $("#alt_name_id").val(), "type": "GET", "params": {"term":$("#po_line_item_alt_name_id").val()}, "data_type": "json"}, "set_alt_name_id", {});                  
+
                 if($("#alt_name_id").val() != "")
                     initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
                 else if($("#org_alt_name_id").val() != "")
@@ -254,7 +277,10 @@
         // $("#po_line_organization_id").focus();  
         $("#po_line_item_alt_name_id").focus();       
     });
-
+    function get_org_id(response){
+        var org_id_val = JSON.stringify(response.aaData.id);
+        $("#organization_id").val(org_id_val);
+    }
     function calculate_line_item_total(){
         var po_line_total = parseFloat($("#po_line_po_line_cost").val()) * parseInt($("#po_line_po_line_quantity").val());
 
@@ -271,6 +297,14 @@
         calculate_line_item_total();
         return false;
     }
+   function set_alt_name_id(response, callback_params, api_params){
+    $.each( response, function() {
+       if ($("#po_line_item_alt_name_id").val() == this.value)
+        $("#alt_name_id").val(this.id) 
+    });
+    
+        return false;
+    } 
 
     function check_customer_min_quality(response, callback_params, api_params){
         if(response.min_vendor_quality != undefined && response.min_vendor_quality != ""){
@@ -304,7 +338,7 @@
 }
 
 .odd td {
-    padding: 2px 3px;
+    padding: 2px 10px !important;
 }
 @media all and (min-width: 800px) and (max-width: 1024px) {
 

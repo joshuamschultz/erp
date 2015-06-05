@@ -24,7 +24,8 @@ class ItemAltNamesController < ApplicationController
   # GET /item_alt_names
   # GET /item_alt_names.json
   def index
-    @item_alt_names = ItemAltName.where("organization_id is not NULL")
+     # @item_alt_names = ItemAltName.where("organization_id is not NULL")
+    @item_alt_names = ItemAltName.get_alt_names
 
     respond_to do |format|
       format.html # index.html.erb

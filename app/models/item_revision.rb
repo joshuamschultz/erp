@@ -16,6 +16,7 @@ class ItemRevision < ActiveRecord::Base
 
   before_save :process_before_save
 
+
   def process_before_save
       self.item_revision_name ||= "0"
 
@@ -39,6 +40,8 @@ class ItemRevision < ActiveRecord::Base
   validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
+  validates :item_revision_name, uniqueness: {scope: :item_id}
+  
   after_save :update_recent_revision
 
   def update_recent_revision    
@@ -61,12 +64,15 @@ class ItemRevision < ActiveRecord::Base
   has_many :specifications, :through => :item_specifications 
   has_many :item_selected_names, :dependent => :destroy
   has_many :item_alt_names, :through => :item_selected_names
-  has_many :item_part_dimensions, :dependent => :destroy
+  # has_many :item_part_dimensions, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :po_lines, :dependent => :destroy
   has_many :quality_lots, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
   has_many :quality_actions, :dependent => :destroy
+
+  has_many :item_revision_item_part_dimensions, dependent: :destroy
+  has_many :item_part_dimensions, through: :item_revision_item_part_dimensions
 
   def self.process_item_associations(item_revision, params)
         if item_revision
@@ -132,6 +138,17 @@ class ItemRevision < ActiveRecord::Base
           #       end
           #     end
           # end
+
+          item_part_dimension_ids = item_revision.item.item_part_dimensions.collect(&:id)
+
+            if item_part_dimension_ids.present?
+              item_part_dimension_ids.each do |item_part_dimension_id|
+                unless item_revision.item_revision_item_part_dimensions.find_by_item_part_dimension_id(item_part_dimension_id)
+                   item_revision_dimension = item_revision.item_revision_item_part_dimensions.create(:item_part_dimension_id => item_part_dimension_id)
+                   item_revision_dimension.save
+                end
+              end
+          end
         end
     end
 

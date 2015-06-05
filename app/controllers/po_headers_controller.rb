@@ -21,7 +21,9 @@ class PoHeadersController < ApplicationController
   end
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_customer? 
       @menus[:purchases][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -123,6 +125,9 @@ class PoHeadersController < ApplicationController
   # GET /po_headers/1/edit
   def edit
     @po_header = PoHeader.find(params[:id])
+    if @po_header.po_status == "closed"
+      redirect_to action: "index"
+    end
   end
 
   # POST /po_headers

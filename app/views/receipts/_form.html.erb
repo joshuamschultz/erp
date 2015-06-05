@@ -24,6 +24,7 @@
         <%#= f.input :receipt_check_amount, :label => "Amount" %>
         <%= f.input :receipt_description, :label => "Description" %>
         <%= f.input :receipt_notes, :label => "Notes" %>
+        <%= f.input :receipt_discount, :label => "Discount (%)" %>
       </div>
     </div>
 
@@ -94,7 +95,19 @@
                 $(".receipt_receivable_new").html("");
                 receivable_select_html = "";
             }
-        });
+            });
+
+            $('#receipt_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {   
+                e.preventDefault();
+                $('#receipt_receipt_description').focus();               
+                $('#receipt_organization_id').val($( "#ui-id-1 li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#receipt_organization_id').val()}}, "get_org_id", {}); 
+            }
+        }); 
+        
 
         <% unless @receipt.nil? %>
             $("#receipt_organization_id").val("<%= @receipt.organization.organization_name if @receipt.organization %>");
@@ -229,6 +242,12 @@
                 call_receipt_receivable_info($(this));
             });
         }
+    }
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);
+       $("#organization_id").val(org_id_val);
+       initialize_api_call({"url": "/organizations/" + org_id_val + "/organization_info", "type": "GET", "params": {}}, "set_customer_info", {});
+       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "organization_receivables", "id": org_id_val}}, "set_receipt_receivables", {});
     }
 
 </script>

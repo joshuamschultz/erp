@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+
+<title>Dummy</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+<style type="text/css">
+@charset "utf-8";
+body {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 12px;
+background-color: #FFF;
+margin-left: 0px;
+margin-top: 0px;
+margin-right: 0px;
+margin-bottom: 0px;
+}
+/* New Style */
+.clear {
+clear: both;
+}
+
+#main-wrapper {
+float: left;
+height: auto;
+width: 640px;
+border:1px solid #000;
+}
+
+
+table {
+border-collapse: collapse;
+}
+
+
+.logo {
+width: 180px;
+}
+
+
+.wrapper-1 td {
+border: 1px solid #000;
+padding: 6px;
+}
+.wrapper-1 th {
+border: 1px solid #000;
+font-size: 12px;
+padding: 6px;
+}
+
+
+</style>
+
+<% @company_info = CompanyInfo.first %>
+<div id="main-wrapper">
+
+<div class="wrapper">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="left" valign="top">
+<td align="center" style="padding:25px 0;"><%=image_tag(@company_info.logo.joint.url(:original), :width => "150") if @company_info.logo %></td>
+
+</tr>
+</table>
+</div>
+
+<div class="wrapper-1">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+
+<tr>
+		<th align="center" valign="middle">Item number</th>
+		<th align="center" valign="middle">Revision</th>
+		<th align="center" valign="middle">Quantity</th>
+		<th align="center" valign="middle">Vendor</th>
+		<th align="center" valign="middle">Customer</th>
+		<th align="center" valign="middle">Date Due</th>
+		<th align="center" valign="middle">Notes</th>
+		<th align="center" valign="middle">Locations</th>
+		<th align="center" valign="middle">PO</th> 
+	</tr>
+
+	<% @so_header.so_lines.each do |so_line| %>
+		<% locations = Array.new %>		
+		<% @so_shipments = SoShipment.find_by_so_line_id(so_line.id) %> 
+		
+		<% if @so_shipments.present? %>
+			<% @so_shipments.each do |so_shipment| %>
+				<% lot = shipment.quality_lot %>
+				<% locations << lot.current_location unless lot.nil? %>
+			<% end %>
+		<% end %>
+		
+
+		<tr>
+			<td align="center" valign="middle"><%= so_line.item.item_part_no %></td>
+			<td align="center" valign="middle"><%= so_line.item_revision.item_revision_name %></td>
+			<td align="center" valign="middle"><%= so_line.so_line_quantity %></td>
+			<td align="center" valign="middle"><%= so_line.organization.organization_name  if so_line.organization.present? %></td>
+			<td align="center" valign="middle"><%= so_line.so_header.organization.organization_name %></td>
+			<td align="center" valign="middle"><%= so_line.so_header.so_due_date %></td>
+			<td align="center" valign="middle"><%= so_line.so_header.so_notes %></td>
+			<td align="center" valign="middle"><%= locations.join(" ")%></td>
+			<td align="center" valign="middle"><%= so_line.so_header.so_header_customer_po %></td>
+		</tr>
+	<% end %>
+</tbody>
+</table>

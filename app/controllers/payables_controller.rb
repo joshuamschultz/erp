@@ -32,6 +32,7 @@ class PayablesController < ApplicationController
       params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
       params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
       params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
+      
       # params[:payable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:payable][:gl_account_id]
       # params[:payable][:gl_account_id] = params[:org_gl_account_id] if params[:payable][:gl_account_id] == ""
     end
@@ -40,14 +41,18 @@ class PayablesController < ApplicationController
   # GET /payables
   # GET /payables.json
   def index
-    if params[:item_id].present?
+      if payable = Payable.find_by_payable_disperse("unassigned").present?
+        payable = Payable.find_by_payable_disperse("unassigned")
+        payable.payable_po_shipments.destroy_all
+        payable.delete
+      end
+      if params[:item_id].present?
+        @payables =Payable.all_payables(params[:item_id])
+      else  
+
+      @payables = Payable.status_based_payables(params[:payable_status] || "open")
+      end
  
-      @payables =Payable.all_payables(params[:item_id])
-
-
-    else
-    @payables = Payable.status_based_payables(params[:payable_status] || "open")
-    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,9 +83,7 @@ class PayablesController < ApplicationController
               )
               end    
               else
-                payable[:links] = CommonActions.object_crud_paths(nil, nil, nil, 
-                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
-              )
+                payable[:links] = ''
              end     
 
           }
@@ -183,6 +186,10 @@ class PayablesController < ApplicationController
 
     respond_to do |format|
       if @payable.update_attributes(params[:payable])
+        if Payable.find_by_payable_disperse("unassigned").present?
+          payable = Payable.find_by_payable_disperse("unassigned")
+          payable.update_attributes(:payable_disperse => "assigned")
+        end
         # @payable.update_gl_account
         format.html { redirect_to @payable, notice: 'Payable was successfully updated.' }
         format.json { head :no_content }

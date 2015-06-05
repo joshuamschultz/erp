@@ -17,21 +17,29 @@ class GaugesController < ApplicationController
   end
 
   def set_page_info
-      @menus[:quality][:active] = "active"
+      @menus[:quality][:active] = "active" unless (params[:type] == "gauge").present?
+      @menus[:reports][:active] = "active"  if (params[:type] == "gauge").present?
   end
 
   # GET /gauges
   # GET /gauges.json  
   def index
-    @gauges = Gauge.all
+    if(params[:type] == "gauge").present?
+      @gauges = Gauge.get_this_week_gauges()
+    else
+      @gauges = Gauge.all
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json{
+ 
         @gauges = @gauges.select{|gauge|
+         
           gauge[:gauge_tool_name] = CommonActions.linkable(gauge_path(gauge), gauge[:gauge_tool_name])
           gauge[:gauge_caliberator] = gauge.organization.present? ? CommonActions.linkable(organization_path(gauge.organization), gauge.organization.organization_short_name) : "" 
           if can? :edit , gauge
-            gauge[:links] = CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
+            gauge[:links] = params[:type].present? ? CommonActions.object_crud_paths(nil, nil, nil) : CommonActions.object_crud_paths(nil, edit_gauge_path(gauge), nil)
           else
              gauge[:links] = CommonActions.object_crud_paths(nil, nil, nil)
           end
