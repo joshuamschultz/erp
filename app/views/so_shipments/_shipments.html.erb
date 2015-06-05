@@ -152,7 +152,7 @@
     function create_receivable_for_items(){
         var selected_receivable_so_lines = $(".receivable_so_lines:checked");
         if(selected_receivable_so_lines.length == 0)
-            alert("Please select items in any SO.")
+            alert("Please select items in same SO_shipment.")
         else{
             var selected_shipments = $(".receivable_so_lines:checked").map(function(){
                 return $(this).val();
