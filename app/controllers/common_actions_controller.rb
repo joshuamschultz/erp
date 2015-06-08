@@ -217,7 +217,7 @@ class CommonActionsController < ApplicationController
             when "shipment_process_complete"
               if params[:shipment_process_id].present?
                   @so_header = ''
-                  so_shipment_process = SoShipment.where("shipment_process_id=? AND so_shipped_status=? ",params[:shipment_process_id],'process')
+                  so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close'])
                   so_shipment = {}
                   item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = ""
                
@@ -227,7 +227,7 @@ class CommonActionsController < ApplicationController
                       item_part = shipment.so_line.item.item_part_no
                       item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
                       item_qty = shipment.so_line.so_line_quantity.to_s
-                      item_shipped = SoShipment.where("so_line_id=? AND so_shipped_status=?",shipment.so_line,'process').sum(:so_shipped_count).to_s
+                      item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close']).sum(:so_shipped_count).to_s
                       item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
                       item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
                       temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
