@@ -39,7 +39,7 @@ class SoShipment < ActiveRecord::Base
         unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
           self.shipment_process_id = 'S'+ 1.to_s      
         else
-          so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => 'process')
+          so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['process','ship_close'])
           if so_shipment_process.count >= 1
             so_shipment = so_shipment_process.last
             unless so_shipment.shipment_process_id.present?            
