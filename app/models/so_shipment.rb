@@ -37,25 +37,17 @@ class SoShipment < ActiveRecord::Base
       unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
         self.so_shipped_status = "process" unless self.so_shipped_status == 'ship_close'
         unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
-          self.shipment_process_id = 'S'+ 1.to_s      
+          self.shipment_process_id = "S00001"      
         else
           so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['process','ship_close'])
           if so_shipment_process.count >= 1
             so_shipment = so_shipment_process.last
-            unless so_shipment.shipment_process_id.present?            
-              shipment_process_id = SoShipment.order("shipment_process_id DESC").first.shipment_process_id.split('',2)[1].to_i
-              self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
+            unless so_shipment.shipment_process_id.present?                          
+              self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")
             else
-              self.shipment_process_id = 'S'+so_shipment.shipment_process_id.split('',2)[1]
+              self.shipment_process_id = so_shipment.shipment_process_id
             end
-          else
-              shipment_process_id = SoShipment.order("shipment_process_id DESC").first.shipment_process_id.split('',2)[1].to_i
-            if shipment_process_id >=1
-              self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
-            else
-              self.shipment_process_id = 'S'+1.to_s
-            end
-
+         
             # last_shipment = SoShipment.last
             # if last_shipment.present? && last_shipment.shipment_process_id.present?
             #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
