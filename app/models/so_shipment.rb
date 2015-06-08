@@ -47,7 +47,8 @@ class SoShipment < ActiveRecord::Base
             else
               self.shipment_process_id = so_shipment.shipment_process_id
             end
-         
+          else
+            self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")         
             # last_shipment = SoShipment.last
             # if last_shipment.present? && last_shipment.shipment_process_id.present?
             #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
