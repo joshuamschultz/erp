@@ -38,7 +38,7 @@ class SoShipmentsController < ApplicationController
               so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
+                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='process' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
@@ -86,9 +86,9 @@ class SoShipmentsController < ApplicationController
                   end
 
             else
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped","ship_close"])
+                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped"])
                 if params[:type] == "process"
-                  @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => "process")
+                  @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close"])
                 end
 
             end
