@@ -1,7 +1,10 @@
 class UserMailer < ActionMailer::Base
-   @companyinfo = CompanyInfo.first if CompanyInfo.first.present?
-   default from: "#{@companyinfo.company_name} <do-not-reply@alliance-fastners.com>"
-
+   if CompanyInfo.first.present?
+    @companyinfo = CompanyInfo.first 
+    default from: "#{@companyinfo.company_name} <do-not-reply@alliance-fastners.com>"
+  else
+    default from: "Chess <do-not-reply@alliance-fastners.com>"
+  end
 
 
 
