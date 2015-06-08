@@ -66,17 +66,18 @@ class Receipt < ActiveRecord::Base
   after_save :process_after_save
 
   def process_after_save
-    if self.receipt_type.present?   
+    if self.receipt_type.present? &&  self.receipt_type.type_value == "check"     
             @deposit_check = DepositCheck.where(:receipt_id => self.id).first
             if @deposit_check.nil? 
-              if self.receipt_type.type_value == "check"
+              # if self.receipt_type.type_value == "check"
                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, check_identifier:  self.receipt_check_code, active: 1) 
-              elsif self.receipt_type.type_value == "credit" || self.receipt_type.type_value == "cash" || self.receipt_type.type_value == "ach"
-                depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
-              end              
-            end         
+              # elsif self.receipt_type.type_value == "credit" || self.receipt_type.type_value == "cash" || self.receipt_type.type_value == "ach"
+                # depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
+            end              
+            # end         
     else
-      self.update_transactions if self.receipt_type.type_value != "credit"       
+      Reconcile.create(tag: "not reconciled",reconcile_type: self.receipt_type.type_value, receipt_id: self.id)
+      # self.update_transactions if self.receipt_type.type_value != "credit"       
     end             
   end 
 
