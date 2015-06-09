@@ -187,7 +187,7 @@
         for ( var i = 0; i < account_row_count; i++ ) {             
             if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText )
                 {
-                    if($("#payable_payable_freight").val() > 0){
+                    if($("#payable_payable_freight").val() >= 0){
                         $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val($("#payable_payable_freight").val());
                     }
                     else{
@@ -227,7 +227,7 @@
         for ( var i = 0; i < account_row_count; i++ ) {             
             if ($("#payable_payable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {                    
-                    if($("#payable_payable_discount").val() > 0)
+                    if($("#payable_payable_discount").val() >= 0)
                     {                   
                         $("#payable_payable_accounts_attributes_"+i+"_payable_account_amount").val(discount_val);
                     }
