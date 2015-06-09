@@ -315,8 +315,10 @@ function set_lots(response, callback_params, api_params){
         <article>
             <div class="ms_image-5">
                 <div class="ms_image-wrapper">
-                    <% @company_info = CompanyInfo.first %>
-                    <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
+                    <% if CompanyInfo.first %>
+                        <% @company_info = CompanyInfo.first %>
+                        <%=image_tag(@company_info.logo.joint.url(:original)) if @company_info.logo %>
+                    <% end %>
                 </div>
 
                 <div class="ms_image-text">
