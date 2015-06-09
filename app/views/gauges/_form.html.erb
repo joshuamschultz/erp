@@ -1,4 +1,4 @@
-<%= simple_form_for(@gauge, :html => {:id => "form_for_gauges",:class => "form-horizontal"}) do |f| %>
+-<%= simple_form_for(@gauge, :html => {:id => "form_for_gauges",:class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">    
@@ -6,8 +6,8 @@
     <%= f.input :gauge_tool_category, :label => "Tool Category" %>
     <%= f.input :gauge_tool_no, :label => "Tool Number" %>
     <%= f.association :organization, label: "Caliberator", label_method: "organization_short_name", label_value: "id", :include_blank => false %>
-    <%= f.input :gage_caliberation_last_at, :as => :string, :label => "Caliberation Last At" %>
-    <%= f.input :gage_caliberation_due_at, :as => :string, :label => "Caliberation Due At" %>
+    <%= f.input :gage_caliberation_last_at, :as => :string, :label => "Calibrator Last At" %>
+    <%= f.input :gage_caliberation_due_at, :as => :string, :label => "Calibrator Due At" %>
     <%#= f.input :gage_caliberaion_period, :label => "Caliberation Period" %>
     <%= f.input :gauge_active, :label => "Active" %> 
   </div>
