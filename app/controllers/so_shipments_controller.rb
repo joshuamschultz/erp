@@ -248,7 +248,7 @@ class SoShipmentsController < ApplicationController
         format.html { redirect_to so_shipments_path(type: "process"), notice: 'SO shipment was successfully deleted.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to so_shipments_url, notice: 'SO shipment was successfully deleted.'+ }
+        format.html { redirect_to so_shipments_url, notice: 'SO shipment was successfully deleted.' }
         format.json { head :no_content }
       end
     end
