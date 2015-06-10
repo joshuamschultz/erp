@@ -75,17 +75,17 @@
     function receive_titles(response, callback_params, api_params){                    
         inventory = response["aaData"]["11050"]; 
         $("#inventory_text").val(inventory);        
-        discount = response["aaData"]["51010020"];
+        discount = response["aaData"]["51010-020"];
         $("#discount_text").val(discount);
-        sales_discount = response["aaData"]["41025010"];
+        sales_discount = response["aaData"]["41025-010"];
         $("#sales_discount_text").val(sales_discount);        
-        freight = response["aaData"]["51020020"]; 
+        freight = response["aaData"]["51020-020"]; 
         $("#freight_text").val(freight);
         expense = response["aaData"]["71107"]; 
         $("#expense_text").val(expense);
-        sales = response["aaData"]["41010010"]; 
+        sales = response["aaData"]["41010-010"]; 
         $("#sales_text").val(sales);
-        cogs = response["aaData"]["51010010"]; 
+        cogs = response["aaData"]["51010-010"]; 
         $("#cogs_text").val(cogs);
 
 
