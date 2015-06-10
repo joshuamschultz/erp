@@ -41,11 +41,21 @@ class Payable < ActiveRecord::Base
       if gl_account_ids.uniq != gl_account_ids 
           errors.add(:payable_invoice, "have duplicate account entries added!")
       end
+      payable_total = 0
+      if self.payable_type =='manual'
+        payable_total = self.payable_total
+      else  
+        payable_total = self.payable_lines.sum(:payable_line_cost)
+        payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
+        payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
+        payable_total = payable_total - payable_discount_val + self.payable_freight      
+      end
 
       total_amount = 0
       self.payable_accounts.each{|b| total_amount += b.payable_account_amount.to_f }
 
-      errors.add(:payable_invoice, "total (#{self.payable_total}) < dispersed account total (#{total_amount})") if total_amount > self.payable_total
+      
+      errors.add(:payable_invoice, "total (#{payable_total.to_f}) < dispersed account total (#{total_amount})") if total_amount.to_f > payable_total.to_f
   end
 
   def process_removed_accounts(payable_accounts)
