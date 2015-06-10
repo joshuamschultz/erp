@@ -1,7 +1,7 @@
 class SoShipmentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
   before_filter :set_page_info
-  before_filter :view_permissions, except: [:new,:index]
+  before_filter :view_permissions, except: [:new]
   before_filter :user_permissions
 
 
@@ -104,7 +104,7 @@ class SoShipmentsController < ApplicationController
                   so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                 end
                 if can? :edit, SoShipment  
-                  so_shipment[:links] = params[:type] == "history" || "process" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
+                  so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
                   so_shipment[:links] = ""
                 end

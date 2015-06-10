@@ -467,18 +467,18 @@ class CommonActionsController < ApplicationController
               gl_account_titles = Hash.new 
               @gl_account = GlAccount.where(:gl_account_identifier =>   "11050").first              
               gl_account_titles["11050"] = @gl_account.gl_account_title
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010020").first
-              gl_account_titles["51010020"] = @gl_account["gl_account_title"]
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "51020020").first
-              gl_account_titles["51020020"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010-020").first
+              gl_account_titles["51010-020"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51020-020").first
+              gl_account_titles["51020-020"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "71107").first
               gl_account_titles["71107"] = @gl_account["gl_account_title"]
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "41010010").first
-              gl_account_titles["41010010"] = @gl_account["gl_account_title"]                       
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010010").first
-              gl_account_titles["51010010"] = @gl_account["gl_account_title"]
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "41025010").first
-              gl_account_titles["41025010"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41010-010").first
+              gl_account_titles["41010-010"] = @gl_account["gl_account_title"]                       
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "51010-010").first
+              gl_account_titles["51010-010"] = @gl_account["gl_account_title"]
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "41025-010").first
+              gl_account_titles["41025-010"] = @gl_account["gl_account_title"]
               
               
               result = gl_account_titles 

@@ -19,10 +19,10 @@ class ReceivableAccount < ActiveRecord::Base
     @gl_account_id_to_update = @gl_account_to_update.id
   	if self.gl_entry_id
   		@gl_entry = GlEntry.where(:id => self.gl_entry_id, :gl_account_id => self.gl_account_id).first       
-      	self.gl_account.gl_account_identifier == "51020020" || self.gl_account.gl_account_identifier == "11050" ||  self.gl_account.gl_account_identifier == "41025010" ? @gl_entry.update_attributes(:gl_entry_debit=> self.receivable_account_amount * -1 ) : @gl_entry.update_attributes(:gl_entry_credit => self.receivable_account_amount)  ;
+      	self.gl_account.gl_account_identifier == "51020-020" || self.gl_account.gl_account_identifier == "11050" ||  self.gl_account.gl_account_identifier == "41025-010" ? @gl_entry.update_attributes(:gl_entry_debit=> self.receivable_account_amount * -1 ) : @gl_entry.update_attributes(:gl_entry_credit => self.receivable_account_amount)  ;
     else
     	@gl_entry
-    	if self.gl_account.gl_account_identifier == "51020020" || self.gl_account.gl_account_identifier == "11050" ||  self.gl_account.gl_account_identifier == "41025010"
+    	if self.gl_account.gl_account_identifier == "51020-020" || self.gl_account.gl_account_identifier == "11050" ||  self.gl_account.gl_account_identifier == "41025-010"
     		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Receivable " +self.receivable.receivable_identifier, :gl_entry_debit => self.receivable_account_amount * -1 , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 
     	else	
     		@gl_entry = GlEntry.new(:gl_account_id => self.gl_account_id, :gl_entry_description => "Receivable " +self.receivable.receivable_identifier, :gl_entry_credit => self.receivable_account_amount, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receivable_id => self.receivable_id) 	
@@ -31,7 +31,7 @@ class ReceivableAccount < ActiveRecord::Base
      	self.update_attributes(:gl_entry_id => @gl_entry.id)
   	end
   	receivable = Receivable.where(:id => self.receivable_id).first
-    id = GlAccount.where(:gl_account_identifier=> "51020020").first.id    
+    id = GlAccount.where(:gl_account_identifier=> "51020-020").first.id    
 	  pacctsum =  receivable.receivable_accounts.where('gl_account_id not in (?)', [id]).sum(:receivable_account_amount).to_f  	
     pacctsum += receivable.receivable_accounts.where(:gl_account_id => id).first.receivable_account_amount * -1 if receivable.receivable_accounts.where(:gl_account_id => id).first.present?
   	@gl_entry = GlEntry.where(:receivable_id => self.receivable_id, :gl_account_id => @gl_account_id_to_update).first
@@ -43,7 +43,7 @@ class ReceivableAccount < ActiveRecord::Base
   	end
   	@gl_account = GlAccount.where(:id => self.gl_account_id).first
   	@amount
-  	if self.gl_account.gl_account_identifier == "51020020" || self.gl_account.gl_account_identifier == "11050"||  self.gl_account.gl_account_identifier == "41025010"
+  	if self.gl_account.gl_account_identifier == "51020-020" || self.gl_account.gl_account_identifier == "11050"||  self.gl_account.gl_account_identifier == "41025-010"
   		@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f * -1 + self.receivable_account_amount.to_f * -1
   	else
     	@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f  + self.receivable_account_amount.to_f
