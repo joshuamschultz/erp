@@ -116,7 +116,7 @@ class SoShipment < ActiveRecord::Base
   #   end    
   # end
 
-    def set_quality_on_hand
+  def set_quality_on_hand
     if self.quality_lot.present?
       quality_lot = self.quality_lot
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
@@ -129,6 +129,16 @@ class SoShipment < ActiveRecord::Base
         p quality_lot.to_yaml
       end
     end    
+  end
+
+  def self.update_quality_on_hand(shipment)
+    if shipment.quality_lot_id.present?
+      quality_lot = QualityLot.find(shipment.quality_lot)
+      if quality_lot.present?
+        quality_lot.quantity_on_hand += shipment.so_shipped_count
+        quality_lot.save
+      end
+    end
   end
 
   def self.complete_shipment(shipment_process_id) 
