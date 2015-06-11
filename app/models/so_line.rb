@@ -38,14 +38,15 @@ class SoLine < ActiveRecord::Base
   after_save :update_so_total
   after_destroy :update_so_total
 
-  def update_so_total
+  def update_so_total   
+    
       so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier(1) : self.so_header.so_identifier
       so_status_count = self.so_header.so_lines.where("so_line_status = ?", "open").count
-      so_header_status = (so_status_count == 0) ? "closed" : "open"
+      so_header_status = (so_status_count == 0) ? "closed" : "open"      
       i= 2
       loop do
         i+=1
-        so_header = SoHeader.find_by_so_identifier(so_identifier)
+        so_header = SoHeader.where('so_identifier = ? && id != ?', so_identifier,self.so_header.id ).first
         break unless(so_header.present?)        
         so_identifier = SoHeader.new_so_identifier(i)
       end
