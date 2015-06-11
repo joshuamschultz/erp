@@ -493,6 +493,12 @@ class CommonActionsController < ApplicationController
                 if @reconcile.nil?                                  
                   Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
                 end 
+                @gl_entries = payment.gl_entries
+                if @gl_entries
+                  @gl_entries.each do |gl_entry|
+                    gl_entry.update_attributes(:gl_entry_description => "Check "+payment.payment_check_code)
+                  end
+                end
                 check_register = CheckRegister.where(payment_id: payment.id).first
                 unless  check_register.present?                    
                     balance = 0 
@@ -518,7 +524,9 @@ class CommonActionsController < ApplicationController
                 sleep 1
                 c = CheckEntry.find(id)
                 check_code = CheckCode.find_by_counter_type('check_code').counter 
-                c.update_attributes(:check_code => check_code) 
+                c.update_attributes(:check_code => check_code)
+                p = c.payment
+                p.update_attributes(:payment_check_code => check_code) if p               
                 temp = CheckCode.find_by_counter_type("check_code") 
                 temp.update_attributes(:counter => check_code )               
                 CheckCode.get_next_check_code                               
