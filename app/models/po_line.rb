@@ -68,8 +68,8 @@ class PoLine < ActiveRecord::Base
     po_header_status = (po_status_count == 0) ? "closed" : "open"     
     i= 1
     loop do
-      i = i +1
-      po_header = PoHeader.find_by_po_identifier(po_identifier)
+      i = i +1       
+      po_header = PoHeader.where('po_identifier = ? && id != ?', po_identifier,self.po_header.id ).first
       break unless(po_header.present?)        
       po_identifier = PoHeader.new_po_identifier(i)      
     end
