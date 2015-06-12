@@ -240,17 +240,17 @@ class SoShipmentsController < ApplicationController
   def destroy
     @so_shipment = SoShipment.find(params[:id])
     SoShipment.update_quality_on_hand(@so_shipment)
-    status = @so_shipment.so_shipped_status
+    # status = @so_shipment.so_shipped_status
     @so_shipment.destroy
 
     respond_to do |format|
-      if status == "process"
-        format.html { redirect_to so_shipments_path(type: "process"), notice: 'SO shipment was successfully deleted.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to so_shipments_url, notice: 'SO shipment was successfully deleted.' }
-        format.json { head :no_content }
-      end
+      # if status == "process"
+      format.html { redirect_to new_so_shipment_path, notice: 'SO shipment was successfully deleted.' }
+      format.json { head :no_content }
+      # else
+      #   format.html { redirect_to so_shipments_url, notice: 'SO shipment was successfully deleted.' }
+      #   format.json { head :no_content }
+      # end
     end
   end
 
