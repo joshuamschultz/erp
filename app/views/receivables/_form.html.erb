@@ -168,7 +168,7 @@
         for ( var i = 0; i < account_row_count; i++ ) {             
             if ($("#receivable_receivable_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
-                    if($("#receivable_receivable_freight").val() > 0){
+                    if($("#receivable_receivable_freight").val() >= 0){
                         $("#receivable_receivable_accounts_attributes_"+i+"_receivable_account_amount").val($("#receivable_receivable_freight").val() * -1);
                     }
                     else{
