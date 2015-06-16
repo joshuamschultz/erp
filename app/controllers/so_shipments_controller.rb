@@ -58,7 +58,7 @@ class SoShipmentsController < ApplicationController
             }
             render json: {:aaData => @so_lines}
         elsif params[:type1].present? && params[:type2].present?
-             @so_lines = SoLine.where(:so_line_status => "open").joins(:so_header).where("so_headers.so_due_date >= ? AND so_headers.so_due_date <= ?", Date.today, Date.today+6).select{|so_line|
+             @so_lines = SoLine.where(:so_line_status => "open").joins(:so_header).where("so_headers.so_due_date <= ?", Date.today-6).select{|so_line|
                 
 
                 so_line = so_line_data_list(so_line, false)
