@@ -37,10 +37,15 @@ class Receivable < ActiveRecord::Base
           errors.add(:receivable_invoice, "have duplicate account entries added!")
       end
 
+      receivable_total = self.receivable_lines.sum(:receivable_line_cost)
+      receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
+      # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
+      receivable_total = receivable_total - self.receivable_freight
+
       total_amount = 0
       self.receivable_accounts.each{|b| total_amount += b.receivable_account_amount.to_f }
 
-      errors.add(:receivable_invoice, "total (#{self.receivable_total}) < dispersed account total (#{total_amount})") if total_amount > self.receivable_total
+      errors.add(:receivable_invoice, "total (#{self.receivable_total}) < dispersed account total (#{total_amount})") if total_amount > receivable_total
   end
 
   before_save :process_before_save
@@ -95,8 +100,8 @@ class Receivable < ActiveRecord::Base
   def update_receivable_total
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
-      receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total - receivable_discount_val + receivable_freight
+      # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
+      receivable_total - receivable_freight
   end
 
   def receivable_discount_val  
