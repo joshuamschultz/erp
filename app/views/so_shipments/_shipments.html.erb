@@ -63,6 +63,7 @@
                 <% end %>
                 <th>SO</th>
                 <th>Vendor</th>
+                <th>customer</th>
                 <th>Quantity Ordered</th>
                 <!-- <th>Total Shipped</th> -->
                 <% unless shipment_type =="process" %>
@@ -93,6 +94,7 @@
                         { "mData": "shipment_process_id" },
                         { "mData": "so_identifier" },                        
                         { "mData": "vendor_name" },
+                        { "mData": "customer_name" },     
                         { "mData": "so_line_quantity" },                        
                         { "mData": "so_shipped_count" },
                         { "mData": "lot" },
@@ -113,6 +115,7 @@
                         { "mData": "item_part_no" },
                         { "mData": "so_identifier" },                        
                         { "mData": "vendor_name" },
+                        { "mData": "customer_name" },     
                         { "mData": "so_line_quantity" },                        
                         { "mData": "so_shipped_count" },
                         { "mData": "lot" },
