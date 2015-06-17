@@ -21,6 +21,9 @@
               	<th>SO</th>
                 <th>Part No</th>
                 <th>Vendor</th>
+                <% unless params[:type1].present? && params[:type2].present? %>
+                    <th>customer</th>
+                <% end %>
                 <th>Quantity Ordered</th>
                 <% unless params[:type1].present? && params[:type2].present? %>
                     <th>Quantity Open</th>
@@ -66,6 +69,7 @@
                         { "mData": "so_identifier" }, 
                         { "mData": "item_part_no" },
                         { "mData": "vendor_name" },
+                        { "mData": "customer_name" },     
                         { "mData": "so_line_quantity" },
                         { "mData": "so_line_quantity_open" },
                            { "mData": "so_due_date"  },  
