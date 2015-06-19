@@ -146,7 +146,9 @@
         } 
     }  
     function disperse_amount(theText, amt, hide){           
-        account_row_count = $(".account_new").length + $(".account_edit").length;        
+        account_row_count = $(".account_new").length + $(".account_edit").length;    
+        console.log("account_row_count"+account_row_count);    
+        console.log("theText"+theText);
         for ( var i = 0; i < account_row_count; i++ ) {                    
             if ($("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
