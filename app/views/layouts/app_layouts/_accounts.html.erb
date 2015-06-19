@@ -34,8 +34,9 @@
 <% inventory_amount = 0 %>
 <% @receivable.so_shipments.each do |so_shipment| %>
   <% if so_shipment.quality_lot && so_shipment.quality_lot.po_line %>
-    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f * so_shipment.so_shipped_count %>   
-  
+    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f * so_shipment.so_shipped_count %>
+  <% elsif so_shipment.so_line  && so_shipment.so_line.so_line_cost %>   
+      <% inventory_amount += so_shipment.so_line.so_line_cost.to_f * so_shipment.so_shipped_count %>
   <% end %>  
 <% end %>  
 
@@ -146,9 +147,7 @@
         } 
     }  
     function disperse_amount(theText, amt, hide){           
-        account_row_count = $(".account_new").length + $(".account_edit").length;    
-        console.log("account_row_count"+account_row_count);    
-        console.log("theText"+theText);
+        account_row_count = $(".account_new").length + $(".account_edit").length;            
         for ( var i = 0; i < account_row_count; i++ ) {                    
             if ($("#<%= account_type %>_<%= account_type %>_accounts_attributes_"+i+"_gl_account_id option:selected").text() == theText)
                 {
