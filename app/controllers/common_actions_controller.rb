@@ -21,6 +21,13 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
+
+            when "get_process_types_po"
+              if params[:id].present?
+                item_alt_name = ItemAltName.find(params[:id])
+                result = item_alt_name.present? ? item_alt_name.item.item_revisions.last.process_types : []
+                result = result.each {|line| line[:process_short_name] = line.process_short_name }
+              end
             when "set_notification_status"
               if params[:id].present?
                 Notification.find(params[:id]).update_attributes(:note_status => "read")
@@ -217,7 +224,7 @@ class CommonActionsController < ApplicationController
             when "shipment_process_complete"
               if params[:shipment_process_id].present?
                   @so_header = ''
-                  so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close'])
+                  so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close','ship_in'])
                   so_shipment = {}
                   item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = ""
                
@@ -227,7 +234,7 @@ class CommonActionsController < ApplicationController
                       item_part = shipment.so_line.item.item_part_no
                       item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
                       item_qty = shipment.so_line.so_line_quantity.to_s
-                      item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close']).sum(:so_shipped_count).to_s
+                      item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
                       item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
                       item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
                       temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
@@ -540,7 +547,25 @@ class CommonActionsController < ApplicationController
                 if id != "undefined"
                   quality_lot = QualityLot.find(id)
                   if quality_lot.present?
-                    quality_lot.set_lot_control_no
+                    if quality_lot.po_line.quality_lot_id.present?
+                      transfer_quality = QualityLot.find(quality_lot.po_line.quality_lot_id)
+                      control_number = transfer_quality.lot_control_no
+                      letter = '@'
+                      if QualityLot.where(:lot_control_no => control_number+letter.next).present?
+                        begin
+                          letter = letter.next!
+                          @max_control_string = QualityLot.where(:lot_control_no => control_number+letter)
+                        end while(@max_control_string.present?)
+                        current_control_no = control_number+letter    
+                      else
+                        current_control_no = control_number+letter.next
+                      end
+
+                      quality_lot.update_column(:lot_control_no, current_control_no)
+                    else
+                        quality_lot.set_lot_control_no  
+                    end
+                    
                   end
                 end
               end

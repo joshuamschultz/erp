@@ -38,7 +38,9 @@ class SoShipmentsController < ApplicationController
               so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='process' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
+                default_status = (so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process"
+
+                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
@@ -47,7 +49,7 @@ class SoShipmentsController < ApplicationController
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
                   # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                   so_line[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
-                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='process' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
+                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
                   so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Close</a>"
                 else
                   so_line[:so_identifier] += ""
@@ -71,6 +73,7 @@ class SoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             @quality_lot = QualityLot.find(params[:quality_lot_id]) if params[:quality_lot_id].present?
+            @so_ship_outs = SoShipment.where(:so_shipped_status => "ship_out").order("created_at desc").includes(:so_line)
 
             if @item
                 if params[:type].present?
@@ -87,13 +90,14 @@ class SoShipmentsController < ApplicationController
 
             else
                 @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped"])
+                 # @so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
                 if params[:type] == "process"
-                  @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close"])
+                  @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close", "ship_in"])
                 end
 
             end
             i = 0
-            @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
+            @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
                 
 
                 so_shipment[:index] =  i

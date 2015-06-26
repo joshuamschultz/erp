@@ -113,7 +113,7 @@ class Item < ActiveRecord::Base
       self.quality_lots.sum(:quantity_on_hand).to_f
   end
   def weighted_cost
-    total = self.quality_lots.sum(:quantity_on_hand).to_f
+    total = qty_on_hand
     cost =0
     if total == 0
       cost
