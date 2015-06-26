@@ -35,11 +35,11 @@ class SoShipment < ActiveRecord::Base
       self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
       self.so_header_id = self.so_line.so_header.id
       unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
-        self.so_shipped_status = "process" unless self.so_shipped_status == 'ship_close'
+        self.so_shipped_status = "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
         unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
           self.shipment_process_id = "S00001"      
         else
-          so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['process','ship_close'])
+          so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['ship_in','process','ship_close'])
           if so_shipment_process.count >= 1
             so_shipment = so_shipment_process.last
             unless so_shipment.shipment_process_id.present?                          
@@ -141,8 +141,9 @@ class SoShipment < ActiveRecord::Base
     end
   end
 
-  def self.complete_shipment(shipment_process_id) 
-    SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["process", "ship_close"]).update_all(:so_shipped_status => "shipped")
+  def self.complete_shipment(shipment_process_id)
+      SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["ship_in"]).update_all(:so_shipped_status => "ship_out")
+      SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["process", "ship_close"]).update_all(:so_shipped_status => "shipped")
   end
 
   
