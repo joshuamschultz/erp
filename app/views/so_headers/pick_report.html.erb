@@ -81,12 +81,14 @@ padding: 6px;
 
 	<% @so_header.so_lines.each do |so_line| %>
 		<% locations = Array.new %>		
-		<% @so_shipments = SoShipment.find_by_so_line_id(so_line.id) %> 
+		<% item_revision = so_line.item_revision %> 
+		<% @quality_lots= item_revision.quality_lots %>
 		
-		<% if @so_shipments.present? %>
-			<% @so_shipments.each do |so_shipment| %>
-				<% lot = shipment.quality_lot %>
-				<% locations << lot.current_location unless lot.nil? %>
+		<% if @quality_lots.present? %>
+			<% @quality_lots.each do |lot| %>
+				<% unless lot.nil? %>				
+					<% locations << lot.current_location if  lot.current_location.gsub(/\s+/, "") != '-'%>
+				<% end %>
 			<% end %>
 		<% end %>
 		
@@ -95,12 +97,12 @@ padding: 6px;
 			<td align="center" valign="middle"><%= so_line.item.item_part_no %></td>
 			<td align="center" valign="middle"><%= so_line.item_revision.item_revision_name %></td>
 			<td align="center" valign="middle"><%= so_line.so_line_quantity %></td>
-			<td align="center" valign="middle"><%= so_line.organization.organization_name  if so_line.organization.present? %></td>
+			<td align="center" valign="middle"><%= so_line.organization ?  so_line.organization.organization_name : "CHESS" %></td>
 			<td align="center" valign="middle"><%= so_line.so_header.organization.organization_name %></td>
 			<td align="center" valign="middle"><%= so_line.so_header.so_due_date %></td>
-			<td align="center" valign="middle"><%= so_line.so_header.so_notes %></td>
-			<td align="center" valign="middle"><%= locations.join(" ")%></td>
-			<td align="center" valign="middle"><%= so_line.so_header.so_header_customer_po %></td>
+			<td align="center" valign="middle"><%= so_line.so_line_notes %></td>
+			<td align="center" valign="middle"><%= locations.join(",")%></td>
+			<td align="center" valign="middle"><%= so_line.so_line_vendor_po.present? ? so_line.so_line_vendor_po : "Stock" %></td>
 		</tr>
 	<% end %>
 </tbody>
