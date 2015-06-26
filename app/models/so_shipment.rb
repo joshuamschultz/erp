@@ -35,7 +35,9 @@ class SoShipment < ActiveRecord::Base
       self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
       self.so_header_id = self.so_line.so_header.id
       unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
-        self.so_shipped_status = "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
+        self.so_shipped_status = (self.so_line.so_header.po_header.present? && self.so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
+
+
         unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
           self.shipment_process_id = "S00001"      
         else
