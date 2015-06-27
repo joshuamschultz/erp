@@ -95,14 +95,22 @@ function printContent(div_id,shipment_id)
  printWin.document.write(content);
  printWin.document.close();
  printWin.focus();
- printWin.print();
  printPage(printWin);
  
 }
 function printPage(win_id){
     setTimeout(function(){
+        win_id.focus();
+        win_id.print();
         win_id.close();
+        // printClose(win_id);
     }, 1000);
+}
+
+function printClose(win_close){
+    setTimeout(function(){
+        win_close.close();
+    }, 2000);
 }
 
 
