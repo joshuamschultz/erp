@@ -11,11 +11,12 @@ class PoLine < ActiveRecord::Base
   belongs_to :item_selected_name
   belongs_to :item_alt_name
 
+
   attr_accessible :po_line_active, :po_line_cost, :po_line_created_id, :po_line_customer_po, 
   :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
   :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
   :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id, :po_line_shipped,
-  :alt_name_transfer_id, :po_line_sell, :notification_attributes
+  :alt_name_transfer_id, :po_line_sell, :notification_attributes, :quality_lot_id, :process_type_id
 
   has_many :quality_lots, :dependent => :destroy
   has_many :payable_shipments, :dependent => :destroy
@@ -53,9 +54,21 @@ class PoLine < ActiveRecord::Base
   before_save :update_item_total
 
   def update_item_total
-    self.po_line_total = self.po_line_cost * self.po_line_quantity
-    self.item = self.item_alt_name.item
-    self.item_revision = self.item_alt_name.item.current_revision
+    if self.quality_lot_id.present?
+       quality_lot = QualityLot.find(self.quality_lot_id)
+
+       qty_on_hand = quality_lot.quantity_on_hand - self.po_line_quantity
+
+       quality_lot.update_attributes(:quantity_on_hand => qty_on_hand)
+       self.po_line_cost =  self.po_line_cost + quality_lot.po_line.po_line_cost
+       # self.po_line_quantity = 2 * self.po_line_quantity
+       self.po_line_total = self.po_line_cost * self.po_line_quantity
+
+    else
+      self.po_line_total = self.po_line_cost * self.po_line_quantity
+    end
+      self.item = self.item_alt_name.item
+      self.item_revision = self.item_alt_name.item.current_revision
   end
 
   after_save :prcess_after_save
@@ -154,12 +167,11 @@ end
             so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
           self.so_line_id = so_line.id
           
-      # elsif self.po_header.po_is?("transer")
-      #     so_line = self.so_line.present? ? self.so_line : SoLine.new
-      #     so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, 
-      #       customer_quality_id: 25, so_line_cost: self.po_line_cost, 
-      #       so_line_sell: 1, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
-      #     self.so_line_id = so_line.id
+      elsif self.po_header.po_is?("transer")
+          so_line = self.so_line.present? ? self.so_line : SoLine.new
+          so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+          self.po_header.so_header.update_attributes(organization_id: self.organization_id)
+          self.so_line_id = so_line.id
       end
 
   end
