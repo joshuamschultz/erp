@@ -292,7 +292,7 @@
 
     $(document).ready(function(){ 
         <% if po_is_transfer %>
-            jQuery("#po_line_item_alt_name_id").on('change', function() {
+            jQuery("#po_line_item_alt_name_id").on('focusout', function() {
                 initiate_line_items();
 
             });

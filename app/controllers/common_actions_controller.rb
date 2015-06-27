@@ -223,47 +223,99 @@ class CommonActionsController < ApplicationController
               
             when "shipment_process_complete"
               if params[:shipment_process_id].present?
-                  @so_header = ''
                   so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close','ship_in'])
                   so_shipment = {}
-                  item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = ""
-               
+                  item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = content = so_total =  notes = cusomter_po = ""
+                  so_b_c_title = so_b_c_address_1 = so_b_c_address_2 = so_b_c_state = so_b_c_country = so_b_c_zipcode = ''
+                  so_s_c_title = so_s_c_address_1 = so_s_c_address_2 = so_s_c_state = so_s_c_country = so_s_c_zipcode = ''
                   if so_shipment_process.count > 0
+
+                    i = 1
+                    j = 1
+                    flag = 1
+                    flag2 = 1
+
                     @so_header = SoHeader.find(so_shipment_process.last.so_header_id)
-                    so_shipment_process.group(:so_line_id).each do |shipment| 
+
+                    if @so_header.bill_to_address.present? 
+                      so_b_c_title = @so_header.bill_to_address.contact_title 
+                      so_b_c_address_1 = @so_header.bill_to_address.contact_address_1 
+                      so_b_c_address_2 = @so_header.bill_to_address.contact_address_2 
+                      so_b_c_state = @so_header.bill_to_address.contact_state 
+                      so_b_c_country = @so_header.bill_to_address.contact_country 
+                      so_b_c_zipcode = @so_header.bill_to_address.contact_zipcode
+                    end 
+                    if @so_header.ship_to_address.present? 
+                      so_s_c_title= @so_header.ship_to_address.contact_title 
+                      so_s_c_address_1 = @so_header.ship_to_address.contact_address_1 
+                      so_s_c_address_2 = @so_header.ship_to_address.contact_address_2 
+                      so_s_c_state = @so_header.ship_to_address.contact_state 
+                      so_s_c_country = @so_header.ship_to_address.contact_country 
+                      so_s_c_zipcode = @so_header.ship_to_address.contact_zipcode
+                    end 
+                    cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present? 
+
+                    notes = @so_header.so_notes if @so_header.so_notes
+                    so_total = (@so_header.so_total.to_f).to_s
+                    len = so_shipment_process.group(:so_line_id).length
+                    @company_info = CompanyInfo.first
+
+                    so_shipment_process.group(:so_line_id).each_with_index do |shipment, index| 
                       item_part = shipment.so_line.item.item_part_no
                       item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
                       item_qty = shipment.so_line.so_line_quantity.to_s
                       item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
-                      item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
+                      # item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
                       item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
                       temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
                       source += temp
+
+                      if i== 1  
+                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax+'<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
+                        if flag ==1
+                          content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+so_b_c_title+'</h2> <h6> '+so_b_c_address_1+'</h6> <h6>'+so_b_c_address_2+'</h6><h6>'+so_b_c_state+'</h6><div class="dd"><h6 class="ds">'+so_b_c_country+'</h6>   <span id ="pk100_so_b_c_zipcode">'+so_b_c_zipcode+'</span></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading" id="pk100_so_s_c_title">'+so_s_c_title+'</h2> <h6 id ="pk100_so_s_c_address_1">'+so_s_c_address_1+'</h6> <h6 id="pk100_so_s_c_address_2">'+so_s_c_address_2+'</h6><h6 id="pk100_so_s_c_state">'+so_s_c_state+'</h6><div class="dd"><h6 id="pk100_so_s_c_country"  class="ds">'+so_s_c_country+'</h6>   <span id ="pk100_so_s_c_zipcode" class="ss">'+so_s_c_zipcode+'</span></div></div></article>' 
+                          flag =0;
+                        end
+
+                        if flag2 ==1
+                          content += '<div class="b_content">  <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
+                          flag2=0;
+                        else
+                          content += '<div class="c_content"> <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
+                        end
+                      end
+
+                      content += temp
+
+                      if i==7 
+                        content += ' </table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article></section></div> <div style="page-break-after:always;">&nbsp; </div>'
+                      end
+
+                      if len == index+1 && i != 7 
+                        # j = 1
+                        # j+=1
+                        content += '</table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article>'
+                   
+                      end 
+
+                      i +=1 
+
+                      if i==8 
+                        j+=1
+                        i= 1
+                        content 
+                      end
+
+                 
+
+
+
                     end
+                    content
 
-                    so_shipment["so_date"] = "Sales Order Date :"+@so_header.created_at.strftime("%m/%d/%Y")
-                    so_shipment["so"] = @so_header.so_identifier
-                    so_shipment["cusomter_po"] = @so_header.so_header_customer_po.present? ?  "Customer P.O:"+ @so_header.so_header_customer_po : "Customer P.O:"
-                    so_shipment["part_number"] = source
-                    so_shipment["notes"] = @so_header.so_notes if @so_header.so_notes
-                    so_shipment["so_header_total"] ='<span> $</span>'+(@so_header.so_total.to_f).to_s
+                    so_shipment["part_number"] = content
 
-                    if @so_header.bill_to_address.present? 
-                      so_shipment["so_b_c_title"]= @so_header.bill_to_address.contact_title 
-                      so_shipment["so_b_c_address_1"] = @so_header.bill_to_address.contact_address_1 
-                      so_shipment["so_b_c_address_2"] = @so_header.bill_to_address.contact_address_2 
-                      so_shipment["so_b_c_state"] = @so_header.bill_to_address.contact_state 
-                      so_shipment["so_b_c_country"] = @so_header.bill_to_address.contact_country 
-                      so_shipment["so_b_c_zipcode"] = @so_header.bill_to_address.contact_zipcode
-                    end 
-                    if @so_header.ship_to_address.present? 
-                      so_shipment["so_s_c_title"]= @so_header.ship_to_address.contact_title 
-                      so_shipment["so_s_c_address_1"] = @so_header.ship_to_address.contact_address_1 
-                      so_shipment["so_s_c_address_2"] = @so_header.ship_to_address.contact_address_2 
-                      so_shipment["so_s_c_state"] = @so_header.ship_to_address.contact_state 
-                      so_shipment["so_s_c_country"] = @so_header.ship_to_address.contact_country 
-                      so_shipment["so_s_c_zipcode"] = @so_header.ship_to_address.contact_zipcode
-                    end 
+
 
                     # @so_shipment["alt_part_number"] = item_alt_part
 
