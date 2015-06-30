@@ -118,15 +118,21 @@ class Item < ActiveRecord::Base
     if total == 0
       cost
     else
+      process_cost = 0
+
       self.quality_lots.each do |quality_lot|
-      cost += (quality_lot.quantity_on_hand.to_f/total)*quality_lot.po_line.po_line_cost.to_f
-    end
-      return  cost.round(5)
+        if quality_lot.po_line.quality_lot_id.present?
+         process_cost = QualityLot.find(quality_lot.po_line.quality_lot_id).po_line.po_line_cost.to_f
+        end
+        cost += (quality_lot.quantity_on_hand.to_f/total)*(quality_lot.po_line.po_line_cost.to_f  + process_cost.to_f)
+      end
+
+      cost.round(5)
     end
   end
 
-  def item_sell_price
-  end
+  # def item_sell_price
+  # end
 
   def current_location
       po_shipment = self.po_shipments.order(:created_at).last

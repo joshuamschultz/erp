@@ -293,11 +293,17 @@
     $(document).ready(function(){ 
         <% if po_is_transfer %>
             jQuery("#po_line_item_alt_name_id").on('focusout', function() {
-                initiate_line_items();
+                initiate_lots();
 
             });
 
-            initiate_line_items();
+            jQuery("#po_line_alt_name_transfer_id").on('focusout', function() {
+                initiate_processes();
+
+            });
+
+            initiate_lots();
+            initiate_processes();
         <% end %>
         $('#po_line_item_alt_name_id').keydown(function(e) {
             var code = e.keyCode || e.which;
@@ -409,13 +415,23 @@
         }
     }
 
-    function initiate_line_items(){
+    function initiate_lots(){
         $("#po_line_quality_lot_id").html("");
-        if($("#item_transfer_name_id").val() != "" && $("#alt_name_id").val() != null)
+        if($("#item_transfer_name_id").val() != "" && $("#item_transfer_name_id").val() != null)
         {
             initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_inventory", "id": $("#item_transfer_name_id").val()}}, "set_quality_lots", {});
+        }
+        else{
 
-            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_process_types_po", "id": $("#item_transfer_name_id").val()}}, "set_process_types", {});
+            page_initial = false;
+        }  
+    }
+    function initiate_processes(){
+        $("#po_line_process_type_id").html("");
+        if($("#alt_name_id").val() != "" && $("#alt_name_id").val() != null)
+        {
+           
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_process_types_po", "id": $("#alt_name_id").val()}}, "set_process_types", {});
         }
         else{
 
