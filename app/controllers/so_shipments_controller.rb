@@ -73,7 +73,7 @@ class SoShipmentsController < ApplicationController
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             @quality_lot = QualityLot.find(params[:quality_lot_id]) if params[:quality_lot_id].present?
-            @so_ship_outs = SoShipment.where(:so_shipped_status => "ship_out").order("created_at desc").includes(:so_line)
+            # @so_ship_outs = SoShipment.where(:so_shipped_status => "ship_out").order("created_at desc").includes(:so_line)
 
             if @item
                 if params[:type].present?
@@ -97,8 +97,9 @@ class SoShipmentsController < ApplicationController
 
             end
             i = 0
-            @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
+            # @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
                 
+            @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id)  .select{|so_shipment|
 
                 so_shipment[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true) 
