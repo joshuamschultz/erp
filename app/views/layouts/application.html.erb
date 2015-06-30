@@ -25,6 +25,7 @@
     <% if current_user && params[:layout] %>
         <%= render :partial => 'layouts/app_layouts/main_layout' %>
     <% else %>
+    
         <%= yield %>
     <% end %>
 

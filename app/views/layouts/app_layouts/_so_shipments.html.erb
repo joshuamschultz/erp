@@ -211,8 +211,13 @@ function printPage(win_id){
 		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
 		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();		
 		var qualityLotId = <%= type %>_line_row.find(".quality_lot").val();
-		if(parseFloat(<%= type %>_line_shipping) > 0)
-			initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":qualityLotId,"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+        if(parseFloat(<%= type %>_line_shipping) > 0)
+        {
+        // alert(<%= type %>_line_shipping);
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "check_quality_lot_negative", "quality_lot_id":qualityLotId,"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status }}, "set_so_shipment", {});
+            // alert(status_lot);
+      
+        }
 		else{
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
 			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
@@ -224,7 +229,20 @@ function printPage(win_id){
 		})
        $("#pk100").hide();
 	});
+
+function set_so_shipment(response, callback_params, api_params)
+{
+     var <%= type %>_line_row = current_field_temp.closest("tr");
+    if(response.aaData['output']== 0)
+    {
+    initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":response.aaData['quality_lot_id'],"<%= type %>_line_id":response.aaData['so_line_id'], "<%= type %>_shipped_count":response.aaData['so_shipped_count'], "<%= type %>_shipped_shelf":response.aaData['so_shipped_shelf'], "<%= type %>_shipped_unit":response.aaData['so_shipped_unit'], "<%= type %>_shipped_status":response.aaData['so_shipped_status']}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+    }
+    else{
+        <%= type %>_line_row.find(".shipping_status").addClass("error");
+        <%= type %>_line_row.find(".shipping_status").html(response.aaData['output']);
+    }
    
+} 
 function shipment_process(so_id){
     initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "shipment_process_complete", "shipment_process_id": so_id}}, "set_quality_lots", {});
      

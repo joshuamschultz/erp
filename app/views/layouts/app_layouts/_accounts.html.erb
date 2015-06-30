@@ -22,8 +22,25 @@
     </tbody>
 </table>
 <% if @payable %>
-<% inventory_amount = @payable.payable_lines.sum(:payable_line_cost) %>   
-<% inventory_amount += @payable.po_shipments.sum(:po_shipped_cost) if  @payable.po_header %>
+<% transfer = 0 %>
+
+<% @payable.po_shipments.each do |po_shipment| %>
+    <% if po_shipment.po_line.po_header.po_type.type_value  == 'transer'%>
+        <% transfer = 1 %>
+    <% end %>
+<% end %> 
+<!-- Assuming that create payable of the same PO at a time -->
+<% if transfer == 1 %>
+   <% inventory_amount = 0 %> 
+  <% @payable.po_shipments.each do |po_shipment| %>  
+  
+  <% inventory_amount += po_shipment.po_line.po_line_cost  * po_shipment.po_line.po_line_quantity %>    
+    
+  <% end %>   
+<% else %>
+    <% inventory_amount = @payable.payable_lines.sum(:payable_line_cost) %>   
+    <% inventory_amount += @payable.po_shipments.sum(:po_shipped_cost) if  @payable.po_header %>
+<% end %>
 <%= hidden_field_tag :payable_cost,  inventory_amount     %>
 <%= hidden_field_tag :payable_freight, @payable.payable_freight  %>
 <%= hidden_field_tag :payable_discount, @payable.payable_discount_val  %>
