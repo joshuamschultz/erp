@@ -211,7 +211,7 @@ function printPage(win_id){
 		var <%= type %>_line_shelf = <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val();
 		var <%= type %>_line_unit = <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val();		
 		var qualityLotId = <%= type %>_line_row.find(".quality_lot").val();
-        if(parseFloat(<%= type %>_line_shipping) > 0)
+        if(parseFloat(<%= type %>_line_shipping) > 0 && qualityLotId == '')
         {
         // alert(<%= type %>_line_shipping);
             initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "check_quality_lot_negative", "quality_lot_id":qualityLotId,"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status }}, "set_so_shipment", {});
@@ -220,7 +220,7 @@ function printPage(win_id){
         }
 		else{
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
-			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
+			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid! or Lot is empty ");
 		}
 	} 
 
