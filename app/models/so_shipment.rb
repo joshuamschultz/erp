@@ -145,7 +145,14 @@ class SoShipment < ActiveRecord::Base
 
   def self.complete_shipment(shipment_process_id)
       SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["ship_in"]).update_all(:so_shipped_status => "ship_out")
+      so_shipments = SoShipment.where(:so_shipped_status => "ship_out").collect(&:id)
+      so_shipments.each do |so_shipment_id|
+        if so_shipment_id.present?
+          ReceivableSoShipment.create(so_shipment_id: so_shipment_id)
+        end
+      end
       SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["process", "ship_close"]).update_all(:so_shipped_status => "shipped")
+      
   end
 
   
