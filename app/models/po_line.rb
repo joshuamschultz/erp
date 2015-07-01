@@ -60,13 +60,11 @@ class PoLine < ActiveRecord::Base
        qty_on_hand = quality_lot.quantity_on_hand - self.po_line_quantity
 
        quality_lot.update_attributes(:quantity_on_hand => qty_on_hand)
-       self.po_line_cost =  self.po_line_cost + quality_lot.po_line.po_line_cost
-       # self.po_line_quantity = 2 * self.po_line_quantity
-       self.po_line_total = self.po_line_cost * self.po_line_quantity
-
-    else
-      self.po_line_total = self.po_line_cost * self.po_line_quantity
+       # self.po_line_cost =  self.po_line_cost + quality_lot.po_line.po_line_cost
+       # # self.po_line_quantity = 2 * self.po_line_quantity
+       # self.po_line_total = self.po_line_cost * self.po_line_quantity
     end
+      self.po_line_total = self.po_line_cost * self.po_line_quantity
       self.item = self.item_alt_name.item
       self.item_revision = self.item_alt_name.item.current_revision
   end

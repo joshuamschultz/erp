@@ -32,11 +32,9 @@
 <!-- Assuming that create payable of the same PO at a time -->
 <% if transfer == 1 %>
    <% inventory_amount = 0 %> 
-  <% @payable.po_shipments.each do |po_shipment| %>
+  <% @payable.po_shipments.each do |po_shipment| %>  
   
-  <% lot = QualityLot.find(po_shipment.po_line.quality_lot_id) %>
-  <% lot.po_line.po_line_cost%>
-  <% inventory_amount += (po_shipment.po_line.po_line_cost - lot.po_line.po_line_cost) * po_shipment.po_line.po_line_quantity %>    
+  <% inventory_amount += po_shipment.po_line.po_line_cost  * po_shipment.po_line.po_line_quantity %>    
     
   <% end %>   
 <% else %>
