@@ -220,7 +220,7 @@ function printPage(win_id){
         }
 		else{
 			<%= type %>_line_row.find(".shipping_status").addClass("error");
-			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid! or Lot is empty ");
+			<%= type %>_line_row.find(".shipping_status").html("Item count is invalid!");
 		}
 	} 
 
@@ -239,7 +239,7 @@ function set_so_shipment(response, callback_params, api_params)
     }
     else{
         <%= type %>_line_row.find(".shipping_status").addClass("error");
-        <%= type %>_line_row.find(".shipping_status").html(response.aaData['output']);
+        <%= type %>_line_row.find(".shipping_status").html(response.aaData);
     }
    
 } 
