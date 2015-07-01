@@ -642,7 +642,24 @@ class CommonActionsController < ApplicationController
                 result = "Failure"                
               end
 
+            when "check_quality_lot_negative"
+              res = Hash.new
+              res["quality_lot_id"]= params[:quality_lot_id]
+              res["so_shipped_count"] =params[:so_shipped_count]
+              res["so_line_id"] = params[:so_line_id]
+              res["so_shipped_shelf"]=params[:so_shipped_shelf]
+              res["so_shipped_unit"] = params[:so_shipped_unit]
+              res["so_shipped_status"] = params[:so_shipped_status]
 
+              if params[:quality_lot_id].present? && params[:so_shipped_count].present?
+                quality_lot = QualityLot.find(params[:quality_lot_id])
+                if quality_lot.present?
+                 res["output"] = (quality_lot.quantity_on_hand >= params[:so_shipped_count].to_i ) ? 0 : "ship more than a lot has"
+                  result = res
+                else
+                  result = "Please receive lot first"
+                end
+              end
             when "after_print_deposits"
               if params[:id].present? 
                 deposit_check = DepositCheck.find(params[:id]) 
