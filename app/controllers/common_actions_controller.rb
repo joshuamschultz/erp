@@ -261,7 +261,7 @@ class CommonActionsController < ApplicationController
                     @company_info = CompanyInfo.first
 
                     so_shipment_process.group(:so_line_id).each_with_index do |shipment, index| 
-                      item_part = shipment.so_line.item.item_part_no
+                      item_part = shipment.so_line.po_line.process_type_id.present? ? ProcessType.find(shipment.so_line.po_line.process_type_id).process_short_name : shipment.so_line.item.item_part_no
                       item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
                       item_qty = shipment.so_line.so_line_quantity.to_s
                       item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
@@ -657,9 +657,12 @@ class CommonActionsController < ApplicationController
                  res["output"] = (quality_lot.quantity_on_hand >= params[:so_shipped_count].to_i ) ? 0 : "ship more than a lot has"
                   result = res
                 else
-                  result = "Please receive lot first"
+                  result = res["output"] = "Please receive lot first"
                 end
+              else
+                result = res["output"] = "Please receive lot first"
               end
+
             when "after_print_deposits"
               if params[:id].present? 
                 deposit_check = DepositCheck.find(params[:id]) 
