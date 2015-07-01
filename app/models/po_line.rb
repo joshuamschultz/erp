@@ -54,16 +54,16 @@ class PoLine < ActiveRecord::Base
   before_save :update_item_total
 
   def update_item_total
-    if self.quality_lot_id.present?
-       quality_lot = QualityLot.find(self.quality_lot_id)
+    # if self.quality_lot_id.present?
+    #    quality_lot = QualityLot.find(self.quality_lot_id)
 
-       qty_on_hand = quality_lot.quantity_on_hand - self.po_line_quantity
+    #    qty_on_hand = quality_lot.quantity_on_hand - self.po_line_quantity
 
-       quality_lot.update_attributes(:quantity_on_hand => qty_on_hand)
-       # self.po_line_cost =  self.po_line_cost + quality_lot.po_line.po_line_cost
-       # # self.po_line_quantity = 2 * self.po_line_quantity
-       # self.po_line_total = self.po_line_cost * self.po_line_quantity
-    end
+    #    quality_lot.update_attributes(:quantity_on_hand => qty_on_hand)
+    #    # self.po_line_cost =  self.po_line_cost + quality_lot.po_line.po_line_cost
+    #    # # self.po_line_quantity = 2 * self.po_line_quantity
+    #    # self.po_line_total = self.po_line_cost * self.po_line_quantity
+    # end
       self.po_line_total = self.po_line_cost * self.po_line_quantity
       self.item = self.item_alt_name.item
       self.item_revision = self.item_alt_name.item.current_revision
