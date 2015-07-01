@@ -25,7 +25,7 @@ class ItemRevision < ActiveRecord::Base
         CommonActions.nil_or_blank(self.item_revision_name) || 
         CommonActions.nil_or_blank(self.item_cost) || 
         CommonActions.nil_or_blank(self.item_tooling) || 
-        self.owner.nil? || self.organization.nil? || self.print.nil? || self.material.nil?
+        self.owner.nil? || self.print.nil? || self.material.nil?
           self.item_revision_complete = true
       else
           self.item_revision_complete = false
