@@ -72,6 +72,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
           #  p gauge_ov = Math.sqrt(((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails)))
           # p "============================================================================" 
           # p "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+          gauge_ov = ((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails)) > 0 ? 0 : Math.sqrt(((gauge_rbar2 * @@gauge_k2)**2) - ((gauge_gv**2) / (@@gauge_n * @@gauge_trails))) 
           gauge_rr = Math.sqrt((gauge_ov**2) + (gauge_gv**2))
 
           gauge_pv = gauge_rp * @@gauge_k3
