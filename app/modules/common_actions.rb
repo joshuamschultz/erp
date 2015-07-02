@@ -513,4 +513,83 @@ module CommonActions
     		notification.update_attributes(:note_status => "unread")
     	end
     end
+
+
+	def self.sales_report(so_id)
+		@company_info = CompanyInfo.first 
+		b_c_title = b_c_address_1 = b_c_address_2 = b_c_state = b_c_country = b_c_zipcode =''
+		s_c_title = s_c_address_1 = s_c_address_2 = s_c_state = s_c_country = s_c_zipcode = ''
+		item_part_no = item_alt_name = po_identifier  = item_description = ''
+		so_line_quantity = so_line_shipped = source = so_line_notes=''
+		content = cusomter_po = ''
+		i,j,flag,flag2 = 1,1,1,1
+
+
+		@so_header = SoHeader.find(so_id)
+
+		if @so_header.bill_to_address.present?
+			b_c_title = @so_header.bill_to_address.contact_title 
+			b_c_address_1 = @so_header.bill_to_address.contact_address_1 
+			b_c_address_2= @so_header.bill_to_address.contact_address_2
+			b_c_state = @so_header.bill_to_address.contact_state 
+			b_c_country = @so_header.bill_to_address.contact_country 
+			b_c_zipcode = @so_header.bill_to_address.contact_zipcode 
+		end
+		if @so_header.ship_to_address.present?
+			s_c_title = @so_header.ship_to_address.contact_title
+			s_c_address_1= @so_header.ship_to_address.contact_address_1 
+			s_c_address_2 = @so_header.ship_to_address.contact_address_2 
+			s_c_state = @so_header.ship_to_address.contact_state 
+			s_c_country = @so_header.ship_to_address.contact_country 
+			s_c_zipcode = @so_header.ship_to_address.contact_zipcode 
+		end
+	
+
+		cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present? 
+
+
+		len = @so_header.so_lines.length
+
+		@so_header.so_lines.each_with_index do |so_line, index|
+			item_part_no = so_line.item.item_part_no
+			item_alt_name = so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier ? so_line.item_alt_name.item_alt_identifier : ''
+			item_description = so_line.item_revision.item_description if so_line.item_revision.present?
+			so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
+			if i== 1  
+				content += '<div class="ms_wrapper"><section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
+				if flag ==1
+					content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+b_c_title+'</h2> <strong>'+b_c_address_1+'</strong> <strong>'+b_c_address_2+'</strong><strong>'+b_c_state+'</strong><strong>'+b_c_country+'&nbsp;'+b_c_zipcode+'</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">'+s_c_title+'</h2> <strong>'+s_c_address_1+'</strong> <strong>'+s_c_address_2+'</strong><strong>'+s_c_state+'</strong><strong>'+s_c_country+'&nbsp; '+s_c_zipcode+'</strong></div></article>' 
+					flag =0;
+				end
+
+				if flag2 ==1
+					content += '<article class="art-01 art-04 de"><div class="ff"><table border="0" width="640px" cellspacing="0" cellpadding="0"><tbody><tr align="center" class="hea art-002"><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">CUST P/N - ALL P/N</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Description</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">QTY</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Shipped</td></tr></tbody></table></div>'
+					flag2=0;
+				else
+					content += '<article class="art-01 art-04 de sal_tab2"><div class="ff"><table border="0" width="640px" cellspacing="0" cellpadding="0"><tbody><tr align="center" class="hea art-002"><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">CUST P/N - ALL P/N</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Description</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">QTY</td><td style="font-weight: bold; padding:0 0 20px 0; font-size:16px;">Shipped</td></tr></tbody></table></div>'
+				end
+			end
+			content += '<div class="fff"><table border="0" width="640px" cellspacing="0" cellpadding="0"><tbody><tr align="center" class="hea art-002"><td><table border="0" width="100%"><tbody><tr><td width="150" scope="row">'+item_part_no+'</td></tr> <tr><td width="150" scope="row">'+item_alt_name+'</td></tr> </tbody></table></td><td><table border="0" width="100%"><tbody><tr><td width="150" scope="row">'+item_description+'</td></tr>   </tbody></table></td><td >'+(so_line.so_line_quantity).to_s+'</td><td>'+so_line.so_line_shipped.to_s+'</td></tr><tr><td class="ww-01" style="color: #800000;">'+so_line_notes+' &nbsp </td></tr></tbody></table></div>'
+
+			if i==4
+				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+(@so_header.so_total.to_f).to_s+'</h4></div></article></section></div><div style="page-break-after:always;">&nbsp; </div>'
+			end
+
+			if len == index+1 && i != 4 
+				# j = 1
+				# j+=1
+				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+(@so_header.so_total.to_f).to_s+'</h4></div></article></section></div>'
+			end 
+
+			i +=1 
+
+			if i==5 
+				j+=1
+				i= 1
+				content 
+			end
+		end
+		content
+		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:159px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:410px}.sal_tab2{height:600px}</style>#{content}'
+	end
 end
