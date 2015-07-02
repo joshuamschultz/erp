@@ -18,7 +18,11 @@ body {
     line-height: 10px;
 }
 
-.ms_wrapper{float: left;height: auto;width:660px;}
+.ms_wrapper {
+float: left;
+height: auto;
+width: 710px;
+}
 .form-bold {
     font-size: 12px;
 }
@@ -42,8 +46,10 @@ body {
     text-transform: uppercase;
 }
 .fontw {
-    font-size: 16px;
+font-size: 16px;
+padding: 0 0 3px;
 }
+
 .fo {
     font-size: 22px;
 }
@@ -78,7 +84,7 @@ body {
 .fon-10 {
     font-size: 17px;
 }
-.spac{height:80px;}
+.spac {height: 12px;}
 .spac2{height:300px;}
 
 
@@ -105,10 +111,9 @@ body {
 }
 
 .foot-2 {
-    float: left;
-    
-    height: 274px;
-    width: 100%;
+float: left;
+height: 364px;
+width: 100%;
 }
 .ms_main{ page-break-after: always;min-height: 200px;}
 
@@ -146,7 +151,7 @@ body {
   
           <td width="60%" align="right" class="fontw"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="right">
-              <th scope="row" style="padding:0 15px 22px 0"><%= check_entry.created_at.strftime("%m/%d/%Y") %></th>
+              <th scope="row" style="padding:0 0px 22px 0"><%= check_entry.created_at.strftime("%m/%d/%Y") %></th>
             </tr>
 
           </table></td>
@@ -159,7 +164,7 @@ body {
   
           <td width="60%" align="right" class="fontw"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="right">
-              <th scope="row" style="padding:0 15px 0 0"><%= payment.payment_check_amount %></th>
+              <th scope="row" style="padding:0 0 0 0"><%= payment.payment_check_amount %></th>
             </tr>
             <tr align="right">
               <th scope="row"></th>
@@ -176,7 +181,7 @@ body {
     
         <tr align="left" valign="top">
           <th scope="row">&nbsp;</th>
-          <td class="fontw" style="font-size:13px !important; padding:66px 0 0 0;" colspan="2"> &nbsp; <%= payment.payment_description if payment.payment_description.present? %> </td>
+          <td class="fontw" style="font-size:13px !important; padding:76px 0 0 0;" colspan="2"> &nbsp; <%= payment.payment_description if payment.payment_description.present? %> </td>
          
         </tr>
 
@@ -244,7 +249,7 @@ body {
           <td align="right">&nbsp;</td>
         </tr>
         <tr>
-          <th scope="row" style="height:50px;">&nbsp;</th>
+          <th scope="row" style="height:68px;">&nbsp;</th>
           <td>&nbsp;</td>
           <td>&nbsp;</td>
         </tr>
