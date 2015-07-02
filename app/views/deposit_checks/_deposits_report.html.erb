@@ -19,12 +19,16 @@
     .ms_wrapper {
         float: left;
         height: auto;
-        width: 640px;
+        width: 660px;
     }
 	
  .ms_wrapper td {
     padding: 2px 0;
 	line-height:20px;
+}
+#tot_count {
+text-align: right;
+padding: 0 58px 0 0;
 }
 table {
     border-collapse: collapse;
@@ -44,7 +48,7 @@ table {
     <tr align="left" valign="top">
       <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr align="center" valign="top">
-          <td width="27%" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <td width="19%" scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td align="center" scope="row">&nbsp;</td>
             </tr>
@@ -56,25 +60,23 @@ table {
                 <tr>
                   <td scope="row">&nbsp;</td>
                 </tr>
-                <tr>
-                  <td scope="row">&nbsp;</td>
-                </tr>
-                  <tr>
-                  <td scope="row">&nbsp;</td>
-                </tr>
-                  <tr>
-                  <td scope="row">&nbsp;</td>
-                </tr>
-                    <tr>
+               <tr>
                   <td align="center" scope="row"><%= Date.today.to_s %></td>
                 </tr>
+                 <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                  <tr>
+                  <td scope="row">&nbsp;</td>
+                </tr>
+                   
               </table></td>
             </tr>
           </table></td>
           <td width="83%"><table id="cash" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="center">
-              <td id="check1" width="30%" scope="row">&nbsp;</td>
-              <td id="check7" width="31%">&nbsp;</td>
+              <td id="check1" width="32%" scope="row">&nbsp;</td>
+              <td id="check7" width="35%">&nbsp;</td>
               <td id="check13" width="39%">&nbsp;</td>
             </tr>
             <tr align="center">
@@ -108,9 +110,9 @@ table {
               <td>&nbsp;</td>
             </tr>
             <tr align="center">
-              <td scope="row">&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
+             <td scope="row">&nbsp;</td>
+              <td id ="tot_count">&nbsp;</td>
+              <td id ="tot_amt">&nbsp;</td>
             </tr>
               <tr align="center">
               <td scope="row">&nbsp;</td>
@@ -124,9 +126,10 @@ table {
             </tr>
 
             <tr align="center">
+              <tr align="center">
               <td scope="row">&nbsp;</td>
-              <td id ="tot_count">&nbsp;</td>
-              <td id ="tot_amt">&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
             </tr>
             </table></td>
         </tr>
