@@ -1219,7 +1219,10 @@ width: 134px;
     border-bottom: medium none;
     height: 458px;
 }
-
+.art-01.art-04 {
+    border-bottom: medium none;
+    min-height: 347px;
+}
 </style>
 </head>
 <body>
