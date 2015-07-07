@@ -592,4 +592,639 @@ module CommonActions
 		content
 		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:159px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:410px}.sal_tab2{height:600px}</style>#{content}'
 	end
+
+	def self.purchase_report(po_id)
+		content = product_notes  = product_description = po_line_comment = product1 = product2 = ''
+		i,j,flag,flag2 = 1,1,1,1
+		@company_info = CompanyInfo.first
+		@po_header = PoHeader.find(po_id)
+		len = @po_header.po_lines.length
+		@po_header.po_lines.each_with_index do |po_line, index|
+
+			if po_line.item_revision.present?
+				product_description= ""+po_line.item_revision.item_description.to_s+""
+				product_notes= po_line.item_revision.item_notes.to_s
+				po_line_comment = po_line.po_line_notes
+
+			if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
+		      product1= (po_line.item.item_part_no).to_s
+		    else 
+		      product1=(po_line.item.item_part_no).to_s
+		      product2=(po_line.item_alt_name.item_alt_identifier).to_s
+		    end 
+			# else
+			# 	product_description = '&nbsp'
+			end
+			if i== 1  
+				content += '<div class="ms_wrapper"><section>
+
+   <article>
+            <div class="ms_image">
+                <div class="ms_image-wrapper">
+					<img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' />
+                </div>
+
+                <div class="ms_image-text">
+                    <h5>'+@company_info.company_address1+'<br/>
+                    '+@company_info.company_address2+'
+                    <hr>
+                    <b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>
+                    &nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax+'
+                    <hr></h5>
+                </div>
+            </div>
+
+            <div class="ms_image-2">
+                <h3> Purchase Order Number</h3>
+                <h2>'+@po_header.po_identifier+'</h2>
+                <h5>Purchase Order Date :'+ @po_header.created_at.strftime("%m/%d/%Y") +'</h5>
+            </div>
+
+        </article>
+
+
+
+				'
+				if flag ==1
+					content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+@po_header.organization.organization_name+'<br>'+@po_header.organization.organization_address_1+''+@po_header.organization.organization_address_2+'</h2> <h3> '+@po_header.organization.organization_city+' '+@po_header.organization.organization_state+''+@po_header.organization.organization_country+''+@po_header.organization.organization_zipcode+'</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>'+@company_info.company_address1+'</strong><strong>'+@company_info.company_address2+'</strong></div></div></article>' 
+					flag =0;
+				end
+
+				if flag2 ==1
+					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+					flag2=0;
+				else
+					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+				end
+			end
+			content += '
+
+
+
+
+
+ <div class="ff">
+    <table cellspacing="0" cellpadding="0" width="678px" border="0">
+        <tbody>
+           
+          
+
+                <tr valign="top" align="center" class="h-pad">
+
+                    <td>'+po_line.po_line_quantity.to_s+' </td>
+                    <td>
+                        <table width="100%" border="0">
+                            <tbody>
+
+                                            
+
+                                <tr>
+                                    <td width="150" scope="row">'+ product1+'</td>
+                                </tr>
+                                <tr>
+                                    <td width="150" scope="row">'+product2+'</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </td>
+
+                    
+                         
+                        <td>'+product_description+'</td>
+                  
+                                
+                    
+
+
+                    <td>'+(po_line.po_line_cost.to_f).to_s+'</td>
+                    <td>'+(po_line.po_line_total.to_f).to_s+'</td>
+                </tr>
+      
+      
+
+            </tbody>
+        </table>
+
+
+
+            <div class="sd">
+                <div class="sd1">
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" border-collapse="collapse">
+                        <tr>
+                       
+                                <td >'+product_notes+'</td>
+                         
+                        </tr>    
+                        <tr>
+                            <td >'+po_line.po_line_notes+'</td>
+                        </tr>                           
+                    </table>
+                
+            </div>
+        </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+			'
+
+			if i==4
+				content += '</article> 
+
+
+        <article class="art-02">
+
+            <div class="ms_text-55">
+                <h1 class="ms_heading-3">Comments:</h1> 
+
+                <div class="ms_text-6">                
+                    <strong class="ms-5">'+@po_header.po_notes+'</strong> 
+               
+<!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
+PLEASE SHIP UPS GROUND ASAP!
+THANK YOU!</strong> 
+ -->
+                </div>
+            </div>
+
+            <div class="ms_text-2">
+                <div class="ms_text-6">
+                    <div class="ms_text-7 ms_text-8 ">
+                    </div>
+                    <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">'+(@po_header.po_total.to_f).to_s+'</strong> 
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+        </article>
+
+ <article>
+            <div class="footer">
+
+                <div class="page">
+                    <h3>Date</h3>
+                    <h4>'+@po_header.created_at.strftime("%m/%d/%Y")+'</h4>
+                </div>
+
+                <div class="page-center">
+                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
+regulatory agencies reserve the right to audit Seller'+"'"+'s books and records and the right to
+inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
+                </div>
+
+                <div class="original">
+                    <h3>Page </h3>
+                    <h4>'+j.to_s+'
+</h4>
+                </div>
+
+
+        </article>
+
+
+
+
+
+
+				 </section></div><div style="page-break-after:always;">&nbsp; </div>'
+			end
+
+			if len == index+1 && i != 4 
+				# j = 1
+				# j+=1
+				content += '</article>
+
+        <article class="art-02">
+
+            <div class="ms_text-55">
+                <h1 class="ms_heading-3">Comments:</h1> 
+
+                <div class="ms_text-6">                
+                    <strong class="ms-5">'+@po_header.po_notes+'</strong> 
+               
+<!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
+PLEASE SHIP UPS GROUND ASAP!
+THANK YOU!</strong> 
+ -->
+                </div>
+            </div>
+
+            <div class="ms_text-2">
+                <div class="ms_text-6">
+                    <div class="ms_text-7 ms_text-8 ">
+                    </div>
+                    <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">'+(@po_header.po_total.to_f).to_s+'</strong> 
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+        </article>
+
+ <article>
+            <div class="footer">
+
+                <div class="page">
+                    <h3>Date</h3>
+                    <h4>'+@po_header.created_at.strftime("%m/%d/%Y")+'</h4>
+                </div>
+
+                <div class="page-center">
+                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
+regulatory agencies reserve the right to audit Seller'+"'"+'s books and records and the right to
+inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
+                </div>
+
+                <div class="original">
+                    <h3>Page </h3>
+                    <h4>'+j.to_s+'
+</h4>
+                </div>
+
+
+        </article>
+
+
+
+</section></div>'
+			end 
+
+			i +=1 
+
+			if i==5 
+				j+=1
+				i= 1
+				content 
+			end
+		end
+		content
+		html =%'
+		<!DOCTYPE html>
+<html>
+<head>
+<title>Member Spotlight</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+
+<style>
+@charset "utf-8";
+
+body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
+
+
+/* New Style */
+.clear{clear: both;}
+
+.ms_wrapper{height: auto;}
+.ms_wrapper section {
+   float: left;
+   height: auto;
+   width: 678px;
+}
+.ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}
+
+.ms_wrapper .ms_image {
+    border: 1px solid #ccc;
+    float: left;
+    font-size: 22px;
+    height: 104px;
+    text-align: center;
+    width: 310px;
+}
+.ms_wrapper .ms_heading-3{  text-decoration: underline; font-size: 14px;margin: 0 0 4px; padding: 0 0 10px;float: left;}
+
+article.art-01 {
+    border-bottom: 1px solid #555;
+    border-top: 1px solid #555;
+    margin: 18px 0 0;
+    padding: 7px 0 0;
+}
+
+ .ms_wrapper .ms_image-2 {
+    border: 1px solid #ccc;
+    float: right;
+    font-size: 22px;
+    height: 104px;
+    text-align: center;}
+.ms_wrapper article{float: left;width: 100%;}
+}
+.ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;}
+.ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}
+.ms_wrapper .ms_sub-heading{font-size: 13px;margin:20px 0 6px;color:#000;}
+
+.ms_text strong, .ms_text-2 strong {
+    float: left;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 19px;
+    width: 100%;
+}
+.ms_text1 strong {
+    float: left;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 19px;
+    width: 100%;
+    margin: 1px 0;
+    text-align: center;
+    font-weight: bold;
+}
+.ms_text-6.ms-33 .ms_sub-heading {
+    font-size: 17px;
+}
+
+.ms_text-6.ms-33 {
+    text-align: center;
+}
+.ms_image-2 h3 {
+    color: #000080;
+    font-size: 21px;
+    font-weight: normal;
+    margin: 17px 0 0;
+    text-decoration: underline;
+}
+
+
+.ms_text-6 > h3 {
+    float: left;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.ms_text-6 {
+    float: left;
+    margin: 0 0 0 27px;
+    width: 212px;
+}
+
+.ms_image-2 h2 {
+    color: #800000;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 2px 0;
+}
+
+        .ms_image-2 h5{  font-size: 16px;
+    font-weight: bold;margin: 2px 0;}
+
+.ms_text-3-wrapper {
+    float: left;
+
+}
+.ms_text-3-wrapper .ms_text-3{width: 126px;float: left;}
+.ms_text-3-wrapper .ms_text-5{width: 204px;float: left;text-align: center;}
+.ms_text-3-wrapper .ms_text-4 {
+    float: left;
+    width: 91px;
+}
+
+article.art-02 {
+    border: 1px solid #555;
+    border-radius: 15px;
+    margin: 70px 0 0;
+    padding: 7px 0 0;
+    height:80px;
+}
+.ms_text-5 > strong {
+    font-weight: normal;
+}
+
+.ms_text-3-wrapper .ms_text-4 strong {
+    float: left;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 19px;
+    width: 100%;
+    margin: 6px 0;
+    text-align: center;
+
+}
+
+.ms_text-3-wrapper .ms_text-3 strong {
+    float: left;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 19px;
+    width: 100%;
+    margin: 6px 0;
+    text-align: center;
+
+}
+
+
+.ms_text-3-wrapper .ms_sub-heading {
+    border-bottom: 1px solid #555;
+    font-size: 13px;
+    margin: 21px 0 12px;
+    padding: 0 0 12px;
+    text-align: center;
+}
+
+.ms_sub{  font-size: 15px;
+    text-align: center;
+    text-decoration: underline;
+margin: 2px 0 10px 0;}
+
+
+.ms_text {
+    border-right: 1px solid #555;
+    float: left;
+    padding: 0 3px 11px;
+    width: 310px;
+}
+.ms_text-2 {
+    float: right;
+    padding: 0 0 16px;
+     min-height: 35px;
+}
+
+.ms_text-7 > strong {
+    float: none;
+}
+.ms_text-7.ms_text-8 {
+    border-bottom: 1px solid #555;
+    padding: 0 0 9px;
+}
+
+.ms-1 {
+    float: left !important;
+    text-align: right;
+    width: 95px !important;
+}
+.ms_text-7.ms_text-9 strong {
+    font-size: 14px;
+    font-weight: bold;
+}
+.ms_text-7 {
+    float: left;
+    margin: 4px 0;
+    width: 90%;
+}
+.ms_text1 {
+    float: left;
+    margin: 12px 28px 0;
+    width: 42%;
+}
+
+.ms-5{color: #800000;}
+
+
+
+.ms_text-55 {
+   float: left;
+   padding: 0 3px 11px;
+}
+.ms_wrapper .ms_image2{margin: 0 20px 0 0;border: 1px solid #ccc;padding: 20px 0;text-align: center;font-size: 22px;}
+.ms_image2 h2{font-size: 17px;margin: 0;}
+.ms_image2 strong {
+    color: #800000;
+    float: left;
+    font-size: 22px;
+    margin: 0 0 8px;
+    width: 100%;
+}
+.ms_image2 p{font-size: 18px;margin: 0;color: #000080;}
+
+.footer {
+    border: 2px solid #444;
+    float: left;
+    margin: 11px 0 0;
+    width: 678px;
+}.page{float: left;margin: 0 0 0 20px;}
+.page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
+.original{float: right;margin: 0 20px 0 0;}
+.original h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.original h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
+
+.ms_image-wrapper {
+    float: left;
+    height: 69px;
+    margin: 6px 0 0 3px;
+    width: 128px;
+}
+.ms_image-wrapper img {
+    width: 150px;
+}
+
+.ms_image-text {
+    float: right;
+    margin: 6px 10px 0 0;
+}
+.ms_image-text h2 {
+    font-size: 13px;
+    margin: 19px 0 8px 0;
+     text-decoration: underline;
+}
+.ms_image-text h3 {
+    border-bottom: 1px solid #555;
+    font-size: 13px;
+    font-weight: normal;
+    margin: 12px 0 6px 0;
+    padding: 0 0 7px;
+}
+
+
+
+.ms_image-text h5 {
+    font-size: 9px;
+    font-weight: normal;
+}
+
+
+.page-center {
+    float: left;
+    margin: 8px 36px;
+    width: 394px;
+}
+ .ms_text-5 strong {
+   float: left;
+   margin: 6px 0;
+   width: 100%;
+}
+
+.page-center h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
+.page-center h4 {
+    font-size: 9px;
+    font-weight: normal;
+    margin: 0 0 12px;
+    text-align: center;
+}
+
+
+
+
+.hea.art-002 {
+border-bottom: 1px solid #222;
+float: left;
+font-weight: bold;
+width: 100%;
+}
+.hea.art-002 > td {
+padding: 0;
+width: 134px;
+    border: 1px solid;
+}
+
+
+.h-pad > td {
+    padding: 9px 12px;
+    text-align: center;
+    width: 109px;
+    border: 1px solid #000;
+}
+.h-pad {
+
+    width: 100%;
+}
+
+
+.h-pad-04{width: 640px;text-align: center;}
+
+.h-pad-04 {
+    color: #800000;
+    text-align: left;
+    width: 128px;
+}
+
+.sd1 {
+    text-align: center;
+    width: 100%;
+}
+
+.sd1 td {
+    border: 1px solid #000;
+    color: #800000;
+}
+.art-01.art-04.art-07 {
+    border-bottom: medium none;
+    height: 458px;
+}
+
+</style>
+</head>
+<body>
+
+		#{content}'
+
+	end
 end
