@@ -572,7 +572,7 @@ module CommonActions
 			content += '<div class="fff"><table border="0" width="640px" cellspacing="0" cellpadding="0"><tbody><tr align="center" class="hea art-002"><td><table border="0" width="100%"><tbody><tr><td width="150" scope="row">'+item_part_no+'</td></tr> <tr><td width="150" scope="row">'+item_alt_name+'</td></tr> </tbody></table></td><td><table border="0" width="100%"><tbody><tr><td width="150" scope="row">'+item_description+'</td></tr>   </tbody></table></td><td >'+(so_line.so_line_quantity).to_s+'</td><td>'+so_line.so_line_shipped.to_s+'</td></tr><tr><td class="ww-01" style="color: #800000;">'+so_line_notes+' &nbsp </td></tr></tbody></table></div>'
 
 			if i==4
-				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+(@so_header.so_total.to_f).to_s+'</h4></div></article></section></div><div style="page-break-after:always;">&nbsp; </div>'
+				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+(@so_header.so_total.to_f).to_s+'</h4></div></article></section></div><div style="page-break-after:always;"></div>'
 			end
 
 			if len == index+1 && i != 4 
