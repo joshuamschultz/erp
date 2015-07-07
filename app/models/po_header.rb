@@ -108,5 +108,8 @@ class PoHeader < ActiveRecord::Base
   def po_is?(po_type)
       self.po_type.present? && self.po_type_value == po_type
   end
+  def po_report
+    CommonActions.purchase_report(self.id).html_safe
+  end
 
 end
