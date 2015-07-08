@@ -90,6 +90,7 @@ class SoShipmentsController < ApplicationController
 
             else
                 @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped"])
+                 # @so_shipments  =  @so_shipments +  @so_ship_outs
                  # @so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
                 if params[:type] == "process"
                   @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close", "ship_in"])
@@ -214,6 +215,7 @@ class SoShipmentsController < ApplicationController
         @so_shipment["control_number"] = @so_shipment.quality_lot.lot_control_no if @so_shipment.quality_lot
         @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
         @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
+        @so_shipment["quantity_on_hand"] = @so_shipment.quality_lot.quantity_on_hand
         format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
         format.json { render json: @so_shipment, status: :created, location: @so_shipment }
       else
