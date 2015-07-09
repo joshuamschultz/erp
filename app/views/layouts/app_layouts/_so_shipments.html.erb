@@ -12,6 +12,10 @@ var current_field_temp;
 				<%= type %>_line_row.find(".shipping_status").addClass("error");
 				<%= type %>_line_row.find(".shipping_status").html(response.errors[1]);
 			}
+            else if (response.errors){
+                <%= type %>_line_row.find(".shipping_status").addClass("error");
+                <%= type %>_line_row.find(".shipping_status").html(response.errors['lot']);
+            }
 			else if(response.shipped_status == "closed"){
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
 				<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
@@ -241,14 +245,14 @@ function printPage(win_id){
                 initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":qualityLotId,"<%= type %>_line_id":<%= type %>_line_id, "<%= type %>_shipped_count":<%= type %>_line_shipping, "<%= type %>_shipped_shelf":<%= type %>_line_shelf, "<%= type %>_shipped_unit":<%= type %>_line_unit, "<%= type %>_shipped_status":<%= type %>_shipped_status}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
             }
             if(typeof current_lot_qty_on_hand === "undefined"){
-                <%= type %>_line_row.find(".shipping_status").addClass("error");
-                <%= type %>_line_row.find(".shipping_status").html("please receive the lot");
+
+                initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":'empty'}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
+
             }
             
             if (parseInt(current_lot_qty_on_hand) < parseInt(<%= type %>_line_shipping)){
 
-                <%= type %>_line_row.find(".shipping_status").addClass("error");
-                <%= type %>_line_row.find(".shipping_status").html("ship more than a lot has");
+               initialize_api_call({"url": "/<%= type %>_shipments", "type": "POST", "data_type": "json", "params": {"<%= type %>_shipment":{"quality_lot_id":'less'}}}, "shipment_row_callback", {"<%= type %>_line_row":<%= type %>_line_row});
 
             }
             // alert(status_lot);
