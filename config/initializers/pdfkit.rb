@@ -1,7 +1,6 @@
 PDFKit.configure do |config|
   config.default_options[:ignore_load_errors] = true
 config.wkhtmltopdf = `which wkhtmltopdf`.gsub(/\n/, '')
-config.wkhtmltopdf = '/usr/bin/wkhtmltopdf '
   config.default_options = {
     :encoding=>"UTF-8",
     :page_size=>"A4",
