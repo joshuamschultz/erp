@@ -407,6 +407,14 @@ class CommonActionsController < ApplicationController
                 # organization = Organization.find(params[:organization_id])
                 result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_id = ?", params[:organization_id], item_id).order("po_headers.created_at DESC")
               end
+            when "get_po_header"
+              if params[:po_identifier].present?
+                result = PoHeader.find_by_po_identifier(params[:po_identifier]).id
+                p "=========="  
+                  p result
+                p "==========="
+                result
+              end
             when "set_customer_quote_status"
               if params[:customer_quote_id].present? && params[:status_id].present?
                   customer_quote = CustomerQuote.find(params[:customer_quote_id])
@@ -644,6 +652,7 @@ class CommonActionsController < ApplicationController
 
             when "check_quality_lot_negative"
               res = Hash.new
+              res["line_row"]= params[:line_row]
               res["quality_lot_id"]= params[:quality_lot_id]
               res["so_shipped_count"] =params[:so_shipped_count]
               res["so_line_id"] = params[:so_line_id]
