@@ -410,9 +410,6 @@ class CommonActionsController < ApplicationController
             when "get_po_header"
               if params[:po_identifier].present?
                 result = PoHeader.find_by_po_identifier(params[:po_identifier]).id
-                p "=========="  
-                  p result
-                p "==========="
                 result
               end
             when "set_customer_quote_status"
