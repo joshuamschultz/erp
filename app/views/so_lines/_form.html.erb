@@ -43,8 +43,14 @@
                     </div>
                 </div> -->
 
-            <%= f.input :po, :id_element => '#po_header_id', required: true,:label => "PO",:input_html => {:size => 10} %>
-
+            <div class="control-group autocomplete required so_line_po">
+                <label for="so_line_item_alt_name_id" class="autocomplete required control-label">
+                    <abbr title="required"></abbr> Vendor po
+                </label>
+                <div class="controls">
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input type="text" size="30"  name="so_line[po]" id="so_line_po" data-id-element="#so_line_po"  class="autocomplete required ui-autocomplete-input" autocomplete="off"></div>
+            </div>
             <%= hidden_field_tag :po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
 
             <%= hidden_field_tag :org_po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
@@ -111,10 +117,14 @@
                 </div> -->
            
 
-      
-
-
-            <%= f.input :po, :id_element => '#po_header_id',:label => "Vendor P0",:input_html => {:size => 10} %>
+            <div class="control-group autocomplete required so_line_po">
+                <label for="so_line_item_alt_name_id" class="autocomplete required control-label">
+                    <abbr title="required"></abbr> Vendor po
+                </label>
+                <div class="controls">
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input type="text" size="30"  name="so_line[po]" id="so_line_po" data-id-element="#so_line_po"  class="autocomplete required ui-autocomplete-input" autocomplete="off"></div>
+            </div>
 
             <%= hidden_field_tag :po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
 
@@ -156,6 +166,9 @@
 
     $(document).ready(function(){  
         $('#so_line_po').val('<%= @so_line.po%>');
+        $('#alt_name_id').val('<%= @so_line.item_alt_name_id if @so_line.present? %>');
+
+
         $('#so_line_so_line_sell').keydown(function(e) {
             var code = e.keyCode || e.which;
 
