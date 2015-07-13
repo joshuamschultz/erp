@@ -23,12 +23,25 @@ class SoLinesController < ApplicationController
       simple_form_validation = true
   end
 
+  def auto_complete
+    if params[:organization_id].present? && params[:alt_name_id]
+      item_id = ItemAltName.find(params[:alt_name_id]).item.id
+      complete = PoHeader.joins(:po_lines).where("po_headers.organization_id = ? AND po_lines.item_id = ? AND po_headers.po_identifier LIKE ?", params[:organization_id], item_id, "%#{params[:term]}%")
+      render json: complete.map { |product| {:id => product.id, :label => product.po_identifier, :value => product.po_identifier} }
+    end
+  end
+
   def set_autocomplete_values
+
     params[:so_line][:organization_id], params[:organization_id] = params[:organization_id], params[:so_line][:organization_id]
     params[:so_line][:organization_id] = params[:org_organization_id] if params[:so_line][:organization_id] == ""
 
     params[:so_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:so_line][:item_alt_name_id]
     params[:so_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:so_line][:item_alt_name_id] == ""
+    
+    params[:so_line][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:so_line][:po_header_id]
+    params[:so_line][:po_header_id] = params[:org_po_header_id] if params[:so_line][:po_header_id] == ""
+
   end
 
   def index
@@ -47,7 +60,7 @@ class SoLinesController < ApplicationController
 
 
           so_line[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
-          so_line[:vendor_po] = so_line.so_line_vendor_po.present? ? so_line.so_line_vendor_po : "Stock"
+          so_line[:vendor_po] = so_line.po_header.present? ? CommonActions.linkable(po_header_path(so_line.po_header), so_line.po_header.po_identifier) : "Stock"
           so_line[:quality_level_name] = so_line.customer_quality ? CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name) : ""
           if can? :edit , SoLine
             so_line[:links] = CommonActions.object_crud_paths(nil, edit_so_header_so_line_path(@so_header, so_line), nil)
