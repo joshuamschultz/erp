@@ -29,9 +29,25 @@ class CommonActionsController < ApplicationController
                 result = result.each {|line| line[:process_short_name] = line.process_short_name }
               end
             when "set_notification_status"
+
               if params[:id].present?
-                Notification.find(params[:id]).update_attributes(:note_status => "read")
-                result = "success"
+                notification = Notification.find(params[:id])
+                notification.update_attributes(:note_status => "read")
+                if notification.notable_type == 'Print'
+                  result = (notification.notable.item_revisions.present? && notification.notable.item_revisions.last.item.present?) ? "/items/"+notification.notable.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+notification.notable.attachment.attachment.url 
+                elsif notification.notable_type == "Specification"
+                  result = "http://erp.chessgroupinc.com/specifications/"+notification.notable.id.to_s
+                elsif notification.notable_type == "ProcessType"
+                  result = "http://erp.chessgroupinc.com/process_types/"+notification.notable.id.to_s
+                elsif notification.notable_type == "PoLine"
+                  result = "http://erp.chessgroupinc.com/po_headers/"+notification.notable.po_header.id.to_s
+                elsif notification.notable_type == "Organization"
+                  result = "http://erp.chessgroupinc.com/organizations/"+notification.notable.id.to_s
+                elsif notification.notable_type == "QualityAction"
+                  result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
+                end
+
+                result 
               end
 
             when "initiate_notifications"

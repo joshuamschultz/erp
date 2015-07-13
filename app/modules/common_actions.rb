@@ -398,7 +398,7 @@ module CommonActions
 		user.quality_actions.each do |quality_action|
 			notification = notification_check_status(quality_action,"QualityAction",user)
 			if notification.present?
-				temp = "<li id="+notification.first.id.to_s+"><a href='/quality_actions/"+quality_action.id.to_s+"' class='glyphicons envelope'><i></i>"+quality_action.quality_action_no.to_s+"-Quality Action Assigned to you </a></li>"
+				temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>"+quality_action.quality_action_no.to_s+"-Quality Action Assigned to you </a></li>"
 				source += temp
 			end
 		end
@@ -409,7 +409,7 @@ module CommonActions
 		 		if vendor_organization.present?
 		 			notification = notification_check_status(vendor_organization,"Organization",quality_user)
 		 			if notification.present?
-		 				temp = "<li id="+notification.first.id.to_s+"><a href='/organizations/"+vendor_organization.id.to_s+"' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>Certifications are about to expire</a></li>"
 						source += temp
 					end
 		 		end
@@ -418,11 +418,9 @@ module CommonActions
 		 	prints = Print.all
 		 	prints.each do |print|
 		 		if print.present?
-		 			print_link = ''
 		 			notification = notification_check_status(print,"Print",quality_user)
 		 			if notification.present?
-		 				print_link = (print.item_revisions.present? && print.item_revisions.last.item.present?) ? "/items/"+print.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+print.attachment.attachment.url 
-		 				temp = "<li id="+notification.first.id.to_s+"><a href='"+print_link.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
 						source += temp
 					end
 		 		end
@@ -433,7 +431,7 @@ module CommonActions
 		 		if specification.present?
 		 			notification = notification_check_status(specification,"Specification",quality_user)
 		 			if notification.present?
-		 				temp = "<li id="+notification.first.id.to_s+"><a href='/specifications/"+specification.id.to_s+"' class='glyphicons envelope'><i></i>"+specification.specification_identifier+"-specification created</a></li>"
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>"+specification.specification_identifier+"-specification created</a></li>"
 						source += temp
 					end
 		 		end
@@ -444,7 +442,7 @@ module CommonActions
 		 		if process_type.present?
 		 			notification = notification_check_status(process_type,"ProcessType",quality_user)
 		 			if notification.present?
-		 				temp = "<li id="+notification.first.id.to_s+"><a href='/process_types/"+process_type.id.to_s+"' class='glyphicons envelope'><i></i>"+process_type.process_short_name+"-process_type created</a></li>"
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>"+process_type.process_short_name+"-process_type created</a></li>"
 						source += temp
 					end
 		 		end
@@ -455,7 +453,7 @@ module CommonActions
 		 		if po_line.present?
 		 			notification = notification_check_status(po_line,"PoLine",quality_user)
 		 			if notification.present?
-	 					temp = "<li id="+notification.first.id.to_s+"><a href='/po_headers/"+po_line.po_header.id.to_s+"' class='glyphicons envelope'><i></i>PO "+po_line.po_header.po_identifier+" bypassed supplier requirements</a></li>"
+	 					temp = "<li id="+notification.first.id.to_s+"><a href='#' class='glyphicons envelope'><i></i>PO "+po_line.po_header.po_identifier+" bypassed supplier requirements</a></li>"
 						source += temp
 					end
 		 		end
@@ -472,6 +470,7 @@ module CommonActions
 	end
 
 	def self.notification_process(model_type, model_id)
+
 		quality_user = User.where(:roles_mask => 4).first
 
       if model_type == "Organization" && model_id.organization_type_id == 6
@@ -507,7 +506,7 @@ module CommonActions
     end
 
     def self.notification_set_status(model_identifier,model_type_name,user_id)
-    	notification = Notification.find_by_notable_id(model_identifier.id)
+    	notification = Notification.find_by_notable_id_and_notable_type(model_identifier.id,model_type_name)
     	unless notification.present?
     		notification = Notification.create(notable_id: model_identifier.id, notable_type:  model_type_name, note_status:  "unread", user_id:  user_id)
     		notification.save
