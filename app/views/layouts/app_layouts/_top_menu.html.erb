@@ -99,15 +99,20 @@
   
         initiate_notifications();
         $("#notify_count li").click(function() {
+            // $("#notify_count li").removeClass('selected');
+            // $(this).addClass('selected');
+            // var href = $(this).children('a').attr('href');
             notification_status_change($(this).attr('id'));
         });
 
     });
 
-    function notification_status_change(notify_id){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_notification_status", "id": notify_id}}, "set_quality_lots", {});
+    function notification_status_change(notify_id, location_link){
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_notification_status", "id": notify_id}}, "get_notification_location", {});
     }
-
+    function get_notification_location(response){
+        window.location.href=response.aaData;
+    }
     function initiate_notifications(){
 
             var load_me = "<%= CommonActions.process_application_notifications(current_user.id).html_safe %>" ;
