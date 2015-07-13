@@ -418,9 +418,11 @@ module CommonActions
 		 	prints = Print.all
 		 	prints.each do |print|
 		 		if print.present?
+		 			print_link = ''
 		 			notification = notification_check_status(print,"Print",quality_user)
 		 			if notification.present?
-		 				temp = "<li id="+notification.first.id.to_s+"><a href='/prints/"+print.id.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
+		 				print_link = (print.item_revisions.present? && print.item_revisions.last.item.present?) ? "/items/"+print.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+print.attachment.attachment.url 
+		 				temp = "<li id="+notification.first.id.to_s+"><a href='"+print_link.to_s+"' class='glyphicons envelope'><i></i>"+print.print_identifier+"-print created</a></li>"
 						source += temp
 					end
 		 		end
