@@ -162,11 +162,13 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_po", "so_line_so_line_notes"];
 
     $(document).ready(function(){  
         $('#so_line_po').val('<%= @so_line.po%>');
-        $('#alt_name_id').val('<%= @so_line.item_alt_name_id if @so_line.present? %>');
+
+        $('#alt_name_id').val('<%= @so_line.item_alt_name_id  %>');
+
 
 
         $('#so_line_so_line_sell').keydown(function(e) {
@@ -188,20 +190,16 @@
             var code = e.keyCode || e.which;
 
             if (code === 9 || code ===13) {  
-                var widget = $(this).data('ui-autocomplete'),
-                menu   = widget.menu,
-                $ul    = menu.element,
-                id     = $ul.attr('id'); // or $ul[0].id
-                $('#so_line_po').val($( "#"+id+" li a" ).first().html());  
+                set_first_auto_val($(this).attr('id'), $(this).data('ui-autocomplete'));
                 get_vendor_po
             }
         }); 
           
         $('#so_line_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
-            if (code === 9 ) {  
-               // alert($( "#ui-id-1 li a" ).first().html());  
-                // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            if (code === 9 || code ===13) {  
+                set_first_auto_val($(this).attr('id'), $(this).data('ui-autocomplete'));
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_line_organization_id').val()}}, "set_vendor", {}); 
             }
         });  
 
@@ -286,14 +284,24 @@
     function get_vendor_po(){
      $("#so_line_po").on('change keyup paste', function(){
         var x= $(this).val();
- 
+        var alt_name_val_id  = '';
+
+        if($('#alt_name_id').val() === ''){
+           
+           alt_name_val_id = $('#alt_name_id').val('<%= @so_line.item_alt_name_id  %>')
+        }
+        else{
+            alt_name_val_id = $('#alt_name_id').val();
+
+        }
+
 
 
 
     $.ajax(
     {
         url: '/auto_complete',
-        data: {'term':x,"organization_id": $('#organization_id').val(), "alt_name_id": $('#alt_name_id').val()},
+        data: {'term':x,"organization_id": $('#organization_id').val(), "alt_name_id": alt_name_val_id},
         minLength: 3,
         type: "get",
         dataType: "json",
@@ -314,7 +322,7 @@
                 }
                 $('#so_line_po').autocomplete({ source: cus_details });
             }
-
+       
         }
 
     });
@@ -335,6 +343,17 @@
                             .attr("value",dataArr[i]['po_identifier'])
                             .text(dataArr[i]['po_identifier']));
         });        
+    }
+    function set_vendor(response)
+    {
+        $('#organization_id').val(response.aaData['id']);
+    }
+    function set_first_auto_val(id_val,menu_data){
+            var widget = menu_data,
+                menu   = widget.menu,
+                $ul    = menu.element,
+                id     = $ul.attr('id'); // or $ul[0].id
+                $('#'+id_val).val($( "#"+id+" li a" ).first().html());  
     }
 
 </script>
