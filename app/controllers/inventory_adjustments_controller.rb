@@ -1,6 +1,14 @@
 class InventoryAdjustmentsController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
+  before_filter :user_permissions
+
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_vendor? 
+        authorize! :edit, InventoryAdjustment
+    end 
+  end
 
   def set_page_info
       @menus[:inventory][:active] = "active"
