@@ -10,6 +10,15 @@ class InventoryAdjustment < ActiveRecord::Base
   after_save :after_create_process
   before_create :before_create_process
 
+  before_validation :validate_on_create_update 
+
+protected
+  def validate_on_create_update
+    if (self.inventory_adjustment_quantity + self.quality_lot.lot_quantity) < 0
+        self.errors.add(:inventory_adjustment_quantity, "Adjustment quantity more than lot_quantity") 
+    end
+  end
+
   def after_create_process
     @quality_lot = QualityLot.find(self.quality_lot_id)
     @lot_quantity =@quality_lot.lot_quantity + self.inventory_adjustment_quantity
