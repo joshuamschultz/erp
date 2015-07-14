@@ -6,13 +6,13 @@ class ElementsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+   if  user_signed_in? && current_user.is_customer? 
         authorize! :edit, Element
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? )
         authorize! :edit, Element
     end 
   end

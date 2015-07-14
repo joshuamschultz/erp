@@ -303,12 +303,6 @@ class Ability
 
         elsif user.has_role? :vendor
 
-            can :view, QualityAction
-
-            can :view, Gauge
-
-            can :view, Package
-
             can :view, Ppap
 
             can :view, RunAtRate
@@ -318,8 +312,6 @@ class Ability
             can :view, Material
 
             can :view, MaterialElement
-
-            can :view, Element
 
             can :view, ProcessType
 

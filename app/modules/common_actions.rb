@@ -182,15 +182,21 @@ module CommonActions
 		menus[:inventory] = {:class => "hasSubmenu glyphicons cargo", :path => "#", :name => "Inventory", :type => "multiple"}
 		menus[:inventory][:sub_menu] = 	[
 			{:path => items_path, :name => "Items"},
-			{:path => item_alt_names_path, :name => "Alternates"},
-			{:path => inventory_adjustments_path, :name => "Adjust Inventory"},
-			{:path => prints_path, :name => "Prints"},
-			{:path => elements_path, :name => "Elements"}
 		]
+		if  user_signed_in? && !current_user.is_customer?  && !current_user.is_vendor? 	
+			menus[:inventory][:sub_menu].push({:path => item_alt_names_path, :name => "Alternates"})
+		
+			menus[:inventory][:sub_menu].push({:path => inventory_adjustments_path, :name => "Adjust Inventory"})
 
-		if can? :view, Material
-			menus[:inventory][:sub_menu].push({:path => materials_path, :name => "Materials"})
+			menus[:inventory][:sub_menu].push({:path => prints_path, :name => "Prints"})
+
+			menus[:inventory][:sub_menu].push({:path => elements_path, :name => "Elements"})
 		end
+		
+
+
+			menus[:inventory][:sub_menu].push({:path => materials_path, :name => "Materials"})
+
 
 		if can? :view, ProcessType
 			menus[:inventory][:sub_menu].push({:path => process_types_path, :name => "Processes"})
@@ -209,7 +215,8 @@ module CommonActions
 			]
 		end
 
-		if  user_signed_in? && !current_user.is_customer?
+		if  user_signed_in? && !current_user.is_customer?  && !current_user.is_vendor? 	
+
 			menus[:general_ledger] = {:class => "hasSubmenu glyphicons book_open", :path => "#", :name => "General Ledger", :type => "multiple"}
 			menus[:general_ledger][:sub_menu] = 	[]
 
@@ -253,9 +260,9 @@ module CommonActions
   		if can? :view, RunAtRate
   			menus[:quality][:sub_menu].push({:path => run_at_rates_path, :name => "Run at Rate"})
   		end
-
-      menus[:quality][:sub_menu].push({:path => quality_actions_path, :name => "Quality Action"})
-
+		if  user_signed_in? && !current_user.is_vendor? 
+			menus[:quality][:sub_menu].push({:path => quality_actions_path, :name => "Quality Action"})
+		end
   		if can? :view, CauseAnalysis
   			menus[:quality][:sub_menu].push({:path => cause_analyses_path, :name => "Cause Analysis"})
   		end
@@ -275,8 +282,9 @@ module CommonActions
       if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer?
        menus[:quality][:sub_menu].push({:path => customer_qualities_path, :name => "Quality Level"})
       end
-
-      menus[:quality][:sub_menu].push({:path => vendor_qualities_path, :name => "Quality ID"})
+      if  user_signed_in? && !current_user.is_vendor? 
+      	menus[:quality][:sub_menu].push({:path => vendor_qualities_path, :name => "Quality ID"})
+      end
 
 		if  user_signed_in? && !current_user.is_vendor?  && !current_user.is_customer?
 			menus[:logistics] = {:class => "hasSubmenu glyphicons boat", :path => "#", :name => "Logistics", :type => "multiple"}
@@ -287,16 +295,16 @@ module CommonActions
 				{:path => po_shipments_path(type: "history"), :name => "History"}
 			]
 		end
+		if  user_signed_in? && !current_user.is_vendor? 	
+			menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
+			menus[:reports][:sub_menu] = 	[
+				{:path => gauges_path(type: "gauge"), :name => "Gauge Calibration"},
+				{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Qualification"},
+				{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "Shipping Due"},
+				{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lots Missing Location"}
 
-		menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
-		menus[:reports][:sub_menu] = 	[
-			{:path => gauges_path(type: "gauge"), :name => "Gauge Calibration"},
-			{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Qualification"},
-			{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "Shipping Due"},
-			{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lots Missing Location"}
-
-		]
-
+			]
+		end
 		menus[:documentation] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Documentation", :type => "multiple"}
 		menus[:documentation][:sub_menu] = 	[
 			{:path => "#", :name => "Internal"},
@@ -307,34 +315,33 @@ module CommonActions
 
 
 		]
+		if  user_signed_in? && !current_user.is_vendor? 	
+			menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 
-		menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
+			menus[:system][:sub_menu] = 	[]
 
-		menus[:system][:sub_menu] = 	[]
+			menus[:system][:sub_menu].push({:path => events_path, :name => "Calendar"})
 
-      menus[:system][:sub_menu].push({:path => events_path, :name => "Calendar"})
+			menus[:system][:sub_menu].push({:path => commodities_path, :name => "Commodities"})
 
-      menus[:system][:sub_menu].push({:path => commodities_path, :name => "Commodities"})
+			if can? :view, Territory
+				menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"})
+			end
 
+			if can? :view, Owner
+				menus[:system][:sub_menu].push({:path => owners_path, :name => "Owners"})
+			end
 
-  		if can? :view, Territory
-  			menus[:system][:sub_menu].push({:path => territories_path, :name => "Territories"})
-  		end
+			menus[:system][:sub_menu].push({:path => check_code_path(CheckCode.first), :name => "Counters"})
 
-  		if can? :view, Owner
-  			menus[:system][:sub_menu].push({:path => owners_path, :name => "Owners"})
-  		end
+			if can? :view, User
+				menus[:system][:sub_menu].push({:path => privileges_path, :name => "Privileges"})
+			end
 
-      menus[:system][:sub_menu].push({:path => check_code_path(CheckCode.first), :name => "Counters"})
-
-  		if can? :view, User
-  			menus[:system][:sub_menu].push({:path => privileges_path, :name => "Privileges"})
-  		end
-
-  		if can? :view, CompanyInfo
-  			menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"})
-  		end
-
+			if can? :view, CompanyInfo
+				menus[:system][:sub_menu].push({:path => company_infos_path, :name => "Home Info"})
+			end
+		end
 		menus
 	end
 

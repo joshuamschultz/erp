@@ -2,6 +2,13 @@ class ItemAltNamesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
   autocomplete :item_alt_name, :item_alt_identifier, :display_value => :alt_item_name
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_vendor? 
+        authorize! :edit, ItemAltName
+    end 
+  end
 
   def set_page_info
       @menus[:inventory][:active] = "active"
