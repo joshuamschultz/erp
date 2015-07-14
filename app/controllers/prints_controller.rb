@@ -2,7 +2,15 @@ class PrintsController < ApplicationController
   before_filter :set_page_info
 
   autocomplete :print, :print_identifier, :full => true
+  before_filter :user_permissions
 
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_vendor? 
+        authorize! :edit, Print
+    end 
+  end
+  
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
