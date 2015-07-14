@@ -11,6 +11,16 @@
           <%= select_tag 'role', options_for_select([["Super Admin", "superadmin"], ["Manager", "manager"], ["Quality", "quality"], ["Operations", "operations"], ["Clerical", "clerical"], ["Logistics", "logistics"], ["Vendor", "vendor"], ["Customer", "customer"]]), :class => "string optional" %>
         </div>
       </div>
+
+      <div class="control-group select required quality_lot_po_line">
+        <label for="user_organization_id" class="select required control-label">
+          <abbr title="required">*</abbr> Organization
+        </label>
+        <div class="controls">
+          <select name="user[organization_id]" id="user_organization_id" class="select required" autofocus="autofocus">
+          </select>
+        </div>
+      </div>
       <%= f.input :gender, label: 'Gender', collection: [['Male'], ['Female']], as: :radio_buttons, :checked => "Male"  %>
       <%= f.input :address %>  
       <%= f.input :city %> 
@@ -28,6 +38,37 @@
   </div>
 <% end %>
 <script type="text/javascript">
-    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_organization_id", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+     var page_initial = true;
+
+    $(document).ready(function(){ 
+
+        initiate_organizations();
+    });
+    function initiate_organizations(){
+
+      initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_organizations"}}, "set_organizations", {});
+    }
+    function set_organizations(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".organization-select-box-template").html(), response));
+        $("#user_organization_id").html(html);
+        set_val_selectbox();
+
+    }
+
+
+    function set_val_selectbox(){
+
+      var theText = "<%= @user.organization.organization_name if @user.organization %>";
+      $("#user_organization_id option").each(function() {
+        if($(this).text() == theText) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+
+    }
+
 </script>
 
+   <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "organization-select-box"} %>

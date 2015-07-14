@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   include RoleModel
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes,
-  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask
+  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id
 
   roles_attribute :roles_mask
 
@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
   :plant_manager, :sales_manager, :operations_manager, :quality_manager, :logistics_manager
 
 
-  has_one :organization
-
+  # has_one :organization
+  belongs_to :organization
   accepts_nested_attributes_for :organization
 
   has_many :inspected_lots, :class_name => "QualityLot", :foreign_key => "lot_inspector_id"
