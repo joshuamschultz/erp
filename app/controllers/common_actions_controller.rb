@@ -21,7 +21,9 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
-
+            when "get_organizations"
+                result = Organization.all.each {|organization| organization[:organization_name] = organization.organization_name }
+              
             when "get_process_types_po"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
