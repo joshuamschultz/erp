@@ -1,6 +1,9 @@
 <%= stylesheet_link_tag "fullcalendar.css" %>
 <%= javascript_include_tag  "bootstrap.min", "calendar.js","fullcalendar.js" %>
 <!-- Main Container Fluid -->
+<p>
+  <%=link_to 'Create Event', new_event_url, :id => 'new_event' %>
+</p>
 <div class="container-fluid fluid menu-left">
   <div class="innerLR innerT">
     <div class="widget">
@@ -12,35 +15,114 @@
         <div id="calendar"></div>
       </div>
     </div>
-
-    <div class="uniformjs" id="external-events">
-
-      <div class="widget">
-        <div class="widget-head">
-          <h3 class="heading">Draggable Events</h3>
-        </div>
-
-        <div class="widget-body">
-          <!-- Events list -->
-          <ul>
-            <li class="glyphicons move"><i></i> My Event 1</li>
-            <li class="glyphicons move"><i></i> My Event 2</li>
-            <li class="glyphicons move"><i></i> My Event 3</li>
-            <li class="glyphicons move"><i></i> My Event 4</li>
-            <li class="glyphicons move"><i></i> My Event 5</li>
-          </ul>
-          <!-- Events list END -->
-
-          <label for="drop-remove" class="checkbox">
-            <input type="checkbox" class="checkbox" id="drop-remove" /> 
-            remove after drop
-          </label>
-        </div>
-      </div>
-    </div>
+   
   </div>  
 </div>
 
 <script>
   var basePath = '';
+ $(document).ready(function() {
+
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+  $('#calendar').empty();
+  $('#calendar').fullCalendar({
+    editable: true,        
+    header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'month',
+        height: 500,
+        slotMinutes: 15,
+        minTime: 7,
+        maxTime: 22,
+        firstHour: 8,
+        
+        loading: function(bool){
+            if (bool) 
+                $('#loading').show();
+            else 
+                $('#loading').hide();
+        },
+
+        selectable: true,
+        selectHelper: true,
+
+        // a future calendar might have many sources.        
+        eventSources: [{
+            url: '/events/',
+            backgroundColor: 'blue',
+            textColor: 'white',
+            ignoreTimezone: false
+        }],
+        
+        timeFormat: 'h:mm t{ - h:mm t} ',
+        dragOpacity: "0.5",
+        
+        select: function(start, end, allDay) {
+            window.location.replace("/events/new"+"?start="+start);
+        },
+
+        //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+        eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
+            updateEvent(event);
+        },
+
+        // http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+        eventResize: function(event, dayDelta, minuteDelta, revertFunc){
+            updateEvent(event);
+        },
+
+        // http://arshaw.com/fullcalendar/docs/mouse/eventClick/
+        eventClick: function(event, jsEvent, view){          
+            window.location.replace("/events/"+event.id+"/edit");
+        },
+  });
+});
+
+function updateEvent(the_event) {
+  $.ajax({
+    type: 'GET',
+    url: "/events/" + the_event.id+"/change_date",
+    headers: {
+      'X-Transaction': 'put',
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    },
+    data: 
+    { 
+      event: { title: the_event.title,
+               start_at: "" + the_event.start,
+               end_at: "" + the_event.end              
+
+         }
+    },
+    complete:  function (reponse) { }
+  });
+};
+
+// function addEvent(the_event) {
+//   $.ajax({
+//     type: 'post',
+//     url: "/events/",
+//     headers: {
+//       'X-Transaction': 'POST',
+//       'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+//     },
+//     data: 
+//     { 
+//       event: { title: the_event.title,
+//                starts_at: "" + the_event.start,
+//                ends_at: "" + the_event.end,
+//                description: the_event.description               
+//          }
+//     },
+//     complete: function (reponse) { }
+//   });
+
+// };
+
 </script>

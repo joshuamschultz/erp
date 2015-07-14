@@ -9,7 +9,11 @@ end
   resources :item_lots
 
 
-  resources :events
+  resources :events do
+    member do
+      get 'change_date' 
+    end
+  end
 
 
   get "permissions/error"
