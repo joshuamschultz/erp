@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
   has_many :quality_actions_users, :dependent => :destroy
   has_many :quality_actions, :through => :quality_actions_users
 
+  has_many :quotes
   validates_presence_of :email, :name
 
   before_create :process_before_create
