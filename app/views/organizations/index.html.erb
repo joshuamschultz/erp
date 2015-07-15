@@ -1,3 +1,4 @@
+<% unless current_user.is_vendor?  %>
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -112,4 +113,9 @@
                     ]'
     } 
 %>
+<% end %>
+
+<% else %>
+    <%= render  'permissions/error'
+ %>
 <% end %>

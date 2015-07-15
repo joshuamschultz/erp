@@ -13,7 +13,7 @@ class OrganizationsController < ApplicationController
   end
 
   def user_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+   if  user_signed_in? && current_user.is_customer? 
         authorize! :edit, Organization
     end 
   end
