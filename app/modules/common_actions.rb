@@ -403,6 +403,29 @@ module CommonActions
 			end
 		end
 
+		events =  Event.find(:all, :conditions => ["start_at <= ? and start_at > ?", Time.now.advance(:hours => 1), Time.now])
+		events.each do |event|
+			if event.present? 
+				notification = Notification.where("notable_id =? AND notable_type =? AND user_id =? ", event.id, "Event", user.id)		
+			    if notification.present?
+			    	if notification.first.read_at.present? 
+			    		unless Time.now.advance(:hours => 1) > notification.read_at && Time.now <= notification.read_at
+			    			notification.update_attributes(:note_status => "unread")
+			    		end
+			    	end
+			    	if notification.first.note_status == 'unread' 
+				    	temp = "<li id="+notification.first.id.to_s+"><a href='/events/"+event.id.to_s+"' class='glyphicons bell'><i></i>An event "+event.title.to_s+" within one hour</a></li>"	
+				    	source += temp
+				    end	
+			    else
+			    	notification = Notification.create(notable_id: event.id, notable_type:  "Event", note_status:  "unread", user_id:  user_id)
+    				notification.save
+    				temp = "<li id="+notification.id.to_s+"><a href='/events/"+event.id.to_s+"' class='glyphicons bell'><i></i>An event "+event.title.to_s+ " within one hour</a></li>"	
+			    	source += temp
+			    end	
+			end
+		end
+
 		if User.current_user.present? && User.current_user.is_quality?
 		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
 		 	vendor_organizations.each do |vendor_organization|
