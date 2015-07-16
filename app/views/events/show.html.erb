@@ -16,9 +16,17 @@
              <tr>
               <td class="span2"><b>End At:</b></td>
               <td class="span5"><%= @event.end_at %></td>              
+            </tr>            
+            <tr>
+              <td class="span2"><b>Repeat:</b></td>
+              <td class="span5"><%= @event.repeats %></td>              
             </tr>
         </tbody>
     </table>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<table class="table">
+<tbody><tr>
+<td><%= link_to 'Edit', edit_event_path(@event), :class=>"btn btn-block btn-primary"%></td>
+<td> <%= link_to 'Delete', event_path(@event), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-block btn-danger"  %></td>
+<td> <%= link_to 'Back', events_path, :class=>"btn btn-block btn-success" %></td>
+<td> &nbsp;</td><td> &nbsp;</td><td> &nbsp;</td><td> &nbsp;</td></tr></tbody></table>

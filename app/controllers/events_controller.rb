@@ -60,6 +60,7 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     respond_to do |format|
       if @event.save
+        @event.create_similar_events                    
         format.html { redirect_to events_path, notice: 'your event was saved.' }
           format.json { head :no_content }
       else
@@ -77,4 +78,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+
+    respond_to do |format|
+      format.html { redirect_to events_url }
+      format.json { head :no_content }
+    end
+  end
 end
