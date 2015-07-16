@@ -125,6 +125,7 @@ class Item < ActiveRecord::Base
          process_cost = QualityLot.find(quality_lot.po_line.quality_lot_id).po_line.po_line_cost.to_f
         end
         cost += (quality_lot.quantity_on_hand.to_f/total)*(quality_lot.po_line.po_line_cost.to_f  + process_cost.to_f)
+        process_cost = 0
       end
 
       cost.round(5)
