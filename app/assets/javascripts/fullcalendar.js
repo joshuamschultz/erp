@@ -3860,7 +3860,7 @@ function AgendaEventRenderer() {
 			classes = classes.concat(event.source.className || []);
 		}
 		if (url) {
-			html += "a href='" + htmlEscape(event.url) + "'";
+			html += "a href='" + htmlEscape("/events/"+event.id+"/") + "'";
 		}else{
 			html += "div";
 		}
@@ -4606,7 +4606,7 @@ function DayEventRenderer() {
 			if (event.source) {
 				classes = classes.concat(event.source.className || []);
 			}
-			url = event.url;
+			url = "/events/"+event.id;
 			skinCss = getSkinCss(event, opt);
 			if (url) {
 				html += "<a href='" + htmlEscape(url) + "'";

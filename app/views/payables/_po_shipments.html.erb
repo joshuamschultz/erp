@@ -15,13 +15,8 @@
                 <td><%= link_to po_shipment.po_line.item_alt_name.item_alt_identifier, item_path(po_shipment.po_line.item) %></td>
                 <td><%= po_shipment.po_line.po_line_quantity %></td>
                 <td><%= po_shipment.po_shipped_count %></td>
-                <% if po_shipment.po_line.po_header.po_type.type_value == 'transer' %>
-                      <% lot = QualityLot.find(po_shipment.po_line.quality_lot_id) %>
-                      <% item_1_cost = lot.present? && lot.po_line.present? && lot.po_line.po_line_cost.present? ? lot.po_line.po_line_cost : 0   %>
-                     <td><%= po_shipment.po_line.po_line_cost + item_1_cost %></td>
-                <% else %>
-                    <td><%= po_shipment.po_line.po_line_cost %></td>
-                <% end %>
+                <td><%= po_shipment.po_line.po_line_cost %></td>
+                
                 <td><%= po_shipment.po_shipped_cost %></td>
                 
                 <td><% if can? :edit, Payable %>
