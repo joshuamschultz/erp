@@ -62,6 +62,10 @@ class SoHeader < ActiveRecord::Base
       end
   end
 
-
+  def so_report
+    CommonActions.sales_report(self.id).html_safe
+  end
   
 end
+
+

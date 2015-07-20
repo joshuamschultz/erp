@@ -90,6 +90,7 @@ class SoShipmentsController < ApplicationController
 
             else
                 @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped"])
+                 # @so_shipments  =  @so_shipments +  @so_ship_outs
                  # @so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
                 if params[:type] == "process"
                   @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close", "ship_in"])
@@ -180,45 +181,32 @@ class SoShipmentsController < ApplicationController
   # POST /so_shipments
   # POST /so_shipments.json
   def create
-    @so_shipment = SoShipment.new(params[:so_shipment])
+    unless params[:so_shipment]['quality_lot_id'] == 'empty' || params[:so_shipment]['quality_lot_id'] == 'less'
+      @so_shipment = SoShipment.new(params[:so_shipment])
+    else
+
+      @so_shipment = params[:so_shipment]['quality_lot_id'] == 'empty' ? 0 : 1
+    end
 
     respond_to do |format|
-      if @so_shipment.save
-
-        @so_shipment.set_quality_on_hand        
-        @so_shipment.so_line.update_so_total
-        @so_shipment["so"] = @so_shipment.so_line.so_header.so_identifier
-        @so_shipment["so_total"] = @so_shipment.so_line.so_header.so_total.to_f
-        if @so_shipment.so_line.so_header.bill_to_address.present? 
-          @so_shipment["so_b_c_title"]= @so_shipment.so_line.so_header.bill_to_address.contact_title 
-          @so_shipment["so_b_c_address_1"] = @so_shipment.so_line.so_header.bill_to_address.contact_address_1 
-          @so_shipment["so_b_c_address_2"] = @so_shipment.so_line.so_header.bill_to_address.contact_address_2 
-          @so_shipment["so_b_c_state"] = @so_shipment.so_line.so_header.bill_to_address.contact_state 
-          @so_shipment["so_b_c_country"] = @so_shipment.so_line.so_header.bill_to_address.contact_country 
-          @so_shipment["so_b_c_zipcode"] = @so_shipment.so_line.so_header.bill_to_address.contact_zipcode
-        end 
-        if @so_shipment.so_line.so_header.ship_to_address.present? 
-          @so_shipment["so_s_c_title"]= @so_shipment.so_line.so_header.ship_to_address.contact_title 
-          @so_shipment["so_s_c_address_1"] = @so_shipment.so_line.so_header.ship_to_address.contact_address_1 
-          @so_shipment["so_s_c_address_2"] = @so_shipment.so_line.so_header.ship_to_address.contact_address_2 
-          @so_shipment["so_s_c_state"] = @so_shipment.so_line.so_header.ship_to_address.contact_state 
-          @so_shipment["so_s_c_country"] = @so_shipment.so_line.so_header.ship_to_address.contact_country 
-          @so_shipment["so_s_c_zipcode"] = @so_shipment.so_line.so_header.ship_to_address.contact_zipcode
-        end 
-        @so_shipment["so_notes"] = @so_shipment.so_line.so_header.so_notes if @so_shipment.so_line.so_header.so_notes
-        @so_shipment["so_date"] = "Sales Order Date :"+@so_shipment.so_line.so_header.created_at.strftime("%m/%d/%Y")
-        @so_shipment["part_number"] = @so_shipment.so_line.item.item_part_no
-        @so_shipment["part_desc"] = @so_shipment.so_line.item_revision.item_description.present? ? @so_shipment.so_line.item_revision.item_description : ''
-        @so_shipment["alt_part_number"] = @so_shipment.so_line.item_alt_name.item_alt_identifier if @so_shipment.so_line.item.item_part_no != @so_shipment.so_line.item_alt_name.item_alt_identifier 
-        @so_shipment["so_line_quantity"] = @so_shipment.so_line.so_line_quantity
-        @so_shipment["control_number"] = @so_shipment.quality_lot.lot_control_no if @so_shipment.quality_lot
-        @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
-        @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
-        format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
-        format.json { render json: @so_shipment, status: :created, location: @so_shipment }
+      res = Hash.new
+      if @so_shipment == 0 || @so_shipment == 1
+          format.html { render action: "new" }
+          res["lot"] = @so_shipment == 0 ? 'Please receive the lot' : 'ship more than a lot has'
+          format.json { render json: {errors:  res} }
       else
-        format.html { render action: "new" }
-        format.json { render json: {errors:  @so_shipment.errors.first} }
+        if @so_shipment.save
+          @so_shipment.set_quality_on_hand        
+          @so_shipment.so_line.update_so_total
+          @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
+          @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
+          @so_shipment["quantity_on_hand"] = @so_shipment.quality_lot.quantity_on_hand
+          format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
+          format.json { render json: @so_shipment, status: :created, location: @so_shipment }
+        else
+          format.html { render action: "new" }
+          format.json { render json: {errors:  @so_shipment.errors.first} }
+        end
       end
     end
   end

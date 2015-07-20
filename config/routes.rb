@@ -1,4 +1,5 @@
 AllianceFasteners::Application.routes.draw do
+match "auto_complete" => 'so_lines#auto_complete'
 
   namespace :api do
   namespace :vi do

@@ -21,7 +21,9 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
-
+            when "get_organizations"
+                result = Organization.all.each {|organization| organization[:organization_name] = organization.organization_name }
+              
             when "get_process_types_po"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
@@ -29,9 +31,25 @@ class CommonActionsController < ApplicationController
                 result = result.each {|line| line[:process_short_name] = line.process_short_name }
               end
             when "set_notification_status"
+
               if params[:id].present?
-                Notification.find(params[:id]).update_attributes(:note_status => "read")
-                result = "success"
+                notification = Notification.find(params[:id])
+                notification.update_attributes(:note_status => "read")
+                if notification.notable_type == 'Print'
+                  result = (notification.notable.item_revisions.present? && notification.notable.item_revisions.last.item.present?) ? "/items/"+notification.notable.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+notification.notable.attachment.attachment.url 
+                elsif notification.notable_type == "Specification"
+                  result = "http://erp.chessgroupinc.com/specifications/"+notification.notable.id.to_s
+                elsif notification.notable_type == "ProcessType"
+                  result = "http://erp.chessgroupinc.com/process_types/"+notification.notable.id.to_s
+                elsif notification.notable_type == "PoLine"
+                  result = "http://erp.chessgroupinc.com/po_headers/"+notification.notable.po_header.id.to_s
+                elsif notification.notable_type == "Organization"
+                  result = "http://erp.chessgroupinc.com/organizations/"+notification.notable.id.to_s
+                elsif notification.notable_type == "QualityAction"
+                  result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
+                end
+
+                result 
               end
 
             when "initiate_notifications"
@@ -407,6 +425,11 @@ class CommonActionsController < ApplicationController
                 # organization = Organization.find(params[:organization_id])
                 result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_id = ?", params[:organization_id], item_id).order("po_headers.created_at DESC")
               end
+            when "get_po_header"
+              if params[:po_identifier].present?
+                result = PoHeader.find_by_po_identifier(params[:po_identifier]).id
+                result
+              end
             when "set_customer_quote_status"
               if params[:customer_quote_id].present? && params[:status_id].present?
                   customer_quote = CustomerQuote.find(params[:customer_quote_id])
@@ -644,6 +667,7 @@ class CommonActionsController < ApplicationController
 
             when "check_quality_lot_negative"
               res = Hash.new
+              res["line_row"]= params[:line_row]
               res["quality_lot_id"]= params[:quality_lot_id]
               res["so_shipped_count"] =params[:so_shipped_count]
               res["so_line_id"] = params[:so_line_id]
