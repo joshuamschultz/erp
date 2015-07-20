@@ -414,12 +414,7 @@ module CommonActions
 		events.each do |event|
 			if event.present? 
 				notification = Notification.where("notable_id =? AND notable_type =? AND user_id =? ", event.id, "Event", user.id)		
-			    if notification.present?
-			    	if notification.first.read_at.present? 
-			    		unless Time.now.advance(:hours => 1) > notification.read_at && Time.now <= notification.read_at
-			    			notification.update_attributes(:note_status => "unread")
-			    		end
-			    	end
+			    if notification.present?			    	
 			    	if notification.first.note_status == 'unread' 
 				    	temp = "<li id="+notification.first.id.to_s+"><a href='/events/"+event.id.to_s+"' class='glyphicons bell'><i></i>An event "+event.title.to_s+" within one hour</a></li>"	
 				    	source += temp
