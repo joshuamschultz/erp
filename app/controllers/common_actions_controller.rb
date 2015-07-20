@@ -148,6 +148,17 @@ class CommonActionsController < ApplicationController
                 alt_name_item = item.item_alt_names.first
                 result = alt_name_item              
               end
+            when "get_revisions"
+              if params[:value].present?
+                item =  Item.find_by_item_part_no(params[:value])
+                revisions = item.item_revisions
+                result = revisions             
+              end
+            when "get_item_revision"
+              if params[:value].present?
+                item_revision =  ItemRevision.find(params[:value])                
+                result = item_revision            
+              end
 
             when "get_location"
               if params[:lot_id] && params[:line_id]
