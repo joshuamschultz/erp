@@ -33,7 +33,11 @@ class QuotesController < ApplicationController
             organization = Organization.find(params[:organization_id])
             @quotes = organization.quote_vendors.joins(:quote).order('quotes.created_at desc').collect{ |quote_vendor| quote_vendor.quote}
         else
-           p @quotes = Quote.order('created_at desc')
+            if  user_signed_in? && current_user.is_vendor?
+                @quotes = Quote.where(:user_id => User.current_user.id).order('created_at desc')
+            else
+                @quotes = Quote.order('created_at desc')
+            end
         end
 
         respond_to do |format|

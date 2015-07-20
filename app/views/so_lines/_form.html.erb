@@ -43,16 +43,17 @@
                     </div>
                 </div> -->
 
-                <div id="group_div" style="padding-bottom:20px;">
-                    <div class="control-group">
-                        <label for="quote_vendors" class="optional control-label">Vendor PO</label>
-                        <div class="controls">                        
-                            <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
-      
-                        </div>
-                    </div>
-                </div>
-                
+            <div class="control-group autocomplete required so_line_po">
+                <label for="so_line_item_alt_name_id" class="autocomplete required control-label">
+                    <abbr title="required"></abbr> Vendor po
+                </label>
+                <div class="controls">
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input type="text" size="30"  name="so_line[po]" id="so_line_po" data-id-element="#so_line_po"  class="autocomplete required ui-autocomplete-input" autocomplete="off"></div>
+            </div>
+            <%= hidden_field_tag :po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
+
+            <%= hidden_field_tag :org_po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
 
                 <%= f.input :so_line_notes, :label => "Notes" %>
 
@@ -114,16 +115,25 @@
                         </div>
                     </div>
                 </div> -->
+           
 
-                <div id="group_div" style="padding-bottom:20px;">
-                    <div class="control-group">
-                        <label for="quote_vendors" class="optional control-label">Vendor PO</label>
-                        <div class="controls">                        
-                            <%= f.select :so_line_vendor_po, options_for_select([["",""]],:selected =>  @so_line.so_line_vendor_po.present? ? @so_line.so_line_vendor_po : "")%>
-      
-                        </div>
-                    </div>
-                </div>
+            <div class="control-group autocomplete required so_line_po">
+                <label for="so_line_item_alt_name_id" class="autocomplete required control-label">
+                    <abbr title="required"></abbr> Vendor po
+                </label>
+                <div class="controls">
+                    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                    <input type="text" size="30"  name="so_line[po]" id="so_line_po" data-id-element="#so_line_po"  class="autocomplete required ui-autocomplete-input" autocomplete="off"></div>
+            </div>
+
+            <%= hidden_field_tag :po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
+
+            <%= hidden_field_tag :org_po_header_id, (@so_line.po_header.id if @so_line.po_header) %>
+
+
+
+
+         
                 
 
 
@@ -152,9 +162,14 @@
 
 
 <script type="text/javascript">
-    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_so_line_vendor_po", "so_line_customer_quality_id", "so_line_so_line_notes"];
+    tab_field_forms["form_for_so_line"] = ["so_line_item_alt_name_id", "so_line_so_line_cost", "so_line_so_line_sell", "so_line_so_line_quantity", "so_line_organization_id", "so_line_po", "so_line_so_line_notes"];
 
     $(document).ready(function(){  
+        $('#so_line_po').val('<%= @so_line.po%>');
+
+        $('#alt_name_id').val('<%= @so_line.item_alt_name_id  %>');
+
+
 
         $('#so_line_so_line_sell').keydown(function(e) {
             var code = e.keyCode || e.which;
@@ -170,12 +185,21 @@
                 $('#so_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#so_line_item_alt_name_id').val()}}, "get_alt_name_id", {}); 
             }
-        });   
+        }); 
+        $('#so_line_po').keydown(function(e) {
+            var code = e.keyCode || e.which;
+
+            if (code === 9 || code ===13) {  
+                set_first_auto_val($(this).attr('id'), $(this).data('ui-autocomplete'));
+                get_vendor_po
+            }
+        }); 
+          
         $('#so_line_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
-            if (code === 9 ) {  
-               alert($( "#ui-id-1 li a" ).first().html());  
-                // initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            if (code === 9 || code ===13) {  
+                set_first_auto_val($(this).attr('id'), $(this).data('ui-autocomplete'));
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_line_organization_id').val()}}, "set_vendor", {}); 
             }
         });  
 
@@ -215,13 +239,18 @@
         $("#so_line_item_alt_name_id").focus();
 
         $("#so_line_organization_id").focusout(function(){
-            get_vendor_po();
+            // get_vendor_po();
         });
         $("#so_line_item_alt_name_id").focusout(function(){
-            get_vendor_po();
+            // get_vendor_po();
+        });
+
+        $("#so_line_po").focusout(function(){
+             get_po_identifier();
         });
         get_vendor_po();
-    });    
+    });  
+ 
     function get_alt_name_id(response){
         var alt_id_val = JSON.stringify(response.aaData.id);
         $("#alt_name_id").val(alt_id_val);
@@ -244,9 +273,65 @@
         calculate_line_item_total();
         return false;
     }
-
+    function get_po_identifier()
+    {
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_po_header", "po_identifier": $('#so_line_po').val()}}, "set_po_identifier", {}); 
+    }
+    function set_po_identifier(response)
+    {
+        $('#po_header_id').val(response.aaData);
+    }
     function get_vendor_po(){
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_vendor_po", "organization_id": $('#organization_id').val(), "alt_name_id": $('#alt_name_id').val() }}, "set_vendor_po", {});
+     $("#so_line_po").on('change keyup paste', function(){
+        var x= $(this).val();
+        var alt_name_val_id  = '';
+
+        if($('#alt_name_id').val() === ''){
+           
+           alt_name_val_id = $('#alt_name_id').val('<%= @so_line.item_alt_name_id  %>')
+        }
+        else{
+            alt_name_val_id = $('#alt_name_id').val();
+
+        }
+
+
+
+
+    $.ajax(
+    {
+        url: '/auto_complete',
+        data: {'term':x,"organization_id": $('#organization_id').val(), "alt_name_id": alt_name_val_id},
+        minLength: 3,
+        type: "get",
+        dataType: "json",
+        success: function(data) 
+        {
+          
+            if (data != "") 
+            {
+                var cus_details = [];
+                for (i in data) 
+                {
+                    for (k in data[i]) 
+                    {
+                        // cus_details.push(data[i][k]);
+                            if($.inArray(data[i][k], cus_details) === -1) cus_details.push(data[i][k]);
+
+                    }
+                }
+                $('#so_line_po').autocomplete({ source: cus_details });
+            }
+       
+        }
+
+    });
+
+
+
+
+  
+  });
     }
     function set_vendor_po(response, callback_params, api_params){
         var dataArr = response["aaData"];
@@ -258,6 +343,17 @@
                             .attr("value",dataArr[i]['po_identifier'])
                             .text(dataArr[i]['po_identifier']));
         });        
+    }
+    function set_vendor(response)
+    {
+        $('#organization_id').val(response.aaData['id']);
+    }
+    function set_first_auto_val(id_val,menu_data){
+            var widget = menu_data,
+                menu   = widget.menu,
+                $ul    = menu.element,
+                id     = $ul.attr('id'); // or $ul[0].id
+                $('#'+id_val).val($( "#"+id+" li a" ).first().html());  
     }
 
 </script>

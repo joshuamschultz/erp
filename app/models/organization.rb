@@ -90,7 +90,7 @@ class Organization < ActiveRecord::Base
 
 	validates_length_of :organization_fax, in: 10..32, :if => Proc.new { |o| (o.contact_type.present? && o.contact_type.type_value == "fax") || o.organization_fax.present? }
 
-	belongs_to :user
+	# belongs_to :user
 	belongs_to :territory
 	belongs_to :customer_quality
 	belongs_to :vendor_quality
