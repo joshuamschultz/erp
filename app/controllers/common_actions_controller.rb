@@ -47,6 +47,8 @@ class CommonActionsController < ApplicationController
                   result = "http://erp.chessgroupinc.com/organizations/"+notification.notable.id.to_s
                 elsif notification.notable_type == "QualityAction"
                   result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
+                elsif notification.notable_type == "Event"
+                  result = "#{RAILS_ROOT}/events/"+notification.notable.id.to_s  
                 end
 
                 result 
