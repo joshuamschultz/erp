@@ -2,12 +2,7 @@ class Event < ActiveRecord::Base
   belongs_to :user
   attr_accessible :title, :start_at, :end_at, :allDay, :description, :repeats, :user_id, :frequency
   # scope :between, lambda {|start_time, end_time| {:conditions => ["? < starts_at and starts_at < ?", Event.format_date(start_time), Event.format_date(end_time)] }}
-  before_save :process_before_save
-
-  def process_before_save
-    start_at = self.start_at.utc
-    end_at = self.end_at.utc
-  end
+ 
   def create_similar_events()        
     case self.repeats
       when "Daily"

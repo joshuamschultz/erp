@@ -16,13 +16,13 @@
           </div>          
           <div class="control-group">
             <label for="username" class="control-label">Start At</label>
-            <div class="controls "><%= f.datetime_select :start_at, :class=>"span12" %></div>
+            <div class="controls "><%= f.datetime_select :start_at, :class=>"span12", :default => Time.zone.now%></div>
           </div>          
         </div>        
         <div class="span6 events_datetime">
           <div class="control-group">
             <label for="password" class="control-label">End At</label>
-            <div class="controls"><%= f.datetime_select :end_at, :class=>"span12" %></div>
+            <div class="controls"><%= f.datetime_select :end_at, :class=>"span12", :default => Time.zone.now %></div>
           </div>                          
         <div class="control-group">
           <label for="email" class="control-label">Repeats</label>
@@ -54,5 +54,3 @@
     width: 200px !important;
   }
 </style>
-
-  
