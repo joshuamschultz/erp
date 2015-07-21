@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   include RoleModel
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes,
-  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id
+  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id, :time_zone
 
   roles_attribute :roles_mask
 
