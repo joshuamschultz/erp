@@ -825,7 +825,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 
 
 
-				 </section></div><div style="page-break-after:always;">&nbsp; </div>'
+				 </section></div><div style="page-break-after:always;"> </div>'
 			end
 
 			if len == index+1 && i != 4 
