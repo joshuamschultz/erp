@@ -15,14 +15,10 @@ class PoShipment < ActiveRecord::Base
 
   before_save :process_before_save
 
-  def process_before_save
-      if self.po_line.po_header.po_type.type_value == 'transer'        
-        lot = QualityLot.find(self.po_line.quality_lot_id)
-        item_1_cost = lot.present? && lot.po_line.present? && lot.po_line.po_line_cost.present? ? lot.po_line.po_line_cost : 0
-        self.po_shipped_cost = self.po_shipped_count.to_f * (self.po_line.po_line_cost + item_1_cost)
-      else
+  def process_before_save     
+     
         self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
-      end
+      
 
       unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
           self.po_shipped_status = "received"

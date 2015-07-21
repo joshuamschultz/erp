@@ -17,6 +17,11 @@
 
                 <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
+                <% @item_revisions = ((@so_line.persisted? && @so_line.item.present?) ? @so_line.item.item_revisions : "") %>
+                <% selected_item_revision = ((@so_line.persisted? && @so_line.item_revision.present?) ? @so_line.item_revision : "") %>
+
+                <%= f.input :item_revision_id, :collection =>  @item_revisions.map{ |i| [i.item_revision_name, "#{i.id}"]}, :label => "Revision", :selected => selected_item_revision %>              
+
                 <%= f.input :so_line_cost, :label => "Cost" %>     
 
                 <%= f.input :so_line_sell, :label => "Sell" %>        
@@ -89,6 +94,9 @@
                 <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
                 <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
+
+                
+                <%= f.input :item_revision_id, :label => "Revision", :collection => [""] %>         
 
                 <%= f.input :so_line_cost, :label => "Cost" %>     
 
@@ -184,6 +192,7 @@
             if (code === 9 || code ===13) {  
                 $('#so_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_alt_name", "value": $('#so_line_item_alt_name_id').val()}}, "get_alt_name_id", {}); 
+
             }
         }); 
         $('#so_line_po').keydown(function(e) {
@@ -222,9 +231,12 @@
         <% if @so_line.new_record? %>
             $("#so_line_item_alt_name_id").on("focusout", function(){
                 if($("#alt_name_id").val() != "")
-                    initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+
+                    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_revisions", "value": $('#so_line_item_alt_name_id').val()}}, "get_item_revisions", {}); 
+
                 else if($("#org_alt_name_id").val() != "")
-                    initialize_api_call({"url": "/item_alt_names/" + $("#org_alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+                   initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_revisions", "value": $('#so_line_item_alt_name_id').val()}}, "get_item_revisions", {}); 
+
                 else{
                     $("#so_line_so_line_cost").val("");
                     calculate_line_item_total();
@@ -248,9 +260,24 @@
         $("#so_line_po").focusout(function(){
              get_po_identifier();
         });
+
+
         get_vendor_po();
     });  
- 
+    $("#so_line_item_revision_id").change(function(){
+             initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_revision", "value": $('#so_line_item_revision_id').val()}}, "set_item_revision_cost", {}); 
+           
+           
+        });
+    function set_item_revision_cost(response, callback_params, api_params)
+    {
+
+        $("#so_line_so_line_cost").val(response.aaData.item_cost);
+        if(response.item_sell) 
+            $("#so_line_so_line_sell").val(response.aaData.item_sell);
+        calculate_line_item_total();
+        return false;
+    }
     function get_alt_name_id(response){
         var alt_id_val = JSON.stringify(response.aaData.id);
         $("#alt_name_id").val(alt_id_val);
@@ -266,13 +293,18 @@
             $("#so_line_so_line_price").val("");
     }
 
-    function set_item_revision_cost(response, callback_params, api_params){
-        $("#so_line_so_line_cost").val(response.item_cost);
-        if(response.item_sell) 
-            $("#so_line_so_line_sell").val(response.item_sell);
-        calculate_line_item_total();
+    function get_item_revisions(response, callback_params, api_params){
+        // revisions = JSON.stringify(response.aaData));
+        $("#so_line_item_revision_id").empty();
+        $("#so_line_item_revision_id").append(
+        $('<option></option>').val("").html("Select Revision"));
+        for (var i = 0; i < response.aaData.length; i++) { 
+            $("#so_line_item_revision_id").append(
+        $('<option></option>').val(response.aaData[i].id).html(response.aaData[i].item_revision_name));
+        }
         return false;
     }
+
     function get_po_identifier()
     {
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_po_header", "po_identifier": $('#so_line_po').val()}}, "set_po_identifier", {}); 

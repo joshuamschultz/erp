@@ -11,6 +11,11 @@ class ApplicationController < ActionController::Base
 
 
   before_filter :set_current_user
+  around_filter :set_time_zone
+  
+  def set_time_zone(&block)
+    Time.use_zone(current_user.time_zone, &block)
+  end
 
   def set_current_user
     User.current_user = current_user
