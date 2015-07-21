@@ -47,6 +47,8 @@ class CommonActionsController < ApplicationController
                   result = "http://erp.chessgroupinc.com/organizations/"+notification.notable.id.to_s
                 elsif notification.notable_type == "QualityAction"
                   result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
+                elsif notification.notable_type == "Event"
+                  result = "#{RAILS_ROOT}/events/"+notification.notable.id.to_s  
                 end
 
                 result 
@@ -145,6 +147,17 @@ class CommonActionsController < ApplicationController
                 item =  Item.find_by_item_part_no(params[:value])
                 alt_name_item = item.item_alt_names.first
                 result = alt_name_item              
+              end
+            when "get_revisions"
+              if params[:value].present?
+                item =  Item.find_by_item_part_no(params[:value])
+                revisions = item.item_revisions
+                result = revisions             
+              end
+            when "get_item_revision"
+              if params[:value].present?
+                item_revision =  ItemRevision.find(params[:value])                
+                result = item_revision            
               end
 
             when "get_location"
