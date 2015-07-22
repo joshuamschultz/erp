@@ -5,32 +5,22 @@
   <div class="widget-body">     
     <div class="row-fluid">      
         <div class="span6 events_datetime">              
-          <%= form_for(@event) do |f| %>  
-          <div class="control-group">
-            <label for="firstname" class="control-label">Title</label>
-            <div class="controls"><%= f.text_field :title, :class=>"span12" %></div>
-          </div>
-          <div class="control-group">
-            <label for="lastname" class="control-label">Description</label>
-            <div class="controls"><%= f.text_area :description, :class=>"span12" %> </div>
-          </div>          
-          <div class="control-group">
-            <label for="username" class="control-label">Start At</label>
-            <div class="controls "><%= f.datetime_select :start_at, :class=>"span12", :default => Time.zone.now%></div>
-          </div>          
+         <%= simple_form_for(@event, :html => {:id => "form_for_events",:class => "form-horizontal"}) do |f| %>
+         <%= f.error_notification %>  
+
+          <%= f.input :title, :label => "Title", :required => true %>
+
+          <%= f.input :description, :label => "Description", :max => 500  %>
+          <%= f.input :start_at, :label => "Start At" , :default => Time.zone.now%>
         </div>        
         <div class="span6 events_datetime">
-          <div class="control-group">
-            <label for="password" class="control-label">End At</label>
-            <div class="controls"><%= f.datetime_select :end_at, :class=>"span12", :default => Time.zone.now %></div>
-          </div>                          
-        <div class="control-group">
+         <%= f.input :end_at, :label => "End At" , :default => Time.zone.now %>                 
           <label for="email" class="control-label">Repeats</label>
           <div class="controls rrr"><%= f.select :repeats, options_for_select([["Do not Repeat", ""], "Daily","Weekly", "Monthly", "Yearly"]), :class=>"span12 " %> </div>
-        </div>
-        <div class="control-group">
+        
+        <div class="control-group" id="frequency_div">
           <label for="frequency" class="control-label">No. Of Occurence</label>
-          <div class="controls"><%= f.number_field :frequency, :class=>"span12" %></div>
+          <div class="controls"><%= f.number_field :frequency, :class=>"span12", :min => 1 %></div>
         </div>
         <%= f.hidden_field :user_id, :value => current_user.id %>
       </div>      
@@ -53,4 +43,28 @@
   .rrr select {
     width: 200px !important;
   }
+  .btn.btn-icon.btn-primary.glyphicons.circle_ok {
+    padding: 5px 15px;
+  }
 </style>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $("#frequency_div").hide();
+  <% if @event.present? %>
+    $("#event_repeats").val("<%= @event.repeats%>");  
+    <% if @event.repeats != "" %>
+      $("#frequency_div").show();
+    <% end %>
+  <% end %>
+  $("#event_repeats").on('change', function(){
+    if($("#event_repeats").val()!= "")
+    {
+      $("#frequency_div").show();
+    }
+    else
+    {
+      $("#frequency_div").hide();
+    }
+  });
+});
+</script>
