@@ -16,21 +16,23 @@
 
     <div class="span12"> 
         <div class="row-fluid item_detail_classic_btn">
-            <div class="span3 well">
-                <a class="widget-stats" href="#" id="">
-                    <h5><strong><%= @item.qty_on_hand %></strong></h5>
-                    <span class="txt"><strong>Quantity On Hand</strong></span>
-                    <div class="clearfix"></div>
-                </a>
-            </div>
+            <% unless  user_signed_in? &&  current_user.is_customer? %>
+                <div class="span3 well">
+                    <a class="widget-stats" href="#" id="">
+                        <h5><strong><%= @item.qty_on_hand %></strong></h5>
+                        <span class="txt"><strong>Quantity On Hand</strong></span>
+                        <div class="clearfix"></div>
+                    </a>
+                </div>
 
-            <div class="span2 well">
-                <a class="widget-stats" href="#" id="">
-                    <h5><strong><%= @item.qty_on_order %></strong></h5>
-                    <span class="txt"><strong>Quantity On Order</strong></span>
-                    <div class="clearfix"></div>
-                </a>
-            </div> 
+                <div class="span2 well">
+                    <a class="widget-stats" href="#" id="">
+                        <h5><strong><%= @item.qty_on_order %></strong></h5>
+                        <span class="txt"><strong>Quantity On Order</strong></span>
+                        <div class="clearfix"></div>
+                    </a>
+                </div> 
+            <% end %>
 
             <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
@@ -221,7 +223,7 @@
                         <% end %>        
                     </div>
                 </div>
-                <% unless current_user.is_customer? %>
+                <% unless user_signed_in? &&  current_user.is_customer? %>
                     <!-- Inventory Adjustments -->                
                     <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
                 <% end %>
