@@ -45,7 +45,7 @@
                 <td>Owner:</td>
                 <td><%= link_to @item_revision.owner.owner_identifier, owner_path(@item_revision.owner) if @item_revision.owner %></td>
               </tr>
-
+              <% unless  user_signed_in? &&  current_user.is_customer? %>  
               <tr>
                 <td>Vendor:</td>
                 <td><%= link_to @item_revision.organization.organization_short_name, organization_path(@item_revision.organization) if @item_revision.organization %></td>
@@ -55,7 +55,7 @@
                 <td>Quality:</td>
                 <td><%#= link_to @item_revision.vendor_quality.quality_name, vendor_quality_path(@item_revision.vendor_quality) if @item_revision.vendor_quality %></td>
               </tr> -->                           
-              <% unless  user_signed_in? &&  current_user.is_customer? %>  
+              
                 <tr>
                   <td>Tooling:</td>
                   <td><%= @item_revision.item_tooling %></td>
