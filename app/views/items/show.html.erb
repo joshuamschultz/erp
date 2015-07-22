@@ -221,12 +221,14 @@
                         <% end %>        
                     </div>
                 </div>
-
-                <!-- Inventory Adjustments -->
-                <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
+                <% unless current_user.is_customer? %>
+                    <!-- Inventory Adjustments -->                
+                    <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
+                <% end %>
 
             </div>
             <!-- // Tab content END -->
+
             
 
             
