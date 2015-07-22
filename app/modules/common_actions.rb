@@ -1224,11 +1224,11 @@ width: 134px;
 }
 .art-01.art-04.art-07 {
     border-bottom: medium none;
-    height: 458px;
+    height: 605px;
 }
 .art-01.art-04 {
     border-bottom: medium none;
-    min-height: 347px;
+    min-height: 478px;
 }
 </style>
 </head>
