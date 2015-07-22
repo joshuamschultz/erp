@@ -51,7 +51,13 @@
 <% inventory_amount = 0 %>
 <% @receivable.so_shipments.each do |so_shipment| %>
   <% if so_shipment.quality_lot && so_shipment.quality_lot.po_line %>
-    <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f * so_shipment.so_shipped_count %>
+    <% if so_shipment.quality_lot.po_line.po_header.po_type.type_value  == 'transer' %>
+         <% lot = QualityLot.find(so_shipment.quality_lot.po_line.quality_lot_id) %>
+        <% inventory_amount += (so_shipment.quality_lot.po_line.po_line_cost.to_f + lot.po_line.po_line_cost.to_f) * so_shipment.so_shipped_count %>
+    <% else %>
+        <% inventory_amount += so_shipment.quality_lot.po_line.po_line_cost.to_f * so_shipment.so_shipped_count %>
+    <% end %>
+
   <% elsif so_shipment.so_line  && so_shipment.so_line.so_line_cost %>   
       <% inventory_amount += so_shipment.so_line.so_line_cost.to_f * so_shipment.so_shipped_count %>
   <% end %>  
