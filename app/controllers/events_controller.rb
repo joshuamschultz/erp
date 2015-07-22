@@ -32,7 +32,8 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     respond_to do |format|
-      if @event.update_attributes(params[:event])
+      if @event.update_attributes(params[:event])                
+        # @event.create_similar_events 
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
         format.json { head :no_content }
       else
@@ -61,10 +62,11 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         @event.create_similar_events                    
-        format.html { redirect_to events_path, notice: 'your event was saved.' }
+        format.html { redirect_to events_path, notice: 'Event created successfully.' }
           format.json { head :no_content }
       else
-        render json: {msg: 'error: something go wrong.' }, status: 500
+        format.html { render :action => "new"  }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
   end
