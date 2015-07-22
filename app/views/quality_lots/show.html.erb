@@ -274,7 +274,7 @@
     
     <div class="span6">
     <% if can? :view, SoShipment %>
-      <%= render :partial => 'so_shipments/quality_lot_shipments', :locals => {open_path: quality_lot_path(@quality_lot, :shipment_type => "shipped"), closed_path: quality_lot_path(@quality_lot, :shipment_type => "history"), shipment_type: params[:shipment_type], create_receivable: false} %>
+      <%= render :partial => 'so_shipments/quality_lot_shipments', :locals => {open_path: quality_lot_path(@quality_lot, :shipment_type => ["shipped","ship_out"]), closed_path: quality_lot_path(@quality_lot, :shipment_type => ["shipped","ship_out"]), shipment_type: params[:shipment_type], create_receivable: false} %>
     <% end %>
     </div>
 
