@@ -55,17 +55,17 @@
                 <td>Quality:</td>
                 <td><%#= link_to @item_revision.vendor_quality.quality_name, vendor_quality_path(@item_revision.vendor_quality) if @item_revision.vendor_quality %></td>
               </tr> -->                           
+              <% unless  user_signed_in? &&  current_user.is_customer? %>  
+                <tr>
+                  <td>Tooling:</td>
+                  <td><%= @item_revision.item_tooling %></td>
+                </tr>
 
-              <tr>
-                <td>Tooling:</td>
-                <td><%= @item_revision.item_tooling %></td>
-              </tr>
-
-              <tr>
-                <td>Cost:</td>
-                <td>$<%= @item_revision.item_cost.to_f %></td>
-              </tr>
-
+                <tr>
+                  <td>Cost:</td>
+                  <td>$<%= @item_revision.item_cost.to_f %></td>
+                </tr>
+                <% end %>
               <tr>
                 <td>Print:</td>
                 <td>
