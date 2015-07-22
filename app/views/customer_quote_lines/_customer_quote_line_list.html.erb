@@ -26,7 +26,9 @@
                     <th>Tooling</th>
                     <th>Lead Time</th>
                     <th>Total</th>
-                    <th>Vendor quote</th>
+                    <% unless  user_signed_in? &&  current_user.is_customer? %> 
+                        <th>Vendor quote</th>
+                    <% end %>
                     <th></th>
                 </tr>
             </thead>
@@ -35,20 +37,37 @@
         </table>
     </div>
 </div>
-
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report_customer_quote_line_list", :path => customer_quote_customer_quote_lines_path(@customer_quote), :extras => {:slno => false },
-        :columns => '[
-                        { "mData": "item_part_no" },
-                        { "mData": "customer_quote_line_quantity" },
-                        { "mData": "customer_quote_line_cost"},
-                        { "mData": "customer_quote_line_description"},
-                        { "mData": "customer_quote_line_tooling_cost"},
-                        { "mData": "lead_time" },
-                        { "mData": "customer_quote_line_total" },
-                        { "mData": "quote_vendor_name" },
-                        { "mData": "links" }                       
-                    ]'
-    } 
-%>
+ <% unless  user_signed_in? &&  current_user.is_customer? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report_customer_quote_line_list", :path => customer_quote_customer_quote_lines_path(@customer_quote), :extras => {:slno => false },
+            :columns => '[
+                            { "mData": "item_part_no" },
+                            { "mData": "customer_quote_line_quantity" },
+                            { "mData": "customer_quote_line_cost"},
+                            { "mData": "customer_quote_line_description"},
+                            { "mData": "customer_quote_line_tooling_cost"},
+                            { "mData": "lead_time" },
+                            { "mData": "customer_quote_line_total" },
+                            { "mData": "quote_vendor_name" },
+                            { "mData": "links" }                       
+                        ]'
+        } 
+    %>
+<% else %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {
+            :name => "table_report_customer_quote_line_list", :path => customer_quote_customer_quote_lines_path(@customer_quote), :extras => {:slno => false },
+            :columns => '[
+                            { "mData": "item_part_no" },
+                            { "mData": "customer_quote_line_quantity" },
+                            { "mData": "customer_quote_line_cost"},
+                            { "mData": "customer_quote_line_description"},
+                            { "mData": "customer_quote_line_tooling_cost"},
+                            { "mData": "lead_time" },
+                            { "mData": "customer_quote_line_total" },
+                            { "mData": "links" }                       
+                        ]'
+        } 
+    %>
+<% end %>
