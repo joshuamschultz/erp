@@ -172,7 +172,7 @@
 
 
   <div class="span2"> 
-  <% if can? :edit, QualityLot %>
+  <% if can? :view, QualityLot %>
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
             <a class="widget-stats" href="<%= quality_lot_materials_path(quality_lot_id: @quality_lot.id) %>" id="">
@@ -221,17 +221,18 @@
     <br>
     <br>
 
-   
+    <% if user_signed_in? &&  !current_user.is_vendor? %>
 
-    <div class="row-fluid item_detail_classic_btn">
+      <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
-            <a class="widget-stats" href="#" id="" onclick="material_report()">
-                <h5><strong>Inspection <br />  Report</strong></h5>
-                <!-- <span class="txt"><strong>Process Capability</strong></span> -->
-                <div class="clearfix"></div>
-            </a>
+          <a class="widget-stats" href="#" id="" onclick="material_report()">
+          <h5><strong>Inspection <br />  Report</strong></h5>
+          <!-- <span class="txt"><strong>Process Capability</strong></span> -->
+          <div class="clearfix"></div>
+          </a>
         </div>
-    </div>
+      </div>
+    <% end %>
 
 
 <!--     <div class="row-fluid item_detail_classic_btn">
