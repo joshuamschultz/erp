@@ -561,7 +561,7 @@ module CommonActions
 		@so_header.so_lines.each_with_index do |so_line, index|
 			item_part_no = so_line.item.item_part_no
 			item_alt_name = so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier ? so_line.item_alt_name.item_alt_identifier : ''
-			item_description = so_line.item_revision.item_description if so_line.item_revision.present?
+			item_description = so_line.item_revision.present? ? so_line.item_revision.item_description : so_line.item.item_revisions.last.item_description
 			so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
 			if i== 1  
 				content += '<div class="ms_wrapper"><section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
