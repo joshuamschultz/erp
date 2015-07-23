@@ -24,7 +24,16 @@ protected
     @lot_quantity =@quality_lot.lot_quantity + self.inventory_adjustment_quantity
     @quantity_on_hand =@quality_lot.quantity_on_hand + self.inventory_adjustment_quantity
     @quality_lot.update_attribute(:lot_quantity , @lot_quantity)
-    @quality_lot.update_attribute(:quantity_on_hand , @quantity_on_hand)
+    final_date = Time.now
+    lot_status = "open"
+    finished = false
+    if @quantity_on_hand == 0
+      final_date = Time.now
+      lot_status = "closed"
+      finished = true
+    end
+
+    @quality_lot.update_attributes(quantity_on_hand: @quantity_on_hand, lot_status: lot_status, final_date: final_date,finished: finished)
   end
   def before_create_process 
     self.item_id = item_no
