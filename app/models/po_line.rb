@@ -167,7 +167,7 @@ end
           
       elsif self.po_header.po_is?("transer")
           so_line = self.so_line.present? ? self.so_line : SoLine.new
-          so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+          so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id ,so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
           self.po_header.so_header.update_attributes(organization_id: self.organization_id)
           self.so_line_id = so_line.id
       end

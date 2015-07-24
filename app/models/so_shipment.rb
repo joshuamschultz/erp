@@ -32,35 +32,36 @@ class SoShipment < ActiveRecord::Base
   before_save :process_before_save
 
   def process_before_save
-      self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
-      self.so_header_id = self.so_line.so_header.id
-      unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
-        self.so_shipped_status = (self.so_line.so_header.po_header.present? && self.so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
+    self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
+    self.so_header_id = self.so_line.so_header.id
+    unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
+      self.so_shipped_status = (self.so_line.so_header.po_header.present? && self.so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
 
 
-        unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
-          self.shipment_process_id = "S00001"      
-        else
+      unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
+        self.shipment_process_id = "S00001"      
+      else
           so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['ship_in','process','ship_close'])
-          if so_shipment_process.count >= 1
-            so_shipment = so_shipment_process.last
-            unless so_shipment.shipment_process_id.present?                          
-              self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")
-            else
-              self.shipment_process_id = so_shipment.shipment_process_id
-            end
+        if so_shipment_process.count >= 1
+          so_shipment = so_shipment_process.last
+          unless so_shipment.shipment_process_id.present?                          
+            self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")
           else
-            self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")         
-            # last_shipment = SoShipment.last
-            # if last_shipment.present? && last_shipment.shipment_process_id.present?
-            #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
-            #   self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
-            # else
-            #   self.shipment_process_id = 'S'+1.to_s
-            # end
-          end          
-        end
+            self.shipment_process_id = so_shipment.shipment_process_id
+          end
+        else
+          self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")         
+        # last_shipment = SoShipment.last
+        # if last_shipment.present? && last_shipment.shipment_process_id.present?
+        #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
+        #   self.shipment_process_id = 'S'+(1 + shipment_process_id).to_s
+        # else
+        #   self.shipment_process_id = 'S'+1.to_s
+        # end
+        end          
       end
+    end
+  
   end
 
   after_save :set_so_line_status
@@ -123,9 +124,13 @@ class SoShipment < ActiveRecord::Base
       quality_lot = self.quality_lot
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
       quality_lot.quantity_on_hand = quality_lot.quantity_on_hand - self.so_shipped_count
+
+     
       if quality_lot.quantity_on_hand <= 0
         quality_lot.finished = true
         quality_lot.lot_finalized_at = Date.today.to_s
+        quality_lot.lot_status = "closed"
+        quality_lot.final_date = Time.now
       end
       if quality_lot.save(:validate => false)
         p quality_lot.to_yaml
@@ -137,8 +142,9 @@ class SoShipment < ActiveRecord::Base
     if shipment.quality_lot_id.present?
       quality_lot = QualityLot.find(shipment.quality_lot)
       if quality_lot.present?
-        quality_lot.quantity_on_hand += shipment.so_shipped_count
-        quality_lot.save
+          quantity_on_hand = quality_lot.quantity_on_hand += shipment.so_shipped_count
+          quality_lot.update_attributes(lot_status: 'open', quantity_on_hand:  quantity_on_hand, finished: false)
+        # quality_lot.save
       end
     end
   end

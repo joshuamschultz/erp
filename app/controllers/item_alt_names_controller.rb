@@ -3,7 +3,14 @@ class ItemAltNamesController < ApplicationController
   before_filter :set_autocomplete_values, only: [:create, :update]
   autocomplete :item_alt_name, :item_alt_identifier, :display_value => :alt_item_name
   before_filter :user_permissions, only: [:create, :show, :edit]
+  before_filter :unauthorized
 
+  def unauthorized
+    if  user_signed_in? && current_user.is_customer? 
+      authorize! :edit, ItemAltName
+    end 
+  end
+  
   def user_permissions
    if  user_signed_in? && current_user.is_vendor? 
         authorize! :edit, ItemAltName

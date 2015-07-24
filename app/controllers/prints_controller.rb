@@ -6,7 +6,7 @@ class PrintsController < ApplicationController
 
 
   def user_permissions
-   if  user_signed_in? && current_user.is_vendor? 
+   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?) 
         authorize! :edit, Print
     end 
   end
