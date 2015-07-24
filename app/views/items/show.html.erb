@@ -222,9 +222,10 @@
                     </div>
                 </div>
 
+                <% if  user_signed_in? &&  !current_user.is_vendor? %>
                 <!-- Inventory Adjustments -->
-                <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
-
+                    <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
+                <% end %>
             </div>
             <!-- // Tab content END -->
             
