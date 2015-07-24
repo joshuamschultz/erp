@@ -68,6 +68,18 @@
     var vendor_fields = ["organization_vendor_quality_id", "organization_vendor_expiration_date"];    
 
     $(document).ready(function(){ 
+
+        <% user = 'false' %>
+        <% if user_signed_in? &&  !current_user.is_vendor? %>
+            <% user = 'true' %>
+        <% end %>
+        var current_user = <%= user %> 
+        if (current_user == false)
+        {
+            window.location = "/permissions/error";
+        }
+
+
         $('.organization_type_option').on('change', function(){  
             organization_type_changed($('.organization_type_option:checked').parent().text());
         });

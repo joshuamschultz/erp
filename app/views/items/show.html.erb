@@ -223,10 +223,11 @@
                         <% end %>        
                     </div>
                 </div>
-                <% unless user_signed_in? &&  current_user.is_customer? %>
+                <% if user_signed_in? &&  !current_user.is_customer? &&  !current_user.is_vendor? %>
                     <!-- Inventory Adjustments -->                
                     <%= render :partial => 'inventory_adjustments/inventory_adjustments' %>
                 <% end %>
+
 
             </div>
             <!-- // Tab content END -->

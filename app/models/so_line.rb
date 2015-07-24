@@ -60,7 +60,8 @@ class SoLine < ActiveRecord::Base
   end
 
   def generate_pdf
-    html = CommonActions.sales_report(self.so_header.id)+'<style>.de{margin: 35px 0 0; min-height: 565px;}.sal_tab2 {height: 705px;}</style>'
+    html = CommonActions.sales_report(self.so_header.id)+'<style>.de{margin: 35px 0 0; min-height: 545px;}.sal_tab2 {height: 755px;}</style>'
+    
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
     # end

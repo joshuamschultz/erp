@@ -293,7 +293,11 @@ class CommonActionsController < ApplicationController
 
                     so_shipment_process.group(:so_line_id).each_with_index do |shipment, index| 
                       item_part = (shipment.so_line.po_line.present? && shipment.so_line.po_line.process_type_id.present?) ? ProcessType.find(shipment.so_line.po_line.process_type_id).process_short_name : shipment.so_line.item.item_part_no
-                      item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present? 
+                      if shipment.so_line.item_revision.present?
+                        item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present?
+                      else
+                        item_desc =  shipment.so_line.item.item_revisions.last.item_description if  shipment.so_line.item.item_revisions.last.item_description.present?
+                      end
                       item_qty = shipment.so_line.so_line_quantity.to_s
                       item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
                       # item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
