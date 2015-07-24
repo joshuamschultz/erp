@@ -96,8 +96,8 @@ function updateEvent(the_event) {
     data: 
     { 
       event: { title: the_event.title,
-               start_at: "" + the_event.start,
-               end_at: "" + the_event.end              
+               start_at: "" + the_event.start.toISOString(),
+               end_at: "" + the_event.end.toISOString()              
 
          }
     },

@@ -85,7 +85,7 @@ class SoShipmentsController < ApplicationController
                   if params[:type].present?
                     @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@quality_lot.so_shipments).order("created_at desc") : SoShipment.open_shipments(@quality_lot.so_shipments).order("created_at desc")
                   else     
-                    @so_shipments = @quality_lot.so_shipments.where(:so_shipped_status => "shipped")  
+                    @so_shipments = @quality_lot.so_shipments.where(:so_shipped_status => ["shipped","ship_out"])  
                   end
 
             else
