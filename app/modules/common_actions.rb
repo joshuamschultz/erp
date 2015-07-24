@@ -410,24 +410,6 @@ module CommonActions
 			end
 		end
 
-		events =  Event.find(:all, :conditions => ["start_at <= ? and start_at > ?", Time.now.advance(:hours => 1), Time.now])
-		events.each do |event|
-			if event.present? 
-				notification = Notification.where("notable_id =? AND notable_type =? AND user_id =? ", event.id, "Event", user.id)		
-			    if notification.present?			    	
-			    	if notification.first.note_status == 'unread' 
-				    	temp = "<li id="+notification.first.id.to_s+"><a href='/events/"+event.id.to_s+"' class='glyphicons bell'><i></i>An event "+event.title.to_s+" within one hour</a></li>"	
-				    	source += temp
-				    end	
-			    else
-			    	notification = Notification.create(notable_id: event.id, notable_type:  "Event", note_status:  "unread", user_id:  user_id)
-    				notification.save
-    				temp = "<li id="+notification.id.to_s+"><a href='/events/"+event.id.to_s+"' class='glyphicons bell'><i></i>An event "+event.title.to_s+ " within one hour</a></li>"	
-			    	source += temp
-			    end	
-			end
-		end
-
 		if User.current_user.present? && User.current_user.is_quality?
 		 	vendor_organizations = Organization.where("vendor_expiration_date >= ? AND vendor_expiration_date <= ? AND organization_type_id = ?",Date.today, Date.today+29, 6)
 		 	vendor_organizations.each do |vendor_organization|
@@ -579,7 +561,7 @@ module CommonActions
 		@so_header.so_lines.each_with_index do |so_line, index|
 			item_part_no = so_line.item.item_part_no
 			item_alt_name = so_line.item.item_part_no != so_line.item_alt_name.item_alt_identifier ? so_line.item_alt_name.item_alt_identifier : ''
-			item_description = so_line.item_revision.item_description if so_line.item_revision.present?
+			item_description = so_line.item_revision.present? ? so_line.item_revision.item_description : so_line.item.item_revisions.last.item_description
 			so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
 			if i== 1  
 				content += '<div class="ms_wrapper"><section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
@@ -616,9 +598,8 @@ module CommonActions
 			end
 		end
 		content
-		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:159px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:410px}.sal_tab2{height:600px}</style>#{content}'
+		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:159px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:420px}.sal_tab2{height:628px}</style>#{content}'
 	end
-
 	def self.purchase_report(po_id)
 		content = product_notes  = product_description = po_line_comment = product1 = product2 = ''
 		i,j,flag,flag2 = 1,1,1,1
@@ -825,7 +806,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 
 
 
-				 </section></div><div style="page-break-after:always;">&nbsp; </div>'
+				 </section></div><div style="page-break-after:always;"> </div>'
 			end
 
 			if len == index+1 && i != 4 
@@ -1243,11 +1224,11 @@ width: 134px;
 }
 .art-01.art-04.art-07 {
     border-bottom: medium none;
-    height: 458px;
+    height: 575px;
 }
 .art-01.art-04 {
     border-bottom: medium none;
-    min-height: 347px;
+    min-height: 448px;
 }
 </style>
 </head>

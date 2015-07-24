@@ -145,6 +145,17 @@
 
 <script type="text/javascript">
     $(document).ready(function(){ 
+        <% user = 'false' %>
+        <% if user_signed_in? &&  !current_user.is_vendor? %>
+            <% user = 'true' %>
+        <% end %>
+        var current_user = <%= user %> 
+        if (current_user == false)
+        {
+            window.location = "/permissions/error";
+        }
+
+
         var length = $(".select2-choices li").map(function() { return $(this).text() }).get().length;
         $("#organization_tags").select2({tags:<%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
 

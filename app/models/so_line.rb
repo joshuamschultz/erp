@@ -11,7 +11,7 @@ class SoLine < ActiveRecord::Base
   attr_accessible :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity, 
   :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
   :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped, :so_line_sell,
-  :so_line_vendor_po, :po_header_id, :po
+  :so_line_vendor_po, :po_header_id, :po, :item_revision_id
 
   validates_presence_of :so_header, :item_alt_name, :so_line_cost, :so_line_quantity
 
@@ -33,7 +33,7 @@ class SoLine < ActiveRecord::Base
   def update_item_total
       self.so_line_price = (self.so_line_sell.round(10) * self.so_line_quantity.round(10)) #+ self.so_line_freight.round(10)
       self.item = self.item_alt_name.item
-      self.item_revision = self.item_alt_name.item.current_revision
+      # self.item_revision = self.item_alt_name.item.current_revision
   end
 
   after_save :update_so_total
@@ -60,7 +60,8 @@ class SoLine < ActiveRecord::Base
   end
 
   def generate_pdf
-    html = CommonActions.sales_report(self.so_header.id)+'<style>.de{margin: 35px 0 0; min-height: 565px;}.sal_tab2 {height: 755px;}</style>'
+    html = CommonActions.sales_report(self.so_header.id)+'<style>.de{margin: 35px 0 0; min-height: 545px;}.sal_tab2 {height: 755px;}</style>'
+    
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
     # end

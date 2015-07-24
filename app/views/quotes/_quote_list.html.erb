@@ -20,7 +20,7 @@
                     <% if @organization.present? %>
                         <th>Index</th>
                         <th>Quote</th>
-                        <th>Vendors</th>
+                        <th>Vendors</th> 
                         <th>Items</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -49,6 +49,11 @@
         </table>
     </div>
 </div>
+<% hide_column = 'false' %>
+<% if user_signed_in? &&  !current_user.is_vendor? %>
+    <% hide_column = 'true' %>
+
+<% end %>
 <% if @item.present? %>
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_quote_list", 
@@ -57,7 +62,7 @@
             :columns => '[
                             { "mData": "index","bVisible": false},
                             { "mData": "quote_group_id" },
-                            { "mData": "vendor_name" },
+                            { "mData": "vendor_name", "bVisible": '+hide_column.to_s+' },
                             { "mData": "price" },
                             { "mData": "quantity"},
                             { "mData": "notes"},
@@ -73,7 +78,7 @@
             :columns => '[
                             { "mData": "index", "bVisible": false},
                             { "mData": "quote_group_id" },
-                            { "mData": "vendor_name" },
+                            { "mData": "vendor_name", "bVisible": '+hide_column.to_s+' },
                             { "mData": "part_no"},
                             { "mData": "price" },
                             { "mData": "quantity"},
@@ -90,7 +95,7 @@
             :columns => '[
                         { "mData": "index","bVisible": false},
                         { "mData": "quote_group_id" },
-                        { "mData": "vendor_name" },
+                        { "mData": "vendor_name", "bVisible": '+hide_column.to_s+' },
                         { "mData": "quote_description" },
                         { "mData": "quote_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false },                       
