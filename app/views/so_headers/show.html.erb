@@ -18,6 +18,7 @@
         <%= render :partial => 'so_headers/so_header_info' %>
     </div>
     <div class="span9">
+      <% unless user_signed_in? && current_user.is_customer? %> 
         <div class="row-fluid">
             <div class="span4 well">
                 <a class="widget-stats" id="alt_address_btn" data-toggle="modal" href="#modal-simple" class="btn btn-small btn-success">
@@ -42,6 +43,7 @@
                   </a>
             </div>
         </div>
+      <% end %>
 
         <!-- Line Items -->
         <%= render :partial => 'so_lines/line_items' %>
@@ -57,9 +59,9 @@
 </div>
 
 <div class="separator bottom"></div>
-
-<%= render :partial => 'comments/comments', 
-:locals => {:extras => {:link => populate_so_header_path(type: "note", id: @so_header.id)}} %>
+<% unless user_signed_in? && current_user.is_customer? %>
+  <%= render :partial => 'comments/comments', :locals => {:extras => {:link => populate_so_header_path(type: "note", id: @so_header.id)}} %>
+<% end %>
 
 <script type="text/javascript">
 <% if can? :edit , SoHeader %>
