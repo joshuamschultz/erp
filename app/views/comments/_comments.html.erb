@@ -1,4 +1,4 @@
-<% if user_signed_in? &&  !current_user.is_vendor? %>
+<% if user_signed_in? &&  !current_user.is_vendor? && !current_user.is_customer? %>
 
     <h5>Comments : <span></span></h5>
     <div class="well"> 
