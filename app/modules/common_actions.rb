@@ -260,7 +260,7 @@ module CommonActions
   		if can? :view, RunAtRate
   			menus[:quality][:sub_menu].push({:path => run_at_rates_path, :name => "Run at Rate"})
   		end
-		if  user_signed_in? && !current_user.is_vendor? 
+		if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 	 	
 			menus[:quality][:sub_menu].push({:path => quality_actions_path, :name => "Quality Action"})
 		end
   		if can? :view, CauseAnalysis
@@ -274,15 +274,17 @@ module CommonActions
   		if can? :view, Gauge
   			menus[:quality][:sub_menu].push({:path => gauges_path, :name => "Instruments"})
   		end
-
-      if can? :view, Dimension
-        menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"})
+  		if  user_signed_in? && !current_user.is_customer?
+	      	if can? :view, Dimension
+	        	menus[:quality][:sub_menu].push({:path => dimensions_path, :name => "Dimension Types"})
+	    	end
     	end
 
       if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer?
        menus[:quality][:sub_menu].push({:path => customer_qualities_path, :name => "Quality Level"})
       end
-      if  user_signed_in? && !current_user.is_vendor? 
+      if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 	 	
+
       	menus[:quality][:sub_menu].push({:path => vendor_qualities_path, :name => "Quality ID"})
       end
 
@@ -295,7 +297,7 @@ module CommonActions
 				{:path => po_shipments_path(type: "history"), :name => "History"}
 			]
 		end
-		if  user_signed_in? && !current_user.is_vendor? 	
+		if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 	 	
 			menus[:reports] = {:class => "hasSubmenu glyphicons charts", :path => "#", :name => "Reports", :type => "multiple"}
 			menus[:reports][:sub_menu] = 	[
 				{:path => gauges_path(type: "gauge"), :name => "Gauge Calibration"},
@@ -315,7 +317,7 @@ module CommonActions
 
 
 		]
-		if  user_signed_in? && !current_user.is_vendor? 	
+		if  user_signed_in? && !current_user.is_vendor? && !current_user.is_customer? 	
 			menus[:system] = {:class => "hasSubmenu glyphicons cogwheels", :path => "#", :name => "System", :type => "multiple"}
 
 			menus[:system][:sub_menu] = 	[]

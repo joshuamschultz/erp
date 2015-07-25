@@ -9,13 +9,13 @@ class QualityActionsController < ApplicationController
   before_filter :user_permissions
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics?  || current_user.is_customer? )
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? )
         authorize! :edit, QualityAction
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_vendor? 
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, QualityAction
     end 
   end
