@@ -669,6 +669,7 @@ class CommonActionsController < ApplicationController
               if @quality_lot.present?
                 @po_shipment = @quality_lot.po_shipment
                 if @po_shipment.present?
+                  res["po_shipped_count"] = @po_shipment.po_shipped_count
                   res["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
                   res["shipped_status"] = @po_shipment.po_line.po_line_status   
                   res["part_number"] = @po_shipment.po_line.item.item_part_no
