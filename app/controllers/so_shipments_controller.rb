@@ -39,7 +39,8 @@ class SoShipmentsController < ApplicationController
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 default_status = (so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process"
-                so_line[:revision] = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : ''
+        
+                so_line[:revision] = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : so_line.item.item_revisions.last.item_revision_name
                 so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
