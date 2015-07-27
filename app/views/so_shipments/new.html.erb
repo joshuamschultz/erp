@@ -21,6 +21,9 @@
               	<th>SO</th>
                 <th>Part No</th>
                 <% unless params[:type1].present? && params[:type2].present? %>
+                    <th>Revision</th>
+                <% end %>
+                <% unless params[:type1].present? && params[:type2].present? %>
                     <th>Vendor</th>
                 <% end %>
                 <th>customer</th>
@@ -68,6 +71,7 @@
         				
                         { "mData": "so_identifier" }, 
                         { "mData": "item_part_no" },
+                        { "mData": "revision" },
                         { "mData": "vendor_name" },
                         { "mData": "customer_name" },     
                         { "mData": "so_line_quantity" },
