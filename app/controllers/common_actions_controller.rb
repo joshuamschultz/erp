@@ -21,6 +21,11 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
+            when "get_item_revision_cost"
+              if params[:id].present?
+                item_revision = ItemRevision.find(params[:id])
+                result = item_revision
+              end
             when "get_organizations"
                 result = Organization.all.each {|organization| organization[:organization_name] = organization.organization_name }
               
@@ -154,10 +159,11 @@ class CommonActionsController < ApplicationController
                 revisions = item.item_revisions
                 result = revisions             
               end
-            when "get_item_revision"
-              if params[:value].present?
-                item_revision =  ItemRevision.find(params[:value])                
-                result = item_revision            
+            when "get_item_revisions"
+              if params[:id].present?
+                item_alt_name = ItemAltName.find(params[:id])
+                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item.item_revisions : []
+                result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
               end
 
             when "get_location"
