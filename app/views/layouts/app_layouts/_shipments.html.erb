@@ -216,7 +216,7 @@ function print_jr100(response, callback_params, api_params)
 {
 	console.log(response["aaData"].company_name);
 	$("#jr100_company_name").html(response["aaData"].company_name);
-	$("#jr100_date").html(shipment_date);
+	$("#jr100_date").html('<%= Date.today.strftime("%m/%d/%Y") %>');
     $("#jr100_partno").html(response["aaData"].part_number);
     $("#jr100_quantity").html(response["aaData"].po_shipped_count);
     $("#jr100_po").html(response["aaData"].po);
