@@ -160,7 +160,7 @@ class CommonActionsController < ApplicationController
             when "get_item_revisions"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
-                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item.item_revisions : []
+                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item.item_revisions.order("created_at  desc"): []
                 result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
               end
 
