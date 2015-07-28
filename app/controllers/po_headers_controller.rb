@@ -59,6 +59,7 @@ class PoHeadersController < ApplicationController
       end
 
       @po_headers = @po_headers.status_based_pos(params[:po_status]).order("created_at desc")  if params[:po_status].present? && @po_headers.any?
+   
   end
 
   # GET /po_headers
@@ -72,6 +73,11 @@ class PoHeadersController < ApplicationController
       format.html # index.html.erb
       format.json { 
           i = 0
+
+          if  user_signed_in? && current_user.is_vendor?
+            organization_ids = current_user.organizations.collect(&:id)
+            @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+          end
           @po_headers = @po_headers.select{|po_header|
               po_header[:index] = i 
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)

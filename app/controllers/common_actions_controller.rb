@@ -26,9 +26,7 @@ class CommonActionsController < ApplicationController
                 item_revision = ItemRevision.find(params[:id])
                 result = item_revision
               end
-            when "get_organizations"
-                result = Organization.all.each {|organization| organization[:organization_name] = organization.organization_name }
-              
+                            
             when "get_process_types_po"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
