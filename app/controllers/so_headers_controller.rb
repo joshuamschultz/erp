@@ -71,7 +71,11 @@ class SoHeadersController < ApplicationController
       respond_to do |format|
         format.html # index.html.erb
         format.json {     
-          i = 0    
+          i = 0   
+          po_type = MasterType.find_by_type_value('transer')
+          so_ids = PoHeader.where("po_type_id =? ",po_type.id).collect(&:so_header_id)
+          @so_headers = @so_headers.delete_if {|entry| so_ids.include? entry[:id]}
+
           @so_headers = @so_headers.select{|so_header|          
             so_header[:index] = i
             so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
