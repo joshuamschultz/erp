@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
   has_many :quality_actions_users, :dependent => :destroy
   has_many :quality_actions, :through => :quality_actions_users
 
+  has_many :organization_users, :dependent => :destroy
+  has_many :organizations, :through => :organization_users
+
+
   has_many :quotes
   validates_presence_of :email, :name
 
@@ -61,6 +65,22 @@ class User < ActiveRecord::Base
     def current_user
       Thread.current[:current_user]
     end
+  end
+
+
+  def self.user_organizations_associations(user, params)
+        if user
+
+          organizations = params[:organizations] || []
+          user.organization_users.where(:organization_id != organizations).destroy_all
+          if organizations
+              organizations.each do |organization_id|
+                unless user.organization_users.find_by_organization_id(organization_id)
+                    user.organization_users.new(:organization_id => organization_id).save
+                end
+              end
+          end
+        end
   end
 
 end

@@ -21,9 +21,12 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? ? item_alt_name.item.quality_lots : []
                 result = result.each {|line| line[:lot_control_no] = line.lot_control_no }
               end
-            when "get_organizations"
-                result = Organization.all.each {|organization| organization[:organization_name] = organization.organization_name }
-              
+            when "get_item_revision_cost"
+              if params[:id].present?
+                item_revision = ItemRevision.find(params[:id])
+                result = item_revision
+              end
+                            
             when "get_process_types_po"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
@@ -154,10 +157,11 @@ class CommonActionsController < ApplicationController
                 revisions = item.item_revisions
                 result = revisions             
               end
-            when "get_item_revision"
-              if params[:value].present?
-                item_revision =  ItemRevision.find(params[:value])                
-                result = item_revision            
+            when "get_item_revisions"
+              if params[:id].present?
+                item_alt_name = ItemAltName.find(params[:id])
+                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item.item_revisions.order("created_at  desc"): []
+                result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
               end
 
             when "get_location"
@@ -256,7 +260,7 @@ class CommonActionsController < ApplicationController
               if params[:shipment_process_id].present?
                   so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close','ship_in'])
                   so_shipment = {}
-                  item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = content = so_total =  notes = cusomter_po = ""
+                  item_revision = item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = content = so_total =  notes = cusomter_po = ""
                   so_b_c_title = so_b_c_address_1 = so_b_c_address_2 = so_b_c_state = so_b_c_country = so_b_c_zipcode = ''
                   so_s_c_title = so_s_c_address_1 = so_s_c_address_2 = so_s_c_state = so_s_c_country = so_s_c_zipcode = ''
                   if so_shipment_process.count > 0
@@ -295,14 +299,16 @@ class CommonActionsController < ApplicationController
                       item_part = (shipment.so_line.po_line.present? && shipment.so_line.po_line.process_type_id.present?) ? ProcessType.find(shipment.so_line.po_line.process_type_id).process_short_name : shipment.so_line.item.item_part_no
                       if shipment.so_line.item_revision.present?
                         item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present?
+                        item_revision = shipment.so_line.item_revision.item_revision_name if shipment.so_line.item_revision.item_revision_name.present?
                       else
                         item_desc =  shipment.so_line.item.item_revisions.last.item_description if  shipment.so_line.item.item_revisions.last.item_description.present?
+                        item_revision = shipment.so_line.item.item_revisions.last.item_revision_name if  shipment.so_line.item.item_revisions.last.item_revision_name.present?
                       end
                       item_qty = shipment.so_line.so_line_quantity.to_s
                       item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
                       # item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
                       item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
-                      temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
+                      temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td>'+item_revision+'</td> <td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
                       source += temp
 
                       if i== 1  
@@ -313,10 +319,10 @@ class CommonActionsController < ApplicationController
                         end
 
                         if flag2 ==1
-                          content += '<div class="b_content">  <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
+                          content += '<div class="b_content">  <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Revision</td> <td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
                           flag2=0;
                         else
-                          content += '<div class="c_content"> <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
+                          content += '<div class="c_content"> <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td> <td width="28%">Revision</td> <td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
                         end
                       end
 
