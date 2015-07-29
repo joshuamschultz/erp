@@ -132,6 +132,9 @@ class Organization < ActiveRecord::Base
   	has_many :group_organizations, :dependent => :destroy
   	has_many :customer_quotes, :dependent => :destroy
 
+  	has_many :organization_users, :dependent => :destroy
+  	has_many :users, :through => :organization_users
+
 
     # has_many :quotes, :through => :quotes_organizations
     # has_many :quotes

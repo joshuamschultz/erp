@@ -72,6 +72,15 @@ class QualityLotsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
+
+          if  user_signed_in? && current_user.is_vendor?
+            @po_headers  = PoHeader.all
+            organization_ids = current_user.organizations.collect(&:id)
+            @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+            @po_headers =   @po_headers.collect(&:id)
+            @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}  
+          end
+
           @quality_lots = @quality_lots.select{|quality_lot|
             quality_lot[:index] = i
 

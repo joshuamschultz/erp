@@ -205,7 +205,7 @@ class Receivable < ActiveRecord::Base
           end
         end
 
-        content += ' <tr class="h-pad" valign="top" align="left"><td>'+so_shipment.so_line.so_line_quantity.to_s+'</td><td> '+so_shipment.so_shipped_count.to_s+'</td><td><table width="100%" border="0">'+product1+''+product2+'</table></td>'+product_description+'<td> '+so_shipment.so_line.so_line_cost.to_s+'</td><td>'+so_shipment.so_shipped_cost.to_s+'</td></tr>'
+        content += ' <tr class="h-pad" valign="top" align="left"><td>'+so_shipment.so_line.so_line_quantity.to_s+'</td><td> '+so_shipment.so_shipped_count.to_s+'</td><td><table width="100%" border="0">'+product1+''+product2+'</table></td>'+product_description+'<td> '+so_shipment.so_line.so_line_sell.to_s+'</td><td>'+so_shipment.so_shipped_cost.to_s+'</td></tr>'
         
         if i==10 
           content += '</table></article>'
@@ -337,7 +337,7 @@ class Receivable < ActiveRecord::Base
           end
         end
 
-        content += ' <tr class="h-pad" valign="top" align="left"><td>'+so_shipment.so_line.so_line_quantity.to_s+'</td><td> '+so_shipment.so_shipped_count.to_s+'</td><td><table width="100%" border="0">'+product1+''+product2+'</table></td>'+product_description+'<td> '+so_shipment.so_line.so_line_cost.to_s+'</td><td>'+so_shipment.so_shipped_cost.to_s+'</td></tr>'
+        content += ' <tr class="h-pad" valign="top" align="left"><td>'+so_shipment.so_line.so_line_quantity.to_s+'</td><td> '+so_shipment.so_shipped_count.to_s+'</td><td><table width="100%" border="0">'+product1+''+product2+'</table></td>'+product_description+'<td> '+so_shipment.so_line.so_line_sell.to_s+'</td><td>'+so_shipment.so_shipped_cost.to_s+'</td></tr>'
         
         if i==10 
           content += '</table></article>'
