@@ -271,22 +271,31 @@ class CommonActionsController < ApplicationController
                     flag2 = 1
 
                     @so_header = SoHeader.find(so_shipment_process.last.so_header_id)
-
-                    if @so_header.bill_to_address.present? 
-                      so_b_c_title = @so_header.bill_to_address.contact_title 
-                      so_b_c_address_1 = @so_header.bill_to_address.contact_address_1 
-                      so_b_c_address_2 = @so_header.bill_to_address.contact_address_2 
-                      so_b_c_state = @so_header.bill_to_address.contact_state 
-                      so_b_c_country = @so_header.bill_to_address.contact_country 
-                      so_b_c_zipcode = @so_header.bill_to_address.contact_zipcode
-                    end 
-                    if @so_header.ship_to_address.present? 
-                      so_s_c_title= @so_header.ship_to_address.contact_title 
-                      so_s_c_address_1 = @so_header.ship_to_address.contact_address_1 
-                      so_s_c_address_2 = @so_header.ship_to_address.contact_address_2 
-                      so_s_c_state = @so_header.ship_to_address.contact_state 
-                      so_s_c_country = @so_header.ship_to_address.contact_country 
-                      so_s_c_zipcode = @so_header.ship_to_address.contact_zipcode
+                    if @so_header.po_header.present? && @so_header.po_header.po_type.type_value == "transer"
+                      # @po_header.organization.organization_city 
+                      so_s_c_title = @so_header.po_header.organization.organization_name  
+                      so_s_c_address_1 = @so_header.po_header.organization.organization_address_1 
+                      so_s_c_address_2= @so_header.po_header.organization.organization_address_2 
+                      so_s_c_state =   @so_header.po_header.organization.organization_city.to_s+' '+@so_header.po_header.organization.organization_state.to_s
+                      so_s_c_country = @so_header.po_header.organization.organization_country
+                      so_s_c_zipcode = @so_header.po_header.organization.organization_zipcode 
+                    else
+                      if @so_header.bill_to_address.present? 
+                        so_b_c_title = @so_header.bill_to_address.contact_title 
+                        so_b_c_address_1 = @so_header.bill_to_address.contact_address_1 
+                        so_b_c_address_2 = @so_header.bill_to_address.contact_address_2 
+                        so_b_c_state = @so_header.bill_to_address.contact_state 
+                        so_b_c_country = @so_header.bill_to_address.contact_country 
+                        so_b_c_zipcode = @so_header.bill_to_address.contact_zipcode
+                      end 
+                      if @so_header.ship_to_address.present? 
+                        so_s_c_title= @so_header.ship_to_address.contact_title 
+                        so_s_c_address_1 = @so_header.ship_to_address.contact_address_1 
+                        so_s_c_address_2 = @so_header.ship_to_address.contact_address_2 
+                        so_s_c_state = @so_header.ship_to_address.contact_state 
+                        so_s_c_country = @so_header.ship_to_address.contact_country 
+                        so_s_c_zipcode = @so_header.ship_to_address.contact_zipcode
+                      end
                     end 
                     cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present? 
 
