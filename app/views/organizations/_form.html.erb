@@ -107,8 +107,34 @@
         tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, customer_fields, org_form_fields2);
 
         organization_type_changed($('.organization_type_option:checked').parent().text());
+
+        set_val_selectbox();
+
     });
 
+    function set_val_selectbox(){
+
+      var customer_quality = "<%= @organization.customer_quality.quality_name if @organization.customer_quality %>";
+      $("#organization_customer_quality_id option").each(function() {
+        if($(this).text() == customer_quality) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+      var min_vendor_quality = "<%= @organization.min_vendor_quality.quality_name if @organization.min_vendor_quality %>";
+      $("#organization_customer_min_quality_id option").each(function() {
+        if($(this).text() == min_vendor_quality) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+      var vendor_quality = "<%= @organization.vendor_quality.quality_name if @organization.vendor_quality %>";
+      $("#organization_vendor_quality_id option").each(function() {
+        if($(this).text() == vendor_quality) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+    }
     function organization_type_changed(org_type){
         if(org_type == "Customer"){
             $('#customer_part').show();
