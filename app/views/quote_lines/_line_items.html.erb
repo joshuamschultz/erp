@@ -9,7 +9,9 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Quote Line Items</h4>
             <span class="span6 heading right">
+            <% if user_signed_in? &&  !current_user.is_vendor? %>
                 <%= link_to 'Edit', new_quote_quote_line_path(@quote), :class => "btn btn-mini btn-success" if show_buttons %>  
+            <% end %>
             </span>
         </div> 
     </div>
