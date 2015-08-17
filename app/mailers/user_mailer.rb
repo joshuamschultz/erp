@@ -65,14 +65,18 @@ class UserMailer < ActionMailer::Base
     # @quote_vendor = quote_vendor
     @contact_email = contact_email 
     @path = '<a href="http://erp.chessgroupinc.com/quotes/'+@quote.id.to_s+'/quote_lines/new">Click here to fill your quote</a>'
-  
+    attach_mail = []
     if @quote.attachments
       @quote.attachments.each do |attachmen|
-        file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
-        file_name = attachmen.attachment_file_name
-        attachments[file_name] = File.read(file_path)
+        if attachmen.attachment_public == true
+          file_path = "#{Rails.root.to_s}/public"+attachmen.attachment.url(:original)
+          file_name = attachmen.attachment_file_name
+          attach_mail << attachments[file_name] = File.read(file_path)
+        end
       end
     end
+
+    attach_mail
     mail(:to => @contact_email, :subject => "Quotes").deliver
     puts "Mail Send!"
 
