@@ -23,7 +23,7 @@ class QualityLotCapabilitiesController < ApplicationController
       format.json { 
         @quality_lot_capabilities.each do |lot_capability|
               lot_capability[:lot_control_no] = CommonActions.linkable(quality_lot_path(lot_capability.quality_lot), lot_capability.quality_lot.lot_control_no)
-              lot_capability[:item_part_letter] = CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_capability.item_part_dimension.item_revision.item, lot_capability.item_part_dimension.item_revision, lot_capability.item_part_dimension), lot_capability.item_part_dimension.item_part_letter)
+              lot_capability[:item_part_letter] = CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_capability.item_part_dimension.item_revisions.last.item, lot_capability.item_part_dimension.item_revisions.last, lot_capability.item_part_dimension), lot_capability.item_part_dimension.item_part_letter)
               lot_capability[:item_part_dimensions] = lot_capability.item_part_dimension.item_part_dimension.round(4) #CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_capability.item_part_dimension.item_revision.item, lot_capability.item_part_dimension.item_revision, lot_capability.item_part_dimension), lot_capability.item_part_dimension.item_part_letter)
               lot_capability[:item_part_pos_tolerance] = (lot_capability.item_part_dimension.item_part_dimension + lot_capability.item_part_dimension.item_part_pos_tolerance).to_f.round(4)
               lot_capability[:item_part_neg_tolerance] = (lot_capability.item_part_dimension.item_part_dimension - lot_capability.item_part_dimension.item_part_neg_tolerance).to_f.round(4)
