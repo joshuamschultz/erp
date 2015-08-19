@@ -25,7 +25,7 @@ mastertypes = [
    ["Support", "", "support", "organization_type", "true"],
    # PO Types
    ["Regular", "", "regular", "po_type", "true"],
-   ["Transer", "", "transer", "po_type", "true"],
+   ["Transfer", "", "transer", "po_type", "true"],
    ["Direct", "", "direct", "po_type", "true"],
    #Customer Quality Level
    ["APQP Information", "", "apqp_information", "customer_quality_level", "true"],
