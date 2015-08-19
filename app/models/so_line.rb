@@ -41,7 +41,7 @@ class SoLine < ActiveRecord::Base
 
   def update_so_total   
     
-      so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier(1) : self.so_header.so_identifier
+      so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier(0) : self.so_header.so_identifier
       so_status_count = self.so_header.so_lines.where("so_line_status = ?", "open").count
       so_header_status = (so_status_count == 0) ? "closed" : "open"      
       i= 2
