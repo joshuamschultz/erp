@@ -22,7 +22,7 @@ var current_field_temp;
 					<%= type %>_line_row.hide(1000, arguments.callee);
 
 					       
-					setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
+					setTimeout(function(){<%= type %>_line_row.remove(); location.reload();}, 1001);
 				}
 				else{              
 
