@@ -60,6 +60,23 @@
                     ]'
     } 
 %>
+<% elsif @organization.present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "asc"},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "so_id" },
+                            { "mData": "customer_name"},
+                            { "mData": "bill_to_address_name" },
+                            { "mData": "ship_to_address_name" },
+                            { "mData": "so_cofc" },                       
+                            { "mData": "so_squality" },                       
+                            { "mData": "so_status"},
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                            
+                        ]'
+        } 
+    %>
 <% else %>
 
 
