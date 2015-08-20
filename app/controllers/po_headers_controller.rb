@@ -78,6 +78,7 @@ class PoHeadersController < ApplicationController
             organization_ids = current_user.organizations.collect(&:id)
             @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
           end
+          po_line_ids = []
           @po_headers = @po_headers.select{|po_header|
               po_header[:index] = i 
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
@@ -88,8 +89,17 @@ class PoHeadersController < ApplicationController
               else
                 po_header[:links] = nil
               end
-              po_header[:po_line_price] =  po_header.po_lines.find_by_item_id(@item.id).po_line_cost if params[:item_id].present?
-              po_header[:po_type_qty] =  po_header.po_lines.find_by_item_id(@item.id).po_line_quantity if params[:item_id].present?
+              if params[:item_id].present?
+                po_lines = po_header.po_lines
+                if po_line_ids != nil?
+                  po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
+                else
+                  po_lines
+                end
+                po_line_ids<<po_header.po_lines.first.id
+                po_header[:po_line_price] = po_lines.first.po_line_cost
+                po_header[:po_type_qty] = po_lines.first.po_line_quantity
+              end
 
               i += 1
           }
