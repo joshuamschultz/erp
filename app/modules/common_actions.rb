@@ -5,6 +5,44 @@ module CommonActions
 		PoHeader.where(po_identifier: UNASSIGNED).destroy_all
 		SoHeader.where(so_identifier: UNASSIGNED).destroy_all
 	end
+	
+	def self.address(address_id)
+		address_info = Hash.new
+		@so_header = address_id
+		if @so_header.bill_to_address.present?
+			address_info['b_c_title'] = @so_header.bill_to_address.contact_title 
+			address_info['b_c_address_1'] = @so_header.bill_to_address.contact_address_1 
+			address_info['b_c_address_2']= @so_header.bill_to_address.contact_address_2
+			address_info['b_c_state'] = @so_header.bill_to_address.contact_state 
+			address_info['b_c_country'] = @so_header.bill_to_address.contact_country 
+			address_info['b_c_zipcode'] = @so_header.bill_to_address.contact_zipcode
+		end
+		if @so_header.ship_to_address.present?
+			address_info['s_c_title'] = @so_header.ship_to_address.contact_title
+			address_info['s_c_address_1']= @so_header.ship_to_address.contact_address_1 
+			address_info['s_c_address_2'] = @so_header.ship_to_address.contact_address_2 
+			address_info['s_c_state'] = @so_header.ship_to_address.contact_state 
+			address_info['s_c_country'] = @so_header.ship_to_address.contact_country 
+			address_info['s_c_zipcode'] = @so_header.ship_to_address.contact_zipcode 
+		end
+
+		unless @so_header.bill_to_address.present? && @so_header.ship_to_address.present?
+			company = CommonActions.main_info
+			address_info['b_c_title'] = address_info['s_c_title'] = company['company_name']
+			address_info['b_c_address_1'] = address_info['s_c_address_1'] = company['company_address1']
+			address_info['b_c_address_2'] = address_info['s_c_address_2'] = company['company_address2']
+		end
+		address_info
+	end
+
+	def self.main_address
+		@company_info = CompanyInfo.first
+		main_info = Hash.new
+		main_info['company_name'] = @company_info.company_name
+		main_info['company_address1'] = @company_info.company_address1
+		main_info['company_address2'] = @company_info.company_address2
+		main_info
+	end
 
 	def self.object_crud_paths(show_path, edit_path, delete_path, others = [])
 		paths = ""
@@ -537,24 +575,19 @@ module CommonActions
 
 		@so_header = SoHeader.find(so_id)
 		so_total =  (@so_header.so_total.to_f).to_s
-		if @so_header.bill_to_address.present?
-			b_c_title = @so_header.bill_to_address.contact_title 
-			b_c_address_1 = @so_header.bill_to_address.contact_address_1 
-			b_c_address_2= @so_header.bill_to_address.contact_address_2
-			b_c_state = @so_header.bill_to_address.contact_state 
-			b_c_country = @so_header.bill_to_address.contact_country 
-			b_c_zipcode = @so_header.bill_to_address.contact_zipcode 
-		end
-		if @so_header.ship_to_address.present?
-			s_c_title = @so_header.ship_to_address.contact_title
-			s_c_address_1= @so_header.ship_to_address.contact_address_1 
-			s_c_address_2 = @so_header.ship_to_address.contact_address_2 
-			s_c_state = @so_header.ship_to_address.contact_state 
-			s_c_country = @so_header.ship_to_address.contact_country 
-			s_c_zipcode = @so_header.ship_to_address.contact_zipcode 
-		end
-	
-
+		so = CommonActions.address(@so_header)
+		b_c_title = so['b_c_title']
+		b_c_address_1 = so['b_c_address_1']
+		b_c_address_2 = so['b_c_address_2']
+		b_c_state = so['b_c_state']
+		b_c_country = so['b_c_country']
+		b_c_zipcode = so['b_c_zipcode']
+		s_c_title = so['s_c_title']
+		s_c_address_1 = so['s_c_address_1']
+		s_c_address_2 = so['s_c_address_2']
+		s_c_state = so['s_c_state']
+		s_c_country = so['s_c_country']
+		s_c_zipcode = so['s_c_zipcode']
 		cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present? 
 
 
