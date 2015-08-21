@@ -602,7 +602,7 @@ module CommonActions
 			if i== 1  
 				content += '<div class="ms_wrapper"><section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
 				if flag ==1
-					content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+b_c_title+'</h2> <strong>'+b_c_address_1+'</strong> <strong>'+b_c_address_2+'</strong><strong>'+b_c_state+'</strong><strong>'+b_c_country+'&nbsp;'+b_c_zipcode+'</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">'+s_c_title+'</h2> <strong>'+s_c_address_1+'</strong> <strong>'+s_c_address_2+'</strong><strong>'+s_c_state+'</strong><strong>'+s_c_country+'&nbsp; '+s_c_zipcode+'</strong></div></article>' 
+					content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+b_c_title.to_s+'</h2> <strong>'+b_c_address_1.to_s+'</strong> <strong>'+b_c_address_2.to_s+'</strong><strong>'+b_c_state.to_s+'</strong><strong>'+b_c_country.to_s+'&nbsp;'+b_c_zipcode.to_s+'</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">'+s_c_title.to_s+'</h2> <strong>'+s_c_address_1.to_s+'</strong> <strong>'+s_c_address_2.to_s+'</strong><strong>'+s_c_state.to_s+'</strong><strong>'+s_c_country.to_s+'&nbsp; '+s_c_zipcode.to_s+'</strong></div></article>' 
 					flag =0;
 				end
 
