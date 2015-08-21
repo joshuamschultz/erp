@@ -27,7 +27,7 @@ module CommonActions
 		end
 
 		unless @so_header.bill_to_address.present? && @so_header.ship_to_address.present?
-			company = CommonActions.main_info
+			company = CommonActions.main_address
 			address_info['b_c_title'] = address_info['s_c_title'] = company['company_name']
 			address_info['b_c_address_1'] = address_info['s_c_address_1'] = company['company_address1']
 			address_info['b_c_address_2'] = address_info['s_c_address_2'] = company['company_address2']
