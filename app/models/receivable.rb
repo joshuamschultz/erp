@@ -148,22 +148,19 @@ class Receivable < ActiveRecord::Base
     content= product1= product2= product_description ='' 
     in_contact_title = in_contact_address1 = in_contact_address2 = in_contact_state = in_contact_czip = ''
     ship_contact_title = ship_contact_address1 = ship_contact_address2 = ship_contact_state = ship_contact_czip = ''
-
+    
     if self.so_header.present?
-        if self.so_header.bill_to_address.present? 
-          in_contact_title = '<span>'+self.so_header.bill_to_address.contact_title+'</span>'
-          in_contact_address1= self.so_header.bill_to_address.contact_address_1+'&nbsp;'
-          in_contact_address2 = self.so_header.bill_to_address.contact_address_2+'&nbsp;'
-          in_contact_state = self.so_header.bill_to_address.contact_state+'&nbsp;'
-          in_contact_czip = self.so_header.bill_to_address.contact_country+'&nbsp;'+self.so_header.bill_to_address.contact_zipcode
-        end 
-        if self.so_header.ship_to_address.present? 
-          ship_contact_title = '<span>'+self.so_header.ship_to_address.contact_title+'</span>'
-          ship_contact_address1 = self.so_header.ship_to_address.contact_address_1+'&nbsp;'
-          ship_contact_address2 = self.so_header.ship_to_address.contact_address_2+'&nbsp;'
-          ship_contact_state = self.so_header.ship_to_address.contact_state+'&nbsp;'
-          ship_contact_czip = self.so_header.ship_to_address.contact_country+'&nbsp;'+self.so_header.ship_to_address.contact_zipcode
-        end 
+      so = CommonActions.address(self.so_header)
+      in_contact_title = '<span>'+so['b_c_title'].to_s+'</span>'
+      in_contact_address1 = so['b_c_address_1'].to_s+'&nbsp;'
+      in_contact_address2 = so['b_c_address_2'].to_s+'&nbsp;'
+      in_contact_state = so['b_c_state'].to_s+'&nbsp;'
+      in_contact_czip = so['b_c_country'].to_s+'&nbsp;'+so['b_c_zipcode']
+      ship_contact_title = '<span>'+so['s_c_title'].to_s+'</span>'
+      ship_contact_address1 = so['s_c_address_1'].to_s+'&nbsp;'
+      ship_contact_address2 = so['s_c_address_2'].to_s+'&nbsp;'
+      ship_contact_state = so['s_c_state'].to_s+'&nbsp;'
+      ship_contact_czip = so['s_c_country'].to_s+'&nbsp;'+so['s_c_zipcode']
     end 
 
     i = 1
@@ -281,20 +278,17 @@ class Receivable < ActiveRecord::Base
     ship_contact_title = ship_contact_address1 = ship_contact_address2 = ship_contact_state = ship_contact_czip = ''
 
     if self.so_header.present?
-        if self.so_header.bill_to_address.present? 
-          in_contact_title = '<span>'+self.so_header.bill_to_address.contact_title+'</span>'
-          in_contact_address1= self.so_header.bill_to_address.contact_address_1+'&nbsp;'
-          in_contact_address2 = self.so_header.bill_to_address.contact_address_2+'&nbsp;'
-          in_contact_state = self.so_header.bill_to_address.contact_state+'&nbsp;'
-          in_contact_czip = self.so_header.bill_to_address.contact_country+'&nbsp;'+self.so_header.bill_to_address.contact_zipcode
-        end 
-        if self.so_header.ship_to_address.present? 
-          ship_contact_title = '<span>'+self.so_header.ship_to_address.contact_title+'</span>'
-          ship_contact_address1 = self.so_header.ship_to_address.contact_address_1+'&nbsp;'
-          ship_contact_address2 = self.so_header.ship_to_address.contact_address_2+'&nbsp;'
-          ship_contact_state = self.so_header.ship_to_address.contact_state+'&nbsp;'
-          ship_contact_czip = self.so_header.ship_to_address.contact_country+'&nbsp;'+self.so_header.ship_to_address.contact_zipcode
-        end 
+      so = CommonActions.address(self.so_header)
+      in_contact_title = '<span>'+so['b_c_title'].to_s+'</span>'
+      in_contact_address1 = so['b_c_address_1'].to_s+'&nbsp;'
+      in_contact_address2 = so['b_c_address_2'].to_s+'&nbsp;'
+      in_contact_state = so['b_c_state'].to_s+'&nbsp;'
+      in_contact_czip = so['b_c_country'].to_s+'&nbsp;'+so['b_c_zipcode']
+      ship_contact_title = '<span>'+so['s_c_title'].to_s+'</span>'
+      ship_contact_address1 = so['s_c_address_1'].to_s+'&nbsp;'
+      ship_contact_address2 = so['s_c_address_2'].to_s+'&nbsp;'
+      ship_contact_state = so['s_c_state'].to_s+'&nbsp;'
+      ship_contact_czip = so['s_c_country'].to_s+'&nbsp;'+so['s_c_zipcode']
     end 
 
     i = 1
