@@ -171,5 +171,4 @@ class ContactsController < ApplicationController
     end
   end
 
-
 end
