@@ -43,8 +43,8 @@ class ReceivableAccount < ActiveRecord::Base
   	end
   	@gl_account = GlAccount.where(:id => self.gl_account_id).first
   	@amount
-  	if self.gl_account.gl_account_identifier == "51020-020" || self.gl_account.gl_account_identifier == "11050"||  self.gl_account.gl_account_identifier == "41025-010"
-  		@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f * -1 + self.receivable_account_amount.to_f * -1
+  	if  self.gl_account.gl_account_identifier == "11050"||  self.gl_account.gl_account_identifier == "41025-010"
+      @amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f * -1 + self.receivable_account_amount.to_f * -1
   	else
     	@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f  + self.receivable_account_amount.to_f
 	end    	
