@@ -110,7 +110,6 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully created.' }
-        # format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully created.' }
         format.json { render json: @contact, status: :created, location: @contact }
       else
         format.html { render action: "new" }
@@ -128,7 +127,6 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.update_attributes(params[:contact])
         format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
-        # format.html { redirect_to @contact, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
