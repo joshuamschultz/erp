@@ -32,7 +32,7 @@ class Organization < ActiveRecord::Base
 		self.organization_active = true if self.attributes.has_key?("organization_active") && self.organization_active.nil?
 	end
 
-	after_create :process_after_create
+	# after_create :process_after_create
 
 	def process_after_create
 		contact = self.contacts.build(contact_address_1: self.organization_address_1, contact_address_2: self.organization_address_2, 
