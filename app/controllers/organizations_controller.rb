@@ -127,7 +127,6 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       if @organization.save
-        @organization.process_after_create
         CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully created.' }
         format.json { render json: @organization, status: :created, location: @organization }
