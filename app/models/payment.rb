@@ -144,7 +144,8 @@ class Payment < ActiveRecord::Base
     end
 
 
-    def update_transactions       
+    def update_transactions    
+        self.update_attributes(:payment_status => 'closed')   
         self.update_transaction("11012") 
         self.update_transaction("21010")
     end
