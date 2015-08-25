@@ -298,6 +298,7 @@ function material_report() {
     if (typeof quality_iframe != "undefined"){
       quality_iframe.contentWindow.focus();
       quality_iframe.contentWindow.print();
+      dimension_report();
     }
     else{
       dimension_report();
@@ -309,6 +310,7 @@ function dimension_report() {
     if (typeof dimension_iframe != "undefined"){
       dimension_iframe.contentWindow.focus();
       dimension_iframe.contentWindow.print();
+      gage_report();
     }
     else{
       gage_report();
@@ -319,6 +321,7 @@ function gage_report() {
     if (typeof gage_iframe != "undefined"){
       gage_iframe.contentWindow.focus();
       gage_iframe.contentWindow.print();
+      psw_report();
     }
     else{
       psw_report();
@@ -329,6 +332,7 @@ function psw_report() {
     if (typeof psw_iframe != "undefined"){
       psw_iframe.contentWindow.focus();
       psw_iframe.contentWindow.print();
+      csk_report();
     }
     else{
       csk_report();
@@ -340,6 +344,7 @@ function csk_report() {
     if (typeof csk_iframe != "undefined"){
       csk_iframe.contentWindow.focus();
       csk_iframe.contentWindow.print();
+      package_report();
     }
     else{
       package_report();
@@ -351,6 +356,7 @@ function package_report() {
       if (typeof csk_iframe != "undefined"){
         package_iframe.contentWindow.focus();
         package_iframe.contentWindow.print();
+        control_plan_report(); 
       }
       else{
         control_plan_report(); 
