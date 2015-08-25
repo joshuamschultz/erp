@@ -295,58 +295,67 @@
 <% if can? :edit, QualityLot %>
 function material_report() {
     var quality_iframe = $("#lot_material")[0];
-    quality_iframe.contentWindow.focus();
-    quality_iframe.contentWindow.print();
-    <% if @quality_lot.ppap %>
-       dimension_report();
-    <% else %>
-      alert("Please create psw for dimension_report");
-      gage_report();
-    <% end %>
+    if (typeof quality_iframe != "undefined"){
+      quality_iframe.contentWindow.focus();
+      quality_iframe.contentWindow.print();
+    }
+    else{
+      dimension_report();
+    }
+
 }
 function dimension_report() {
     var dimension_iframe = $("#lot_dimension")[0];
-    dimension_iframe.contentWindow.focus();
-    dimension_iframe.contentWindow.print();
-    gage_report();
+    if (typeof dimension_iframe != "undefined"){
+      dimension_iframe.contentWindow.focus();
+      dimension_iframe.contentWindow.print();
+    }
+    else{
+      gage_report();
+    }
 }
 function gage_report() {
     var gage_iframe = $("#lot_gage")[0];
-    gage_iframe.contentWindow.focus();
-    gage_iframe.contentWindow.print();
-    <% if @quality_lot.ppap %>
+    if (typeof gage_iframe != "undefined"){
+      gage_iframe.contentWindow.focus();
+      gage_iframe.contentWindow.print();
+    }
+    else{
       psw_report();
-    <% else %>
-      alert("Please create psw report");
-      csk_report();
-    <% end %>
+    }   
 }
 function psw_report() {
     var psw_iframe = $("#lot_psw")[0];
-    psw_iframe.contentWindow.focus();
-    psw_iframe.contentWindow.print();
-    csk_report();
+    if (typeof psw_iframe != "undefined"){
+      psw_iframe.contentWindow.focus();
+      psw_iframe.contentWindow.print();
+    }
+    else{
+      csk_report();
+    }
 
 }
 function csk_report() {
     var csk_iframe = $("#lot_csk")[0];
-    csk_iframe.contentWindow.focus();
-    csk_iframe.contentWindow.print();
-    <% if @quality_lot.package %>
+    if (typeof csk_iframe != "undefined"){
+      csk_iframe.contentWindow.focus();
+      csk_iframe.contentWindow.print();
+    }
+    else{
       package_report();
-    <% else %>
-      alert("Please create package report");
-      control_plan_report();
-    <% end %>
+    }
 }
 function package_report() {
 
     var package_iframe = $("#lot_package")[0];
-      package_iframe.contentWindow.focus();
-      package_iframe.contentWindow.print();
-      control_plan_report();
+      if (typeof csk_iframe != "undefined"){
+        package_iframe.contentWindow.focus();
+        package_iframe.contentWindow.print();
+      }
+      else{
+        control_plan_report(); 
+      }
   
-
 }
 function control_plan_report() {
     var control_plan_report_iframe = $("#lot_control_plan")[0];
@@ -355,8 +364,7 @@ function control_plan_report() {
       control_plan_report_iframe.contentWindow.print();
       process_flow_report();
     }
-    else
-    {
+    else{
       process_flow_report();
     }
   
@@ -370,8 +378,7 @@ function process_flow_report() {
       process_flow_report_iframe.contentWindow.print();
       fmea_report();
     }
-    else
-    {
+    else{
       fmea_report();
     }
 
@@ -384,8 +391,7 @@ function fmea_report() {
       fmea_report_iframe.contentWindow.print();
       design_report();
     }
-    else
-    { 
+    else{ 
       design_report();
     }
 
@@ -398,8 +404,7 @@ function design_report(){
     design_report_iframe.contentWindow.print();
     quality_docs_report();
   }
-  else
-  { 
+  else{ 
     quality_docs_report();
   }
 
@@ -515,19 +520,30 @@ function printLab(win_id){
 
 
 
-<iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
 
-<iframe src="<%= dimension_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_dimension" width="10" height= "10"></iframe>
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value("material_inspection").id).present? %>
+  <iframe src="<%= material_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_material" width="10" height= "10"></iframe>
+<% end%>
 
-<iframe src="<%= gage_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_gage" width="10" height= "10"></iframe>
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value( "dimensional_inspection").id).present? && @quality_lot.ppap.present? %>
+  <iframe src="<%= dimension_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_dimension" width="10" height= "10"></iframe>
+<% end%>
 
-<iframe src="<%= psw_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_psw" width="10" height= "10" ></iframe>
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value("gage_r&r").id).present? &&  @quality_lot.ppap.present? %>
+  <iframe src="<%= gage_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_gage" width="10" height= "10"></iframe>
+<% end %>
 
-<iframe src="<%= csk_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_csk" width="10" height= "10"></iframe>
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value("part_submission_warrant_psw").id).present? && @quality_lot.ppap.present? %>
+  <iframe src="<%= psw_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_psw" width="10" height= "10" ></iframe>
+<% end %>
 
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value("capability_analysis").id).present? %>
+  <iframe src="<%= csk_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_csk" width="10" height= "10"></iframe>
+<% end %>
 
-<iframe src="<%= package_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_package" width="10" height= "10"></iframe>
-
+<% if @quality_lot.checklist.check_list_lines.find_by_master_type_id(MasterType.find_by_type_value("packaging").id).present? && @quality_lot.package .present? %>
+  <iframe src="<%= package_report_quality_lot_path(@quality_lot) %>" style="border:0;" id="lot_package" width="10" height= "10"></iframe>
+<% end %>
 <style>
 
 .ee-17{width: 61% !important;}
