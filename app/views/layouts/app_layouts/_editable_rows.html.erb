@@ -99,7 +99,7 @@ function bind_editable_row_tab(){
        	if(keyCode == 13){
        		e.preventDefault();
        	    if(next_index > -1)
-				$("#"+next_element).focus();
+				$("#"+next_element).select();
 			else
 				$("#<%= form %>").submit();
        	}	
