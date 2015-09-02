@@ -49,7 +49,13 @@
     $(document).ready(function(){ 
         // $("#quality_lot_po_line_id").html("");
         // $("#quality_lot_item_revision_id").html("");
-
+        $('#inventory_adjustment_quality_lot_id').keydown(function(e) {
+          var code = e.keyCode || e.which;
+          if (code ===13 ) {  
+            $('#inventory_adjustment_inventory_adjustment_quantity').select();
+          }
+        });
+        
         jQuery("#inventory_adjustment_item_alt_name_id").on('change', function() {
             initiate_line_items();
          

@@ -312,6 +312,12 @@
                 $('#po_line_po_line_quantity').val("");
             }
         });  
+        $('#po_line_po_line_quantity').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#po_line_po_line_cost').val("");
+            }
+        });
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
 
         $('#po_line_organization_id').keydown(function(e) {

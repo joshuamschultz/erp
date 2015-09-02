@@ -78,7 +78,13 @@
 
     var receivable_fine_to_submit = true;
 
-    $(document).ready(function(){    
+    $(document).ready(function(){  
+        $('#receivable_receivable_notes').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#receivable_receivable_freight').select();
+            }
+        });  
     $("#accounts_dispersal_table").hide();
     $("#hide_me").hide();
         // $("#receivable_receivable_discount " ).on("focusout", function(){

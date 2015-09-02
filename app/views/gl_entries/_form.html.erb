@@ -81,6 +81,20 @@
     date_box_fields = date_box_fields.concat([{"name":"gl_entry_gl_entry_date", "value":"<%= date_box_date1 %>"}]);
 
     $(document).ready(function(){ 
+        $('#gl_entry_gl_entry_description').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#gl_entry_gl_entry_credit').select();
+            }
+        }); 
+
+        $('#gl_entry_gl_entry_credit').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#gl_entry_gl_entry_debit').select();
+            }
+        }); 
+        
         $(document).on("focusout", "#gl_entry_gl_account_id", function(){
             if($("#gl_account_id").val() != "" && $("#gl_account_id").val() != undefined){
                 initialize_api_call({"url": "/gl_accounts/" + $("#gl_account_id").val() + "/gl_account_info", "type": "GET", "params": {}}, "set_gl_account_info", {});
