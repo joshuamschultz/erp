@@ -80,6 +80,12 @@
     var receivable_select_html = "";
 
     $(document).ready(function(){ 
+        $('#receipt_receipt_notes').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#receipt_receipt_discount').select();
+            }
+        }); 
         $("#receipt_organization_id").on("focusout", function(){
             if($("#organization_id").val() == ""){
                 $("#organization_id").val($("#org_organization_id").val());
