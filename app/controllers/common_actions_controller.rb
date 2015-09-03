@@ -731,7 +731,7 @@ class CommonActionsController < ApplicationController
                 unless  check_register.present? 
                     if deposit_check.receipt_type != 'credit'
                       balance = 0                  
-                      gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
+                      gl_account = GlAccount.where('gl_account_identifier' => '11010' ).first                     
                       if  CheckRegister.exists?                 
                         check_register = CheckRegister.last                          
                         balance +=  receipt.receipt_check_amount + check_register.balance
