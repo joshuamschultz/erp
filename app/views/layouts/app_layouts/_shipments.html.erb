@@ -84,11 +84,11 @@ function printPage(win_id){
 
 
 // To avoid control number duplication create lot number and print at the end of the loop lot ids div contains all the lot_ids and if the shipping inputs became 1 ie. the end of the loop lot number and print is doing
-
 	$('#lot_ids').bind("DOMSubtreeModified",function(){
     if($('#lot_ids').text() != "")
     {
     		var Ids = $('#lot_ids').text();
+        alert(Ids);
     		Ids_array = Ids.split(","); 		
      		var count = 0;
     		$(".shipping_input_field").each(function(){
@@ -102,7 +102,6 @@ function printPage(win_id){
     			Ids_array.pop(Ids_array);          
     			initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_numbers", "ids": Ids_array}}, "print_data", {});
           
-
     		}
      }
 	});
