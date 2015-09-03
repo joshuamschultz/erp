@@ -87,9 +87,9 @@ class Receipt < ActiveRecord::Base
 
   def update_transactions   
         self.update_attributes(:receipt_status => 'closed')       
-        self.update_transaction("11012","credit") # Cash
+        self.update_transaction("11010","credit") # Cash
         self.update_transaction("11030", "debit")  # Receivable
-        self.update_transaction("51010020", "discount")  # Discount
+        self.update_transaction("51010-020", "discount")  # Discount
   end
 
   def  update_transaction(account, type)      
