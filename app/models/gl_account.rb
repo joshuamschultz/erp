@@ -21,17 +21,19 @@ class GlAccount < ActiveRecord::Base
   validates_presence_of :gl_type
 
   def credit_total
-    credit = 0
-    self.gl_entries.each do |gl_entry|
-      credit += gl_entry.gl_entry_credit
-    end
-    credit 
+    # credit = 0
+    # self.gl_entries.each do |gl_entry|
+    #   credit += gl_entry.gl_entry_credit
+    # end
+    # credit 
+    self.gl_entries.sum(:gl_entry_credit)
   end 
   def debit_total
-    debit = 0
-    self.gl_entries.each do |gl_entry|
-      debit += gl_entry.gl_entry_debit
-    end
-    debit 
+    # debit = 0
+    # self.gl_entries.each do |gl_entry|
+    #   debit += gl_entry.gl_entry_debit
+    # end
+    # debit 
+    self.gl_entries.sum(:gl_entry_debit)
   end    
 end
