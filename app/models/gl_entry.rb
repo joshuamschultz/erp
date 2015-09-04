@@ -24,6 +24,7 @@ class GlEntry < ActiveRecord::Base
       self.gl_entry_identifier = CommonActions.get_new_identifier(GlEntry, :gl_entry_identifier, "A")
   end
 
+
    def process_before_destory
      if self.gl_entry_debit_was != 0
        CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', self.gl_entry_debit_was)
@@ -33,6 +34,15 @@ class GlEntry < ActiveRecord::Base
      end
    end
 
+   def update_gl_accounts(debit, credit)
+    if debit != 0
+       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', debit)
+     end
+     if credit != 0
+       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', credit)
+     end
+   end
+   
    def get_description_link 
     result = self.gl_entry_description
     if self.receivable_id
