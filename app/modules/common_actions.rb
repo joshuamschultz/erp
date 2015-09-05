@@ -140,7 +140,7 @@ module CommonActions
 
 
 	def self.current_hour_letter
-		hour_letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X"]
+		hour_letter = ('A'..'Z').to_a
 		hour_letter[Time.now.hour]
 	end
 
