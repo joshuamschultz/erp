@@ -17,7 +17,7 @@ class GlEntry < ActiveRecord::Base
   validates_presence_of :gl_entry_description, :gl_account
 
   before_create :process_before_create
- # after_save :process_after_save
+  after_save :process_after_save
   before_destroy :process_before_destory
 
   def process_before_create    
@@ -26,21 +26,17 @@ class GlEntry < ActiveRecord::Base
 
 
    def process_before_destory
-     if self.gl_entry_debit_was != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', self.gl_entry_debit_was)
-     end
-     if self.gl_entry_credit_was != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', self.gl_entry_credit_was)
-     end
+     update_gl_accounts(self.gl_entry_debit_was, self.gl_entry_credit_was)
    end
 
    def update_gl_accounts(debit, credit)
     if debit != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', debit)
-     end
-     if credit != 0
-       CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', credit)
-     end
+      CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'increment', debit)
+    end
+
+    if credit != 0
+      CommonActions.update_gl_accounts_for_gl_entry(self.gl_account.gl_account_title_was, 'decrement', credit)
+    end
    end
    
    def get_description_link 
@@ -59,6 +55,10 @@ class GlEntry < ActiveRecord::Base
 
   def redirect_path
      gl_entry_path(self)
+  end
+
+  def process_after_save
+    self.gl_account.total_amount
   end
 
 end

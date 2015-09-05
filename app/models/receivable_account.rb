@@ -47,8 +47,8 @@ class ReceivableAccount < ActiveRecord::Base
       @amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f * -1 + self.receivable_account_amount.to_f * -1
   	else
     	@amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f  + self.receivable_account_amount.to_f
-	end    	
-    @gl_account.update_attributes(:gl_account_amount => @amount)
+	end    	 
+    # @gl_account.update_attributes(:gl_account_amount => @amount) unless @gl_account.gl_account_identifier == '41010-010' || @gl_account.gl_account_identifier == '51010-010'
     @gl_account = GlAccount.where(:id => @gl_account_id_to_update).first
     amount = @gl_account.gl_account_amount - self.receivable_account_amount_was.to_f + self.receivable_account_amount.to_f
     @gl_account.update_attributes(:gl_account_amount => amount)   
