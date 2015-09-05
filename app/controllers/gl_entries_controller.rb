@@ -104,8 +104,8 @@ class GlEntriesController < ApplicationController
     respond_to do |format|
       current_debit_amount = params[:gl_entry]['gl_entry_debit'].to_i - @gl_entry.gl_entry_debit_was 
       current_credit_amount = params[:gl_entry]['gl_entry_credit'].to_i - @gl_entry.gl_entry_credit_was
+      @gl_entry.update_gl_accounts(current_debit_amount, current_credit_amount)
       if @gl_entry.update_attributes(params[:gl_entry])
-        @gl_entry.update_gl_accounts(current_debit_amount, current_credit_amount)
         format.html { redirect_to @gl_entry, notice: 'Gl entry was successfully updated.' }
         format.json { head :no_content }
       else
