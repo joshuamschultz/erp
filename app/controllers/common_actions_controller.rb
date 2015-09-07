@@ -600,6 +600,7 @@ class CommonActionsController < ApplicationController
                 check_entry.update_attributes(:status => "Printed", :check_active => 0)
                 payment = Payment.find_by_check_entry_id(params[:id])
                 payment.update_transactions
+                payment.update_attributes(:payment_status => 'closed')   
                 @reconcile = Reconcile.where(:payment_id => payment.id).first
                 if @reconcile.nil?                                  
                   Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
