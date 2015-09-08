@@ -353,7 +353,7 @@ function csk_report() {
 function package_report() {
 
     var package_iframe = $("#lot_package")[0];
-      if (typeof csk_iframe != "undefined"){
+      if (typeof package_iframe != "undefined"){
         package_iframe.contentWindow.focus();
         package_iframe.contentWindow.print();
         control_plan_report(); 
