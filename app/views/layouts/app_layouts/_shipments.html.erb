@@ -92,11 +92,13 @@ function printPage(win_id){
      		var count = 0;
     		$(".shipping_input_field").each(function(){
     			if(parseFloat($(this).val()) > 0){
-    				count = count + 1;
+            setTimeout(function(){
+              count = count + 1;
+            }, 1000);
     			}
     		});
 
-    		if(count >= 1)
+    		if(count == 1)
     		{			
           console.log(count);          
     			Ids_array.pop(Ids_array);          
