@@ -98,7 +98,8 @@ function printPage(win_id){
         alert(count);
     		if(count == 1)
     		{	
-          console.log(count);          
+          console.log(count);  
+          alert(Ids_array);        
     			Ids_array.pop(Ids_array);          
     			initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_numbers", "ids": Ids_array}}, "print_data", {});
           
