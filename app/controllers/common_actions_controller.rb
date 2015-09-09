@@ -679,7 +679,7 @@ class CommonActionsController < ApplicationController
             when "get_jr100_print_data"
               @quality_lot = QualityLot.find(params["id"])
               res = Hash.new
-              if @quality_lot.present?
+              if @quality_lot.present? && @quality_lot.lot_print_status != "print"
                 @po_shipment = @quality_lot.po_shipment
                 if @po_shipment.present?
                   res["po_shipped_count"] = @po_shipment.po_shipped_count
@@ -691,6 +691,7 @@ class CommonActionsController < ApplicationController
                   res["company_name"] =  CompanyInfo.first.company_name
                   res["control_number"] = @quality_lot.lot_control_no
                   result = res
+                  @quality_lot.update_attributes(:lot_print_status => 'print')
                 end
               else                
                 result = "Failure"                
