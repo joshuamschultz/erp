@@ -209,6 +209,7 @@ function print_data(response, callback_params, api_params)
  			initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_jr100_print_data", "id": item}}, "print_jr100", {}); 	 	
 		    
  	 });
+
 }
 function print_jr100(response, callback_params, api_params)
 {
@@ -222,9 +223,9 @@ function print_jr100(response, callback_params, api_params)
     $("#jr100_controlno").text(response["aaData"].control_number);        
     printContent($("#jr100").attr('id'));
   }
-    // setTimeout(function(){
-    //   location.reload();
-    // }, 3000);
+    setTimeout(function(){
+      location.reload();
+    }, 3000);
 }
 </script>
  <!DOCTYPE html>
