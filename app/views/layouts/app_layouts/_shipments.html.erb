@@ -21,7 +21,8 @@ var current_field_temp;
 					<%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
 					<%= type %>_line_row.hide(1000, arguments.callee);
 
-					setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
+          setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
+
 				}
 				else{              
 
@@ -223,9 +224,7 @@ function print_jr100(response, callback_params, api_params)
     $("#jr100_controlno").text(response["aaData"].control_number);        
     printContent($("#jr100").attr('id'));
   }
-    setTimeout(function(){
-      location.reload();
-    }, 3000);
+ 
 }
 </script>
  <!DOCTYPE html>
