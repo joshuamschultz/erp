@@ -145,7 +145,6 @@ class Payment < ActiveRecord::Base
 
 
     def update_transactions    
-        self.update_attributes(:payment_status => 'closed')   
         self.update_transaction("11012") 
         self.update_transaction("21010")
     end
@@ -168,6 +167,8 @@ class Payment < ActiveRecord::Base
                 amount = @gl_account.gl_account_amount - self.payment_check_amount.to_f               
                 @gl_account.update_attributes(:gl_account_amount => amount) 
             end 
+        Payment.skip_callback("save", :after, :process_after_save)
+        self.update_attributes(:payment_status => 'closed')   
     end
 
     private
