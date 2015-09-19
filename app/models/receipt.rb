@@ -76,6 +76,16 @@ class Receipt < ActiveRecord::Base
             end              
             # end     
     elsif self.receipt_type.present? &&  self.receipt_type.type_value == "ach" ||  self.receipt_type.type_value == "cash" ||  self.receipt_type.type_value == "credit"  
+        
+        if self.receipt_type.type_value == "credit"  
+            credit_register = CreditRegister.where(receipt_id: self.id).first
+            unless  credit_register.present?                
+                 balance = self.receipt_check_amount * -1                  
+                 balance += CreditRegister.calculate_balance('receipt').to_f  if  CreditRegister.exists?                                                         
+                CreditRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.receipt_check_amount, rec: false, receipt_id: self.id, balance: balance)
+            end
+        end 
+
       self.update_transactions
       Reconcile.create(tag: "not reconciled",reconcile_type: self.receipt_type.type_value, receipt_id: self.id)          
       # self.update_transactions if self.receipt_type.type_value != "credit"       

@@ -132,7 +132,7 @@ class Payment < ActiveRecord::Base
             credit_register = CreditRegister.where(payment_id: self.id).first
             unless  credit_register.present?                
                  balance = self.payment_check_amount * -1                  
-                 balance += CreditRegister.calculate_balance.to_f  if  CreditRegister.exists?                                                         
+                 balance += CreditRegister.calculate_balance('payment').to_f  if  CreditRegister.exists?                                                         
                 CreditRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.payment_check_amount, rec: false, payment_id: self.id, balance: balance)
             end
         end 
