@@ -1,10 +1,11 @@
 class CreditRegister < ActiveRecord::Base
-  attr_accessible :amount, :balance, :organization_id, :payment_id, :rec, :transaction_date
+  attr_accessible :amount, :balance, :organization_id, :payment_id, :rec, :transaction_date, :receipt_id
 
   belongs_to :payment
+  belongs_to :receipt
 
-  def self.calculate_balance
-  	@credit_registers = CreditRegister.all
+  def self.calculate_balance(mode_type)
+  	@credit_registers = mode_type == 'receipt' ? CreditRegister.includes(:receipt) : CreditRegister.includes(:payment)
   	total_amount = 0
   	if @credit_registers.any?
 	  	@credit_registers.each do |c|
