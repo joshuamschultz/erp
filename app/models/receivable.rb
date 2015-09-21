@@ -173,7 +173,7 @@ class Receivable < ActiveRecord::Base
     len = self.so_shipments.includes(:so_line, :receivable_so_shipment).length 
     if len > 0
       sub_total+= self.so_shipments.includes(:so_line, :receivable_so_shipment).sum("so_shipped_cost").to_f
-      s_sub_total+= sub_total - self.receivable_freight.to_f
+      s_sub_total+= sub_total + self.receivable_freight.to_f
 
       self.so_shipments.includes(:so_line, :receivable_so_shipment).each_with_index do |so_shipment, index| 
         if so_shipment.so_line.item_revision.present? 
@@ -302,7 +302,7 @@ class Receivable < ActiveRecord::Base
     if len > 0
 
       sub_total+= self.so_shipments.includes(:so_line, :receivable_so_shipment).sum("so_shipped_cost").to_f
-      s_sub_total+= sub_total - self.receivable_freight.to_f
+      s_sub_total+= sub_total + self.receivable_freight.to_f
 
       self.so_shipments.includes(:so_line, :receivable_so_shipment).each_with_index do |so_shipment, index| 
         if so_shipment.so_line.item_revision.present? 
