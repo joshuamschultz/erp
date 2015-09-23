@@ -4,7 +4,7 @@ class Receipt < ActiveRecord::Base
   has_many :receipt_lines, :dependent => :destroy, :before_add => :set_receipt
   belongs_to :organization
   has_one :reconcile
-  has_one :deposit_check
+  has_one :deposit_check, :dependent => :destroy
   has_one :check_register
 
   attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
@@ -74,11 +74,22 @@ class Receipt < ActiveRecord::Base
               # elsif self.receipt_type.type_value == "credit" || self.receipt_type.type_value == "cash" || self.receipt_type.type_value == "ach"
                 # depositCheck = DepositCheck.create(receipt_id: self.id, status: "open", receipt_type: self.receipt_type.type_value, active: 1 )       
             end              
-            # end         
-    else
-      Reconcile.create(tag: "not reconciled",reconcile_type: self.receipt_type.type_value, receipt_id: self.id)
+            # end     
+    elsif self.receipt_type.present? &&  self.receipt_type.type_value == "ach" ||  self.receipt_type.type_value == "cash" ||  self.receipt_type.type_value == "credit"  
+        
+        if self.receipt_type.type_value == "credit"  
+            credit_register = CreditRegister.where(receipt_id: self.id).first
+            unless  credit_register.present?                
+                 balance = self.receipt_check_amount * -1                  
+                 balance += CreditRegister.calculate_balance('receipt').to_f  if  CreditRegister.exists?                                                         
+                CreditRegister.create(transaction_date: Date.today.to_s, organization_id: self.organization_id, amount: self.receipt_check_amount, rec: false, receipt_id: self.id, balance: balance)
+            end
+        end 
+
+      self.update_transactions
+      Reconcile.create(tag: "not reconciled",reconcile_type: self.receipt_type.type_value, receipt_id: self.id)          
       # self.update_transactions if self.receipt_type.type_value != "credit"       
-    end             
+    end
   end 
 
   def redirect_path
@@ -86,7 +97,6 @@ class Receipt < ActiveRecord::Base
   end
 
   def update_transactions   
-        self.update_attributes(:receipt_status => 'closed')       
         self.update_transaction("11010","credit") # Cash
         self.update_transaction("11030", "debit")  # Receivable
         self.update_transaction("51010-020", "discount")  # Discount
@@ -128,6 +138,8 @@ class Receipt < ActiveRecord::Base
                 @gl_entry.save 
                 @gl_account.update_attributes(:gl_account_amount => amount) 
             end 
+               Receipt.skip_callback("save", :after, :process_after_save)
+               self.update_attributes(:receipt_status => 'closed')       
   end
 
 
