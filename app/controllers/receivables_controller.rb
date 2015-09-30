@@ -129,7 +129,7 @@ class ReceivablesController < ApplicationController
         # @so_header = @receivable.so_header rescue nil
         # genarate_pdf
         # @receivable.update_gl_account
-        format.html { redirect_to new_receivable_receivable_line_path(@receivable), notice: 'Receivable was successfully created.' }
+        format.html { redirect_to new_receivable_receivable_line_path(@receivable), notice: 'Invoice was successfully created.' }
         format.json { render json: @receivable, status: :created, location: @receivable }
       else
         format.html { render action: "new" }
@@ -163,7 +163,7 @@ class ReceivablesController < ApplicationController
           receivable = Receivable.find_by_receivable_disperse("unassigned")
           receivable.update_attributes(:receivable_disperse => "assigned")
         end
-        format.html { redirect_to @receivable, notice: 'Receivable was successfully updated.' }
+        format.html { redirect_to @receivable, notice: 'Invoice was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
