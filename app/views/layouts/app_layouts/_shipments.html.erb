@@ -22,6 +22,10 @@ var current_field_temp;
 					<%= type %>_line_row.hide(1000, arguments.callee);
 
 					setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
+          if(response.po_shipped_status == "closed"){
+            $('.po_'+response.po_shipped_id).closest('a').closest('td').remove();
+          }
+
 				}
 				else{              
 
