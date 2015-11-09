@@ -155,6 +155,7 @@ class PoShipmentsController < ApplicationController
           @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
           @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status   
           @po_shipment["po_shipped_status"] = @po_shipment.po_line.po_header.po_status   
+          @po_shipment["shipment_shipped_status"] = @po_shipment.close_all_po_lines?(@po_shipment.id)
           @po_shipment["po_shipped_id"] = @po_shipment.po_line.po_header_id
           @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
           @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier

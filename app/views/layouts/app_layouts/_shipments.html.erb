@@ -20,8 +20,9 @@ var current_field_temp;
           <%= type %>_line_row.find(".shipping_status").addClass("success");
           <%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
           <%= type %>_line_row.hide(1000, arguments.callee);
-
-          setTimeout(function(){<%= type %>_line_row.remove();}, 1001);
+          var a = <%= type %>_line_row.closest('tr');
+          var prev = a.prev(); 
+          setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();}}, 1001);
 
         }
         else{              
