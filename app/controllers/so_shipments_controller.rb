@@ -45,6 +45,7 @@ class SoShipmentsController < ApplicationController
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
+                  so_line[:so_identifier] = "<a href='/so_headers/#{so_line.so_header.id}' style='color: #848482;' >"+so_line.so_header.so_identifier+"</a> "
 
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
@@ -187,9 +188,17 @@ class SoShipmentsController < ApplicationController
   # POST /so_shipments.json
   def create
     unless params[:so_shipment]['quality_lot_id'] == 'empty' || params[:so_shipment]['quality_lot_id'] == 'less'
-      @so_shipment = SoShipment.new(params[:so_shipment])
+      @so_shipment = SoShipment.new(params[:so_shipment]) #To delete in Sprint 7
+###To uncommnet in Sprint 7      
+      # @quality_lot = QualityLot.find(params[:so_shipment]['quality_lot_id'])
+      # lot_status =   @quality_lot.quality_histories.last.quality_status if @quality_lot.quality_histories.last.present? && @quality_lot.quality_histories.last.quality_status.present?      
+      # if lot_status.present? && lot_status == 'accepted'
+      #   @so_shipment = SoShipment.new(params[:so_shipment])
+      # else
+      #   @so_shipment = 2
+      # end
+###To uncommnet in Sprint 7      End      
     else
-
       @so_shipment = params[:so_shipment]['quality_lot_id'] == 'empty' ? 0 : 1
     end
 
@@ -199,12 +208,19 @@ class SoShipmentsController < ApplicationController
           format.html { render action: "new" }
           res["lot"] = @so_shipment == 0 ? 'Please receive the lot' : 'ship more than a lot has'
           format.json { render json: {errors:  res} }
+##To uncomment in Sprint 7    
+      # elsif @so_shipment == 2
+      #     format.html { render action: "new" }
+      #     res["lot"] = 'Lot is not accepted'
+      #     format.json { render json: {errors:  res} }
+## To uncomment in Sprint 7 End
       else
         if @so_shipment.save
           @so_shipment.set_quality_on_hand        
           @so_shipment.so_line.update_so_total
           @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
           @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
+          @so_shipment["shipment_shipped_status"] = @so_shipment.close_all_so_lines?(@so_shipment.id)
           @so_shipment["quantity_on_hand"] = @so_shipment.quality_lot.quantity_on_hand
           format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
           format.json { render json: @so_shipment, status: :created, location: @so_shipment }
