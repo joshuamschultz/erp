@@ -1,6 +1,6 @@
 class SoShipment < ActiveRecord::Base
   belongs_to :so_line
-
+  belongs_to :item
   attr_accessible :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
   :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id
 
@@ -159,6 +159,16 @@ class SoShipment < ActiveRecord::Base
       end
       SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["process", "ship_close"]).update_all(:so_shipped_status => "shipped")
       
+  end
+  def close_all_so_lines?(shipment_id)
+    finished = 1
+    soHeaderId = SoShipment.find(shipment_id).so_header_id
+    SoLine.where(:so_header_id => soHeaderId).each do |so_line|
+     if so_line.so_line_status != 'closed'
+      finished = 0 
+     end
+    end
+    finished 
   end
 
   
