@@ -119,4 +119,15 @@ class PoShipment < ActiveRecord::Base
     end    
   end
 
+  def close_all_po_lines?(shipment_id)
+    finished = 1
+    poHeaderId = PoShipment.find(shipment_id).po_line.po_header_id
+    PoLine.where(:po_header_id => poHeaderId).each do |po_line|
+     if po_line.po_line_status != 'closed'
+      finished = 0 
+     end
+    end
+    finished 
+  end
+
 end
