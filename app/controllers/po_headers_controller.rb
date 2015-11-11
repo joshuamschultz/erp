@@ -76,10 +76,11 @@ class PoHeadersController < ApplicationController
 
           if  user_signed_in? && current_user.is_vendor?
             organization_ids = current_user.organizations.collect(&:id)
+#            organization_ids = current_user.organizations.where("organization_type_id =? ", MasterType.find_by_type_value('vendor').id).collect(&:id) To uncomment for Sprint 7
             @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
           end
-          po_line_ids = []
-          @po_headers = @po_headers.select{|po_header|
+          po_line_ids = []        
+          @po_headers = @po_headers.select{|po_header|             
               po_header[:index] = i 
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
@@ -90,13 +91,13 @@ class PoHeadersController < ApplicationController
                 po_header[:links] = nil
               end
               if params[:item_id].present?
-                po_lines = po_header.po_lines
+                po_lines = PoLine.where(:po_header_id => po_header.id, :item_id => params[:item_id])
                 if po_line_ids != nil?
                   po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
                 end
-                po_line_ids<<po_header.po_lines.first.id
-                po_header[:po_line_price] = po_lines.first.po_line_cost
-                po_header[:po_type_qty] = po_lines.first.po_line_quantity
+                po_line_ids<< po_lines.first.id
+                po_header[:po_line_price] = po_lines.first.po_line_cost.to_f
+                po_header[:po_type_qty] = po_lines.first.po_line_quantity               
               end
 
               i += 1
