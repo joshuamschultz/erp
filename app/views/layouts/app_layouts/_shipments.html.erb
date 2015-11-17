@@ -1,7 +1,14 @@
  <script type="text/javascript">
 var quality_lot_id;
 var current_field_temp;
+var prev_ids=[];
   function shipping_fnDrawCallback(dt_settings){
+      
+    for(var i= 0; i< prev_ids.length;++i) 
+    { 
+      console.log(prev_ids[i]); 
+      $('#'+prev_ids[i]).remove();    
+    }
     
   }
 
@@ -21,8 +28,8 @@ var current_field_temp;
           <%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
           <%= type %>_line_row.hide(1000, arguments.callee);
           var a = <%= type %>_line_row.closest('tr');
-          var prev = a.prev(); 
-          setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();}}, 1001);
+          var prev = a.prev();           
+          setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();prev_ids.push(prev.attr('id'));}}, 1001);
 
         }
         else{              
@@ -33,7 +40,7 @@ var current_field_temp;
           <%= type %>_line_row.find(".<%= type %>_line_shipping_input input[type=text]").val("0");
           <%= type %>_line_row.find(".<%= type %>_line_shelf_input input[type=text]").val("");
           <%= type %>_line_row.find(".<%= type %>_line_unit_input input[type=text]").val("");
-      }
+        }     
     }
   }
 
