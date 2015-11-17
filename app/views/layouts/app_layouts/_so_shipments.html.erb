@@ -1,8 +1,13 @@
-\<script type="text/javascript">
+<script type="text/javascript">
 var quality_lot_id;
 var current_field_temp;
+var prev_ids=[];
 	function shipping_fnDrawCallback(dt_settings){
-		
+	   for(var i= 0; i< prev_ids.length;++i) 
+        { 
+            console.log(prev_ids[i]); 
+            $('#'+prev_ids[i]).remove();    
+        }
 	}
 
 	function shipment_row_callback(response, callback_params, api_params){
@@ -47,7 +52,7 @@ var current_field_temp;
                 // alert(<%= type %>_line_row.closest('[id=group-id-table_]'));
                 var a = <%= type %>_line_row.closest('tr');
                 var prev = a.prev();                              
-				setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();}}, 1001);
+				setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();prev_ids.push(prev.attr('id'))}}, 1001);
 			}
 			else{
 				<%= type %>_line_row.find(".shipping_status").addClass("success");
