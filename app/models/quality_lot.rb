@@ -156,10 +156,10 @@ class QualityLot < ActiveRecord::Base
 		@item_lots =ItemLot.where(:item_id => self.item_lot.item_id)
 		@item_lots.each do |item_lot|		
 
-			if item_lot.quality_lot.present? && item_lot.quality_lot.lot_control_no.present? && self.id != item_lot.quality_lot.id		
+			if item_lot.quality_lot.present? && item_lot.quality_lot.lot_control_no.present? && self.id > item_lot.quality_lot.id		
 				count = count + 1
 			end 
-		end		
+		end	
 		@max_control_string = MaxControlString.where(:control_string => control_string+letter)
 		end while(@max_control_string.present?)     
 		MaxControlString.create(:control_string => control_string+letter)  
