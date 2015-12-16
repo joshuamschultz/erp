@@ -30,7 +30,7 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => credit_registers_path, :extras => {:slno => false, :order => "desc", :hide_column => 0},
+        :name => "table_report", :path => credit_registers_path, :extras => {:slno => false, :order => "desc", :hide_column => 0, :currency_format => [4,5]},
         :columns => '[
                         { "mData": "id" },
                         { "mData": "transaction_date" },

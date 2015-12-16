@@ -51,7 +51,7 @@ AllianceFasteners::Application.configure do
   # config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025} #the port is used by mailcatcher gem
 
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { :host => "localhost:3002" }
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
 
   config.action_mailer.raise_delivery_errors = true
 
@@ -59,7 +59,7 @@ AllianceFasteners::Application.configure do
   config.action_mailer.smtp_settings = {
        :address              => "smtp.gmail.com",
        :port                 => 587,
-       :user_name            => 'testagile00@gmail.com',
+       :user_name            => 'test.agileblaze@gmail.com',
        :password             => 'mohanraj',
        :authentication       => 'plain',
        :enable_starttls_auto => true  }

@@ -26,7 +26,23 @@
                 <%#= hidden_field_tag :alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
                 <%#= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
+                <% if po_is_transfer %>
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#item_transfer_name_id', required: true, :label => "Item" %>
 
+                <%= (hidden_field_tag :item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+                <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+
+                <%= f.association :item_transfer_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', :label => "Final P/N" if po_is_transfer %>
+
+                <%= hidden_field_tag :alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
+
+                <%= hidden_field_tag :org_alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
+
+
+                
+                <% else %>
                 <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
                 <%= hidden_field_tag :alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
@@ -36,6 +52,34 @@
 
                 <%= f.association :item_transfer_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#item_transfer_name_id', :label => "Final P/N" if po_is_transfer %>
 
+                <%= (hidden_field_tag :item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+                <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+                <% end %>   
+                <% if po_is_transfer %>
+                    <div class="control-group select required quality_lot_po_line" >
+                        <label for="po_line_quality_lot_id" class="select required control-label">
+                            <abbr title="required">*</abbr> Lot
+                        </label>
+                        <div class="controls">
+                            <select name="po_line[quality_lot_id]" id="po_line_quality_lot_id" class="select required" autofocus="autofocus" required="required" oninvalid="this.setCustomValidity('Please select an lot in the list')">
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group select required quality_lot_po_line" >
+                        <label for="po_line_process_type_id" class="select required control-label">
+                            <abbr title="required">*</abbr> Process
+                        </label>
+                        <div class="controls" >
+                            <select  name="po_line[process_type_id]" id="po_line_process_type_id"  class="select required" autofocus="autofocus" required="required"  oninvalid="this.setCustomValidity('Please select an process in the list')">
+
+                            </select>
+                        </div>
+                    </div>
+                <% end %>
                 <%= (hidden_field_tag :item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
 
                 <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
@@ -122,6 +166,23 @@
 
                 <%#= hidden_field_tag :org_alt_name_id, (@po_line.item_selected_name.id unless @po_line.new_record?) %>
 
+                <% if po_is_transfer %>
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#item_transfer_name_id', required: true, :label => "Item" %>
+
+                <%= (hidden_field_tag :item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+                <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
+
+
+                <%= f.association :item_transfer_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', :label => "Final P/N" if po_is_transfer %>
+
+                <%= hidden_field_tag :alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
+
+                <%= hidden_field_tag :org_alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
+
+
+                
+                <% else %>
                 <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
 
                 <%= hidden_field_tag :alt_name_id, (@po_line.item_alt_name.id if @po_line.item_alt_name) %>
@@ -135,6 +196,31 @@
 
                 <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
 
+                <% end %>
+                <% if po_is_transfer %>
+                    <div class="control-group select required quality_lot_po_line" >
+                        <label for="po_line_quality_lot_id" class="select required control-label">
+                            <abbr title="required">*</abbr> Lot
+                        </label>
+                        <div class="controls">
+                            <select name="po_line[quality_lot_id]" id="po_line_quality_lot_id" class="select required" autofocus="autofocus" required="required" oninvalid="this.setCustomValidity('Please select an lot in the list')">
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group select required quality_lot_po_line" >
+                        <label for="po_line_process_type_id" class="select required control-label">
+                            <abbr title="required">*</abbr> Process
+                        </label>
+                        <div class="controls">
+                            <select name="po_line[process_type_id]" id="po_line_process_type_id" class="select required" autofocus="autofocus" required="required" oninvalid="this.setCustomValidity('Please select an process in the list')">
+
+                            </select>
+                        </div>
+                    </div>
+
+                <% end %>
                 <!-- <div class="control-group">
                     <label for="item_processes" class="optional control-label"></label>
                     <div class="controls"> <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn btn-small", :target => "_blank" %> </div>
@@ -205,7 +291,46 @@
     var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
 
     $(document).ready(function(){ 
+        <% if po_is_transfer %>
+            jQuery("#po_line_item_alt_name_id").on('focusout', function() {
+                initiate_lots();
+
+            });
+
+            jQuery("#po_line_alt_name_transfer_id").on('focusout', function() {
+                initiate_processes();
+
+            });
+
+            initiate_lots();
+            initiate_processes();
+        <% end %>
+        $('#po_line_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) {  
+                $('#po_line_item_alt_name_id').val($( "#ui-id-1 li a" ).first().html());  
+                $('#po_line_po_line_quantity').val("");
+            }
+        });  
+        $('#po_line_po_line_quantity').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code ===13 ) {  
+                $('#po_line_po_line_cost').val("");
+            }
+        });
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
+
+        $('#po_line_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13) {  
+                var widget = $(this).data('ui-autocomplete'),
+                menu   = widget.menu,
+                $ul    = menu.element,
+                id     = $ul.attr('id'); // or $ul[0].id
+                $('#po_line_organization_id').val($( "#"+id+" li a" ).first().html());  
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#po_line_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
 
         $("#po_line_organization_id").on("focusout", function(){
             if($("#organization_id").val() == ""){
@@ -218,7 +343,10 @@
         });
 
         <% if @po_line.new_record? %>
-            $("#po_line_item_alt_name_id").on("focusout", function(){
+            $("#po_line_item_alt_name_id").on("focusout", function(){                
+                if($("#alt_name_id").val() == "" && $("#po_line_item_alt_name_id").val() != "" )                
+                 initialize_api_call({"url": "/item_alt_names/autocomplete_item_alt_name_item_alt_identifier" + $("#alt_name_id").val(), "type": "GET", "params": {"term":$("#po_line_item_alt_name_id").val()}, "data_type": "json"}, "set_alt_name_id", {});                  
+
                 if($("#alt_name_id").val() != "")
                     initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
                 else if($("#org_alt_name_id").val() != "")
@@ -254,7 +382,10 @@
         // $("#po_line_organization_id").focus();  
         $("#po_line_item_alt_name_id").focus();       
     });
-
+    function get_org_id(response){
+        var org_id_val = JSON.stringify(response.aaData.id);
+        $("#organization_id").val(org_id_val);
+    }
     function calculate_line_item_total(){
         var po_line_total = parseFloat($("#po_line_po_line_cost").val()) * parseInt($("#po_line_po_line_quantity").val());
 
@@ -271,6 +402,14 @@
         calculate_line_item_total();
         return false;
     }
+   function set_alt_name_id(response, callback_params, api_params){
+    $.each( response, function() {
+       if ($("#po_line_item_alt_name_id").val() == this.value)
+        $("#alt_name_id").val(this.id) 
+    });
+    
+        return false;
+    } 
 
     function check_customer_min_quality(response, callback_params, api_params){
         if(response.min_vendor_quality != undefined && response.min_vendor_quality != ""){
@@ -281,11 +420,86 @@
 
         }
     }
+
+    function initiate_lots(){
+        $("#po_line_quality_lot_id").html("");
+        if($("#item_transfer_name_id").val() != "" && $("#item_transfer_name_id").val() != null)
+        {
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_inventory", "id": $("#item_transfer_name_id").val()}}, "set_quality_lots", {});
+        }
+        else{
+
+            page_initial = false;
+        }  
+    }
+    function initiate_processes(){
+        $("#po_line_process_type_id").html("");
+        if($("#alt_name_id").val() != "" && $("#alt_name_id").val() != null)
+        {
+           
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_process_types_po", "id": $("#alt_name_id").val()}}, "set_process_types", {});
+        }
+        else{
+
+            page_initial = false;
+        }  
+    }
+
+    function set_quality_lots(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
+        $("#po_line_quality_lot_id").html(html);
+        set_val_selectbox();
+       // initiate_current_quantity();
+
+    }
+
+    function set_process_types(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".process-type-select-box-template").html(), response));
+        $("#po_line_process_type_id").html(html);
+        set_process_selectbox();
+       // initiate_current_quantity();
+
+    }
+
+
+
+
+    function set_val_selectbox(){
+
+      var theText = "<%= QualityLot.find(@po_line.quality_lot_id).lot_control_no if @po_line.quality_lot_id %>";
+      $("#po_line_quality_lot_id option").each(function() {
+        if($(this).text() == theText) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+
+    }
+
+    function set_process_selectbox(){
+
+      var theText = "<%= ProcessType.find(@po_line.process_type_id).process_short_name if @po_line.process_type_id %>";
+      $("#po_line_process_type_id option").each(function() {
+        if($(this).text() == theText) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+
+
+    }
+
 </script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "lot-control-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "process-type-select-box"} %>
+
 
 
 <style> 
-
+li{
+    display: block;
+    border: 0px;
+}
 .autocomplete {
     width: 98%;
 }
@@ -304,7 +518,7 @@
 }
 
 .odd td {
-    padding: 2px 3px;
+    padding: 2px 10px !important;
 }
 @media all and (min-width: 800px) and (max-width: 1024px) {
 

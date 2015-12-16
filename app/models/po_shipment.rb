@@ -3,7 +3,7 @@ class PoShipment < ActiveRecord::Base
 
   has_one :payable_po_shipment, :dependent => :destroy
   has_one :payable, through: :payable_po_shipment
-  belongs_to :quality_lot
+  belongs_to :quality_lot, :dependent => :destroy
 
   
   attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
@@ -15,8 +15,10 @@ class PoShipment < ActiveRecord::Base
 
   before_save :process_before_save
 
-  def process_before_save
-      self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
+  def process_before_save     
+     
+        self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
+      
 
       unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
           self.po_shipped_status = "received"
@@ -58,10 +60,21 @@ class PoShipment < ActiveRecord::Base
       po_shipped = self.po_total_shipped
       po_status = (po_shipped == self.po_line.po_line_quantity) ? "closed" : "open"
       self.po_line.update_attributes(:po_line_shipped => po_shipped, :po_line_status => po_status)
+      po_status_count = self.po_line.po_header.po_lines.where("po_line_status = ?", "open").count
+      po_header_status = (po_status_count == 0) ? "closed" : "open"
+      self.po_line.po_header.update_attributes(:po_status => po_header_status)  
       PoLine.set_callback("save", :before, :update_item_total)
       PoLine.set_callback("save", :after, :update_po_total)
     end
+ 
+
   end
+  # after_commit :after_commit_process
+  # def after_commit_process
+  #   if self.quality_lot
+  #     QualityLot.summa(self.quality_lot)
+  #   end
+  # end
 
   def self.open_shipments(po_shipments)
       po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
@@ -104,6 +117,17 @@ class PoShipment < ActiveRecord::Base
         p quality_lotss.to_yaml
       end
     end    
+  end
+
+  def close_all_po_lines?(shipment_id)
+    finished = 1
+    poHeaderId = PoShipment.find(shipment_id).po_line.po_header_id
+    PoLine.where(:po_header_id => poHeaderId).each do |po_line|
+     if po_line.po_line_status != 'closed'
+      finished = 0 
+     end
+    end
+    finished 
   end
 
 end

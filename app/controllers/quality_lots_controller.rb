@@ -20,7 +20,11 @@ class QualityLotsController < ApplicationController
   end
 
   def set_page_info
+    unless params[:type].present?
       @menus[:quality][:active] = "active"
+    else
+      @menus[:reports][:active] = "active"
+    end
   end
 
   def set_autocomplete_values     
@@ -58,6 +62,8 @@ class QualityLotsController < ApplicationController
     if params[:item_id].present?
         @item = Item.find(params[:item_id])
         @quality_lots = @item.quality_lots.order('created_at desc')
+    elsif params[:type].present?
+      @quality_lots = QualityLot.lot_missing_location
     else
         @quality_lots = QualityLot.order('created_at desc')
     end
@@ -66,6 +72,15 @@ class QualityLotsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
+
+          if  user_signed_in? && current_user.is_vendor?
+            @po_headers  = PoHeader.all
+            organization_ids = current_user.organizations.collect(&:id)
+            @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+            @po_headers =   @po_headers.collect(&:id)
+            @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}  
+          end
+
           @quality_lots = @quality_lots.select{|quality_lot|
             quality_lot[:index] = i
 
@@ -86,8 +101,8 @@ class QualityLotsController < ApplicationController
             quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
             revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
 
-            quality_lot[:item_revision_name] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
-            revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)
+            quality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)  : ""
             if  user_signed_in? && current_user.is_customer? 
               if can? :edit , quality_lot
                 quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
@@ -148,6 +163,7 @@ class QualityLotsController < ApplicationController
 
     respond_to do |format|
       if @quality_lot.save
+        @quality_lot.after_create_values
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully created.') }
         format.json { render :json => @quality_lot, :status => :created }
       else
@@ -224,6 +240,41 @@ class QualityLotsController < ApplicationController
   def dimension_report
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
+  end
+  
+  def gage_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def psw_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+  def csk_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+  def package_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def process_flow_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def fmea_report
+      @quality_lot = QualityLot.find(params[:id])
+      render :layout => false
+  end
+
+  def report
+    @quality_lots = QualityLot.report_data
+    render :layout => false
+
+
   end
 
 end

@@ -21,7 +21,7 @@
               <tr> 
                 <th>Qty</th>
                 <th>SO</th>
-                <th>Vendor</th>
+                <th>Customer</th>
                 <th>Shipped At</th>
                 <th>Lot</th>
                 <th></th>
@@ -41,7 +41,7 @@
         :columns => '[
                         { "mData": "so_shipped_count" },
                         { "mData": "so_identifier" },                        
-                        { "mData": "vendor_name" },
+                        { "mData": "customer_name" },
                         { "mData": "so_shipped_date" },
                         { "mData": "lot" },  
                         { "mData": "links", "bSortable": false, "bSearchable": false }  
@@ -81,6 +81,7 @@
 
     function redirect_to_receivable(response, callback_params, api_params){
         if(response.id){
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "create_receivable", "id": response.id}}, "set_quality_lots", {});
             window.location = "/receivables/" + response.id + "/edit";
         }
     }

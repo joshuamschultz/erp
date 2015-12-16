@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+
+<title>Gage Report</title>
+<!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
+
+<style type="text/css">
+    @charset "utf-8";
+    body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	background-color: #FFF;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+    }
+    /* New Style */
+    .clear {
+        clear: both;
+    }
+
+    #main-wrapper {
+        float: left;
+        height: auto;
+        width: 640px;
+		border:1px solid #000;
+    }
+.wrapper {
+float: left;
+height: auto;
+width: 100%;
+}
+.wrapper-1 {
+float: left;
+height: auto;
+width: 100%;
+}
+.wrapper-2 {
+float: left;
+height: auto;
+width: 100%;
+}
+
+
+table {
+    border-collapse: collapse;
+}
+.t_bor tr{border-bottom:1px dashed #111;}
+body,td,th {
+	color: #000;
+}
+
+.logo {
+    width: 180px;
+}
+
+
+.wrapper-1 td {
+    border: 1px solid #000;
+}
+
+.wrapper-2 td {
+    float: left;
+    margin: 4px 11px 1px;
+    width: 137px;
+}
+
+.wrapper-2.ff {
+    border: 1px solid #000;
+}
+</style>
+
+<% @company_info = CompanyInfo.first %>
+<div id="main-wrapper">
+
+<div class="wrapper">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top">
+      <td width="18%" scope="row"> <%= image_tag(@company_info.image.image.url(:original), :class => "logo") if @company_info.image %></td>
+
+
+
+
+      <td width="82%" align="center" valign="middle" style="font-size:18px;"><strong>FIXTURE / GAGE REVIEW </strong></td>
+    </tr>
+  </table>
+</div>
+
+<div class="wrapper-1">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+<!--       <td scope="row">ROC PLANT(s)</td>
+      <td align="center" valign="middle" style="color:#000;" colspan="3"><%= @quality_lot.po_header.organization.organization_address_1
+%></td> -->
+     
+      <td>Document
+Updated:</td>
+      <td align="center" valign="middle" style="color:#000;" colspan="5" ><%= Time.now.strftime("%m/%d/%Y") %></td>
+    </tr>
+    
+        <tr>
+      <td scope="row">PART NAME</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.item_name %></td>
+      <td>PART NUMBER</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.item.item_part_no %></td>
+      <td>P.O. NUMBER</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %></td>
+    </tr>
+        <tr>
+      <td scope="row">DRAWING NUMBER</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.item.item_part_no %></td>
+      <td>ECN LEVEL</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.item_revision_name %></td>
+      <td>ECN DATE</td>
+      <td align="center" valign="middle" style="color:#000;"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y")%></td>
+    </tr>
+        <tr>
+      <td scope="row">SUPPLIER</td>
+      <td colspan="5" align="center" valign="middle" style="color:#000;"><%= @company_info.company_name %></td>
+     
+
+    </tr>
+  </table>
+</div>
+<div class="wrapper">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="top">
+      <td width="100%" scope="row">&nbsp;</td>
+      </tr>
+  </table>
+</div>
+<div class="wrapper-1">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="center" valign="middle">
+      <td width="9%" scope="row">Part Number<br>
+        </td>
+      <td width="6%">Rev<br>
+level</td>
+      <td width="18%">Part Description<br>
+</td>
+      <td width="10%">GAGE ID #<br>
+</td>
+      <td width="17%">Gage Description/Purpose<br>
+</td>
+      <td width="8%">Attribute or<br>
+Variable</td>
+      <td width="13%">Dimension/ Spec<br>
+</td>
+      <td width="10%">Supplier Approval*<br>
+</td>
+      <td width="9%">Gage ID details </td>
+<% temp  = [] %>
+<% gauges  = [] %>
+
+<% @quality_lot.item_revision.item_part_dimensions.each do |item_part_dimension| %>
+  <% gauges << item_part_dimension.gauge  %>
+<% end %>
+
+
+
+<% gauges.uniq.reverse.each do |gauge| %>
+
+    </tr>
+        <tr align="center" valign="middle">
+      <td width="9%" scope="row"><%= @quality_lot.item_revision.item.item_part_no %></td>
+      <td width="6%"><%= @quality_lot.item_revision.item_revision_name %></td>
+      <td width="18%"><strong><%= @quality_lot.item_revision.item.item_part_no %></strong></td>
+      <td width="10%"><strong><%= gauge.gauge_tool_no %></strong></td>
+   
+     
+      <td width="17%"><strong>   <%=  gauge.gauge_tool_name %> </strong></td>
+      <td width="8%"><strong></strong></td>
+      <% gauge.item_part_dimensions.each do |item_letter| %>
+        <% temp << item_letter.item_part_letter %>
+      <% end %>
+  <td width="13%"><%= temp.uniq.to_sentence.gsub(/[and]/, '') %></td>
+ <!-- 
+      <td width="13%"><%= gauge.gauge_tool_name %></td> -->
+      <td width="10%"><%= User.where(:roles_mask => 4).first.name %> </td>
+      <td width="9%"></td>
+    </tr>
+
+
+
+  <% end %>
+
+    </table>
+
+</div>
+
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <td><strong>
+* Supplier is responsible for gage design and maintenance and to ensure the part meet print at all times. General Gage design criteria agreed on this document is provided to minimize
+correlation issues between supplier and Customer.</strong>
+
+      </td></tr></table>
+
+
+
+<div class="wrapper-2 ff">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <td colspan="4" align="left" style="width:none !important; float:none; background-color:#ddd;" > <strong> dfgd dsf dsfds s  sdfg fgds</strong></td>
+
+    </tr>
+    <tr>
+      <td scope="row">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr align="center" valign="middle">
+      <td scope="row" style=" border-top: 1px solid #000;">Date</td>
+      <td style=" border-top: 1px solid #000;"> Engineering Representative
+(Print name & Signature)</td>
+      <td style=" border-top: 1px solid #000;">Date</td>
+      <td style=" border-top: 1px solid #000;"> Plant Quality Representative
+(Print name & Signature)</td>
+    </tr>
+    <tr>
+      <td scope="row">&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td align="center"><%= User.where(:roles_mask => 4).first.name %></td>
+    </tr>
+    <tr align="center" valign="middle">
+      <td scope="row" style=" border-top: 1px solid #000;">Date</td>
+      <td style=" border-top: 1px solid #000;"> Supplier Quality
+(Print name & Signature)</td>
+      <td style=" border-top: 1px solid #000;">Date</td>
+      <td style=" border-top: 1px solid #000;">Supplier Representative
+(Print name & Signature)</td>
+    </tr>
+  </table>
+
+</div>
+
+
+<!-- <div class="wrapper-1" style="margin:60px 0 0 0">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="left" valign="middle">
+      <td align="center" scope="row" style="background-color:#ddd;"><strong>Supplemental information</strong></td>
+    </tr>
+    <tr>
+      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center" valign="middle">
+          <td width="8%" scope="row">1</td>
+          <td width="92%" align="left">Does the gage design reflect the latest part engineering changes?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">2</td>
+          <td width="92%" align="left">Does part orientation on gage conform to design record GD&T? </td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">3</td>
+          <td width="92%" align="left">Are part datums, as defined on the part design record, correctly applied?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">4</td>
+          <td width="92%" align="left">Are all applicable datum locating points identified?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">5</td>
+          <td width="92%" align="left">Is the type of measurement system (attribute or variable data) appropriate for the gage's intended function? (Key Product Characteristics (KPC - critical to safety) gages MUST produce
+variable data)</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">6</td>
+          <td width="92%" align="left">Are the materials used in the gage and gage detail construction appropriate for the function? (consider gage durability)</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">7</td>
+          <td width="92%" align="left">Are standard and commercial items used, where possible, to minimize cost and simplify construction?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">8</td>
+          <td width="92%" align="left">Are clamp pivot points in line with pressure points?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">9</td>
+          <td width="92%" align="left">For surface profile gages - Does the gage touch off on a minimum of five points (corners & center of part)? How many data points are used?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">10</td>
+          <td width="92%" align="left">Is adequate clearance provided for part load and unload?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">11</td>
+          <td width="92%" align="left">Are all check features/details practical and accessible?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">12</td>
+          <td width="92%" align="left">Are loose or interchangeable check details tethered to the gage base?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">13</td>
+          <td width="92%" align="left">Are loose or interchangeable check details properly identified?</td>
+        </tr>
+        <tr align="center" valign="middle">
+          <td width="8%" scope="row">14</td>
+          <td width="92%" align="left">Do loose or interchangeable check details have storage slots to prevent damage?</td>
+        </tr>
+         <tr align="center" valign="middle">
+          <td width="8%" scope="row">15</td>
+          <td width="92%" align="left">Do moveable check details clear other gage components?</td>
+        </tr>
+        <tr align="center" valign="middle">
+          <td width="8%" scope="row">16</td>
+          <td width="92%" align="left">Have provisions been made for handling?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">17</td>
+          <td width="92%" align="left">Are there any operational safety issues and, if so, how are they addressed?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">18</td>
+          <td width="92%" align="left">Have provisions been made for gage identification (Part #, rev. level, Gage #, Calibration Date, Recalibration Due Date, etc.) and are they adequate? Describe (e.g. embossed metal
+plate, sticker, etc.)</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">19</td>
+          <td width="92%" align="left">Are gage operation instructions part of the design and are they complete?</td>
+        </tr>
+                <tr align="center" valign="middle">
+          <td width="8%" scope="row">20</td>
+          <td width="92%" align="left">Does the gage have electrical or electronic components and, if so, how are they powered?</td>
+        </tr>
+ -->
+        </table></td>
+    </tr>
+  </table>
+
+</div>
+
+</div>
+
+
+

@@ -19,7 +19,9 @@ class CustomerQuotesController < ApplicationController
     end
 
     def set_page_info
+      unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  )
         @menus[:quotes][:active] = "active"
+      end
     end
 
     def set_autocomplete_values
@@ -70,7 +72,7 @@ class CustomerQuotesController < ApplicationController
             format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
                      customer_quote[:index] = i
                      customer_quote[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
-                     customer_quote[:customer_name] = CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name)
+                     customer_quote[:customer_name] = customer_quote.organization.present? ? CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name) : ''
                      if can? :edit, CustomerQuote
                       customer_quote[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
                       customer_quote[:links] = CommonActions.object_crud_paths(nil, customer_quote_customer_quote_lines_path(customer_quote), customer_quote_path(customer_quote))

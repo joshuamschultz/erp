@@ -33,7 +33,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_payment_list", :path => payments_path(payment_status: params[:payment_status]), :extras => {:slno => false},
+    {:name => "table_report_payment_list", :path => payments_path(payment_status: params[:payment_status]), :extras => {:slno => false, :currency_format => [4]},
         :columns => '[
                         { "mData": "payment_identifier" },
                         { "mData": "vendor_name" },

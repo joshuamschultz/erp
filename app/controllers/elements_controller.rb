@@ -1,18 +1,18 @@
 class ElementsController < ApplicationController
   before_filter :set_page_info
   autocomplete :element, :element_name, :full => true, :display_value => :element_symbol_name
-  before_filter :view_permissions, except: [:index, :show]
+  # before_filter :view_permissions, except: [:index, :show]
   before_filter :user_permissions
 
 
-  def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, Element
-    end 
-  end
+  # def view_permissions
+  #  if  user_signed_in? && current_user.is_customer? 
+  #       authorize! :edit, Element
+  #   end 
+  # end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? || current_user.is_customer?)
         authorize! :edit, Element
     end 
   end

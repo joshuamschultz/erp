@@ -82,10 +82,11 @@
   });
 
  $(document).on("keydown", "#form_for_lot_gauge_results input[type=text]", function(e){
+
       var keyCode = e.keyCode || e.which;
       if(keyCode == 13){
         e.preventDefault();
-        $($(this).attr("next_element")).focus();
+        $($(this).attr("next_element")).select();
         if($(this).attr("class") == $("#last_element").attr("last-element"))
             $("#form_for_lot_gauge_results").submit();
       }

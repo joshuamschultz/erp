@@ -6,8 +6,16 @@ class QualityActionsController < ApplicationController
 
   before_filter :view_permissions, except: [:index, :show]
 
+  before_filter :user_permissions
+
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? )
+        authorize! :edit, QualityAction
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, QualityAction
     end 
   end
@@ -32,7 +40,7 @@ class QualityActionsController < ApplicationController
   # GET /quality_actions
   # GET /quality_actions.json
   def index
-    if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && (current_user.is_operations? || current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer? )
 
       if params[:status]
 
@@ -40,7 +48,7 @@ class QualityActionsController < ApplicationController
         @quality_actions = QualityAction.status_based_quality_action(params[:status])
         @status = params[:status]
       else
-        @quality_actions = QualityAction.quality_action_filtering
+        @quality_actions = QualityAction.quality_action_filtering 
       end
     
     else
@@ -53,6 +61,9 @@ class QualityActionsController < ApplicationController
       end
 
     end
+
+
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -121,6 +132,7 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.save
         @quality_action.set_user(params)
+        CommonActions.notification_process("QualityAction", @quality_action)
         format.html { redirect_to quality_action_path(@quality_action), notice: 'Quality action was successfully created.' }
         format.json { render json: @quality_action, status: :created, location: @quality_action }
       else
@@ -146,7 +158,7 @@ class QualityActionsController < ApplicationController
     respond_to do |format|
       if @quality_action.update_attributes(params[:quality_action])
          @quality_action.set_user(params)
-
+        CommonActions.notification_process("QualityAction", @quality_action)
         format.html { redirect_to quality_actions_url, notice: 'Quality action was successfully updated.' }
         format.json { head :no_content }
       else

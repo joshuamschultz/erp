@@ -21,7 +21,9 @@ class PoHeadersController < ApplicationController
   end
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_customer? 
       @menus[:purchases][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -57,6 +59,7 @@ class PoHeadersController < ApplicationController
       end
 
       @po_headers = @po_headers.status_based_pos(params[:po_status]).order("created_at desc")  if params[:po_status].present? && @po_headers.any?
+   
   end
 
   # GET /po_headers
@@ -70,7 +73,14 @@ class PoHeadersController < ApplicationController
       format.html # index.html.erb
       format.json { 
           i = 0
-          @po_headers = @po_headers.select{|po_header|
+
+          if  user_signed_in? && current_user.is_vendor?
+            organization_ids = current_user.organizations.collect(&:id)
+#            organization_ids = current_user.organizations.where("organization_type_id =? ", MasterType.find_by_type_value('vendor').id).collect(&:id) To uncomment for Sprint 7
+            @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+          end
+          po_line_ids = []        
+          @po_headers = @po_headers.select{|po_header|             
               po_header[:index] = i 
               po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
               po_header[:po_type_name] = po_header.po_type.type_name
@@ -80,8 +90,15 @@ class PoHeadersController < ApplicationController
               else
                 po_header[:links] = nil
               end
-              po_header[:po_line_price] =  po_header.po_lines.find_by_item_id(@item.id).po_line_cost if params[:item_id].present?
-              po_header[:po_type_qty] =  po_header.po_lines.find_by_item_id(@item.id).po_line_quantity if params[:item_id].present?
+              if params[:item_id].present?
+                po_lines = PoLine.where(:po_header_id => po_header.id, :item_id => params[:item_id])
+                if po_line_ids != nil?
+                  po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
+                end
+                po_line_ids<< po_lines.first.id
+                po_header[:po_line_price] = po_lines.first.po_line_cost.to_f
+                po_header[:po_type_qty] = po_lines.first.po_line_quantity               
+              end
 
               i += 1
           }
@@ -123,6 +140,9 @@ class PoHeadersController < ApplicationController
   # GET /po_headers/1/edit
   def edit
     @po_header = PoHeader.find(params[:id])
+    if @po_header.po_status == "closed"
+      redirect_to action: "index"
+    end
   end
 
   # POST /po_headers
