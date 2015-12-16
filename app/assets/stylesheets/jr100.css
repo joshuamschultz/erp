@@ -1,4 +1,4 @@
-    @charset "utf-8";
+@charset "utf-8";
     body {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 14px;
@@ -34,7 +34,7 @@
         font-size: 22px;
         text-align: center;
         width: 310px;
-        height: 100px;
+        height: 90px;
     }
     .ms_wrapper .ms_image-2 {
 
@@ -42,7 +42,7 @@
         font-size: 22px;
         text-align: right;
         width: 310px;
-        height: 100px;
+        height: 90px;
     }
     .ms_wrapper article {
         float: left;
@@ -164,7 +164,7 @@
 
 .bor td {
     border: 1px solid #111;
-    padding: 3px 37px;
+    padding: 2px 37px;
 }
 .bor-2 td {
     border: 1px solid #111;
