@@ -9,7 +9,8 @@
 			{{# aaData}}<option value="{{id}}">{{po_line_item_name}}</option>{{/ aaData}}
 	<% when "lot-control-select-box" %>
 			{{# aaData}}<option value="{{id}}">{{lot_control_no}}</option>{{/ aaData}}
-
+	<% when "process-type-select-box" %>
+			{{# aaData}}<option value="{{id}}">{{process_short_name}}</option>{{/ aaData}}
 	<% when "contact-email-select-box" %>
 			{{# aaData}}<option value="{{id}}">{{contact_email}}</option>{{/ aaData}}
 	<% when "element-select-box" %>

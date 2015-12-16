@@ -1,4 +1,12 @@
 class CheckEntriesController < ApplicationController
+  before_filter :user_permissions
+
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, CheckEntry
+    end 
+  end 
   # GET /check_entries
   # GET /check_entries.json
   def index
@@ -7,8 +15,8 @@ class CheckEntriesController < ApplicationController
       format.html # index.html.erb
       format.json { 
           @check_entries = @check_entries.select{|check_entry| 
-            check_data = check_entry.check_belongs_to
-            check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
+            # check_data = check_entry.check_belongs_to
+            # check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
             check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
             payables = check_entry.get_payables
             check_entry[:payables] = payables["payableIds"]

@@ -18,5 +18,8 @@
 	<%= render :partial => 'layouts/app_layouts/editable_rows_lots', locals: {f: f, form: "form_for_lot_dimensions", name: "dimension", title_field: :item_part_letter, value_field: :lot_dimension_value, objects: objects, values: values, back: quality_lot_dimensions_path(quality_lot_id: @quality_lot.id), default_rows: 5 } %>
 <% end %>
 
+<%= render 'item_part_dimensions/item_dimensions' %>
+
+
 <%#= render :partial => 'item_part_dimensions/item_dimensions', locals: {item_page: false} %>
 

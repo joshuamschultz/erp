@@ -32,7 +32,7 @@ class PpapsController < ApplicationController
         @ppaps = @ppaps.select{|ppap|
           ppap[:id_link] = CommonActions.linkable(ppap_path(ppap), ppap.id)
           if can? :edit, ppap
-            ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap), ppap.quality_lot.lot_control_no)
+            ppap[:lot_control_no] = CommonActions.linkable(quality_lot_path(ppap.quality_lot.id), ppap.quality_lot.lot_control_no)
             ppap[:links] = CommonActions.object_crud_paths(nil, edit_ppap_path(ppap), nil)
           else
             ppap[:lot_control_no] =  ppap.quality_lot.lot_control_no

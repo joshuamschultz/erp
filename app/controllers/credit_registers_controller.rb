@@ -1,21 +1,45 @@
 class CreditRegistersController < ApplicationController
   # GET /credit_registers
   # GET /credit_registers.json
+  before_filter :set_page_info
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && current_user.is_customer? 
+        authorize! :edit, CreditRegister
+    end 
+  end
+
+  def set_page_info
+    unless user_signed_in? && current_user.is_customer? 
+      @menus[:general_ledger][:active] = "active"
+    end 
+  end
   def index
     @credit_registers = CreditRegister.all
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
-        @credit_registers = @credit_registers.select{|credit_register| 
-          payable_ids = credit_register.payment.payment_lines.collect(&:payable_id)
-          @identifiers = Array.new() 
-          payable_ids.each do |p|
-            payable = Payable.find (p)
-            @identifiers.push(payable.payable_identifier)
-          end 
-           credit_register[:payables] =  @identifiers
-           credit_register[:organization] = credit_register.payment.present? && credit_register.payment.organization.present? ? CommonActions.linkable(organization_path(credit_register.payment.organization), credit_register.payment.organization.organization_name) :  "-"
+        @credit_registers = @credit_registers.select{|credit_register|
+          @pidentifiers = Array.new() 
+          @ridentifiers = Array.new()  
+          register_id = ''
+          if credit_register.payment_id.present?
+            payable_ids = credit_register.payment.payment_lines.collect(&:payable_id)
+            payable_ids.each do |p|
+              payable = Payable.find (p)
+              @pidentifiers.push(payable.payable_identifier)
+            end 
+          else
+            receivable_ids = credit_register.receipt.receipt_lines.collect(&:receivable_id)
+            receivable_ids.each do |r|
+              receivable = Receivable.find (r)
+              @ridentifiers.push(receivable.receivable_identifier)
+            end 
+          end
+           credit_register[:payables] =  @pidentifiers.present? ? @pidentifiers : @ridentifiers
+           credit_register[:organization] = credit_register.payment.present? ? credit_register.payment.present? && credit_register.payment.organization.present? ? CommonActions.linkable(organization_path(credit_register.payment.organization), credit_register.payment.organization.organization_name) :  "-" : credit_register.receipt.present? && credit_register.receipt.organization.present? ? CommonActions.linkable(organization_path(credit_register.receipt.organization), credit_register.receipt.organization.organization_name) :  "-"
            credit_register[:reconcile] =  credit_register.rec ? "Y" : "N"   
           }
         render json: {:aaData => @credit_registers }}

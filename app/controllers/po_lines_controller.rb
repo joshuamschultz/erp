@@ -44,13 +44,21 @@ class PoLinesController < ApplicationController
       format.html { redirect_to new_po_header_po_line_path(@po_header) }
       format.json { 
           @po_lines = @po_lines.select{|po_line|
-              po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-              po_line[:item_notes] = po_line.item_revision.item_notes
+              if po_line.po_line_status == "open"
+                po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+              else
+                po_line[:item_part_no] = "<a href='/items/#{po_line.item.id}' style='color: #848482;' >"+po_line.item_alt_name.item_alt_identifier+"</a> "
+              end
+              po_line[:item_notes] = po_line.item_revision.present? ? po_line.item_revision.item_notes : '' 
               po_line[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
               po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "CHESS"
               po_line[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"              
               if can? :edit , PoLine
-                po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+                if po_line.po_line_status == "open"
+                  po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+                else
+                  po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
+                end
               else
                 po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
               end
@@ -101,6 +109,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.save
+        CommonActions.notification_process("PoLine", @po_line)
         # genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully created.' }
         format.json { render :json => @po_line, :status => :created, :location => [@po_line.po_header, @po_line] }
@@ -119,6 +128,7 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
+        CommonActions.notification_process("PoLine", @po_line)
         # genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
         format.json { head :ok }

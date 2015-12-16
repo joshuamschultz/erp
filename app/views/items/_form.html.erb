@@ -3,7 +3,8 @@
 
   <div class="form-inputs">
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
-
+    <%= f.input :item_alt_part_no, :label => "Alt Part No" %>
+    
     <% unless @item.persisted? %>
     <%= f.simple_fields_for :item_revisions do |g| %>
             <%#= g.input :item_name, :label => "Name" %>
@@ -107,7 +108,7 @@
 
 <script type="text/javascript">
     <% unless @item.persisted? %>
-        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_description", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
+        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_owner_id", "item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
 
         <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
 
@@ -116,3 +117,8 @@
         tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_active"];
     <% end %>
 </script>
+<style type="text/css">
+    #item_item_revisions_attributes_0_item_description {
+        height: 50px;
+    }
+</style>

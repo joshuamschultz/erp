@@ -33,6 +33,21 @@
                         </td>
                     </tr>
                 <% end %>
+                <% @payable.gl_entries.each do |gl_entry|%>
+                    <% if gl_entry.gl_account.gl_account_identifier == '21010' %>
+
+                       <tr>
+                        <td><%= gl_entry.gl_account.gl_account_title if gl_entry.gl_account %></td>
+                        <td> </td>
+                        <% if gl_entry.gl_entry_credit != 0%>
+                        <td><%= gl_entry.gl_entry_credit %></td>
+                        <% else %>
+                        <td><%= gl_entry.gl_entry_debit %></td>
+                        <% end %>
+                       <td></td>
+                    </tr> 
+                    <% end %>
+                <% end %>
             <tbody>
                 
             </tbody>

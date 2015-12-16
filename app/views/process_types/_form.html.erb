@@ -7,6 +7,13 @@
     </div>
   <% end %>
 
+  <div class="control-group">
+    <label for="item_specifications" class="optional control-label">Specifications</label>
+    <div class="controls">
+        <%= select_tag "specs[]", options_for_select(Specification.all.map {|spec| [spec.specification_identifier, spec.id]}, @process_type.persisted? ? (@process_type.process_type_specifications.empty? ? [] : @process_type.process_type_specifications.collect(&:specification_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "process_type_specifications" %>
+    </div>
+  </div>
+
   <div class="separator bottom"></div> 
 
   <div class="form-actions">
