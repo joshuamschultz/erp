@@ -399,7 +399,7 @@ $(function()
 	$('#content .slim-scroll').each(function(){
 		$(this).slimScroll({
 			height: $(this).attr('data-scroll-height'),
-			allowPageScroll : false,
+			allowPageScroll : true,
 			railDraggable: ($.fn.draggable ? true : false)
 	    });
 	});
