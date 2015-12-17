@@ -112,7 +112,8 @@ class QualityLotsController < ApplicationController
             else
               quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
             end
-            quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
+            quality_lot[:cost] = quality_lot.po_line.po_line_cost
+	    quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
             quality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
             quality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
             quality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
