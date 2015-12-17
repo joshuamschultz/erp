@@ -46,6 +46,8 @@
         </table>
     </div>
 </div>
+
+<% cost = @item.present? ? '{"mData": "cost"},' : '{ "mData": "cost", "bVisible": false },'%>
 <% unless params[:type].present? %>
     <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
         {
