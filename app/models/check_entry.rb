@@ -3,9 +3,10 @@ class CheckEntry < ActiveRecord::Base
 
   attr_accessible :check_active, :check_code, :check_identifier, :status
 
-  validates_presence_of :check_code
+  # validates_presence_of :check_code
 
-  validates_uniqueness_of :check_code
+  validates  :check_code,
+             :uniqueness => { :allow_blank => true }
 
   def self.get_next_check_code
       #   Payment.joins(:check_entry)
@@ -47,7 +48,9 @@ class CheckEntry < ActiveRecord::Base
       payable_ids = self.payment.payment_lines.collect(&:payable_id)
       payable_ids.each do |p|
         payable = Payable.find (p)
-        @identifiers.push(CommonActions.linkable(payable_path(payable), payable.payable_identifier))
+        if payable.present?
+          @identifiers.push(CommonActions.linkable(payable_path(payable), payable.payable_identifier))
+        end
       end 
       result["payableIds"] = @identifiers
       result["amount"] = self.payment.payment_check_amount

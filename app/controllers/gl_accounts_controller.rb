@@ -9,9 +9,10 @@ class GlAccountsController < ApplicationController
     end 
   end
   def set_page_info
-    @menus[:general_ledger][:active] = "active"
+    unless user_signed_in? && (current_user.is_customer? || current_user.is_vendor? )
+      @menus[:general_ledger][:active] = "active"
+    end
   end
-
   # GET /gl_accounts
   # GET /gl_accounts.json
   def index

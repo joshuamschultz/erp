@@ -31,6 +31,11 @@ class ReceiptLine < ActiveRecord::Base
 
   after_save :process_after_save
   after_destroy :process_after_save
+  before_create :process_before_create
+
+  def process_before_create
+    self.receipt_line_amount = self.receipt_line_amount - (self.receipt_line_amount * (self.receipt.receipt_discount / 100 ).to_f).to_f
+  end
 
   def process_after_save
       Receivable.skip_callback("save", :before, :process_before_save)

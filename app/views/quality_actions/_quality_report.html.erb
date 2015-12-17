@@ -214,7 +214,7 @@ p {
                                                             <% end %>
                                                         </tr>
                                                         <tr>
-                                                            <th scope="row"><%= @quality_action.po_header.quality_lots.last.lot_control_no if @quality_action.po_header %></th>
+                                                            <th scope="row"><%= @quality_action.quality_lot.lot_control_no if @quality_action.quality_lot %></th>
                                                         </tr>
                                                         <tr>
                                                             <th scope="row"><strong>Qty:</strong><%= @quality_action.quantity%> &nbsp;&nbsp;&nbsp;<strong>P.O.:</strong> <%= @quality_action.po_header.po_identifier  if @quality_action.po_header %></th>
@@ -289,8 +289,10 @@ p {
                                 </tr>
                                 <tr align="center">
                                     <th scope="row"><%= @quality_action.users.collect{|user| user.name+"</br>" }.join.html_safe %></th>
+                                    <% if @quality_action.quality_action_status == "finished" %>
                                     <td class="bo-01"><%= @quality_action.due_date.strftime("%m/%d/%Y") if @quality_action.due_date  %></td>
                                     <td><%= @quality_action.created_at.strftime("%m/%d/%Y") %></td>
+                                    <% end %>
                                 </tr>
                             </table>
                         </td>
@@ -303,7 +305,7 @@ p {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr align="left" class="bor-05">
                         <th width="50%" scope="row" class="rig-01">Revision Status: Final</th>
-                        <td width="50%" align="right" class="rig-02">Document Owner: <strong><span class="color-02">Qulity</span></strong>
+                        <td width="50%" align="right" class="rig-02">Document Owner: <strong><span class="color-02">Quality</span></strong>
                         </td>
                     </tr>
                 </table>

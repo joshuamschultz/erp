@@ -11,6 +11,17 @@
 
         <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', :label => "Item" %>
 
+        <div class="control-group select required quality_lot_po_line">
+            <label for="quality_action_quality_lot_id" class="select required control-label">
+                <abbr title="required">*</abbr> Lot
+            </label>
+            <div class="controls">
+                <select name="quality_action[quality_lot_id]" id="quality_action_quality_lot_id" class="select required" autofocus="autofocus">
+
+                </select>
+            </div>
+        </div>
+
         <%= hidden_field_tag :alt_name_id, (@quality_action.item_alt_name.id if @quality_action.item_alt_name) %>
 
         <%= hidden_field_tag :org_alt_name_id, (@quality_action.item_alt_name.id if @quality_action.item_alt_name) %>
@@ -72,22 +83,97 @@
 </div>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_quality_action"] = ["quality_action_ic_action_id_<%= MasterType.ic_actions.first.id %>", "quality_action_ic_action_id_<%= MasterType.ic_actions.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+2 %>", "quality_action_item_alt_name_id", "quality_action_po_header_id", "quality_action_quantity", "quality_action_definition_of_issue", "quality_action_short_term_fix", "quality_action_cause_analysis_id", "quality_action_root_cause", "quality_action_required_action", "quality_action_due_date", "responsible_party"]
+    tab_field_forms["form_for_quality_action"] = ["quality_action_ic_action_id_<%= MasterType.ic_actions.first.id %>", "quality_action_ic_action_id_<%= MasterType.ic_actions.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+1 %>", "quality_action_organization_quality_type_id_<%=MasterType.organization_quality_types.first.id+2 %>", "quality_action_item_alt_name_id", "quality_action_quality_lot_id", "quality_action_po_header_id", "quality_action_quantity", "quality_action_definition_of_issue", "quality_action_short_term_fix", "quality_action_cause_analysis_id", "quality_action_root_cause", "quality_action_required_action", "quality_action_due_date", "responsible_party"]
+    
+    var page_initial = true;
+    
     $(document).ready(function(){    
+        jQuery("#quality_action_item_alt_name_id").on('change', function() {
+            initiate_line_items();
+        });
+
+        jQuery(".ui-corner-all").live('click', function() {
+            initiate_line_items();
+        });
+
         $("#quality_action_item_alt_name_id").val("<%= @quality_action.item_alt_name.alt_item_name if @quality_action.item_alt_name %>");
+        initiate_line_items();
 
         $("#quality_action_ic_action_id_<%= MasterType.ic_actions.first.id %>").focus();
 
         $("#quality_action_po_header_id").val("<%= @quality_action.po_header.po_identifier if @quality_action.po_header %>");
 
         $("#quality_action_cause_analysis_id").val("<%= @quality_action.cause_analysis.name if @quality_action.cause_analysis %>");
+
+        $("#quality_action_due_date").val("<%= @quality_action.due_date if @quality_action.due_date %>");
+        
+        $('#quality_action_item_alt_name_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {   
+                var ui_id = $(this).autocomplete('widget').attr('id');               
+                $('#quality_action_item_alt_name_id').val($( "#"+ui_id +" li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#quality_action_item_alt_name_id').val()}}, "get_item_id", {}); 
+            }
+        }); 
+         
+        $('#quality_action_po_header_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {     
+                 var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#quality_action_po_header_id').val($( "#"+ui_id +" li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_po", "po_name":  $('#quality_action_po_header_id').val()}}, "get_po_id", {}); 
+            }
+        });
+        
+        $('#quality_action_cause_analysis_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {     
+                 var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#quality_action_cause_analysis_id').val($( "#"+ui_id +" li a" ).first().html());                               
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_cause", "cause_name":  $('#quality_action_cause_analysis_id').val()}}, "get_cause_id", {}); 
+            }
+        });
+
     });
 
     <% date_box_date = @quality_action.new_record? ? Date.today : @quality_action.due_date %> 
 
-    date_box_fields = date_box_fields.concat([{"name":"quality_action_due_date", "value":"<%= date_box_date %>"}]);
-    $('input').on('focus', function() {
-        $(this).select();
+    // date_box_fields = date_box_fields.concat([{"name":"quality_action_due_date", "value":"<%= date_box_date %>"}]);
+    // $('input').on('focus', function() {
+    //     $(this).select();
+    // }
+
+    function initiate_line_items(){
+        $("#quality_action_quality_lot_id").html("");
+
+        if($("#alt_name_id").val() != "" && $("#alt_name_id").val() != null)
+          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_quality_lots_inventory", "id": $("#alt_name_id").val()}}, "set_quality_lots", {});
+        else{
+
+              page_initial = false;
+        }  
     }
 
+    function set_quality_lots(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
+        $("#quality_action_quality_lot_id").html(html);
+    }
+    function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#alt_name_id").val(item_id_val); 
+         initiate_line_items();                     
+    }
+    function get_po_id(response){
+       var po_id = JSON.stringify(response.aaData.id);      
+        $("#po_header_id").val(po_id);                          
+    }
+    function get_cause_id(response){
+       var cause_id = JSON.stringify(response.aaData.id);      
+        $("#cause_analysis_id").val(cause_id);                          
+    }
 </script>
+
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "lot-control-select-box"} %>

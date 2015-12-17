@@ -21,15 +21,16 @@
               <tr>
                 <th>index</th>
                 <th>SO ID</th>
-                <th>Customer</th>
-                <th>Bill To</th>
+                <th>Customer</th> 
+
+                <% unless @item.present? %> 
+                    <th>Bill To</th>
+                <% end %>
                 <th>Ship To</th>
                 <% if @item.present? %> 
-                    <th>Cost</th> 
+                    <th>Sell</th> 
                     <th>Quantity Ordered</th>
-                <% end %>                
-                <th>Cofc</th>
-                <th>Squality</th>
+                <% end %>  
                 <th>Status</th>
                 <th></th>
               </tr>
@@ -43,36 +44,46 @@
 <% if @item.present? %>
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
-                        { "mData": "bill_to_address_name" },
-                        { "mData": "ship_to_address_name" },
+                        { "mData": "ship_to_address_name" },                        
                         { "mData": "so_line_price" },
-                        { "mData": "so_type_qty" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
+                        { "mData": "so_type_qty" },                  
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         
                     ]'
     } 
 %>
+<% elsif @organization.present? %>
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "asc"},
+            :columns => '[
+                            { "mData": "index","bVisible": false },
+                            { "mData": "so_id" },
+                            { "mData": "customer_name"},
+                            { "mData": "bill_to_address_name" },
+                            { "mData": "ship_to_address_name" },                    
+                            { "mData": "so_status"},
+                            { "mData": "links", "bSortable": false, "bSearchable": false }
+                            
+                        ]'
+        } 
+    %>
 <% else %>
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_so_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
+    {:name => "table_report_so_header_list", :path => open_path, :extras => {:slno => false, :order => "asc"},
         :columns => '[
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
                         { "mData": "bill_to_address_name" },
-                        { "mData": "ship_to_address_name" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
+                        { "mData": "ship_to_address_name" },                 
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         

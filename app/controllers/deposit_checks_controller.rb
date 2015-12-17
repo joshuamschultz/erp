@@ -1,6 +1,13 @@
 class DepositChecksController < ApplicationController
   # GET /deposit_checks
   # GET /deposit_checks.json
+  before_filter :user_permissions
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, DepositCheck
+    end 
+  end 
   def index
     @deposit_checks = DepositCheck.where(:active => 1)
 

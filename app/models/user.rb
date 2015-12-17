@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   include RoleModel
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes,
-  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask
+  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id, :time_zone
 
   roles_attribute :roles_mask
 
@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
   :plant_manager, :sales_manager, :operations_manager, :quality_manager, :logistics_manager
 
 
-  has_one :organization
-
+  # has_one :organization
+  belongs_to :organization
   accepts_nested_attributes_for :organization
 
   has_many :inspected_lots, :class_name => "QualityLot", :foreign_key => "lot_inspector_id"
@@ -44,6 +44,11 @@ class User < ActiveRecord::Base
   has_many :quality_actions_users, :dependent => :destroy
   has_many :quality_actions, :through => :quality_actions_users
 
+  has_many :organization_users, :dependent => :destroy
+  has_many :organizations, :through => :organization_users
+
+
+  has_many :quotes
   validates_presence_of :email, :name
 
   before_create :process_before_create
@@ -60,6 +65,22 @@ class User < ActiveRecord::Base
     def current_user
       Thread.current[:current_user]
     end
+  end
+
+
+  def self.user_organizations_associations(user, params)
+        if user
+
+          organizations = params[:organizations] || []
+          user.organization_users.where(:organization_id != organizations).destroy_all
+          if organizations
+              organizations.each do |organization_id|
+                unless user.organization_users.find_by_organization_id(organization_id)
+                    user.organization_users.new(:organization_id => organization_id).save
+                end
+              end
+          end
+        end
   end
 
 end
