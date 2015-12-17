@@ -46,6 +46,35 @@
 
         $("#item_alt_name_item_id").val("<%= @item_alt_name.item.item_part_no if @item_alt_name.item %>");
 
-        $("#item_alt_name_item_id").focus();            
+        $("#item_alt_name_item_id").focus(); 
+
+        $('#item_alt_name_item_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {   
+              var ui_id = $(this).autocomplete('widget').attr('id');               
+                $('#item_alt_name_item_id').val($(  "#"+ui_id +" li a" ).first().html());                                
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item", "item_name":  $('#item_alt_name_item_id').val()}}, "get_item_id", {}); 
+            }
+        });
+
+        $('#item_alt_name_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {      
+                var ui_id = $(this).autocomplete('widget').attr('id');            
+                $('#item_alt_name_organization_id').val($( "#"+ui_id +" li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#item_alt_name_organization_id').val()}}, "get_org_id", {}); 
+            }
+        });  
+           
     });
+    function get_item_id(response){
+       var item_id_val = JSON.stringify(response.aaData.id);      
+        $("#item_id").val(item_id_val);                      
+    }
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);      
+        $("#organization_id").val(org_id_val);
+    }
 </script>

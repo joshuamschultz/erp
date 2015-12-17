@@ -28,7 +28,11 @@ before_filter :set_autocomplete_values, only: [:create, :update]
               quote_line[:item_part_no] = quote_line.item_name_sub unless quote_line.item && quote_line.item_alt_name
               # quote_line[:customer_name] = quote_line.organization ? CommonActions.linkable(organization_path(quote_line.organization), quote_line.organization.organization_name) : ""
               #quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), nil)
-              quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), quote_quote_line_path(@quote, quote_line))
+              if user_signed_in? &&  current_user.is_vendor? 
+                quote_line[:links] = CommonActions.object_crud_paths(nil, nil,nil)
+              else
+                quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), quote_quote_line_path(@quote, quote_line))
+              end
           }
           render json: {:aaData => @quote_lines}
        }

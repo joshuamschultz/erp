@@ -42,7 +42,9 @@
         <div class="separator bottom"></div>
 
         <div class="form-actions">
+        <% if can? :edit, QualityLot %>
             <%= f.submit "Update", :class => "btn" %>
+        <% end %>
             <%= link_to 'Back', quality_lot_materials_path(quality_lot_id: @quality_lot.id), :class => "btn" %>
         </div>
       <% end %>

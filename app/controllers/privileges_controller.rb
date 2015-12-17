@@ -86,6 +86,7 @@ class PrivilegesController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        User.user_organizations_associations(@user, params)
       	# @user.send_reset_password_instructions
         UserMailer.welcome_email(@user).deliver
         format.html { redirect_to privileges_path, notice: 'User was successfully created.' }

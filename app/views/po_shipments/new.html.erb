@@ -1,4 +1,4 @@
-<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "shipment_header"} %>
+<%= render :partial => 'layouts/app_layouts/contents', :locals => {type: "receiving_header"} %>
 
 <div class="widget">
     <!-- Widget heading -->
@@ -6,12 +6,14 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Receiving</h4>
             <span class="span6 heading right">
-            <% if can? :view , PoShipment %>
+            <% if can? :edit , PoShipment %>
             	<%= link_to 'Receive', "#", :class => "btn btn-small btn-success", onclick: "initiate_shipping_inputs();return false" %> 
+                <div id="lot_ids" style="display:none"></div>
             <% end %>               
             </span>
         </div> 
     </div>
+    <div class="loading" style="display:none"> <div id="load">  <p>Processing...</p></div> </div>
     <!-- // Widget heading END -->
     <div class="widget-body">
         <table id="table_report_shipping_items" class="editable_table dynamicTable table table-striped table-bordered table-condensed">
@@ -56,4 +58,12 @@
 %>
 
 <%= render :partial => 'layouts/app_layouts/shipments', :locals => {type: "po"} %>
+<style> 
 
+#load {background: url("/assets/images/loading.GIF") no-repeat scroll 0 0 rgba(0, 0, 0, 0);color:#fff;height: 55px;left: 0;margin: 0 auto;
+position: absolute;right: 25%;
+text-align: center;top: 40%;width: 55px;}
+.loading {background-color: rgba(0, 0, 0, 0.8);height: 100%;position: fixed;top: 0;width: 100%;z-index: 999}
+#load p {margin-top: 65px;font-family: Arial, Helvetica, sans-serif;font-size: 14px;}
+
+</style>

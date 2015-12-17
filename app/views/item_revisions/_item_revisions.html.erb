@@ -17,8 +17,10 @@
               <tr>
                 <th>Revision Title</th>
                 <th>Revision Date</th>
-                <th>Tooling</th>
-                <th>Cost</th>
+                <% unless  user_signed_in? &&  current_user.is_customer? %>  
+                    <th>Tooling</th>
+                    <th>Cost</th>
+                <% end %>
                 <th></th>
               </tr>
             </thead>
@@ -28,8 +30,8 @@
         </table>
     </div>
 </div>
-
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+<% unless  user_signed_in? &&  current_user.is_customer? %>  
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {:name => "table_report_revisions", :path => item_item_revisions_path(@item), :extras => {:slno => false}, 
         :columns => '[                
                         { "mData": "item_revision_name" },
@@ -39,4 +41,15 @@
                         { "mData": "links" }
                     ]'
     } 
-%>
+    %>
+<% else %>
+     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {:name => "table_report_revisions", :path => item_item_revisions_path(@item), :extras => {:slno => false}, 
+        :columns => '[                
+                        { "mData": "item_revision_name" },
+                        { "mData": "item_revision_date" },                       
+                        { "mData": "links" }
+                    ]'
+    } 
+    %>
+<% end %>

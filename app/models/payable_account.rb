@@ -44,7 +44,7 @@ class PayableAccount < ActiveRecord::Base
   	end
   	@gl_account = GlAccount.where(:id => self.gl_account_id).first
     amount = @gl_account.gl_account_amount - self.payable_account_amount_was.to_f + self.payable_account_amount.to_f
-    @gl_account.update_attributes(:gl_account_amount => amount)
+    # @gl_account.update_attributes(:gl_account_amount => amount)
     @gl_account = GlAccount.where(:id => @gl_account_id_to_update).first
     amount = @gl_account.gl_account_amount - self.payable_account_amount_was.to_f + self.payable_account_amount.to_f
     @gl_account.update_attributes(:gl_account_amount => amount)   

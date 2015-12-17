@@ -3,7 +3,6 @@
 
 <title>Material Report</title>
 <!--[if lt IE 9]><script src="html5.js"></script><![endif]-->
-
 <style type="text/css">
     @charset "utf-8";
     body {
@@ -46,7 +45,7 @@ border:none;
 img {
     width: 180px;
 }
-.color{color:#f40303;}
+.color{color:#000;}
 
 </style>
 <% @company_info = CompanyInfo.first %>
@@ -104,7 +103,7 @@ MATERIAL TEST RESULTS </strong></td>
               <td scope="row" style=" border-left:1px solid #111; border-bottom:1px solid #111; padding:0 8px 0 8px ; "><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr align="center">
                   <td align="left" style=" border-right:1px solid #111;" scope="row">Drawing  Rev Level</td>
-                  <td style=" border-right:1px solid #111;" class="color"><%= @quality_lot.item_revision.item_name%></td>
+                  <td style=" border-right:1px solid #111;" class="color"><%= @quality_lot.item_revision.item_revision_name %></td>
                   <td style=" border-right:1px solid #111;">Rev Date</td>
                   <td class="color"><%= @quality_lot.item_revision.created_at.strftime("%m/%d/%Y") %></td>
                 </tr>
@@ -122,7 +121,7 @@ MATERIAL TEST RESULTS </strong></td>
                         <tr>
               <td scope="row" style=" border-left:1px solid #111;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td scope="row">Po No: </td>
+                  <td scope="row">Po No: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= @quality_lot.po_line.po_line_customer_po if @quality_lot.po_line.po_line_customer_po.present? %> </td>
                   <td align="center" class="color"><%= SoShipment.find_by_quality_lot_id(@quality_lot).so_line.so_header.so_header_customer_po if SoShipment.find_by_quality_lot_id(@quality_lot) %></td>
                 </tr>
               </table></td>
@@ -148,7 +147,7 @@ MATERIAL TEST RESULTS </strong></td>
 
               <tr align="center">
                 <td scope="row" class="color"><%= element.material_element.element.element_name.to_s + " (" + element.material_element.element.element_symbol.to_s + ")" %></td>
-                <td><%= (element.material_element.element_low_range)-(element.material_element.element_high_range) %></td>
+                <td><%= val= element.material_element.element_low_range.to_s+'-'+element.material_element.element_high_range.to_s %></td>
                 <td><%= element.lot_element_low_range %></td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -178,13 +177,13 @@ MATERIAL TEST RESULTS </strong></td>
     </tr>
     <tr style="border:none;">
       <td scope="row" style="padding:0;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr align="center">
+        <tr align="left">
           <td align="left" style=" border-right:1px solid #111;" scope="row">Supplier Quality Engineer, Date</td>
           <td style=" border-right:1px solid #111;">Other as requested</td>
           </tr>
-        <tr align="center">
-          <td align="left" style=" border-right:1px solid #111;" scope="row">PRINTED NAME Aphrodite</td>
-          <td style=" border-right:1px solid #111;">PRINTED NAME</td>
+        <tr align="left">
+          <td align="left" style=" border-right:1px solid #111;" scope="row">PRINTED NAME : Aphrodite</td>
+          <td style=" border-right:1px solid #111;">PRINTED NAME :</td>
         </tr>
       </table></td>
     </tr>
@@ -194,7 +193,7 @@ MATERIAL TEST RESULTS </strong></td>
        </td>
     </tr>
     <tr>
-      <td scope="row">First Article Inspection -Material Test Results</td>
+      <td scope="row">First Article Inspection - Material Test Results</td>
     </tr>
   </table>
 

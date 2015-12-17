@@ -36,7 +36,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_payable_list", :path => payables_path(payable_status: params[:payable_status]), :extras => {:slno => false},
+    {:name => "table_report_payable_list", :path => payables_path(payable_status: params[:payable_status]), :extras => {:slno => false,:currency_format => [5]},
         :columns => '[
                         { "mData": "payable_identifier" },
                         { "mData": "vendor_name" },

@@ -1,0 +1,107 @@
+<%= stylesheet_link_tag "fullcalendar.css" %>
+<%= javascript_include_tag   "calendar.js","fullcalendar.js" %>
+<!-- Main Container Fluid -->
+<p>
+  <%=link_to 'Create Event', new_event_url, :id => 'new_event' %>
+</p>
+<div class="container-fluid fluid menu-left">
+  <div class="innerLR innerT">
+    <div class="widget">
+      <div class="widget-head">
+        <h4 class="heading">Calendar</h4>
+      </div>
+
+      <div class="widget-body">
+        <div id="calendar"></div>
+      </div>
+    </div>
+   
+  </div>  
+</div>
+
+<script>
+  var basePath = '';
+ $(document).ready(function() {
+
+  var date = new Date();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+  $('#calendar').empty();
+  $('#calendar').fullCalendar({
+    editable: true,        
+    header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'month',
+        height: 500,
+        slotMinutes: 15,
+        minTime: 7,
+        maxTime: 22,
+        firstHour: 8,
+
+        
+        loading: function(bool){
+            if (bool) 
+                $('#loading').show();
+            else 
+                $('#loading').hide();
+        },
+
+        selectable: true,
+        selectHelper: true,
+
+        // a future calendar might have many sources.        
+        eventSources: [{
+            url: '/events/',
+            backgroundColor: 'blue',
+            textColor: 'white',
+            ignoreTimezone: false
+        }],
+        
+        timeFormat: 'h:mm t{ - h:mm t} ',
+        dragOpacity: "0.5",
+        
+        select: function(start, end, allDay) {
+            window.location.replace("/events/new"+"?start="+start);
+        },
+
+        //http://arshaw.com/fullcalendar/docs/event_ui/eventDrop/
+        eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
+            updateEvent(event);
+        },
+
+        // http://arshaw.com/fullcalendar/docs/event_ui/eventResize/
+        eventResize: function(event, dayDelta, minuteDelta, revertFunc){
+            updateEvent(event);
+        },
+
+        // http://arshaw.com/fullcalendar/docs/mouse/eventClick/
+        eventClick: function(event, jsEvent, view){          
+            window.location.replace("/events/"+event.id+"/edit");
+        },
+  });
+});
+
+function updateEvent(the_event) {
+  $.ajax({
+    type: 'GET',
+    url: "/events/" + the_event.id+"/change_date",
+    headers: {
+      'X-Transaction': 'put',
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    },
+    data: 
+    { 
+      event: { title: the_event.title,
+               start_at: "" + the_event.start.toISOString(),
+               end_at: "" + the_event.end.toISOString()              
+
+         }
+    },
+    complete:  function (reponse) { }
+  });
+};
+</script>
