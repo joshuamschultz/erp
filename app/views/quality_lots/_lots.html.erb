@@ -25,6 +25,7 @@
                 <% unless params[:type].present? %>
                     <th>Revision</th>
                 <% end %>
+                <th>Cost</th>
                 <th>Quantity</th>
                 <th>Lots/PO</th>
                 <th>PO</th>
@@ -45,6 +46,8 @@
         </table>
     </div>
 </div>
+
+<% cost = @item.present? ? '{"mData": "cost"},' : '{ "mData": "cost", "bVisible": false },'%>
 <% unless params[:type].present? %>
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {
@@ -53,7 +56,8 @@
                             { "mData": "index","bVisible": false },
                             { "mData": "lot_control_no" },
                             { "mData": "item_part_no" },
-                            { "mData": "item_revision_name" },                        
+                            { "mData": "item_revision_name" },  
+                            '+ cost +'                      
                             { "mData": "lot_quantity" },
                             { "mData": "total_lots", "bVisible": false },
                             { "mData": "po_identifier" },
