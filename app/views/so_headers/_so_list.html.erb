@@ -22,14 +22,14 @@
                 <th>index</th>
                 <th>SO ID</th>
                 <th>Customer</th>
-                <th>Bill To</th>
+                <% unless @item.present? %> 
+                    <th>Bill To</th>
+                <% end %>
                 <th>Ship To</th>
                 <% if @item.present? %> 
                     <th>Sell</th> 
                     <th>Quantity Ordered</th>
-                <% end %>                
-                <th>Cofc</th>
-                <th>Squality</th>
+                <% end %>  
                 <th>Status</th>
                 <th></th>
               </tr>
@@ -48,12 +48,9 @@
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
-                        { "mData": "bill_to_address_name" },
                         { "mData": "ship_to_address_name" },
                         { "mData": "so_line_price" },
-                        { "mData": "so_type_qty" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
+                        { "mData": "so_type_qty" },                  
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         
@@ -68,9 +65,7 @@
                             { "mData": "so_id" },
                             { "mData": "customer_name"},
                             { "mData": "bill_to_address_name" },
-                            { "mData": "ship_to_address_name" },
-                            { "mData": "so_cofc" },                       
-                            { "mData": "so_squality" },                       
+                            { "mData": "ship_to_address_name" },                    
                             { "mData": "so_status"},
                             { "mData": "links", "bSortable": false, "bSearchable": false }
                             
@@ -87,9 +82,7 @@
                         { "mData": "so_id" },
                         { "mData": "customer_name"},
                         { "mData": "bill_to_address_name" },
-                        { "mData": "ship_to_address_name" },
-                        { "mData": "so_cofc" },                       
-                        { "mData": "so_squality" },                       
+                        { "mData": "ship_to_address_name" },                 
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         
