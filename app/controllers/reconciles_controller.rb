@@ -13,7 +13,9 @@ class ReconcilesController < ApplicationController
   # GET /reconciles
   # GET /reconciles.json
   def set_page_info
+    unless user_signed_in? && (current_user.is_customer? || current_user.is_vendor? )
       @menus[:general_ledger][:active] = "active"
+    end
   end
 
   def find_reconciles

@@ -1,0 +1,49 @@
+<!-- Widget -->
+<div class="widget widget-006">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Shipped<%= " - History" if (shipment_type == "history") %></h4>
+            <span class="span6 heading right">
+                <%#= link_to 'New Shipment', new_so_shipment_path, :class => "btn btn-mini btn-success" %>
+                
+                <%= link_to 'Create Receivable', "#", class: "btn btn-mini btn-success", onclick: "create_receivable_for_items(); return false;" if create_receivable %>
+
+                <%= link_to 'Received - History', po_shipments_path(type: "history"), class: "btn btn-mini btn-success" if (shipment_type == "history") %>
+            </span>
+        </div> 
+    </div>
+    <!-- // Widget heading END -->
+
+    <div class="widget-body">
+        <table id="so_shipment_table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+              <tr> 
+                <th>Qty</th>
+                <th>SO</th>
+                <th>Customer</th>
+                <th>Shipped At</th>
+         
+              </tr>
+            </thead>
+
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    {
+        :name => "so_shipment_table_report", :path => so_shipments_path(type: shipment_type, quality_lot_id: (@quality_lot.id if @quality_lot), create_receivable: (create_receivable if create_receivable)), :extras => {:slno => false, :order => "desc"}, 
+        :columns => '[
+                        { "mData": "so_shipped_count" },
+                        { "mData": "so_identifier" },                        
+                        { "mData": "customer_name" },
+                        { "mData": "so_shipped_date" }
+                    ]'
+    } 
+%>
+
+<!-- { "mData": "so_line_quantity_shipped" }, -->

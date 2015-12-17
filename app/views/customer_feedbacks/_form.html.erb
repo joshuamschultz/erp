@@ -57,6 +57,16 @@
 
        $("#organization_type").focus();     // change_organization_type();
        change_organization_type();
+       
+        $('#customer_feedback_organization_id').keydown(function(e) {
+            var code = e.keyCode || e.which;
+            if (code === 9 || code ===13 ) 
+            {    
+                var ui_id = $(this).autocomplete('widget').attr('id');
+                $('#customer_feedback_organization_id').val($( "#"+ui_id +" li a" ).first().html());
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#customer_feedback_organization_id').val()}}, "get_org_id", {}); 
+            }
+          });  
     });
 
  
@@ -71,5 +81,9 @@
         else{ 
             $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=customer" );   
        }
+    }
+    function get_org_id(response){
+       var org_id_val = JSON.stringify(response.aaData.id);
+       $("#organization_id").val(org_id_val);
     }
 </script>

@@ -28,6 +28,20 @@
   tab_field_forms["form_for_elements"] = ["material_element_element_id", "material_element_element_low_range", "material_element_element_high_range"];
 
   $(document).ready(function(){ 
+    $('#material_element_element_id').keydown(function(e) {
+      var code = e.keyCode || e.which;
+      if (code ===13 ) {  
+        $('#material_element_element_low_range').select();
+      }
+    });
+
+    $('#material_element_element_low_range').keydown(function(e) {
+      var code = e.keyCode || e.which;
+      if (code ===13 ) {  
+        $('#material_element_element_high_range').select();
+      }
+    });
+    
     $("#material_element_element_id").focus();
 
     $("#material_element_element_id").val("<%= @material_element.element.element_symbol_name if @material_element.element %>");

@@ -76,6 +76,7 @@ class ItemPartDimensionsController < ApplicationController
 
     respond_to do |format|
       if @item_part_dimension.save
+        ItemPartDimension.process_dimension(@item_part_dimension, @item_revision)
         format.html { redirect_to @item, notice: 'Item dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else

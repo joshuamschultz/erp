@@ -15,6 +15,7 @@ class Quote < ActiveRecord::Base
 
     belongs_to :group
     belongs_to :organization
+    belongs_to :user
     # has_many :organizations, :through => :quotes_organizations
     # has_many :quotes_organizations
 
@@ -92,6 +93,7 @@ class Quote < ActiveRecord::Base
 
     def after_create_process
     self.quote_identifier = new_quote_identifier
+    self.user_id = User.current_user.id
     self.save
     end
 

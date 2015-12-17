@@ -1,1 +1,40 @@
+<% if params[:type].present? %>
+   <div class=" widget row-fluid">
+    <div class="ms_image span4"> 
+        <div class="d_t">
+        <%= image_tag(CompanyInfo.first.image.image.url(:original), :size => "250x250") if CompanyInfo.first.image %>
+        </div>  
+             
+    </div>
+
+	<div class="span3 well well-002 w_2">
+	      <a class="widget-stats" href="#" id="contacts_btn" onclick="quality_report()"ra>
+	          <span class="glyphicons print"><i></i></span>
+	          <span class="txt">Print</span>
+	          <div class="clearfix"></div>
+	      </a>
+	</div>
+        </div>
+<% end %>
 <%= render :partial => 'quality_lots/lots' %>
+
+<script type="text/javascript">
+    function quality_report() {
+        var quality_iframe = $("#myPrintView")[0];
+        quality_iframe.contentWindow.focus();
+        quality_iframe.contentWindow.print();
+    }
+
+</script>
+
+<iframe src="<%= report_quality_lots_path %>" style="border:0;" id="myPrintView" width="0" height= "10"></iframe>
+
+<style>
+
+.w_2 {
+    float: right !important;
+    margin: 10px;
+}
+
+.d_t{background-color:#ffffff; width:250px;margin: 15px auto 7px;padding: 23px;}
+</style>

@@ -275,6 +275,9 @@ p{text-align: center !important;}
     }
 </style>
 <script type="text/javascript">
+    <% if can? :edit , Ppap %>
+           
+    
     $(function() {
         $(":checkbox").change(function(){
             set_value(this, "check");
@@ -294,7 +297,7 @@ p{text-align: center !important;}
             location.reload(true);
         }
     };
-
+    <% end %>  
     // Disabling all the form elements if the user is cusotmer
     // $(".ppap :input").attr("disabled", true);
 </script>

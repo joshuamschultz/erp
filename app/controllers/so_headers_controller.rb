@@ -23,7 +23,9 @@ class SoHeadersController < ApplicationController
 
 
   def set_page_info
+    unless  user_signed_in? && current_user.is_vendor? 
       @menus[:sales][:active] = "active"
+    end
   end
 
   def set_autocomplete_values
@@ -69,14 +71,24 @@ class SoHeadersController < ApplicationController
       respond_to do |format|
         format.html # index.html.erb
         format.json {     
-          i = 0    
+          i = 0   
+          po_type = MasterType.find_by_type_value('transer')
+          so_ids = PoHeader.where("po_type_id =? ",po_type.id).collect(&:so_header_id)
+          @so_headers = @so_headers.delete_if {|entry| so_ids.include? entry[:id]}
+          so_line_ids = []
           @so_headers = @so_headers.select{|so_header|          
             so_header[:index] = i
             so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
             so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
-            so_header[:so_line_price] = so_header.so_lines.find_by_item_id(@item.id).so_line_cost if params[:item_id].present?
-            so_header[:so_type_qty] =  so_header.so_lines.find_by_item_id(@item.id).so_line_quantity if params[:item_id].present?
-
+            if params[:item_id].present?
+              so_lines = so_header.so_lines
+              if so_line_ids != nil?
+                so_lines =  so_lines.delete_if {|entry| so_line_ids.include? entry[:id]}
+              end
+              so_line_ids<<so_header.so_lines.first.id
+              so_header[:so_line_price] = so_lines.first.so_line_sell
+              so_header[:so_type_qty] = so_lines.first.so_line_quantity
+            end
             if so_header.bill_to_address
                 so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
             else
@@ -218,6 +230,11 @@ class SoHeadersController < ApplicationController
       @company_info = CompanyInfo.first
       render :layout => false
 
+  end
+  def pick_report
+      @so_header = SoHeader.find(params[:id])
+      @company_info = CompanyInfo.first
+      render :layout => false
   end
 
 

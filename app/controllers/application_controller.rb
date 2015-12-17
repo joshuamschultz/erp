@@ -4,12 +4,22 @@ class ApplicationController < ActionController::Base
 
   	before_filter :authenticate_user!
   	before_filter :initialize_request
-rescue_from CanCan::AccessDenied do |exception|
-    redirect_to main_app.root_url, :alert => exception.message
+    
+    rescue_from CanCan::AccessDenied do |exception|
+    redirect_to main_app.permissions_error_url, :alert => exception.message
   end
 
 
   before_filter :set_current_user
+  around_filter :set_time_zone
+  
+  def set_time_zone(&block)
+    if current_user.present?
+      Time.use_zone(current_user.time_zone, &block) 
+    else
+      Time.use_zone('Eastern Time (US & Canada)', &block)
+    end
+  end
 
   def set_current_user
     User.current_user = current_user

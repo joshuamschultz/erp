@@ -75,11 +75,16 @@ AllianceFasteners::Application.configure do
   config.action_mailer.smtp_settings = {
        :address              => "smtp.gmail.com",
        :port                 => 587,
-       :user_name            => 'testagile00@gmail.com',
+       :user_name            => 'test.agileblaze@gmail.com',
        :password             => 'mohanraj',
        :authentication       => 'plain',
        :enable_starttls_auto => true  }
 
   # Expands the lines which load the assets
   config.assets.debug = false
+
+  # Enable to show log error in browser....
+  config.consider_all_requests_local = false
+
+  config.action_controller.perform_caching = true
 end

@@ -85,6 +85,7 @@ class SpecificationsController < ApplicationController
     respond_to do |format|
       @specification.attachment.created_by = current_user
       if @specification.save
+        CommonActions.notification_process("Specification", @specification)
         format.html { redirect_to specifications_url, notice: 'Specification was successfully created.' }
         format.json { render json: @specification, status: :created, location: @specification }
       else
@@ -102,6 +103,7 @@ class SpecificationsController < ApplicationController
     respond_to do |format|
       @specification.attachment.updated_by = current_user
       if @specification.update_attributes(params[:specification])
+        CommonActions.notification_process("Specification", @specification)
         format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
         format.json { head :no_content }
       else

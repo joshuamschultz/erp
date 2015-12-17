@@ -5,8 +5,16 @@ class AttachmentsController < ApplicationController
   # GET /attachments.json
   def index
     @attachable = params[:attachable_type].constantize.find(params[:attachable_id])
-    @attachments = @attachable.attachments.order("attachment_revision_date desc")
-
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
+      if params[:attachable_type] == "QuoteVendor" && user_signed_in? && current_user.is_vendor?
+        @attachments = @attachable.attachments.order("attachment_revision_date desc")
+      else
+        @attachments = @attachable.attachments.where(:attachment_public => 1).order("attachment_revision_date desc")
+      end
+    else
+      @attachments = @attachable.attachments.where(:attachment_public => 0).order("attachment_revision_date desc")
+        # @attachments = @attachable.attachments.order("attachment_revision_date desc")
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json {

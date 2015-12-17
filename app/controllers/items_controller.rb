@@ -37,14 +37,28 @@ class ItemsController < ApplicationController
           @items = @organization.present? ? @organization.po_items : []
         elsif @organization.type_name == "customer"
           @items = @organization.present? ? @organization.so_items : []
+        elsif @organization.type_name == "support"
+          @items =  []  
         end
     else
-        @items = Item.order('item_part_no asc')
+  
+         @items = Item.order('item_part_no asc')
+
     end
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
+        if @items.present?
+                @po_lines = PoLine.all
+          if  user_signed_in? && current_user.is_customer?
+            organization_ids = current_user.organizations.where("organization_type_id =? ",5).collect(&:id)
+            if organization_ids.present?
+              @po_lines =  @po_lines.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+              @po_lines =  @po_lines.collect(&:item_id)
+              @items = @items.delete_if {|entry| !@po_lines.include? entry[:id]}  
+            end
+          end
         @items = @items.select{|item|
             item_revision = item.current_revision
             item[:item_part_no] = "<a href='#{item_path(item)}'><strong>#{item.item_part_no}</strong></a>"            
@@ -76,7 +90,9 @@ class ItemsController < ApplicationController
             end
             item[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
         }
-        render json: {:aaData => @items} 
+      end
+        render json: {:aaData => @items}
+
       }        
     end
   end

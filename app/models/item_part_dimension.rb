@@ -1,13 +1,15 @@
 class ItemPartDimension < ActiveRecord::Base
-	belongs_to :item_revision
+	# belongs_to :item_revision
 	belongs_to :dimension
 	belongs_to :gauge
 
 	after_initialize :default_values
 	before_save :before_save_process
 
+	has_many :item_revision_item_part_dimensions, dependent: :destroy
+	has_many :item_revisions, through: :item_revision_item_part_dimensions
 
-	attr_accessible :item_revision_id, :dimension_id, :item_part_active, :item_part_created_id, :item_part_critical,
+	attr_accessible :dimension_id, :item_part_active, :item_part_created_id, :item_part_critical,
 		:item_part_letter, :item_part_neg_tolerance, :item_part_notes, :item_part_pos_tolerance,
 		:item_part_dimension, :item_part_updated_id, :gauge_id, :go_non_go, :dimension_string
 
@@ -40,7 +42,7 @@ class ItemPartDimension < ActiveRecord::Base
  		end
  	end
 
-	validates_presence_of :item_revision
+	# validates_presence_of :item_revision
 	validates_presence_of :dimension
 	validates_presence_of :gauge
 
@@ -48,4 +50,12 @@ class ItemPartDimension < ActiveRecord::Base
 	has_many :quality_lot_capabilities, :dependent => :destroy
 	has_many :quality_lot_gauge_dimensions, :dependent => :destroy
 	has_many :quality_lot_gauge_results, :dependent => :destroy
+
+
+  def self.process_dimension(item_part_dimension, item_revision)
+        if item_part_dimension
+           item_revision_dimension = item_part_dimension.item_revision_item_part_dimensions.create(:item_revision_id => item_revision.id)
+           item_revision_dimension.save
+        end
+   end
 end
