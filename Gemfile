@@ -60,7 +60,7 @@ gem 'aws-sdk', '1.8.5'
 
 gem 'nested_scaffold'
 
-gem 'cancan'
+gem 'cancancan', '~> 1.9'
 gem 'role_model'
 
 gem 'rails_admin'
@@ -71,3 +71,9 @@ gem 'ruby-standard-deviation', '~> 2.0.0'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'string-urlize', '~> 1.0.2'
+
+
+
+
+
+gem "fast_seeder"

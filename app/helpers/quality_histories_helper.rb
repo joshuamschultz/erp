@@ -1,0 +1,2 @@
+module QualityHistoriesHelper
+end

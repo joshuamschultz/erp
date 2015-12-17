@@ -51,6 +51,8 @@ class Ability
 
             can :manage, GlAccount
 
+            can :manage, GlEntry
+
             can :manage, PoShipment
 
             can :manage, SoShipment
@@ -64,6 +66,10 @@ class Ability
             can :manage, Receivable
 
             can :manage, Receipt
+
+            can :manage, CheckEntry
+
+            can :manage, DepositCheck
 
             can :manage, SoHeader
 
@@ -223,7 +229,7 @@ class Ability
 
             can :view, CauseAnalysis
 
-            can :view, Package
+            can :manage, Package
 
             can :manage, PoShipment
 
@@ -271,6 +277,10 @@ class Ability
 
             can :manage, Receipt
 
+            can :manage, CheckEntry
+
+            can :manage, DepositCheck
+
             can :manage, SoHeader
 
             can :manage, SoLine
@@ -293,12 +303,6 @@ class Ability
 
         elsif user.has_role? :vendor
 
-            can :view, QualityAction
-
-            can :view, Gauge
-
-            can :view, Package
-
             can :view, Ppap
 
             can :view, RunAtRate
@@ -308,8 +312,6 @@ class Ability
             can :view, Material
 
             can :view, MaterialElement
-
-            can :view, Element
 
             can :view, ProcessType
 

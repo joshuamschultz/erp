@@ -1,8 +1,8 @@
-class Gauge < ActiveRecord::Base  
+class Gauge < ActiveRecord::Base
   include Rails.application.routes.url_helpers
-  
-  attr_accessible :organization_id, :gage_caliberaion_period, :gage_caliberation_last_at, 
-  :gage_caliberation_due_at, :gauge_active, :gauge_created_id, :gauge_tool_name, :gauge_tool_no, 
+
+  attr_accessible :organization_id, :gage_caliberaion_period, :gage_caliberation_last_at,
+  :gage_caliberation_due_at, :gauge_active, :gauge_created_id, :gauge_tool_name, :gauge_tool_no,
   :gauge_updated_id, :gauge_tool_category
 
   after_initialize :default_values
@@ -19,4 +19,9 @@ class Gauge < ActiveRecord::Base
   	def redirect_path
       	gauge_path(self)
 	end
+
+  def self.get_this_week_gauges
+     Gauge.where("gage_caliberation_due_at <= ?", Date.today+6)
+  end
+
 end

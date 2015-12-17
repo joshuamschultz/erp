@@ -1,6 +1,25 @@
 class ReceivableLinesController < ApplicationController
   # GET receivables/1/receivable_lines
   # GET receivables/1/receivable_lines.json
+
+
+  before_filter :view_permissions, except: [:index, :show]
+  before_filter :user_permissions
+
+
+  def view_permissions
+   if  user_signed_in? && current_user.is_operations?
+        authorize! :edit, Receivable
+    end 
+  end
+
+  def user_permissions
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+        authorize! :edit, Receivable
+    end 
+  end 
+
+
   def index
     @receivable = Receivable.find(params[:receivable_id])
     @receivable_lines = @receivable.receivable_lines
@@ -9,7 +28,11 @@ class ReceivableLinesController < ApplicationController
       format.html # index.html.erb
       format.json { 
            @receivable_lines = @receivable_lines.select{|receivable_line|              
+            if can? :edit, Receivable 
               receivable_line[:links] = CommonActions.object_crud_paths(nil, edit_receivable_receivable_line_path(@receivable, receivable_line), nil)
+            else
+              receivable_line[:links] = ''
+            end
           }
           render json: {:aaData => @receivable_lines}
        }

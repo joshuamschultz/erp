@@ -2,8 +2,18 @@ class GlEntriesController < ApplicationController
   before_filter :set_page_info
   before_filter :set_autocomplete_values, only: [:create, :update]
 
+  before_filter :user_permissions
+
+  def user_permissions
+     if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+        authorize! :edit, GlEntry
+    end 
+  end
+
   def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:general_ledger][:active] = "active"
+    end 
   end
 
   def set_autocomplete_values
@@ -92,6 +102,9 @@ class GlEntriesController < ApplicationController
     @gl_entry = GlEntry.find(params[:id])
 
     respond_to do |format|
+      current_debit_amount = params[:gl_entry]['gl_entry_debit'].to_i - @gl_entry.gl_entry_debit_was 
+      current_credit_amount = params[:gl_entry]['gl_entry_credit'].to_i - @gl_entry.gl_entry_credit_was
+      @gl_entry.update_gl_accounts(current_debit_amount, current_credit_amount)
       if @gl_entry.update_attributes(params[:gl_entry])
         format.html { redirect_to @gl_entry, notice: 'Gl entry was successfully updated.' }
         format.json { head :no_content }

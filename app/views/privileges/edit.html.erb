@@ -11,6 +11,13 @@
           <%= select_tag 'role', options_for_select([["Super Admin", "superadmin"], ["Manager", "manager"], ["Quality", "quality"], ["Operations", "operations"], ["Clerical", "clerical"], ["Logistics", "logistics"], ["Vendor", "vendor"], ["Customer", "customer"]]), :class => "string optional" %>
         </div>
       </div>
+
+  <div class="control-group">
+      <label for="organization_users" class="optional control-label">Organizations</label>
+      <div class="controls">
+        <%= select_tag "organizations[]", options_for_select(Organization.all.map {|organization| [organization.organization_name, organization.id]}, @user.persisted? ? (@user.organization_users.empty? ? [] : @user.organization_users.collect(&:organization_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "organization_users" %>
+      </div>
+    </div>
       <%= f.input :gender, label: 'Gender', collection: [['Male'], ['Female']], as: :radio_buttons, :checked => "Male"  %>
       <%= f.input :address %>  
       <%= f.input :city %> 
@@ -28,6 +35,6 @@
   </div>
 <% end %>
 <script type="text/javascript">
-    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+    tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_organization_id", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
 </script>
 
