@@ -55,6 +55,7 @@ class PoShipmentsController < ApplicationController
 
                 # po_shipment = so_line_data_list(po_shipment, true)  
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+		po_shipment[:po_line_cost] = po_shipment.po_line.po_line_cost
                 if can? :edit, PoShipment
                   po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 else
