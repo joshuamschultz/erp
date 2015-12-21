@@ -57,7 +57,6 @@
                     <th>Vendor PO</th>
                     <th>Quality Level</th>
                     <th>Status</th>
-                    <th>Cost</th>
                     <th>Sell</th>      
                     <th>Quantity</th>
                     <th>Freight</th>
@@ -80,7 +79,6 @@
                             { "mData": "vendor_po" },
                             { "mData": "quality_level_name" },
                             { "mData": "so_line_status" },
-                            { "mData": "so_line_cost" },
                             { "mData": "so_line_sell" },
                             { "mData": "so_line_quantity" },
                             { "mData": "so_line_freight" },
@@ -94,3 +92,5 @@
 
 
 <% end %>
+
+<%= link_to 'SAVE', so_header_path(@so_header), {:style =>'font-size: 14px; padding: 4px 18px; margin-top:5px;',  :class =>"btn btn-mini btn-success btn-007"} if @so_header && @so_line %>
