@@ -141,6 +141,7 @@
     $(document).on("change", ".receivable_so_lines", function(){
         if(this.checked){
             disable_other_so_items($(this).attr("class"));
+            enable_other_so_items($(this).attr("class"));
         }
     });
 
@@ -150,6 +151,13 @@
                 $(this).attr("checked", false);
             }
         });
+    }
+    function enable_other_so_items(accept_so_class){
+        $(".receivable_so_lines").each(function(){
+            if($(this).attr("class") == accept_so_class){
+                $(this).attr("checked", true);
+            }
+        });  
     }
 
     function create_receivable_for_items(){
