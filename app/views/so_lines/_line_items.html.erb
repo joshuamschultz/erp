@@ -17,8 +17,7 @@
             <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
                 <thead>
                   <tr>
-                    <th>Part No</th>
-                    <th>Quality Level</th>
+                    <th>Part No</th>                   
                     <th>Sell</th>      
                     <th>Quantity</th>
                     <th>Status</th>              
@@ -35,8 +34,7 @@
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {:name => "table_report_items", :path => so_header_so_lines_path(@so_header), :extras => {:slno => false},
             :columns => '[
-                            { "mData": "item_part_no" },
-                            { "mData": "quality_level_name" },
+                            { "mData": "item_part_no" },                            
                             { "mData": "so_line_sell" },
                             { "mData": "so_line_quantity" },
                             { "mData": "so_line_status" },
@@ -54,8 +52,7 @@
                   <tr>
                     <th>Part No</th>
                     <th>Vendor</th>
-                    <th>Vendor PO</th>
-                    <th>Quality Level</th>
+                    <th>Vendor PO</th>                    
                     <th>Status</th>
                     <th>Sell</th>      
                     <th>Quantity</th>
@@ -76,8 +73,7 @@
             :columns => '[
                             { "mData": "item_part_no" },
                             { "mData": "vendor_name" },
-                            { "mData": "vendor_po" },
-                            { "mData": "quality_level_name" },
+                            { "mData": "vendor_po" },                            
                             { "mData": "so_line_status" },
                             { "mData": "so_line_sell" },
                             { "mData": "so_line_quantity" },
