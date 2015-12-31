@@ -324,9 +324,16 @@ class QualityLot < ActiveRecord::Base
 		self.so_shipments.sum(:so_shipped_count)
  	end
  	def current_location
-		po_shipment = self.po_shipment
-		po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
- 		# self.lot_unit+'-'+self.lot_self To uncomment Sprint 7
+ 		
+		# po_shipment = self.po_shipment
+		# # po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+		# shipped_unit = po_shipment.po_shipped_unit.nil? ? "" :  po_shipment.po_shipped_unit.to_s
+		# shipped_shelf = po_shipment.po_shipped_shelf.nil? ? "" : po_shipment.po_shipped_shelf.to_s
+		# po_shipment.nil? ? "-" :  shipped_unit + " - " + shipped_shelf
+		loc = self.lot_unit.nil? ? "" : self.lot_unit
+		loc += 	"-"
+		loc += self.lot_self.nil? ? "" : self.lot_self
+		loc 		
   	end
   	def self.lot_missing_location
   		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')
