@@ -20,7 +20,8 @@ class DepositChecksController < ApplicationController
               deposit_check[:check_code] = CommonActions.linkable(receipt_path(deposit_check.receipt),deposit_check.check_identifier)
               receivables = deposit_check.get_receivables
               deposit_check[:receivables] = receivables
-
+              deposit_check[:receipt_customer] = CommonActions.linkable(organization_path(deposit_check.receipt.organization), deposit_check.receipt.organization.organization_name)            
+              deposit_check[:receipt_check_amount] = deposit_check.receipt.receipt_check_amount
               deposit_check[:links] = CommonActions.object_crud_paths(nil, edit_deposit_check_path(deposit_check), nil)     
 
           }
