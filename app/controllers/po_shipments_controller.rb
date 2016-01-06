@@ -55,6 +55,7 @@ class PoShipmentsController < ApplicationController
 
                 # po_shipment = so_line_data_list(po_shipment, true)  
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+                po_shipment[:po_line_cost] = po_shipment.po_line.po_line_cost
                 if can? :edit, PoShipment
                   po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 else
@@ -131,7 +132,7 @@ class PoShipmentsController < ApplicationController
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]       
         
-        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type)            
+        @quality_lot = QualityLot.new(:po_header_id => @po_shipment.po_line.po_header_id, :po_line_id => @po_shipment.po_line.id, :item_revision_id => @po_shipment.po_line.item_revision_id, :lot_quantity => @po_shipment.po_shipped_count, :quantity_on_hand => @po_shipment.po_shipped_count,:inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type, :lot_unit => @po_shipment.po_shipped_unit, :lot_self => @po_shipment.po_shipped_shelf)            
         @quality_lot.lot_inspector = current_user
 
         if @quality_lot.save
@@ -183,7 +184,7 @@ class PoShipmentsController < ApplicationController
       if @po_shipment.update_attributes(params[:po_shipment])
         if  @po_shipment.quality_lot_id
           @quality_lot = QualityLot.find(@po_shipment.quality_lot_id)
-          @quality_lot.update_attribute(:lot_quantity , @po_shipment.po_shipped_count)
+          @quality_lot.update_attributes(:lot_quantity => @po_shipment.po_shipped_count, :lot_unit => @po_shipment.po_shipped_unit, :lot_self => @po_shipment.po_shipped_shelf)
         end  
         format.html { redirect_to po_shipments_path, notice: 'PO shipment was successfully updated.' }
         format.json { head :no_content }

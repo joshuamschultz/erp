@@ -155,11 +155,15 @@ class Receivable < ActiveRecord::Base
       in_contact_address1 = so['b_c_address_1'].to_s+'&nbsp;'
       in_contact_address2 = so['b_c_address_2'].to_s+'&nbsp;'
       in_contact_state = so['b_c_state'].to_s+'&nbsp;'
+      so['b_c_country']= so['b_c_country'].present? ? so['b_c_country'] : ''
+      so['b_c_zipcode']= so['b_c_zipcode'].present? ? so['b_c_zipcode'] : ''
       in_contact_czip = so['b_c_country'].to_s+'&nbsp;'+so['b_c_zipcode']
       ship_contact_title = '<span>'+so['s_c_title'].to_s+'</span>'
       ship_contact_address1 = so['s_c_address_1'].to_s+'&nbsp;'
       ship_contact_address2 = so['s_c_address_2'].to_s+'&nbsp;'
       ship_contact_state = so['s_c_state'].to_s+'&nbsp;'
+      so['s_c_country']= so['s_c_country'].present? ? so['s_c_country'] : ''
+      so['s_c_zipcode']= so['s_c_zipcode'].present? ? so['s_c_zipcode'] : ''
       ship_contact_czip = so['s_c_country'].to_s+'&nbsp;'+so['s_c_zipcode']
     end 
 

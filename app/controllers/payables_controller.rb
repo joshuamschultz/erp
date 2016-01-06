@@ -9,13 +9,13 @@ class PayablesController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_operations?
+   if  user_signed_in? && (current_user.is_operations? || current_user.is_vendor? )
         authorize! :edit, Payable
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_customer?  )
         authorize! :edit, Payable
     end 
   end 
@@ -59,6 +59,7 @@ class PayablesController < ApplicationController
       format.json { 
           @payables = @payables.select{|payable|
               payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.payable_identifier)
+              payable[:payable_open_balance] = payable.payable_current_balance 
               if can? :view, PoHeader
                 payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
               else

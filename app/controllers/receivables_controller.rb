@@ -59,6 +59,7 @@ class ReceivablesController < ApplicationController
               receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
               receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
               receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
+              receivable["receivable_balance"] = receivable.receivable_current_balance
               if can? :edit, Receivable 
                 receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
                 [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]

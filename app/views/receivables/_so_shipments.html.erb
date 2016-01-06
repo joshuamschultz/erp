@@ -4,7 +4,6 @@
             <th>Part No</th>
             <th>Quantity Ordered</th>
             <th>Quantity Shipped</th>
-            <th>Cost</th>
             <th>Sell</th>
             <th>Amount</th>
             <th></th>
@@ -16,7 +15,6 @@
                 <td><%= link_to so_shipment.so_line.item_alt_name.item_alt_identifier, item_path(so_shipment.so_line.item) %></td>
                 <td><%= so_shipment.so_line.so_line_quantity %></td>
                 <td><%= so_shipment.so_shipped_count %></td>
-                <td><%= so_shipment.so_line.so_line_cost %></td>
                 <td><%= so_shipment.so_line.so_line_sell %></td>
                 <td><%= so_shipment.so_shipped_cost %></td>
                 <td><% if can? :edit, Receivable %>
