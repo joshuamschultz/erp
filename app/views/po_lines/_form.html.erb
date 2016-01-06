@@ -91,7 +91,16 @@
                     <label for="item_processes" class="optional control-label"></label>
                     <div class="controls"> <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn btn-small", :target => "_blank" %> </div>
                 </div> -->
+                <div class="control-group select required quality_lot_po_line">
+                    <label for="po_line_item_revision_id" class="select required control-label">
+                        <abbr title="required">*</abbr> Revision
+                    </label>
+                    <div class="controls">
+                        <select name="po_line[item_revision_id]" id="po_line_item_revision_id" class="select required" autofocus="autofocus">
 
+                    </select>
+                    </div>
+                </div> 
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
                 <%= f.input :po_line_cost, :label => "Cost", :disabled => true %>
@@ -228,7 +237,16 @@
                     <label for="item_processes" class="optional control-label"></label>
                     <div class="controls"> <%#= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn btn-small", :target => "_blank" %> </div>
                 </div> -->
+                <div class="control-group select required quality_lot_po_line">
+                    <label for="po_line_item_revision_id" class="select required control-label">
+                        <abbr title="required">*</abbr> Revision
+                    </label>
+                    <div class="controls">
+                        <select name="po_line[item_revision_id]" id="po_line_item_revision_id" class="select required" autofocus="autofocus">
 
+                    </select>
+                    </div>
+                </div> 
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
                 <%= f.input :po_line_cost, :label => "Cost", :disabled => true  %>
