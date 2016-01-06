@@ -100,8 +100,10 @@
 
                     </select>
                     </div>
-                </div> 
+                </div>   
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
+
+                
 
                 <%= f.input :po_line_cost, :label => "Cost", :disabled => true %>
 
@@ -208,7 +210,7 @@
                 <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
 
                 <% end %>
-                
+               
                 <% if po_is_transfer %>
                     <div class="control-group select required quality_lot_po_line" >
                         <label for="po_line_quality_lot_id" class="select required control-label">
@@ -246,7 +248,7 @@
 
                     </select>
                     </div>
-                </div> 
+                </div>   
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
                 <%= f.input :po_line_cost, :label => "Cost", :disabled => true  %>
