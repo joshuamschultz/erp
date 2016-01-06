@@ -24,7 +24,7 @@ class QualityLot < ActiveRecord::Base
   	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
   	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
   	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number, :quality_lot_materials_attributes, :run_at_rate_id,
-  	:fai, :finished, :quantity_on_hand, :lot_status, :final_date, :lot_print_status #, :lot_unit, :lot_self  To uncomment for Sprint 7
+  	:fai, :finished, :quantity_on_hand, :lot_status, :final_date, :lot_print_status , :lot_unit, :lot_self  #To uncomment for Sprint 7
 
    	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
 	:conditions => ['type_category = ?', 'inspection_level']
@@ -324,9 +324,16 @@ class QualityLot < ActiveRecord::Base
 		self.so_shipments.sum(:so_shipped_count)
  	end
  	def current_location
-		po_shipment = self.po_shipment
-		po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
- 		# self.lot_unit+'-'+self.lot_self To uncomment Sprint 7
+ 		
+		# po_shipment = self.po_shipment
+		# # po_shipment.nil? ? "-" : po_shipment.po_shipped_unit.to_s + " - " + po_shipment.po_shipped_shelf
+		# shipped_unit = po_shipment.po_shipped_unit.nil? ? "" :  po_shipment.po_shipped_unit.to_s
+		# shipped_shelf = po_shipment.po_shipped_shelf.nil? ? "" : po_shipment.po_shipped_shelf.to_s
+		# po_shipment.nil? ? "-" :  shipped_unit + " - " + shipped_shelf
+		loc = self.lot_unit.nil? ? "" : self.lot_unit
+		loc += 	"-"
+		loc += self.lot_self.nil? ? "" : self.lot_self
+		loc 		
   	end
   	def self.lot_missing_location
   		 QualityLot.joins(:po_shipment).where("po_shipments.po_shipped_unit =?  AND po_shipments.po_shipped_shelf =?",'','')

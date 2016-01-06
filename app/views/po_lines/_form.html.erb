@@ -57,6 +57,9 @@
                 <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
 
                 <% end %>   
+
+                
+
                 <% if po_is_transfer %>
                     <div class="control-group select required quality_lot_po_line" >
                         <label for="po_line_quality_lot_id" class="select required control-label">
@@ -91,7 +94,7 @@
 
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
-                <%= f.input :po_line_cost, :label => "Cost" %>
+                <%= f.input :po_line_cost, :label => "Cost", :disabled => true %>
 
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
@@ -125,7 +128,6 @@
                 <div class="actions">
                     <%= f.submit "ADD", :class =>"btn" %>
                     <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
-                    <%= link_to 'SAVE', po_header_path(@po_header), :class =>"btn" %>
                     <%= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>
                 </div>
             <% end %>
@@ -197,6 +199,7 @@
                 <%= (hidden_field_tag :org_item_transfer_name_id, (@po_line.item_transfer_name.id if @po_line.item_transfer_name)) if po_is_transfer %>
 
                 <% end %>
+                
                 <% if po_is_transfer %>
                     <div class="control-group select required quality_lot_po_line" >
                         <label for="po_line_quality_lot_id" class="select required control-label">
@@ -228,7 +231,7 @@
 
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
-                <%= f.input :po_line_cost, :label => "Cost" %>
+                <%= f.input :po_line_cost, :label => "Cost", :disabled => true  %>
 
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
@@ -264,7 +267,6 @@
                 <div class="actions">
                     <%= f.submit "ADD", :class =>"btn" %>
                     <%= link_to 'Delete', po_header_po_line_path(@po_header, @po_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @po_line.new_record? %>
-                    <%= link_to 'SAVE', po_header_path(@po_header), :class =>"btn" %>
                     <%= link_to 'New Item/Alt Name', new_item_alt_name_path(new_item: true), :class => "btn", :target => "_blank" %>
                 </div>
             <% end %>
@@ -286,11 +288,12 @@
 <script type="text/javascript">
     // tab_field_forms["form_for_po_line"] = ["po_line_organization_id", "po_line_po_line_customer_po", "po_line_item_alt_name_id", "po_line_po_line_quantity", "po_line_po_line_cost", "po_line_po_line_notes"];
 
-    tab_field_forms["form_for_po_line"] = ["po_line_item_alt_name_id", <%= '"po_line_alt_name_transfer_id",'.html_safe if po_is_transfer %> "po_line_po_line_quantity", "po_line_po_line_cost", <%= @po_header.customer.nil? ? '"po_line_organization_id", "po_line_po_line_customer_po",'.html_safe : '"po_line_po_line_sell",'.html_safe %> "po_line_po_line_notes"];
+    tab_field_forms["form_for_po_line"] = ["po_line_item_alt_name_id", <%= '"po_line_alt_name_transfer_id",'.html_safe if po_is_transfer %> "po_line_po_line_quantity", <%= @po_header.customer.nil? ? '"po_line_organization_id", "po_line_po_line_customer_po",'.html_safe : '"po_line_po_line_sell",'.html_safe %> "po_line_po_line_notes"];
 
     var vendor_quality = "<%= @po_line.po_header.organization.vendor_quality.present? ? @po_line.po_header.organization.vendor_quality.quality_name : "" %>";
 
     $(document).ready(function(){ 
+
         <% if po_is_transfer %>
             jQuery("#po_line_item_alt_name_id").on('focusout', function() {
                 initiate_lots();
@@ -315,7 +318,7 @@
         $('#po_line_po_line_quantity').keydown(function(e) {
             var code = e.keyCode || e.which;
             if (code ===13 ) {  
-                $('#po_line_po_line_cost').val("");
+                $('#po_line_organization_id').val("");
             }
         });
         var alt_name_path = $("#po_line_item_alt_name_id").attr("data-autocomplete");
@@ -343,29 +346,40 @@
         });
 
         <% if @po_line.new_record? %>
-            $("#po_line_item_alt_name_id").on("focusout", function(){                
-                if($("#alt_name_id").val() == "" && $("#po_line_item_alt_name_id").val() != "" )                
-                 initialize_api_call({"url": "/item_alt_names/autocomplete_item_alt_name_item_alt_identifier" + $("#alt_name_id").val(), "type": "GET", "params": {"term":$("#po_line_item_alt_name_id").val()}, "data_type": "json"}, "set_alt_name_id", {});                  
+            $("#po_line_item_alt_name_id").on("focusout", function(){     
 
+                if($("#alt_name_id").val() == "" && $("#po_line_item_alt_name_id").val() != "" )                
+                 initialize_api_call({"url": "/item_alt_names/autocomplete_item_alt_name_item_alt_identifier" + $("#alt_name_id").val(), "type": "GET", "params": {"term":$("#po_line_item_alt_name_id").val()}, "data_type": "json"}, "set_alt_name_id", {});               
                 if($("#alt_name_id").val() != "")
-                    initialize_api_call({"url": "/item_alt_names/" + $("#alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+                initiate_item_revisions($("#alt_name_id").val());
                 else if($("#org_alt_name_id").val() != "")
-                    initialize_api_call({"url": "/item_alt_names/" + $("#org_alt_name_id").val(), "type": "GET", "params": {}, "data_type": "json"}, "set_item_revision_cost", {});
+                    initiate_item_revisions($("#org_alt_name_id").val());
                 else{
-                    $("#po_line_po_line_cost").val("");
+                $("#po_line_po_line_cost").val("");
                     calculate_line_item_total();
                 }
             });
 
         <% end %>
-
+        if($("#alt_name_id").val() != "")
+            initiate_item_revisions($("#alt_name_id").val());
+        else if($("#org_alt_name_id").val() != "")
+            initiate_item_revisions($("#org_alt_name_id").val());
+        else{
+        $("#po_line_so_line_cost").val("");
+            calculate_line_item_total();
+        }  
+        $('#po_line_po_line_cost').val('<%= @po_line.po_line_cost if @po_line %>');      
+        
         $("#po_line_organization_id").val("<%= @po_line.organization.organization_name if @po_line.organization %>");
 
         $("#po_line_item_alt_name_id").val("<%= @po_line.item_alt_name.alt_item_name if @po_line.item_alt_name %>");
 
         $("#po_line_alt_name_transfer_id").val("<%= @po_line.item_transfer_name.alt_item_name if @po_line.item_transfer_name %>");
-
         // $("#po_line_item_alt_name_id").attr("data-autocomplete", alt_name_path + "?organization_id=" + $("#org_organization_id").val());
+        $("#po_line_item_revision_id").on('change', function() {
+            initiate_po_line_cost();
+        });
 
         $("#po_line_po_line_cost").change(function(){
             calculate_line_item_total();
@@ -398,7 +412,7 @@
     }
 
     function set_item_revision_cost(response, callback_params, api_params){
-        $("#po_line_po_line_cost").val(response.item_cost);
+        $("#po_line_po_line_cost").val(response.aaData.item_cost);
         calculate_line_item_total();
         return false;
     }
@@ -488,12 +502,47 @@
 
     }
 
+    function initiate_item_revisions(item_id){
+        $("#po_line_item_revision_id").html("");
+        var Id = 0;
+        if($("#alt_name_id").val() != "" && $("#alt_name_id").val() != null)
+            Id = item_id;
+        else if($("#org_alt_name_id").val() != "" && $("#org_alt_name_id").val() != null)
+            Id = item_id;
+        else{
+
+              page_initial = false;
+        }  
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_revisions", "id": Id}}, "set_item_revisions", {});
+    }
+    function set_item_revisions(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".revision-select-box-template").html(), response));
+        $("#po_line_item_revision_id").html(html);
+         set_revision_po_selectbox();
+    }
+
+    function set_revision_po_selectbox(){
+      var theText_revision = "<%= @po_line.item_revision.item_revision_name if @po_line.item_revision %>";
+      $("#po_line_item_revision_id option").each(function() {
+        if($(this).text() == theText_revision) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+      initiate_po_line_cost();
+    }
+
+    function initiate_po_line_cost(){
+        if($("#po_line_item_revision_id").val() != "" && $("#po_line_item_revision_id").val() != null)
+          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_item_revision_cost", "id": $("#po_line_item_revision_id").val()}}, "set_item_revision_cost", {});
+        else{
+            page_initial = false;
+        }
+    }  
 </script>
 
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "lot-control-select-box"} %>
 <%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "process-type-select-box"} %>
-
-
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "revision-select-box"} %>
 
 <style> 
 li{

@@ -24,6 +24,8 @@ class CheckRegistersController < ApplicationController
         @check_registers = @check_registers.select{|check_register| 
           
            check_register[:organization] = check_register.payment.present? && check_register.payment.organization.present? ? CommonActions.linkable(organization_path(check_register.payment.organization), check_register.payment.organization.organization_name) : check_register.receipt.present? && check_register.receipt.organization.present? ? CommonActions.linkable(organization_path(check_register.receipt.organization), check_register.receipt.organization.organization_name) : "-"
+           check_register[:amount] =  check_register.amount.abs unless check_register.amount.nil?
+           check_register[:balance] =  check_register.balance.abs unless check_register.balance.nil?
            check_register[:reconcile] =  check_register.rec ? "Y" : "N"   
           }
           render json: {:aaData => @check_registers}}
