@@ -105,8 +105,10 @@ class Item < ActiveRecord::Base
 
   end
 
-  def qty_on_committed
-   self.so_lines.where(:so_line_status => "open").includes(:so_header).where(so_headers: {so_status: "open"}).sum("so_line_quantity - so_line_shipped")
+  def qty_on_committed(revision)
+
+   item_revision = ItemRevision.find(revision)
+   item_revision.so_lines.where(:so_line_status => "open").includes(:so_header).where(so_headers: {so_status: "open"}).sum("so_line_quantity - so_line_shipped")
   end
 
   def qty_on_hand
