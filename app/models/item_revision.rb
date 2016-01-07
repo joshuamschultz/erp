@@ -12,8 +12,7 @@ class ItemRevision < ActiveRecord::Base
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
   :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
-  :item_revision_complete, :item_sell
-
+  :item_revision_complete, :item_sell, :item_revision_weekly_usage, :item_revision_lead_time
   before_save :process_before_save
 
 
@@ -67,6 +66,7 @@ class ItemRevision < ActiveRecord::Base
   # has_many :item_part_dimensions, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :po_lines, :dependent => :destroy
+  has_many :so_lines, :dependent => :destroy
   has_many :quality_lots, :dependent => :destroy
   has_many :quote_lines, :dependent => :destroy
   has_many :quality_actions, :dependent => :destroy
