@@ -28,7 +28,10 @@ var prev_ids=[];
           <%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
           <%= type %>_line_row.hide(1000, arguments.callee);
           var a = <%= type %>_line_row.closest('tr');
-          var prev = a.prev();           
+          var prev = a.prev();  
+          var oTable = $('#table_report_shipping_items').dataTable();
+
+          console.log(oTable.fnGetData().length);          
           setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();prev_ids.push(prev.attr('id'));}}, 1001);
 
         }
@@ -229,7 +232,8 @@ function print_jr100(response, callback_params, api_params)
     $("#jr100_quantity").html(response["aaData"].po_shipped_count);
     $("#jr100_po").html(response["aaData"].po);
     $("#jr100_customer").html(response["aaData"].customer);
-    $("#jr100_controlno").text(response["aaData"].control_number);        
+    $("#jr100_controlno").text(response["aaData"].control_number);   
+    $("#jr100_count").text(response["aaData"].jr_report_count);        
     printContent($("#jr100").attr('id'));
   }
  
@@ -255,7 +259,7 @@ function print_jr100(response, callback_params, api_params)
 
 
             <div class="ms_image-2">
-                <h4><strong>Form JR100</strong> is </h4>
+                 <h4><strong style="color:#000099;">Form JR100</strong> is </h4>
                
               <h5><strong>Standard</strong> Operating Procedures </h5>
           
@@ -264,26 +268,32 @@ function print_jr100(response, callback_params, api_params)
         </article>
         <table width="100%" border="0" cellspacing="0"  class="bor" cellpadding="0">
           <tr>
-            <td colspan="2" align="center" scope="row"><strong>Title: Job Router</strong></td>
+            <td colspan="2" align="center" scope="row" style="color:#000099;font-size:10;"><strong>Title: Job Router</strong></td>
+            <td style="font-size:10px; border-bottom:none;"> Material Control Reference</td>
+
+            
           </tr>
           <tr>
-            <td width="50%" align="right" scope="row">Date :</td>
+            <td width="50%" align="right" scope="row"><strong>Date :</strong></td>
             <td width="50%" id="jr100_date"></td>
+            <td rowspan="5" style="font-size:10px;padding-left:2px;text-align: center;" id="jr100_count"></td>
+
           </tr>
           <tr>
-            <td align="right" scope="row">Part Number :</td>
+            <td align="right" scope="row"><strong>Part Number,Current Revision</strong></td>
             <td id="jr100_partno"></td>
+           
           </tr>
           <tr>
-            <td align="right" scope="row">Quantity :</td>
+            <td align="right" scope="row"><strong>Quantity Received</strong></td>
             <td id="jr100_quantity"> </td>
           </tr>
           <tr>
-            <td align="right" scope="row">PO :</td>
+            <td align="right" scope="row"><strong>CG Purchase Order</strong></td>
             <td id="jr100_po"></td>
           </tr>
            <tr>
-            <td align="right" scope="row">Customer(If Known) :</td>
+            <td align="right" scope="row"><strong>Customer</strong></td>
             <td id="jr100_customer"> &nbsp </td>
           </tr>
         </table>
@@ -291,92 +301,162 @@ function print_jr100(response, callback_params, api_params)
         <table width="100%" border="0" cellspacing="0" class="bor-2" cellpadding="0">
   <tr>
     <td width="11%" scope="row"><strong>Department </strong></td>
-    <td width="68%" align="center"><strong>Description</strong></td>
+    <td width="68%" align="center"><strong>Action Description </strong></td>
     <td width="13%"><strong>Date </strong></td>
-    <td width="8%"><strong>Approved </strong></td>
+    <td width="8%"><strong>Approved* By: </strong></td>
   </tr>
   <tr>
-    <td scope="row"><strong>Receiving: </strong></td>
+    <td scope="row" style="font-size:14px;"><strong>Receiving: </strong></td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
       <tr>
-        <td scope="row">Check for Damaged Incoming Boxes </td>
+        <td scope="row">Inspection for Foreign Object Debris or Damage: Boxes</td>
       </tr>
       <tr>
-        <td scope="row">Visual Inspection of Parts </td>
+        <td scope="row">Visual Inspection for Foreign Object Debris or Damage: Material</td>
       </tr>
       <tr>
-        <td scope="row">Quantity count (Attach D200 if applicable)</td>
+        <td scope="row">Verify CG Purchase Order :</td>
       </tr>
       <tr>
-        <td scope="row">Paperwork w/ parts(If required) </td>
+        <td scope="row">Quantity Accountability/ Preliminary Count: </td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td scope="row"><strong>Disbursement: </strong></td>
-    <td align="center"><strong>Proceed to Quality Department</strong></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td scope="row" colspan="4" ><strong>Parts to Quality Inspection Area </strong></td>
+    <!-- <td align="center"><strong>Proceed to Quality Department</strong></td> -->
+    
+   
+    
   </tr>
   <tr>
-    <td scope="row"><strong>Quality:</strong></td>
+    <td scope="row" style="font-size:14px;"><strong>Quality:</strong></td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td scope="row">Retrieve and Verify CG Purchase Order : </td>
+      </tr>
+      <tr>
+        <td scope="row">Retrieve all required paperwork (test reports/certs) </td>
+      </tr>
       <tr>
         <td scope="row">Assign Control No. : <span id="jr100_controlno"></span></td>
       </tr>
       <tr>
-        <td scope="row">Retreive and Verify Alliance Purchase Order:</td>
+        <td scope="row">Retrieve and Verify Customer Purchase Order : </td>
       </tr>
       <tr>
+        <td scope="row">Retrieve and Verify Customer Part Drawing : </td>
+      </tr>
+      <tr>        
         <td scope="row">Inspect to <span id = "jr100_company_name"></span> PO Specifications </td>
       </tr>
+      
       <tr>
-        <td scope="row">Retreive and Verify Customer Purchase Order: </td>
+        <td scope="row">Complete Inspection  </td>
       </tr>
       <tr>
-        <td scope="row">Inspect to Customer PO Specifications </td>
+        <td scope="row">Create Digital Lot Folder </td>
       </tr>
       <tr>
-        <td scope="row">Generate Paperwork</td>
+        <td scope="row">Control Stamp, and Scan all paperwork to Documents</td>
       </tr>
+      <tr>
+        <td scope="row">Designate: STOCK, LOCK, OR SHIP</td>
+      </tr>
+      
+      
     </table></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td scope="row"><strong> Disbursement:</strong></td>
-    <td align="center"><strong>Proceed To Shipping Department</strong></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td scope="row" colspan="4" ><strong> Parts to Warehouse</strong></td>
+   
   </tr>
-  <tr>
-    <td scope="row">Shipping:</td>
+  <tr valign="top">
+    <td scope="row">
+
+      <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="font-size:14px;border:none;" ><strong> Warehouse:</strong></td>
+      </tr>  
+       <tr>
+        <td  style="border:none;"> </td>
+      </tr>  
+       <tr>
+        <td style="font-size:14px;border:none;" > <strong>Shipping:</strong></td>
+      </tr>
+    </table>
+
+
+     
+
+    </td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
       <tr>
-        <td align="center" scope="row"><strong>Secondary Processing</strong></td>
+        <td align="center" scope="row">Quantity Accountability/Verification: <strong>FINAL COUNT</strong> (D200 if needed)</td>
       </tr>
       <tr>
-        <td scope="row">Supplier:</td>
+        <td scope="row">
+
+<table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td  style="border:none;"><strong> FUTURE SHIPMENT </strong></td> <td style="border:none;"> SHELF NUMBER: </td>
+      </tr> </table> 
+
+
+        </td>
       </tr>
       <tr>
-        <td scope="row">Verify Paperwork </td>
+        <td scope="row">
+
+        <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="border:none;"><strong> STOCK</strong> </td> <td style="border:none;"> SHELF NUMBER:</td>
+      </tr> </table> 
+
+       </td>
       </tr>
       <tr>
-        <td scope="row">Put Paperwork in Processing Bin </td>
+        <td scope="row">Bag parts according to specific customer requirements </td>
       </tr>
       <tr>
-        <td align="center" scope="row"><strong> Ship/ Stock</strong></td>
+        <td  scope="row"> Label box with current customer part number AND current revision </td>
       </tr>
       <tr>
-        <td scope="row">Verify Paperwork </td>
+        <td scope="row">Update Customer Spreadsheet </td>
       </tr>
       <tr>
-        <td scope="row">Package to PO Specifications </td>
+        <td scope="row">  <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="border:none;"> <strong>LOCK in Cage </strong></td> <td style="border:none;"> QA/OH NO.:</td>
+      </tr> </table>  </td>
       </tr>
       <tr>
-        <td scope="row">If Stock ; Shelf# </td>
+        <td scope="row"><strong>SHIP: Parts to Secondary Processing: </strong></td>
+      </tr>
+       <tr>
+        <td scope="row" align="center">Vendor : </td>
+      </tr>
+       <tr>
+        <td scope="row" align="center">CG PO: </td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Parts Received Correct W/Certs Included: </td>
+      </tr>
+       <tr>
+        <td scope="row"><strong>SHIP: Completed Parts to Customer: </strong></td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Customer Purchase Order/Shipment Accuracy  </td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Correct Part Number, Control Number, and Quantity</td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Customer Packing/Shipping Requirements </td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
@@ -384,13 +464,15 @@ function print_jr100(response, callback_params, api_params)
   </tr>
 </table>
 
-        <article>
-            <div class="footer">
-            <div class="page-center">
-              <h3><strong>Must Fill Out </strong> a Quality Action for any Steps above that do not fulfill an "Approved" status</h3>
-                </div>
-        </article>
-
+        <!-- <article> -->
+            <!-- <div class="footer"> -->
+            <!-- <div class="page-center"> -->
+              <p style="color:red;font-size:10px;">**Any action that does not reach approved status will be assigned a Quality Action or On Hold number, and be isolated and locked. </p>
+                <!-- </div> -->
+       <!--  </article>
+ -->
+  <p style="color:2791C3;font-size:10px;float:left;"> Revision: FINAL </p>
+  <p style="color:2791C3;font-size:10px;float:right;">Owner: LOGISTICS  </p>
     </div>
 
 </section>
