@@ -93,7 +93,7 @@
                 <% @item.quality_lots.each do |lot| %>
                     <tr>
                        <td><%= lot.lot_control_no %></td>   
-                        <td><%= lot.po_shipment.po_shipped_unit.to_s+" - "+lot.po_shipment.po_shipped_shelf %></td>
+                        <td><%= lot.po_shipment.po_shipped_unit.to_s+" - "+lot.po_shipment.po_shipped_shelf if lot.po_shipment &&  lot.po_shipment.po_shipped_unit%></td>
                     </tr>
                 <% end %>
               </tbody>
