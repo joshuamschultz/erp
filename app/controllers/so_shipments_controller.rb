@@ -108,7 +108,7 @@ class SoShipmentsController < ApplicationController
                 so_shipment = so_line_data_list(so_shipment, true) 
                 if params[:type] == "process"
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
-                  so_shipment[:shipment_process_id] = so_shipment.shipment_process_id
+                  so_shipment[:shipment_process_id] = "<div style='color:#848482'>#{so_shipment.shipment_process_id}</div>"
                   so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                 end
                 if can? :edit, SoShipment  
