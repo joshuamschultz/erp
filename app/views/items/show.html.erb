@@ -17,7 +17,7 @@
     <div class="span12"> 
         <div class="row-fluid item_detail_classic_btn">
             <% unless  user_signed_in? &&  current_user.is_customer? %>
-                <div class="span3 well">
+                <div class="span2 well">
                     <a class="widget-stats" href="#" id="">
                         <h5><strong><%= @item.qty_on_hand %></strong></h5>
                         <span class="txt"><strong>Quantity On Hand</strong></span>
@@ -27,7 +27,7 @@
 
                 <div class="span2 well">
                     <a class="widget-stats" href="#" id="">
-                        <h5><strong><%= @item.qty_on_order %></strong></h5>
+                        <h5><strong><%#=  params[:revision_id].present? ? @item.qty_on_order(params[:revision_id]) : 0  %></strong></h5>
                         <span class="txt"><strong>Quantity On Order</strong></span>
                         <div class="clearfix"></div>
                     </a>
@@ -36,14 +36,14 @@
 
             <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
-                    <h5><strong><%= @item.qty_on_committed %></strong></h5>
+                    <h5><strong><%= params[:revision_id].present? ? @item.qty_on_committed(params[:revision_id]) : 0  %></strong></h5>
                     <span class="txt"><strong>Quantity Committed</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
 
         <% unless  user_signed_in? &&  (current_user.is_vendor? || current_user.is_customer? )%>
-            <div class="span3 well">
+            <div class="span2 well">
                 <a class="widget-stats" href="#" id="">
                     <h5><strong>$<%= @item.weighted_cost %></strong></h5>
                     <span class="txt"><strong>Weighted Cost</strong></span>
@@ -53,14 +53,18 @@
 
         <% end %>
 
-
-
-
-
             <div class="span2 well">
                 <a class="widget-stats" href="<%= quality_lots_path(:item_id => @item.id) %>" id="">
                     <h5><strong><%= @item.quality_lots.count %></strong></h5>
                     <span class="txt"><strong>Lots</strong></span>
+                    <div class="clearfix"></div>
+                </a>
+            </div>
+
+            <div class="span2 well">
+                <a class="widget-stats" data-toggle="modal" href="#modal-simple"  id="">
+                    <h5><strong></strong></h5>
+                    <span class="txt"><strong>Locations</strong></span>
                     <div class="clearfix"></div>
                 </a>
             </div>
@@ -94,6 +98,33 @@
 </div>
 
     </div>
+</div>
+
+<div class="modal hide fade" id="modal-simple">
+  <div class="modal-header">
+      <h3>Location and lots</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  </div>
+  <div class="modal-body">
+      <form id="send_mail">
+          <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
+              <thead>
+                  <tr>
+                    <th>Lots</th>
+                    <th>Locations</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% @item.quality_lots.each do |lot| %>
+                    <tr>
+                       <td><%= lot.lot_control_no %></td>   
+                        <td><%= lot.po_shipment.po_shipped_unit.to_s+" - "+lot.po_shipment.po_shipped_shelf if lot.po_shipment &&  lot.po_shipment.po_shipped_unit%></td>
+                    </tr>
+                <% end %>
+              </tbody>
+          </table>
+      </form>
+  </div>
 </div>
 
 
@@ -420,10 +451,10 @@ function get_so_header(status){
             "aoColumns": [
                         { "mData": "index","bVisible": false },
                         { "mData": "so_id" },
-                        { "mData": "customer_name"},                    
+                        { "mData": "customer_name"},
                         { "mData": "ship_to_address_name" },
-                        { "mData": "so_line_price" },                      
-                        { "mData": "so_type_qty" },                        
+                        { "mData": "so_line_price" },
+                        { "mData": "so_type_qty" },                                      
                         { "mData": "so_status"},
                         { "mData": "links", "bSortable": false, "bSearchable": false }
                         
