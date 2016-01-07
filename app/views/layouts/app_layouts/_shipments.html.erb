@@ -28,7 +28,10 @@ var prev_ids=[];
           <%= type %>_line_row.find(".shipping_status").html("Saved and closed successfully!");
           <%= type %>_line_row.hide(1000, arguments.callee);
           var a = <%= type %>_line_row.closest('tr');
-          var prev = a.prev();           
+          var prev = a.prev();  
+          var oTable = $('#table_report_shipping_items').dataTable();
+
+          console.log(oTable.fnGetData().length);          
           setTimeout(function(){<%= type %>_line_row.remove();if(response.shipment_shipped_status == 1) {prev.remove();prev_ids.push(prev.attr('id'));}}, 1001);
 
         }
@@ -48,7 +51,7 @@ var prev_ids=[];
 function printContent(div_id)
 {
  var content = "<html>";
- content +="<head> </head>  <style type='text/css'>body{font-family:Arial, Helvetica, sans-serif;font-size:5px !important;}.clear{clear:both} td{font-size:12px;}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}td{padding:2px 0}.ms_image-2>h4{margin:24px 0 0}.ms_wrapper .ms_image{float:left;font-size:22px;text-align:center;width:310px;height:90px}.ms_wrapper .ms_image-2{float:right;font-size:22px;text-align:right;width:310px;height:90px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.bor{padding:12px 0}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:bold}.ms_image-2 h3{color:#000080;font-size:16px;font-weight:normal;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:#800000;font-size:20px;font-weight:bold;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:bold;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:#800000;float:left;font-size:14px;font-weight:normal;line-height:19px;margin:6px 0;text-align:center;width:100%}.ms_text-3.text-5 strong{color:#000 !important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px 0}.fon-004>td{font-size:16px;font-weight:bold;padding:20px 0 8px}.bor td{border:1px solid #111;padding:2px 37px}.bor-2 td{border:1px solid #111;padding:5px 7px}.bord-no{padding:0 !important}.bor-3 td{border-top:1px solid #111;border-bottom:none;padding:4px 7px;border-left:none;border-right:none}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:#800000;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:#000080}.footer{border:2px solid #444;float:left;margin:8px 0 0;width:100%}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:bold;margin:12px 0 0}.page h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:bold;margin:12px 0 0}.original h4{color:#800000;font-size:12px;font-weight:normal;margin:5px 0 12px;text-align:center}.ms_image-wrapper{float:left;height:69px;margin:6px 0 0 3px;width:150px}.ms_image-wrapper img{width:150px}.ms_image-text{float:right;margin:6px 10px 0 0;width:120px}.ms_image-text h2{font-size:13px;margin:19px 0 8px 0;text-decoration:underline}.ms_image-text h3{font-size:13px;font-weight:normal;margin:3px 0}.ms_image-text h5{font-size:9px;font-weight:normal;width:120px}.page-center{text-align:center}.page-center h3{font-size:12px;font-weight:bold}.page-center h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original h4 span{color:#000}.original h4 span{color:#000;margin:0 4px 0 0}.text-6{color:#800000;margin:0 14px 0 0 !important;width:auto !important}.text-7{float:left;margin:22px 0 0;width:100%}.lin{border-bottom:2px solid #111}th{padding:0 0 9px}</style>";
+ content +="<head> </head>  <style type='text/css'>body{font-family:Arial, Helvetica, sans-serif;font-size:5px !important;}.clear{clear:both} td{font-size:9px;}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}td{padding:2px 0}.ms_image-2>h4{margin:24px 0 0}.ms_wrapper .ms_image{float:left;font-size:22px;text-align:center;width:310px;height:90px}.ms_wrapper .ms_image-2{float:right;font-size:22px;text-align:right;width:310px;height:90px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.bor{padding:12px 0}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:bold}.ms_image-2 h3{color:#000080;font-size:16px;font-weight:normal;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:#800000;font-size:20px;font-weight:bold;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:bold;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:normal;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:#800000;float:left;font-size:14px;font-weight:normal;line-height:19px;margin:6px 0;text-align:center;width:100%}.ms_text-3.text-5 strong{color:#000 !important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px 0}.fon-004>td{font-size:16px;font-weight:bold;padding:20px 0 8px}.bor td{border:1px solid #111;padding:2px 37px}.bor-2 td{border:1px solid #111;padding:5px 7px}.bord-no{padding:0 !important}.bor-3 td{border-top:1px solid #111;border-bottom:none;padding:4px 7px;border-left:none;border-right:none}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:#800000;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:#000080}.footer{border:2px solid #444;float:left;margin:8px 0 0;width:100%}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:bold;margin:12px 0 0}.page h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:bold;margin:12px 0 0}.original h4{color:#800000;font-size:12px;font-weight:normal;margin:5px 0 12px;text-align:center}.ms_image-wrapper{float:left;height:69px;margin:6px 0 0 3px;width:150px}.ms_image-wrapper img{width:150px}.ms_image-text{float:right;margin:6px 10px 0 0;width:120px}.ms_image-text h2{font-size:13px;margin:19px 0 8px 0;text-decoration:underline}.ms_image-text h3{font-size:13px;font-weight:normal;margin:3px 0}.ms_image-text h5{font-size:9px;font-weight:normal;width:120px}.page-center{text-align:center}.page-center h3{font-size:12px;font-weight:bold}.page-center h4{font-size:12px;font-weight:normal;margin:5px 0 12px 0;text-align:center}.original h4 span{color:#000}.original h4 span{color:#000;margin:0 4px 0 0}.text-6{color:#800000;margin:0 14px 0 0 !important;width:auto !important}.text-7{float:left;margin:22px 0 0;width:100%}.lin{border-bottom:2px solid #111}th{padding:0 0 9px}</style>";
  content += "<body>";
  content += document.getElementById(div_id).innerHTML ;
  content += "</body>";
@@ -229,7 +232,8 @@ function print_jr100(response, callback_params, api_params)
     $("#jr100_quantity").html(response["aaData"].po_shipped_count);
     $("#jr100_po").html(response["aaData"].po);
     $("#jr100_customer").html(response["aaData"].customer);
-    $("#jr100_controlno").text(response["aaData"].control_number);        
+    $("#jr100_controlno").text(response["aaData"].control_number);   
+    $("#jr100_count").text(response["aaData"].jr_report_count);        
     printContent($("#jr100").attr('id'));
   }
  
@@ -255,7 +259,7 @@ function print_jr100(response, callback_params, api_params)
 
 
             <div class="ms_image-2">
-                <h4><strong>Form JR100</strong> is </h4>
+                 <h4><strong style="color:#000099;">Form JR100</strong> is </h4>
                
               <h5><strong>Standard</strong> Operating Procedures </h5>
           
@@ -264,26 +268,32 @@ function print_jr100(response, callback_params, api_params)
         </article>
         <table width="100%" border="0" cellspacing="0"  class="bor" cellpadding="0">
           <tr>
-            <td colspan="2" align="center" scope="row"><strong>Title: Job Router</strong></td>
+            <td colspan="2" align="center" scope="row" style="color:#000099;font-size:10;"><strong>Title: Job Router</strong></td>
+            <td style="font-size:10px; border-bottom:none;"> Material Control Reference</td>
+
+            
           </tr>
           <tr>
-            <td width="50%" align="right" scope="row">Date :</td>
+            <td width="50%" align="right" scope="row"><strong>Date :</strong></td>
             <td width="50%" id="jr100_date"></td>
+            <td rowspan="5" style="font-size:10px;padding-left:2px;text-align: center;" id="jr100_count"></td>
+
           </tr>
           <tr>
-            <td align="right" scope="row">Part Number :</td>
+            <td align="right" scope="row"><strong>Part Number,Current Revision</strong></td>
             <td id="jr100_partno"></td>
+           
           </tr>
           <tr>
-            <td align="right" scope="row">Quantity :</td>
+            <td align="right" scope="row"><strong>Quantity Received</strong></td>
             <td id="jr100_quantity"> </td>
           </tr>
           <tr>
-            <td align="right" scope="row">PO :</td>
+            <td align="right" scope="row"><strong>CG Purchase Order</strong></td>
             <td id="jr100_po"></td>
           </tr>
            <tr>
-            <td align="right" scope="row">Customer(If Known) :</td>
+            <td align="right" scope="row"><strong>Customer</strong></td>
             <td id="jr100_customer"> &nbsp </td>
           </tr>
         </table>
@@ -291,92 +301,162 @@ function print_jr100(response, callback_params, api_params)
         <table width="100%" border="0" cellspacing="0" class="bor-2" cellpadding="0">
   <tr>
     <td width="11%" scope="row"><strong>Department </strong></td>
-    <td width="68%" align="center"><strong>Description</strong></td>
+    <td width="68%" align="center"><strong>Action Description </strong></td>
     <td width="13%"><strong>Date </strong></td>
-    <td width="8%"><strong>Approved </strong></td>
+    <td width="8%"><strong>Approved* By: </strong></td>
   </tr>
   <tr>
-    <td scope="row"><strong>Receiving: </strong></td>
+    <td scope="row" style="font-size:14px;"><strong>Receiving: </strong></td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
       <tr>
-        <td scope="row">Check for Damaged Incoming Boxes </td>
+        <td scope="row">Inspection for Foreign Object Debris or Damage: Boxes</td>
       </tr>
       <tr>
-        <td scope="row">Visual Inspection of Parts </td>
+        <td scope="row">Visual Inspection for Foreign Object Debris or Damage: Material</td>
       </tr>
       <tr>
-        <td scope="row">Quantity count (Attach D200 if applicable)</td>
+        <td scope="row">Verify CG Purchase Order :</td>
       </tr>
       <tr>
-        <td scope="row">Paperwork w/ parts(If required) </td>
+        <td scope="row">Quantity Accountability/ Preliminary Count: </td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td scope="row"><strong>Disbursement: </strong></td>
-    <td align="center"><strong>Proceed to Quality Department</strong></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td scope="row" colspan="4" ><strong>Parts to Quality Inspection Area </strong></td>
+    <!-- <td align="center"><strong>Proceed to Quality Department</strong></td> -->
+    
+   
+    
   </tr>
   <tr>
-    <td scope="row"><strong>Quality:</strong></td>
+    <td scope="row" style="font-size:14px;"><strong>Quality:</strong></td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td scope="row">Retrieve and Verify CG Purchase Order : </td>
+      </tr>
+      <tr>
+        <td scope="row">Retrieve all required paperwork (test reports/certs) </td>
+      </tr>
       <tr>
         <td scope="row">Assign Control No. : <span id="jr100_controlno"></span></td>
       </tr>
       <tr>
-        <td scope="row">Retreive and Verify Alliance Purchase Order:</td>
+        <td scope="row">Retrieve and Verify Customer Purchase Order : </td>
       </tr>
       <tr>
+        <td scope="row">Retrieve and Verify Customer Part Drawing : </td>
+      </tr>
+      <tr>        
         <td scope="row">Inspect to <span id = "jr100_company_name"></span> PO Specifications </td>
       </tr>
+      
       <tr>
-        <td scope="row">Retreive and Verify Customer Purchase Order: </td>
+        <td scope="row">Complete Inspection  </td>
       </tr>
       <tr>
-        <td scope="row">Inspect to Customer PO Specifications </td>
+        <td scope="row">Create Digital Lot Folder </td>
       </tr>
       <tr>
-        <td scope="row">Generate Paperwork</td>
+        <td scope="row">Control Stamp, and Scan all paperwork to Documents</td>
       </tr>
+      <tr>
+        <td scope="row">Designate: STOCK, LOCK, OR SHIP</td>
+      </tr>
+      
+      
     </table></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td scope="row"><strong> Disbursement:</strong></td>
-    <td align="center"><strong>Proceed To Shipping Department</strong></td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td scope="row" colspan="4" ><strong> Parts to Warehouse</strong></td>
+   
   </tr>
-  <tr>
-    <td scope="row">Shipping:</td>
+  <tr valign="top">
+    <td scope="row">
+
+      <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="font-size:14px;border:none;" ><strong> Warehouse:</strong></td>
+      </tr>  
+       <tr>
+        <td  style="border:none;"> </td>
+      </tr>  
+       <tr>
+        <td style="font-size:14px;border:none;" > <strong>Shipping:</strong></td>
+      </tr>
+    </table>
+
+
+     
+
+    </td>
     <td class="bord-no"><table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
       <tr>
-        <td align="center" scope="row"><strong>Secondary Processing</strong></td>
+        <td align="center" scope="row">Quantity Accountability/Verification: <strong>FINAL COUNT</strong> (D200 if needed)</td>
       </tr>
       <tr>
-        <td scope="row">Supplier:</td>
+        <td scope="row">
+
+<table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td  style="border:none;"><strong> FUTURE SHIPMENT </strong></td> <td style="border:none;"> SHELF NUMBER: </td>
+      </tr> </table> 
+
+
+        </td>
       </tr>
       <tr>
-        <td scope="row">Verify Paperwork </td>
+        <td scope="row">
+
+        <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="border:none;"><strong> STOCK</strong> </td> <td style="border:none;"> SHELF NUMBER:</td>
+      </tr> </table> 
+
+       </td>
       </tr>
       <tr>
-        <td scope="row">Put Paperwork in Processing Bin </td>
+        <td scope="row">Bag parts according to specific customer requirements </td>
       </tr>
       <tr>
-        <td align="center" scope="row"><strong> Ship/ Stock</strong></td>
+        <td  scope="row"> Label box with current customer part number AND current revision </td>
       </tr>
       <tr>
-        <td scope="row">Verify Paperwork </td>
+        <td scope="row">Update Customer Spreadsheet </td>
       </tr>
       <tr>
-        <td scope="row">Package to PO Specifications </td>
+        <td scope="row">  <table width="100%" border="0" cellspacing="0" class="bor-3" cellpadding="0">
+      <tr>
+        <td style="border:none;"> <strong>LOCK in Cage </strong></td> <td style="border:none;"> QA/OH NO.:</td>
+      </tr> </table>  </td>
       </tr>
       <tr>
-        <td scope="row">If Stock ; Shelf# </td>
+        <td scope="row"><strong>SHIP: Parts to Secondary Processing: </strong></td>
+      </tr>
+       <tr>
+        <td scope="row" align="center">Vendor : </td>
+      </tr>
+       <tr>
+        <td scope="row" align="center">CG PO: </td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Parts Received Correct W/Certs Included: </td>
+      </tr>
+       <tr>
+        <td scope="row"><strong>SHIP: Completed Parts to Customer: </strong></td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Customer Purchase Order/Shipment Accuracy  </td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Correct Part Number, Control Number, and Quantity</td>
+      </tr>
+       <tr>
+        <td scope="row">Verify Customer Packing/Shipping Requirements </td>
       </tr>
     </table></td>
     <td>&nbsp;</td>
@@ -384,13 +464,15 @@ function print_jr100(response, callback_params, api_params)
   </tr>
 </table>
 
-        <article>
-            <div class="footer">
-            <div class="page-center">
-              <h3><strong>Must Fill Out </strong> a Quality Action for any Steps above that do not fulfill an "Approved" status</h3>
-                </div>
-        </article>
-
+        <!-- <article> -->
+            <!-- <div class="footer"> -->
+            <!-- <div class="page-center"> -->
+              <p style="color:red;font-size:10px;">**Any action that does not reach approved status will be assigned a Quality Action or On Hold number, and be isolated and locked. </p>
+                <!-- </div> -->
+       <!--  </article>
+ -->
+  <p style="color:2791C3;font-size:10px;float:left;"> Revision: FINAL </p>
+  <p style="color:2791C3;font-size:10px;float:right;">Owner: LOGISTICS  </p>
     </div>
 
 </section>

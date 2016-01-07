@@ -377,7 +377,7 @@ class CommonActionsController < ApplicationController
             when "item_lot_locations"
               if params[:id].present?
                 @item = Item.find(params[:id])
-                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
+                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.lot_quantity,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
                 result = locations
               else
                 result = "fail"
@@ -600,7 +600,6 @@ class CommonActionsController < ApplicationController
                 check_entry.update_attributes(:status => "Printed", :check_active => 0)
                 payment = Payment.find_by_check_entry_id(params[:id])
                 payment.update_transactions
-                payment.update_attributes(:payment_status => 'closed')   
                 @reconcile = Reconcile.where(:payment_id => payment.id).first
                 if @reconcile.nil?                                  
                   Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
@@ -690,13 +689,20 @@ class CommonActionsController < ApplicationController
                   res["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization                  
                   res["company_name"] =  CompanyInfo.first.company_name
                   res["control_number"] = @quality_lot.lot_control_no
+                  @jr_next = CheckCode.find_by_counter_type('jr_next') 
+                  if @jr_next
+                    res["jr_report_count"] = @jr_next.counter.to_s+'-100'
+                     @jr_count = @jr_next.counter.to_i >= 100 ? 1 : Integer(@jr_next.counter) + 1
+                    @jr_next.update_attributes(:counter => @jr_count.to_s)
+                  
+                  end
                   result = res
                   @quality_lot.update_attributes(:lot_print_status => 'print')
                 end
+
               else                
                 result = "Failure"                
               end
-
             when "check_quality_lot_negative"
               res = Hash.new
               res["line_row"]= params[:line_row]

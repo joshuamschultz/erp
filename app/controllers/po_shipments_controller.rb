@@ -34,6 +34,7 @@ class PoShipmentsController < ApplicationController
             @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
                 po_line = po_line.po_line_data_list(po_line, false)
                 po_line[:lot] = ""
+                po_line[:revision] = po_line.item_revision.present? ? po_line.item_revision.item_revision_name : po_line.item.item_revisions.last.item_revision_name
                 # po_line = so_line_data_list(po_line, false)
              }
             render json: {:aaData => @po_lines}
