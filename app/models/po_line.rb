@@ -66,7 +66,7 @@ class PoLine < ActiveRecord::Base
     # end
       self.po_line_total = self.po_line_cost * self.po_line_quantity
       self.item = self.item_alt_name.item
-      self.item_revision = self.item_alt_name.item.current_revision
+      #self.item_revision = self.item_alt_name.item.current_revision
   end
 
   after_save :prcess_after_save
