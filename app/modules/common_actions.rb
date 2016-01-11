@@ -5,6 +5,25 @@ module CommonActions
 		PoHeader.where(po_identifier: UNASSIGNED).destroy_all
 		SoHeader.where(so_identifier: UNASSIGNED).destroy_all
 	end
+
+	def self.user_role(role_id)
+		case role_id
+			when 2
+				"Manager"
+			when 4
+				"Quality"
+			when 8
+				"Operations"
+			when 16
+				"Clerical"
+			when 32
+				"Logistics"
+			when 64
+				"Vendor"
+			when 128
+				"Customer"
+			end
+	end
 	
 	def self.address(address_id)
 		address_info = Hash.new
@@ -64,7 +83,7 @@ module CommonActions
             # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
              so_line =  SoLine.find(soLineId)
              if so_line.item.present?
-	            quality_lots = so_line.item.quality_lots.where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no,x.quantity_on_hand] }
+	            quality_lots = so_line.item.quality_lots.includes(:quality_histories).where(:quality_histories => {'quality_status' => 'accepted'}).where('finished not in (?)', [true]).map { |x|  [x.id,x.lot_control_no,x.quantity_on_hand] }
 	            quality_lots.each do |quality_lot|
 	            	divdata += "<option id='#{quality_lot[2]}' value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
 	            end
@@ -341,8 +360,8 @@ module CommonActions
 				{:path => gauges_path(type: "gauge"), :name => "Gauge Calibration"},
 				{:path => organizations_path(type1: "vendor",type2: "certification"), :name => "Vendor Qualification"},
 				{:path => new_so_shipment_path(type1: "shipping_to",type2: "due_date"), :name => "Shipping Due"},
-				{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lots Missing Location"}
-
+				{:path => quality_lots_path(type: "lot_missing_location"), :name => "Lots Missing Location"},
+				{:path => items_path(inventory_type: "inventory"), :name => "Inventory Report"}
 			]
 		end
 		menus[:documentation] = {:class => "hasSubmenu glyphicons briefcase", :path => "#", :name => "Documentation", :type => "multiple"}
