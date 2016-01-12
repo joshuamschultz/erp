@@ -326,7 +326,10 @@ class Ability
             can :manage, Quote
 
             can :view, Item
-           
+
+            can :view, PoShipment
+            
+            can :view, Payable
         elsif user.has_role? :customer
 
             can :view, QualityAction
