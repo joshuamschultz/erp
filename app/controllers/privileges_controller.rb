@@ -110,6 +110,7 @@ class PrivilegesController < ApplicationController
     @user.roles = [params[:role]]
     respond_to do |format|
       if @user.update_attributes(params[:user])
+        User.user_organizations_associations(@user, params)
         format.html { redirect_to privileges_path, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
