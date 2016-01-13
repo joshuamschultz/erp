@@ -53,7 +53,7 @@
 <div class="modal hide" id="modal-simple">
     <div class="modal-header">
         <h3>Send To Reconcile</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >×</button>
     </div>
     <div class="modal-body">
         <form id="send_mail">
@@ -89,7 +89,8 @@
 
 
 <script type="text/javascript">
-$(".close").click(function() {
+$(".close").click(function() {  
+ initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "resetCheckEntriesCheckCode"  }}, "", {}); 
    $("#modal-simple").hide(); 
 });
 $("#print_check").click(function() {
@@ -111,8 +112,17 @@ $("#print_check").click(function() {
     <% end %> 
     if (flag == 1)
     {    
-        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "ids" : checkEntryId  }}, "set_check_code", {});         
-        checks_iframe.contentWindow.print();
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "ids" : checkEntryId  }}, "set_check_code", {});
+        var timer = ((count/2) + 2) * 1000
+        setTimeout(function()
+        {   
+          checks_iframe.contentWindow.location.reload(true);
+        }, timer);
+        setTimeout(function()
+        { 
+           
+           checks_iframe.contentWindow.print();
+        }, timer * 4);
     }    
     else
     {
@@ -122,7 +132,7 @@ $("#print_check").click(function() {
     setTimeout(function()
     {         
         $("#modal-simple").show();      
-    }, timer);
+    }, timer * 5);
 
 });  
 function set_check_code(response, callback_params, api_params)
