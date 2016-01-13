@@ -36,5 +36,18 @@
 <% end %>
 <script type="text/javascript">
     tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_organization_id", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
+    
+    $(document).ready(function(){ 
+        set_val_selectbox();
+    });
+
+    function set_val_selectbox(){
+      var user_role = '<%= CommonActions.user_role(@user.roles_mask) %>';
+      $("#role option").each(function() {
+        if($(this).text() == user_role) {
+          $(this).attr('selected', 'selected');            
+        }                        
+      });
+    }
 </script>
 
