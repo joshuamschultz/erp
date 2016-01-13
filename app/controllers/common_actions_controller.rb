@@ -628,21 +628,29 @@ class CommonActionsController < ApplicationController
               end
 
 
-            when "generate_check_code"                  
+            when "generate_check_code"                
               ids = params[:ids]
-              res = Hash.new 
+              vndr_id = Hash.new {|h,k| h[k]=[]} 
               ids.each do |id|
+                payment = Payment.find_by_check_entry_id(id)
+                vndr_id[payment.organization_id] << id   
+              end 
+              res = Hash.new 
+              vndr_id.each do |v, c|
                 sleep 1
-                c = CheckEntry.find(id)
                 check_code = CheckCode.find_by_counter_type('check_code').counter 
-                c.update_attributes(:check_code => check_code)
-                p = c.payment
-                p.update_attributes(:payment_check_code => check_code) if p               
+                vndr_id[v].each do |vd|
+                  ch = CheckEntry.find(vd)
+                  p = ch.payment
+                  p.update_attributes(:payment_check_code => check_code) if p 
+                  ch.update_attributes(:check_code => check_code) 
+                  res[vd] = check_code
+                end
                 temp = CheckCode.find_by_counter_type("check_code") 
                 temp.update_attributes(:counter => check_code )               
                 CheckCode.get_next_check_code                               
-                res[id] = check_code
-              end 
+                
+              end               
               result = res
 
             when "set_lot_numbers"              
@@ -723,6 +731,11 @@ class CommonActionsController < ApplicationController
                 end
               else
                 result = res["output"] = "Please receive lot first"
+              end
+              
+            when "resetCheckEntriesCheckCode"
+              CheckEntry.where(:check_active => 1).each do |check_entry|
+                check_entry.update_attributes(:check_code => '')
               end
 
             when "after_print_deposits"
