@@ -5,8 +5,8 @@ class CheckEntry < ActiveRecord::Base
 
   # validates_presence_of :check_code
 
-  validates  :check_code,
-             :uniqueness => { :allow_blank => true }
+  # validates  :check_code,
+  #            :uniqueness => { :allow_blank => true }
 
   def self.get_next_check_code
       #   Payment.joins(:check_entry)
