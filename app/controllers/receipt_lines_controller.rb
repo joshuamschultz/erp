@@ -14,7 +14,7 @@ class ReceiptLinesController < ApplicationController
               receipt_line[:receivable_balance] = receipt_line.receivable.receivable_current_balance.round(2)
               # receipt_line[:receipt_line_discount] = receipt_line.receipt.receipt_discount !=nil ? (receipt_line[:receivable_total] * receipt_line.receipt.receipt_discount) / 100 : 0
               # receipt_line[:receipt_line_discount] = receipt_line[:receivable_total] - receipt_line.receipt_line_amount
-              receipt_line[:receipt_line_discount] = ((receipt_line.receipt_line_amount * receipt_line.receipt.receipt_discount)/100).round(2)
+              receipt_line[:receipt_line_discount] = ((receipt_line.receivable.receivable_total * receipt_line.receipt.receipt_discount)/100).round(2)
           }
           render json: {:aaData => @receipt_lines}
       }
