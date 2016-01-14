@@ -172,6 +172,7 @@
 
 
   <div class="span2"> 
+    <% if user_signed_in? &&  !current_user.is_vendor? %>
   <% if can? :view, QualityLot %>
     <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
@@ -221,7 +222,7 @@
     <br>
     <br>
 
-    <% if user_signed_in? &&  !current_user.is_vendor? %>
+    
 
       <div class="row-fluid item_detail_classic_btn">
         <div class="span12 well">
