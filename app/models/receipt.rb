@@ -137,7 +137,7 @@ class Receipt < ActiveRecord::Base
                     desc = "Deposit "+ self.receipt_check_code               
                 end
                 if type == "debit"
-                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => (self.receipt_check_amount +  tot_dis), :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)                             
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => self.receipt_check_amount , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)                             
                   amount = @gl_account.gl_account_amount - (self.receipt_check_amount +  tot_dis).to_f                  
                 elsif type == "credit"    
                   @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_credit => self.receipt_check_amount , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id) 
