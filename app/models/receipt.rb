@@ -120,11 +120,11 @@ class Receipt < ActiveRecord::Base
                   #amount = @gl_account.gl_account_amount - (((self.receipt_check_amount_was * 100 ).to_f / (100 - self.receipt_discount_was).to_f).to_f  -   self.receipt_check_amount_was.to_f) + (((self.receipt_check_amount * 100 ).to_f / (100 - self.receipt_discount).to_f).to_f  -   self.receipt_check_amount.to_f)  
                   tot_dis =0
                   self.receipt_lines.each do |receipt_line|
-                    tot_dis + ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
+                    tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
                   end
                   tot_dis_was =0
                   self.receipt_lines.each do |receipt_line|
-                    tot_dis + ((receipt_line.receipt_line_amount_was * self.receipt_discount_was)/100).round(2)
+                    tot_dis_was =+ ((receipt_line.receipt_line_amount_was * self.receipt_discount_was)/100).round(2)
                   end
                   @gl_entry.update_attributes(:gl_entry_debit => tot_dis )
                   amount = @gl_account.gl_account_amount + tot_dis_was- tot_dis           
@@ -144,7 +144,7 @@ class Receipt < ActiveRecord::Base
                 elsif type == "discount"
                     tot_dis =0
                     self.receipt_lines.each do |receipt_line|
-                      tot_dis + ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
+                      tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
                     end
                    @gl_entry= GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => tot_dis, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)
                    amount = @gl_account.gl_account_amount - tot_dis 
