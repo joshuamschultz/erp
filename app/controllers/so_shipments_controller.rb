@@ -45,10 +45,10 @@ class SoShipmentsController < ApplicationController
                 so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
-                  so_line[:so_identifier] = "<a href='/so_headers/#{so_line.so_header.id}' style='color: #848482;' >"+so_line.so_header.so_identifier+"</a> "
+                  so_line[:so_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/so_headers/#{so_line.so_header.id}' style='padding-left:10px;color: #8ec657;' >"+so_line.so_header.so_identifier+"</a>"
 
                   so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
-                  so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a>"
+                  so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a></div>"
                   # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
                   so_line[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
                   so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
@@ -95,6 +95,7 @@ class SoShipmentsController < ApplicationController
                  # @so_shipments  =  @so_shipments +  @so_ship_outs
                  # @so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
                 if params[:type] == "process"
+
                   @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close", "ship_in"])
                 end
 
@@ -108,8 +109,8 @@ class SoShipmentsController < ApplicationController
                 so_shipment = so_line_data_list(so_shipment, true) 
                 if params[:type] == "process"
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
-                  so_shipment[:shipment_process_id] = "<div style='color:#848482'>#{so_shipment.shipment_process_id}</div>"
-                  so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
+                  so_shipment[:shipment_process_id] = "<div style='height:30px;color:#8ec657;background-color: #484848;padding-left:10px;'>#{so_shipment.shipment_process_id}"
+                  so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a></div>"
                 end
                 if can? :edit, SoShipment  
                   so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
