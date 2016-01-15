@@ -108,24 +108,25 @@ class Receipt < ActiveRecord::Base
         @gl_entry = GlEntry.where(receipt_id: self.id, gl_account_id: @gl_account_to_update.id).first
 
         amount = 0
+        tot_dis =0
+        self.receipt_lines.each do |receipt_line|
+          tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
+        end
+        tot_dis_was =0
+        self.receipt_lines.each do |receipt_line|
+          tot_dis_was =+ ((receipt_line.receipt_line_amount_was * self.receipt_discount_was)/100).round(2)
+        end
            unless @gl_entry.nil?                
                 if type == "debit"                  
-                  @gl_entry.update_attributes(:gl_entry_debit => self.receipt_check_amount.to_f + self.receipt_discount.to_f)
-                  amount = @gl_account.gl_account_amount - (self.receipt_check_amount_was.to_f + self.receipt_discount_was.to_f) + (self.receipt_check_amount.to_f + self.receipt_discount.to_f)
+                  @gl_entry.update_attributes(:gl_entry_debit => self.receipt_check_amount.to_f + tot_dis)
+                  amount = @gl_account.gl_account_amount - (self.receipt_check_amount_was.to_f + tot_dis_was) + (self.receipt_check_amount.to_f + tot_dis)
                 elsif type == "credit"  
                   @gl_entry.update_attributes(:gl_entry_credit => self.receipt_check_amount.to_f )
                   amount = @gl_account.gl_account_amount - self.receipt_check_amount_was.to_f  + self.receipt_check_amount.to_f                                            
                 elsif type == "discount"  
                   #@gl_entry.update_attributes(:gl_entry_debit => ((self.receipt_check_amount * 100 ).to_f / (100 - self.receipt_discount).to_f).to_f  -   self.receipt_check_amount.to_f)
                   #amount = @gl_account.gl_account_amount - (((self.receipt_check_amount_was * 100 ).to_f / (100 - self.receipt_discount_was).to_f).to_f  -   self.receipt_check_amount_was.to_f) + (((self.receipt_check_amount * 100 ).to_f / (100 - self.receipt_discount).to_f).to_f  -   self.receipt_check_amount.to_f)  
-                  tot_dis =0
-                  self.receipt_lines.each do |receipt_line|
-                    tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
-                  end
-                  tot_dis_was =0
-                  self.receipt_lines.each do |receipt_line|
-                    tot_dis_was =+ ((receipt_line.receipt_line_amount_was * self.receipt_discount_was)/100).round(2)
-                  end
+                  
                   @gl_entry.update_attributes(:gl_entry_debit => tot_dis )
                   amount = @gl_account.gl_account_amount + tot_dis_was- tot_dis           
                 end  
@@ -136,16 +137,12 @@ class Receipt < ActiveRecord::Base
                     desc = "Deposit "+ self.receipt_check_code               
                 end
                 if type == "debit"
-                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => (self.receipt_check_amount +  self.receipt_discount), :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)                             
-                  amount = @gl_account.gl_account_amount - (self.receipt_check_amount +  self.receipt_discount).to_f                  
+                  @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => (self.receipt_check_amount +  tot_dis), :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)                             
+                  amount = @gl_account.gl_account_amount - (self.receipt_check_amount +  tot_dis).to_f                  
                 elsif type == "credit"    
                   @gl_entry = GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_credit => self.receipt_check_amount , :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id) 
                   amount = @gl_account.gl_account_amount + self.receipt_check_amount.to_f 
-                elsif type == "discount"
-                    tot_dis =0
-                    self.receipt_lines.each do |receipt_line|
-                      tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
-                    end
+                elsif type == "discount"                    
                    @gl_entry= GlEntry.new(:gl_account_id => @gl_account_to_update.id, :gl_entry_description => desc, :gl_entry_debit => tot_dis, :gl_entry_active => 1, :gl_entry_date => Date.today.to_s, :receipt_id => self.id)
                    amount = @gl_account.gl_account_amount - tot_dis 
                 end  
