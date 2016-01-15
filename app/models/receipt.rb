@@ -110,11 +110,11 @@ class Receipt < ActiveRecord::Base
         amount = 0
         tot_dis =0
         self.receipt_lines.each do |receipt_line|
-          tot_dis += ((receipt_line.receipt_line_amount * self.receipt_discount)/100).round(2)
+          tot_dis += ((receipt_line.receivable.receivable_total * self.receipt_discount)/100).round(2)
         end
         tot_dis_was =0
         self.receipt_lines.each do |receipt_line|
-          tot_dis_was =+ ((receipt_line.receipt_line_amount_was * self.receipt_discount_was)/100).round(2)
+          tot_dis_was =+ ((receipt_line.receivable.receivable_total * self.receipt_discount_was)/100).round(2)
         end
            unless @gl_entry.nil?                
                 if type == "debit"                  
