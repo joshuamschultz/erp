@@ -113,12 +113,13 @@ class PoLine < ActiveRecord::Base
       object[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
       object[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
       unless shipment
-         object[:po_identifier] = "<a href='/po_headers/#{po_line.po_header.id}' style='color: #848482;' >"+po_line.po_header.po_identifier+"</a> "
+         
         object[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
         object[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
         object[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
+        object[:po_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/po_headers/#{po_line.po_header.id}' style='color: #8ec657;padding-left:10px;' >"+po_line.po_header.po_identifier+"</a> "
         object[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
-        object[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success po_#{po_line.po_header.id}' href='#'>Fill</a>"
+        object[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success po_#{po_line.po_header.id}' href='#'>Fill</a></div>"
         
         object[:links] = "<a po_line_id='#{po_line.id}' po_shipped_status='rejected' class='pull-right btn_save_shipped btn-action glyphicons ban btn-danger' href='#'><i></i></a> "
         object[:links] += " <a po_line_id='#{po_line.id}' po_shipped_status='on hold' class='pull-right btn_save_shipped btn-action glyphicons circle_exclamation_mark btn-warning' href='#'><i></i></a> "
