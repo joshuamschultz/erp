@@ -101,7 +101,7 @@ class Receivable < ActiveRecord::Base
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total - receivable_freight
+      receivable_total + receivable_freight
   end
 
   def receivable_discount_val  
@@ -113,10 +113,10 @@ class Receivable < ActiveRecord::Base
   def receivable_current_balance
       receipt_lines_discount = 0
       self.receipt_lines.each do |receipt_line|
-        receipt_lines_discount += ((receipt_line.receipt_line_amount * 100 ).to_f / (100 - receipt_line.receipt.receipt_discount).to_f).to_f  -   receipt_line.receipt_line_amount.to_f   
-        p receipt_lines_discount
+        receipt_lines_discount += ((receipt_line.receivable.receivable_total*receipt_line.receipt.receipt_discount)/100).round(2)       
+        p receipt_lines_discount.to_f
       end
-      self.receivable_total - self.receipt_lines.sum(:receipt_line_amount) - receipt_lines_discount
+      ((self.receivable_total - receipt_lines_discount) - self.receipt_lines.sum(:receipt_line_amount)).round(2)
   end
 
   def redirect_path

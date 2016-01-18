@@ -21,6 +21,9 @@
                         <th>Part No</th>
                         <th>Final P/N</th>
                         <th>Status</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                        <th>Total</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,6 +40,9 @@
                             { "mData": "item_part_no" },
                             { "mData": "item_transfer_no", "bVisible": ' + (@po_header.po_type.type_value == "transer").to_s + '},
                             { "mData": "po_line_status" },
+                            { "mData": "po_line_quantity" },
+                            { "mData": "po_line_cost" },
+                            { "mData": "po_line_total" },  
                             { "mData": "links", "bSortable": false, "bSearchable": false }
                         ]'
         } 

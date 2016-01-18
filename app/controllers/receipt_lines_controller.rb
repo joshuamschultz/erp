@@ -11,9 +11,10 @@ class ReceiptLinesController < ApplicationController
          @receipt_lines = @receipt_lines.select{|receipt_line|
               receipt_line[:receivable_identifier] = CommonActions.linkable(receivable_path(receipt_line.receivable), receipt_line.receivable.receivable_identifier)
               receipt_line[:receivable_total] = receipt_line.receivable.receivable_total
-              receipt_line[:receivable_balance] = receipt_line.receivable.receivable_current_balance
-              receipt_line[:receipt_line_discount] = receipt_line.receipt.receipt_discount !=nil ? (receipt_line[:receivable_total] * receipt_line.receipt.receipt_discount) / 100 : 0
+              receipt_line[:receivable_balance] = receipt_line.receivable.receivable_current_balance.round(2)
+              # receipt_line[:receipt_line_discount] = receipt_line.receipt.receipt_discount !=nil ? (receipt_line[:receivable_total] * receipt_line.receipt.receipt_discount) / 100 : 0
               # receipt_line[:receipt_line_discount] = receipt_line[:receivable_total] - receipt_line.receipt_line_amount
+              receipt_line[:receipt_line_discount] = ((receipt_line.receivable.receivable_total * receipt_line.receipt.receipt_discount)/100).round(2)
           }
           render json: {:aaData => @receipt_lines}
       }
