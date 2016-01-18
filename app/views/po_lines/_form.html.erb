@@ -105,7 +105,7 @@
 
                 
 
-                <%= f.input :po_line_cost, :label => "Cost", :disabled => true %>
+                <%= f.input :po_line_cost, :label => "Cost" %>
 
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
@@ -251,7 +251,7 @@
                 </div>   
                 <%= f.input :po_line_quantity, :label => "Quantity" %>
 
-                <%= f.input :po_line_cost, :label => "Cost", :disabled => true  %>
+                <%= f.input :po_line_cost, :label => "Cost"  %>
 
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
