@@ -20,9 +20,11 @@ class ReceiptLine < ActiveRecord::Base
   def check_total_received
       total_shipped = self.other_receipt_lines.sum(:receipt_line_amount) + self.receipt_line_amount
       if total_shipped > self.receivable.receivable_total
-          errors.add(:receipt_line_amount, "exceeded than receivable total!")
+          errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
       end      
-
+      if self.receipt_line_amount > (self.receivable.receivable_total - ((self.receivable.receivable_total*self.receipt.receipt_discount)/100).round(2))
+         errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
+      end  
       # if self.receipt.new_record?
       #     receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
       #     errors.add(:receipt_line_amount, "duplicate receivable entry!") unless receivable_ids.uniq == receivable_ids
@@ -31,11 +33,11 @@ class ReceiptLine < ActiveRecord::Base
 
   after_save :process_after_save
   after_destroy :process_after_save
-  before_create :process_before_create
+  # before_create :process_before_create
 
-  def process_before_create
-    self.receipt_line_amount = (self.receipt_line_amount - ((self.receipt_line_amount*self.receipt.receipt_discount)/100).round(2))
-  end
+  # def process_before_create
+  #   self.receipt_line_amount = (self.receivable.receivable_total - ((self.receipt_line_amount*self.receipt.receipt_discount)/100).round(2))
+  # end
 
   def process_after_save
       Receivable.skip_callback("save", :before, :process_before_save)
