@@ -101,7 +101,7 @@ class Receivable < ActiveRecord::Base
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total - receivable_freight
+      receivable_total + receivable_freight
   end
 
   def receivable_discount_val  
