@@ -53,6 +53,8 @@ class ContactsController < ApplicationController
             contact[:contact_name] = contact.contact_title
             contact[:contact_default] = contact.default_address.present? ? "selected" : ""
             contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
+            contact[:contact_email] = "<a href='mailto:#{contact.contact_email}' target='_top'>#{contact.contact_email.to_s}</a>"
+
             if can? :edit, Contact
               contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
             else
