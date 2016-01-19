@@ -23,7 +23,7 @@
 
     <abbr>Website: </abbr><a href="<%= organization.organization_website %>"><%= organization.organization_website %></a><br/>
 
-    <abbr>E-Mail: </abbr> <a href="mailto:#"><%= organization.organization_email %></a><br />
+    <abbr>E-Mail: </abbr> <a href="mailto:<%= organization.organization_email %>"><%= organization.organization_email %></a><br />
 
     <abbr>Contact Type: </abbr><%= organization.contact_type.type_name if organization.contact_type %><br/>
 
