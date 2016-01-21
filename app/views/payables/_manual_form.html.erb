@@ -109,18 +109,35 @@
 
           }); 
           $('#payable_organization_id').on('autocompletechange change', function ()
-         {            
-              initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": this.value}}, "get_org_id", {}); 
-          }).change();
+         { 
+            selected_val = this.value 
+            matched = 0
+            $( "#ui-id-1 li a" ).each(function() {
+             if($( this ).html() ==  selected_val)
+              {
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": selected_val}}, "get_org_id", {}); 
+                matched = 1;
+              }
 
-          $('#payable_organization_id').keydown(function(e) {
-            var code = e.keyCode || e.which;
-            if (code === 9 || code ===13 ) 
-            {                  
+            });
+            
+            if(matched == 0)
+              {               
                 $('#payable_organization_id').val($( "#ui-id-1 li a" ).first().html());
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payable_organization_id').val()}}, "get_org_id", {}); 
-            }
-          });  
+              }
+                    
+              
+          }).change();
+
+          // $('#payable_organization_id').keydown(function(e) {
+          //   var code = e.keyCode || e.which;
+          //   if (code === 9 || code ===13 ) 
+          //   {                  
+          //       $('#payable_organization_id').val($( "#ui-id-1 li a" ).first().html());
+          //       initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payable_organization_id').val()}}, "get_org_id", {}); 
+          //   }
+          // });  
 
 
 
