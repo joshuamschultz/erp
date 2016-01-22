@@ -91,24 +91,47 @@
       
     $(document).ready(function(){ 
 
-        $('#so_header_organization_id').keydown(function(e) {
-            var code = e.keyCode || e.which;
-            if(code ===13){
-                $("#so_header_organization_id").on("change", function(){
-                    if($("#organization_id").val() != "")
-                        initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
-                    else{
-                        $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html());  
-                        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_header_organization_id').val()}}, "get_org_id", {}); 
-                    }
-                });
-            }
-            if (code === 9 || code ===13) {  
-              
-              $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html());  
+         $('#so_header_organization_id').on('autocompletechange change', function ()
+         { 
+            selected_val = this.value 
+            matched = 0
+            $( "#ui-id-1 li a" ).each(function() {
+             if($( this ).html() ==  selected_val)
+              {
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": this.value}}, "get_org_id", {}); 
+                matched = 1;
+              }
+
+            });
+            
+            if(matched == 0)
+              {               
+                $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html()); 
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_header_organization_id').val()}}, "get_org_id", {}); 
-            }
-        });  
+              }
+                    
+              
+          }).change();
+
+
+        // $('#so_header_organization_id').keydown(function(e) {
+        //     var code = e.keyCode || e.which;
+        //     if(code ===13){
+        //         $("#so_header_organization_id").on("change", function(){
+        //             if($("#organization_id").val() != "")
+        //                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
+        //             else{
+        //                 $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html());  
+        //                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_header_organization_id').val()}}, "get_org_id", {}); 
+        //             }
+        //         });
+        //     }
+        //     if (code === 9 || code ===13) {  
+              
+        //       $('#so_header_organization_id').val($( "#ui-id-1 li a" ).first().html());  
+        //         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#so_header_organization_id').val()}}, "get_org_id", {}); 
+        //     }
+        // });  
         
         $("#so_header_organization_id").on("focusout", function(){
             if($("#organization_id").val() != ""){
