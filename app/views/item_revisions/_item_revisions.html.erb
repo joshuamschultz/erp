@@ -18,8 +18,7 @@
                 <th>Revision Title</th>
                 <th>Revision Date</th>
                 <% unless  user_signed_in? &&  current_user.is_customer? %>  
-                    <th>Tooling</th>
-                    <th>Cost</th>
+                    <th>Tooling</th>                    
                 <% end %>
                 <th></th>
               </tr>
@@ -36,8 +35,7 @@
         :columns => '[                
                         { "mData": "item_revision_name" },
                         { "mData": "item_revision_date" },
-                        { "mData": "item_tooling" },
-                        { "mData": "item_cost" },
+                        { "mData": "item_tooling" },                        
                         { "mData": "links" }
                     ]'
     } 
