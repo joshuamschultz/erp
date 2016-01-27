@@ -157,10 +157,14 @@
       $("#update_payable").attr('disabled',false);   
     } 
     function get_rowcount(){
-        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));        
+        var $last = ($('#accounts_dispersal_table').find('tbody tr:visible:last'));               
         var last_id = $last.children('td:first').children().find('select').attr('id');
-        var getNum = last_id.match(/(\d+)/g);  
-        getNum = parseInt(getNum);  
+        var getNum = 0;
+        if(last_id)
+        {
+            getNum = last_id.match(/(\d+)/g);  
+            getNum = parseInt(getNum);  
+        }
         return (getNum+1);
     }  
     function set_vendor_addresses(response, callback_params, api_params){
