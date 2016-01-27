@@ -93,7 +93,12 @@ class ReceiptsController < ApplicationController
     respond_to do |format|
       if @receipt.save
         deposit_check = DepositCheck.find_by_receipt_id(@receipt.id)
-        @receipt.update_attributes(:deposit_check_id => deposit_check.id) if deposit_check
+        if deposit_check
+          @receipt.update_attributes(:deposit_check_id => deposit_check.id) 
+        elsif @receipt.receipt_type.present? &&  @receipt.receipt_type.type_value == "check"
+          depositCheck = DepositCheck.create(receipt_id: @receipt.id, status: "open", receipt_type: @receipt.receipt_type.type_value, check_identifier:  @receipt.receipt_check_code, active: 1) 
+          @receipt.update_attributes(:deposit_check_id => depositCheck.id)   
+        end
         format.html { redirect_to @receipt, notice: 'Receipt was successfully created.' }
         format.json { render json: @receipt, status: :created, location: @receipt }
       else
