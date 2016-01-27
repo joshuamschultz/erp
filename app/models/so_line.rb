@@ -65,7 +65,7 @@ class SoLine < ActiveRecord::Base
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
     # end
-    kit = PDFKit.new(html, :page_size => 'A4' )  
+    kit = PDFKit.new(html, :page_size => 'A4', :margin_left=>"0.7in" )  
     # Get an inline PDF
     pdf = kit.to_pdf
     # Save the PDF to a file    
