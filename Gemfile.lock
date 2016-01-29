@@ -38,7 +38,7 @@ GEM
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
     builder (3.0.4)
-    cancan (1.6.10)
+    cancancan (1.10.1)
     client_side_validations (3.2.6)
     client_side_validations-simple_form (2.1.0)
       client_side_validations (~> 3.2.5)
@@ -66,6 +66,8 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    fast_seeder (0.0.2)
+      rails (~> 3.0)
     font-awesome-sass-rails (3.0.2.2)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
@@ -193,7 +195,7 @@ DEPENDENCIES
   aws-sdk (= 1.8.5)
   bootstrap-datetimepicker-rails
   bootstrap-sass (~> 2.3.1.0)
-  cancan
+  cancancan (~> 1.9)
   client_side_validations
   client_side_validations-simple_form
   coffee-rails (~> 3.2.1)
@@ -201,6 +203,7 @@ DEPENDENCIES
   country_select
   devise
   execjs (= 1.4.0)
+  fast_seeder
   jquery-rails
   kaminari
   mysql2
