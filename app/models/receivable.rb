@@ -124,7 +124,10 @@ class Receivable < ActiveRecord::Base
   end
 
   def check_receivable_account_total
-      (self.receivable_accounts.sum(:receivable_account_amount) == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
+       sales_income_gl_id = GlAccount.where(:gl_account_identifier => '41010-010' ).first.id
+       sales_freight_gl_id = GlAccount.where(:gl_account_identifier =>'51020-020').first.id       
+       sum_of_receivable_account = self.receivable_accounts.sum(:receivable_account_amount, :conditions => {:gl_account_id => sales_income_gl_id}) - self.receivable_accounts.sum(:receivable_account_amount, :conditions => {:gl_account_id => sales_freight_gl_id})
+       ( sum_of_receivable_account == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
 
   # def update_gl_account
