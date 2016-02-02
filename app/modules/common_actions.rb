@@ -664,12 +664,17 @@ module CommonActions
 		@po_header = PoHeader.find(po_id)
 		len = @po_header.po_lines.length
 		@po_header.po_lines.each_with_index do |po_line, index|
-
+			po_type_name = po_line.po_header.po_type.type_name
 			if po_line.item_revision.present?
 				product_description= ""+po_line.item_revision.item_description.to_s+""
+				#product_process= ""+po_line.process_type.to_s+""
+				product_process = ProcessType.find(po_line.process_type_id).process_short_name if po_line.process_type_id.present? 
 				product_notes= po_line.item_revision.item_notes.to_s
 				po_line_comment = po_line.po_line_notes
+				
+				po_line_lot = QualityLot.find(po_line.quality_lot_id).lot_control_no if po_line.quality_lot_id.present? 
 
+				
 			if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
 		      product1= (po_line.item.item_part_no).to_s
 		    else 
@@ -714,54 +719,47 @@ module CommonActions
 					flag =0;
 				end
 
-				if flag2 ==1
-					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+				if po_type_name =="Transfer"
+					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
 					flag2=0;
 				else
 					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
 				end
 			end
 			content += '
-
-
-
-
-
  <div class="ff">
     <table cellspacing="0" cellpadding="0" width="678px" border="0">
         <tbody>
-           
-          
+            <tr valign="top" align="center" class="h-pad">
+                 <td>'+po_line.po_line_quantity.to_s+' </td>
+                 <td>
+                    <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="150" scope="row">'+product1+'</td>
+                        </tr>
+                        <tr>
+                            <td width="150" scope="row">'+product2+'</td>
+                        </tr>
 
-                <tr valign="top" align="center" class="h-pad">
-
-                    <td>'+po_line.po_line_quantity.to_s+' </td>
-                    <td>
-                        <table width="100%" border="0">
-                            <tbody>
-
-                                            
-
-                                <tr>
-                                    <td width="150" scope="row">'+ product1+'</td>
-                                </tr>
-                                <tr>
-                                    <td width="150" scope="row">'+product2+'</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </td>
-
-                    
+                    </tbody>
+                    </table>
+                </td>'
+              
+					if po_type_name =="Transfer"
+                    	content +='<td>'+po_line_lot+'</td>
                          
-                        <td>'+product_description+'</td>
-                  
+                        <td>'+product_process+'</td>'
+                    else
+                    	content +=
+                    	'<td>'+product_description+'</td>'
+                    end
+                  	
                                 
                     
 
 
-                    <td>'+(po_line.po_line_cost.to_f).to_s+'</td>
+                   content += '<td>'+(po_line.po_line_cost.to_f).to_s+'</td>
                     <td>'+(po_line.po_line_total.to_f).to_s+'</td>
                 </tr>
       
@@ -863,7 +861,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 
 
 
-				 </section></div><div style="page-break-after:always;"> </div><div>&nbsp;</div>'
+				 </section></div><div style="page-break-after:always;"> </div>'
 			end
 
 			if len == index+1 && i != 4 
