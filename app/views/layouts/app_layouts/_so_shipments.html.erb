@@ -334,19 +334,19 @@ function item_locations(item_id){
 function set_lots(response, callback_params, api_params){
     $("#my_lot").html("");
     $("#my_id").html("");
-    // $("#lot_qty").html(""); To Uncomment Sprint 7
+     $("#lot_qty").html(""); //To Uncomment Sprint 7
     var obj = {};
     var obj1 = {};
     for (var i=0; i<response.aaData.length; i++) {
     obj = response.aaData[i][0]+"<br>";
-    obj1 = response.aaData[i][1]+"<br>"; //Delete this line in Sprint 7
+    //obj1 = response.aaData[i][1]+"<br>"; //Delete this line in Sprint 7
 /*  For Sprint 7 */
-    // obj1 = response.aaData[i][2]+"<br>";
-    // qty = response.aaData[i][1]+"<br>";
+    obj1 = response.aaData[i][2]+"<br>";
+    qty = response.aaData[i][1]+"<br>";
 /* for Sprint 7 End*/
     $("#my_lot").append(obj); //hide button and show thank you
     $("#my_id").append(obj1); //hide button and show thank you
-  //  $("#lot_qty").append(qty); To Uncomment Sprint 7
+    $("#lot_qty").append(qty); //To Uncomment Sprint 7
     }
 
 }
@@ -364,14 +364,14 @@ function set_lots(response, callback_params, api_params){
               <thead>
                   <tr>
                     <th>Lots</th>
-                    <!--th>Quantity</th>To Uncomment Sprint 7-->
+                    <th>Quantity</th>
                     <th>Locations</th>
                   </tr>
               </thead>
               <tbody>
                 <tr>
                     <td  id="my_lot"> </td>
-                    <!--<td id="lot_qty"></td>To Uncomment Sprint 7-->
+                    <td id="lot_qty"></td>
                     <td id= "my_id"></td>
                 </tr>
               </tbody>

@@ -431,11 +431,11 @@
             $("#po_line_po_line_total").val("");
     }
 
-    function set_item_revision_cost(response, callback_params, api_params){
-        $("#po_line_po_line_cost").val(response.aaData.item_cost);
-        calculate_line_item_total();
-        return false;
-    }
+    // function set_item_revision_cost(response, callback_params, api_params){
+    //     $("#po_line_po_line_cost").val(response.aaData.item_cost);
+    //     calculate_line_item_total();
+    //     return false;
+    // }
    function set_alt_name_id(response, callback_params, api_params){
     $.each( response, function() {
        if ($("#po_line_item_alt_name_id").val() == this.value)

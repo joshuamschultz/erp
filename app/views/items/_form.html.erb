@@ -21,6 +21,8 @@
             </div> -->
 
             <%= g.input :item_revision_name, :label => "Revision" %>
+            <%#= g.input :item_revision_weekly_usage, :label => "Weekly Usage" %>
+            <%#= g.input :item_revision_lead_time, :label => "Lead Time" %>
             <%= g.input :item_revision_date, :as => "string", :label => "Revision Date" %>
             <%= g.association :owner, :label => "Owner", :label_method => 'owner_identifier',:label_value => "id", :include_blank => false %>    
 
@@ -33,7 +35,7 @@
             <%#= hidden_field_tag :org_organization_id, (g.object.organization.id if g.object && g.object.organization) %>
 
             <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
-            <%= g.input :item_cost, :label => "Cost" %>
+            <%#= g.input :item_cost, :label => "Cost" %>
             <%= g.input :item_tooling, :label => "Tooling" %>
 
             <!-- <div class="control-group">

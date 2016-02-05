@@ -19,7 +19,7 @@
             <% unless  user_signed_in? &&  current_user.is_customer? %>
                 <div class="span2 well">
                     <a class="widget-stats" href="#" id="">
-                        <h5><strong><%= @item.qty_on_hand %></strong></h5>
+                        <h5><strong><%=  params[:revision_id].present? ? @item.stock(ItemRevision.find(params[:revision_id])) :@item.qty_on_hand %></strong></h5>
                         <span class="txt"><strong>Quantity On Hand</strong></span>
                         <div class="clearfix"></div>
                     </a>
