@@ -59,37 +59,47 @@ class ItemsController < ApplicationController
               @items = @items.delete_if {|entry| !@po_lines.include? entry[:id]}  
             end
           end
-        @items = @items.select{|item|
-            item_revision = item.current_revision
-            item[:item_part_no] = "<a href='#{item_path(item)}'><strong>#{item.item_part_no}</strong></a>"            
-            if item_revision
-              item[:owner_name] = "" #"<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"              
-              item[:item_name] = item_revision.item_name
-              item[:item_description] = ""
-              item[:vendor_name] = "" # "<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
-              item[:item_revision_name] = item_revision.item_revision_name
-              item[:item_revision_date] = item_revision.item_revision_date
-              item[:item_tooling] = item_revision.item_tooling
-              item[:item_cost] = item.weighted_cost
-              item[:item_notes] = item_revision.item_notes
-              item[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
-              item[:item_quantity_in_hand] = item.qty_on_hand
-              item[:item_quantity_on_order] = item.qty_on_order
-              item[:item_sell] = item_revision.item_sell.present? ? item_revision.item_sell : 0.0
-            else
-              item[:owner_name] = ""
-              item[:item_name] = ""
-              item[:item_description] = ""
-              item[:vendor_name] = ""
-              item[:item_revision_name] = ""
-              item[:item_revision_date] = ""
-              item[:item_tooling] = ""
-              item[:item_cost] = ""
-              item[:item_notes] = ""
-              item[:item_alt_parts] = ""
-            end
-            item[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
+          @items_new =Array.new 
+          @items = @items.select{|item|
+            @items = item.item_revisions.select{|item_revision|
+              item_with_revision = Hash.new               
+              if item_revision
+                item_with_revision[:item_part_no] = item_revision.present? ? CommonActions.linkable(item_path(item_revision.item, 
+            revision_id: item_revision.id), item.item_part_no)  : ""
+                item_with_revision[:owner_name] = "" #"<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"              
+                item_with_revision[:item_name] = item_revision.item_name
+                item_with_revision[:item_description] = ""
+                item_with_revision[:vendor_name] = "" # "<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
+                item_with_revision[:item_revision_name] = item_revision.item_revision_name
+                item_with_revision[:item_revision_date] = item_revision.item_revision_date
+                item_with_revision[:item_tooling] = item_revision.item_tooling
+                item_with_revision[:item_cost] = item.weighted_cost
+                item_with_revision[:item_notes] = item_revision.item_notes
+                item_with_revision[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
+                item_with_revision[:item_quantity_in_hand] = item.qty_on_hand
+                item_with_revision[:item_quantity_on_order] = item.qty_on_order_item
+                item_with_revision[:item_sell] = item_revision.item_sell.present? ? item_revision.item_sell : 0.0
+                item_with_revision[:item_active] = item.item_active
+              else
+                item_with_revision[:item_part_no] = item_revision.present? ? CommonActions.linkable(item_path(item_revision.item, 
+            revision_id: item_revision.id), item.item_part_no)  : ""
+                item_with_revision[:owner_name] = ""
+                item_with_revision[:item_name] = ""
+                item_with_revision[:item_description] = ""
+                item_with_revision[:vendor_name] = ""
+                item_with_revision[:item_revision_name] = ""
+                item_with_revision[:item_revision_date] = ""
+                item_with_revision[:item_tooling] = ""
+                item_with_revision[:item_cost] = ""
+                item_with_revision[:item_notes] = ""
+                item_with_revision[:item_alt_parts] = ""
+                item_with_revision[:item_active] = item.item_active
+              end
+              item_with_revision[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
+              @items_new << item_with_revision             
+          }          
         }
+        @items = @items_new
       end
         render json: {:aaData => @items}
 
