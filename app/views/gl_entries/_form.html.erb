@@ -30,10 +30,11 @@
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
     {
-        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false,:column_index => 0, :order => "desc",:currency_format => [4,5]},
+        :name => "table_report", :path => gl_entries_path, :extras => {:slno => false,:grouping => false, :column_index => 0, :order => "desc",:currency_format => [4,5]},
         :columns => '[                        
-                        { "mData": "gl_account_name" },
+                        
                         { "mData": "gl_entry_identifier" },
+                        { "mData": "gl_account_name" },
                         { "mData": "gl_entry_description" },
                         { "mData": "gl_entry_date" },
                         { "mData": "gl_entry_credit"},
