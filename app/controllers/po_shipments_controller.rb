@@ -7,13 +7,13 @@ class PoShipmentsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? || current_user.is_vendor? )
         authorize! :edit, PoShipment
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
+   if  user_signed_in? && current_user.is_customer?  
         authorize! :edit, PoShipment
     end 
   end
@@ -27,9 +27,11 @@ class PoShipmentsController < ApplicationController
   # GET /po_shipments
   # GET /po_shipments.json
   def index
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
+           
         if params[:type] == "shipping"
             @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
                 po_line = po_line.po_line_data_list(po_line, false)
@@ -49,14 +51,23 @@ class PoShipmentsController < ApplicationController
             else
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
             end
+            @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id)
+            if  user_signed_in? && current_user.is_vendor?
+            #organization_ids = current_user.organizations.collect(&:id)
+            organization_ids = current_user.organizations.where("organization_type_id =? ", MasterType.find_by_type_value('vendor').id).collect(&:id) 
+             
+            @po_shipments =  @po_shipments.delete_if {|entry| !organization_ids.include? entry.po_line.po_header.organization_id}
+           
+            end
             i = 0
-            @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id).select{|po_shipment|
+            @po_shipments = @po_shipments.select{|po_shipment|
                 po_shipment[:index] =  i
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
 
                 # po_shipment = so_line_data_list(po_shipment, true)  
                 po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
-                po_shipment[:po_line_cost] = po_shipment.po_line.po_line_cost
+                
+                po_shipment[:po_line_cost] = po_shipment.po_line.po_line_cost                
                 if can? :edit, PoShipment
                   po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
                 else
@@ -81,6 +92,7 @@ class PoShipmentsController < ApplicationController
       }
     end
   end
+
 
   # def po_line_data_list(object, shipment)
   #   po_line = shipment ? object.po_line : object

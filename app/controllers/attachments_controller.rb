@@ -12,7 +12,7 @@ class AttachmentsController < ApplicationController
         @attachments = @attachable.attachments.where(:attachment_public => 1).order("attachment_revision_date desc")
       end
     else
-      @attachments = @attachable.attachments.where(:attachment_public => 0).order("attachment_revision_date desc")
+      @attachments = @attachable.attachments.order("attachment_revision_date desc")
         # @attachments = @attachable.attachments.order("attachment_revision_date desc")
     end
     respond_to do |format|

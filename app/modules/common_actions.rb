@@ -650,7 +650,7 @@ module CommonActions
 
 
 		len = @so_header.so_lines.length
-
+		content += '<div class="ms_wrapper">';
 		@so_header.so_lines.each_with_index do |so_line, index|
 			item_part_no = so_line.item.item_part_no
 			item_revision = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : so_line.item.item_revisions.last.item_revision_name
@@ -658,7 +658,7 @@ module CommonActions
 			item_description = so_line.item_revision.present? ? so_line.item_revision.item_description : so_line.item.item_revisions.last.item_description
 			so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
 			if i== 1  
-				content += '<div class="ms_wrapper"><section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
+				content += '<section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>'+@so_header.so_identifier+'</h2><h5>Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5> Customer P.O:'+cusomter_po+'</h5></div></article>'
 				if flag ==1
 					content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+b_c_title.to_s+'</h2> <strong>'+b_c_address_1.to_s+'</strong> <strong>'+b_c_address_2.to_s+'</strong><strong>'+b_c_state.to_s+'</strong><strong>'+b_c_country.to_s+'&nbsp;'+b_c_zipcode.to_s+'</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">'+s_c_title.to_s+'</h2> <strong>'+s_c_address_1.to_s+'</strong> <strong>'+s_c_address_2.to_s+'</strong><strong>'+s_c_state.to_s+'</strong><strong>'+s_c_country.to_s+'&nbsp; '+s_c_zipcode.to_s+'</strong></div></article>' 
 					flag =0;
@@ -673,26 +673,28 @@ module CommonActions
 			end
 			content += '<div class="fff"><table border="0" width="640px" cellspacing="0" cellpadding="0"><tbody><tr align="center" class="hea art-002"><td><table border="0" width="100%"><tbody><tr><td width="150" scope="row">'+item_part_no+'</td></tr> <tr><td width="150" scope="row">'+item_alt_name+'</td></tr> </tbody></table></td><td >'+item_revision.to_s+'</td><td><table border="0" width="100%"><tbody><tr> <td width="150" scope="row">'+item_description+'</td></tr>   </tbody></table></td><td >'+(so_line.so_line_quantity).to_s+'</td><td>'+so_line.so_line_shipped.to_s+'</td></tr><tr><td class="ww-01" style="color: #800000;">'+so_line_notes+' &nbsp </td></tr></tbody></table></div>'
 
-			if i==4
-				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes.to_s+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+so_total+'</h4></div></article></section></div><div style="page-break-after:always;"></div>'
+			if i==5
+				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes.to_s+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+so_total+'</h4></div></div></article></section><div style="page-break-after:always;"></div><div id="blank_page">&nbsp;</div>'
 			end
 
-			if len == index+1 && i != 4 
+			if len == index+1 && i != 5 
 				# j = 1
 				# j+=1
-				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes.to_s+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+so_total+'</h4></div></article></section></div>'
+				content += ' </article><article><div class="footer"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center">  <h3>'+@so_header.so_notes.to_s+'</h3></div><div class="original"><h3>Original </h3><h4><span>$</span>'+so_total+'</h4></div></div></article></section>'
 			end 
 
 			i +=1 
 
-			if i==5 
+			if i==6 
 				j+=1
 				i= 1
 				content 
 			end
 		end
+		content +='</div>'
 		content
-		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:auto;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:128px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:420px}.sal_tab2{height:628px}</style>#{content}'
+		html = %'<!DOCTYPE html><title>Sales Report</title><style type="text/css">@charset "utf-8";body{font-family:Arial,Helvetica,sans-serif;font-size:14px}.clear{clear:both}.ms_wrapper{height:auto}.ms_wrapper section{float:left;height:auto;width:640px}.ms_wrapper .ms_heading{border-bottom:2px solid #999;font-size:16px;margin:30px 0 4px;padding:0 0 10px;width:100%}.ms_wrapper .ms_image{border:1px solid #ccc;float:left;font-size:22px;text-align:center;width:310px;height:85px;padding:25px 0}.ms_wrapper .ms_image-2{border:1px solid #ccc;float:right;font-size:22px;text-align:center;width:310px;height:135px}.ms_wrapper article{float:left;width:100%}.ms_wrapper .ms_text{float:left;font-size:15px;height:180px;line-height:23px;width:262px;margin:0;color:#666}.ms_wrapper .ms_offers{float:left;margin:12px 0 0;padding:10px 0 0;text-align:center}.ms_wrapper .ms_sub-heading{font-size:22px;margin:20px 0 6px;color:#000}.ms_text strong,.ms_text-2 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;}.ms_text1 strong{float:left;font-size:14px;line-height:19px;width:100%;margin:1px 0;text-align:center;font-weight:700}.ms_image-2 h3{color:navy;font-size:16px;font-weight:400;margin:17px 0 0;text-decoration:underline}.ms_image-2 h2{color:maroon;font-size:20px;font-weight:700;margin:2px 0}.ms_image-2 h5{font-size:16px;font-weight:700;margin:2px 0}.ms_text-3-wrapper{float:left;width:310px}.ms_text-3-wrapper .ms_text-3{width:152px;float:left}.ms_text-3-wrapper .ms_text-4{width:152px;float:right}.ms_text-3-wrapper .ms_text-4 strong{float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3-wrapper .ms_text-3 strong{color:maroon;float:left;font-size:14px;font-weight:400;line-height:19px;width:100%;margin:6px 0;text-align:center}.ms_text-3.text-5 strong{color:#000!important}.ms_text-3-wrapper .ms_sub-heading{font-size:16px;text-align:center;margin:30px 0 12px}.ms_sub{font-size:15px;text-align:center;text-decoration:underline;margin:2px 0 10px}.ms_text{border-bottom:2px solid #999;float:left;padding:0 0 16px;width:310px}.ms_text-2{border-bottom:2px solid #999;float:right;padding:0 0 16px;width:310px;height:180px;}.ms_text1{float:left;margin:12px 28px 0;width:42%}.ms_wrapper .ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:128px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}.de{margin:35px 0 0;min-height:420px}.sal_tab2{height:628px} @page{size:21cm 29.7cm;margin: 10mm 5mm 2mm 10mm;}</style>#{content}'
+		
 	end
 	def self.purchase_report(po_id)
 		content = product_notes  = product_description = po_line_comment = product1 = product2 = ''
@@ -701,12 +703,17 @@ module CommonActions
 		@po_header = PoHeader.find(po_id)
 		len = @po_header.po_lines.length
 		@po_header.po_lines.each_with_index do |po_line, index|
-
+			po_type_name = po_line.po_header.po_type.type_name
 			if po_line.item_revision.present?
 				product_description= ""+po_line.item_revision.item_description.to_s+""
+				#product_process= ""+po_line.process_type.to_s+""
+				product_process = ProcessType.find(po_line.process_type_id).process_short_name if po_line.process_type_id.present? 
 				product_notes= po_line.item_revision.item_notes.to_s
 				po_line_comment = po_line.po_line_notes
+				
+				po_line_lot = QualityLot.find(po_line.quality_lot_id).lot_control_no if po_line.quality_lot_id.present? 
 
+				
 			if po_line.item.item_part_no == po_line.item_alt_name.item_alt_identifier 
 		      product1= (po_line.item.item_part_no).to_s
 		    else 
@@ -751,54 +758,47 @@ module CommonActions
 					flag =0;
 				end
 
-				if flag2 ==1
-					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+				if po_type_name =="Transfer"
+					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
 					flag2=0;
 				else
 					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
 				end
 			end
 			content += '
-
-
-
-
-
  <div class="ff">
     <table cellspacing="0" cellpadding="0" width="678px" border="0">
         <tbody>
-           
-          
+            <tr valign="top" align="center" class="h-pad">
+                 <td>'+po_line.po_line_quantity.to_s+' </td>
+                 <td>
+                    <table width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="150" scope="row">'+product1+'</td>
+                        </tr>
+                        <tr>
+                            <td width="150" scope="row">'+product2+'</td>
+                        </tr>
 
-                <tr valign="top" align="center" class="h-pad">
-
-                    <td>'+po_line.po_line_quantity.to_s+' </td>
-                    <td>
-                        <table width="100%" border="0">
-                            <tbody>
-
-                                            
-
-                                <tr>
-                                    <td width="150" scope="row">'+ product1+'</td>
-                                </tr>
-                                <tr>
-                                    <td width="150" scope="row">'+product2+'</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </td>
-
-                    
+                    </tbody>
+                    </table>
+                </td>'
+              
+					if po_type_name =="Transfer"
+                    	content +='<td>'+po_line_lot+'</td>
                          
-                        <td>'+product_description+'</td>
-                  
+                        <td>'+product_process+'</td>'
+                    else
+                    	content +=
+                    	'<td>'+product_description+'</td>'
+                    end
+                  	
                                 
                     
 
 
-                    <td>'+(po_line.po_line_cost.to_f).to_s+'</td>
+                   content += '<td>'+(po_line.po_line_cost.to_f).to_s+'</td>
                     <td>'+(po_line.po_line_total.to_f).to_s+'</td>
                 </tr>
       
@@ -1000,7 +1000,7 @@ body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
    width: 678px;
 }
 .ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}
-
+@page{size:21cm 29.7cm;margin: 30mm 45mm 30mm 45mm;}
 .ms_wrapper .ms_image {
     border: 1px solid #ccc;
     float: left;
@@ -1209,7 +1209,7 @@ margin: 2px 0 10px 0;}
     border: 2px solid #444;
     float: left;
     margin: 11px 0 0;
-    width: 678px;
+    width: 678px;}
 }.page{float: left;margin: 0 0 0 20px;}
 .page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
 .page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
