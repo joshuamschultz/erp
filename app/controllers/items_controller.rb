@@ -76,8 +76,8 @@ class ItemsController < ApplicationController
                 item_with_revision[:item_cost] = item.weighted_cost
                 item_with_revision[:item_notes] = item_revision.item_notes
                 item_with_revision[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
-                item_with_revision[:item_quantity_in_hand] = item.qty_on_hand
-                item_with_revision[:item_quantity_on_order] = item.qty_on_order_item
+                item_with_revision[:item_quantity_in_hand] =  item.stock(ItemRevision.find(item_revision.id))
+                item_with_revision[:item_quantity_on_order] = item.qty_on_order(ItemRevision.find(item_revision.id))                
                 item_with_revision[:item_sell] = item_revision.item_sell.present? ? item_revision.item_sell : 0.0
                 item_with_revision[:item_active] = item.item_active
               else

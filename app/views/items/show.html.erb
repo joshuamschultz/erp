@@ -27,7 +27,7 @@
 
                 <div class="span2 well">
                     <a class="widget-stats" href="#" id="">
-                        <h5><strong><%#=  params[:revision_id].present? ? @item.qty_on_order(params[:revision_id]) : 0  %></strong></h5>
+                        <h5><strong><%=  params[:revision_id].present? ? @item.qty_on_order(params[:revision_id]) : 0  %></strong></h5>
                         <span class="txt"><strong>Quantity On Order</strong></span>
                         <div class="clearfix"></div>
                     </a>
