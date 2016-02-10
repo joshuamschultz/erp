@@ -663,6 +663,7 @@ module CommonActions
 		@company_info = CompanyInfo.first
 		@po_header = PoHeader.find(po_id)
 		len = @po_header.po_lines.length
+		content += '<div class="ms_wrapper">'
 		@po_header.po_lines.each_with_index do |po_line, index|
 			po_type_name = po_line.po_header.po_type.type_name
 			if po_line.item_revision.present?
@@ -685,7 +686,7 @@ module CommonActions
 			# 	product_description = '&nbsp'
 			end
 			if i== 1  
-				content += '<div class="ms_wrapper"><section>
+				content += '<section>
 
    <article>
             <div class="ms_image">
@@ -861,7 +862,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 
 
 
-				 </section></div><div style="page-break-after:always;"> </div>'
+				 </section><div style="page-break-after:always;"> </div><div id="blank_page">&nbsp;</div>'
 			end
 
 			if len == index+1 && i != 4 
@@ -961,7 +962,7 @@ body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
    width: 678px;
 }
 .ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}
-@page{size:21cm 29.7cm;margin: 30mm 45mm 30mm 45mm;}
+@page{size:21cm 29.7cm;margin: 10mm 10mm 2mm 10mm;}
 .ms_wrapper .ms_image {
     border: 1px solid #ccc;
     float: left;
@@ -985,7 +986,7 @@ article.art-01 {
     font-size: 22px;
     height: 104px;
     text-align: center;}
-.ms_wrapper article{float: left;width: 100%;}
+.ms_wrapper article{float: left;width: 678px;}
 }
 .ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;}
 .ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}
@@ -1065,6 +1066,7 @@ article.art-02 {
     margin: 70px 0 0;
     padding: 7px 0 0;
     height:80px;
+    width: 670px;
 }
 .ms_text-5 > strong {
     font-weight: normal;
@@ -1170,7 +1172,7 @@ margin: 2px 0 10px 0;}
     border: 2px solid #444;
     float: left;
     margin: 11px 0 0;
-    width: 678px;}
+    width: 668px;}
 }.page{float: left;margin: 0 0 0 20px;}
 .page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
 .page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
@@ -1279,11 +1281,11 @@ width: 134px;
 }
 .art-01.art-04.art-07 {
     border-bottom: medium none;
-    height: 575px;
+    height: 400px;
 }
 .art-01.art-04 {
     border-bottom: medium none;
-    min-height: 448px;
+    min-height: 380px;
 }
 </style>
 </head>
