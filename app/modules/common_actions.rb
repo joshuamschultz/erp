@@ -854,7 +854,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 </h4>
                 </div>
 
-
+                </div>
         </article>
 
 
@@ -921,7 +921,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 </h4>
                 </div>
 
-
+             </div>
         </article>
 
 
