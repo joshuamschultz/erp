@@ -185,7 +185,7 @@ end
   def generate_pdf
 
 
-    html = CommonActions.purchase_report(self.po_header.id)+'<style>#blank_page{display: none;} article.art-02 {margin: 20px 0 0;} @page{size:21cm 29.7cm;margin: 0mm 5mm 0mm 10mm;}</style>'
+    html = CommonActions.purchase_report(self.po_header.id)+'<style>#blank_page{display: none;} .art-01.art-04.art-07{  min-height: 478px;} .art-01.art-04{  min-height: 478px;} article.art-05{min-height: 76px;} @page{size:21cm 29.7cm;margin: 12mm 5mm 2mm 10mm;}</style>'
 
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
