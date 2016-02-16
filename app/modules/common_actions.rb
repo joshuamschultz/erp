@@ -838,7 +838,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 			if len == index+1 && i != 4 
 				# j = 1
 				# j+=1
-				content += '</article>
+				content += '</tbody></table></article>
 
         <article class="art-02">
 
