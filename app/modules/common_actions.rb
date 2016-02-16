@@ -718,6 +718,8 @@ module CommonActions
 				if flag ==1
 					content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+@po_header.organization.organization_name+'<br>'+@po_header.organization.organization_address_1+''+@po_header.organization.organization_address_2+'</h2> <h3> '+@po_header.organization.organization_city+' '+@po_header.organization.organization_state+''+@po_header.organization.organization_country+''+@po_header.organization.organization_zipcode+'</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>'+@company_info.company_address1+'</strong><strong>'+@company_info.company_address2+'</strong></div></div></article>' 
 					flag =0;
+				else 
+					content += '<article class="art-05"></article>'
 				end
 
 				if po_type_name =="Transfer"
