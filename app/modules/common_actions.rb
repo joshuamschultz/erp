@@ -718,37 +718,22 @@ module CommonActions
 				if flag ==1
 					content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+@po_header.organization.organization_name+'<br>'+@po_header.organization.organization_address_1+''+@po_header.organization.organization_address_2+'</h2> <h3> '+@po_header.organization.organization_city+' '+@po_header.organization.organization_state+''+@po_header.organization.organization_country+''+@po_header.organization.organization_zipcode+'</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>'+@company_info.company_address1+'</strong><strong>'+@company_info.company_address2+'</strong></div></div></article>' 
 					flag =0;
-				else
-					content += '<article class="art-05"></article>'
 				end
 
 				if po_type_name =="Transfer"
-					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody>'
 					flag2=0;
 				else
-					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody>'
 				end
 			end
 			content += '
- <div class="ff">
-    <table cellspacing="0" cellpadding="0" width="678px" border="0">
-        <tbody>
+ 
             <tr valign="top" align="center" class="h-pad">
                  <td>'+po_line.po_line_quantity.to_s+' </td>
-                 <td>
-                    <table width="100%" border="0">
-                    <tbody>
-                        <tr>
-                            <td width="150" scope="row">'+product1+'</td>
-                        </tr>
-                        <tr>
-                            <td width="150" scope="row">'+product2+'</td>
-                        </tr>
+                 <td>'+product1+'</br>
+                 '+product2+'</td>'
 
-                    </tbody>
-                    </table>
-                </td>'
-              
 					if po_type_name =="Transfer"
                     	content +='<td>'+po_line_lot+'</td>
                          
@@ -764,45 +749,28 @@ module CommonActions
 
                    content += '<td>'+(po_line.po_line_cost.to_f).to_s+'</td>
                     <td>'+(po_line.po_line_total.to_f).to_s+'</td>
-                </tr>
-      
-      
-
-            </tbody>
-        </table>
-
-
-
-            <div class="sd">
-                <div class="sd1">
-                    <table cellspacing="0" cellpadding="0" border="0" width="100%" border-collapse="collapse">
-                        <tr>
-                       
-                                <td >'+product_notes+'</td>
-                         
-                        </tr>    
-                        <tr>
-                            <td >'+po_line.po_line_notes+'</td>
-                        </tr>                           
-                    </table>
-                
-            </div>
-        </div>
-
-</div>
-
-
-
-
-
-
-
-
-
-			'
-
+                </tr>'
+                		if po_type_name =="Transfer"
+	                        content +='<tr>
+	                       
+	                                <td class="td-one" colspan="6">'+product_notes+'</td>
+	                         
+	                        </tr>    
+	                        <tr>
+	                            <td class="td-one" colspan="6">'+po_line.po_line_notes+'</td>
+	                        </tr>'
+	                    else
+	                    	content +='<tr>
+	                       
+	                                <td class="td-one" colspan="5">'+product_notes+'</td>
+	                         
+	                        </tr>    
+	                        <tr>
+	                            <td class="td-one" colspan="5">'+po_line.po_line_notes+'</td>
+	                        </tr>'
+	                    end
 			if i==4
-				content += '</article> 
+				content += '</tbody></table></article> 
 
 
         <article class="art-02">
@@ -978,10 +946,6 @@ body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
 article.art-01 {
     border-bottom: 1px solid #555;
     border-top: 1px solid #555;
-    margin: 18px 0 0;
-    padding: 7px 0 0;
-}
-article.art-05 {   
     margin: 18px 0 0;
     padding: 7px 0 0;
 }
@@ -1245,7 +1209,6 @@ margin: 2px 0 10px 0;}
 
 .hea.art-002 {
 border-bottom: 1px solid #222;
-float: left;
 font-weight: bold;
 width: 100%;
 }
@@ -1259,7 +1222,6 @@ width: 134px;
 .h-pad > td {
     padding: 9px 12px;
     text-align: center;
-    width: 109px;
     border: 1px solid #000;
 }
 .h-pad {
@@ -1292,6 +1254,12 @@ width: 134px;
 .art-01.art-04 {
     border-bottom: medium none;
     min-height: 380px;
+}
+.td-one{
+
+	border: 1px solid #000;
+	color: #800000;
+	text-align: center;
 }
 </style>
 </head>
