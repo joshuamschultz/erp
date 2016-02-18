@@ -97,21 +97,22 @@ function printPage(win_id){
 
 // To avoid control number duplication create lot number and print at the end of the loop lot ids div contains all the lot_ids and if the shipping inputs became 1 ie. the end of the loop lot number and print is doing
   $('#lot_ids').bind("DOMSubtreeModified",function(){
+    var allPages = getAllPages();
     if($('#lot_ids').text() != "")
     {
-    		var Ids = $('#lot_ids').text();
-    		Ids_array = Ids.split(","); 		
-     		var count = 0;
-    		$(".shipping_input_field").each(function(){
-    			if(parseFloat($(this).val()) > 0){
-    				count = count + 1;
-    			}
-    		});		
-    		if(count != 0)
-    		{			
+        var Ids = $('#lot_ids').text();
+        Ids_array = Ids.split(",");     
+        var count = 0;
+        $(".shipping_input_field",allPages).each(function(){
+          if(parseFloat($(this).val()) > 0){
+            count = count + 1;
+          }
+        });   
+        if(count != 0)
+        {     
           // console.log(count);          
-    			Ids_array.pop(Ids_array);          
-    			initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_numbers", "ids": Ids_array}}, "print_data", {});
+          Ids_array.pop(Ids_array);          
+          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "set_lot_numbers", "ids": Ids_array}}, "print_data", {});
           
         }
      }
@@ -136,12 +137,20 @@ function printPage(win_id){
     });
   <% end %>
 
+  
+  function getAllPages(){
+     var allPages;      
+     var oTable1 = $('#table_report_shipping_items').dataTable();          
+         return allPages = oTable1.fnGetNodes(); 
+        }
+        
   function initiate_shipping_inputs(){
+    var allPages = getAllPages();
     $(".loading").show();
     $(".shipping_status").html("");
     $(".shipping_status").removeClass("success");
     $(".shipping_status").removeClass("error");        
-    $(".shipping_input_field").each(function(){
+    $(".shipping_input_field",allPages).each(function(){
       if(parseFloat($(this).val()) > 0){
         process_shipping_inputs($(this));
       }       
@@ -149,9 +158,11 @@ function printPage(win_id){
   }
 
   function process_all_open(shipping_id, current_element){
-        if(confirm("Are you sure?")){
-          $(".shipping_input_<%= type %>_" + shipping_id).each(function(){
-            $(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());
+              
+          if(confirm("Are you sure?")){
+            var allPages = getAllPages();
+          $(".shipping_input_<%= type %>_" + shipping_id,allPages).each(function(){            
+            $(this).val($(this).closest("tr").find(".<%= type %>_line_quantity_open").html());            
           });
           initiate_shipping_inputs();
         }
