@@ -131,29 +131,31 @@
 <!-- { "mData": "so_line_quantity_shipped" }, -->
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        <% if shipment_type == "process" %>
+    var allPages;
+   <% if shipment_type == "process" %>
             $('.innerLR').removeClass(".row-fluid");
-        <% end %>
-
-    });
-
+    <% end %>
     $(document).on("change", ".receivable_so_lines", function(){
         if(this.checked){
+            var oTable = $('#so_shipment_table_report').dataTable();
+            allPages = oTable.fnGetNodes();            
+            $('input[type="checkbox"]', allPages).prop('checked', true);
             disable_other_so_items($(this).attr("class"));
             enable_other_so_items($(this).attr("class"));
         }
+
+
     });
 
     function disable_other_so_items(except_so_class){
-        $(".receivable_so_lines").each(function(){
+        $(".receivable_so_lines", allPages).each(function(){
             if($(this).attr("class") != except_so_class){
                 $(this).attr("checked", false);
             }
         });
     }
     function enable_other_so_items(accept_so_class){
-        $(".receivable_so_lines").each(function(){
+        $(".receivable_so_lines", allPages).each(function(){
             if($(this).attr("class") == accept_so_class){
                 $(this).attr("checked", true);
             }
