@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 unless User.find_by_email('joshua@alliance.com')
    user = User.new(email: 'joshua@alliance.com', name: 'joshua', password: '12345678', password_confirmation: '12345678')
    user.roles = [:superadmin]
@@ -106,8 +98,8 @@ end
 
 
 check_codes = [
-   ["", "check_code"],
-   ["", "quality_next"],
+   ["400", "check_code"],
+   ["100", "quality_next"],
 ]
 
 check_codes.each do |ch|
@@ -115,3 +107,120 @@ check_codes.each do |ch|
       CheckCode.create(:counter => ch[0], :counter_type => ch[1])
    end
 end
+
+
+
+Organization.create!([
+  {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Remington Firearms", organization_short_name: "Remington", organization_description: "Home Office - Illian", organization_address_1: "Illion Way", organization_address_2: "", organization_city: "Illion", organization_state: "NY", organization_country: "United States", organization_zipcode: "13908", organization_telephone: "315.098.4503", organization_fax: "", organization_email: "dutchconsumer@gmail.com", organization_website: "www.remington.com", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: true},
+  {user_id: nil, organization_type_id: 6, territory_id: 2, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 2, vendor_expiration_date: "2016-01-03", organization_name: "Cashi Components", organization_short_name: "Cashi", organization_description: "Taiwan Office", organization_address_1: "7383 Taiwan Drive", organization_address_2: "", organization_city: "Tapai City", organization_state: "HL", organization_country: "Taiwan, Republic Of China", organization_zipcode: "786533", organization_telephone: "", organization_fax: "", organization_email: "dutchconsumer@gmail.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
+  {user_id: nil, organization_type_id: 6, territory_id: nil, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 2, vendor_expiration_date: "2016-01-04", organization_name: "American Pride", organization_short_name: "Home Office", organization_description: "Dirtbags in everything", organization_address_1: "", organization_address_2: "", organization_city: "", organization_state: "", organization_country: "United States", organization_zipcode: "", organization_telephone: "", organization_fax: "", organization_email: "dutchconsumer@gmail.com", organization_website: "www.google.com", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
+  {user_id: nil, organization_type_id: 7, territory_id: nil, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Cal-Vibration", organization_short_name: "Calation", organization_description: "Calibrators", organization_address_1: "", organization_address_2: "", organization_city: "", organization_state: "", organization_country: "United States", organization_zipcode: "", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
+  {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-27", organization_name: "Ephesus Lighting", organization_short_name: "Ephesus", organization_description: "Home Office", organization_address_1: "76 jefferson street", organization_address_2: "", organization_city: "Syracuse", organization_state: "NY", organization_country: "United States", organization_zipcode: "130089", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: false}
+])
+Owner.create!([
+  {owner_identifier: "Chess Group", owner_description: "", owner_commission_type_id: 1, owner_commission_amount: "5.0", owner_created_id: nil, owner_updated_id: nil, owner_active: true}
+])
+
+CompanyInfo.create!([
+  {company_name: "Chess Group", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil, company_created_id: nil, company_updated_id: nil}
+])
+Contact.create!([
+  {contactable_id: 1, contactable_type: "Organization", contact_type: "address", contact_title: "Remington Firearms", contact_description: "Home Office - Illian", contact_address_1: "Illion Way", contact_address_2: "", contact_city: "Illion", contact_state: "NY", contact_country: "United States", contact_zipcode: "13908", contact_telephone: "315.098.4503", contact_fax: "", contact_email: "dutchconsumer@gmail.com", contact_website: "www.remington.com", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
+  {contactable_id: 1, contactable_type: "Organization", contact_type: "address", contact_title: "Main Factory", contact_description: "Huntsville Shipping", contact_address_1: "6480 Remington Way", contact_address_2: "", contact_city: "Huntsville", contact_state: "AL", contact_country: "United States", contact_zipcode: "87643", contact_telephone: "456.555.4564", contact_fax: "", contact_email: "dutch@chessgroupinc.com", contact_website: "remington.com", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
+  {contactable_id: 3, contactable_type: "Organization", contact_type: "address", contact_title: "American Pride", contact_description: "Dirtbags in everything", contact_address_1: "", contact_address_2: "", contact_city: "", contact_state: "", contact_country: "United States", contact_zipcode: "", contact_telephone: "", contact_fax: "", contact_email: "dutchconsumer@gmail.com", contact_website: "www.google.com", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
+  {contactable_id: 4, contactable_type: "Organization", contact_type: "address", contact_title: "Cal-Vibration", contact_description: "Calibrators", contact_address_1: "", contact_address_2: "", contact_city: "", contact_state: "", contact_country: "United States", contact_zipcode: "", contact_telephone: "", contact_fax: "", contact_email: "dutch@chessgroupinc.com", contact_website: "", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
+  {contactable_id: 5, contactable_type: "Organization", contact_type: "address", contact_title: "Ephesus Lighting", contact_description: "Home Office", contact_address_1: "", contact_address_2: "", contact_city: "", contact_state: "", contact_country: "United States", contact_zipcode: "", contact_telephone: "", contact_fax: "", contact_email: "dutch@chessgroupinc.com", contact_website: "", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
+  {contactable_id: 5, contactable_type: "Organization", contact_type: "address", contact_title: "Ansen", contact_description: "Ansen Manufacturing Center", contact_address_1: "7849 Hollywood Way", contact_address_2: "", contact_city: "Ogdensburg", contact_state: "NY", contact_country: "United States", contact_zipcode: "13098", contact_telephone: "", contact_fax: "", contact_email: "dutchconsumer@gmail.com", contact_website: "", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil}
+])
+CustomerQuality.create!([
+  {quality_name: "Visual", quality_description: "", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil, quality_supplier_a: nil, quality_supplier_b: nil, quality_floor_plan: nil, quality_form: nil, quality_packaging: nil, quality_psw: nil, quality_control_plan: nil, quality_fmea: nil, quality_process_flow: nil, quality_gauge: nil, quality_study: nil, quality_dimensional_cofc: nil, quality_material_cofc: nil},
+  {quality_name: "FAI", quality_description: "", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil, quality_supplier_a: nil, quality_supplier_b: nil, quality_floor_plan: nil, quality_form: nil, quality_packaging: nil, quality_psw: nil, quality_control_plan: nil, quality_fmea: nil, quality_process_flow: nil, quality_gauge: nil, quality_study: nil, quality_dimensional_cofc: nil, quality_material_cofc: nil},
+  {quality_name: "PPAP", quality_description: "", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil, quality_supplier_a: nil, quality_supplier_b: nil, quality_floor_plan: nil, quality_form: nil, quality_packaging: nil, quality_psw: nil, quality_control_plan: nil, quality_fmea: nil, quality_process_flow: nil, quality_gauge: nil, quality_study: nil, quality_dimensional_cofc: nil, quality_material_cofc: nil}
+])
+CustomerQualityLevel.create!([
+  {customer_quality_id: 1, master_type_id: 33},
+  {customer_quality_id: 2, master_type_id: 13},
+  {customer_quality_id: 2, master_type_id: 21},
+  {customer_quality_id: 3, master_type_id: 13},
+  {customer_quality_id: 3, master_type_id: 17},
+  {customer_quality_id: 3, master_type_id: 18},
+  {customer_quality_id: 3, master_type_id: 19},
+  {customer_quality_id: 3, master_type_id: 20},
+  {customer_quality_id: 3, master_type_id: 23},
+  {customer_quality_id: 3, master_type_id: 27},
+  {customer_quality_id: 3, master_type_id: 31}
+])
+
+Dimension.create!([
+  {dimension_identifier: "Length", dimension_description: "", dimension_notes: "", dimension_active: true, dimension_created_id: nil, dimension_updated_id: nil},
+  {dimension_identifier: "Diameter", dimension_description: "", dimension_notes: "", dimension_active: true, dimension_created_id: nil, dimension_updated_id: nil},
+  {dimension_identifier: "Across the Flats", dimension_description: "", dimension_notes: "", dimension_active: true, dimension_created_id: nil, dimension_updated_id: nil},
+  {dimension_identifier: "Thread", dimension_description: "", dimension_notes: "", dimension_active: true, dimension_created_id: nil, dimension_updated_id: nil}
+])
+Element.create!([
+  {element_name: "Carbon", element_symbol: "C", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true},
+  {element_name: "Silicon", element_symbol: "Si", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true},
+  {element_name: "Lead", element_symbol: "Pb", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true},
+  {element_name: "Sulfur", element_symbol: "S", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true},
+  {element_name: "Phosphorus", element_symbol: "P", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true},
+  {element_name: "Nickel", element_symbol: "Ni", element_notes: "", element_created_id: nil, element_updated_id: nil, element_active: true}
+])
+Gauge.create!([
+  {organization_id: nil, gauge_tool_name: "0 - 6 Caliper", gauge_tool_category: "Caliper", gauge_tool_no: "7a8sd9f0asdf", gage_caliberation_last_at: "2015-10-06", gage_caliberation_due_at: "2016-07-08", gage_caliberaion_period: nil, gauge_active: true, gauge_created_id: nil, gauge_updated_id: nil},
+  {organization_id: nil, gauge_tool_name: "CMM", gauge_tool_category: "CMM", gauge_tool_no: "a87dsfa9s0df", gage_caliberation_last_at: "2016-01-29", gage_caliberation_due_at: "2016-07-08", gage_caliberaion_period: nil, gauge_active: true, gauge_created_id: nil, gauge_updated_id: nil},
+  {organization_id: nil, gauge_tool_name: "Micrometer Smaler", gauge_tool_category: "Micrometer", gauge_tool_no: "as7d8fads9f0ad", gage_caliberation_last_at: "2015-05-04", gage_caliberation_due_at: "2016-02-03", gage_caliberaion_period: nil, gauge_active: true, gauge_created_id: nil, gauge_updated_id: nil}
+])
+
+Image.create!([
+  {imageable_id: 1, imageable_type: "CompanyInfo", image_title: nil, image_description: nil, image_notes: nil, image_file_name: "smaller_logo.png", image_file_size: "18276", image_content_type: "image/png", image_public: nil, image_active: nil, image_created_id: nil, image_updated_id: nil}
+])
+Item.create!([
+  {item_part_no: "H-054", item_quantity_on_order: nil, item_quantity_in_hand: nil, item_active: true, item_created_id: nil, item_updated_id: nil, item_alt_part_no: "64857-1K-060"},
+  {item_part_no: "STD-333", item_quantity_on_order: nil, item_quantity_in_hand: nil, item_active: true, item_created_id: nil, item_updated_id: nil, item_alt_part_no: "WHS8766"}
+])
+
+ItemPartDimension.create!([
+  {dimension_id: 3, gauge_id: 1, item_part_letter: "01", item_part_dimension: "4.0", item_part_pos_tolerance: "0.05", item_part_neg_tolerance: "0.05", item_part_critical: false, item_part_notes: nil, item_part_active: true, item_part_created_id: nil, item_part_updated_id: nil, go_non_go: false, dimension_string: "4"},
+  {dimension_id: 1, gauge_id: 1, item_part_letter: "02", item_part_dimension: "1.3", item_part_pos_tolerance: "0.01", item_part_neg_tolerance: "0.01", item_part_critical: true, item_part_notes: nil, item_part_active: true, item_part_created_id: nil, item_part_updated_id: nil, go_non_go: false, dimension_string: "1.3"},
+  {dimension_id: 4, gauge_id: 1, item_part_letter: "01", item_part_dimension: "0.0", item_part_pos_tolerance: "0.0", item_part_neg_tolerance: "0.0", item_part_critical: false, item_part_notes: nil, item_part_active: true, item_part_created_id: nil, item_part_updated_id: nil, go_non_go: true, dimension_string: "8"},
+  {dimension_id: 1, gauge_id: 1, item_part_letter: "01", item_part_dimension: "1.2", item_part_pos_tolerance: "0.004", item_part_neg_tolerance: "0.005", item_part_critical: false, item_part_notes: nil, item_part_active: true, item_part_created_id: nil, item_part_updated_id: nil, go_non_go: false, dimension_string: "1.2"}
+])
+
+ItemRevision.create!([
+  {item_revision_name: "B", item_revision_date: "2016-01-03", item_id: 1, owner_id: 1, organization_id: 1, vendor_quality_id: nil, customer_quality_id: nil, item_name: "Screw", item_description: "1/2 Crazy Nut", item_notes: "", item_tooling: "0.0", item_cost: "0.0", item_revision_created_id: nil, item_revision_updated_id: nil, print_id: 1, material_id: 1, latest_revision: true, item_revision_complete: true, item_sell: nil},
+  {item_revision_name: "F", item_revision_date: "2016-01-03", item_id: 2, owner_id: 1, organization_id: 1, vendor_quality_id: nil, customer_quality_id: nil, item_name: "Washer", item_description: "Steel Washer with 0167\" Diamter", item_notes: "", item_tooling: "0.0", item_cost: "0.0", item_revision_created_id: nil, item_revision_updated_id: nil, print_id: 2, material_id: 2, latest_revision: true, item_revision_complete: true, item_sell: nil}
+])
+ItemProcess.create!([
+  {item_revision_id: 1, process_type_id: 2},
+  {item_revision_id: 2, process_type_id: 1}
+])
+
+MaterialElement.create!([
+  {material_id: 1, element_id: 1, element_symbol: nil, element_name: nil, element_low_range: "4.0", element_high_range: "7.0", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 1, element_id: 3, element_symbol: nil, element_name: nil, element_low_range: "0.05", element_high_range: "0.09", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 1, element_id: 6, element_symbol: nil, element_name: nil, element_low_range: "2.0", element_high_range: "4.0", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 2, element_id: 1, element_symbol: nil, element_name: nil, element_low_range: "4.0", element_high_range: "7.0", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 2, element_id: 3, element_symbol: nil, element_name: nil, element_low_range: "4.0", element_high_range: "5.0", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 2, element_id: 6, element_symbol: nil, element_name: nil, element_low_range: "2.0", element_high_range: "4.0", element_active: true, element_created_id: nil, element_updated_id: nil},
+  {material_id: 2, element_id: 4, element_symbol: nil, element_name: nil, element_low_range: "1.0", element_high_range: "2.0", element_active: true, element_created_id: nil, element_updated_id: nil}
+])
+Material.create!([
+  {material_short_name: "AISI 7876", material_description: "Carbon Steel Low Lead", material_notes: "", material_created_id: nil, material_updated_id: nil, material_active: true},
+  {material_short_name: "AISI 4576", material_description: "Carbon Steel High Lead", material_notes: "", material_created_id: nil, material_updated_id: nil, material_active: true}
+])
+
+VendorQuality.create!([
+  {quality_name: "A", quality_description: "ISO and AS", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil},
+  {quality_name: "B", quality_description: "ISO", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil},
+  {quality_name: "C", quality_description: "Needed but ISO or AS", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil},
+  {quality_name: "D", quality_description: "Not Aerospace Appropriate", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil}
+])
+ItemRevisionItemPartDimension.create!([
+  {item_revision_id: 1, item_part_dimension_id: 1},
+  {item_revision_id: 1, item_part_dimension_id: 2},
+  {item_revision_id: 2, item_part_dimension_id: 3},
+  {item_revision_id: 2, item_part_dimension_id: 4}
+])
+ProcessTypeSpecification.create!([
+  {process_type_id: 2, specification_id: 1}
+])
