@@ -322,6 +322,8 @@
 
             jQuery("#po_line_alt_name_transfer_id").on('focusout', function() {
                 initiate_processes();
+                initiate_item_revisions($("#alt_name_id").val());
+
 
             });
 
