@@ -74,10 +74,13 @@ class SoShipmentsController < ApplicationController
             render json: {:aaData => @so_lines}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
+            item_revision = ItemRevision.find(params[:revision_id]) if params[:revision_id].present?
             @quality_lot = QualityLot.find(params[:quality_lot_id]) if params[:quality_lot_id].present?
             # @so_ship_outs = SoShipment.where(:so_shipped_status => "ship_out").order("created_at desc").includes(:so_line)
 
-            if @item
+            if item_revision
+               @so_shipments = SoShipment.all_revision_shipments(item_revision.id)
+            elsif @item
                 if params[:type].present?
                   @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
                 else

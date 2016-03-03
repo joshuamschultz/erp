@@ -46,7 +46,9 @@ class ReceivablesController < ApplicationController
       receivable.receivable_so_shipments.destroy_all
       receivable.delete
     end
-    if params[:item_id].present?
+    if params[:revision_id].present?
+      @receivables =Receivable.open_receivables(params[:revision_id],params[:receivable_status])
+    elsif params[:item_id].present?
       @receivables =Receivable.open_receivables(params[:item_id],params[:receivable_status])
     else
       @receivables = Receivable.status_based_receivables(params[:receivable_status] || "open")
