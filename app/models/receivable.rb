@@ -278,7 +278,7 @@ class Receivable < ActiveRecord::Base
   end
   def self.open_revision_receivables(item_revision,status)
     receivables = []
-    @item_revision = Item.find(item_revision)
+    @item_revision = ItemRevision.find(item_revision)
     @item_revision.so_lines.each do |so_line|
       unless so_line.so_header.receivables.empty?
         receivables= so_line.so_header.receivables.status_based_receivables(status || "open")
