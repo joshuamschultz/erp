@@ -47,9 +47,9 @@ class PayablesController < ApplicationController
         payable.delete
       end
       if params[:revision_id].present?
-        @payables =Payable.all_payables(params[:revision_id])
+        @payables =Payable.all_revision_payables(params[:revision_id])
       elsif params[:item_id].present?
-        @payables =Payable.all_revision_payables(params[:item_id])
+        @payables =Payable.all_payables(params[:item_id])
       else  
 
       @payables = Payable.status_based_payables(params[:payable_status] || "open")
