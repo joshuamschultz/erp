@@ -59,8 +59,11 @@ class QualityLotsController < ApplicationController
   # GET po_headers/1/quality_lots
   # GET po_headers/1/quality_lots.json
   def index
-    if params[:item_id].present?
-        @item = Item.find(params[:item_id])
+    if params[:revision_id].present?
+          @item_revision = ItemRevision.find(params[:revision_id])
+          @quality_lots = @item_revision.quality_lots.order('created_at desc')
+    elsif params[:item_id].present?
+        @item = Item.find(params[:item_id])       
         @quality_lots = @item.quality_lots.order('created_at desc')
     elsif params[:type].present?
       @quality_lots = QualityLot.lot_missing_location
