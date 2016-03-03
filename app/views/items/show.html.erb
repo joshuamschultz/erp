@@ -136,7 +136,7 @@
                 </div>
 
                 <% if can? :view, QualityLot %>
-                    <%= render :partial => 'quality_lots/lots' %>
+                    <%= render :partial => 'quality_lots/lots', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                 <% end %>
 
                 <%= render 'item_revisions/item_revisions' %>
@@ -243,13 +243,13 @@
                     <div class="row-fluid">
                          <% if can? :view, Payable %>        
                             <div class="span6">
-                                <%= render :partial => 'payables/item_payables' %>
+                                <%= render :partial => 'payables/item_payables', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                             </div>
                         <% end %>
 
                         <% if can? :view, Receivable %>  
                             <div class="span6">
-                            <%= render :partial => 'receivables/item_receivables' %>
+                            <%= render :partial => 'receivables/item_receivables', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                             </div>
                         <% end %>        
                     </div>

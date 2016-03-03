@@ -42,7 +42,10 @@ class PoShipmentsController < ApplicationController
             render json: {:aaData => @po_lines}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
-            if @item
+            item_revision = ItemRevision.find(params[:revision_id]) if params[:revision_id].present?
+            if item_revision
+               @po_shipments = PoShipment.all_revision_shipments(item_revision.id)
+            elsif @item
                if params[:type].present?
                 @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
                else

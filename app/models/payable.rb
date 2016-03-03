@@ -172,5 +172,15 @@ class Payable < ActiveRecord::Base
     end
     payables
   end
+  def self.all_revision_payables(item_revision)
+    payables = []
+    @item_revision = ItemRevision.find(item_revision)
+    @item_revision.po_lines.each do |po_line|
+      unless po_line.po_header.payables.empty?
+        payables= po_line.po_header.payables
+      end
+    end
+    payables
+  end
 
 end
