@@ -57,7 +57,7 @@
                     <td><%= text_field_tag :invoice_due_date, "", :disabled => true %></td>
                     <td><%= text_field_tag :invoice_amount, "", :disabled => true %></td>
                     <td><%= text_field_tag :invoice_balance, "", :disabled => true %></td>
-                    <td><%= payment_line.input :payment_line_amount, label: false, :input_html => {class: "payment_payable_amount"} %></td>
+                    <td><%= payment_line.input :payment_line_amount, :input_html => { :class => 'payment_payable_amount commoncls', :min => 0, :step => 'any'}, :label => false %></td>
                     <td><a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a></td>
                 </tr>
             <% end %>

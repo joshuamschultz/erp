@@ -33,9 +33,9 @@
 
                 <%#= f.input :so_line_cost, :label => "Cost" %>     
 
-                <%= f.input :so_line_sell, :label => "Sell" %>        
+                 <%= f.input :so_line_sell, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Sell" %>        
 
-                <%= f.input :so_line_quantity, :label => "Quantity" %>
+                <%= f.input :so_line_quantity, :input_html => { :class => 'commoncls', :min => 0, :step => 1 }, :label => "Quantity" %>
                 
                 <%#= f.input :so_line_freight, :label => "Freight Charge" %>
 
@@ -116,9 +116,9 @@
                 </div>    
                 <%#= f.input :so_line_cost, :label => "Cost" %>     
 
-                <%= f.input :so_line_sell, :label => "Sell" %>        
+               <%= f.input :so_line_sell, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Sell" %>        
 
-                <%= f.input :so_line_quantity, :label => "Quantity" %>
+                <%= f.input :so_line_quantity, :input_html => { :class => 'commoncls', :min => 0, :step => 1}, :label => "Quantity" %>
                 
                 <%#= f.input :so_line_freight, :label => "Freight Charge" %>
 

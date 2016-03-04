@@ -1,3 +1,4 @@
+<%= javascript_include_tag "commoncls" %>
 <% unless type.nil? %>
 <script type="text/template" class="<%= type %>-template" style="display:none">
 <% case(type) %>
@@ -70,7 +71,7 @@
 		      <td>
 		        <div class='control-group decimal required payment_payment_lines_payment_line_amount'>
 		          <div class='controls'>
-		            <input type='number' value='0.0' step='any' required='required' name='payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required payment_payable_amount'>
+		            <input type="number" value="0.0" step="any" min="0" required="required" name="payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required payment_payable_amount commoncls">
 		          </div>
 		        </div>
 		      </td>
@@ -96,7 +97,7 @@
 		      <td>
 		        <div class='control-group decimal required receipt_receipt_lines_receipt_line_amount'>
 		          <div class='controls'>
-		            <input type='number' value='0.0' step='any' required='required' name='receipt[receipt_lines_attributes][{{row_count}}]receipt_line_amount]' id='receipt_receipt_lines_attributes_{{row_count}}_receipt_line_amount' class='numeric decimal required receipt_receivable_amount'>
+		            <input type='number' value='0.0' step='1' min='0' required='required' name='receipt[receipt_lines_attributes][{{row_count}}]receipt_line_amount]' id='receipt_receipt_lines_attributes_{{row_count}}_receipt_line_amount' class='numeric decimal required receipt_receivable_amount commoncls'>
 		          </div>
 		        </div>
 		      </td>
