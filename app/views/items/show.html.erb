@@ -27,7 +27,7 @@
 
                 <div class="span2 well">
                     <a class="widget-stats" href="#" id="">
-                        <h5><strong><%#=  params[:revision_id].present? ? @item.qty_on_order(params[:revision_id]) : 0  %></strong></h5>
+                        <h5><strong><%=  params[:revision_id].present? ? @item.qty_on_order(params[:revision_id]) : 0  %></strong></h5>
                         <span class="txt"><strong>Quantity On Order</strong></span>
                         <div class="clearfix"></div>
                     </a>
@@ -161,7 +161,7 @@
                 </div>
 
                 <% if can? :view, QualityLot %>
-                    <%= render :partial => 'quality_lots/lots' %>
+                    <%= render :partial => 'quality_lots/lots', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                 <% end %>
 
                 <%= render 'item_revisions/item_revisions' %>
@@ -268,13 +268,13 @@
                     <div class="row-fluid">
                          <% if can? :view, Payable %>        
                             <div class="span6">
-                                <%= render :partial => 'payables/item_payables' %>
+                                <%= render :partial => 'payables/item_payables', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                             </div>
                         <% end %>
 
                         <% if can? :view, Receivable %>  
                             <div class="span6">
-                            <%= render :partial => 'receivables/item_receivables' %>
+                            <%= render :partial => 'receivables/item_receivables', locals: { :revision_id => params[:revision_id].present? ? @item_revision.id : ""} %>
                             </div>
                         <% end %>        
                     </div>

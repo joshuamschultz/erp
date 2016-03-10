@@ -52,7 +52,7 @@
 
     <%= f.input :payable_description, :label => "Description" %>
     <%= f.input :payable_notes, :label => "Notes" %>
-    <%= f.input :payable_total, :label => "Amount" %>
+    <%= f.input :payable_total, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Amount" %>
     <%= f.hidden_field :payable_type, :value => 'manual'%>
     
     <%#= f.input :payable_cost, :disabled => true, input_html: { class: 'special_font' }, :label => "Cost" %>

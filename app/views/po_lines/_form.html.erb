@@ -101,12 +101,12 @@
                     </select>
                     </div>
                 </div>   
-                <%= f.input :po_line_quantity, :label => "Quantity" %>
+               <%= f.input :po_line_quantity, :input_html => { :class => 'commoncls', :min => 0, :step => 1}, :label => "Quantity" %>
 
                 
 
-                <%= f.input :po_line_cost, :label => "Cost" %>
-
+                <%= f.input :po_line_cost, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' },  :label => "Cost" %>
+                
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
                 <%#= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer", :disabled => @po_header.customer.present? %>
@@ -123,7 +123,7 @@
 
                 <%#= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
                 
-                <%= f.input :po_line_notes, :label => "Notes" %>
+                <%= f.input :po_line_notes, :label => "Notes", :input_html => {:maxlength => 150} %>
 
                 <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
                 
@@ -249,9 +249,9 @@
                     </select>
                     </div>
                 </div>   
-                <%= f.input :po_line_quantity, :label => "Quantity" %>
+                <%= f.input :po_line_quantity, :input_html => { :class => 'commoncls', :min => 0, :step => 1}, :label => "Quantity" %>
 
-                <%= f.input :po_line_cost, :label => "Cost"  %>
+                <%= f.input :po_line_cost, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Cost" %>
 
                 <%= f.input :po_line_sell, :label => "Sell" if @po_header.customer.present? %>
 
@@ -271,7 +271,7 @@
 
                 <%#= f.association :customer_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
                 
-                <%= f.input :po_line_notes, :label => "Notes" %>
+                <%= f.input :po_line_notes, :label => "Notes", :input_html => {:maxlength => 150} %>
 
                 <%= f.input :po_line_total, :label => "Total", :disabled => true, input_html: { class: 'special_font' }, :as => :hidden %>
                 
@@ -322,6 +322,7 @@
 
             jQuery("#po_line_alt_name_transfer_id").on('focusout', function() {
                 initiate_processes();
+                initiate_item_revisions($("#alt_name_id").val());
 
             });
 

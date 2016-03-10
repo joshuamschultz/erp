@@ -46,7 +46,9 @@ class PayablesController < ApplicationController
         payable.payable_po_shipments.destroy_all
         payable.delete
       end
-      if params[:item_id].present?
+      if params[:revision_id].present?
+        @payables =Payable.all_revision_payables(params[:revision_id])
+      elsif params[:item_id].present?
         @payables =Payable.all_payables(params[:item_id])
       else  
 
