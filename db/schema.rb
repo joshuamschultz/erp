@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141126061441) do
+ActiveRecord::Schema.define(:version => 20151001071615) do
 
   create_table "approved_checks", :force => true do |t|
     t.string   "status"
@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.boolean  "rec"
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
+    t.integer  "receipt_id"
   end
 
   create_table "customer_feedbacks", :force => true do |t|
@@ -279,6 +280,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.decimal  "customer_quote_line_total",        :precision => 25, :scale => 10, :default => 0.0
     t.string   "lead_time"
     t.string   "item_name_sub"
+    t.integer  "quote_id"
   end
 
   add_index "customer_quote_lines", ["customer_quote_id"], :name => "index_customer_quote_lines_on_customer_quote_id"
@@ -337,6 +339,21 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "updated_at",         :null => false
   end
 
+  create_table "events", :force => true do |t|
+    t.string   "title"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.string   "allDay"
+    t.string   "user_name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "repeats"
+    t.text     "description"
+    t.integer  "user_id"
+    t.integer  "frequency"
+    t.integer  "parent_id"
+  end
+
   create_table "fmea_types", :force => true do |t|
     t.string   "fmea_name"
     t.string   "fmea_description"
@@ -371,10 +388,10 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.string   "gl_account_identifier"
     t.string   "gl_account_description"
     t.boolean  "gl_account_active"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
-    t.float    "gl_account_amount",      :default => 0.0
-    t.boolean  "key_account",            :default => true
+    t.datetime "created_at",                                                               :null => false
+    t.datetime "updated_at",                                                               :null => false
+    t.decimal  "gl_account_amount",      :precision => 15, :scale => 10, :default => 0.0
+    t.boolean  "key_account",                                            :default => true
   end
 
   add_index "gl_accounts", ["gl_type_id"], :name => "index_gl_accounts_on_gl_type_id"
@@ -468,6 +485,14 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "item_id"
   end
 
+  create_table "item_lots", :force => true do |t|
+    t.integer  "quality_lot_id"
+    t.integer  "item_id"
+    t.integer  "item_lot_count"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "item_materials", :force => true do |t|
     t.integer  "item_revision_id"
     t.integer  "material_id"
@@ -521,6 +546,13 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
   add_index "item_processes", ["item_revision_id"], :name => "index_item_processes_on_item_revision_id"
   add_index "item_processes", ["process_type_id"], :name => "index_item_processes_on_process_type_id"
 
+  create_table "item_revision_item_part_dimensions", :force => true do |t|
+    t.integer  "item_revision_id"
+    t.integer  "item_part_dimension_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+  end
+
   create_table "item_revisions", :force => true do |t|
     t.string   "item_revision_name",                                       :default => "0"
     t.date     "item_revision_date"
@@ -530,7 +562,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "vendor_quality_id"
     t.integer  "customer_quality_id"
     t.string   "item_name"
-    t.string   "item_description"
+    t.text     "item_description"
     t.text     "item_notes"
     t.decimal  "item_tooling",             :precision => 25, :scale => 10, :default => 0.0
     t.decimal  "item_cost",                :precision => 25, :scale => 10, :default => 0.0
@@ -543,6 +575,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.boolean  "latest_revision"
     t.boolean  "item_revision_complete",                                   :default => false
     t.decimal  "item_sell",                :precision => 15, :scale => 10
+    t.integer  "lot_count",                                                :default => 0
   end
 
   add_index "item_revisions", ["customer_quality_id"], :name => "index_item_revisions_on_customer_quality_id"
@@ -580,6 +613,8 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "item_updated_id"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.integer  "lot_count"
+    t.string   "item_alt_part_no"
   end
 
   create_table "journal_entries", :force => true do |t|
@@ -653,6 +688,22 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "updated_at",                             :null => false
   end
 
+  create_table "max_control_strings", :force => true do |t|
+    t.string   "control_string"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.string   "control_string_second"
+  end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "notable_id"
+    t.string   "notable_type"
+    t.string   "note_status"
+    t.integer  "user_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "organization_processes", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "process_type_id"
@@ -665,6 +716,13 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
 
   add_index "organization_processes", ["organization_id"], :name => "index_organization_processes_on_organization_id"
   add_index "organization_processes", ["process_type_id"], :name => "index_organization_processes_on_process_type_id"
+
+  create_table "organization_users", :force => true do |t|
+    t.integer  "organization_id"
+    t.string   "user_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "organizations", :force => true do |t|
     t.integer  "user_id"
@@ -883,6 +941,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.string   "payable_invoice"
     t.integer  "gl_account_id"
     t.string   "payable_type"
+    t.string   "payable_disperse"
   end
 
   add_index "payables", ["gl_account_id"], :name => "index_payables_on_gl_account_id"
@@ -972,6 +1031,8 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "po_line_shipped",                                       :default => 0
     t.integer  "alt_name_transfer_id"
     t.decimal  "po_line_sell",          :precision => 25, :scale => 10, :default => 0.0
+    t.integer  "quality_lot_id"
+    t.integer  "process_type_id"
   end
 
   add_index "po_lines", ["alt_name_transfer_id"], :name => "index_po_lines_on_alt_name_transfer_id"
@@ -1079,7 +1140,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
   end
 
   create_table "process_type_specifications", :force => true do |t|
-    t.integer  "process_type"
+    t.integer  "process_type_id"
     t.integer  "specification_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
@@ -1123,6 +1184,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.text     "root_cause"
+    t.integer  "quality_lot_id"
   end
 
   add_index "quality_actions", ["cause_analysis_id"], :name => "index_quality_actions_on_cause_analysis_id"
@@ -1145,6 +1207,14 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
     t.string   "quality_document_name"
+  end
+
+  create_table "quality_histories", :force => true do |t|
+    t.integer  "quality_lot_id"
+    t.string   "quality_status"
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "quality_lot_capabilities", :force => true do |t|
@@ -1265,6 +1335,11 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.string   "fai"
     t.boolean  "finished",             :default => false
     t.integer  "quantity_on_hand"
+    t.string   "lot_status"
+    t.datetime "final_date"
+    t.string   "lot_print_status"
+    t.string   "lot_unit"
+    t.string   "lot_self"
   end
 
   add_index "quality_lots", ["item_revision_id"], :name => "index_quality_lots_on_item_revision_id"
@@ -1346,6 +1421,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "customer_id"
     t.integer  "group_id"
     t.boolean  "attachment_public",                                 :default => false
+    t.integer  "user_id"
   end
 
   add_index "quotes", ["group_id"], :name => "index_quotes_on_group_id"
@@ -1415,6 +1491,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "updated_at",                                                            :null => false
     t.integer  "check_entry_id"
     t.integer  "deposit_check_id"
+    t.decimal  "receipt_discount",     :precision => 25, :scale => 10, :default => 0.0
   end
 
   add_index "receipts", ["check_entry_id"], :name => "index_receipts_on_check_entry_id"
@@ -1494,6 +1571,7 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.string   "receivable_invoice"
     t.integer  "gl_account_id"
     t.decimal  "receivable_freight",     :precision => 25, :scale => 10, :default => 0.0
+    t.string   "receivable_disperse"
   end
 
   add_index "receivables", ["gl_account_id"], :name => "index_receivables_on_gl_account_id"
@@ -1576,6 +1654,8 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.integer  "so_line_shipped",                                     :default => 0
     t.decimal  "so_line_sell",        :precision => 25, :scale => 10, :default => 0.0
     t.string   "so_line_vendor_po"
+    t.integer  "po_header_id"
+    t.string   "po"
   end
 
   add_index "so_lines", ["customer_quality_id"], :name => "index_so_lines_on_customer_quality_id"
@@ -1598,6 +1678,8 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "created_at",                                                              :null => false
     t.datetime "updated_at",                                                              :null => false
     t.integer  "quality_lot_id",                                         :default => 0
+    t.integer  "so_header_id"
+    t.string   "shipment_process_id"
   end
 
   add_index "so_shipments", ["so_line_id"], :name => "index_so_shipments_on_so_line_id"
@@ -1640,9 +1722,9 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",   :null => false
-    t.string   "encrypted_password",     :default => "",   :null => false
-    t.string   "name",                   :default => "",   :null => false
+    t.string   "email",                  :default => "",                           :null => false
+    t.string   "encrypted_password",     :default => "",                           :null => false
+    t.string   "name",                   :default => "",                           :null => false
     t.string   "gender",                 :default => ""
     t.text     "address"
     t.string   "city",                   :default => ""
@@ -1669,8 +1751,10 @@ ActiveRecord::Schema.define(:version => 20141126061441) do
     t.datetime "locked_at"
     t.string   "authentication_token"
     t.integer  "roles_mask"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
+    t.integer  "organization_id"
+    t.string   "time_zone",              :default => "Eastern Time (US & Canada)"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

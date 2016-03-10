@@ -36,7 +36,7 @@
 
             <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
             <%#= g.input :item_cost, :label => "Cost" %>
-            <%= g.input :item_tooling, :label => "Tooling" %>
+             <%= g.input :item_tooling, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Tooling" %>
 
             <!-- <div class="control-group">
                 <label for="item_prints" class="optional control-label">Prints</label>

@@ -702,6 +702,7 @@ module CommonActions
 		@company_info = CompanyInfo.first
 		@po_header = PoHeader.find(po_id)
 		len = @po_header.po_lines.length
+		content += '<div class="ms_wrapper">'
 		@po_header.po_lines.each_with_index do |po_line, index|
 			po_type_name = po_line.po_header.po_type.type_name
 			if po_line.item_revision.present?
@@ -724,7 +725,7 @@ module CommonActions
 			# 	product_description = '&nbsp'
 			end
 			if i== 1  
-				content += '<div class="ms_wrapper"><section>
+				content += '<section>
 
    <article>
             <div class="ms_image">
@@ -756,35 +757,24 @@ module CommonActions
 				if flag ==1
 					content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+@po_header.organization.organization_name+'<br>'+@po_header.organization.organization_address_1+''+@po_header.organization.organization_address_2+'</h2> <h3> '+@po_header.organization.organization_city+' '+@po_header.organization.organization_state+''+@po_header.organization.organization_country+''+@po_header.organization.organization_zipcode+'</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">Chess Group Inc </h2> <strong>'+@company_info.company_address1+'</strong><strong>'+@company_info.company_address2+'</strong></div></div></article>' 
 					flag =0;
+				else 
+					content += '<article class="art-05"></article>'
 				end
 
 				if po_type_name =="Transfer"
-					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+					content += '<article class="art-01 art-04"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>CONTROL NO</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody>'
 					flag2=0;
 				else
-					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody></table>'
+					content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody>'
 				end
 			end
 			content += '
- <div class="ff">
-    <table cellspacing="0" cellpadding="0" width="678px" border="0">
-        <tbody>
+ 
             <tr valign="top" align="center" class="h-pad">
                  <td>'+po_line.po_line_quantity.to_s+' </td>
-                 <td>
-                    <table width="100%" border="0">
-                    <tbody>
-                        <tr>
-                            <td width="150" scope="row">'+product1+'</td>
-                        </tr>
-                        <tr>
-                            <td width="150" scope="row">'+product2+'</td>
-                        </tr>
+                 <td>'+product1+'</br>
+                 '+product2+'</td>'
 
-                    </tbody>
-                    </table>
-                </td>'
-              
 					if po_type_name =="Transfer"
                     	content +='<td>'+po_line_lot+'</td>
                          
@@ -800,45 +790,28 @@ module CommonActions
 
                    content += '<td>'+(po_line.po_line_cost.to_f).to_s+'</td>
                     <td>'+(po_line.po_line_total.to_f).to_s+'</td>
-                </tr>
-      
-      
-
-            </tbody>
-        </table>
-
-
-
-            <div class="sd">
-                <div class="sd1">
-                    <table cellspacing="0" cellpadding="0" border="0" width="100%" border-collapse="collapse">
-                        <tr>
-                       
-                                <td >'+product_notes+'</td>
-                         
-                        </tr>    
-                        <tr>
-                            <td >'+po_line.po_line_notes+'</td>
-                        </tr>                           
-                    </table>
-                
-            </div>
-        </div>
-
-</div>
-
-
-
-
-
-
-
-
-
-			'
-
+                </tr>'
+                		if po_type_name =="Transfer"
+	                        content +='<tr>
+	                       
+	                                <td class="td-one" colspan="6">'+product_notes+'</td>
+	                         
+	                        </tr>    
+	                        <tr>
+	                            <td class="td-one" colspan="6">'+po_line.po_line_notes+'</td>
+	                        </tr>'
+	                    else
+	                    	content +='<tr>
+	                       
+	                                <td class="td-one" colspan="5">'+product_notes+'</td>
+	                         
+	                        </tr>    
+	                        <tr>
+	                            <td class="td-one" colspan="5">'+po_line.po_line_notes+'</td>
+	                        </tr>'
+	                    end
 			if i==4
-				content += '</article> 
+				content += '</tbody></table></article> 
 
 
         <article class="art-02">
@@ -892,7 +865,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 </h4>
                 </div>
 
-
+                </div>
         </article>
 
 
@@ -900,13 +873,13 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 
 
 
-				 </section></div><div style="page-break-after:always;"> </div>'
+				 </section><div style="page-break-after:always;"> </div><div id="blank_page">&nbsp;</div>'
 			end
 
 			if len == index+1 && i != 4 
 				# j = 1
 				# j+=1
-				content += '</article>
+				content += '</tbody></table></article>
 
         <article class="art-02">
 
@@ -959,7 +932,7 @@ inspect at the Seller'+"'"+'s plant any and all materials and systems.</h4>
 </h4>
                 </div>
 
-
+             </div>
         </article>
 
 
@@ -1000,7 +973,7 @@ body{ font-family:Arial,Helvetica,sans-serif;font-size:14px;}
    width: 678px;
 }
 .ms_wrapper .ms_heading {  text-decoration: underline; font-size: 14px;margin: 17px 0 4px; padding: 0 0 10px;float: left;}
-@page{size:21cm 29.7cm;margin: 30mm 45mm 30mm 45mm;}
+@page{size:21cm 29.7cm;margin: 10mm 10mm 2mm 10mm;}
 .ms_wrapper .ms_image {
     border: 1px solid #ccc;
     float: left;
@@ -1024,7 +997,7 @@ article.art-01 {
     font-size: 22px;
     height: 104px;
     text-align: center;}
-.ms_wrapper article{float: left;width: 100%;}
+.ms_wrapper article{float: left;width: 678px;}
 }
 .ms_wrapper .ms_text {float: left;font-size: 15px;height: auto;line-height: 23px; width: 262px; margin: 0;color:#666;}
 .ms_wrapper .ms_offers { float: left; margin: 12px 0 0; padding: 10px 0 0; text-align: center;}
@@ -1104,6 +1077,7 @@ article.art-02 {
     margin: 70px 0 0;
     padding: 7px 0 0;
     height:80px;
+    width: 670px;
 }
 .ms_text-5 > strong {
     font-weight: normal;
@@ -1209,10 +1183,12 @@ margin: 2px 0 10px 0;}
     border: 2px solid #444;
     float: left;
     margin: 11px 0 0;
-    width: 678px;}
+    width: 668px;
+    height:124px;}
 }.page{float: left;margin: 0 0 0 20px;}
-.page h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
-.page h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
+.page h3{font-size: 14px;font-weight: bold;margin: 3px 6px 1px 13px;float: left;}
+.page h4{font-size: 12px;font-weight: normal;margin: 5px 0 12px 0;text-align: center;float: left;}
+
 .original{float: right;margin: 0 20px 0 0;}
 .original h3{font-size: 14px; font-weight: bold;   margin: 12px 0 0;}
 .original h4{font-size: 12px; font-weight: normal;margin: 5px 0 12px 0;text-align: center;}
@@ -1254,7 +1230,7 @@ margin: 2px 0 10px 0;}
 
 .page-center {
     float: left;
-    margin: 8px 36px;
+    margin: 45px 36px;
     width: 394px;
 }
  .ms_text-5 strong {
@@ -1276,7 +1252,6 @@ margin: 2px 0 10px 0;}
 
 .hea.art-002 {
 border-bottom: 1px solid #222;
-float: left;
 font-weight: bold;
 width: 100%;
 }
@@ -1290,7 +1265,6 @@ width: 134px;
 .h-pad > td {
     padding: 9px 12px;
     text-align: center;
-    width: 109px;
     border: 1px solid #000;
 }
 .h-pad {
@@ -1318,11 +1292,17 @@ width: 134px;
 }
 .art-01.art-04.art-07 {
     border-bottom: medium none;
-    height: 575px;
+    height: 400px;
 }
 .art-01.art-04 {
     border-bottom: medium none;
-    min-height: 448px;
+    min-height: 380px;
+}
+.td-one{
+
+	border: 1px solid #000;
+	color: #800000;
+	text-align: center;
 }
 </style>
 </head>

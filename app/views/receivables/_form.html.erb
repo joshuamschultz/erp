@@ -44,7 +44,7 @@
     <%#= hidden_field_tag :org_gl_account_id, (@receivable.gl_account_id if @receivable.gl_account) %>
 
     <%= f.input :receivable_notes, :label => "Notes" %>   
-    <%= f.input :receivable_freight, :label => "Freight" %>
+    <%= f.input :receivable_freight, :input_html => { :class => 'commoncls', :min => 0, :step => 'any'}, :label => "Freight" %>
   </div>
 
   

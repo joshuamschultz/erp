@@ -102,6 +102,11 @@ class PoShipment < ActiveRecord::Base
   def self.all_shipments(itemId)
     PoShipment.joins(:po_line).where(:po_lines => {:item_id => itemId})
   end  
+
+  def self.all_revision_shipments(itemRevisionId)
+    PoShipment.joins(:quality_lot).where(:quality_lots => {:item_revision_id => itemRevisionId})
+  end
+
   def set_quality_on_hand
     if self.quality_lot.present?
       quality_lotss = self.quality_lot
