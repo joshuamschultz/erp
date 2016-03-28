@@ -109,7 +109,7 @@ check_codes.each do |ch|
 end
 
 
-
+=begin
 Organization.create!([
   {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Remington Firearms", organization_short_name: "Remington", organization_description: "Home Office - Illian", organization_address_1: "Illion Way", organization_address_2: "", organization_city: "Illion", organization_state: "NY", organization_country: "United States", organization_zipcode: "13908", organization_telephone: "315.098.4503", organization_fax: "", organization_email: "dutchconsumer@gmail.com", organization_website: "www.remington.com", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: true},
   {user_id: nil, organization_type_id: 6, territory_id: 2, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 2, vendor_expiration_date: "2016-01-03", organization_name: "Cashi Components", organization_short_name: "Cashi", organization_description: "Taiwan Office", organization_address_1: "7383 Taiwan Drive", organization_address_2: "", organization_city: "Tapai City", organization_state: "HL", organization_country: "Taiwan, Republic Of China", organization_zipcode: "786533", organization_telephone: "", organization_fax: "", organization_email: "dutchconsumer@gmail.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
@@ -117,13 +117,17 @@ Organization.create!([
   {user_id: nil, organization_type_id: 7, territory_id: nil, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Cal-Vibration", organization_short_name: "Calation", organization_description: "Calibrators", organization_address_1: "", organization_address_2: "", organization_city: "", organization_state: "", organization_country: "United States", organization_zipcode: "", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
   {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-27", organization_name: "Ephesus Lighting", organization_short_name: "Ephesus", organization_description: "Home Office", organization_address_1: "76 jefferson street", organization_address_2: "", organization_city: "Syracuse", organization_state: "NY", organization_country: "United States", organization_zipcode: "130089", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: false}
 ])
+
 Owner.create!([
   {owner_identifier: "Chess Group", owner_description: "", owner_commission_type_id: 1, owner_commission_amount: "5.0", owner_created_id: nil, owner_updated_id: nil, owner_active: true}
 ])
+=end
 
 CompanyInfo.create!([
   {company_name: "Chess Group", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil, company_created_id: nil, company_updated_id: nil}
 ])
+=begin
+
 Contact.create!([
   {contactable_id: 1, contactable_type: "Organization", contact_type: "address", contact_title: "Remington Firearms", contact_description: "Home Office - Illian", contact_address_1: "Illion Way", contact_address_2: "", contact_city: "Illion", contact_state: "NY", contact_country: "United States", contact_zipcode: "13908", contact_telephone: "315.098.4503", contact_fax: "", contact_email: "dutchconsumer@gmail.com", contact_website: "www.remington.com", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
   {contactable_id: 1, contactable_type: "Organization", contact_type: "address", contact_title: "Main Factory", contact_description: "Huntsville Shipping", contact_address_1: "6480 Remington Way", contact_address_2: "", contact_city: "Huntsville", contact_state: "AL", contact_country: "United States", contact_zipcode: "87643", contact_telephone: "456.555.4564", contact_fax: "", contact_email: "dutch@chessgroupinc.com", contact_website: "remington.com", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
@@ -132,6 +136,7 @@ Contact.create!([
   {contactable_id: 5, contactable_type: "Organization", contact_type: "address", contact_title: "Ephesus Lighting", contact_description: "Home Office", contact_address_1: "", contact_address_2: "", contact_city: "", contact_state: "", contact_country: "United States", contact_zipcode: "", contact_telephone: "", contact_fax: "", contact_email: "dutch@chessgroupinc.com", contact_website: "", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil},
   {contactable_id: 5, contactable_type: "Organization", contact_type: "address", contact_title: "Ansen", contact_description: "Ansen Manufacturing Center", contact_address_1: "7849 Hollywood Way", contact_address_2: "", contact_city: "Ogdensburg", contact_state: "NY", contact_country: "United States", contact_zipcode: "13098", contact_telephone: "", contact_fax: "", contact_email: "dutchconsumer@gmail.com", contact_website: "", contact_notes: "", contact_active: true, contact_created_id: nil, contact_updated_id: nil, first_name: nil, last_name: nil}
 ])
+
 CustomerQuality.create!([
   {quality_name: "Visual", quality_description: "", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil, quality_supplier_a: nil, quality_supplier_b: nil, quality_floor_plan: nil, quality_form: nil, quality_packaging: nil, quality_psw: nil, quality_control_plan: nil, quality_fmea: nil, quality_process_flow: nil, quality_gauge: nil, quality_study: nil, quality_dimensional_cofc: nil, quality_material_cofc: nil},
   {quality_name: "FAI", quality_description: "", quality_notes: "", quality_active: true, quality_created_id: nil, quality_updated_id: nil, quality_supplier_a: nil, quality_supplier_b: nil, quality_floor_plan: nil, quality_form: nil, quality_packaging: nil, quality_psw: nil, quality_control_plan: nil, quality_fmea: nil, quality_process_flow: nil, quality_gauge: nil, quality_study: nil, quality_dimensional_cofc: nil, quality_material_cofc: nil},
@@ -190,6 +195,7 @@ ItemRevision.create!([
   {item_revision_name: "B", item_revision_date: "2016-01-03", item_id: 1, owner_id: 1, organization_id: 1, vendor_quality_id: nil, customer_quality_id: nil, item_name: "Screw", item_description: "1/2 Crazy Nut", item_notes: "", item_tooling: "0.0", item_cost: "0.0", item_revision_created_id: nil, item_revision_updated_id: nil, print_id: 1, material_id: 1, latest_revision: true, item_revision_complete: true, item_sell: nil},
   {item_revision_name: "F", item_revision_date: "2016-01-03", item_id: 2, owner_id: 1, organization_id: 1, vendor_quality_id: nil, customer_quality_id: nil, item_name: "Washer", item_description: "Steel Washer with 0167\" Diamter", item_notes: "", item_tooling: "0.0", item_cost: "0.0", item_revision_created_id: nil, item_revision_updated_id: nil, print_id: 2, material_id: 2, latest_revision: true, item_revision_complete: true, item_sell: nil}
 ])
+
 ItemProcess.create!([
   {item_revision_id: 1, process_type_id: 2},
   {item_revision_id: 2, process_type_id: 1}
@@ -224,3 +230,4 @@ ItemRevisionItemPartDimension.create!([
 ProcessTypeSpecification.create!([
   {process_type_id: 2, specification_id: 1}
 ])
+=end
