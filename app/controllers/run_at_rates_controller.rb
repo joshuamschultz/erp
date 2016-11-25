@@ -119,4 +119,15 @@ class RunAtRatesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  private
+
+    def set_run_at_rate
+      @run_at_rate = RunAtRate.find(params[:id])
+    end
+
+    def run_at_rate_params
+      params.require(:run_at_rate).permit(:run_at_rate_active, :run_at_rate_created_id, :run_at_rate_description, 
+                                          :run_at_rate_name, :run_at_rate_notes, :run_at_rate_updated_id,:attachment_attributes)
+    end
 end

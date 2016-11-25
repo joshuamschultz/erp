@@ -1,6 +1,4 @@
-class Dimension < ActiveRecord::Base
-  attr_accessible :dimension_active, :dimension_created_id, :dimension_description, 
-  :dimension_identifier, :dimension_notes, :dimension_updated_id, :gauge_id
+class Dimension < ActiveRecord::Base  
 
   after_initialize :default_values
 

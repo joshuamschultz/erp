@@ -660,7 +660,7 @@ module CommonActions
 	def self.purchase_report(po_id)
 		content = product_notes  = product_description = po_line_comment = product1 = product2 = ''
 		i,j,flag,flag2 = 1,1,1,1
-		@company_info = CompanyInfo.first
+		@company_info = CompanyInfo.first		
 		@po_header = PoHeader.find(po_id)
 		len = @po_header.po_lines.length
 		content += '<div class="ms_wrapper">'
@@ -685,7 +685,8 @@ module CommonActions
 			# else
 			# 	product_description = '&nbsp'
 			end
-			if i== 1  
+			if i== 1  			
+				
 				content += '<section>
 
    <article>

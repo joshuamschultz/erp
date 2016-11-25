@@ -145,5 +145,15 @@ class OwnersController < ApplicationController
   def per_page
     params[:iDisplayLength].to_i > 0 ? params[:iDisplayLength].to_i : 10
   end
+  private
+
+    def set_owner
+      @owner = Owner.find(params[:id])
+    end
+
+    def owner_params
+      params.require(:owner).permit(:owner_commission_amount, :owner_commission_type_id, :owner_description, 
+                                    :owner_identifier, :owner_created_id, :owner_updated_id, :owner_active)
+    end
 
 end

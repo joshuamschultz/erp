@@ -1,9 +1,6 @@
 class CompanyInfo < ActiveRecord::Base
   extend ValidatesFormattingOf::ModelAdditions
 
-  attr_accessible :company_active, :company_address1, :company_address2, :company_created_id, 
-  :company_fax, :company_mobile, :company_name, :company_phone1, :company_phone2, :company_slogan, 
-  :company_updated_id, :company_website, :image_attributes, :logo_attributes
 
   validates_uniqueness_of :company_name if validates_length_of :company_name, :minimum => 2, :maximum => 50
 
@@ -17,7 +14,14 @@ class CompanyInfo < ActiveRecord::Base
 
   accepts_nested_attributes_for :image, :allow_destroy => true
 
+ 
   has_one :logo, :as => :jointable
 
   accepts_nested_attributes_for :logo, :allow_destroy => true
+  
+  def company_info_params
+      params.require(:company_info).permit(:company_active, :company_address1, :company_address2, :company_created_id, 
+  :company_fax, :company_mobile, :company_name, :company_phone1, :company_phone2, :company_slogan, 
+  :company_updated_id, :company_website, :image_attributes, :logo_attributes)
+  end
 end

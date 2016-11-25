@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '5.0.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -10,8 +10,8 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails', '~> 5.0', '>= 5.0.4'
+  gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -37,7 +37,8 @@ gem 'rails3-jquery-autocomplete'
 # To use debugger
 # gem 'debugger'
 
-gem 'devise'
+gem 'devise', '~> 4.2'
+
 gem 'therubyracer', '~> 0.10.2'
 gem 'execjs', '1.4.0'
 gem 'bootstrap-sass', '~> 2.3.1.0'
@@ -65,15 +66,16 @@ gem 'role_model'
 
 gem 'rails_admin'
 
-gem 'client_side_validations'
-gem 'client_side_validations-simple_form'
-gem 'ruby-standard-deviation', '~> 2.0.0'
+gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
+gem 'client_side_validations-simple_form',github: 'DavyJonesLocker/client_side_validations-simple_form', branch: 'rails5'
+ # gem 'client_side_validations-simple_form'#, '~> 3.3', '>= 3.3.1'
+# gem 'ruby-standard-deviation', '~> 2.0.0'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'string-urlize', '~> 1.0.2'
+gem 'protected_attributes_continued'
 
 
 
 
-
-gem "fast_seeder"
+# gem "fast_seeder"

@@ -124,4 +124,14 @@ class SpecificationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_specification
+      @specification = Specification.find(params[:id])
+    end
+
+    def specification_params
+      params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description, 
+                                            :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes)
+    end
 end

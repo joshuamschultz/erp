@@ -13,15 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20151001071615) do
 
-  create_table "approved_checks", :force => true do |t|
-    t.string   "status"
-    t.integer  "payment_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "approved_checks", ["payment_id"], :name => "index_approved_checks_on_payment_id"
-
   create_table "attachments", :force => true do |t|
     t.integer  "attachable_id"
     t.string   "attachable_type"
@@ -400,7 +391,7 @@ ActiveRecord::Schema.define(:version => 20151001071615) do
     t.string   "gl_entry_identifier"
     t.integer  "gl_account_id"
     t.string   "gl_entry_description"
-    t.date     "gl_entry_date",                                         :default => '2014-01-07'
+    t.date     "gl_entry_date",                                         :default => '2016-03-28'
     t.decimal  "gl_entry_credit",       :precision => 25, :scale => 10, :default => 0.0
     t.decimal  "gl_entry_debit",        :precision => 25, :scale => 10, :default => 0.0
     t.text     "gl_entry_notes"
@@ -616,20 +607,6 @@ ActiveRecord::Schema.define(:version => 20151001071615) do
     t.integer  "lot_count"
     t.string   "item_alt_part_no"
   end
-
-  create_table "journal_entries", :force => true do |t|
-    t.integer  "gl_account_id"
-    t.integer  "organization_id"
-    t.string   "action"
-    t.float    "debit_amount"
-    t.float    "credit_amount"
-    t.text     "note"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
-  add_index "journal_entries", ["gl_account_id"], :name => "index_journal_entries_on_gl_account_id"
-  add_index "journal_entries", ["organization_id"], :name => "index_journal_entries_on_organization_id"
 
   create_table "logos", :force => true do |t|
     t.integer  "jointable_id"
@@ -1330,7 +1307,6 @@ ActiveRecord::Schema.define(:version => 20151001071615) do
     t.string   "lot_shelf_idenifier"
     t.integer  "lot_shelf_unit"
     t.integer  "lot_shelf_number"
-    t.integer  "run_at_rate"
     t.integer  "run_at_rate_id"
     t.string   "fai"
     t.boolean  "finished",             :default => false

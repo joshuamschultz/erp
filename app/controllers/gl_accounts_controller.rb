@@ -122,7 +122,15 @@ class GlAccountsController < ApplicationController
         render :text => "" and return
       end
   end
+   private
 
+    def set_gl_account
+      @gl_account = GlAccount.find(params[:id])
+    end
+
+    def gl_account_params
+      params.require(:gl_account).permit(:gl_account_active, :gl_account_description, :gl_account_title, :gl_account_identifier, :gl_type_id, :gl_account_amount, :key_account)
+    end
 
 
 end

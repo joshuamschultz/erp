@@ -135,4 +135,13 @@ class ReconcilesController < ApplicationController
       format.json { head :no_content }
     end
   end
+   private
+
+    def set_reconcile
+      @reconcile = Reconcile.find(params[:id])
+    end
+
+    def reconcile_params
+      params.require(:notification).permit(:tag, :reconcile_type, :payment_id, :deposit_check_id, :printing_screen_id, :receipt_id)
+    end
 end

@@ -4,7 +4,7 @@ class Logo < ActiveRecord::Base
   :jointable_id, :jointable_type, :joint
 
   	belongs_to :jointable, :polymorphic => true
-
+    
 
 
   	  has_attached_file :joint, :url  => "/attachments/joints/:id/:style/:basename.:extension", 

@@ -1,7 +1,5 @@
 class CauseAnalysis < ActiveRecord::Base
-	include Rails.application.routes.url_helpers
-
-	attr_accessible :active, :created_id, :description, :name, :notes, :updated_id, :attachment_attributes
+	include Rails.application.routes.url_helpers	
 
 	after_initialize :default_values
 
@@ -25,6 +23,8 @@ class CauseAnalysis < ActiveRecord::Base
 	def before_save_values
 	  self.name = self.attachment.attachment_name
 	end
-
+	def cause_analysis_params
+		params.require(:cause_analysis).permit(:active, :created_id, :description, :name, :notes, :updated_id, :attachment_attributes)
+	end	
   
 end

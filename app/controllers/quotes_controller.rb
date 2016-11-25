@@ -229,5 +229,16 @@ class QuotesController < ApplicationController
     def create_po
         
     end
+    private
+
+        def set_quote
+            @quote = Quote.find(params[:id])
+        end
+
+        def quote_params
+          params.require(:quote).permit(:quote_active, :quote_created_id, :quote_description, :quote_identifier, 
+                                        :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
+                                        :quote_po_type, :item_quantity, :customer_id, :group_id, :attachment_public)
+        end
 
 end

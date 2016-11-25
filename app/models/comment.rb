@@ -1,6 +1,5 @@
 class Comment < ActiveRecord::Base
-  attr_accessible :comment, :comment_active, :comment_created_id, :comment_updated_id, 
-  :commentable_id, :commentable_type, :comment_type
+  
 
   after_initialize :default_values
 
@@ -32,5 +31,9 @@ class Comment < ActiveRecord::Base
           end
       end   
   end
+  def comment_params
+      params.require(:comment).permit(:comment, :comment_active, :comment_created_id, :comment_updated_id, 
+  :commentable_id, :commentable_type, :comment_type)
+  end 
 
 end

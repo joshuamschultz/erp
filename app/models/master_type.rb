@@ -1,23 +1,16 @@
 class MasterType < ActiveRecord::Base
-  attr_accessible :type_active, :type_category, :type_description, :type_name, :type_value, :quality_document_id
+  
   belongs_to :quality_document
-  scope :po_types, where(:type_category => 'po_type')
+  scope :po_types, -> {where type_category: 'po_type'}
+  scope :organization_types, -> {where type_category: 'organization_type'}
+  scope :quality_levels, -> {where type_category: 'customer_quality_level'}
+  scope :payment_types, -> {where type_category: 'payment_type'}
+  scope :gl_modes, -> {where type_category: 'gl_mode'}
+  scope :gl_categories, -> {where type_category: 'gl_category'}  
+  scope :ic_actions, -> {where type_category: 'icp_quallity_action'}
+  scope :organization_quality_types, -> {where type_category: 'organization_type_q_a'}
+  scope :customer_feedback_types, -> {where type_category: 'customer_response'}
 
-  scope :organization_types, where(:type_category => 'organization_type')
-
-  scope :quality_levels, where(:type_category => 'customer_quality_level')
-
-  scope :payment_types, where(:type_category => 'payment_type')
-
-  scope :gl_modes, where(:type_category => 'gl_mode')
-
-  scope :gl_categories, where(:type_category => 'gl_category')  
-
-  scope :ic_actions, where(:type_category => 'icp_quallity_action')
-
-  scope :organization_quality_types, where(:type_category => 'organization_type_q_a')
-
-  scope :customer_feedback_types, where(:type_category => 'customer_response')
 
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 

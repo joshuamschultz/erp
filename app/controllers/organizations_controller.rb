@@ -48,20 +48,23 @@ class OrganizationsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      @orgs = Array.new
       format.json {
         @organizations = @organizations.select{|organization| 
-          organization[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
-          organization[:organization_expiration_date] = organization.vendor_expiration_date
-          organization[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
-          organization[:organization_email] ="<a href='mailto:#{organization.organization_email}' target='_top'>#{organization.organization_email}</a>"
+          org = Hash.new
+          org[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
+          org[:organization_expiration_date] = organization.vendor_expiration_date
+          org[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
+          org[:organization_email] ="<a href='mailto:#{organization.organization_email}' target='_top'>#{organization.organization_email}</a>"
 
           if can? :edit, Organization
-            organization[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
+            org[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
            else
-             organization[:links] = ""
+             org[:links] = ""
            end 
+           @orgs.push(org)
         }
-        render json: {:aaData => @organizations}  }
+        render json: {:aaData => @orgs}  }
     end
   end
 
@@ -211,6 +214,11 @@ class OrganizationsController < ApplicationController
   def main_address
       @organization = Organization.find(params[:organization_id])
   end
+  
+    
+    def organization_params
+      params.required(:organization).permit(:organization_expiration_date)
+    end
 
 
 end

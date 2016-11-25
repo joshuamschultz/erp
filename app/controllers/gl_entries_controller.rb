@@ -149,4 +149,14 @@ class GlEntriesController < ApplicationController
 
         render json: {:result => note}
   end
+  private
+
+    def set_gl_entry
+      @gl_entry = GlEntry.find(params[:id])
+    end
+
+    def gl_entry_params
+      params.require(:gl_entry).permit(:gl_entry_active, :gl_entry_credit, :gl_entry_date, :gl_entry_debit,
+                                       :gl_entry_description, :gl_entry_identifier, :gl_entry_notes, :gl_account_id, :payable_id, :payable_account_id, :receivable_id, :receivable_account_id, :payment_id, :receipt_id)
+    end
 end

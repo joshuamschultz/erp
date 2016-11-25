@@ -1,9 +1,7 @@
 class RunAtRate < ActiveRecord::Base
 	include Rails.application.routes.url_helpers
 
-	attr_accessible :run_at_rate_active, :run_at_rate_created_id, :run_at_rate_description, 
-					  :run_at_rate_name, :run_at_rate_notes, :run_at_rate_updated_id,:attachment_attributes
-
+	
 	after_initialize :default_values
 
 	def default_values

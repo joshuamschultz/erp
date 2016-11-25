@@ -1,5 +1,5 @@
 AllianceFasteners::Application.routes.draw do
-match "auto_complete" => 'so_lines#auto_complete'
+get "auto_complete" => 'so_lines#auto_complete'
 
   namespace :api do
   namespace :vi do
@@ -470,8 +470,8 @@ end
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  match "/404" => "static_pages#error_404"
-  match "/500" => "static_pages#error_500"
+  get "/404" => "static_pages#error_404"
+  get "/500" => "static_pages#error_500"
 
   # match ':not_found' => 'account#dashboard', :constraints => { :not_found => /.*/ }
 

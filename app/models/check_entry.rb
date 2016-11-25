@@ -1,7 +1,7 @@
 class CheckEntry < ActiveRecord::Base
   include Rails.application.routes.url_helpers 
 
-  attr_accessible :check_active, :check_code, :check_identifier, :status
+   
 
   # validates_presence_of :check_code
 
@@ -62,5 +62,8 @@ class CheckEntry < ActiveRecord::Base
   has_one :payment 
 
   #, :class_name => "Payment", :foreign_key => "payment_check_code", :primary_key => 'check_code'
-  # has_one :receipt, :class_name => "Receipt", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
+    # has_one :receipt, :class_name => "Receipt", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
+  def check_entry_params
+      params.require(:check_entry).permit(:check_active, :check_code, :check_identifier, :status)
+  end
 end
