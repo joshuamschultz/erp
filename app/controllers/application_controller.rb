@@ -2,16 +2,16 @@ class ApplicationController < ActionController::Base
   	include CommonActions
   	protect_from_forgery
 
-  	before_filter :authenticate_user!
-  	before_filter :initialize_request
+  	before_action :authenticate_user!
+  	before_action :initialize_request
     
     rescue_from CanCan::AccessDenied do |exception|
     redirect_to main_app.permissions_error_url, :alert => exception.message
   end
 
 
-  before_filter :set_current_user
-  around_filter :set_time_zone
+  before_action :set_current_user
+  around_action :set_time_zone
   
   def set_time_zone(&block)
     if current_user.present?
@@ -28,4 +28,6 @@ class ApplicationController < ActionController::Base
   		CommonActions.clear_temp_objects
     	root_path
   	end
+
+    
 end

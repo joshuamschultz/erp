@@ -109,4 +109,13 @@ class CustomerFeedbacksController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_customer_feedback
+      @customer_feedback = CustomerFeedback.find(params[:id])
+    end
+
+    def customer_feedback_params
+      params.require(:customer_feedback).permit(:feedback, :quality_action_id, :title, :organization_id, :user_id, :customer_feedback_type_id)
+    end
 end

@@ -7,7 +7,9 @@ class Organization < ActiveRecord::Base
 	:organization_name, :organization_notes, :organization_short_name, :organization_state, 
 	:organization_telephone, :organization_type_id, :organization_updated_id, :organization_website, 
 	:organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id, 
-	:vendor_quality_id, :organization_complete, :organization_active,  :notification_attributes
+	:vendor_quality_id, :organization_complete, :organization_active,  :notification_attributes, :organization_expiration_date
+
+	attr_accessor :organization_expiration_date, :links
 
 	scope :organizations, lambda{|type| 
 		case(type)
@@ -101,16 +103,17 @@ class Organization < ActiveRecord::Base
     accepts_nested_attributes_for :notification, :allow_destroy => true
 
 
-  	belongs_to :organization_type, :class_name => "MasterType", :foreign_key => "organization_type_id", 
-  	:conditions => ['type_category = ?', 'organization_type']
-
-	belongs_to :contact_type, :class_name => "MasterType", :foreign_key => "customer_contact_type_id", 
-	:conditions => ['type_category = ?', 'customer_contact_type']
-
-	belongs_to :max_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_max_quality_id"
-
-	belongs_to :min_vendor_quality, :class_name => "VendorQuality", :foreign_key => "customer_min_quality_id"
-
+  	belongs_to :organization_type, -> {where type_category: 'organization_type'},
+  	           :class_name => "MasterType", :foreign_key => "organization_type_id"
+	belongs_to :contact_type, -> {where type_category: 'customer_contact_type'},
+	           :class_name => "MasterType", :foreign_key => "customer_contact_type_id"
+	belongs_to :max_vendor_quality, 
+	           :class_name => "VendorQuality", 
+	           :foreign_key => "customer_max_quality_id"
+	belongs_to :min_vendor_quality, 
+	           :class_name => "VendorQuality", 
+	           :foreign_key => "customer_min_quality_id"
+	           
 	has_many :comments, :as => :commentable, :dependent => :destroy
 	has_many :contacts, :as => :contactable, :dependent => :destroy
 	has_many :organization_processes, :dependent => :destroy

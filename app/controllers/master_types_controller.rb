@@ -87,4 +87,13 @@ class MasterTypesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+  
+    def set_master_type
+      @master_type = MasterType.find(params[:id])
+    end
+
+    def master_type_params
+      params.require(:master_type).permit(:type_active, :type_category, :type_description, :type_name, :type_value, :quality_document_id)
+    end
 end

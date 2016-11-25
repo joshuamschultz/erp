@@ -1,6 +1,4 @@
-class Owner < ActiveRecord::Base
-  attr_accessible :owner_commission_amount, :owner_commission_type_id, :owner_description, 
-  :owner_identifier, :owner_created_id, :owner_updated_id, :owner_active
+class Owner < ActiveRecord::Base  
 
   after_initialize :default_values
 
@@ -8,8 +6,8 @@ class Owner < ActiveRecord::Base
     self.owner_active = true if self.owner_active.nil?
   end
 
-  belongs_to :commission_type, :class_name => "MasterType", :foreign_key => "owner_commission_type_id", 
-  :conditions => ['type_category = ?', 'commission_type']
+ belongs_to :commission_type, -> {where type_category:  commission_type},
+             :class_name => "MasterType", :foreign_key => "owner_commission_type_id"
 
   (validates_uniqueness_of :owner_identifier if validates_length_of :owner_identifier, :minimum => 2, :maximum => 20) if validates_presence_of :owner_identifier
 

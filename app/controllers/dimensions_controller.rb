@@ -120,4 +120,14 @@ class DimensionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_dimension
+      @dimension = Dimension.find(params[:id])
+    end
+
+    def dimension_params
+      params.require(:dimension).permit(:dimension_active, :dimension_created_id, :dimension_description,
+                                                :dimension_identifier, :dimension_notes, :dimension_updated_id, :gauge_id)
+    end
 end

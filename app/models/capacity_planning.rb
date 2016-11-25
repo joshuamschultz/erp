@@ -1,9 +1,6 @@
 class CapacityPlanning < ActiveRecord::Base
 		include Rails.application.routes.url_helpers
-
-  attr_accessible :capacity_plan_active, :capacity_plan_created_id, :capacity_plan_description,
-  				:capacity_plan_name, :capacity_plan_notes, :capacity_plan_updated_id, :attachment_attributes
-
+   
   	after_initialize :default_values
 
 	def default_values
@@ -24,4 +21,9 @@ class CapacityPlanning < ActiveRecord::Base
 	def before_save_values
 	  sel_name = self.attachment.attachment_name
 	end
+	def capacity_planning_params
+		params.require(:capacity_planning).permit(:capacity_plan_active, :capacity_plan_created_id, :capacity_plan_description,
+  				:capacity_plan_name, :capacity_plan_notes, :capacity_plan_updated_id, :attachment_attributes)
+	end	
+
 end

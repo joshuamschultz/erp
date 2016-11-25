@@ -148,6 +148,16 @@ class ProcessTypesController < ApplicationController
   #     }
   #   end
   # end
+   private
+
+    def set_process_type
+      @process_type = ProcessType.find(params[:id])
+    end
+
+    def process_type_params
+      params.require(:process_type).permit(:process_active, :process_created_id, :process_description, 
+                                           :process_notes, :process_short_name, :process_updated_id, :attachment_attributes, :notification_attributes)
+    end
 end
 
 

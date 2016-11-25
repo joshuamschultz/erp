@@ -2,9 +2,9 @@ class CustomerQuote < ActiveRecord::Base
     include Rails.application.routes.url_helpers
     has_many :customer_quote_lines
     belongs_to :organization
-    attr_accessible :organization_id,:customer_quote_active, :customer_quote_created_id, :customer_quote_description, :customer_quote_identifier, :customer_quote_notes, :customer_quote_status, :customer_quote_updated_id
+    
 
-    belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
+    belongs_to :organization, -> {where organization_type_id:  MasterType.find_by_type_value("customer").id}
     validates_presence_of :organization
 
     before_create :process_before_create

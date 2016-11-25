@@ -39,6 +39,7 @@ table {
 
 
 <div class="ms_wrapper">
+ <% @deposit_checks.each do |deposit_check| %>  
       <% receipt = Receipt.find_by_deposit_check_id(deposit_check.id) %>
   
   <div class="container">
@@ -112,17 +113,17 @@ table {
               <td id="check18"  >&nbsp;</td>
           <td width="83%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr align="center">
-              <td width="30%" scope="row">334,556</td>
+              <td width="30%" scope="row"></td>
               <td width="31%">.................</td>
               <td width="39%">.................</td>
             </tr>
             <tr align="center">
-              <td scope="row">334,556</td>
+              <td scope="row"></td>
               <td>.................</td>
               <td>.................</td>
             </tr>
             <tr align="center">
-              <td scope="row">334,556</td>
+              <td scope="row"></td>
               <td>.................</td>
               <td>.................</td>
             </tr>
@@ -192,113 +193,7 @@ table {
         <br>   <br>
     </div>
     
-
     
-    
-    <div class="container">
-    
-    
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td scope="row"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="45%" scope="row"><strong>Date:&nbsp;&nbsp;&nbsp; &nbsp;<%= Date.today.to_s  %></strong></td>
-          <td width="41%"><strong>DEPOSIT #:&nbsp;&nbsp;&nbsp; &nbsp; </strong></td>
-          <td width="14%"><strong>Page: &nbsp;&nbsp;&nbsp; &nbsp;  1</strong></td>
-        <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-        
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-                <tr align="center">
-          <td width="12%" scope="row">Lorem </td>
-          <td width="28%">Lorem Ipsum</td>
-          <td width="15%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="16%">Lorem </td>
-          <td width="13%">Lorem </td>
-        </tr>
-      </table></td>
-    </tr>
-    </table>
-        <br>   <br>
-    </div>
     
 
     
@@ -320,7 +215,7 @@ table {
     </div>
   </table>
 
-
+ <%end%> 
 
 
 

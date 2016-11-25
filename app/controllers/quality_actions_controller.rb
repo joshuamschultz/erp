@@ -185,4 +185,16 @@ class QualityActionsController < ApplicationController
       render :layout => false
 
   end
+   private
+
+    def set_quality_action
+      @quality_action = QualityAction.find(params[:id])
+    end
+
+    def quality_action_params
+      params.require(:quality_action).permit(:definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
+                                             :quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
+                                             :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
+                                             :created_user_id, :root_cause, :quality_lot_id, :notification_attributes)
+    end
 end

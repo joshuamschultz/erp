@@ -96,4 +96,14 @@ class TerritoriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+   private
+
+    def set_territory
+      @territory = Territory.find(params[:id])
+    end
+
+    def territory_params
+      params.require(:territory).permit(:territory_active, :territory_created_id, :territory_description,
+                                        :territory_identifier, :territory_updated_id, :territory_zip)
+    end
 end

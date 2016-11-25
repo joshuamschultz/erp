@@ -6,10 +6,7 @@ class QualityAction < ActiveRecord::Base
     belongs_to :po_header
     belongs_to :cause_analysis
     belongs_to :quality_lot
-    attr_accessible :definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
-                :quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
-                :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
-                :created_user_id, :root_cause, :quality_lot_id, :notification_attributes
+    
 
     has_many :quality_actions_users, :dependent => :destroy
     has_many :users, :through => :quality_actions_users
@@ -39,13 +36,12 @@ class QualityAction < ActiveRecord::Base
 
     validates_presence_of :quality_action_no, :ic_action_id, :organization_quality_type_id
 
-    belongs_to :ic_action, :class_name => "MasterType", :foreign_key => "ic_action_id",
-        :conditions => ['type_category = ?', 'icp_quallity_action']
-
-    belongs_to :organization_quality_type, :class_name => "MasterType", :foreign_key => "organization_quality_type_id",
-        :conditions => ['type_category = ?', 'organization_type_q_a']
-
-    belongs_to :created_user, :foreign_key => "created_user_id", :class_name => "User"
+    belongs_to :ic_action, -> {where type_category:  icp_quallity_action},
+               :class_name => "MasterType", :foreign_key => "ic_action_id"
+    belongs_to :organization_quality_type, -> {where type_category:  organization_type_q_a},
+               :class_name => "MasterType", :foreign_key => "organization_quality_type_id"
+    belongs_to :created_user, :foreign_key => "created_user_id", 
+                              :class_name => "User"
 
 
     scope :status_based_quality_action, lambda{|status| where(:quality_action_status => status)}

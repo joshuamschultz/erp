@@ -5,12 +5,11 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable, :confirmable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, 
-  :trackable, :validatable, :token_authenticatable, :lockable, :timeoutable
+  :trackable, :validatable, :lockable, :timeoutable
 
   include RoleModel
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :organization_attributes,
-  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id, :time_zone
+  
 
   roles_attribute :roles_mask
 
@@ -81,6 +80,10 @@ class User < ActiveRecord::Base
               end
           end
         end
+  end
+  def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :organization_attributes,
+  :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id, :time_zone)
   end
 
 end

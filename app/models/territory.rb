@@ -7,8 +7,7 @@ class Territory < ActiveRecord::Base
     self.territory_active = true if self.territory_active.nil?
   end
 
-  attr_accessible :territory_active, :territory_created_id, :territory_description, 
-  :territory_identifier, :territory_updated_id, :territory_zip
+  
 
   (validates_uniqueness_of :territory_identifier if validates_length_of :territory_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :territory_identifier
 

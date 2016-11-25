@@ -1,7 +1,6 @@
 class CheckListLine < ActiveRecord::Base
 	belongs_to :checklist
-	belongs_to :master_type
-	attr_accessible :check_list_status, :checklist_id,  :master_type_id
+	belongs_to :master_type	 
 	belongs_to :master_type, :conditions => ['type_category = ?', 'customer_quality_level']
 	validate :master_type, :checklist
 
@@ -13,5 +12,8 @@ class CheckListLine < ActiveRecord::Base
 				status = true
 			end
 		end
+	end
+	def check_list_line_params
+      params.require(:check_list_line).permit(:check_list_status, :checklist_id,  :master_type_id)
 	end
 end

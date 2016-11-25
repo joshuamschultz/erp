@@ -7,8 +7,7 @@ class Specification < ActiveRecord::Base
     self.specification_active = true if self.specification_active.nil?
   end
 
-  attr_accessible :specification_active, :specification_created_id, :specification_description, 
-  :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes
+  
 
   # (validates_uniqueness_of :specification_identifier if validates_length_of :specification_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :specification_identifier
 
@@ -28,7 +27,8 @@ class Specification < ActiveRecord::Base
   accepts_nested_attributes_for :notification, :allow_destroy => true
 
   
-  default_scope :order => 'specification_identifier ASC'
+  
+  default_scope { order('specification_identifier ASC') } 
 
   accepts_nested_attributes_for :attachment, :allow_destroy => true
 

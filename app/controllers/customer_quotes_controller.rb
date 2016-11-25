@@ -183,4 +183,13 @@ class CustomerQuotesController < ApplicationController
         render json: {:result => note} 
         
     end
+    private
+
+      def set_customer_quote
+        @customer_quote = CustomerQuote.find(params[:id])
+      end
+
+      def customer_quote_params
+        params.require(:customer_quote).permit(:organization_id,:customer_quote_active, :customer_quote_created_id, :customer_quote_description, :customer_quote_identifier, :customer_quote_notes, :customer_quote_status, :customer_quote_updated_id)
+      end
 end

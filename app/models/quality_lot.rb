@@ -20,20 +20,13 @@ class QualityLot < ActiveRecord::Base
 	# 	self.quantity_on_hand = self.lot_quantity
 	# end
 
-  	attr_accessible :po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
-  	:inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
-  	:lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
-  	:lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number, :quality_lot_materials_attributes, :run_at_rate_id,
-  	:fai, :finished, :quantity_on_hand, :lot_status, :final_date, :lot_print_status , :lot_unit, :lot_self  #To uncomment for Sprint 7
-
-   	belongs_to :inspection_level, :class_name => "MasterType", :foreign_key => "inspection_level_id", 
-	:conditions => ['type_category = ?', 'inspection_level']
-
-	belongs_to :inspection_method, :class_name => "MasterType", :foreign_key => "inspection_method_id", 
-	:conditions => ['type_category = ?', 'inspection_method']
-
-	belongs_to :inspection_type, :class_name => "MasterType", :foreign_key => "inspection_type_id", 
-	:conditions => ['type_category = ?', 'inspection_type']
+  	
+	belongs_to :inspection_level, -> {where type_category:  inspection_level}, :class_name => "MasterType", 
+   	                                                                           :foreign_key => "inspection_level_id"
+	belongs_to :inspection_method, -> {where type_category:  inspection_method}, :class_name => "MasterType", 
+	                               												 :foreign_key => "inspection_method_id" 
+	belongs_to :inspection_type, -> {where type_category:  inspection_type}, :class_name => "MasterType", 
+	                                                                         :foreign_key => "inspection_type_id" 
 
 	belongs_to :lot_inspector, :class_name => "User", :foreign_key => "lot_inspector_id"
 
