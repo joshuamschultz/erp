@@ -7,13 +7,13 @@ class CustomerQuotesController < ApplicationController
 
 
     def view_permissions
-     if  user_signed_in? &&  current_user.is_customer?
+      if  user_signed_in? &&  current_user.is_customer?
           authorize! :edit, CustomerQuote
       end 
     end
 
     def user_permissions
-     if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor?  )
+      if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor?  )
           authorize! :edit, CustomerQuote
       end 
     end
@@ -44,7 +44,7 @@ class CustomerQuotesController < ApplicationController
           i = 0
           @customer_qots = Array.new
           format.html
-           if item
+          if item
               format.json {  @customer_quotes = @customer_quotes.select{|customer_quote|
                     customer_qot = Hash.new
                     customer_quote.attributes.each do |key, value|
@@ -91,17 +91,17 @@ class CustomerQuotesController < ApplicationController
                      if can? :edit, CustomerQuote
                       customer_qot[:links] = CommonActions.object_crud_paths(nil, edit_customer_quote_path(customer_quote), nil)
                       customer_qot[:links] = CommonActions.object_crud_paths(nil, customer_quote_customer_quote_lines_path(customer_quote), customer_quote_path(customer_quote))
-                    else
+                     else
                       customer_qot[:links] = nil
                       customer_qot[:links] = nil
-                    end 
+                     end 
 
                      customer_qot[:quote_status] = CommonActions.status_color(customer_quote.customer_quote_status)
                       i = i+1
                       @customer_qots.push(customer_qot)
                  }
                  render json: {:aaData => @customer_qots}
-                 }
+            }
           end
         end
     end
