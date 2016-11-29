@@ -46,22 +46,28 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+       @concts = Array.new
       format.json {
           @contacts = @contacts.select{|contact|
-            contact[:organization] = CommonActions.linkable(organization_path(contact.contactable), "Organization : " + contact.contactable.organization_short_name)
-            contact[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == "contact"
-            contact[:contact_name] = contact.contact_title
-            contact[:contact_default] = contact.default_address.present? ? "selected" : ""
-            contact[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
-            contact[:contact_email] = "<a href='mailto:#{contact.contact_email}' target='_top'>#{contact.contact_email.to_s}</a>"
+            conct = Hash.new
+            contact.attributes.each do |key, value|
+              conct[key] = value
+            end
+            conct[:organization] = CommonActions.linkable(organization_path(contact.contactable), "Organization : " + contact.contactable.organization_short_name)
+            conct[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == "contact"
+            conct[:contact_name] = contact.contact_title
+            conct[:contact_default] = contact.default_address.present? ? "selected" : ""
+            conct[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == "address"
+            conct[:contact_email] = "<a href='mailto:#{contact.contact_email}' target='_top'>#{contact.contact_email.to_s}</a>"
 
             if can? :edit, Contact
-              contact[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
+              conct[:links] = CommonActions.object_crud_paths(nil, edit_contact_path(contact), nil)
             else
-               contact[:links] = ""
+               conct[:links] = ""
             end
+            @concts.push(conct)
           }
-          render json: {:aaData => @contacts}
+          render json: {:aaData => @concts}
       }
     end
   end
