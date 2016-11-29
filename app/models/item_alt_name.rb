@@ -9,8 +9,8 @@ class ItemAltName < ActiveRecord::Base
   end
 
   belongs_to :item
-  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
-
+  belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("customer").id}
+  
   validates :item_id, :uniqueness => {:scope => :organization_id, :message => "already exists for the customer!" }
 
   # validates_uniqueness_of :item_alt_identifier

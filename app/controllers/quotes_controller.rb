@@ -51,57 +51,75 @@ class QuotesController < ApplicationController
            
             if item
                  i = 0
+                 @qots = Array.new
                 format.json {  @quotes = @quotes.select{|quote|
-                                     quote[:index] = i
-                                     quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
-                                     quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                      qot = Hash.new
+                                      quote.attributes.each do |key, value|
+                                        qot[key] = value
+                                      end
+                                     qot[:index] = i
+                                     qot[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                     qot[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
                                      if  user_signed_in? && !current_user.is_vendor?
-                                        quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil) if can? :update, @quotes
+                                        qot[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil) if can? :update, @quotes
                                     else
-                                        quote[:links] = CommonActions.object_crud_paths(nil, nil, nil) if can? :update, @quotes
+                                        qot[:links] = CommonActions.object_crud_paths(nil, nil, nil) if can? :update, @quotes
                                     end
-                                     quote[:created] = quote.created_at.strftime("%d %b %Y")
-                                     quote[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
-                                     quote[:price] = Quote.get_quote_item_prices(quote, params[:item_id])
-                                     quote[:notes] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_notes
+                                     qot[:created] = quote.created_at.strftime("%d %b %Y")
+                                     qot[:quantity] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_quantity
+                                     qot[:price] = Quote.get_quote_item_prices(quote, params[:item_id])
+                                     qot[:notes] = quote.quote_lines.find_by_item_id(params[:item_id]).quote_line_notes
                                      i += 1
+                                     @qots.push(qot)
                                  }
-                                 render json: {:aaData => @quotes}
+                                 render json: {:aaData => @qots}
                                  }
             elsif organization
                  i = 0
+                 @qots = Array.new
                 format.json {  @quotes = @quotes.select{|quote|
-                                     quote[:index] = i
-                                     quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
-                                     quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                                     quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
-                                     quote[:created] = quote.created_at.strftime("%d %b %Y")
-                                     quote[:quantity] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_quantity }.join(", ").html_safe
-                                     quote[:price] = Quote.get_quote_item_prices_org(quote, organization)
-                                     quote[:part_no] = Quote.item_list(quote)
-                                     quote[:notes] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_notes }.join(", ").html_safe
+                                    qot = Hash.new
+                                    quote.attributes.each do |key, value|
+                                        qot[key] = value
+                                    end
+                                     qot[:index] = i
+                                     qot[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                     qot[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                     qot[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                     qot[:created] = quote.created_at.strftime("%d %b %Y")
+                                     qot[:quantity] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_quantity }.join(", ").html_safe
+                                     qot[:price] = Quote.get_quote_item_prices_org(quote, organization)
+                                     qot[:part_no] = Quote.item_list(quote)
+                                     qot[:notes] = quote.quote_lines.collect{|quote_line| quote_line.quote_line_notes }.join(", ").html_safe
                                      i += 1
+                                     @qots.push(qot)
                                  }
-                                 render json: {:aaData => @quotes}
+                                 render json: {:aaData => @qots}
                                  }
             else
                  i = 0
+                 @qots = Array.new
                 format.json {  @quotes = @quotes.select{|quote|
-                                 quote[:index] = i
-                                 quote[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
-                                 quote[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
+                                qot = Hash.new
+                                quote.attributes.each do |key, value|
+                                    qot[key] = value
+                                end
+                                 qot[:index] = i
+                                 qot[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
+                                 qot[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
                                 if  user_signed_in? && !current_user.is_vendor?
-                                    quote[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
-                                    quote[:links] = CommonActions.object_crud_paths(nil, new_quote_quote_line_path(quote), quote_path(quote))
+                                    qot[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
+                                    qot[:links] = CommonActions.object_crud_paths(nil, new_quote_quote_line_path(quote), quote_path(quote))
                                  else
-                                    quote[:links] = CommonActions.object_crud_paths(nil, nil, nil)
-                                    quote[:links] = CommonActions.object_crud_paths(nil, nil,quote_path(quote))
+                                    qot[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+                                    qot[:links] = CommonActions.object_crud_paths(nil, nil,quote_path(quote))
                                  end
-                                 quote[:created] = quote.created_at.strftime("%d %b %Y")
-                                 quote[:quote_status] = CommonActions.status_color(quote.quote_status)
+                                 qot[:created] = quote.created_at.strftime("%d %b %Y")
+                                 qot[:quote_status] = CommonActions.status_color(quote.quote_status)
                                  i += 1
+                                 @qots.push(qot)
                              }
-                             render json: {:aaData => @quotes}
+                             render json: {:aaData => @qots}
                              }
             end
         end

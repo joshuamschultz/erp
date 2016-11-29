@@ -22,19 +22,25 @@ before_filter :set_autocomplete_values, only: [:create, :update]
 
     respond_to do |format|
       format.html # index.html.erb
+      @qote_lines = Array.new
       format.json { 
         @quote_lines = @quote_lines.select{|quote_line|
-              quote_line[:item_part_no] = CommonActions.linkable(item_path(quote_line.item), quote_line.item_alt_name.item_alt_identifier) if quote_line.item && quote_line.item_alt_name
-              quote_line[:item_part_no] = quote_line.item_name_sub unless quote_line.item && quote_line.item_alt_name
+              qote_line = Hash.new
+              quote_line.attributes.each do |key, value|
+                qote_line[key] = value
+              end
+              qote_line[:item_part_no] = CommonActions.linkable(item_path(quote_line.item), quote_line.item_alt_name.item_alt_identifier) if quote_line.item && quote_line.item_alt_name
+              qote_line[:item_part_no] = quote_line.item_name_sub unless quote_line.item && quote_line.item_alt_name
               # quote_line[:customer_name] = quote_line.organization ? CommonActions.linkable(organization_path(quote_line.organization), quote_line.organization.organization_name) : ""
               #quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), nil)
               if user_signed_in? &&  current_user.is_vendor? 
-                quote_line[:links] = CommonActions.object_crud_paths(nil, nil,nil)
+                qote_line[:links] = CommonActions.object_crud_paths(nil, nil,nil)
               else
-                quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), quote_quote_line_path(@quote, quote_line))
+                qote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), quote_quote_line_path(@quote, quote_line))
               end
+               @qote_lines.push(qote_line)
           }
-          render json: {:aaData => @quote_lines}
+          render json: {:aaData => @qote_lines}
        }
     end
   end
