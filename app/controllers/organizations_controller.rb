@@ -52,7 +52,9 @@ class OrganizationsController < ApplicationController
       format.json {
         @organizations = @organizations.select{|organization| 
           org = Hash.new
-          org[:id] = organization.id
+          organization.attributes.each do |key, value|
+            org[key] = value
+          end
           org[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
           org[:organization_expiration_date] = organization.vendor_expiration_date
           org[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
