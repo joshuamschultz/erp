@@ -1,4 +1,4 @@
-Alliance Fasteners Installation Guide
+Warehouse Management System Installation Guide
 =====================================
 
 
@@ -8,9 +8,9 @@ Alliance Fasteners Installation Guide
 
    $source /usr/local/rvm/scripts/rvm
 
-2. Install Ruby 1.9.3
+2. Install Ruby 2.3.1
 
-    $rvm install 1.9.3
+    $rvm install 2.3.1
 
 3. After the installation, we can list the available Ruby versions we have installed by typing:
 
@@ -21,16 +21,16 @@ Alliance Fasteners Installation Guide
 
 5. Create Gemset
 
-	$rvm gemset create rails3.2.13
-	$rvm <ruby_version>@rails3.2.13
+	$rvm gemset create rails5.0.0.1
+	$rvm <ruby_version>@rails5.0.0.1
 
 6. Install rails gem
 
-	$gem install rails -v 3.2.13
+	$gem install rails -v 5.0.0.1
 
 7. Use the gemset
 
-	rvm use <ruby_version>@rails3.2.13
+	rvm use <ruby_version>@rails5.0.0.1
 
 8. Clone code from phabricator(Before that get access to the phabricator repo )
 
@@ -67,7 +67,7 @@ Alliance Fasteners Installation Guide
 Once installation is completed, each time you can run the project by following the below listed steps:
 
 1. $source /usr/local/rvm/scripts/rvm
-2. $rvm use <ruby_version>@rails3.2.13
+2. $rvm use <ruby_version>@rails5.0.0.1
 3. $rails s
 
 
