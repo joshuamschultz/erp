@@ -13,8 +13,11 @@ class CustomerQuotesController < ApplicationController
     end
 
     def user_permissions
-      if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor?  )
-          authorize! :edit, CustomerQuote
+      if  user_signed_in? &&
+        ( current_user.is_logistics? ||
+          current_user.is_quality?   ||
+          current_user.is_vendor? )
+            authorize! :edit, CustomerQuote
       end 
     end
 
@@ -94,9 +97,9 @@ class CustomerQuotesController < ApplicationController
                      else
                       customer_qot[:links] = nil
                       customer_qot[:links] = nil
-                     end 
+                     end
 
-                     customer_qot[:quote_status] = CommonActions.status_color(customer_quote.customer_quote_status)
+                      customer_qot[:quote_status] =CommonActions.status_color(customer_quote.customer_quote_status)
                       i = i+1
                       @customer_qots.push(customer_qot)
                  }

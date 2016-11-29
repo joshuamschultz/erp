@@ -54,7 +54,7 @@ class PoHeader < ActiveRecord::Base
 
   belongs_to :ship_to_address, ->{where('contactable_type = ? and contact_type = ?', 'Organization', 'address')},
                                :class_name => "Contact", :foreign_key => "po_ship_to_id" 
-  belongs_to :po_type, -> {where type_category: po_type },
+  belongs_to :po_type, -> {where('type_category = "po_type"') },
                        :class_name => "MasterType", :foreign_key => "po_type_id" 
 
   has_many :po_lines, :dependent => :destroy
