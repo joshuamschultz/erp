@@ -9,13 +9,13 @@ class PoHeadersController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
+    if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
         authorize! :edit, PoHeader
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? 
+    if  user_signed_in? && current_user.is_customer? 
         authorize! :edit, PoHeader
     end 
   end
@@ -35,7 +35,7 @@ class PoHeadersController < ApplicationController
   end
 
   def get_autocomplete_items(parameters)
-      items = super(parameters)
+      items = active_record_get_autocomplete_items(parameters)
       if params[:organization_id].present?
           items = items.where(:organization_id => params[:organization_id])
       end
@@ -69,43 +69,43 @@ class PoHeadersController < ApplicationController
       @po_headers.find_by_po_identifier("Unassigned").delete
       redirect_to action: "index"
     else
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { 
-          i = 0
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { 
+            i = 0
 
-          if  user_signed_in? && current_user.is_vendor?
-            organization_ids = current_user.organizations.collect(&:id)
-#            organization_ids = current_user.organizations.where("organization_type_id =? ", MasterType.find_by_type_value('vendor').id).collect(&:id) To uncomment for Sprint 7
-            @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
-          end
-          po_line_ids = []        
-          @po_headers = @po_headers.select{|po_header|             
-              po_header[:index] = i 
-              po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
-              po_header[:po_type_name] = po_header.po_type.type_name
-              po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
-              if can? :edit, PoHeader
-                po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
-              else
-                po_header[:links] = nil
-              end
-              if params[:item_id].present?
-                po_lines = PoLine.where(:po_header_id => po_header.id, :item_id => params[:item_id])
-                if po_line_ids != nil?
-                  po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
+            if  user_signed_in? && current_user.is_vendor?
+              organization_ids = current_user.organizations.collect(&:id)
+  #            organization_ids = current_user.organizations.where("organization_type_id =? ", MasterType.find_by_type_value('vendor').id).collect(&:id) To uncomment for Sprint 7
+              @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
+            end
+            po_line_ids = []        
+            @po_headers = @po_headers.select{|po_header|             
+                po_header[:index] = i 
+                po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
+                po_header[:po_type_name] = po_header.po_type.type_name
+                po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
+                if can? :edit, PoHeader
+                  po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+                else
+                  po_header[:links] = nil
                 end
-                po_line_ids<< po_lines.first.id
-                po_header[:po_line_price] = po_lines.first.po_line_cost.to_f
-                po_header[:po_type_qty] = po_lines.first.po_line_quantity               
-              end
+                if params[:item_id].present?
+                  po_lines = PoLine.where(:po_header_id => po_header.id, :item_id => params[:item_id])
+                  if po_line_ids != nil?
+                    po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
+                  end
+                  po_line_ids<< po_lines.first.id
+                  po_header[:po_line_price] = po_lines.first.po_line_cost.to_f
+                  po_header[:po_type_qty] = po_lines.first.po_line_quantity               
+                end
 
-              i += 1
-          }
-          render json: {:aaData => @po_headers}
-      }
+                i += 1
+            }
+            render json: {:aaData => @po_headers}
+        }
+      end
     end
-  end
   end
 
   # GET /po_headers/1

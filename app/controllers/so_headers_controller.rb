@@ -10,13 +10,13 @@ class SoHeadersController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
+    if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
         authorize! :edit, User
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_vendor? 
+    if  user_signed_in? && current_user.is_vendor? 
         authorize! :edit, User
     end 
   end
@@ -37,7 +37,7 @@ class SoHeadersController < ApplicationController
   #       authorize! :edit, SoHeader
   # end
   def get_autocomplete_items(parameters)
-      items = super(parameters)
+      items = active_record_get_autocomplete_items(parameters)
       if params[:organization_id].present?
           items = items.where(:organization_id => params[:organization_id])
       end
@@ -245,7 +245,7 @@ private
       html = render_to_string(:layout => false , :partial => 'so_headers/sales_report')
       kit = PDFKit.new(html, :page_size => 'A4')    
       # Get an inline PDF
-      pdf = kit.to_pdf
+      kit.to_pdf
       # Save the PDF to a file    
       path = Rails.root.to_s+"/public/sales_report"
       if File.directory? path

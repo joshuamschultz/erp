@@ -29,7 +29,7 @@ class OrganizationsController < ApplicationController
   end
 
   def get_autocomplete_items(parameters)
-    items = super(parameters)    
+    items = active_record_get_autocomplete_items(parameters)    
     items = items.organizations(params[:type])
   end
 

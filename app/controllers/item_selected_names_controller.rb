@@ -2,7 +2,7 @@ class ItemSelectedNamesController < ApplicationController
   autocomplete :item_selected_name, :item_name, :display_value => :with_alt_name
 
   def get_autocomplete_items(parameters)    
-    items = super(parameters)
+    items = active_record_get_autocomplete_items(parameters)
 
     recent_revisions = ItemRevision.recent_revisions
     # ItemRevision.joins(:item).where("latest_revision = ?", true)

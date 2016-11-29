@@ -12,7 +12,7 @@ class ItemAltNamesController < ApplicationController
   end
   
   def user_permissions
-   if  user_signed_in? && current_user.is_vendor? 
+    if  user_signed_in? && current_user.is_vendor? 
         authorize! :edit, ItemAltName
     end 
   end
@@ -30,7 +30,7 @@ class ItemAltNamesController < ApplicationController
   end
 
   def get_autocomplete_items(parameters)    
-    items = super(parameters)
+    items = active_record_get_autocomplete_items(parameters)
     # matched_altnames = ItemAltName.where("organization_id is NULL or organization_id = ?", params[:organization_id])
     items = ItemAltName.where("item_alt_identifier like ?", "%" + params[:term] + "%")
   end
