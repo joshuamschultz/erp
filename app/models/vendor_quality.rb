@@ -18,7 +18,7 @@ class VendorQuality < ActiveRecord::Base
 
   (validates_uniqueness_of :quality_name if validates_length_of :quality_name, :minimum => 1, :maximum => 1) if validates_presence_of :quality_name
 
-  validates_format_of :quality_name, :with => /^[a-zA-Z]*$/i, :message => "can only contain letter!"
+  validates_format_of :quality_name, :with => /^[a-zA-Z]*$/i, :multiline => true,:message => "can only contain letter!"
 
   validates_length_of :quality_description, :maximum => 50
 

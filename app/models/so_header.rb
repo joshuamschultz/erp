@@ -7,11 +7,10 @@ class SoHeader < ActiveRecord::Base
   validates_presence_of :organization
   
   belongs_to :organization
-  belongs_to :bill_to_address, :class_name => "Contact", :foreign_key => "so_bill_to_id", 
-	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
-
-  belongs_to :ship_to_address, :class_name => "Contact", :foreign_key => "so_ship_to_id", 
-	:conditions => ['contactable_type = ? and contact_type = ?', 'Organization', 'address']
+  belongs_to :bill_to_address, ->{where('contactable_type = ? and contact_type = ?', 'Organization', 'address')},
+             :class_name => "Contact", :foreign_key => "so_bill_to_id" 
+  belongs_to :ship_to_address, ->{where('contactable_type = ? and contact_type = ?', 'Organization', 'address')},
+             :class_name => "Contact", :foreign_key => "so_ship_to_id" 
 
   has_one :po_header
 	has_many :attachments, :as => :attachable, :dependent => :destroy  
@@ -19,7 +18,7 @@ class SoHeader < ActiveRecord::Base
 	has_many :so_lines, :dependent => :destroy
   has_many :receivables, :dependent => :destroy
 
-  default_scope order('created_at DESC')
+  default_scope { order('created_at DESC') } 
 	before_create :before_create_level_defaults
 
 

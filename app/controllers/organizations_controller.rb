@@ -7,13 +7,13 @@ class OrganizationsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_logistics?
+    if  user_signed_in? && current_user.is_logistics?
         authorize! :edit, Organization
     end 
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? 
+    if  user_signed_in? && current_user.is_customer? 
         authorize! :edit, Organization
     end 
   end
@@ -52,6 +52,7 @@ class OrganizationsController < ApplicationController
       format.json {
         @organizations = @organizations.select{|organization| 
           org = Hash.new
+          org[:id] = organization.id
           org[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
           org[:organization_expiration_date] = organization.vendor_expiration_date
           org[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
@@ -59,9 +60,9 @@ class OrganizationsController < ApplicationController
 
           if can? :edit, Organization
             org[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
-           else
-             org[:links] = ""
-           end 
+          else
+            org[:links] = ""
+          end 
            @orgs.push(org)
         }
         render json: {:aaData => @orgs}  }
