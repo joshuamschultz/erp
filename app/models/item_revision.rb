@@ -7,7 +7,7 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :material
   belongs_to :vendor_quality
   belongs_to :customer_quality
-  belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
+  belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}
 
   attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
@@ -148,9 +148,9 @@ class ItemRevision < ActiveRecord::Base
                    item_revision_dimension.save
                 end
               end
-          end
+            end
         end
-    end
+  end
 
     def redirect_path
         item_path(self.item, revision_id: self.id)
@@ -164,6 +164,7 @@ class ItemRevision < ActiveRecord::Base
         SoHeader.joins(:so_lines).where("so_lines.item_revision_id = ?", self.id)
     end 
 
-    scope :recent_revisions, joins(:item).where("item_revisions.latest_revision = ?", true)
+    
+    scope :recent_revisions, -> { joins(:item).where('item_revisions.latest_revision = ?', true) }
 
 end

@@ -78,7 +78,7 @@ class Item < ActiveRecord::Base
       self.item_revisions.order("item_revision_date desc").first
   end
 
-  scope :item_with_recent_revisions, joins(:item_revisions).where("item_revisions.latest_revision = ?", true)
+  scope :item_with_recent_revisions, -> { joins(:item_revisions).where('item_revisions.latest_revision = ?', true) }
 
   def customer_alt_names
       alt_names = []
@@ -223,10 +223,10 @@ class Item < ActiveRecord::Base
           end
         end
       end
-    }
-      content
-      html = '<!DOCTYPE html><title>Inventory_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 12px;padding: 6px;} .wrapper {width: 640px;</style>
+    }    
+    html = '<!DOCTYPE html><title>Inventory_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 12px;padding: 6px;} .wrapper {width: 640px;</style>
             '+content+'
         '
+    html
   end
 end
