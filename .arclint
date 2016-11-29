@@ -1,7 +1,7 @@
 {
   "linters": {
     "sample": {
-      "type": "ruby"
+      "type": "ruby",
       "include": "(\\.rb$)"
     }
   }
