@@ -222,6 +222,4 @@ class OrganizationsController < ApplicationController
     def organization_params
       params.required(:organization).permit(:organization_expiration_date)
     end
-
-
 end

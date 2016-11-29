@@ -1,8 +1,12 @@
 {
   "linters": {
-    "sample": {
+    "ruby": {
       "type": "ruby",
       "include": "(\\.rb$)"
+    },
+    "text": {
+      "type": "text",
+      "text.max-line-length": 500
     }
   }
 }

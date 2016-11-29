@@ -13,52 +13,51 @@ Warehouse Management System Installation Guide
     $rvm install 2.3.1
 
 3. After the installation, we can list the available Ruby versions we have installed by typing:
-
-	$rvm list
+  $rvm list
 4. We can switch between the Ruby versions by typing:
 
    $rvm use <ruby_version>
 
 5. Create Gemset
 
-	$rvm gemset create rails5.0.0.1
-	$rvm <ruby_version>@rails5.0.0.1
+  $rvm gemset create rails5.0.0.1
+  $rvm <ruby_version>@rails5.0.0.1
 
 6. Install rails gem
 
-	$gem install rails -v 5.0.0.1
+  $gem install rails -v 5.0.0.1
 
 7. Use the gemset
 
-	rvm use <ruby_version>@rails5.0.0.1
+  rvm use <ruby_version>@rails5.0.0.1
 
 8. Clone code from phabricator(Before that get access to the phabricator repo )
 
- 	$git clone ssh://git@phabricator.agileblaze.com/diffusion/ALLFASTNERS/alliance_fastners.git
+  $git clone ssh://git@phabricator.agileblaze.com/diffusion/132/erp_.git
 
 9. Change Directory
 
- 	$cd alliance_fastners
+  $cd alliance_fastners
 
 10. Install all gem files
 
- 	 $bundle install
+  $bundle install
 
 11. Create DataBase
 
-    $rake db:create
+  $rake db:create
 
 12. Run Miggration
 
-    $rake db:migrate
+  $rake db:migrate
 
 13. Populate seed data
    
-    $rake db:seed
+  $rake db:seed
 
 14. Run the server
     
-    $rails s
+  $rails s
 
 15. Go to http://localhost:3000/
  
@@ -69,7 +68,3 @@ Once installation is completed, each time you can run the project by following t
 1. $source /usr/local/rvm/scripts/rvm
 2. $rvm use <ruby_version>@rails5.0.0.1
 3. $rails s
-
-
-
-

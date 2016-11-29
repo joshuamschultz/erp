@@ -7,20 +7,21 @@ class PoLinesController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
+    if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
         authorize! :edit, PoLine
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? 
+    if  user_signed_in? && current_user.is_customer?
         authorize! :edit, PoLine
-    end 
+    end
   end
 
   def set_page_info
       @menus[:purchases][:active] = "active"
       simple_form_validation = true
+      p simple_form_validation
   end
 
   def set_autocomplete_values
@@ -33,7 +34,7 @@ class PoLinesController < ApplicationController
     params[:po_line][:alt_name_transfer_id], params[:item_transfer_name_id] = params[:item_transfer_name_id], params[:po_line][:alt_name_transfer_id]
     params[:po_line][:alt_name_transfer_id] = params[:org_item_transfer_name_id] if params[:po_line][:alt_name_transfer_id] == "" || params[:po_line][:alt_name_transfer_id].nil?
   end
-  
+
   # GET po_headers/1/po_lines
   # GET po_headers/1/po_lines.json
   def index
@@ -42,29 +43,34 @@ class PoLinesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to new_po_header_po_line_path(@po_header) }
-      format.json { 
+      format.json {
+          @po_lins = Array.new
           @po_lines = @po_lines.select{|po_line|
-              if po_line.po_line_status == "open"
-                po_line[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-              else
-                po_line[:item_part_no] = "<a href='/items/#{po_line.item.id}' style='color: #848482;' >"+po_line.item_alt_name.item_alt_identifier+"</a> "
+              po_lin = Hash.new
+              po_line.attributes.each do |key, value|
+                po_lin[key] = value
               end
-              po_line[:item_notes] = po_line.item_revision.present? ? po_line.item_revision.item_notes : '' 
-              po_line[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
-              po_line[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "CHESS"
-              po_line[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"              
+              if po_line.po_line_status == "open"
+                po_lin[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
+              else
+                po_lin[:item_part_no] = "<a href='/items/#{po_line.item.id}' style='color: #848482;' >"+po_line.item_alt_name.item_alt_identifier+"</a> "
+              end
+              po_lin[:item_notes] = po_line.item_revision.present? ? po_line.item_revision.item_notes : ''
+              po_lin[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier) : ""
+              po_lin[:customer_name] = po_line.organization ? CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) : "CHESS"
+              po_lin[:po_line_customer_po] = po_line.po_line_customer_po.present? ? po_line.po_line_customer_po : "Stock"
               if can? :edit , PoLine
                 if po_line.po_line_status == "open"
-                  po_line[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
+                  po_lin[:links] = CommonActions.object_crud_paths(nil, edit_po_header_po_line_path(@po_header, po_line), nil)
                 else
-                  po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
+                  po_lin[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
                 end
               else
-                po_line[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
+                po_lin[:links] =  CommonActions.object_crud_paths(nil, nil, nil)
               end
-              
+              @po_lins.push(po_lin)
           }
-          render json: {:aaData => @po_lines}
+          render json: {:aaData => @po_lins}
        }
     end
   end
@@ -124,7 +130,7 @@ class PoLinesController < ApplicationController
   # PUT po_headers/1/po_lines/1.json
   def update
     @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])    
+    @po_line = @po_header.po_lines.find(params[:id])
 
     respond_to do |format|
       if @po_line.update_attributes(params[:po_line])
@@ -154,13 +160,14 @@ class PoLinesController < ApplicationController
 
 private
 
-  def genarate_pdf 
+  def genarate_pdf
       html = render_to_string(:layout => false , :partial => 'po_headers/purchase_report')
 
-      kit = PDFKit.new(html, :page_size => 'A4' )  
+      kit = PDFKit.new(html, :page_size => 'A4' )
       # Get an inline PDF
       pdf = kit.to_pdf
-      # Save the PDF to a file    
+      # Save the PDF to a file
+      p pdf
       path = Rails.root.to_s+"/public/purchase_report"
       if File.directory? path
         path = path+"/"+@po_header.po_identifier.to_s+".pdf"
