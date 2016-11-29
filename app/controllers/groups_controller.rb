@@ -8,14 +8,20 @@ class GroupsController < ApplicationController
 
     def index
         @groups = Group.all
+        @grups = Array.new
         respond_to do |format|
             format.html # index.html.erb
             format.json {
                 @groups = @groups.select{|group|
-                    group[:group_name] = CommonActions.linkable(group_path(group), group.group_name)
-                    group[:links] = CommonActions.object_crud_paths(nil, edit_group_path(group),nil)
+                    grup = Hash.new
+                    group.attributes.each do |key, value|
+                        grup[key] = value
+                    end
+                    grup[:group_name] = CommonActions.linkable(group_path(group), group.group_name)
+                    grup[:links] = CommonActions.object_crud_paths(nil, edit_group_path(group),nil)
+                    @grups.push(grup)
                 }
-                render json: {:aaData => @groups}
+                render json: {:aaData => @grups}
             }
         end
     end
