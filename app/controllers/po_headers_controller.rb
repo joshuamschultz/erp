@@ -70,6 +70,7 @@ class PoHeadersController < ApplicationController
       redirect_to action: "index"
     else
       respond_to do |format|
+        @po_heders = Array.new
         format.html # index.html.erb
         format.json { 
             i = 0
@@ -80,15 +81,19 @@ class PoHeadersController < ApplicationController
               @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
             end
             po_line_ids = []        
-            @po_headers = @po_headers.select{|po_header|             
-                po_header[:index] = i 
-                po_header[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
-                po_header[:po_type_name] = po_header.po_type.type_name
-                po_header[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
+            @po_headers = @po_headers.select{|po_header|  
+                po_heder = Hash.new
+                po_header.attributes.each do |key, value|
+                  po_heder[key] = value
+                end           
+                po_heder[:index] = i 
+                po_heder[:po_id] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
+                po_heder[:po_type_name] = po_header.po_type.type_name
+                po_heder[:vendor_name] = CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name)
                 if can? :edit, PoHeader
-                  po_header[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
+                  po_heder[:links] = CommonActions.object_crud_paths(nil, edit_po_header_path(po_header), nil)
                 else
-                  po_header[:links] = nil
+                  po_heder[:links] = nil
                 end
                 if params[:item_id].present?
                   po_lines = PoLine.where(:po_header_id => po_header.id, :item_id => params[:item_id])
@@ -96,13 +101,13 @@ class PoHeadersController < ApplicationController
                     po_lines =  po_lines.delete_if {|entry| po_line_ids.include? entry[:id]}
                   end
                   po_line_ids<< po_lines.first.id
-                  po_header[:po_line_price] = po_lines.first.po_line_cost.to_f
-                  po_header[:po_type_qty] = po_lines.first.po_line_quantity               
+                  po_heder[:po_line_price] = po_lines.first.po_line_cost.to_f
+                  po_heder[:po_type_qty] = po_lines.first.po_line_quantity               
                 end
-
+                 @po_heders.push(po_heder)
                 i += 1
             }
-            render json: {:aaData => @po_headers}
+            render json: {:aaData => @po_heders}
         }
       end
     end
