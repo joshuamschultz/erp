@@ -41,7 +41,7 @@ class QuotesController < ApplicationController
         end
 
         respond_to do |format|
-             if  user_signed_in? && current_user.is_vendor?
+            if  user_signed_in? && current_user.is_vendor?
                 @quotes = Quote.where(:user_id => User.current_user.id).order('created_at desc')
 
                  ids = current_user.organizations.collect(&:id)
@@ -60,7 +60,7 @@ class QuotesController < ApplicationController
                                      qot[:index] = i
                                      qot[:quote_group_id] = CommonActions.linkable(quote_path(quote), quote.quote_identifier)
                                      qot[:vendor_name] = quote.quote_vendors.collect{|vendor| CommonActions.linkable(organization_path(vendor.organization), vendor.organization.organization_name) }.join(", ").html_safe
-                                     if  user_signed_in? && !current_user.is_vendor?
+                                    if  user_signed_in? && !current_user.is_vendor?
                                         qot[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil) if can? :update, @quotes
                                     else
                                         qot[:links] = CommonActions.object_crud_paths(nil, nil, nil) if can? :update, @quotes
@@ -110,10 +110,10 @@ class QuotesController < ApplicationController
                                 if  user_signed_in? && !current_user.is_vendor?
                                     qot[:links] = CommonActions.object_crud_paths(nil, edit_quote_path(quote), nil)
                                     qot[:links] = CommonActions.object_crud_paths(nil, new_quote_quote_line_path(quote), quote_path(quote))
-                                 else
+                                else
                                     qot[:links] = CommonActions.object_crud_paths(nil, nil, nil)
                                     qot[:links] = CommonActions.object_crud_paths(nil, nil,quote_path(quote))
-                                 end
+                                end
                                  qot[:created] = quote.created_at.strftime("%d %b %Y")
                                  qot[:quote_status] = CommonActions.status_color(quote.quote_status)
                                  i += 1
