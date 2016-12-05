@@ -17,29 +17,40 @@ class AttachmentsController < ApplicationController
     end
     respond_to do |format|
       format.html # index.html.erb
+      @atahments = Array.new
       format.json {
         if params[:hide_info].present?
           @attachments = @attachments.select{|attachment|
-              attachment[:attachment_name] = "<a href='#{attachment.attachment.url(:original)}' target='_blank'><i>#{attachment.attachment_name}</i></a> " if attachment.attachment
-              attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
-              attachment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
-              attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
-              attachment[:approved_by] = ""
-              attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), attachment_path(attachment))
-              attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
+              atahment = Hash.new
+              attachment.attributes.each do |key, value|
+                atahment[key] = value
+              end
+              atahment[:attachment_name] = "<a href='#{attachment.attachment.url(:original)}' target='_blank'><i>#{attachment.attachment_name}</i></a> " if attachment.attachment
+              atahment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
+              atahment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
+              atahment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : ""
+              atahment[:approved_by] = ""
+              atahment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), attachment_path(attachment))
+              atahment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
+              @atahments.push(atahment)
             }
-          render json: {:aaData => @attachments}
+          render json: {:aaData => @atahments}
         else
           @attachments = @attachments.select{|attachment|
-              attachment[:attachment_name] = CommonActions.linkable(attachment_path(attachment), attachment.attachment_name)
-              attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
-              attachment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
-              attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
-              attachment[:approved_by] = ""
-              attachment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
-              attachment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
+              atahment = Hash.new
+              attachment.attributes.each do |key, value|
+                atahment[key] = value
+              end
+              atahment[:attachment_name] = CommonActions.linkable(attachment_path(attachment), attachment.attachment_name)
+              atahment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
+              atahment[:uploaded_date] = attachment.created_at.strftime("%m-%d-%Y")
+              atahment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : ""
+              atahment[:approved_by] = ""
+              atahment[:links] = CommonActions.object_crud_paths(nil, edit_attachment_path(attachment), nil)
+              atahment[:links] += "<a href='#{attachment.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> " if attachment.attachment
+              @atahments.push(atahment)
             }
-          render json: {:aaData => @attachments}
+          render json: {:aaData => @atahments}
         end
       }
     end
@@ -82,7 +93,7 @@ class AttachmentsController < ApplicationController
         CommonActions.record_ownership(@attachment, current_user)
         bool_saved = @attachment.save(:validate => false)
     else
-        @attachment = Attachment.new(params[:attachment])
+        @attachment = Attachment.new(attachment_params)
         CommonActions.record_ownership(@attachment, current_user)
         bool_saved = @attachment.save
     end
@@ -106,7 +117,7 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       if @attachment.update_attributes(params[:attachment])
-        CommonActions.record_ownership(@attachment, current_user) 
+        CommonActions.record_ownership(@attachment, current_user)
         format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -129,4 +140,18 @@ class AttachmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def set_attachment
+      @attachment = Attachment.find(params[:id])
+    end
+
+    def attachment_params
+      params.require(:attachment).permit(:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
+                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
+                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
+                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
+                                         :attachment_file_name)
+    end
 end

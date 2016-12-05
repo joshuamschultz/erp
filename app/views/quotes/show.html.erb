@@ -1,9 +1,9 @@
 <div class="row-fluid">
     <h4 class="span3 left">Quote Info<span></span></h4>
     <span class="span9 right">
-        <%#= link_to 'Edit', edit_quote_path(@quote), :class => "btn btn-small" unless @quote.organization %>    
+        <%#= link_to 'Edit', edit_quote_path(@quote), :class => "btn btn-small" unless @quote.organization %>
         <%= link_to 'Back', quotes_path, :class => "btn btn-small" %>
-    </span>    
+    </span>
 </div>
 
 <div class="row-fluid">
@@ -25,9 +25,9 @@
             </div>
         </div>
     <% end %>
-   
-    <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>   
-   
+
+    <%= render :partial => 'quote_lines/line_items', locals: { show_buttons: true } %>
+
 </div>
 
 <div class="separator bottom"></div>
@@ -36,7 +36,7 @@
     <div class="well">
         <div class="separator bottom"></div>
         <%= render :partial => 'quote_lines/vendor_lines', locals: {quote_vendor: quote_vendor, quote: @quote, edit_page: false} %>
-        <%= render :partial => 'attachments/attachment_list', locals: { attachable: quote_vendor }%>        
+        <%= render :partial => 'attachments/attachment_list', locals: { attachable: quote_vendor }%>
     </div>
     <div class="separator bottom"></div>
     <div class="separator bottom"></div>
@@ -61,25 +61,25 @@
 <div class="separator bottom"></div>
 
 <!-- Comments -->
-<%= render :partial => 'comments/comments', 
+<%= render :partial => 'comments/comments',
 :locals => {:extras => {:link => populate_quote_path(type: "note", id: @quote)}} %>
 
 <script type="text/javascript">
-  
-    
 
-    $(document).ready(function(){ 
+
+
+    $(document).ready(function(){
 
         initiate_vendor_quotes();
         jQuery("#set_status").on('change', function() {
-            initiate_vendor_quotes();    
+            initiate_vendor_quotes();
         });
 
     });
     function initiate_vendor_quotes(){
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "org_contact_mail","organization_id":  $( "#set_status" ).val() }}, "set_contact_emails", {});
-    
-    }  
+
+    }
 
 
     function set_contact_emails(response, callback_params, api_params){
@@ -94,7 +94,7 @@
          initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "org_head_mail","organization_id":  $( "#set_status" ).val() }}, "set_org_email", {});
     }
     function set_org_email(response, callback_params, api_params){
-        var newOption = "<option selected='selected' value='"+response.aaData['id']+"'>"+response.aaData['Email']+"</option>"; 
+        var newOption = "<option selected='selected' value='"+response.aaData['id']+"'>"+response.aaData['Email']+"</option>";
         $("#inventory_adjustment_quality_lot_id").append(newOption);
 
     }
@@ -116,25 +116,25 @@
         margin-left: -411px;
         margin-top: -521px;
         position: relative;
-    } 
-   
+    }
+
 
 </style>
 
 <div class="modal hide fade" id="modal-simple">
     <div class="modal-header">
         <h3>Send Quote</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
     </div>
     <div class="modal-body">
         <form id="send_mail">
             <table class="dynamicTable table table-striped table-bordered" id="vendor_lines_table_2">
                 <thead>
                     <tr>
-                    <th>Vendor Name</th>                 
+                    <th>Vendor Name</th>
                     <th><label for="inventory_adjustment_quality_lot_id" class="select required control-label">
                                     <abbr title="required">*</abbr> Contacts
-                                </label></th>                 
+                                </label></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -142,7 +142,7 @@
                          <td> <%= select_tag "#{}", options_for_select(@quote.quote_vendors.map{ |quote_vendor| [  quote_vendor.organization.organization_name, quote_vendor.organization.id  ] }), :class => "status-select", :id => "set_status" %></td>
 
                          <td>   <div class="control-group select required quality_lot_po_line">
-                                
+
                                 <div class="controls">
                                     <select name="inventory_adjustment[quality_lot_id]" id="inventory_adjustment_quality_lot_id" class="select required" autofocus="autofocus">
 
@@ -150,7 +150,7 @@
                                 </div>
                             </div></td>
                        </tr>
-         
+
                 </tbody>
             </table>
         </form>
@@ -160,7 +160,7 @@
     </div>
 </div>
 
-<style> 
+<style>
 .span4.well.well-002 {
     width: 49%;
 }
