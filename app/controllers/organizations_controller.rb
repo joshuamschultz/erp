@@ -9,19 +9,19 @@ class OrganizationsController < ApplicationController
   def view_permissions
     if  user_signed_in? && current_user.is_logistics?
         authorize! :edit, Organization
-    end 
+    end
   end
 
   def user_permissions
-    if  user_signed_in? && current_user.is_customer? 
+    if  user_signed_in? && current_user.is_customer?
         authorize! :edit, Organization
-    end 
+    end
   end
 
   def set_page_info
     unless user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
       unless params[:type1].present? && params[:type2].present?
-        @menus[:contacts][:active] = "active" 
+        @menus[:contacts][:active] = "active"
       else
         @menus[:reports][:active] = "active"
       end
@@ -29,7 +29,7 @@ class OrganizationsController < ApplicationController
   end
 
   def get_autocomplete_items(parameters)
-    items = active_record_get_autocomplete_items(parameters)    
+    items = active_record_get_autocomplete_items(parameters)
     items = items.organizations(params[:type])
   end
 
@@ -50,7 +50,7 @@ class OrganizationsController < ApplicationController
       format.html # index.html.erb
       @orgs = Array.new
       format.json {
-        @organizations = @organizations.select{|organization| 
+        @organizations = @organizations.select{|organization|
           org = Hash.new
           organization.attributes.each do |key, value|
             org[key] = value
@@ -64,20 +64,20 @@ class OrganizationsController < ApplicationController
             org[:links] = CommonActions.object_crud_paths(nil, edit_organization_path(organization), nil)
           else
             org[:links] = ""
-          end 
-           @orgs.push(org)
+          end
+          @orgs.push(org)
         }
         render json: {:aaData => @orgs}  }
     end
   end
 
   def mobile_api
- 
+
       @organizations = Organization.all
       respond_to do |format|
       format.html # index.html.erb
       format.json {
- 
+
       render json:  @organizations  }
       end
 
@@ -90,13 +90,13 @@ class OrganizationsController < ApplicationController
     @contactable = @organization
     @attachable = @organization
     @contact_type = params[:contact_type] || "address"
-    
-    @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization 
-    @tags = @organization.present? ? @organization.comments.where(:comment_type => "tag").order("created_at desc") : [] 
+
+    @notes = @organization.comments.where(:comment_type => "note").order("created_at desc") if @organization
+    @tags = @organization.present? ? @organization.comments.where(:comment_type => "tag").order("created_at desc") : []
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { 
+      format.json {
         case(params[:type])
             when "min_quality"
                 min_vendor_quality = @organization.min_vendor_quality.present? ? @organization.min_vendor_quality.quality_name : ""
@@ -181,9 +181,9 @@ class OrganizationsController < ApplicationController
 
       if params[:type] == "tag"
           tags = params[:tags].split(",")
-          Comment.process_comments(current_user, @organization, tags, params[:type])          
+          Comment.process_comments(current_user, @organization, tags, params[:type])
       elsif params[:type] == "process"
-          OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])          
+          OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])
       end
       redirect_to @organization
   end
@@ -217,8 +217,8 @@ class OrganizationsController < ApplicationController
   def main_address
       @organization = Organization.find(params[:organization_id])
   end
-  
-    
+
+
     def organization_params
       params.required(:organization).permit(:organization_expiration_date)
     end

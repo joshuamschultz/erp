@@ -26,7 +26,7 @@ class CommonActionsController < ApplicationController
                 item_revision = ItemRevision.find(params[:id])
                 result = item_revision
               end
-                            
+
             when "get_process_types_po"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
@@ -39,7 +39,7 @@ class CommonActionsController < ApplicationController
                 notification = Notification.find(params[:id])
                 notification.update_attributes(:note_status => "read")
                 if notification.notable_type == 'Print'
-                  result = (notification.notable.item_revisions.present? && notification.notable.item_revisions.last.item.present?) ? "/items/"+notification.notable.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+notification.notable.attachment.attachment.url 
+                  result = (notification.notable.item_revisions.present? && notification.notable.item_revisions.last.item.present?) ? "/items/"+notification.notable.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+notification.notable.attachment.attachment.url
                 elsif notification.notable_type == "Specification"
                   result = "http://erp.chessgroupinc.com/specifications/"+notification.notable.id.to_s
                 elsif notification.notable_type == "ProcessType"
@@ -51,10 +51,10 @@ class CommonActionsController < ApplicationController
                 elsif notification.notable_type == "QualityAction"
                   result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
                 elsif notification.notable_type == "Event"
-                  result = "#{RAILS_ROOT}/events/"+notification.notable.id.to_s  
+                  result = "#{RAILS_ROOT}/events/"+notification.notable.id.to_s
                 end
 
-                result 
+                result
               end
 
             when "initiate_notifications"
@@ -70,7 +70,7 @@ class CommonActionsController < ApplicationController
 
                 # notification_list["list"] = source
 
-                # result =  notification_list["list"] 
+                # result =  notification_list["list"]
               end
             when "org_contact_mail"
               if params[:organization_id].present?
@@ -112,50 +112,50 @@ class CommonActionsController < ApplicationController
             when "get_org"
               if params[:so_value].present?
                 organization =  Organization.find_by_organization_name(params[:so_value])
-                result = organization              
+                result = organization
               end
 
             when "get_item"
               if params[:item_name].present?
                 item =  Item.find_by_item_part_no(params[:item_name])
-                result = item              
+                result = item
               end
-              
+
 
             when "get_account"
               if params[:gl_name].present?
                 account =  GlAccount.find_by_gl_account_title(params[:gl_name])
-                result = account              
+                result = account
               end
             when "get_po"
               if params[:po_name].present?
                 po_header =  PoHeader.find_by_po_identifier(params[:po_name])
-                result = po_header              
+                result = po_header
               end
             when "get_cause"
               if params[:cause_name].present?
                 cause_analysis = CauseAnalysis.find_by_name(params[:cause_name])
-                result = cause_analysis              
+                result = cause_analysis
               end
 
              when "get_lot"
               if params[:lot_name].present?
                 quality_lot = QualityLot.find_by_lot_control_number(params[:lot_name])
-                result =  quality_lot             
-              end             
-              
+                result =  quality_lot
+              end
+
 
             when "get_alt_name"
               if params[:value].present?
                 item =  Item.find_by_item_part_no(params[:value])
                 alt_name_item = item.item_alt_names.first
-                result = alt_name_item              
+                result = alt_name_item
               end
             when "get_revisions"
               if params[:value].present?
                 item =  Item.find_by_item_part_no(params[:value])
                 revisions = item.item_revisions
-                result = revisions             
+                result = revisions
               end
             when "get_item_revisions"
               if params[:id].present?
@@ -214,8 +214,8 @@ class CommonActionsController < ApplicationController
               if params[:id].present?
                 payable = Payable.find(params[:id])
                 if payable.update_attributes(:payable_disperse => "unassigned")
-                  result = "success"  
-                end             
+                  result = "success"
+                end
               end
               # puts params[:shipments].to_s
               # PoHeader.process_payable_po_lines(params)
@@ -223,26 +223,26 @@ class CommonActionsController < ApplicationController
               if params[:id].present?
                 receivable = Receivable.find(params[:id])
                 if receivable.update_attributes(:receivable_disperse => "unassigned")
-                  result = "success"  
-                end             
+                  result = "success"
+                end
               end
 
             when "send_quotes_mail"
 
-              if params[:contact_id].present? && params[:quote_id].present? && params[:organization_id].present?                  
+              if params[:contact_id].present? && params[:quote_id].present? && params[:organization_id].present?
                 quote = Quote.find(params[:quote_id])
                 organization = Organization.find(params[:organization_id])
                 # quote.quote_vendors.each do |quote_vendor|
-                  if organization.contact_type.type_name == "Email"
-                    email = (params[:contact_id] == params[:organization_id]) ? organization.organization_email : Contact.find(params[:contact_id]).contact_email
-                    UserMailer.send_quote(quote,email).deliver
-                  end
+                if organization.contact_type.type_name == "Email"
+                  email = (params[:contact_id] == params[:organization_id]) ? organization.organization_email : Contact.find(params[:contact_id]).contact_email
+                  UserMailer.send_quote(quote,email).deliver
+                end
                 # end
                 result = "success"
 
-               else
+              else
                 result = "fail"
-               end
+              end
 
             when "send_po_order_mail"
               val =  params[:organizations]
@@ -254,8 +254,8 @@ class CommonActionsController < ApplicationController
                 result = "success"
               else
                    result = "fail"
-              end 
-              
+              end
+
             when "shipment_process_complete"
               if params[:shipment_process_id].present?
                   so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close','ship_in'])
@@ -272,13 +272,13 @@ class CommonActionsController < ApplicationController
 
                     @so_header = SoHeader.find(so_shipment_process.last.so_header_id)
                     if @so_header.po_header.present? && @so_header.po_header.po_type.type_value == "transer"
-                      # @po_header.organization.organization_city 
-                      so_s_c_title = @so_header.po_header.organization.organization_name  
-                      so_s_c_address_1 = @so_header.po_header.organization.organization_address_1 
-                      so_s_c_address_2= @so_header.po_header.organization.organization_address_2 
+                      # @po_header.organization.organization_city
+                      so_s_c_title = @so_header.po_header.organization.organization_name
+                      so_s_c_address_1 = @so_header.po_header.organization.organization_address_1
+                      so_s_c_address_2= @so_header.po_header.organization.organization_address_2
                       so_s_c_state =   @so_header.po_header.organization.organization_city.to_s+' '+@so_header.po_header.organization.organization_state.to_s
                       so_s_c_country = @so_header.po_header.organization.organization_country
-                      so_s_c_zipcode = @so_header.po_header.organization.organization_zipcode 
+                      so_s_c_zipcode = @so_header.po_header.organization.organization_zipcode
                     else
                       so = CommonActions.address(@so_header)
                       so_b_c_title = so['b_c_title']
@@ -293,15 +293,15 @@ class CommonActionsController < ApplicationController
                       so_s_c_state = so['s_c_state']
                       so_s_c_country = so['s_c_country']
                       so_s_c_zipcode = so['s_c_zipcode']
-                    end 
-                    cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present? 
+                    end
+                    cusomter_po =   @so_header.so_header_customer_po if @so_header.so_header_customer_po.present?
 
                     notes = @so_header.so_notes if @so_header.so_notes
                     so_total = (@so_header.so_total.to_f).to_s
                     len = so_shipment_process.group(:so_line_id).length
                     @company_info = CompanyInfo.first
 
-                    so_shipment_process.group(:so_line_id).each_with_index do |shipment, index| 
+                    so_shipment_process.group(:so_line_id).each_with_index do |shipment, index|
                       item_part = (shipment.so_line.po_line.present? && shipment.so_line.po_line.process_type_id.present?) ? ProcessType.find(shipment.so_line.po_line.process_type_id).process_short_name : shipment.so_line.item.item_part_no
                       if shipment.so_line.item_revision.present?
                         item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present?
@@ -312,15 +312,19 @@ class CommonActionsController < ApplicationController
                       end
                       item_qty = shipment.so_line.so_line_quantity.to_s
                       item_shipped = SoShipment.where(:so_line_id =>  shipment.so_line, :so_shipped_status => ['process', 'ship_close','ship_in']).sum(:so_shipped_count).to_s
-                      # item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier 
+                      # item_alt_part = shipment.so_line.item_alt_name.item_alt_identifier if shipment.so_line.item.item_part_no != shipment.so_line.item_alt_name.item_alt_identifier
                       item_lot = shipment.quality_lot.lot_control_no if shipment.quality_lot
-                      temp = '<tr align="center"><td id="pk100_part_no" scope="row">' +item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td>'+item_revision+'</td> <td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
+                      temp = '';
+                      temp += '<tr align="center"><td id="pk100_part_no" scope="row">' + item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td>'+item_revision+'</td> <td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
                       source += temp
 
-                      if i== 1  
-                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax+'<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
+                      if i== 1
+                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
+                        content += '<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
                         if flag ==1
-                          content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+so_b_c_title.to_s+'</h2> <h6> '+so_b_c_address_1.to_s+'</h6> <h6>'+so_b_c_address_2.to_s+'</h6><h6>'+so_b_c_state.to_s+'</h6><div class="dd"><h6 class="ds">'+so_b_c_country.to_s+'</h6>   <span id ="pk100_so_b_c_zipcode">'+so_b_c_zipcode.to_s+'</span></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading" id="pk100_so_s_c_title">'+so_s_c_title.to_s+'</h2> <h6 id ="pk100_so_s_c_address_1">'+so_s_c_address_1.to_s+'</h6> <h6 id="pk100_so_s_c_address_2">'+so_s_c_address_2.to_s+'</h6><h6 id="pk100_so_s_c_state">'+so_s_c_state.to_s+'</h6><div class="dd"><h6 id="pk100_so_s_c_country"  class="ds">'+so_s_c_country.to_s+'</h6>   <span id ="pk100_so_s_c_zipcode" class="ss">'+so_s_c_zipcode.to_s+'</span></div></div></article>' 
+                          content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+so_b_c_title.to_s+'</h2> <h6> '+so_b_c_address_1.to_s+'</h6> <h6>'+so_b_c_address_2.to_s+'</h6><h6>'+so_b_c_state.to_s+'</h6><div class="dd"><h6 class="ds">'+so_b_c_country.to_s+'</h6>   <span id ="pk100_so_b_c_zipcode">'+so_b_c_zipcode.to_s
+                          content +='</span></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading" id="pk100_so_s_c_title">'+so_s_c_title.to_s+'</h2> <h6 id ="pk100_so_s_c_address_1">'+so_s_c_address_1.to_s+'</h6> <h6 id="pk100_so_s_c_address_2">'+so_s_c_address_2.to_s+'</h6><h6 id="pk100_so_s_c_state">'+so_s_c_state.to_s+'</h6><div class="dd"><h6 id="pk100_so_s_c_country"  class="ds">'+so_s_c_country.to_s
+                          content +='</h6>   <span id ="pk100_so_s_c_zipcode" class="ss">'+so_s_c_zipcode.to_s+'</span></div></div></article>'
                           flag =0;
                         end
 
@@ -334,31 +338,31 @@ class CommonActionsController < ApplicationController
 
                       content += temp
 
-                      if i==7 
+                      if i==7
                         content += ' </table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article></section></div> <div style="page-break-after:always;">&nbsp; </div>'
                       end
 
-                      if len == index+1 && i != 7 
+                      if len == index+1 && i != 7
                         # j = 1
                         # j+=1
                         content += '</table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article>'
-                   
-                      end 
 
-                      i +=1 
-
-                      if i==8 
-                        j+=1
-                        i= 1
-                        content 
                       end
 
-                 
+                      i +=1
+
+                      if i==8
+                        j+=1
+                        i= 1
+                        content
+                      end
+
+
 
 
 
                     end
-                    content
+                    puts content
 
                     so_shipment["part_number"] = content
 
@@ -373,11 +377,11 @@ class CommonActionsController < ApplicationController
                   end
               else
                 result = "fail"
-              end  
+              end
             when "item_lot_locations"
               if params[:id].present?
                 @item = Item.find(params[:id])
-                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.lot_quantity,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] } 
+                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.lot_quantity,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] }
                 result = locations
               else
                 result = "fail"
@@ -392,8 +396,8 @@ class CommonActionsController < ApplicationController
                 result = "success"
               else
                 result = "fail"
-              end 
-              
+              end
+
             when "send_invoice"
               @receivable = Receivable.find(params[:receivable_id])
               if @receivable.so_header.present?
@@ -401,7 +405,7 @@ class CommonActionsController < ApplicationController
                   @customer_eamil = @receivable.so_header.bill_to_address.contact_email
                   UserMailer.customer_billing_mail(@receivable, @customer_eamil).deliver
                 end
-                result = "success" 
+                result = "success"
               else
                 result = 'fail'
               end
@@ -416,7 +420,7 @@ class CommonActionsController < ApplicationController
             when "get_quote_info"
                 if params[:quote_id].present?
                   quote = Quote.find(params[:quote_id])
-                  result = CustomerQuoteLine.get_line_items(quote)                  
+                  result = CustomerQuoteLine.get_line_items(quote)
                 else
                   result = "fail"
                 end
@@ -431,7 +435,7 @@ class CommonActionsController < ApplicationController
                 organization = Organization.find(params[:organization_id])
                 if organization.present?
                   email =(params[:contact] == params[:organization_id]) ? organization.organization_email : organization.contacts.find(params[:contact]).contact_email
-                  UserMailer.send_customer_quote(params[:customer_quote_id], email)
+                  UserMailer.send_customer_quote(params[:customer_quote_id], email).deliver
                 end
                 result = "success"
               else
@@ -468,7 +472,7 @@ class CommonActionsController < ApplicationController
                   else
                       result = "fail"
                   end
-              end  
+              end
             when "process_reconcile"
               if params[:reconcile_ids].present? && params[:balance].present?
                 Reconcile.where(id: params[:reconcile_ids]).each do |obj|
@@ -480,48 +484,48 @@ class CommonActionsController < ApplicationController
                     credit_register.update_attributes(:rec => true) if  credit_register
                   elsif obj.receipt_id.present?
                     check_register = CheckRegister.find_by_receipt_id(obj.receipt_id)
-                    check_register.update_attributes(:rec => true) if  check_register                      
-                  end  
+                    check_register.update_attributes(:rec => true) if  check_register
+                  end
 
-                end  
-                reconciled = Reconciled.first            
+                end
+                reconciled = Reconciled.first
                 reconciled.update_attributes(balance: params[:balance])
                 result ="Success"
               end
-             when "add_or_update_expense" 
-              if  params[:payable_id].present? && params[:expense_amt].present? 
-                payable = Payable.find(params[:payable_id])             
-                if payable.update_attributes(:payable_total => params[:expense_amt] )                  
+             when "add_or_update_expense"
+              if  params[:payable_id].present? && params[:expense_amt].present?
+                payable = Payable.find(params[:payable_id])
+                if payable.update_attributes(:payable_total => params[:expense_amt] )
                   result ="Success"
                 end
-              end 
-            when "add_or_update_freight" 
-              if  params[:payable_id].present? && params[:freight_amt].present? 
-                payable = Payable.find(params[:payable_id])             
+              end
+            when "add_or_update_freight"
+              if  params[:payable_id].present? && params[:freight_amt].present?
+                payable = Payable.find(params[:payable_id])
                 if payable.update_attributes(:payable_freight => params[:freight_amt] )
                   payable.update_payable_total
                   result ="Success"
                 end
               end
-             when "add_or_update_receivable_freight" 
-              if  params[:receivable_id].present? && params[:freight_amt].present? 
-                receivable = Receivable.find(params[:receivable_id])             
+             when "add_or_update_receivable_freight"
+              if  params[:receivable_id].present? && params[:freight_amt].present?
+                receivable = Receivable.find(params[:receivable_id])
                 if receivable.update_attributes(:receivable_freight => params[:freight_amt] )
                   receivable.update_receivable_total
                   result ="Success"
                 end
               end
             when "add_or_update_discount"
-              if  params[:payable_id].present? && params[:discount].present? 
-                payable = Payable.find(params[:payable_id])             
+              if  params[:payable_id].present? && params[:discount].present?
+                payable = Payable.find(params[:payable_id])
                 if payable.update_attributes(:payable_discount => params[:discount] )
                   payable.update_payable_total
                   result ="Success"
                 end
               end
             when "add_or_update_receivable_discount"
-              if  params[:receivable_id].present? && params[:discount].present? 
-                receivable = Receivable.find(params[:receivable_id])             
+              if  params[:receivable_id].present? && params[:discount].present?
+                receivable = Receivable.find(params[:receivable_id])
                 if receivable.update_attributes(:receivable_discount => params[:discount] )
                   receivable.update_receivable_total
                   result ="Success"
@@ -536,9 +540,9 @@ class CommonActionsController < ApplicationController
               else
                 result = "false"
               end
-            when "set_psw_value"              
-              if params[:field].present? && params[:psw_id].present? && params[:value].present?         
-                Ppap.set_levels(params[:field],params[:psw_id],params[:value], params[:type])                   
+            when "set_psw_value"
+              if params[:field].present? && params[:psw_id].present? && params[:value].present?
+                Ppap.set_levels(params[:field],params[:psw_id],params[:value], params[:type])
                 result ="Success"
               else
                 result = "fail"
@@ -553,17 +557,17 @@ class CommonActionsController < ApplicationController
                 if organization.organization_type.type_value == 'vendor'
                   Commodity.auto_save(tags)
                 end
-                result ="Success"   
+                result ="Success"
               end
             when "set_process"
               if params[:id].present? && params[:value].present?
                 organization = Organization.find(params[:id])
                 OrganizationProcess.process_organization_processes(current_user, organization, params[:value])
-                result ="Success"   
+                result ="Success"
               end
             when "get_quality_lots"
               if params[:id].present?
-                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] } 
+                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
                 result = quality_lots
               end
 
@@ -574,9 +578,9 @@ class CommonActionsController < ApplicationController
                 quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
                 result = quality_lots
               end
-            when "get_gl_account_title" 
-              gl_account_titles = Hash.new 
-              @gl_account = GlAccount.where(:gl_account_identifier =>   "11050").first              
+            when "get_gl_account_title"
+              gl_account_titles = Hash.new
+              @gl_account = GlAccount.where(:gl_account_identifier =>   "11050").first
               gl_account_titles["11050"] = @gl_account.gl_account_title
               @gl_account = GlAccount.where(:gl_account_identifier =>   "51010-020").first
               gl_account_titles["51010-020"] = @gl_account["gl_account_title"]
@@ -585,25 +589,25 @@ class CommonActionsController < ApplicationController
               @gl_account = GlAccount.where(:gl_account_identifier =>   "71107").first
               gl_account_titles["71107"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "41010-010").first
-              gl_account_titles["41010-010"] = @gl_account["gl_account_title"]                       
+              gl_account_titles["41010-010"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "51010-010").first
               gl_account_titles["51010-010"] = @gl_account["gl_account_title"]
               @gl_account = GlAccount.where(:gl_account_identifier =>   "41025-010").first
               gl_account_titles["41025-010"] = @gl_account["gl_account_title"]
-              
-              
-              result = gl_account_titles 
+
+
+              result = gl_account_titles
 
             when "after_print_checks"
-              if params[:id].present? 
-                check_entry = CheckEntry.find(params[:id]) 
+              if params[:id].present?
+                check_entry = CheckEntry.find(params[:id])
                 check_entry.update_attributes(:status => "Printed", :check_active => 0)
                 payment = Payment.find_by_check_entry_id(params[:id])
                 payment.update_transactions
                 @reconcile = Reconcile.where(:payment_id => payment.id).first
-                if @reconcile.nil?                                  
-                  Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])                                             
-                end 
+                if @reconcile.nil?
+                  Reconcile.create(tag: "not reconciled",reconcile_type: "check", payment_id: payment.id, printing_screen_id: params[:id])
+                end
                 @gl_entries = payment.gl_entries
                 if @gl_entries
                   @gl_entries.each do |gl_entry|
@@ -611,49 +615,49 @@ class CommonActionsController < ApplicationController
                   end
                 end
                 check_register = CheckRegister.where(payment_id: payment.id).first
-                unless  check_register.present?                    
-                    balance = 0 
-                    amount =  payment.payment_check_amount * -1 
-                    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first                     
-                    if  CheckRegister.exists? 
-                      check_register = CheckRegister.last                                       
+                unless  check_register.present?
+                    balance = 0
+                    amount =  payment.payment_check_amount * -1
+                    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first
+                    if  CheckRegister.exists?
+                      check_register = CheckRegister.last
                       balance += amount + check_register.balance
                     else
-                      balance += gl_account.gl_account_amount                         
-                    end                   
-                                                     
+                      balance += gl_account.gl_account_amount
+                    end
+
                     CheckRegister.create(transaction_date: Date.today.to_s, check_code: payment.payment_check_code, organization_id: payment.organization_id, amount: amount, rec: false, payment_id: payment.id, balance: balance)
-                end          
+                end
                 result = "success"
               end
 
 
-            when "generate_check_code"                
+            when "generate_check_code"
               ids = params[:ids]
-              vndr_id = Hash.new {|h,k| h[k]=[]} 
+              vndr_id = Hash.new {|h,k| h[k]=[]}
               ids.each do |id|
                 payment = Payment.find_by_check_entry_id(id)
-                vndr_id[payment.organization_id] << id   
-              end 
-              res = Hash.new 
+                vndr_id[payment.organization_id] << id
+              end
+              res = Hash.new
               vndr_id.each do |v, c|
                 sleep 1
-                check_code = CheckCode.find_by_counter_type('check_code').counter 
+                check_code = CheckCode.find_by_counter_type('check_code').counter
                 vndr_id[v].each do |vd|
                   ch = CheckEntry.find(vd)
                   p = ch.payment
-                  p.update_attributes(:payment_check_code => check_code) if p 
-                  ch.update_attributes(:check_code => check_code) 
+                  p.update_attributes(:payment_check_code => check_code) if p
+                  ch.update_attributes(:check_code => check_code)
                   res[vd] = check_code
                 end
-                temp = CheckCode.find_by_counter_type("check_code") 
-                temp.update_attributes(:counter => check_code )               
-                CheckCode.get_next_check_code                               
-                
-              end               
+                temp = CheckCode.find_by_counter_type("check_code")
+                temp.update_attributes(:counter => check_code )
+                CheckCode.get_next_check_code
+
+              end
               result = res
 
-            when "set_lot_numbers"              
+            when "set_lot_numbers"
               params["ids"].each do |id|
                 sleep 1
                 if id != "undefined"
@@ -668,16 +672,16 @@ class CommonActionsController < ApplicationController
                           letter = letter.next!
                           @max_control_string = QualityLot.where(:lot_control_no => control_number+letter)
                         end while(@max_control_string.present?)
-                        current_control_no = control_number+letter    
+                        current_control_no = control_number+letter
                       else
                         current_control_no = control_number+letter.next
                       end
 
                       quality_lot.update_column(:lot_control_no, current_control_no)
                     else
-                        quality_lot.set_lot_control_no  
+                        quality_lot.set_lot_control_no
                     end
-                    
+
                   end
                 end
               end
@@ -691,25 +695,25 @@ class CommonActionsController < ApplicationController
                 if @po_shipment.present?
                   res["po_shipped_count"] = @po_shipment.po_shipped_count
                   res["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-                  res["shipped_status"] = @po_shipment.po_line.po_line_status   
+                  res["shipped_status"] = @po_shipment.po_line.po_line_status
                   res["part_number"] = @po_shipment.po_line.item.item_part_no
                   res["po"]   = @po_shipment.po_line.po_header.po_identifier
-                  res["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization                  
+                  res["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
                   res["company_name"] =  CompanyInfo.first.company_name
                   res["control_number"] = @quality_lot.lot_control_no
-                  @jr_next = CheckCode.find_by_counter_type('jr_next') 
+                  @jr_next = CheckCode.find_by_counter_type('jr_next')
                   if @jr_next
                     res["jr_report_count"] = @jr_next.counter.to_s+'-100'
                      @jr_count = @jr_next.counter.to_i >= 100 ? 1 : Integer(@jr_next.counter) + 1
                     @jr_next.update_attributes(:counter => @jr_count.to_s)
-                  
+
                   end
                   result = res
                   @quality_lot.update_attributes(:lot_print_status => 'print')
                 end
 
-              else                
-                result = "Failure"                
+              else
+                result = "Failure"
               end
             when "check_quality_lot_negative"
               res = Hash.new
@@ -732,39 +736,39 @@ class CommonActionsController < ApplicationController
               else
                 result = res["output"] = "Please receive lot first"
               end
-              
+
             when "resetCheckEntriesCheckCode"
-              CheckEntry.where(:check_active => 1).each do |check_entry|
-                check_entry.update_attributes(:check_code => '')
+              CheckEntry.where(:check_active => 1).each do |chek_entry|
+                chek_entry.update_attributes(:check_code => '')
               end
 
             when "after_print_deposits"
-              if params[:id].present? 
-                deposit_check = DepositCheck.find(params[:id]) 
+              if params[:id].present?
+                deposit_check = DepositCheck.find(params[:id])
                 deposit_check.update_attributes(:status => "Printed", :active => 0)
                 receipt = Receipt.find_by_deposit_check_id(params[:id])
                 receipt.update_transactions
                 @reconcile = Reconcile.where(:receipt_id => receipt.id).first
-                if @reconcile.nil?                                  
-                  Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: receipt.id, deposit_check_id: params[:id])                                             
-                end  
+                if @reconcile.nil?
+                  Reconcile.create(tag: "not reconciled",reconcile_type: "deposit check", receipt_id: receipt.id, deposit_check_id: params[:id])
+                end
                 check_register = CheckRegister.where(receipt_id: receipt.id).first
-                unless  check_register.present? 
+                unless  check_register.present?
                     if deposit_check.receipt_type != 'credit'
-                      balance = 0                  
-                      gl_account = GlAccount.where('gl_account_identifier' => '11010' ).first                     
-                      if  CheckRegister.exists?                 
-                        check_register = CheckRegister.last                          
+                      balance = 0
+                      gl_account = GlAccount.where('gl_account_identifier' => '11010' ).first
+                      if  CheckRegister.exists?
+                        check_register = CheckRegister.last
                         balance +=  receipt.receipt_check_amount + check_register.balance
                       else
-                        balance += gl_account.gl_account_amount                           
-                      end            
+                        balance += gl_account.gl_account_amount
+                      end
 
                       CheckRegister.create(transaction_date: Date.today.to_s, check_code: receipt.receipt_check_code, organization_id: receipt.organization_id, deposit: receipt.receipt_check_amount, rec: false, receipt_id: receipt.id, balance: balance)
-                    end  
-                end          
+                    end
+                end
                 result = "success"
-              end                    
+              end
         end
          render json: {:aaData => result}
     end
