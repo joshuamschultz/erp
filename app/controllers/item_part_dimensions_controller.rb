@@ -1,5 +1,5 @@
 class ItemPartDimensionsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   def set_page_info
       @menus[:inventory][:active] = "active"
@@ -17,19 +17,25 @@ class ItemPartDimensionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @item_part_dimnsions = Array.new
+      format.json {
           @item_part_dimensions = @item_part_dimensions.select{|item_part_dimension|
-            item_part_dimension[:dimension_type] = CommonActions.linkable(dimension_path(item_part_dimension.dimension), item_part_dimension.dimension.dimension_identifier)
-            item_part_dimension[:gauge_name] = item_part_dimension.gauge.present? ? CommonActions.linkable(gauge_path(item_part_dimension.gauge), item_part_dimension.gauge.gauge_tool_name) : ""
-            item_part_dimension[:item_part_letter] = "<a href='#{item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
+            item_part_dimnsion = Hash.new
+            item_part_dimension.attributes.each do |key, value|
+              item_part_dimnsion[key] = value
+            end
+            item_part_dimnsion[:dimension_type] = CommonActions.linkable(dimension_path(item_part_dimension.dimension), item_part_dimension.dimension.dimension_identifier)
+            item_part_dimnsion[:gauge_name] = item_part_dimension.gauge.present? ? CommonActions.linkable(gauge_path(item_part_dimension.gauge), item_part_dimension.gauge.gauge_tool_name) : ""
+            item_part_dimnsion[:item_part_letter] = "<a href='#{item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension)}'> #{item_part_dimension.item_part_letter} </a>"
             if can? :edit, Item
-              item_part_dimension[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)      
+              item_part_dimnsion[:links] = CommonActions.object_crud_paths( nil, edit_item_item_revision_item_part_dimension_path(@item, @item_revision ,item_part_dimension), nil)
             else
-              item_part_dimension[:links]   = ""
-            end  
+              item_part_dimnsion[:links]   = ""
+            end
+            @item_part_dimnsions.push(item_part_dimnsion)
           }
-          render json: {:aaData => @item_part_dimensions } 
-      }                
+          render json: {:aaData => @item_part_dimnsions }
+      }
     end
   end
 
@@ -39,7 +45,7 @@ class ItemPartDimensionsController < ApplicationController
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
     @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
-    
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @item_part_dimension }

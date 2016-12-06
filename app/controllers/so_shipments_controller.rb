@@ -1,28 +1,28 @@
 class SoShipmentsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, :only => :create
-  before_filter :set_page_info
-  before_filter :view_permissions, except: [:new]
-  before_filter :user_permissions
+  skip_before_action :verify_authenticity_token, :only => :create
+  before_action :set_page_info
+  before_action :view_permissions, except: [:new]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
-        authorize! :edit, SoShipment
-    end 
+    if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+      authorize! :edit, SoShipment
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
-        authorize! :edit, SoShipment
-    end 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
+      authorize! :edit, SoShipment
+    end
   end
 
   def set_page_info
     unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
-      unless params[:type1].present? && params[:type2].present? 
+      unless params[:type1].present? && params[:type2].present?
         @menus[:logistics][:active] = "active"
       else
-        @menus[:reports][:active] = "active" 
+        @menus[:reports][:active] = "active"
       end
     end
   end
@@ -32,17 +32,17 @@ class SoShipmentsController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
         if(params[:type] == "shipping")
             @so_lines =   SoLine.where(:so_line_status => "open").joins(:so_header).order("so_headers.so_due_date ASC").select{|so_line|
               so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 default_status = (so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process"
-        
+
                 so_line[:revision] = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : so_line.item.item_revisions.last.item_revision_name
                 so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
-                so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)                
+                so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)
                 so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
                   so_line[:so_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/so_headers/#{so_line.so_header.id}' style='padding-left:10px;color: #8ec657;' >"+so_line.so_header.so_identifier+"</a>"
@@ -58,18 +58,18 @@ class SoShipmentsController < ApplicationController
                   so_line[:so_identifier] += ""
                   so_line[:links] = ""
 
-                end 
+                end
             }
             render json: {:aaData => @so_lines}
         elsif params[:type1].present? && params[:type2].present?
              @so_lines =  SoLine.where(:so_line_status => "open").joins(:so_header).where("so_headers.so_due_date >= ? AND so_headers.so_due_date <= ?",Date.today,  Date.today+6).select{|so_line|
-                
+
 
                 so_line = so_line_data_list(so_line, false)
 
                                 so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
-              
+
             }
             render json: {:aaData => @so_lines}
         else
@@ -85,12 +85,12 @@ class SoShipmentsController < ApplicationController
                   @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
                 else
                   @so_shipments = SoShipment.all_shipments(@item.id)
-                end  
+                end
             elsif  @quality_lot
                   if params[:type].present?
                     @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@quality_lot.so_shipments).order("created_at desc") : SoShipment.open_shipments(@quality_lot.so_shipments).order("created_at desc")
-                  else     
-                    @so_shipments = @quality_lot.so_shipments.where(:so_shipped_status => ["shipped","ship_out"])  
+                  else
+                    @so_shipments = @quality_lot.so_shipments.where(:so_shipped_status => ["shipped","ship_out"])
                   end
 
             else
@@ -105,17 +105,17 @@ class SoShipmentsController < ApplicationController
             end
             i = 0
             # @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
-                
+
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id)  .select{|so_shipment|
 
                 so_shipment[:index] =  i
-                so_shipment = so_line_data_list(so_shipment, true) 
+                so_shipment = so_line_data_list(so_shipment, true)
                 if params[:type] == "process"
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
                   so_shipment[:shipment_process_id] = "<div style='height:30px;color:#8ec657;background-color: #484848;padding-left:10px;'>#{so_shipment.shipment_process_id}"
                   so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a></div>"
                 end
-                if can? :edit, SoShipment  
+                if can? :edit, SoShipment
                   so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
                   so_shipment[:links] = ""
@@ -138,26 +138,26 @@ class SoShipmentsController < ApplicationController
     so_line = shipment ? object.so_line : object
 
 
-      object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)    
+      object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)
       object[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
       if so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer"
-         object[:customer_name] = CommonActions.linkable(organization_path(so_line.so_header.po_header.organization), so_line.so_header.po_header.organization.organization_name)   
+         object[:customer_name] = CommonActions.linkable(organization_path(so_line.so_header.po_header.organization), so_line.so_header.po_header.organization.organization_name)
       else
         object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
       end
       object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
       # object[:customer_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
-    object[:lot] = "" 
-    
+    object[:lot] = ""
+
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
-        quality_lot = QualityLot.find(object.quality_lot_id)        
+        quality_lot = QualityLot.find(object.quality_lot_id)
         object[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot.present? && quality_lot.lot_control_no.present?
       end
-   
+
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
     object[:so_line_quantity] = so_line.so_line_quantity
-    object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"    
-    object[:so_line_quantity_open] = "<div class='so_line_quantity_open'>#{so_line.so_line_quantity - so_line.so_line_shipped}</div>" 
+    object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"
+    object[:so_line_quantity_open] = "<div class='so_line_quantity_open'>#{so_line.so_line_quantity - so_line.so_line_shipped}</div>"
     object
   end
 
@@ -193,15 +193,15 @@ class SoShipmentsController < ApplicationController
   def create
     unless params[:so_shipment]['quality_lot_id'] == 'empty' || params[:so_shipment]['quality_lot_id'] == 'less'
       @so_shipment = SoShipment.new(params[:so_shipment]) #To delete in Sprint 7
-###To uncommnet in Sprint 7      
+###To uncommnet in Sprint 7
       # @quality_lot = QualityLot.find(params[:so_shipment]['quality_lot_id'])
-      # lot_status =   @quality_lot.quality_histories.last.quality_status if @quality_lot.quality_histories.last.present? && @quality_lot.quality_histories.last.quality_status.present?      
+      # lot_status =   @quality_lot.quality_histories.last.quality_status if @quality_lot.quality_histories.last.present? && @quality_lot.quality_histories.last.quality_status.present?
       # if lot_status.present? && lot_status == 'accepted'
       #   @so_shipment = SoShipment.new(params[:so_shipment])
       # else
       #   @so_shipment = 2
       # end
-###To uncommnet in Sprint 7      End      
+###To uncommnet in Sprint 7      End
     else
       @so_shipment = params[:so_shipment]['quality_lot_id'] == 'empty' ? 0 : 1
     end
@@ -212,7 +212,7 @@ class SoShipmentsController < ApplicationController
           format.html { render action: "new" }
           res["lot"] = @so_shipment == 0 ? 'Please receive the lot' : 'ship more than a lot has'
           format.json { render json: {errors:  res} }
-##To uncomment in Sprint 7    
+##To uncomment in Sprint 7
       # elsif @so_shipment == 2
       #     format.html { render action: "new" }
       #     res["lot"] = 'Lot is not accepted'
@@ -220,7 +220,7 @@ class SoShipmentsController < ApplicationController
 ## To uncomment in Sprint 7 End
       else
         if @so_shipment.save
-          @so_shipment.set_quality_on_hand        
+          @so_shipment.set_quality_on_hand
           @so_shipment.so_line.update_so_total
           @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
           @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status

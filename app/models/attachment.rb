@@ -30,12 +30,17 @@ class Attachment < ActiveRecord::Base
 
   def attachment_fields
       # self[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
-      self[:effective_date] = self.attachment_revision_date ? self.attachment_revision_date.strftime("%m-%d-%Y") : ""
-      self[:uploaded_date] = self.created_at.strftime("%m-%d-%Y")
-      self[:uploaded_by] = self.created_by ? self.created_by.name : ""
-      self[:approved_by] = ""
+      atahment = Hash.new
+      self.attributes.each do |key, value|
+        atahment[key] = value
+      end
+      atahment[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
+      atahment[:effective_date] = self.attachment_revision_date ? self.attachment_revision_date.strftime("%m-%d-%Y") : ""
+      atahment[:uploaded_date] = self.created_at.strftime("%m-%d-%Y")
+      atahment[:uploaded_by] = self.created_by ? self.created_by.name : ""
+      atahment[:approved_by] = ""
       # self[:links] = "<a href='#{self.attachment.url(:original)}' target='_blank' class='btn-action glyphicons file btn-success'><i></i></a> "
-      self
+      atahment
   end
 
   belongs_to :created_by, :class_name => "User", :foreign_key => "attachment_created_id"

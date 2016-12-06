@@ -1,20 +1,20 @@
 class ProcessTypesController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, ProcessType
-    end 
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, ProcessType
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
-        authorize! :edit, ProcessType
-    end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+      authorize! :edit, ProcessType
+    end
   end
 
   def set_page_info
@@ -30,18 +30,26 @@ class ProcessTypesController < ApplicationController
     end
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @process_types = @process_types.collect{|process_type| 
-          attachment = process_type.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment.attachment_name)
-          if can? :edit, ProcessType
-            attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
-          else
-            attachment[:links] = ''
+      @proces_types = Array.new
+      format.json {
+        @process_types = @process_types.collect{|process_type|
+          proces_type = Hash.new
+          process_type.attributes.each do |key, value|
+            proces_type[key] = value
           end
-          attachment
+          attachment = process_type.attachment.attachment_fields
+          process_type.attachment.attachment_fields.each do |key, value|
+            proces_type[key] = value
+          end
+          proces_type[:attachment_name] = CommonActions.linkable(process_type_path(process_type), attachment[:attachment_name])
+          if can? :edit, ProcessType
+            proces_type[:links] = CommonActions.object_crud_paths(nil, edit_process_type_path(process_type), nil)
+          else
+            proces_type[:links] = ''
+          end
+          @proces_types.push(proces_type)
         }
-        render json: {:aaData => @process_types} 
+        render json: {:aaData => @proces_types}
       }
     end
 
@@ -80,7 +88,7 @@ class ProcessTypesController < ApplicationController
   # POST /process_types
   # POST /process_types.json
   def create
-    @process_type = ProcessType.new(params[:process_type])
+    @process_type = ProcessType.new(process_type_params)
 
     respond_to do |format|
       @process_type.attachment.created_by = current_user
@@ -133,18 +141,18 @@ class ProcessTypesController < ApplicationController
   #   end
   #   respond_to do |format|
   #     format.html # index.html.erb
-  #     format.json { 
-  #       @specifications = @specifications.collect{|specification| 
+  #     format.json {
+  #       @specifications = @specifications.collect{|specification|
   #         attachment = specification.attachment
   #         attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
   #         attachment[:attachment_revision] = attachment.attachment_revision_title
-  #         attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : "" 
+  #         attachment[:uploaded_by] = attachment.created_by ? attachment.created_by.name : ""
   #         attachment[:attachment_public] = attachment.attachment_public
   #         attachment[:effective_date] = attachment.attachment_revision_date ? attachment.attachment_revision_date.strftime("%m-%d-%Y") : ""
   #         attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
   #         attachment
   #       }
-  #       render json: {:aaData => @specifications} 
+  #       render json: {:aaData => @specifications}
   #     }
   #   end
   # end
@@ -155,12 +163,11 @@ class ProcessTypesController < ApplicationController
     end
 
     def process_type_params
-      params.require(:process_type).permit(:process_active, :process_created_id, :process_description, 
-                                           :process_notes, :process_short_name, :process_updated_id, :attachment_attributes, :notification_attributes)
+      params.require(:process_type).permit(:process_active, :process_created_id, :process_description,
+                                           :process_notes, :process_short_name, :process_updated_id, attachment_attributes: [:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
+                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
+                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
+                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
+                                         :attachment_file_name], notification_attributes:  [:notable_id, :notable_type, :note_status, :user_id])
     end
 end
-
-
-
-
-

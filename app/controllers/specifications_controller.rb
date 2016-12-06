@@ -1,26 +1,26 @@
 class SpecificationsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, Specification
-    end 
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, Specification
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
-        authorize! :edit, Specification
-    end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+      authorize! :edit, Specification
+    end
   end
 
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
-  
+
   # GET /specifications
   # GET /specifications.json
   def index
@@ -31,8 +31,8 @@ class SpecificationsController < ApplicationController
     end
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @specifications = @specifications.collect{|specification| 
+      format.json {
+        @specifications = @specifications.collect{|specification|
           attachment = specification.attachment.attachment_fields
           attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
           if can? :edit, specification
@@ -42,7 +42,7 @@ class SpecificationsController < ApplicationController
           end
           attachment
         }
-        render json: {:aaData => @specifications} 
+        render json: {:aaData => @specifications}
       }
     end
   end
@@ -74,7 +74,7 @@ class SpecificationsController < ApplicationController
   def edit
     @specification = Specification.find(params[:id])
     @attachment = @specification.attachment
-    
+
   end
 
   # POST /specifications
@@ -131,7 +131,7 @@ class SpecificationsController < ApplicationController
     end
 
     def specification_params
-      params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description, 
+      params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description,
                                             :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes)
     end
 end

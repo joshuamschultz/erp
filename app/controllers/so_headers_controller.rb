@@ -1,29 +1,29 @@
 class SoHeadersController < ApplicationController
-  before_filter :find_relations, only: [:index]
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update] 
+  before_action :find_relations, only: [:index]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
   # before_filter :check_permissions, :only => [:edit, :destroy]
   autocomplete :so_header, :so_identifier, :full => true
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
     if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
         authorize! :edit, User
-    end 
+    end
   end
 
   def user_permissions
-    if  user_signed_in? && current_user.is_vendor? 
+    if  user_signed_in? && current_user.is_vendor?
         authorize! :edit, User
-    end 
+    end
   end
 
 
   def set_page_info
-    unless  user_signed_in? && current_user.is_vendor? 
+    unless  user_signed_in? && current_user.is_vendor?
       @menus[:sales][:active] = "active"
     end
   end
@@ -70,46 +70,52 @@ class SoHeadersController < ApplicationController
     else
       respond_to do |format|
         format.html # index.html.erb
-        format.json {     
-          i = 0   
+        @so_heders = Array.new
+        format.json {
+          i = 0
           po_type = MasterType.find_by_type_value('transer')
           so_ids = PoHeader.where("po_type_id =? ",po_type.id).collect(&:so_header_id)
-          @so_headers = @so_headers.delete_if {|entry| so_ids.include? entry[:id]}
+          @so_headers = @so_headers.reject {|entry| so_ids.include? entry[:id]}
           so_line_ids = []
-          @so_headers = @so_headers.select{|so_header|          
-            so_header[:index] = i
-            so_header[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
-            so_header[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
+          @so_headers = @so_headers.select{|so_header|
+            so_heder = Hash.new
+            so_header.attributes.each do |key, value|
+              so_heder[key] = value
+            end
+            so_heder[:index] = i
+            so_heder[:so_id] = CommonActions.linkable(so_header_path(so_header), so_header.so_identifier)
+            so_heder[:customer_name] = CommonActions.linkable(organization_path(so_header.organization), so_header.organization.organization_name)
             if params[:item_id].present?
               so_lines = so_header.so_lines
               if so_line_ids != nil?
-                so_lines =  so_lines.delete_if {|entry| so_line_ids.include? entry[:id]}
+                so_lines =  so_lines.reject {|entry| so_line_ids.include? entry[:id]}
               end
               so_line_ids<<so_header.so_lines.first.id
-              so_header[:so_line_price] = so_lines.first.so_line_sell
-              so_header[:so_type_qty] = so_lines.first.so_line_quantity
+              so_heder[:so_line_price] = so_lines.first.so_line_sell
+              so_heder[:so_type_qty] = so_lines.first.so_line_quantity
             end
             if so_header.bill_to_address
-                so_header[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
+                so_heder[:bill_to_address_name] = CommonActions.linkable(contact_path(so_header.bill_to_address), so_header.bill_to_address.contact_description)
             else
-                so_header[:bill_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+                so_heder[:bill_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
             end
             if so_header.ship_to_address
-                so_header[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_description)
+                so_heder[:ship_to_address_name] = CommonActions.linkable(contact_path(so_header.ship_to_address), so_header.ship_to_address.contact_description)
             else
-                so_header[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
+                so_heder[:ship_to_address_name] = CommonActions.linkable(organization_main_address_path(so_header.organization), so_header.organization.organization_name)
             end
             if can? :edit, so_header
 
-              so_header[:links] =  CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil) 
-            
+              so_heder[:links] =  CommonActions.object_crud_paths(nil, edit_so_header_path(so_header), nil)
+
             else
-              so_header[:links]=""
+              so_heder[:links]=""
             end
 
              i += 1
+             @so_heders.push(so_heder)
            }
-           render json: {:aaData => @so_headers} 
+           render json: {:aaData => @so_heders}
         }
       end
     end
@@ -124,7 +130,7 @@ class SoHeadersController < ApplicationController
       redirect_to action: "index"
     else
       @attachable = @so_header
-      @notes = @so_header.present? ? @so_header.comments.where(:comment_type => "note").order("created_at desc") : []  
+      @notes = @so_header.present? ? @so_header.comments.where(:comment_type => "note").order("created_at desc") : []
       @attachment = @so_header.attachments.new
       respond_to do |format|
         format.html # show.html.erb
@@ -155,7 +161,7 @@ class SoHeadersController < ApplicationController
     @so_header = SoHeader.new(params[:so_header])
 
     respond_to do |format|
-      if @so_header.save        
+      if @so_header.save
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully created.' }
         format.json { render json: @so_header, status: :created, location: @so_header }
       else
@@ -171,7 +177,7 @@ class SoHeadersController < ApplicationController
     @so_header = SoHeader.find(params[:id])
 
     respond_to do |format|
-      if @so_header.update_attributes(params[:so_header])        
+      if @so_header.update_attributes(params[:so_header])
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully updated.' }
         format.json { head :no_content }
       else
@@ -240,13 +246,13 @@ class SoHeadersController < ApplicationController
 
 private
 
-  def genarate_pdf 
+  def genarate_pdf
       p @so_header
       html = render_to_string(:layout => false , :partial => 'so_headers/sales_report')
-      kit = PDFKit.new(html, :page_size => 'A4')    
+      kit = PDFKit.new(html, :page_size => 'A4')
       # Get an inline PDF
       kit.to_pdf
-      # Save the PDF to a file    
+      # Save the PDF to a file
       path = Rails.root.to_s+"/public/sales_report"
       if File.directory? path
         path = path+"/"+@so_header.so_identifier.to_s+".pdf"

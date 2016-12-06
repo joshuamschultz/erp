@@ -5,15 +5,15 @@ class DimensionsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_vendor?
-        authorize! :edit, Dimension
-    end 
+    if  user_signed_in? && current_user.is_vendor?
+      authorize! :edit, Dimension
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_customer? )
-        authorize! :edit, Dimension
-    end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_customer? )
+      authorize! :edit, Dimension
+    end
   end
   def set_page_info
       @menus[:quality][:active] = "active"
@@ -23,21 +23,26 @@ class DimensionsController < ApplicationController
   # GET /dimensions.json
   def index
     @dimensions = Dimension.all
+    @dimnsions = Array.new
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
         @dimensions = @dimensions.select{|dimension|
-          dimension[:dimension_identifier] = "<a href='#{dimension_path(dimension)}'>#{dimension[:dimension_identifier]}</a>"
+          dimnsion = Hash.new
+          dimension.attributes.each do |key, value|
+            dimnsion[key] = value
+          end
+          dimnsion[:dimension_identifier] = "<a href='#{dimension_path(dimension)}'>#{dimension[:dimension_identifier]}</a>"
           # dimension[:instrument_name] = "<a href='#{gauge_path(dimension.gauge)}'>#{dimension.gauge.gauge_tool_name}</a>"
           if can? :edit, Dimension
-            dimension[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
+            dimnsion[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
           else
-            dimension[:links] = CommonActions.object_crud_paths(nil, nil, nil)
+            dimnsion[:links] = CommonActions.object_crud_paths(nil, nil, nil)
           end
-
+          @dimnsions.push(dimnsion)
       }
 
-        render json: {:aaData => @dimensions} 
+        render json: {:aaData => @dimnsions}
       }
     end
   end
@@ -73,15 +78,16 @@ class DimensionsController < ApplicationController
   # POST /dimensions
   # POST /dimensions.json
   def create
-    @dimension = Dimension.new(params[:dimension])
+
+    @dimension = Dimension.new(dimension_params)
 
     respond_to do |format|
-      if @dimension.save        
-        format.html { 
+      if @dimension.save
+        format.html {
             item = Item.find_by_id(params[:item_id])
             if item
                 redirect_to item_path(item), notice: 'Dimension type was successfully created.'
-            else              
+            else
                 redirect_to dimensions_path, notice: 'Dimension type was successfully created.'
             end
         }

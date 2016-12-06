@@ -1,24 +1,24 @@
 class ReceivablesController < ApplicationController
-  before_filter :set_autocomplete_values, only: [:create, :update]
-  skip_before_filter :verify_authenticity_token, :only => :create
+  before_action :set_autocomplete_values, only: [:create, :update]
+  skip_before_action :verify_authenticity_token, :only => :create
 
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_operations?
-        authorize! :edit, Receivable
-    end 
+    if  user_signed_in? && current_user.is_operations?
+      authorize! :edit, Receivable
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
-        authorize! :edit, Receivable
-    end 
-  end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+      authorize! :edit, Receivable
+    end
+  end
 
   def set_page_info
     unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
@@ -32,7 +32,7 @@ class ReceivablesController < ApplicationController
       params[:receivable][:so_header_id] = params[:org_so_header_id] if params[:receivable][:so_header_id] == ""
       params[:receivable][:organization_id], params[:organization_id] = params[:organization_id], params[:receivable][:organization_id]
       params[:receivable][:organization_id] = params[:org_organization_id] if params[:receivable][:organization_id] == ""
-      
+
       # params[:receivable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:receivable][:gl_account_id]
       # params[:receivable][:gl_account_id] = params[:org_gl_account_id] if params[:receivable][:gl_account_id] == ""
     end
@@ -56,22 +56,27 @@ class ReceivablesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @receivables = @receivables.select{|receivable|
-              receivable[:receivable_identifier] = CommonActions.linkable(receivable_path(receivable), receivable.receivable_identifier)
-              receivable[:so_identifier] = receivable.so_header.present? ? CommonActions.linkable(so_header_path(receivable.so_header), receivable.so_header.so_identifier) : "-"
-              receivable[:customer_name] = receivable.organization.present? ? CommonActions.linkable(organization_path(receivable.organization), receivable.organization.organization_name) : "-"
-              receivable["receivable_balance"] = receivable.receivable_current_balance
-              if can? :edit, Receivable 
-                receivable[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivable), nil,
-                [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivable.id)} if receivable.receivable_status == "open") ]
+      @receivabls = Array.new
+      format.json {
+        @receivables = @receivables.select{|receivble|
+              receivabl = Hash.new
+              receivable.attributes.each do |key, value|
+                receivabl[key] = value
+              end
+              receivabl[:receivable_identifier] = CommonActions.linkable(receivable_path(receivble), receivble.receivable_identifier)
+              receivabl[:so_identifier] = receivble.so_header.present? ? CommonActions.linkable(so_header_path(receivble.so_header), receivble.so_header.so_identifier) : "-"
+              receivabl[:customer_name] = receivble.organization.present? ? CommonActions.linkable(organization_path(receivble.organization), receivble.organization.organization_name) : "-"
+              receivabl["receivable_balance"] = receivble.receivable_current_balance
+              if can? :edit, Receivable
+                receivabl[:links] = CommonActions.object_crud_paths(nil, edit_receivable_path(receivble), nil,
+                [ ({:name => "Receive", :path => new_receipt_path(receivable_id: receivble.id)} if receivble.receivable_status == "open") ]
               )
               else
-                receivable[:links] = ''
-              end  
-
+                receivabl[:links] = ''
+              end
+              @receivabls.push(receivabl)
         }
-        render json: {:aaData => @receivables}
+        render json: {:aaData => @receivabls}
       }
     end
   end
@@ -146,15 +151,15 @@ class ReceivablesController < ApplicationController
   def update
     @receivable = Receivable.find(params[:id])
 
-     # Updating GlAccount  
-    #  accountsReceivableAmt = 0     
+     # Updating GlAccount
+    #  accountsReceivableAmt = 0
     #  @receivable.receivable_accounts.each do |receivable_account|
-    #   CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'increment',receivable_account.receivable_account_amount, @receivable.id )                    
+    #   CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'increment',receivable_account.receivable_account_amount, @receivable.id )
     #   accountsReceivableAmt+=receivable_account.receivable_account_amount
     #  end
     # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',accountsReceivableAmt, @receivable.id )
 
-    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',@receivable.receivable_freight ) 
+    # CommonActions.update_gl_accounts('FREIGHT ; UPS', 'increment',@receivable.receivable_freight )
     # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',@receivable.receivable_freight )
 
 
@@ -179,9 +184,9 @@ class ReceivablesController < ApplicationController
   # DELETE /receivables/1.json
   def destroy
     @receivable = Receivable.find(params[:id])
-    # accountsReceivableAmt = 0    
+    # accountsReceivableAmt = 0
     # @receivable.receivable_accounts.each do |receivable_account|
-    #    CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'increment',receivable_account.receivable_account_amount, @receivable.id )                    
+    #    CommonActions.update_gl_accounts(receivable_account.gl_account.gl_account_title, 'increment',receivable_account.receivable_account_amount, @receivable.id )
     #   accountsReceivableAmt+=receivable_account.payable_account_amount
     #  end
     # CommonActions.update_gl_accounts('RECEIVBALE EMPLOYEES', 'decrement',accountsReceivableAmt, @receivable.id )
@@ -192,21 +197,22 @@ class ReceivablesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def invoice_report
     @receivable = Receivable.find(params[:id])
     @so_header = @receivable.so_header rescue nil
     @company_info = CompanyInfo.first
     render :layout => false
-  end 
+  end
 private
 
-  def genarate_pdf 
+  def genarate_pdf
       html = render_to_string(:layout => false , :partial => 'receivables/invoice_report')
-      kit = PDFKit.new(html, :page_size => 'A4')    
+      kit = PDFKit.new(html, :page_size => 'A4')
       # Get an inline PDF
       pdf = kit.to_pdf
-      # Save the PDF to a file    
+      p pdf
+      # Save the PDF to a file
       path = Rails.root.to_s+"/public/invoice_report"
       if File.directory? path
         path = path+"/"+@so_header.so_identifier.to_s+".pdf"

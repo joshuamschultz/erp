@@ -1,24 +1,24 @@
 class PayablesController < ApplicationController
-  before_filter :set_autocomplete_values, only: [:create, :update] 
-  skip_before_filter :verify_authenticity_token, :only => :create
+  before_action :set_autocomplete_values, only: [:create, :update]
+  skip_before_action :verify_authenticity_token, :only => :create
 
-  before_filter :set_page_info 
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && (current_user.is_operations? || current_user.is_vendor? )
-        authorize! :edit, Payable
-    end 
+    if  user_signed_in? && (current_user.is_operations? || current_user.is_vendor? )
+      authorize! :edit, Payable
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_customer?  )
-        authorize! :edit, Payable
-    end 
-  end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_customer?  )
+      authorize! :edit, Payable
+    end
+  end
 
   def set_page_info
     unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
@@ -26,13 +26,13 @@ class PayablesController < ApplicationController
     end
   end
 
-   def set_autocomplete_values
+  def set_autocomplete_values
     if params[:payable].present?
       params[:payable][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:payable][:po_header_id]
       params[:payable][:po_header_id] = params[:org_po_header_id] if params[:payable][:po_header_id] == ""
       params[:payable][:organization_id], params[:organization_id] = params[:organization_id], params[:payable][:organization_id]
       params[:payable][:organization_id] = params[:org_organization_id] if params[:payable][:organization_id] == ""
-      
+
       # params[:payable][:gl_account_id], params[:gl_account_id] = params[:gl_account_id], params[:payable][:gl_account_id]
       # params[:payable][:gl_account_id] = params[:org_gl_account_id] if params[:payable][:gl_account_id] == ""
     end
@@ -50,48 +50,52 @@ class PayablesController < ApplicationController
         @payables =Payable.all_revision_payables(params[:revision_id])
       elsif params[:item_id].present?
         @payables =Payable.all_payables(params[:item_id])
-      else  
+      else
 
       @payables = Payable.status_based_payables(params[:payable_status] || "open")
       end
- 
+
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @payables = @payables.select{|payable|
-              payable[:payable_identifier] = CommonActions.linkable(payable_path(payable), payable.payable_identifier)
-              payable[:payable_open_balance] = payable.payable_current_balance 
-              if can? :view, PoHeader
-                payable[:po_identifier] = payable.po_header.present? ? CommonActions.linkable(po_header_path(payable.po_header), payable.po_header.po_identifier) : "-"
-              else
-                payable[:po_identifier] = payable.po_header.present? ?  payable.po_header.po_identifier : '-' 
-              end  
-              payable[:vendor_name] = payable.organization.present? ? CommonActions.linkable(organization_path(payable.organization), payable.organization.organization_name) : "-"
-              if payable.payable_to_address
-                payable[:payable_to_name] = CommonActions.linkable(contact_path(payable.payable_to_address), payable.payable_to_address.contact_description)
-              elsif payable.organization
-                payable[:payable_to_name] = CommonActions.linkable(organization_main_address_path(payable.organization), payable.organization.organization_name)
-              else
-                payable[:payable_to_name] = "-"
-              end  
-              if can? :edit, Payable            
-                if payable.payable_type == 'manual'
-                    payable[:links] = CommonActions.object_crud_paths(nil, manual_edit_payable_path(payable), nil, 
-                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
-              )
-                else    
-                  payable[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payable), nil, 
-                [ ({:name => "PAY", :path => new_payment_path(payable_id: payable.id)} if payable.payable_status == "open") ]
-              )
-              end    
-              else
-                payable[:links] = ''
-             end     
-
-          }
-          render json: {:aaData => @payables}
-
+      @payabls = Array.new
+      format.json {
+        @payables = @payables.select{|payble|
+          payabl = Hash.new
+          payble.attributes.each do |key, value|
+            payabl[key] = value
+          end
+          payabl[:payable_identifier] = CommonActions.linkable(payable_path(payble), payble.payable_identifier)
+          payabl[:payable_open_balance] = payble.payable_current_balance
+          if can? :view, PoHeader
+            payabl[:po_identifier] = payble.po_header.present? ? CommonActions.linkable(po_header_path(payble.po_header), payble.po_header.po_identifier) : "-"
+          else
+            payabl[:po_identifier] = payble.po_header.present? ?  payble.po_header.po_identifier : '-'
+          end
+          payabl[:vendor_name] = payble.organization.present? ? CommonActions.linkable(organization_path(payble.organization), payble.organization.organization_name) : "-"
+          if payble.payable_to_address
+            payabl[:payable_to_name] = CommonActions.linkable(contact_path(payble.payable_to_address), payble.payable_to_address.contact_description)
+          elsif payble.organization
+            payabl[:payable_to_name] = CommonActions.linkable(organization_main_address_path(payble.organization), payble.organization.organization_name)
+          else
+            payable[:payable_to_name] = "-"
+          end
+          if can? :edit, Payable
+            if payble.payable_type == 'manual'
+                payabl[:links] = CommonActions.object_crud_paths(nil, manual_edit_payable_path(payble), nil,
+            [ ({:name => "PAY", :path => new_payment_path(payable_id: payble.id)} if payble.payable_status == "open") ]
+          )
+            else
+              payabl[:links] = CommonActions.object_crud_paths(nil, edit_payable_path(payble), nil,
+            [ ({:name => "PAY", :path => new_payment_path(payable_id: payble.id)} if payble.payable_status == "open") ]
+          )
+            end
+          else
+            payabl[:links] = ''
+          end
+          @payabls.push(payabl)
+        }
+        render json: {:aaData => @payabls}
       }
     end
   end
@@ -150,25 +154,25 @@ class PayablesController < ApplicationController
     end
 
     respond_to do |format|
-      if @payable.save 
+      if @payable.save
         # @payable.update_gl_account
         if @payable.payable_type == 'manual'
           format.html { redirect_to manual_edit_payable_path(@payable), notice: 'Payable was successfully created.' }
           format.json { render json: @payable, status: :created, location: @payable }
-        else  
+        else
           format.html { redirect_to new_payable_payable_line_path(@payable), notice: 'Payable was successfully created.' }
           format.json { render json: @payable, status: :created, location: @payable }
-        end  
+        end
       else
         if @payable.payable_type == 'manual'
           p @payable.errors.to_yaml
           format.html { render action: "manual_new" }
           format.json { render json: @payable.errors, status: :unprocessable_entity }
-        else  
+        else
           p @payable.errors.to_yaml
           format.html { render action: "new" }
           format.json { render json: @payable.errors, status: :unprocessable_entity }
-         end 
+        end
       end
     end
   end
@@ -179,10 +183,10 @@ class PayablesController < ApplicationController
     @payable = Payable.find(params[:id])
     # params[:payable][:payable_accounts_attributes] = @payable.process_removed_accounts(params[:payable][:payable_accounts_attributes])
 
-    # Updating GlAccount 
-    # accountsPayableAmt = 0     
+    # Updating GlAccount
+    # accountsPayableAmt = 0
     # @payable.payable_accounts.each do |payable_account|
-    #    CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount, @payable.id )                    
+    #    CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount, @payable.id )
     #    accountsPayableAmt += payable_account.payable_account_amount
     # end
     # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',accountsPayableAmt, @payable.id )
@@ -204,7 +208,7 @@ class PayablesController < ApplicationController
         else
           format.html { render action: "edit" }
           format.json { render json: @payable.errors, status: :unprocessable_entity }
-        end  
+        end
       end
     end
   end
@@ -213,16 +217,16 @@ class PayablesController < ApplicationController
   # DELETE /payables/1.json
   def destroy
     @payable = Payable.find(params[:id])
-    # Updating GlAccount  
-    # accountsPayableAmt = 0     
+    # Updating GlAccount
+    # accountsPayableAmt = 0
     # @payable.payable_accounts.each do |payable_account|
-    #    CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount,@payable.id   )             
+    #    CommonActions.update_gl_accounts(payable_account.gl_account.gl_account_title, 'decrement',payable_account.payable_account_amount,@payable.id   )
     #    accountsPayableAmt += payable_account.payable_account_amount
     # end
     # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',accountsPayableAmt, @payable.id )
     @payable.destroy
 
-    
+
 
     respond_to do |format|
       format.html { redirect_to payables_url }

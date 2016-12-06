@@ -1,6 +1,6 @@
 class ItemRevisionsController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
 
   # GET items/1/item_revisions
   # GET items/1/item_revisions.json
@@ -10,7 +10,7 @@ class ItemRevisionsController < ApplicationController
 
       params[:item_revision][:material_id], params[:material_id] = params[:material_id], params[:item_revision][:material_id]
       params[:item_revision][:material_id] = params[:org_material_id] if params[:item_revision][:material_id] == ""
-  
+
       # params[:item_revision][:organization_id], params[:organization_id] = params[:organization_id], params[:item_revision][:organization_id]
       # params[:item_revision][:organization_id] = params[:org_organization_id] if params[:item_revision][:organization_id] == ""
   end
@@ -25,16 +25,22 @@ class ItemRevisionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @item_revsions = Array.new
+      format.json {
         @item_revisions = @item_revisions.select{|revision|
-            revision[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id)}'>#{revision.item_revision_name}</a>"
-           if can? :edit, Item 
-            revision[:links] = CommonActions.object_crud_paths(nil, edit_item_item_revision_path(@item, revision), nil)
-           else 
-            revision[:links] = ""
-           end 
+            revsion = Hash.new
+            revision.attributes.each do |key, value|
+              revsion[key] = value
+            end
+            revsion[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id)}'>#{revision.item_revision_name}</a>"
+           if can? :edit, Item
+            revsion[:links] = CommonActions.object_crud_paths(nil, edit_item_item_revision_path(@item, revision), nil)
+           else
+            revsion[:links] = ""
+           end
+           @item_revsions.push(revsion)
         }
-        render json: {:aaData => @item_revisions}
+        render json: {:aaData => @item_revsions}
       }
     end
   end
@@ -55,9 +61,9 @@ class ItemRevisionsController < ApplicationController
   # GET items/1/item_revisions/new.json
   def new
     @item = Item.find(params[:item_id])
-    
+
     # @item_revision = @item.current_revision.present? ? @item.current_revision.dup : @item.item_revisions.build
-    
+
     if @item.current_revision
         @item_revision = @item.current_revision.dup
         @item_revision.item_processes = @item.current_revision.item_processes
