@@ -1,22 +1,22 @@
 class QualityLotsController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
   autocomplete :quality_lot, :lot_control_no, :full => true
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer?)
-        authorize! :edit, QualityLot
-    end 
+    if  user_signed_in? && ( current_user.is_logistics? || current_user.is_vendor? || current_user.is_customer?)
+      authorize! :edit, QualityLot
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && current_user.is_clerical? 
-        authorize! :edit, QualityLot
-    end 
+    if  user_signed_in? && current_user.is_clerical?
+      authorize! :edit, QualityLot
+    end
   end
 
   def set_page_info
@@ -27,7 +27,7 @@ class QualityLotsController < ApplicationController
     end
   end
 
-  def set_autocomplete_values     
+  def set_autocomplete_values
       params[:quality_lot][:po_header_id], params[:po_header_id] = params[:po_header_id], params[:quality_lot][:po_header_id]
       params[:quality_lot][:po_header_id] = params[:org_po_header_id] if params[:quality_lot][:po_header_id] == ""
 
@@ -63,25 +63,25 @@ class QualityLotsController < ApplicationController
           @item_revision = ItemRevision.find(params[:revision_id])
           @quality_lots = @item_revision.quality_lots.order('created_at desc')
     elsif params[:item_id].present?
-        @item = Item.find(params[:item_id])       
+        @item = Item.find(params[:item_id])
         @quality_lots = @item.quality_lots.order('created_at desc')
     elsif params[:type].present?
       @quality_lots = QualityLot.lot_missing_location
     else
         @quality_lots = QualityLot.order('created_at desc')
     end
-    
+
     i = 0
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
 
           if  user_signed_in? && current_user.is_vendor?
             @po_headers  = PoHeader.all
             organization_ids = current_user.organizations.collect(&:id)
             @po_headers =  @po_headers.delete_if {|entry| !organization_ids.include? entry[:organization_id]}
             @po_headers =   @po_headers.collect(&:id)
-            @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}  
+            @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}
           end
 
           @quality_lots = @quality_lots.select{|quality_lot|
@@ -93,27 +93,27 @@ class QualityLotsController < ApplicationController
             else
               quality_lot[:links] = ""
             end
-            
+
             quality_lot[:lot_control_no] = CommonActions.linkable(quality_lot_path(quality_lot), quality_lot.lot_control_no)
             # quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.po_line.item), quality_lot.po_line.item_alt_name.item_alt_identifier)
-            
-            # quality_lot[:item_with_revision] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
-            # revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier + 
+
+            # quality_lot[:item_with_revision] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
+            # revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier +
             # " (Revision: #{quality_lot.item_revision.item_revision_name})")
 
-            quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
             revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
 
-            quality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item, 
+            quality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item,
             revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)  : ""
-            if  user_signed_in? && current_user.is_customer? 
+            if  user_signed_in? && current_user.is_customer?
               if can? :edit , quality_lot
-                quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
+                quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
               else
                 quality_lot[:po_identifier] = quality_lot.po_header.po_identifier
               end
             else
-              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)       
+              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
             end
             quality_lot[:cost] = quality_lot.po_line.po_line_cost
             quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
@@ -134,7 +134,7 @@ class QualityLotsController < ApplicationController
   def show
     @quality_lot = QualityLot.find(params[:id])
     @po_header = @quality_lot.po_header
-    @notes = @quality_lot.present? ? @quality_lot.comments.where(:comment_type => "note").order("created_at desc") : [] 
+    @notes = @quality_lot.present? ? @quality_lot.comments.where(:comment_type => "note").order("created_at desc") : []
     @attachable = @quality_lot
 
     respond_to do |format|
@@ -233,7 +233,7 @@ class QualityLotsController < ApplicationController
         note["status"] = "fail"
     end
 
-    render json: {:result => note} 
+    render json: {:result => note}
   end
 
   def material_report
@@ -245,7 +245,7 @@ class QualityLotsController < ApplicationController
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
   end
-  
+
   def gage_report
       @quality_lot = QualityLot.find(params[:id])
       render :layout => false
@@ -291,8 +291,8 @@ class QualityLotsController < ApplicationController
     end
 
     def quality_lot_params
-      params.require(:quality_lot).permit(:po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id, 
-                                          :inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id, 
+      params.require(:quality_lot).permit(:po_header_id, :po_line_id, :item_revision_id, :inspection_level_id, :inspection_method_id,
+                                          :inspection_type_id, :lot_active, :lot_control_no, :lot_created_id, :lot_finalized_at, :lot_inspector_id,
                                           :lot_notes, :lot_quantity, :lot_updated_id, :lot_aql_no, :fmea_type_id, :control_plan_id, :process_flow_id,
                                           :lot_shelf_idenifier, :lot_shelf_unit, :lot_shelf_number, :quality_lot_materials_attributes, :run_at_rate_id,
                                           :fai, :finished, :quantity_on_hand, :lot_status, :final_date)

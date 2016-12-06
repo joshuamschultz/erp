@@ -1,6 +1,6 @@
 class ProcessType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
-  
+
 
   after_initialize :default_values
 
@@ -23,9 +23,9 @@ class ProcessType < ActiveRecord::Base
 
   has_one :attachment, :as => :attachable, :dependent => :destroy
 
- 
-  default_scope { order('process_short_name ASC') } 
-  
+
+  default_scope { order('process_short_name ASC') }
+
   accepts_nested_attributes_for :attachment, :allow_destroy => true
 
 
@@ -85,5 +85,5 @@ class ProcessType < ActiveRecord::Base
     end
     specifications.uniq
   end
-  
+
 end

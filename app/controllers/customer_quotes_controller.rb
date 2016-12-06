@@ -1,15 +1,15 @@
 class CustomerQuotesController < ApplicationController
-    before_filter :set_autocomplete_values, only: [:create, :update]
-    before_filter :set_page_info
+    before_action :set_autocomplete_values, only: [:create, :update]
+    before_action :set_page_info
 
-    before_filter :view_permissions, except: [:index, :show]
-    before_filter :user_permissions
+    before_action :view_permissions, except: [:index, :show]
+    before_action :user_permissions
 
 
     def view_permissions
       if  user_signed_in? &&  current_user.is_customer?
           authorize! :edit, CustomerQuote
-      end 
+      end
     end
 
     def user_permissions
@@ -18,7 +18,7 @@ class CustomerQuotesController < ApplicationController
           current_user.is_quality?   ||
           current_user.is_vendor? )
             authorize! :edit, CustomerQuote
-      end 
+      end
     end
 
     def set_page_info
@@ -42,7 +42,7 @@ class CustomerQuotesController < ApplicationController
       else
           @customer_quotes = CustomerQuote.order('created_at desc')
       end
-      
+
       respond_to do |format|
           i = 0
           @customer_qots = Array.new
@@ -87,7 +87,7 @@ class CustomerQuotesController < ApplicationController
                     customer_qot = Hash.new
                     customer_quote.attributes.each do |key, value|
                       customer_qot[key] = value
-                    end 
+                    end
                      customer_qot[:index] = i
                      customer_qot[:customer_quote_identifier] = CommonActions.linkable(customer_quote_path(customer_quote), customer_quote.customer_quote_identifier)
                      customer_qot[:customer_name] = customer_quote.organization.present? ? CommonActions.linkable(organization_path(customer_quote.organization), customer_quote.organization.organization_name) : ''
@@ -114,7 +114,7 @@ class CustomerQuotesController < ApplicationController
     def show
       @customer_quote = CustomerQuote.find(params[:id])
       @attachable = @customer_quote
-      # @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []  
+      # @notes = @customer_quote.present? ? @customer_quote.comments.where(:comment_type => "note").order("created_at desc") : []
       @notes = @customer_quote.comments.where(:comment_type => "note").order("created_at desc") if @customer_quote
 
       respond_to do |format|
@@ -184,7 +184,7 @@ class CustomerQuotesController < ApplicationController
       end
     end
 
-    
+
     def populate
         @customer_quote = CustomerQuote.find(params[:id])
 
@@ -199,8 +199,8 @@ class CustomerQuotesController < ApplicationController
             note["status"] = "fail"
         end
 
-        render json: {:result => note} 
-        
+        render json: {:result => note}
+
     end
     private
 

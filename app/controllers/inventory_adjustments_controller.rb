@@ -1,18 +1,19 @@
 class InventoryAdjustmentsController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
-  before_filter :user_permissions
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
+  before_action :user_permissions
 
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?) 
-        authorize! :edit, InventoryAdjustment
-    end 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?)
+      authorize! :edit, InventoryAdjustment
+    end
   end
 
   def set_page_info
       @menus[:inventory][:active] = "active"
       simple_form_validation = true
+      p simple_form_validation
   end
   def set_autocomplete_values
     params[:inventory_adjustment][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:inventory_adjustment][:item_alt_name_id]
@@ -29,8 +30,8 @@ class InventoryAdjustmentsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html 
-      format.json { 
+      format.html
+      format.json {
           @inventory_adjustments = @inventory_adjustments.select{|inventory_adjustment|
               inventory_adjustment[:id] = inventory_adjustment.id
               inventory_adjustment[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier)
