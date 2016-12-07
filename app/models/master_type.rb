@@ -1,17 +1,18 @@
 class MasterType < ActiveRecord::Base
-  
+
   belongs_to :quality_document
   scope :po_types, -> {where type_category: 'po_type'}
   scope :organization_types, -> {where type_category: 'organization_type'}
   scope :quality_levels, -> {where type_category: 'customer_quality_level'}
   scope :payment_types, -> {where type_category: 'payment_type'}
   scope :gl_modes, -> {where type_category: 'gl_mode'}
-  scope :gl_categories, -> {where type_category: 'gl_category'}  
+  scope :gl_categories, -> {where type_category: 'gl_category'}
   scope :ic_actions, -> {where type_category: 'icp_quallity_action'}
   scope :organization_quality_types, -> {where type_category: 'organization_type_q_a'}
   scope :customer_feedback_types, -> {where type_category: 'customer_response'}
-
-
+  scope :inspection_level, -> {where type_category: 'inspection_level'}
+  scope :inspection_method, -> {where type_category: 'inspection_method'}
+  scope :inspection_type, -> {where type_category: 'inspection_method'}
   has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
@@ -43,9 +44,9 @@ class MasterType < ActiveRecord::Base
   validates_uniqueness_of :type_value
 
   # owner / commission_type -> Sell * quantityshipped, [sell-cost]*quantityshipped
-  # customer quality level / forms -> 
+  # customer quality level / forms ->
   # organization -> type - customer, vendor, support
-  # po -> type - 
+  # po -> type -
 
   # before_save :process_before_save
   # def process_before_save

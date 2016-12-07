@@ -83,48 +83,53 @@ class QualityLotsController < ApplicationController
             @po_headers =   @po_headers.collect(&:id)
             @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}
           end
-
+          @qality_lots = Array.new
           @quality_lots = @quality_lots.select{|quality_lot|
-            quality_lot[:index] = i
+            qality_lot = Hash.new
+            quality_lot.attributes.each do |key, value|
+              qality_lot[key] = value
+            end
+            qality_lot[:index] = i
 
             if (can? :edit, quality_lot)
-              quality_lot[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_path(quality_lot), nil)
+              qality_lot[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_path(quality_lot), nil)
 
             else
-              quality_lot[:links] = ""
+              qality_lot[:links] = ""
             end
 
-            quality_lot[:lot_control_no] = CommonActions.linkable(quality_lot_path(quality_lot), quality_lot.lot_control_no)
+            qality_lot[:lot_control_no] = CommonActions.linkable(quality_lot_path(quality_lot), quality_lot.lot_control_no)
             # quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.po_line.item), quality_lot.po_line.item_alt_name.item_alt_identifier)
 
             # quality_lot[:item_with_revision] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
             # revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier +
             # " (Revision: #{quality_lot.item_revision.item_revision_name})")
 
-            quality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
+            qality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
             revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
 
-            quality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item,
+            qality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item,
             revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)  : ""
             if  user_signed_in? && current_user.is_customer?
               if can? :edit , quality_lot
-                quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
+                qality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
               else
-                quality_lot[:po_identifier] = quality_lot.po_header.po_identifier
+                qality_lot[:po_identifier] = quality_lot.po_header.po_identifier
               end
             else
-              quality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
+              qality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
             end
-            quality_lot[:cost] = quality_lot.po_line.po_line_cost
-            quality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
-            quality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
-            quality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
-            quality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
-            quality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y")
-            quality_lot[:total_lots] = quality_lot.po_line.quality_lots.count
+            qality_lot[:cost] = quality_lot.po_line.po_line_cost
+            qality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
+            qality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
+            qality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
+            qality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
+            qality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y")
+            qality_lot[:total_lots] = quality_lot.po_line.quality_lots.count
             i += 1
+            @qality_lots.push(qality_lot)
           }
-          render json: {:aaData => @quality_lots}
+          render json: {:aaData => @qality_lots}
       }
     end
   end

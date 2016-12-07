@@ -111,7 +111,8 @@ class ProcessTypesController < ApplicationController
 
     respond_to do |format|
       @process_type.attachment.updated_by = current_user
-      if @process_type.update_attributes(params[:process_type])
+      if @process_type.update_attributes(process_type_params)
+        ProcessType.process_item_associations(@process_type, params)
         CommonActions.notification_process("ProcessType", @process_type)
         format.html { redirect_to process_types_url, notice: 'Process type was successfully updated.' }
         format.json { head :no_content }

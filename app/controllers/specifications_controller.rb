@@ -31,18 +31,27 @@ class SpecificationsController < ApplicationController
     end
     respond_to do |format|
       format.html # index.html.erb
+      @specificasions = Array.new
       format.json {
         @specifications = @specifications.collect{|specification|
-          attachment = specification.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment.attachment_name)
-          if can? :edit, specification
-            attachment[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
-          else
-            attachment[:links] = nil
+          specificasion = Hash.new
+          specification.attributes.each do |key, value|
+            specificasion[key] = value
           end
-          attachment
+          attachment = specification.attachment.attachment_fields
+          specification.attachment.attachment_fields.each do |key, value|
+            specificasion[key] = value
+          end
+          specificasion[:attachment_name] = CommonActions.linkable(specification_path(specification), attachment[:attachment_name])
+          if can? :edit, specification
+            specificasion[:links] = CommonActions.object_crud_paths(nil, edit_specification_path(specification), nil)
+          else
+            specificasion[:links] = nil
+          end
+
+          @specificasions.push(specificasion)
         }
-        render json: {:aaData => @specifications}
+        render json: {:aaData => @specificasions}
       }
     end
   end
@@ -80,7 +89,7 @@ class SpecificationsController < ApplicationController
   # POST /specifications
   # POST /specifications.json
   def create
-    @specification = Specification.new(params[:specification])
+    @specification = Specification.new(specification_params)
 
     respond_to do |format|
       @specification.attachment.created_by = current_user
@@ -132,6 +141,10 @@ class SpecificationsController < ApplicationController
 
     def specification_params
       params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description,
-                                            :specification_identifier, :specification_notes, :specification_updated_id, :attachment_attributes, :notification_attributes)
+                                            :specification_identifier, :specification_notes, :specification_updated_id, attachment_attributes: [:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
+                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
+                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
+                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
+                                         :attachment_file_name], notification_attributes:  [:notable_id, :notable_type, :note_status, :user_id])
     end
 end
