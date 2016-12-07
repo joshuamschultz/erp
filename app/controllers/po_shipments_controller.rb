@@ -63,34 +63,42 @@ class PoShipmentsController < ApplicationController
 
             end
             i = 0
+            @po_shipmnts = Array.new
             @po_shipments = @po_shipments.select{|po_shipment|
-                po_shipment[:index] =  i
+                po_shipmnt = Hash.new
+
+                po_shipmnt[:index] =  i
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
+                po_shipment = PoShipment.find(po_shipment["id"])
 
-                # po_shipment = so_line_data_list(po_shipment, true)
-                po_shipment[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
-
-                po_shipment[:po_line_cost] = po_shipment.po_line.po_line_cost
-                if can? :edit, PoShipment
-                  po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
-                else
-                  po_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, nil, nil)
+                po_shipment.attributes.each do |key, value|
+                  po_shipmnt[key] = value
                 end
-                po_shipment[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "") + po_shipment[:item_part_no]
+                # po_shipment = so_line_data_list(po_shipment, true)
+                po_shipmnt[:po_shipped_date] = po_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+
+                po_shipmnt[:po_line_cost] = po_shipment.po_line.po_line_cost
+                if can? :edit, PoShipment
+                  po_shipmnt[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_po_shipment_path(po_shipment), nil)
+                else
+                  po_shipmnt[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, nil, nil)
+                end
+                po_shipmnt[:item_part_no] = (params[:create_payable].present? ? po_shipment.payable_checkbox(params[:type]) : "").to_s + po_shipment[:item_part_no].to_s
                 if po_shipment
                   quality_lot = po_shipment.quality_lot
                 if can? :edit, PoShipment
 
-                  po_shipment[:lot] =  quality_lot.present? && quality_lot.lot_control_no.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : ""
+                  po_shipmnt[:lot] =  quality_lot.present? && quality_lot.lot_control_no.present? ? "<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>"  : ""
                 else
-                  po_shipment[:lot]= ""
+                  po_shipmnt[:lot]= ""
                 end
                 else
-                   po_shipment[:lot]= ""
+                   po_shipmnt[:lot]= ""
                 end
                 i += 1
+                @po_shipmnts.push(po_shipmnt)
             }
-            render json: {:aaData => @po_shipments}
+            render json: {:aaData => @po_shipmnts}
         end
       }
     end

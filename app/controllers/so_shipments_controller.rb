@@ -105,30 +105,35 @@ class SoShipmentsController < ApplicationController
             end
             i = 0
             # @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
-
+            @so_shipmnts = Array.new
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id)  .select{|so_shipment|
-
-                so_shipment[:index] =  i
+                so_shipmnt = Hash.new
+                so_shipmnt[:index] =  i
                 so_shipment = so_line_data_list(so_shipment, true)
+                so_shipment = SoShipment.find(so_shipment["id"])
+                so_shipment.attributes.each do |key, value|
+                  so_shipmnt[key] = value
+                end
                 if params[:type] == "process"
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
-                  so_shipment[:shipment_process_id] = "<div style='height:30px;color:#8ec657;background-color: #484848;padding-left:10px;'>#{so_shipment.shipment_process_id}"
-                  so_shipment[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a></div>"
+                  so_shipmnt[:shipment_process_id] = "<div style='height:30px;color:#8ec657;background-color: #484848;padding-left:10px;'>#{so_shipment.shipment_process_id}"
+                  so_shipmnt[:shipment_process_id] += "<a onclick='shipment_process(#{ship_id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a></div>"
                 end
                 if can? :edit, SoShipment
-                  so_shipment[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
+                  so_shipmnt[:links] = params[:type] == "history" ? "" : CommonActions.object_crud_paths(nil, edit_so_shipment_path(so_shipment), nil)
                 else
-                  so_shipment[:links] = ""
+                  so_shipmnt[:links] = ""
                 end
-                so_shipment[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
+                so_shipmnt[:so_shipped_date] = so_shipment.created_at.strftime("%Y-%m-%d at %I:%M %p")
                 if params[:type] == "process"
-                  so_shipment[:item_part_no] = params[:create_receivable] ?  so_shipment[:item_part_no] : so_shipment[:item_part_no]
+                  so_shipmnt[:item_part_no] = params[:create_receivable] ?  so_shipment[:item_part_no] : so_shipment[:item_part_no]
                 else
-                  so_shipment[:item_part_no] = params[:create_receivable] ? so_shipment.receivable_checkbox(params[:type]) + so_shipment[:item_part_no] : so_shipment[:item_part_no]
+                  so_shipmnt[:item_part_no] = params[:create_receivable] ? so_shipment.receivable_checkbox(params[:type]) + so_shipment[:item_part_no] : so_shipment[:item_part_no]
                 end
                 i += 1
+                @so_shipmnts.push(so_shipmnt)
             }
-            render json: {:aaData => @so_shipments}
+            render json: {:aaData => @so_shipmnts}
         end
       }
     end
@@ -137,28 +142,31 @@ class SoShipmentsController < ApplicationController
   def so_line_data_list(object, shipment)
     so_line = shipment ? object.so_line : object
 
-
-      object[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)
-      object[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
-      if so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer"
-         object[:customer_name] = CommonActions.linkable(organization_path(so_line.so_header.po_header.organization), so_line.so_header.po_header.organization.organization_name)
-      else
-        object[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
+      obj = Hash.new
+      object.attributes.each do |key, value|
+        obj[key] = value
       end
-      object[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
+      obj[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)
+      obj[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
+      if so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer"
+         obj[:customer_name] = CommonActions.linkable(organization_path(so_line.so_header.po_header.organization), so_line.so_header.po_header.organization.organization_name)
+      else
+        obj[:customer_name] = so_line.so_header.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
+      end
+      obj[:vendor_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.organization), so_line.organization.organization_name) : "CHESS"
       # object[:customer_name] = so_line.organization ? CommonActions.linkable(organization_path(so_line.so_header.organization), so_line.so_header.organization.organization_name) : "CHESS"
-    object[:lot] = ""
+    obj[:lot] = ""
 
       if shipment && object.quality_lot_id && object.quality_lot_id > 0
         quality_lot = QualityLot.find(object.quality_lot_id)
-        object[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot.present? && quality_lot.lot_control_no.present?
+        obj[:lot] =quality_lot.lot_control_no.split('-')[0]+"-"+"<a href='/quality_lots/#{quality_lot.id}'>#{quality_lot.lot_control_no.split('-')[1]}</a>" if quality_lot.present? && quality_lot.lot_control_no.present?
       end
 
     # object[:quality_level_name] = CommonActions.linkable(customer_quality_path(so_line.customer_quality), so_line.customer_quality.quality_name)
-    object[:so_line_quantity] = so_line.so_line_quantity
-    object[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"
-    object[:so_line_quantity_open] = "<div class='so_line_quantity_open'>#{so_line.so_line_quantity - so_line.so_line_shipped}</div>"
-    object
+    obj[:so_line_quantity] = so_line.so_line_quantity
+    obj[:so_line_quantity_shipped] = "<div class='so_line_shipping_total'>#{so_line.so_line_shipped}</div>"
+    obj[:so_line_quantity_open] = "<div class='so_line_quantity_open'>#{so_line.so_line_quantity - so_line.so_line_shipped}</div>"
+    obj
   end
 
   # GET /so_shipments/1

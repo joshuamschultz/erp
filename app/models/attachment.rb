@@ -7,8 +7,17 @@ class Attachment < ActiveRecord::Base
   :path => ":rails_root/public/attachments/documents/:id/:style/:basename.:extension"
 
   # validates_attachment_content_type :attachment, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
-
-  validates_length_of :attachment_revision_title, :maximum => 50 if validates_presence_of :attachment_revision_title  or  :is_process_type? == false
+  validate :check_attachment_revision_title
+  def check_attachment_revision_title
+    unless self.is_process_type?
+      if self.attachment_revision_title
+        if attachment_revision_title.length > 50
+          self.errors[:attachment_revision_title] << "Too long"
+        end
+      end
+    end
+  end
+  validates_length_of :attachment_revision_title, :maximum => 50
 
   (validates :attachment_name, :uniqueness => { :scope => :attachable_type, :message => "already exists!" } if validates_length_of :attachment_name, :maximum => 50) if validates_presence_of :attachment_name
 

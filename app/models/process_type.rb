@@ -37,9 +37,9 @@ class ProcessType < ActiveRecord::Base
 
   def self.process_item_associations(process_type, params)
         if process_type
-
+          p params[:specs]
           specs = params[:specs] || []
-          process_type.process_type_specifications.where(:specification_id != specs).destroy_all
+          process_type.process_type_specifications.destroy_all
           if specs
               specs.each do |specification_id|
                 unless process_type.process_type_specifications.find_by_specification_id(specification_id)
