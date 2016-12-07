@@ -6,15 +6,15 @@ class ItemAltNamesController < ApplicationController
   before_filter :unauthorized
 
   def unauthorized
-    if  user_signed_in? && current_user.is_customer? 
+    if  user_signed_in? && current_user.is_customer?
       authorize! :edit, ItemAltName
-    end 
+    end
   end
-  
+
   def user_permissions
-    if  user_signed_in? && current_user.is_vendor? 
+    if  user_signed_in? && current_user.is_vendor?
         authorize! :edit, ItemAltName
-    end 
+    end
   end
 
   def set_page_info
@@ -29,7 +29,7 @@ class ItemAltNamesController < ApplicationController
     params[:item_alt_name][:item_id] = params[:org_item_id] if params[:item_alt_name][:item_id] == ""
   end
 
-  def get_autocomplete_items(parameters)    
+  def get_autocomplete_items(parameters)
     items = active_record_get_autocomplete_items(parameters)
     # matched_altnames = ItemAltName.where("organization_id is NULL or organization_id = ?", params[:organization_id])
     items = ItemAltName.where("item_alt_identifier like ?", "%" + params[:term] + "%")
@@ -43,13 +43,19 @@ class ItemAltNamesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @item_alt_nams = Array.new
+      format.json {
         @item_alt_names = @item_alt_names.select{|alt_name|
-          alt_name[:item_name] = "<a href='#{item_path(alt_name.item)}'> #{alt_name.item.item_part_no} </a>"
-          alt_name[:customer_name] = alt_name.organization.present? ? "<a href='#{organization_path(alt_name.organization)}'> #{alt_name.organization.organization_name} </a>" : ""
-          alt_name[:links] = CommonActions.object_crud_paths( nil, edit_item_alt_name_path(alt_name), nil)
+          alt_nam = Hash.new
+          alt_name.attributes.each do |key, value|
+            alt_nam[key] = value
+          end
+          alt_nam[:item_name] = "<a href='#{item_path(alt_name.item)}'> #{alt_name.item.item_part_no} </a>"
+          alt_nam[:customer_name] = alt_name.organization.present? ? "<a href='#{organization_path(alt_name.organization)}'> #{alt_name.organization.organization_name} </a>" : ""
+          alt_nam[:links] = CommonActions.object_crud_paths( nil, edit_item_alt_name_path(alt_name), nil)
+          @item_alt_nams.push(alt_nam)
         }
-        render json:  {:aaData => @item_alt_names} 
+        render json:  {:aaData => @item_alt_nams}
       }
     end
   end
@@ -86,7 +92,7 @@ class ItemAltNamesController < ApplicationController
   # POST /item_alt_names.json
   def create
     @item_alt_name = ItemAltName.new(params[:item_alt_name])
-    respond_to do |format|      
+    respond_to do |format|
         if params[:new_item] && params[:item_alt_name][:item_id] == "" &&  params[:item_id] != ""
             @item = Item.new(:item_part_no => params[:item_id])
             @item.item_revisions.build

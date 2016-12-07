@@ -7,15 +7,15 @@ class MaterialElementsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, MaterialElement
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
         authorize! :edit, MaterialElement
-    end 
+    end
   end
 
   def set_page_info
@@ -35,25 +35,31 @@ class MaterialElementsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @material_elements = @material_elements.select{|element| 
-            element[:element_name] = CommonActions.linkable(element_path(element.element), element.element.element_name)
-            element[:element_symbol] = element.element.element_symbol
+      @material_elemens = Array.new
+      format.json {
+        @material_elements = @material_elements.select{|element|
+            elemend = Hash.new
+            element.attributes.each do |key, value|
+              elemend[key] = value
+            end
+            elemend[:element_name] = CommonActions.linkable(element_path(element.element), element.element.element_name)
+            elemend[:element_symbol] = element.element.element_symbol
 
             if can? :edit , MaterialElement
 
-              element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
-                                edit_material_material_element_path(@material, element), 
+              elemend[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element),
+                                edit_material_material_element_path(@material, element),
                                 material_material_element_path(@material, element)
                               )
             else
-              element[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element), 
-                              nil, 
+              elemend[:links] = CommonActions.object_crud_paths(material_material_element_path(@material, element),
+                              nil,
                               nil
                             )
             end
+            @material_elemens.push(elemend)
         }
-        render json: {:aaData => @material_elements}
+        render json: {:aaData => @material_elemens}
       }
     end
   end

@@ -6,11 +6,11 @@ class PrintsController < ApplicationController
 
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?) 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer?)
         authorize! :edit, Print
-    end 
+    end
   end
-  
+
   def set_page_info
       @menus[:inventory][:active] = "active"
   end
@@ -22,14 +22,22 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @prins = Array.new
+      format.json {
         @prints = @prints.collect{ |print|
+          prind = Hash.new
+          print.attributes.each do |key, value|
+            prind[key] = value
+          end
           attachment = print.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(print_path(print), attachment.attachment_name)
-          attachment[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
-          attachment
+          print.attachment.attachment_fields.each  do |key, value|
+            prind[key] = value
+          end
+          prind[:attachment_name] = CommonActions.linkable(print_path(print), attachment[:attachment_name])
+          prind[:links] = CommonActions.object_crud_paths(nil, edit_print_path(print), nil)
+          @prins.push(prind)
         }
-        render json: {:aaData => @prints}
+        render json: {:aaData => @prins}
       }
     end
   end
