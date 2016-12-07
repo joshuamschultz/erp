@@ -111,7 +111,7 @@ class SpecificationsController < ApplicationController
 
     respond_to do |format|
       @specification.attachment.updated_by = current_user
-      if @specification.update_attributes(params[:specification])
+      if @specification.update_attributes(specification_params)
         CommonActions.notification_process("Specification", @specification)
         format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
         format.json { head :no_content }

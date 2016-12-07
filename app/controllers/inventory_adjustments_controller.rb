@@ -31,17 +31,22 @@ class InventoryAdjustmentsController < ApplicationController
 
     respond_to do |format|
       format.html
+      @inventory_adjustmnts = Array.new
       format.json {
           @inventory_adjustments = @inventory_adjustments.select{|inventory_adjustment|
-              inventory_adjustment[:id] = inventory_adjustment.id
-              inventory_adjustment[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier)
-              inventory_adjustment[:inventory_adjustment_quantity] = inventory_adjustment.inventory_adjustment_quantity
-              inventory_adjustment[:control_no] = CommonActions.linkable(quality_lot_path(inventory_adjustment.quality_lot),inventory_adjustment.quality_lot.lot_control_no)
-              inventory_adjustment[:inventory_adjustment_description] = inventory_adjustment.inventory_adjustment_description
-              inventory_adjustment[:links] = CommonActions.object_crud_paths( nil, edit_inventory_adjustment_path(inventory_adjustment), nil)
-
+              inventory_adjustmnt = Hash.new
+              inventory_adjustment.attributes.each do |key, value|
+                inventory_adjustmnt[key] = value
+              end
+              inventory_adjustmnt[:id] = inventory_adjustment.id
+              inventory_adjustmnt[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier)
+              inventory_adjustmnt[:inventory_adjustment_quantity] = inventory_adjustment.inventory_adjustment_quantity
+              inventory_adjustmnt[:control_no] = CommonActions.linkable(quality_lot_path(inventory_adjustment.quality_lot),inventory_adjustment.quality_lot.lot_control_no)
+              inventory_adjustmnt[:inventory_adjustment_description] = inventory_adjustment.inventory_adjustment_description
+              inventory_adjustmnt[:links] = CommonActions.object_crud_paths( nil, edit_inventory_adjustment_path(inventory_adjustment), nil)
+              @inventory_adjustmnts.push(inventory_adjustmnt)
           }
-          render json: {:aaData => @inventory_adjustments}
+          render json: {:aaData => @inventory_adjustmnts}
        }
     end
   end

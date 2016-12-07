@@ -6,22 +6,22 @@ class ElementsController < ApplicationController
 
 
   # def view_permissions
-  #  if  user_signed_in? && current_user.is_customer? 
+  #  if  user_signed_in? && current_user.is_customer?
   #       authorize! :edit, Element
-  #   end 
+  #   end
   # end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? || current_user.is_customer?)
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? || current_user.is_customer?)
         authorize! :edit, Element
-    end 
+    end
   end
   def set_page_info
     @menus[:inventory][:active] = "active"
   end
 
   def get_autocomplete_items(parameters)
-    items = super(parameters)  
+    items = active_record_get_autocomplete_items(parameters)
     input_term = "%" + params[:term] + "%"
     items = Element.where("element_name like ? or element_symbol like ?", input_term, input_term)
   end
@@ -33,15 +33,21 @@ class ElementsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      @elemens = Array.new
       format.json { @elements.select{ |element|
-        element[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
-        if can? :edit, element
-          element[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
-        else
-          element[:links] = nil
+        elemend = Hash.new
+        element.attributes.each do |key, value|
+          elemend[key] = value
         end
-        }
-        render json: {:aaData => @elements} 
+        elemend[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
+        if can? :edit, element
+          elemend[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
+        else
+          elemend[:links] = nil
+        end
+        @elemens.push(elemend)
+      }
+        render json: {:aaData => @elemens}
       }
     end
   end

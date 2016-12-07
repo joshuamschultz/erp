@@ -1,21 +1,21 @@
 class MaterialsController < ApplicationController
   before_filter :set_page_info
-  
+
   autocomplete :material, :material_short_name, :full => true
   before_filter :view_permissions, except: [:index, :show]
   before_filter :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, Material
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
         authorize! :edit, Material
-    end 
+    end
   end
   def set_page_info
       @menus[:inventory][:active] = "active"
@@ -28,24 +28,30 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @materials = @materials.select{|material| 
-         if can? :edit,  material
+      @materils = Array.new
+      format.json {
+        @materials = @materials.select{|material|
+          materil = Hash.new
+          material.attributes.each do |key, value|
+            materil[key] = value
+          end
+          if can? :edit,  material
 
-            material[:links] = CommonActions.object_crud_paths(material_path(material), 
+            materil[:links] = CommonActions.object_crud_paths(material_path(material),
                               edit_material_path(material), material_path(material),
                               [ {:name => "Elements", :path => material_material_elements_path(material)},
                                 {:name => "Duplicate", :path => new_material_path(:material_id => material.id)}
                               ])
           else
-            material[:links] = CommonActions.object_crud_paths(material_path(material), 
+            materil[:links] = CommonActions.object_crud_paths(material_path(material),
                               nil, nil,
                               [ {:name => "Elements", :path => material_material_elements_path(material)},
-                                
+
                               ])
-          end 
+          end
+          @materils.push(materil)
         }
-        render json: {:aaData => @materials}
+        render json: {:aaData => @materils}
       }
     end
   end
@@ -82,17 +88,17 @@ class MaterialsController < ApplicationController
   # POST /materials.json
   def create
     @duplicate = Material.find_by_id(params[:material_id])
-    @material = Material.new(params[:material])   
+    @material = Material.new(params[:material])
 
     respond_to do |format|
-      if @material.valid? 
-        if @duplicate   
+      if @material.valid?
+        if @duplicate
           @duplicate.material_elements.each do |element|
               new_element = element.dup
               new_element.material_id = @material.id
               @material.material_elements << new_element
           end
-        end   
+        end
         @material.save
         format.html { redirect_to materials_url, notice: 'Material was successfully created.' }
         format.json { render json: @material, status: :created, location: @material }
