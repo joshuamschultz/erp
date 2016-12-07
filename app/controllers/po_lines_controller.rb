@@ -8,13 +8,13 @@ class PoLinesController < ApplicationController
 
   def view_permissions
     if  user_signed_in? && ( current_user.is_logistics? || current_user.is_quality?  || current_user.is_vendor? )
-        authorize! :edit, PoLine
+      authorize! :edit, PoLine
     end
   end
 
   def user_permissions
     if  user_signed_in? && current_user.is_customer?
-        authorize! :edit, PoLine
+      authorize! :edit, PoLine
     end
   end
 
@@ -92,12 +92,16 @@ class PoLinesController < ApplicationController
   def new
     @po_header = PoHeader.find(params[:po_header_id])
     @po_line = @po_header.po_lines.build
-    @po_line[:organization_org_id] = @po_line.organization_id
-    @po_line.organization = @po_header.customer
 
+    @po_line.organization = @po_header.customer
+    po_lin = Hash.new
+    @po_line.attributes.each do |key,value|
+      po_lin[key] = value
+    end
+    po_lin[:organization_org_id] = @po_line.organization_id
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @po_line }
+      format.json { render :json => po_lin }
     end
   end
 
