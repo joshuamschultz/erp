@@ -2,21 +2,21 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
 
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_logistics?
-        authorize! :edit, Contact
+    if  user_signed_in? && current_user.is_logistics?
+      authorize! :edit, Contact
     end
   end
 
   def user_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, Contact
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, Contact
     end
   end
 
@@ -178,6 +178,4 @@ class ContactsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-
 end

@@ -5,20 +5,20 @@ class PoShipment < ActiveRecord::Base
   has_one :payable, through: :payable_po_shipment
   belongs_to :quality_lot, :dependent => :destroy
 
-  
-  attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id, 
-  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id
+
+  attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
+  :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id, :update_po_total
 
   # validates_presence_of :po_shipped_shelf, message: "Shelf can't be blank!"
   # validates_presence_of :po_shipped_unit, message: "Unit can't be blank!"
-  # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!" 
+  # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!"
 
   before_save :process_before_save
 
-  def process_before_save     
-     
+  def process_before_save
+
         self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
-      
+
 
       unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
           self.po_shipped_status = "received"
@@ -55,18 +55,19 @@ class PoShipment < ActiveRecord::Base
 
   def set_po_line_status
     if self.po_line
-      PoLine.skip_callback("save", :before, :update_item_total)
-      PoLine.skip_callback("save", :after, :update_po_total)
+      PoLine.skip_callback(:save, :before, :update_item_total, raise: false)
+      PoLine.skip_callback(:save, :after, :update_po_total, raise: false)
+
       po_shipped = self.po_total_shipped
       po_status = (po_shipped == self.po_line.po_line_quantity) ? "closed" : "open"
       self.po_line.update_attributes(:po_line_shipped => po_shipped, :po_line_status => po_status)
       po_status_count = self.po_line.po_header.po_lines.where("po_line_status = ?", "open").count
       po_header_status = (po_status_count == 0) ? "closed" : "open"
-      self.po_line.po_header.update_attributes(:po_status => po_header_status)  
-      PoLine.set_callback("save", :before, :update_item_total)
-      PoLine.set_callback("save", :after, :update_po_total)
+      self.po_line.po_header.update_attributes(:po_status => po_header_status)
+      PoLine.set_callback("save", :before, :update_item_total, raise: false)
+      PoLine.set_callback("save", :after, :update_po_total, raise: false)
     end
- 
+
 
   end
   # after_commit :after_commit_process
@@ -101,7 +102,7 @@ class PoShipment < ActiveRecord::Base
 
   def self.all_shipments(itemId)
     PoShipment.joins(:po_line).where(:po_lines => {:item_id => itemId})
-  end  
+  end
 
   def self.all_revision_shipments(itemRevisionId)
     PoShipment.joins(:quality_lot).where(:quality_lots => {:item_revision_id => itemRevisionId})
@@ -121,7 +122,7 @@ class PoShipment < ActiveRecord::Base
       if quality_lotss.save(:validate => false)
         p quality_lotss.to_yaml
       end
-    end    
+    end
   end
 
   def close_all_po_lines?(shipment_id)
@@ -129,10 +130,10 @@ class PoShipment < ActiveRecord::Base
     poHeaderId = PoShipment.find(shipment_id).po_line.po_header_id
     PoLine.where(:po_header_id => poHeaderId).each do |po_line|
      if po_line.po_line_status != 'closed'
-      finished = 0 
+      finished = 0
      end
     end
-    finished 
+    finished
   end
 
 end

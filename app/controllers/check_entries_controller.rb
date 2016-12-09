@@ -3,25 +3,31 @@ class CheckEntriesController < ApplicationController
 
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
-        authorize! :edit, CheckEntry
-    end 
-  end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+      authorize! :edit, CheckEntry
+    end
+  end
   # GET /check_entries
   # GET /check_entries.json
   def index
     @check_entries = CheckEntry.where(:check_active => 1)
+    @check_entris = Array.new
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @check_entries = @check_entries.select{|check_entry| 
+      format.json {
+          @check_entries = @check_entries.select{|check_entry|
+            check_entri = Hash.new
+            check_entry.attributes.each do |key, value|
+              check_entri[key] = value
+            end
             # check_data = check_entry.check_belongs_to
-            # check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code) 
-            check_entry[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
+            # check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code)
+            check_entri[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
             payables = check_entry.get_payables
-            check_entry[:payables] = payables["payableIds"]
+            check_entri[:payables] = payables["payableIds"]
+            @check_entris.push(check_entri)
           }
-          render json: {:aaData => @check_entries}
+          render json: {:aaData => @check_entris}
       }
     end
   end
@@ -101,7 +107,7 @@ class CheckEntriesController < ApplicationController
     @check_entries = CheckEntry.where(:check_active => 1)
     render :layout => false
   end
-    
+
   def generate_check_entry
     if params[:serial_no].present? && params[:serial_end].present?
         for serial in params[:serial_no].to_i..params[:serial_end].to_i
