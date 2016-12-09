@@ -33,13 +33,24 @@ class PoShipmentsController < ApplicationController
       format.json {
 
         if params[:type] == "shipping"
+            @po_lins = Array.new
             @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
+                po_lin = Hash.new
                 po_line = po_line.po_line_data_list(po_line, false)
-                po_line[:lot] = ""
-                po_line[:revision] = po_line.item_revision.present? ? po_line.item_revision.item_revision_name : po_line.item.item_revisions.last.item_revision_name
+                po_line.each do |key, value|
+                  po_lin[key] = value
+                end
+                po_line = PoLine.find(po_line["id"])
+                po_line.attributes.each do |key, value|
+                  po_lin[key] = value
+                end
+                po_lin[:lot] = ""
+                po_lin[:revision] = po_line.item_revision.present? ? po_line.item_revision.item_revision_name : po_line.item.item_revisions.last.item_revision_name
+
                 # po_line = so_line_data_list(po_line, false)
+                @po_lins.push(po_lin)
              }
-            render json: {:aaData => @po_lines}
+            render json: {:aaData => @po_lins}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             item_revision = ItemRevision.find(params[:revision_id]) if params[:revision_id].present?
@@ -69,6 +80,9 @@ class PoShipmentsController < ApplicationController
 
                 po_shipmnt[:index] =  i
                 po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
+                po_shipment.each do |key, value|
+                  po_shipmnt[key] = value
+                end
                 po_shipment = PoShipment.find(po_shipment["id"])
 
                 po_shipment.attributes.each do |key, value|
@@ -178,18 +192,22 @@ class PoShipmentsController < ApplicationController
         # else
                   # @po_shipment.set_quality_on_hand
           quality_lot = @po_shipment.quality_lot
-          @po_shipment["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
-          @po_shipment["shipped_status"] = @po_shipment.po_line.po_line_status
-          @po_shipment["po_shipped_status"] = @po_shipment.po_line.po_header.po_status
-          @po_shipment["shipment_shipped_status"] = @po_shipment.close_all_po_lines?(@po_shipment.id)
-          @po_shipment["po_shipped_id"] = @po_shipment.po_line.po_header_id
-          @po_shipment["part_number"] = @po_shipment.po_line.item.item_part_no
-          @po_shipment["po"]   = @po_shipment.po_line.po_header.po_identifier
-          @po_shipment["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
-          @po_shipment["lot_id"] = quality_lot.id if quality_lot.present?
-          @po_shipment["company_name"] =  CompanyInfo.first.company_name
-          format.html { redirect_to @po_shipment, notice: 'PO received was successfully created.' }
-          format.json { render json: @po_shipment, status: :created, location: @po_shipment }
+          po_shipmnt = Hash.new
+          @po_shipment.attributes.each do |key, value|
+            po_shipmnt[key] = value
+          end
+          po_shipmnt["quantity_open"] = @po_shipment.po_line.po_line_quantity - @po_shipment.po_line.po_line_shipped
+          po_shipmnt["shipped_status"] = @po_shipment.po_line.po_line_status
+          po_shipmnt["po_shipped_status"] = @po_shipment.po_line.po_header.po_status
+          po_shipmnt["shipment_shipped_status"] = @po_shipment.close_all_po_lines?(@po_shipment.id)
+          po_shipmnt["po_shipped_id"] = @po_shipment.po_line.po_header_id
+          po_shipmnt["part_number"] = @po_shipment.po_line.item.item_part_no
+          po_shipmnt["po"]   = @po_shipment.po_line.po_header.po_identifier
+          po_shipmnt["customer"] = @po_shipment.po_line.organization.organization_name if @po_shipment.po_line.organization
+          po_shipmnt["lot_id"] = quality_lot.id if quality_lot.present?
+          po_shipmnt["company_name"] =  CompanyInfo.first.company_name
+          format.html { redirect_to po_shipmnt, notice: 'PO received was successfully created.' }
+          format.json { render json: po_shipmnt, status: :created, location: @po_shipment }
         # end
 
       else
@@ -231,4 +249,16 @@ class PoShipmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_payment
+      @payment = Payment.find(params[:id])
+    end
+
+    def payment_params
+      params.require(:payment).permit(:payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
+                                      :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
+                                      :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
+                                      :check_entry_attributes, :next_check_code, :payment_check_code_type,:update_po_total)
+    end
 end

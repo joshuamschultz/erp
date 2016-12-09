@@ -198,8 +198,12 @@ class CommonActionsController < ApplicationController
 
             when "payment_payable_info"
               payable = Payable.find(params[:id])
-              payable["payable_balance"] = payable.payable_current_balance
-              result = payable
+              payabl = Hash.new
+              payable.attributes.each do |key, value|
+                payabl[key] = value
+              end
+              payabl["payable_balance"] = payable.payable_current_balance
+              result = payabl
 
             when "receipt_receivable_info"
               receivable = Receivable.find(params[:id])
