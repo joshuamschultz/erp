@@ -207,8 +207,12 @@ class CommonActionsController < ApplicationController
 
             when "receipt_receivable_info"
               receivable = Receivable.find(params[:id])
-              receivable["receivable_balance"] = receivable.receivable_current_balance
-              result = receivable
+              receivabl = Hash.new
+              receivable.attributes.each do |key, value|
+                receivabl[key] = value
+              end
+              receivabl["receivable_balance"] = receivable.receivable_current_balance
+              result = receivabl
 
             when "organization_open_pos"
               organization = Organization.find(params[:id])

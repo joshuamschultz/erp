@@ -5,6 +5,7 @@ class MasterType < ActiveRecord::Base
   scope :organization_types, -> {where type_category: 'organization_type'}
   scope :quality_levels, -> {where type_category: 'customer_quality_level'}
   scope :payment_types, -> {where type_category: 'payment_type'}
+  scope :receipt_type, -> {where type_category: 'payment_type'}
   scope :gl_modes, -> {where type_category: 'gl_mode'}
   scope :gl_categories, -> {where type_category: 'gl_category'}
   scope :ic_actions, -> {where type_category: 'icp_quallity_action'}
@@ -27,6 +28,8 @@ class MasterType < ActiveRecord::Base
   has_many :type_based_lots, :class_name => "QualityLot", :foreign_key => "inspection_type_id"
 
   has_many :type_based_payments, :class_name => "Payment", :foreign_key => "payment_type_id"
+
+  has_many :type_based_receipts, :class_name => "Receipt", :foreign_key => "receipt_type_id"
 
   has_many :type_based_gl_accounts, :class_name => "GlAccount", :foreign_key => "gl_type_id"
 

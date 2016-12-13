@@ -9,16 +9,16 @@ class ReceiptsController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_operations?
-        authorize! :edit, Receipt
-    end 
+    if  user_signed_in? && current_user.is_operations?
+      authorize! :edit, Receipt
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
-        authorize! :edit, Receipt
-    end 
-  end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+      authorize! :edit, Receipt
+    end
+  end
 
   def set_page_info
     unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
@@ -48,8 +48,8 @@ class ReceiptsController < ApplicationController
           if can? :edit, Receipt
             receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
           else
-             receipt[:links] = "" 
-          end   
+             receipt[:links] = ""
+          end
         }
         render json: {:aaData => @receipts}
       }
@@ -94,10 +94,10 @@ class ReceiptsController < ApplicationController
       if @receipt.save
         deposit_check = DepositCheck.find_by_receipt_id(@receipt.id)
         if deposit_check
-          @receipt.update_attributes(:deposit_check_id => deposit_check.id) 
+          @receipt.update_attributes(:deposit_check_id => deposit_check.id)
         elsif @receipt.receipt_type.present? &&  @receipt.receipt_type.type_value == "check"
-          depositCheck = DepositCheck.create(receipt_id: @receipt.id, status: "open", receipt_type: @receipt.receipt_type.type_value, check_identifier:  @receipt.receipt_check_code, active: 1) 
-          @receipt.update_attributes(:deposit_check_id => depositCheck.id)   
+          depositCheck = DepositCheck.create(receipt_id: @receipt.id, status: "open", receipt_type: @receipt.receipt_type.type_value, check_identifier:  @receipt.receipt_check_code, active: 1)
+          @receipt.update_attributes(:deposit_check_id => depositCheck.id)
         end
         format.html { redirect_to @receipt, notice: 'Receipt was successfully created.' }
         format.json { render json: @receipt, status: :created, location: @receipt }
@@ -138,4 +138,16 @@ class ReceiptsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def set_receipt
+      @receipt = Receipt.find(params[:id])
+    end
+
+    def receipt_params
+      params.require(:receipt).permit(:receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
+                                      :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
+                                      :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount)
+    end
 end
