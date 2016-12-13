@@ -32,46 +32,61 @@ class SoShipmentsController < ApplicationController
   def index
     respond_to do |format|
       format.html # index.html.erb
+      @so_lins = Array.new
       format.json {
         if(params[:type] == "shipping")
             @so_lines =   SoLine.where(:so_line_status => "open").joins(:so_header).order("so_headers.so_due_date ASC").select{|so_line|
+              so_lin = Hash.new
+              so_line.attributes.each do |key, value|
+                so_lin[key] = value
+              end
               so_line = so_line_data_list(so_line, false)
 
-                                so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
+              so_line.each do |key, value|
+                so_lin[key] = value
+              end
+              so_line = SoLine.find(so_line["id"])
+                so_lin[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
                 default_status = (so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process"
 
-                so_line[:revision] = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : so_line.item.item_revisions.last.item_revision_name
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
-                so_line[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)
-                so_line[:so_line_location] = CommonActions.get_location_div(so_line.id)
+                so_lin[:revision] = so_line.item_revision.present? ? so_line.item_revision.item_revision_name : so_line.item.item_revisions.last.item_revision_name
+                so_lin[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
+                so_lin[:so_line_lot]= CommonActions.get_quality_lot_div(so_line.id)
+                so_lin[:so_line_location] = CommonActions.get_location_div(so_line.id)
                 if can? :edit, SoShipment
-                  so_line[:so_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/so_headers/#{so_line.so_header.id}' style='padding-left:10px;color: #8ec657;' >"+so_line.so_header.so_identifier+"</a>"
+                  so_lin[:so_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/so_headers/#{so_line.so_header.id}' style='padding-left:10px;color: #8ec657;' >"+so_line.so_header.so_identifier+"</a>"
 
-                  so_line[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
-                  so_line[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a></div>"
+                  so_lin[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
+                  so_lin[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a></div>"
                   # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
-                  so_line[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
-                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
-                  so_line[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Close</a>"
+                  so_lin[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
+                  so_lin[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
+                  so_lin[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Close</a>"
                 else
-                  so_line[:so_identifier] += ""
-                  so_line[:so_identifier] += ""
-                  so_line[:links] = ""
+                  so_lin[:so_identifier] += ""
+                  so_lin[:so_identifier] += ""
+                  so_lin[:links] = ""
 
                 end
+                @so_lins.push(so_lin)
             }
-            render json: {:aaData => @so_lines}
+            render json: {:aaData => @so_lins}
         elsif params[:type1].present? && params[:type2].present?
              @so_lines =  SoLine.where(:so_line_status => "open").joins(:so_header).where("so_headers.so_due_date >= ? AND so_headers.so_due_date <= ?",Date.today,  Date.today+6).select{|so_line|
 
-
+                so_lin = Hash.new
+                so_line.attributes.each do |key, value|
+                  so_lin[key] = value
+                end
                 so_line = so_line_data_list(so_line, false)
-
-                                so_line[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
-                so_line[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
-
+                so_line.each do |key, value|
+                  so_lin[key] = value
+                end
+                so_lin[:so_due_date]= so_line.so_header.so_due_date ? so_line.so_header.so_due_date.strftime("%m-%d-%Y") : ""
+                so_lin[:so_line_shipping] = "<div class='so_line_shipping_input'><input so_line_id='#{so_line.id}' so_shipped_status='shipped' class='shipping_input_field shipping_input_so_#{so_line.so_header.id}' type='text' value='0'></div>"
+                @so_lins.push(so_lin)
             }
-            render json: {:aaData => @so_lines}
+            render json: {:aaData => @so_lins}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
             item_revision = ItemRevision.find(params[:revision_id]) if params[:revision_id].present?
@@ -108,12 +123,16 @@ class SoShipmentsController < ApplicationController
             @so_shipmnts = Array.new
             @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id)  .select{|so_shipment|
                 so_shipmnt = Hash.new
-                so_shipmnt[:index] =  i
-                so_shipment = so_line_data_list(so_shipment, true)
-                so_shipment = SoShipment.find(so_shipment["id"])
                 so_shipment.attributes.each do |key, value|
                   so_shipmnt[key] = value
                 end
+                so_shipmnt[:index] =  i
+                so_shipment = so_line_data_list(so_shipment, true)
+                so_shipment.each do |key, value|
+                  so_shipmnt[key] = value
+                end
+                so_shipment = SoShipment.find(so_shipment["id"])
+
                 if params[:type] == "process"
                   ship_id = '"'+so_shipment.shipment_process_id+'"'
                   so_shipmnt[:shipment_process_id] = "<div style='height:30px;color:#8ec657;background-color: #484848;padding-left:10px;'>#{so_shipment.shipment_process_id}"
@@ -128,7 +147,7 @@ class SoShipmentsController < ApplicationController
                 if params[:type] == "process"
                   so_shipmnt[:item_part_no] = params[:create_receivable] ?  so_shipment[:item_part_no] : so_shipment[:item_part_no]
                 else
-                  so_shipmnt[:item_part_no] = params[:create_receivable] ? so_shipment.receivable_checkbox(params[:type]) + so_shipment[:item_part_no] : so_shipment[:item_part_no]
+                  so_shipmnt[:item_part_no] = params[:create_receivable] ? so_shipment.receivable_checkbox(params[:type]).to_s + so_shipment[:item_part_no].to_s : so_shipment[:item_part_no]
                 end
                 i += 1
                 @so_shipmnts.push(so_shipmnt)
@@ -230,12 +249,16 @@ class SoShipmentsController < ApplicationController
         if @so_shipment.save
           @so_shipment.set_quality_on_hand
           @so_shipment.so_line.update_so_total
-          @so_shipment["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
-          @so_shipment["shipped_status"] = @so_shipment.so_line.so_line_status
-          @so_shipment["shipment_shipped_status"] = @so_shipment.close_all_so_lines?(@so_shipment.id)
-          @so_shipment["quantity_on_hand"] = @so_shipment.quality_lot.quantity_on_hand
-          format.html { redirect_to @so_shipment, notice: 'SO shipment was successfully created.' }
-          format.json { render json: @so_shipment, status: :created, location: @so_shipment }
+          so_shipmnt = Hash.new
+          so_shipmnt.attributes.each do |key, value|
+            so_shipmnt[key] = value
+          end
+          so_shipmnt["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
+          so_shipmnt["shipped_status"] = @so_shipment.so_line.so_line_status
+          so_shipmnt["shipment_shipped_status"] = @so_shipment.close_all_so_lines?(@so_shipment.id)
+          so_shipmnt["quantity_on_hand"] = @so_shipment.quality_lot.quantity_on_hand
+          format.html { redirect_to so_shipmnt, notice: 'SO shipment was successfully created.' }
+          format.json { render json: so_shipmnt, status: :created, location: @so_shipment }
         else
           format.html { render action: "new" }
           format.json { render json: {errors:  @so_shipment.errors.first} }
