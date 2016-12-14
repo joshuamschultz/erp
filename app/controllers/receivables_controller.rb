@@ -60,7 +60,7 @@ class ReceivablesController < ApplicationController
       format.json {
         @receivables = @receivables.select{|receivble|
               receivabl = Hash.new
-              receivable.attributes.each do |key, value|
+              receivble.attributes.each do |key, value|
                 receivabl[key] = value
               end
               receivabl[:receivable_identifier] = CommonActions.linkable(receivable_path(receivble), receivble.receivable_identifier)

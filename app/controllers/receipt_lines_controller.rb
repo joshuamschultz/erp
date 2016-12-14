@@ -7,16 +7,22 @@ class ReceiptLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @receipt_lins = Array.new
+      format.json {
          @receipt_lines = @receipt_lines.select{|receipt_line|
-              receipt_line[:receivable_identifier] = CommonActions.linkable(receivable_path(receipt_line.receivable), receipt_line.receivable.receivable_identifier)
-              receipt_line[:receivable_total] = receipt_line.receivable.receivable_total
-              receipt_line[:receivable_balance] = receipt_line.receivable.receivable_current_balance.round(2)
+              receipt_lin = Hash.new
+              receipt_line.attributes.each do |key, value|
+                receipt_lin[key] = value
+              end
+              receipt_lin[:receivable_identifier] = CommonActions.linkable(receivable_path(receipt_line.receivable), receipt_line.receivable.receivable_identifier)
+              receipt_lin[:receivable_total] = receipt_line.receivable.receivable_total
+              receipt_lin[:receivable_balance] = receipt_line.receivable.receivable_current_balance.round(2)
               # receipt_line[:receipt_line_discount] = receipt_line.receipt.receipt_discount !=nil ? (receipt_line[:receivable_total] * receipt_line.receipt.receipt_discount) / 100 : 0
               # receipt_line[:receipt_line_discount] = receipt_line[:receivable_total] - receipt_line.receipt_line_amount
-              receipt_line[:receipt_line_discount] = ((receipt_line.receivable.receivable_total * receipt_line.receipt.receipt_discount)/100).round(2)
+              receipt_lin[:receipt_line_discount] = ((receipt_line.receivable.receivable_total * receipt_line.receipt.receipt_discount)/100).round(2)
+              @receipt_lins.push(receipt_lin)
           }
-          render json: {:aaData => @receipt_lines}
+          render json: {:aaData => @receipt_lins}
       }
     end
   end
