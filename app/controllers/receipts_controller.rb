@@ -1,11 +1,11 @@
 class ReceiptsController < ApplicationController
 
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_autocomplete_values, only: [:create, :update]
 
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
@@ -39,19 +39,25 @@ class ReceiptsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      @recipts = Array.new
       format.json {
         @receipts = @receipts.select{|receipt|
-          receipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
-          receipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
-          receipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
-          receipt[:check_code] = ( receipt.receipt_type.present? && receipt.receipt_type.type_value == 'check' && receipt.deposit_check.present? ) ? receipt.deposit_check.check_identifier : "-"
-          if can? :edit, Receipt
-            receipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
-          else
-             receipt[:links] = ""
+          recipt = Hash.new
+          receipt.attributes.each do |key, value|
+            recipt[key] = value
           end
+          recipt[:receipt_identifier] = CommonActions.linkable(receipt_path(receipt), receipt.receipt_identifier)
+          recipt[:customer_name] = receipt.organization.present? ? CommonActions.linkable(organization_path(receipt.organization), receipt.organization.organization_name) : "-"
+          recipt[:receipt_type_name] =  receipt.receipt_type.present? ? receipt.receipt_type.type_name : ""
+          recipt[:check_code] = ( receipt.receipt_type.present? && receipt.receipt_type.type_value == 'check' && receipt.deposit_check.present? ) ? receipt.deposit_check.check_identifier : "-"
+          if can? :edit, Receipt
+            recipt[:links] = CommonActions.object_crud_paths(nil, edit_receipt_path(receipt), nil)
+          else
+             recipt[:links] = ""
+          end
+          @recipts.push(recipt)
         }
-        render json: {:aaData => @receipts}
+        render json: {:aaData => @recipts}
       }
     end
   end
@@ -148,6 +154,6 @@ class ReceiptsController < ApplicationController
     def receipt_params
       params.require(:receipt).permit(:receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
                                       :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
-                                      :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount)
+                                      :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount, :receipt_type)
     end
 end

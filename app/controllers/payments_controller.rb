@@ -50,17 +50,24 @@ class PaymentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      @paymnts = Array.new
       format.json {
         @payments = @payments.select{|payment|
-          payment[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.payment_identifier)
-          payment[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
-          payment[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
+          paymnt = Hash.new
+          payment.attributes.each do |key, value|
+            paymnt[key] = value
+          end
+          paymnt[:payment_identifier] = CommonActions.linkable(payment_path(payment), payment.payment_identifier)
+          paymnt[:vendor_name] = payment.organization.present? ? CommonActions.linkable(organization_path(payment.organization), payment.organization.organization_name) : "-"
+          paymnt[:payment_type_name] =  payment.payment_type.present? ? payment.payment_type.type_name : ""
           if can? :edit, Payment
-            payment[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
+            paymnt[:links] = CommonActions.object_crud_paths(nil, edit_payment_path(payment), nil)
           else
-            payment[:links] = ""
-          end          }
-        render json: {:aaData => @payments}
+            paymnt[:links] = ""
+          end
+          @paymnts.push(paymnt)
+        }
+        render json: {:aaData => @paymnts}
       }
     end
   end

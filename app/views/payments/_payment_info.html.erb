@@ -28,7 +28,7 @@
             <td class="span3">Check Code:</td>
             <td class="span5"><strong><%#= link_to @payment.check_entry.check_code, @payment.check_entry if @payment.check_entry %><%= @payment.payment_check_code %></strong></td>
           </tr>
-        <% end %>         
+        <% end %>
 
           <tr>
             <td class="span3">Amount:</td>
@@ -38,7 +38,7 @@
           <tr>
             <td class="span3">Notes:</td>
             <td class="span5"><strong><%= @payment.payment_notes %></strong></td>
-          </tr>          
+          </tr>
 
           <!-- "%0.5f" %  -->
 
@@ -53,7 +53,7 @@
 
       <div class="separator bottom"></div>
 
-      <%= render :partial => 'organizations/organization_info', 
+      <%= render :partial => 'organizations/organization_info',
             :locals => {:organization => @payment.organization} %>
   <% end %>
 </div>
