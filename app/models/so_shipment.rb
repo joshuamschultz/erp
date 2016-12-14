@@ -39,18 +39,18 @@ class SoShipment < ActiveRecord::Base
 
 
       unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
-        self.shipment_process_id = "S00001"      
+        self.shipment_process_id = "S00001"
       else
           so_shipment_process = SoShipment.where(:so_header_id => self.so_header_id, :so_shipped_status => ['ship_in','process','ship_close'])
         if so_shipment_process.count >= 1
           so_shipment = so_shipment_process.last
-          unless so_shipment.shipment_process_id.present?                          
+          unless so_shipment.shipment_process_id.present?
             self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")
           else
             self.shipment_process_id = so_shipment.shipment_process_id
           end
         else
-          self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")         
+          self.shipment_process_id = CommonActions.get_new_identifier(SoShipment, :shipment_process_id, "S")
         # last_shipment = SoShipment.last
         # if last_shipment.present? && last_shipment.shipment_process_id.present?
         #   shipment_process_id = SoShipment.maximum(:shipment_process_id).split('',2)[1].to_i
@@ -58,10 +58,10 @@ class SoShipment < ActiveRecord::Base
         # else
         #   self.shipment_process_id = 'S'+1.to_s
         # end
-        end          
+        end
       end
     end
-  
+
   end
 
   after_save :set_so_line_status
@@ -69,14 +69,14 @@ class SoShipment < ActiveRecord::Base
 
   def set_so_line_status
     if self.so_line
-      SoLine.skip_callback("save", :before, :update_item_total)
-      SoLine.skip_callback("save", :after, :update_so_total)
+      SoLine.skip_callback("save", :before, :update_item_total, raise: false)
+      SoLine.skip_callback("save", :after, :update_so_total, raise: false)
       so_shipped = (self.so_shipped_status == "ship_close") ? self.so_line.so_line_quantity : self.so_total_shipped
       so_status = (so_shipped == self.so_line.so_line_quantity) ? "closed" : "open"
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
       so_status_count = self.so_line.so_header.so_lines.where("so_line_status = ?", "open").count
       so_header_status = (so_status_count == 0) ? "closed" : "open"
-      self.so_line.so_header.update_attributes(:so_status => so_header_status) 
+      self.so_line.so_header.update_attributes(:so_status => so_header_status)
       SoLine.set_callback("save", :before, :update_item_total)
       SoLine.set_callback("save", :after, :update_so_total)
     end
@@ -100,7 +100,7 @@ class SoShipment < ActiveRecord::Base
   end
   def self.all_shipments(itemId)
     SoShipment.joins(:so_line).where(:so_lines => {:item_id => itemId})
-  end 
+  end
 
   def self.all_revision_shipments(itemRevisionId)
     SoShipment.joins(:quality_lot).where(:quality_lots => {:item_revision_id => itemRevisionId})
@@ -120,7 +120,7 @@ class SoShipment < ActiveRecord::Base
   #     if quality_lotss.save(:validate => false)
   #       p quality_lotss.to_yaml
   #     end
-  #   end    
+  #   end
   # end
 
   def set_quality_on_hand
@@ -129,7 +129,7 @@ class SoShipment < ActiveRecord::Base
       # quality_lotss.lot_quantity = quality_lotss.lot_quantity + self.so_shipped_count
       quality_lot.quantity_on_hand = quality_lot.quantity_on_hand - self.so_shipped_count
 
-     
+
       if quality_lot.quantity_on_hand <= 0
         quality_lot.finished = true
         quality_lot.lot_finalized_at = Date.today.to_s
@@ -139,7 +139,7 @@ class SoShipment < ActiveRecord::Base
       if quality_lot.save(:validate => false)
         p quality_lot.to_yaml
       end
-    end    
+    end
   end
 
   def self.update_quality_on_hand(shipment)
@@ -162,18 +162,18 @@ class SoShipment < ActiveRecord::Base
         end
       end
       SoShipment.where(:shipment_process_id => shipment_process_id, :so_shipped_status => ["process", "ship_close"]).update_all(:so_shipped_status => "shipped")
-      
+
   end
   def close_all_so_lines?(shipment_id)
     finished = 1
     soHeaderId = SoShipment.find(shipment_id).so_header_id
     SoLine.where(:so_header_id => soHeaderId).each do |so_line|
      if so_line.so_line_status != 'closed'
-      finished = 0 
+      finished = 0
      end
     end
-    finished 
+    finished
   end
 
-  
+
 end

@@ -2,7 +2,7 @@ class QualityLotDimension < ActiveRecord::Base
   belongs_to :quality_lot
   belongs_to :item_part_dimension
 
-  attr_accessible :lot_dimension_active, :lot_dimension_created_id, :lot_dimension_notes, 
+  attr_accessible :lot_dimension_active, :lot_dimension_created_id, :lot_dimension_notes,
   :lot_dimension_status, :lot_dimension_updated_id, :quality_lot_id, :item_part_dimension_id,
   :lot_dimension_value
 
@@ -12,7 +12,7 @@ class QualityLotDimension < ActiveRecord::Base
 
   def process_after_save
     if self.item_part_dimension.go_non_go
-      QualityLotDimension.skip_callback("save", :after, :process_after_save)
+      QualityLotDimension.skip_callback("save", :after, :process_after_save, raise: false)
       p  self.lot_dimension_value.to_i
       if self.lot_dimension_value.to_i == 1
         result = self.quality_lot.quality_lot_dimensions.where(:item_part_dimension_id => self.item_part_dimension_id).collect(&:lot_dimension_value)
@@ -28,7 +28,7 @@ class QualityLotDimension < ActiveRecord::Base
       end
       QualityLotDimension.set_callback("save", :after, :process_after_save)
     else
-      QualityLotDimension.skip_callback("save", :after, :process_after_save)
+      QualityLotDimension.skip_callback("save", :after, :process_after_save, raise: false)
 
       pos_tolerance = self.item_part_dimension.item_part_dimension.to_f + self.item_part_dimension.item_part_pos_tolerance.to_f
       neg_tolerance = self.item_part_dimension.item_part_dimension.to_f - self.item_part_dimension.item_part_neg_tolerance.to_f

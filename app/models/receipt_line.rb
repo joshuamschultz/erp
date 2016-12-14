@@ -2,7 +2,7 @@ class ReceiptLine < ActiveRecord::Base
   belongs_to :receipt
   belongs_to :receivable
 
-  attr_accessible :receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id, 
+  attr_accessible :receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
   :receipt_id, :receivable_id
 
   validates_presence_of :receipt_line_amount, :receivable_id
@@ -21,10 +21,10 @@ class ReceiptLine < ActiveRecord::Base
       total_shipped = self.other_receipt_lines.sum(:receipt_line_amount) + self.receipt_line_amount
       if total_shipped > self.receivable.receivable_total
           errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
-      end      
+      end
       if self.receipt_line_amount > (self.receivable.receivable_total - ((self.receivable.receivable_total*self.receipt.receipt_discount)/100).round(2))
          errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
-      end  
+      end
       # if self.receipt.new_record?
       #     receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
       #     errors.add(:receipt_line_amount, "duplicate receivable entry!") unless receivable_ids.uniq == receivable_ids
@@ -40,8 +40,8 @@ class ReceiptLine < ActiveRecord::Base
   # end
 
   def process_after_save
-      Receivable.skip_callback("save", :before, :process_before_save)
-      Receivable.skip_callback("save", :after, :process_after_save)
+      Receivable.skip_callback("save", :before, :process_before_save, raise: false)
+      Receivable.skip_callback("save", :after, :process_after_save, raise: false)
 
       receivable_balance = self.receivable.receivable_current_balance
       if receivable_balance > 0

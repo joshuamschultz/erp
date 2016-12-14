@@ -3,32 +3,37 @@ class CheckRegistersController < ApplicationController
   # GET /check_registers.json
   before_filter :set_page_info
   before_filter :user_permissions
-  
+
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? 
-        authorize! :edit, CheckRegister
-    end 
+    if  user_signed_in? && current_user.is_customer?
+      authorize! :edit, CheckRegister
+    end
   end
 
   def set_page_info
     unless user_signed_in? && current_user.is_customer?
       @menus[:general_ledger][:active] = "active"
-    end 
+    end
   end
   def index
     @check_registers = CheckRegister.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json {  
-        @check_registers = @check_registers.select{|check_register| 
-          
-           check_register[:organization] = check_register.payment.present? && check_register.payment.organization.present? ? CommonActions.linkable(organization_path(check_register.payment.organization), check_register.payment.organization.organization_name) : check_register.receipt.present? && check_register.receipt.organization.present? ? CommonActions.linkable(organization_path(check_register.receipt.organization), check_register.receipt.organization.organization_name) : "-"
-           check_register[:amount] =  check_register.amount.abs unless check_register.amount.nil?
-           check_register[:balance] =  check_register.balance.abs unless check_register.balance.nil?
-           check_register[:reconcile] =  check_register.rec ? "Y" : "N"   
+      @check_registrs = Array.new
+      format.json {
+        @check_registers = @check_registers.select{|check_register|
+           check_registr = Hash.new
+           check_register.attributes.each do |key, value|
+            check_registr[key] = value
+           end
+           check_registr[:organization] = check_register.payment.present? && check_register.payment.organization.present? ? CommonActions.linkable(organization_path(check_register.payment.organization), check_register.payment.organization.organization_name) : check_register.receipt.present? && check_register.receipt.organization.present? ? CommonActions.linkable(organization_path(check_register.receipt.organization), check_register.receipt.organization.organization_name) : "-"
+           check_registr[:amount] =  check_register.amount.abs unless check_register.amount.nil?
+           check_registr[:balance] =  check_register.balance.abs unless check_register.balance.nil?
+           check_registr[:reconcile] =  check_register.rec ? "Y" : "N"
+           @check_registrs.push(check_registr)
           }
-          render json: {:aaData => @check_registers}}
+          render json: {:aaData => @check_registrs}}
     end
   end
 
