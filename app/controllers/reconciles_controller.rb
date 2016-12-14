@@ -1,13 +1,13 @@
 class ReconcilesController < ApplicationController
-  before_filter :find_reconciles, only: [:index] 
-   before_filter :set_page_info
+  before_action :find_reconciles, only: [:index]
+  before_action :set_page_info
 
-  before_filter :user_permissions
+  before_action :user_permissions
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
         authorize! :edit, Reconcile
-    end 
+    end
   end
 
   # GET /reconciles
@@ -26,41 +26,46 @@ class ReconcilesController < ApplicationController
          @reconciles = Reconcile.where(:tag => "not reconciled")
       end
   end
-  
 
-  def index   
 
-    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first 
-    @balance = gl_account.gl_account_amount 
-    Reconciled.create(:balance => 0) if Reconciled.find(:all).empty?
+  def index
+
+    gl_account = GlAccount.where('gl_account_identifier' => '11012' ).first
+    @balance = gl_account.gl_account_amount
+    Reconciled.create(:balance => 0) if Reconciled.all.empty?
     @reconciled = Reconciled.first.balance
-    
-    
+
+
 
     respond_to do |format|
       format.html # index.html.erb
       #format.json { render json: @reconciles }
+        @reconcils = Array.new
         format.json {
-            
+
            @reconciles = @reconciles.select{|reconcile|
               i = reconcile.id
-              reconcile[:ids] = CommonActions.linkable(reconcile_path(reconcile), reconcile.id)
-              reconcile[:tag] = reconcile.tag 
-              reconcile[:reconcile_type] = reconcile.reconcile_type
-              reconcile[:payment_name] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : ""
-              reconcile[:receipt_name] = reconcile.receipt.present? ? CommonActions.linkable(receipt_path(reconcile.receipt_id), reconcile.receipt.receipt_identifier) : ""
-              reconcile[:deposit_check_name] = reconcile.deposit_check.present? ? CommonActions.linkable(deposit_check_path(reconcile.deposit_check_id), reconcile.deposit_check.id) : ""
-              reconcile[:check_entry_name] = reconcile.payment.present? && reconcile.payment.check_entry_id.present? ? CommonActions.linkable(check_entry_path(reconcile.payment.check_entry_id), reconcile.payment.check_entry.id) : ""
-              reconcile[:amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount :  reconcile.receipt.present? ? reconcile.receipt.receipt_check_amount : 0
-              if can? :edit, Reconcile  
-                reconcile[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
-              else  
-                reconcile[:links] = ""
-              end  
-              reconcile[:checkboxes] = CommonActions.check_boxes(reconcile[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
-             
+              reconcil = Hash.new
+              reconcile.attributes.each do |key, value|
+                reconcil[key] = value
+              end
+              reconcil[:ids] = CommonActions.linkable(reconcile_path(reconcile), reconcile.id)
+              reconcil[:tag] = reconcile.tag
+              reconcil[:reconcile_type] = reconcile.reconcile_type
+              reconcil[:payment_name] = reconcile.payment.present? ? CommonActions.linkable(payment_path(reconcile.payment_id), reconcile.payment.payment_identifier) : ""
+              reconcil[:receipt_name] = reconcile.receipt.present? ? CommonActions.linkable(receipt_path(reconcile.receipt_id), reconcile.receipt.receipt_identifier) : ""
+              reconcil[:deposit_check_name] = reconcile.deposit_check.present? ? CommonActions.linkable(deposit_check_path(reconcile.deposit_check_id), reconcile.deposit_check.id) : ""
+              reconcil[:check_entry_name] = reconcile.payment.present? && reconcile.payment.check_entry_id.present? ? CommonActions.linkable(check_entry_path(reconcile.payment.check_entry_id), reconcile.payment.check_entry.id) : ""
+              reconcil[:amt] = reconcile.payment.present? ? reconcile.payment.payment_check_amount :  reconcile.receipt.present? ? reconcile.receipt.receipt_check_amount : 0
+              if can? :edit, Reconcile
+                reconcil[:links] = CommonActions.object_crud_paths(nil, edit_reconcile_path(reconcile), nil)
+              else
+                reconcil[:links] = ""
+              end
+              reconcil[:checkboxes] = CommonActions.check_boxes(reconcile[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
+              @reconcils.push(reconcil)
           }
-          render json: {:aaData => @reconciles}
+          render json: {:aaData => @reconcils}
       }
     end
   end

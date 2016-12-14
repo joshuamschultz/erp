@@ -151,7 +151,7 @@ class Receipt < ActiveRecord::Base
       @gl_entry.save
       @gl_account.update_attributes(:gl_account_amount => amount)
     end
-    Receipt.skip_callback("save", :after, :process_after_save)
+    Receipt.skip_callback("save", :after, :process_after_save, raise: false)
     self.update_attributes(:receipt_status => 'closed')
   end
 

@@ -9,7 +9,7 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :customer_quality
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}
 
-  attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id, 
+  attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
   :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
   :item_revision_complete, :item_sell, :item_revision_weekly_usage, :item_revision_lead_time
@@ -19,11 +19,11 @@ class ItemRevision < ActiveRecord::Base
   def process_before_save
       self.item_revision_name ||= "0"
 
-      unless CommonActions.nil_or_blank(self.item_name) || 
-        CommonActions.nil_or_blank(self.item_description) || 
-        CommonActions.nil_or_blank(self.item_revision_name) || 
-        CommonActions.nil_or_blank(self.item_cost) || 
-        CommonActions.nil_or_blank(self.item_tooling) || 
+      unless CommonActions.nil_or_blank(self.item_name) ||
+        CommonActions.nil_or_blank(self.item_description) ||
+        CommonActions.nil_or_blank(self.item_revision_name) ||
+        CommonActions.nil_or_blank(self.item_cost) ||
+        CommonActions.nil_or_blank(self.item_tooling) ||
         self.owner.nil? || self.print.nil? || self.material.nil?
           self.item_revision_complete = true
       else
@@ -40,11 +40,11 @@ class ItemRevision < ActiveRecord::Base
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
   validates :item_revision_name, uniqueness: {scope: :item_id}
-  
+
   after_save :update_recent_revision
 
-  def update_recent_revision    
-      ItemRevision.skip_callback("save", :after, :update_recent_revision)
+  def update_recent_revision
+      ItemRevision.skip_callback("save", :after, :update_recent_revision, raise: false)
       recent_revison = self.item.item_revisions.order("item_revision_date desc").first
       recent_revison.update_attributes(:latest_revision => true)
       self.item.item_revisions.where("id != ?", recent_revison.id).update_all(:latest_revision => false)
@@ -52,7 +52,7 @@ class ItemRevision < ActiveRecord::Base
   end
 
   # has_one :item_print, :dependent => :destroy
-  # has_one :print, :through => :item_print 
+  # has_one :print, :through => :item_print
 
   # has_many :item_materials, :dependent => :destroy
   # has_many :materials, :through => :item_materials
@@ -60,7 +60,7 @@ class ItemRevision < ActiveRecord::Base
   has_many :item_processes, :dependent => :destroy
   has_many :process_types, :through => :item_processes
   has_many :item_specifications, :dependent => :destroy
-  has_many :specifications, :through => :item_specifications 
+  has_many :specifications, :through => :item_specifications
   has_many :item_selected_names, :dependent => :destroy
   has_many :item_alt_names, :through => :item_selected_names
   # has_many :item_part_dimensions, :dependent => :destroy
@@ -96,7 +96,7 @@ class ItemRevision < ActiveRecord::Base
            #      alt_names.each do |alt_name|
            #        item_alt_name = ItemAltName.find_by_item_alt_identifier(alt_name)
 
-           #        unless item_alt_name            
+           #        unless item_alt_name
            #            item_alt_name = ItemAltName.new(:item_alt_identifier => alt_name)
            #            item_alt_name.save
            #        end
@@ -162,9 +162,9 @@ class ItemRevision < ActiveRecord::Base
 
     def sales_orders
         SoHeader.joins(:so_lines).where("so_lines.item_revision_id = ?", self.id)
-    end 
+    end
 
-    
+
     scope :recent_revisions, -> { joins(:item).where('item_revisions.latest_revision = ?', true) }
 
 end

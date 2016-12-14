@@ -94,12 +94,12 @@ class Payable < ActiveRecord::Base
   end
 
   def process_payable_total
-      Payable.skip_callback("save", :before, :process_before_save)
-      Payable.skip_callback("save", :after, :process_after_save)
+      Payable.skip_callback("save", :before, :process_before_save, raise: false)
+      Payable.skip_callback("save", :after, :process_after_save, raise: false)
       self.payable_total = self.update_payable_total
       self.save(validate: false)
-      Payable.set_callback("save", :before, :process_before_save)
-      Payable.set_callback("save", :after, :process_after_save)
+      Payable.set_callback("save", :before, :process_before_save, raise: false)
+      Payable.set_callback("save", :after, :process_after_save, raise: false)
   end
 
   # def update_gl_account
@@ -149,8 +149,8 @@ class Payable < ActiveRecord::Base
   end
 
   def update_payable_status
-      Payable.skip_callback("save", :before, :process_before_save)
-      Payable.skip_callback("save", :after, :process_after_save)
+      Payable.skip_callback("save", :before, :process_before_save, raise: false)
+      Payable.skip_callback("save", :after, :process_after_save, raise: false)
 
       payable_balance = self.payable_current_balance
       if payable_balance > 0

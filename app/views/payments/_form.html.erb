@@ -1,5 +1,5 @@
 <%= simple_form_for(@payment, :html => {:id => "form_for_payments",:class => "form-horizontal"}) do |f| %>
-<%= f.error_notification %>  
+<%= f.error_notification %>
 
   <div class="form-inputs">
     <div class="row-fluid">
@@ -18,9 +18,9 @@
 
         <%= hidden_field_tag :org_organization_id, (@payment.organization.id if @payment.organization) %>
 
-        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Type", as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.second.id if @payment.payment_type.nil?) %>
-       
-        
+        <%= f.association :payment_type, :label => "Payment Type", :label_method => "type_name", :label_value => "id", :include_blank => false,  as: :radio_buttons, :input_html => {class: "payment_type_option"}, :checked => (MasterType.payment_types.second.id if @payment.payment_type.nil?) %>
+
+
         <%#= f.input :payment_check_amount, :label => "Amount" %>
         <%= f.input :payment_description, :label => "Description" %>
         <%= f.input :payment_notes, :label => "Notes" %>
@@ -85,11 +85,11 @@
     var payment_fine_to_submit = true;
 
     $(document).ready(function(){
-        
+
         if (!$("input:radio[name='payment[payment_check_code_type]']").is(":checked")) {
             $('.check_code_type_rad:first').attr('checked', true);
-        }    
-        $("#payment_payment_check_code").attr('readonly', 'readonly'); 
+        }
+        $("#payment_payment_check_code").attr('readonly', 'readonly');
         $("#payment_organization_id").on("focusout", function(){
 
             if($("#organization_id").val() == ""){
@@ -111,36 +111,36 @@
             }
         });
          $('#payment_organization_id').on('autocompletechange change', function ()
-            {   
-                selected_val = this.value 
+            {
+                selected_val = this.value
                 matched = 0
                 $( "#ui-id-1 li a" ).each(function() {
                  if($( this ).html() ==  selected_val)
-                  {         
+                  {
                     initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": selected_val}}, "get_org_id", {});
                     matched = 1;
                   }
 
                 });
-            
+
                 if(matched == 0)
                 {
                     $('#payment_organization_id').val($( "#ui-id-1 li a" ).first().html());
-                    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {}); 
+                    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {});
                 }
             }).change();
-        
+
         // $('#payment_organization_id').keydown(function(e) {
         //     var code = e.keyCode || e.which;
-        //     if (code === 9 || code ===13 )                 
-        //     {                  
+        //     if (code === 9 || code ===13 )
+        //     {
         //         // e.preventDefault();
         //         // $('#payment_payment_description').focus();
-                
+
         //         $('#payment_organization_id').val($( "#ui-id-1 li a" ).first().html());
-        //         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {}); 
+        //         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#payment_organization_id').val()}}, "get_org_id", {});
         //     }
-        // });  
+        // });
 
 
         <% unless @payment.nil? %>
@@ -170,15 +170,15 @@
          $(".check_code_type_rad").on("change", function(){
             if($('.check_code_type_rad:checked').val() == 'Automatic')
             {
-                
+
                 $("#payment_payment_check_code").attr('readonly', 'readonly');
             }
            if($('.check_code_type_rad:checked').val() == 'Manual')
             {
-                             
+
                 $("#payment_payment_check_code").removeAttr('readonly');
             }
-        });    
+        });
 
         payment_type_changed($('.payment_type_option:checked').parent().text(), false);
 
@@ -198,7 +198,7 @@
         //         e.preventDefault();
         //         $('#payment_payment_description').focus();
         //     }
-        // });  
+        // });
 
         $(document).on("keydown", "#payment_payment_check_code", function(e){
             var keyCode = e.keyCode || e.which;
@@ -236,7 +236,7 @@
             add_payment_line_row();
             $("#payment_lines_table_body").hide();
             setTimeout(function(){
-                $('#payment_payment_lines_attributes_0_payment_line_amount').attr('readonly', true);                
+                $('#payment_payment_lines_attributes_0_payment_line_amount').attr('readonly', true);
                 $("#payment_payment_lines_attributes_0_payable_id").val("<%= @payable.id %>");
                 call_payment_payable_info($("#payment_payment_lines_attributes_0_payable_id"));
                 $("#payment_lines_table_body").show();
@@ -269,11 +269,11 @@
         $.each(response.aaData, function(){
             if(this.payable_status == "open"){
                 vendor_payable_info += "<tr><td>"+this.payable_identifier+"</td><td>"+this.payable_invoice_date+"</td><td>"+this.payable_due_date+"</td><td>"+this.payable_total+"</td></tr>";
-            }                     
+            }
         });
         vendor_payable_info +="</tbody></table>";
         $("#vendor_payable_info").html(vendor_payable_info);
-        $("#vendor_payable_info").show(); 
+        $("#vendor_payable_info").show();
 
     }
 
@@ -289,7 +289,7 @@
       <% if @payment.persisted? %>
           initialize_api_call({"url": "/payments/<%= @payment.id %>/payment_lines/"+ payment_line_id, "type": "DELETE", "data_type": "json", "params": {}}, "", {});
       <% end %>
-    }    
+    }
 
     function call_payment_payable_info(selected_payable){
         if(selected_payable.val() != "" && selected_payable.val() != null)
@@ -300,7 +300,7 @@
         callback_params["object"].closest("tr").find("#invoice_date").val(response.aaData.payable_invoice_date);
         callback_params["object"].closest("tr").find("#invoice_due_date").val(response.aaData.payable_due_date);
         callback_params["object"].closest("tr").find("#invoice_amount").val(response.aaData.payable_total);
-        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.payable_balance);  
+        callback_params["object"].closest("tr").find("#invoice_balance").val(response.aaData.payable_balance);
         callback_params["object"].closest("tr").find(".payment_payable_amount").val(response.aaData.payable_balance);
         callback_params["object"].closest("tr").find(".payment_payable_amount").focus();
     }
@@ -319,7 +319,7 @@
         }
     }
 
-    function payment_type_changed(payment_type, change_focus){        
+    function payment_type_changed(payment_type, change_focus){
         if(payment_type == "Check"){
             $('#payment_check_div').show();
             if(change_focus)
@@ -338,7 +338,7 @@
     }
 
     function get_org_id(response){
-       var org_id_val = JSON.stringify(response.aaData.id);      
+       var org_id_val = JSON.stringify(response.aaData.id);
         $("#organization_id").val(org_id_val);
         initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
 

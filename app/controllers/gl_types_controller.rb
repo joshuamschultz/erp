@@ -3,15 +3,15 @@ class GlTypesController < ApplicationController
   before_filter :user_permissions
 
   def user_permissions
-   if  user_signed_in? && current_user.is_customer? 
-        authorize! :edit, GlType
-    end 
+    if  user_signed_in? && current_user.is_customer?
+      authorize! :edit, GlType
+    end
   end
 
   def set_page_info
-     unless user_signed_in? && current_user.is_customer?
+    unless user_signed_in? && current_user.is_customer?
       @menus[:general_ledger][:active] = "active"
-    end 
+    end
   end
 
 
@@ -19,14 +19,21 @@ class GlTypesController < ApplicationController
   # GET /gl_types.json
   def index
     @gl_types = GlType.where(:gl_report => "B").order("gl_side DESC") + GlType.where(:gl_report => "T").order("gl_side DESC")
+    @gl_typs = Array.new
     # @gl_types = @gl_types + @gl_types2
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @gl_types = @gl_types.select{|gl_type| 
-            gl_type[:links] = CommonActions.object_crud_paths(nil, edit_gl_type_path(gl_type), gl_type_path(gl_type))
+
+      format.json {
+          @gl_types = @gl_types.select{|gl_type|
+            gl_typ = Hash.new
+            gl_type.attributes.each do |key, value|
+              gl_typ[key] = value
+            end
+            gl_typ[:links] = CommonActions.object_crud_paths(nil, edit_gl_type_path(gl_type), gl_type_path(gl_type))
+            @gl_typs.push(gl_typ)
           }
-          render json: {:aaData => @gl_types}
+          render json: {:aaData => @gl_typs}
       }
     end
   end

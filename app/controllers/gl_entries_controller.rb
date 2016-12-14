@@ -5,15 +5,15 @@ class GlEntriesController < ApplicationController
   before_filter :user_permissions
 
   def user_permissions
-     if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
-        authorize! :edit, GlEntry
-    end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)
+      authorize! :edit, GlEntry
+    end
   end
 
   def set_page_info
     unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?  )
       @menus[:general_ledger][:active] = "active"
-    end 
+    end
   end
 
   def set_autocomplete_values
@@ -28,24 +28,30 @@ class GlEntriesController < ApplicationController
       @gl_account=params[:gl_account]
       if params[:gl_account]
 
-        @gl_entries = GlEntry.where(:gl_account_id => params[:gl_account])          
+        @gl_entries = GlEntry.where(:gl_account_id => params[:gl_account])
       else
-        @gl_entries = GlEntry.all  
-      end 
+        @gl_entries = GlEntry.all
+      end
     respond_to do |format|
       format.html # index.html.erb
-      format.json {         
-          @gl_entries.select{|gl_entry| 
+      @gl_entris = Array.new
+      format.json {
+          @gl_entries.select{|gl_entry|
+            gl_entri = Hash.new
+            gl_entry.attributes.each do |key, value|
+              gl_entri[key] = value
+            end
             if can? :edit, GlEntry
-              gl_entry[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
+              gl_entri[:links] = CommonActions.object_crud_paths(nil, edit_gl_entry_path(gl_entry), gl_entry_path(gl_entry))
             else
-              gl_entry[:links] =  ""
-            end   
-            gl_entry[:gl_entry_identifier] = CommonActions.linkable(gl_entry_path(gl_entry), gl_entry.gl_entry_identifier)
-            gl_entry[:gl_account_name] = CommonActions.linkable(gl_account_path(gl_entry.gl_account), gl_entry.gl_account.gl_account_title)
-            gl_entry[:gl_entry_description] = gl_entry.get_description_link
+              gl_entri[:links] =  ""
+            end
+            gl_entri[:gl_entry_identifier] = CommonActions.linkable(gl_entry_path(gl_entry), gl_entry.gl_entry_identifier)
+            gl_entri[:gl_account_name] = CommonActions.linkable(gl_account_path(gl_entry.gl_account), gl_entry.gl_account.gl_account_title)
+            gl_entri[:gl_entry_description] = gl_entry.get_description_link
+            @gl_entris.push(gl_entri)
           }
-          render json: {:aaData => @gl_entries}       
+          render json: {:aaData => @gl_entris}
       }
     end
   end
@@ -55,7 +61,7 @@ class GlEntriesController < ApplicationController
   def show
     @gl_entry = GlEntry.find(params[:id])
     @attachable = @gl_entry
-    @notes = @gl_entry.comments.where(:comment_type => "note").order("created_at desc") if @gl_entry 
+    @notes = @gl_entry.comments.where(:comment_type => "note").order("created_at desc") if @gl_entry
 
     respond_to do |format|
       format.html # show.html.erb
@@ -83,7 +89,7 @@ class GlEntriesController < ApplicationController
   # POST /gl_entries
   # POST /gl_entries.json
   def create
-    @gl_entry = GlEntry.new(params[:gl_entry])
+    @gl_entry = GlEntry.new(gl_entry_params)
 
     respond_to do |format|
       if @gl_entry.save
@@ -102,7 +108,7 @@ class GlEntriesController < ApplicationController
     @gl_entry = GlEntry.find(params[:id])
 
     respond_to do |format|
-      current_debit_amount = params[:gl_entry]['gl_entry_debit'].to_i - @gl_entry.gl_entry_debit_was 
+      current_debit_amount = params[:gl_entry]['gl_entry_debit'].to_i - @gl_entry.gl_entry_debit_was
       current_credit_amount = params[:gl_entry]['gl_entry_credit'].to_i - @gl_entry.gl_entry_credit_was
       @gl_entry.update_gl_accounts(current_debit_amount, current_credit_amount)
       if @gl_entry.update_attributes(params[:gl_entry])
