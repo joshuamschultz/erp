@@ -66,7 +66,7 @@ class ProcessFlowsController < ApplicationController
   # POST /process_flows
   # POST /process_flows.json
   def create
-    @process_flow = ProcessFlow.new(params[:process_flow])
+    @process_flow = ProcessFlow.new(process_flow_params)
 
     respond_to do |format|
       @process_flow.attachment.created_by = current_user
@@ -87,7 +87,7 @@ class ProcessFlowsController < ApplicationController
 
     respond_to do |format|
       @process_flow.attachment.updated_by = current_user
-      if @process_flow.update_attributes(params[:process_flow])
+      if @process_flow.update_attributes(process_flow_params)
         format.html { redirect_to process_flows_url, notice: 'Process flow was successfully updated.' }
         format.json { head :no_content }
       else
@@ -108,4 +108,14 @@ class ProcessFlowsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_process_flow
+      @process_flow = ProcessFlow.find(params[:id])
+    end
+
+    def process_flow_params
+      params.require(:process_flow).permit(:process_active, :process_created_id, :process_description,
+                                           :process_identifier, :process_name, :process_notes, :process_updated_id, :attachment_attributes)
+    end
 end

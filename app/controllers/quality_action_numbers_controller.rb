@@ -44,7 +44,7 @@ class QualityActionNumbersController < ApplicationController
   # POST /quality_action_numbers
   # POST /quality_action_numbers.json
   def create
-    @quality_action_number = QualityActionNumber.new(params[:quality_action_number])
+    @quality_action_number = QualityActionNumber.new(quality_action_number_params)
 
     respond_to do |format|
       if @quality_action_number.save
@@ -63,7 +63,7 @@ class QualityActionNumbersController < ApplicationController
     @quality_action_number = QualityActionNumber.find(params[:id])
 
     respond_to do |format|
-      if @quality_action_number.update_attributes(params[:quality_action_number])
+      if @quality_action_number.update_attributes(quality_action_number_params)
         format.html { redirect_to @quality_action_number, notice: 'Quality action number was successfully updated.' }
         format.json { head :no_content }
       else
@@ -84,4 +84,13 @@ class QualityActionNumbersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_quality_action_number
+      @quality_action_number = QualityActionNumber.find(params[:id])
+    end
+
+    def quality_action_number_params
+      params.require(:quality_action_number).permit(:next_action_no)
+    end
 end

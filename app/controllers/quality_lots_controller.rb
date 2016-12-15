@@ -167,7 +167,7 @@ class QualityLotsController < ApplicationController
   # POST po_headers/1/quality_lots
   # POST po_headers/1/quality_lots.json
   def create
-    @quality_lot = QualityLot.new(params[:quality_lot])
+    @quality_lot = QualityLot.new(quality_lot_params)
     @quality_lot.lot_inspector = current_user
 
     respond_to do |format|
@@ -201,7 +201,7 @@ class QualityLotsController < ApplicationController
         format.html { redirect_to(quality_lot_materials_path(quality_lot_id: @quality_lot.id), :notice => 'Material element test was successfully updated.') }
         format.json { head :ok }
 
-      elsif @quality_lot.update_attributes(params[:quality_lot])
+      elsif @quality_lot.update_attributes(quality_lot_params)
         format.html { redirect_to(@quality_lot, :notice => 'Quality lot was successfully updated.') }
         format.json { head :ok }
 

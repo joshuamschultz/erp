@@ -157,7 +157,7 @@ class SoHeadersController < ApplicationController
   # POST /so_headers
   # POST /so_headers.json
   def create
-    @so_header = SoHeader.new(params[:so_header])
+    @so_header = SoHeader.new(so_header_params)
 
     respond_to do |format|
       if @so_header.save
@@ -176,7 +176,7 @@ class SoHeadersController < ApplicationController
     @so_header = SoHeader.find(params[:id])
 
     respond_to do |format|
-      if @so_header.update_attributes(params[:so_header])
+      if @so_header.update_attributes(so_header_params)
         format.html { redirect_to new_so_header_so_line_path(@so_header), notice: 'So header was successfully updated.' }
         format.json { head :no_content }
       else
@@ -262,5 +262,14 @@ private
         kit.to_file(path)
       end
   end
+  private
 
+    def set_so_header
+      @so_header = SoHeader.find(params[:id])
+    end
+
+    def so_header_params
+      params.require(:so_header).permit(:so_bill_to_id, :so_cofc, :so_comments, :so_identifier, :so_notes, :so_due_date,
+                                        :so_ship_to_id, :so_squality, :so_status, :so_total, :organization_id, :so_header_customer_po)
+    end
 end

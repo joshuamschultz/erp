@@ -90,16 +90,6 @@ class QualityLotCapabilitiesController < ApplicationController
     @quality_lot.process_quality_lot_capabilities(params)
     redirect_to quality_lot_capabilities_path(quality_lot_id: @quality_lot.id), notice: 'Process capability was successfully updated.'
 
-    # @quality_lot_capability = QualityLotCapability.new(params[:quality_lot_capability])
-    # respond_to do |format|
-    #   if @quality_lot_capability.save
-    #     format.html { redirect_to @quality_lot_capability, notice: 'Quality lot capability was successfully created.' }
-    #     format.json { render json: @quality_lot_capability, status: :created, location: @quality_lot_capability }
-    #   else
-    #     format.html { render action: "new" }
-    #     format.json { render json: @quality_lot_capability.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PUT /quality_lot_capabilities/1
@@ -112,7 +102,7 @@ class QualityLotCapabilitiesController < ApplicationController
       if params[:status]
         @quality_lot_capability.update_attributes(:lot_dimension_status => params[:status])
         format.html { redirect_to quality_lot_capabilitys_url, notice: 'Status successfully updated.' }
-      elsif @quality_lot_capability.update_attributes(params[:quality_lot_capability])
+      elsif @quality_lot_capability.update_attributes(quality_lot_capability_params)
         format.html { redirect_to quality_lot_capability_path(@quality_lot_capability), notice: 'Process capability was successfully updated.' }
         format.json { head :no_content }
       else
@@ -134,4 +124,19 @@ class QualityLotCapabilitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_quality_lot_capability
+      @quality_lot_capability = QualityLotCapability.find(params[:id])
+    end
+
+    def set_quality_lot
+      @quality_lot = QualityLot.find(params[:quality_lot_id])
+    end
+
+    def quality_lot_capability_params
+      params.require(:quality_lot_capability).permit(:lot_dimension_active, :lot_dimension_created_id, :lot_dimension_notes,
+                                                     :lot_dimension_status, :lot_dimension_updated_id, :quality_lot_id, :item_part_dimension_id,
+                                                     :lot_dimension_value)
+    end
 end

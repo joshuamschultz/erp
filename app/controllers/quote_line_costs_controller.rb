@@ -40,7 +40,7 @@ class QuoteLineCostsController < ApplicationController
   # POST /quote_line_costs
   # POST /quote_line_costs.json
   def create
-    @quote_line_cost = QuoteLineCost.new(params[:quote_line_cost])
+    @quote_line_cost = QuoteLineCost.new(quote_line_cost_params)
 
     respond_to do |format|
       if @quote_line_cost.save
@@ -59,7 +59,7 @@ class QuoteLineCostsController < ApplicationController
     @quote_line_cost = QuoteLineCost.find(params[:id])
 
     respond_to do |format|
-      if @quote_line_cost.update_attributes(params[:quote_line_cost])
+      if @quote_line_cost.update_attributes(quote_line_cost_params)
         format.html { redirect_to @quote_line_cost, notice: 'Quote line cost was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,15 @@ class QuoteLineCostsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_quote_line_cost
+      @quote_line_cost = QuoteLineCost.find(params[:id])
+    end
+
+    def quote_line_cost_params
+      params.require(:quote_line_cost).permit(:quote_line_cost, :quote_line_cost_created_id, :quote_line_cost_notes,
+                                           :quote_line_cost_updated_id, :quote_vendor_id, :quote_line_id, :quote_line_cost_tooling,
+                                           :quote_line_cost_lead, :quote_line_cost_description)
+    end
 end

@@ -94,7 +94,7 @@ class ReceiptsController < ApplicationController
   # POST /receipts
   # POST /receipts.json
   def create
-    @receipt = Receipt.new(params[:receipt])
+    @receipt = Receipt.new(receipt_params)
 
     respond_to do |format|
       if @receipt.save
@@ -121,7 +121,7 @@ class ReceiptsController < ApplicationController
     params[:receipt][:receipt_lines_attributes] = @receipt.process_removed_lines(params[:receipt][:receipt_lines_attributes])
 
     respond_to do |format|
-      if @receipt.update_attributes(params[:receipt])
+      if @receipt.update_attributes(receipt_params)
         deposit_check = DepositCheck.find_by_receipt_id(@receipt.id)
         @receipt.update_attributes(:deposit_check_id => deposit_check.id) if deposit_check
         format.html { redirect_to @receipt, notice: 'Receipt was successfully updated.' }

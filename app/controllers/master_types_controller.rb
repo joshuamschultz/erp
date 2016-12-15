@@ -6,10 +6,10 @@ class MasterTypesController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { 
+        format.json {
 
           @master_types = @master_types.select{|master_type|
-              master_type[:links] = CommonActions.object_crud_paths(nil, edit_master_type_path(master_type), 
+              master_type[:links] = CommonActions.object_crud_paths(nil, edit_master_type_path(master_type),
               master_type_path(master_type))
           }
           render json: {:aaData => @master_types}
@@ -47,7 +47,7 @@ class MasterTypesController < ApplicationController
   # POST /master_types
   # POST /master_types.json
   def create
-    @master_type = MasterType.new(params[:master_type])
+    @master_type = MasterType.new(master_type_params)
 
     respond_to do |format|
       if @master_type.save
@@ -66,7 +66,7 @@ class MasterTypesController < ApplicationController
     @master_type = MasterType.find(params[:id])
 
     respond_to do |format|
-      if @master_type.update_attributes(params[:master_type])
+      if @master_type.update_attributes(master_type_params)
         format.html { redirect_to master_types_url, notice: 'Master type was successfully updated.' }
         format.json { head :no_content }
       else
@@ -88,7 +88,7 @@ class MasterTypesController < ApplicationController
     end
   end
   private
-  
+
     def set_master_type
       @master_type = MasterType.find(params[:id])
     end

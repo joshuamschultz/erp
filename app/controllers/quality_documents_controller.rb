@@ -54,7 +54,7 @@ before_action :set_page_info
   # POST /quality_documents
   # POST /quality_documents.json
   def create
-    @quality_document = QualityDocument.new(params[:quality_document])
+    @quality_document = QualityDocument.new(quality_document_params)
 
     respond_to do |format|
       if @quality_document.save
@@ -73,7 +73,7 @@ before_action :set_page_info
     @quality_document = QualityDocument.find(params[:id])
 
     respond_to do |format|
-      if @quality_document.update_attributes(params[:quality_document])
+      if @quality_document.update_attributes(quality_document_params)
         format.html { redirect_to quality_documents_path, notice: 'Quality document was successfully updated.' }
         format.json { head :no_content }
       else
@@ -94,4 +94,13 @@ before_action :set_page_info
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_quality_document
+      @quality_document = QualityDocument.find(params[:id])
+    end
+
+    def quality_document_params
+      params.require(:quality_document).permit(:logo_attributes, :quality_document_name)
+    end
 end

@@ -153,7 +153,7 @@ class PoHeadersController < ApplicationController
   # POST /po_headers
   # POST /po_headers.json
   def create
-    @po_header = PoHeader.new(params[:po_header])
+    @po_header = PoHeader.new(po_header_params)
 
     respond_to do |format|
       if @po_header.save
@@ -173,7 +173,7 @@ class PoHeadersController < ApplicationController
     @po_header = PoHeader.find(params[:id])
 
     respond_to do |format|
-      if @po_header.update_attributes(params[:po_header])
+      if @po_header.update_attributes(po_header_params)
 
         format.html { redirect_to new_po_header_po_line_path(@po_header), notice: 'Po header was successfully updated.' }
         format.json { head :no_content }
@@ -228,6 +228,16 @@ class PoHeadersController < ApplicationController
       @company_info = CompanyInfo.first
       render :layout => false
   end
+  private
 
+    def set_po_header
+      @po_header = PoHeader.find(params[:id])
+    end
+
+    def po_header_params
+      params.require(:po_header).permit(:po_active, :po_created_id, :po_description, :po_identifier, :po_notes,
+                                        :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id, :customer_id,
+                                        :po_bill_to_id, :po_ship_to_id, :cusotmer_po, :so_header_id)
+    end
 
 end

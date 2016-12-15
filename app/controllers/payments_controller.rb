@@ -107,7 +107,7 @@ class PaymentsController < ApplicationController
   # POST /payments
   # POST /payments.json
   def create
-    @payment = Payment.new(params[:payment])
+    @payment = Payment.new(payment_params)
 
     respond_to do |format|
       if @payment.save
@@ -131,7 +131,7 @@ class PaymentsController < ApplicationController
     params[:payment][:payment_lines_attributes] = @payment.process_removed_lines(params[:payment][:payment_lines_attributes])
 
     respond_to do |format|
-      if @payment.update_attributes(params[:payment])
+      if @payment.update_attributes(payment_params)
         # check_entry = CheckEntry.find_by_check_code(@payment.payment_check_code)
         # @payment.update_attributes(:check_entry_id => check_entry.id) if check_entry
         format.html { redirect_to @payment, notice: 'Payment was successfully updated.' }
@@ -154,4 +154,16 @@ class PaymentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_payment
+      @payment = Payment.find(params[:id])
+    end
+
+    def payment_params
+      params.require(:payment).permit(:payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
+                                      :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
+                                      :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
+                                      :check_entry_attributes, :next_check_code, :payment_check_code_type)
+    end
 end

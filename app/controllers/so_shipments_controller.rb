@@ -219,7 +219,7 @@ class SoShipmentsController < ApplicationController
   # POST /so_shipments.json
   def create
     unless params[:so_shipment]['quality_lot_id'] == 'empty' || params[:so_shipment]['quality_lot_id'] == 'less'
-      @so_shipment = SoShipment.new(params[:so_shipment]) #To delete in Sprint 7
+      @so_shipment = SoShipment.new(so_shipment_params) #To delete in Sprint 7
 ###To uncommnet in Sprint 7
       # @quality_lot = QualityLot.find(params[:so_shipment]['quality_lot_id'])
       # lot_status =   @quality_lot.quality_histories.last.quality_status if @quality_lot.quality_histories.last.present? && @quality_lot.quality_histories.last.quality_status.present?
@@ -273,7 +273,7 @@ class SoShipmentsController < ApplicationController
     @so_shipment = SoShipment.find(params[:id])
 
     respond_to do |format|
-      if @so_shipment.update_attributes(params[:so_shipment])
+      if @so_shipment.update_attributes(so_shipment_params)
         # format.html { redirect_to @so_shipment, notice: 'So shipment was successfully updated.' }
         format.html { redirect_to so_shipments_path, notice: 'SO shipment was successfully updated.' }
         format.json { head :no_content }
@@ -302,5 +302,14 @@ class SoShipmentsController < ApplicationController
       # end
     end
   end
+  private
 
+    def set_so_shipment
+      @so_shipment = SoShipment.find(params[:id])
+    end
+
+    def so_shipment_params
+      params.require(:so_shipment).permit(:so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
+                                          :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id)
+    end
 end

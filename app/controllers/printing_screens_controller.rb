@@ -6,7 +6,7 @@ class PrintingScreensController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
        @printing_screens = @printing_screens.select{|printing_screen|
 
               printing_screen[:ids] = CommonActions.linkable(printing_screen_path(printing_screen), printing_screen.id)
@@ -19,7 +19,7 @@ class PrintingScreensController < ApplicationController
 
         }
         render json: {:aaData => @printing_screens}
-      } 
+      }
     end
   end
 
@@ -53,7 +53,7 @@ class PrintingScreensController < ApplicationController
   # POST /printing_screens
   # POST /printing_screens.json
   def create
-    @printing_screen = PrintingScreen.new(params[:printing_screen])
+    @printing_screen = PrintingScreen.new(printing_screen_params)
 
     respond_to do |format|
       if @printing_screen.save
@@ -72,7 +72,7 @@ class PrintingScreensController < ApplicationController
     @printing_screen = PrintingScreen.find(params[:id])
 
     respond_to do |format|
-      if @printing_screen.update_attributes(params[:printing_screen])
+      if @printing_screen.update_attributes(printing_screen_params)
         format.html { redirect_to @printing_screen, notice: 'Printing screen was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,7 +82,7 @@ class PrintingScreensController < ApplicationController
       if @printing_screen.status == "closed"
         reconcile = Reconcile.find_by_printing_screen_id(@printing_screen.id)
         reconcile.update_attribute(:tag, "not reconciled")
-      end  
+      end
     end
   end
 
@@ -97,4 +97,13 @@ class PrintingScreensController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_printing_screen
+      @printing_screen = PrintingScreen.find(params[:id])
+    end
+
+    def printing_screen_params
+      params.require(:printing_screen).permit(:status, :payment_id)
+    end
 end
