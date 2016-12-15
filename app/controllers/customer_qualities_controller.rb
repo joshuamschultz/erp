@@ -85,7 +85,7 @@ class CustomerQualitiesController < ApplicationController
   # POST /customer_qualities
   # POST /customer_qualities.json
   def create
-    @customer_quality = CustomerQuality.new(params[:customer_quality])
+    @customer_quality = CustomerQuality.new(customer_quality_params)
     respond_to do |format|
       if @customer_quality.save
         CustomerQuality.quality_level_associations(@customer_quality, params)
@@ -104,7 +104,7 @@ class CustomerQualitiesController < ApplicationController
     @customer_quality = CustomerQuality.find(params[:id])
 
     respond_to do |format|
-      if @customer_quality.update_attributes(params[:customer_quality])
+      if @customer_quality.update_attributes(customer_quality_params)
         CustomerQuality.quality_level_associations(@customer_quality, params)
         format.html { redirect_to customer_qualities_url, notice: 'Quality Level was successfully updated.' }
         format.json { head :no_content }
@@ -138,5 +138,17 @@ class CustomerQualitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_customer_quality
+      @customer_quality = CustomerQuality.find(params[:id])
+    end
+
+    def customer_quality_params
+      params.require(:customer_quality).permit( :quality_active, :quality_control_plan, :quality_created_id, :quality_description,
+                                                 :quality_dimensional_cofc, :quality_floor_plan, :quality_fmea, :quality_form, :quality_gauge,
+                                                 :quality_material_cofc, :quality_name, :quality_notes, :quality_packaging, :quality_process_flow,
+                                                 :quality_psw, :quality_study, :quality_supplier_a, :quality_supplier_b, :quality_updated_id)
+    end
 
 end

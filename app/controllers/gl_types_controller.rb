@@ -68,7 +68,7 @@ class GlTypesController < ApplicationController
   # POST /gl_types
   # POST /gl_types.json
   def create
-    @gl_type = GlType.new(params[:gl_type])
+    @gl_type = GlType.new(gl_type_params)
 
     respond_to do |format|
       if @gl_type.save
@@ -87,7 +87,7 @@ class GlTypesController < ApplicationController
     @gl_type = GlType.find(params[:id])
 
     respond_to do |format|
-      if @gl_type.update_attributes(params[:gl_type])
+      if @gl_type.update_attributes(gl_type_params)
         format.html { redirect_to gl_types_path, notice: 'Gl type was successfully updated.' }
         format.json { head :no_content }
       else
@@ -108,4 +108,13 @@ class GlTypesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_gl_type
+      @gl_type = GlType.find(params[:id])
+    end
+
+    def gl_type_params
+      params.require(:gl_type).permit(:gl_active, :gl_description, :gl_identifier, :gl_name, :gl_report, :gl_side)
+    end
 end

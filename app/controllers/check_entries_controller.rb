@@ -62,7 +62,7 @@ class CheckEntriesController < ApplicationController
   # POST /check_entries
   # POST /check_entries.json
   def create
-    @check_entry = CheckEntry.new(params[:check_entry])
+    @check_entry = CheckEntry.new(check_entry_params)
 
     respond_to do |format|
       if @check_entry.save
@@ -81,7 +81,7 @@ class CheckEntriesController < ApplicationController
     @check_entry = CheckEntry.find(params[:id])
 
     respond_to do |format|
-      if @check_entry.update_attributes(params[:check_entry])
+      if @check_entry.update_attributes(check_entry_params)
         format.html { redirect_to @check_entry, notice: 'Check entry was successfully updated.' }
         format.json { head :no_content }
       else
@@ -117,5 +117,13 @@ class CheckEntriesController < ApplicationController
     end
     redirect_to check_entries_url
   end
+  private
 
+    def set_check_entry
+      @check_entry = CheckEntry.find(params[:id])
+    end
+
+    def check_entry_params
+      params.require(:check_entry).permit(:check_active, :check_code, :check_identifier, :status)
+    end
 end

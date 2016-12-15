@@ -40,7 +40,7 @@ class CheckListLinesController < ApplicationController
   # POST /check_list_lines
   # POST /check_list_lines.json
   def create
-    @check_list_line = CheckListLine.new(params[:check_list_line])
+    @check_list_line = CheckListLine.new(check_list_line_params)
 
     respond_to do |format|
       if @check_list_line.save
@@ -59,7 +59,7 @@ class CheckListLinesController < ApplicationController
     @check_list_line = CheckListLine.find(params[:id])
 
     respond_to do |format|
-      if @check_list_line.update_attributes(params[:check_list_line])
+      if @check_list_line.update_attributes(check_list_line_params)
         format.html { redirect_to @check_list_line, notice: 'Check list line was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class CheckListLinesController < ApplicationController
       format.json { head :no_content }
     end
   end
+   private
+
+    def set_check_list_line
+      @check_list_line = CheckListLine.find(params[:id])
+    end
+
+    def check_list_line_params
+      params.require(:check_list_line).permit(:check_list_status, :checklist_id,  :master_type_id)
+    end
 end

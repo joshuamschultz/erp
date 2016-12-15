@@ -143,7 +143,7 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(params[:item])
+    @item = Item.new(item_params)
 
     respond_to do |format|
       if @item.save
@@ -163,7 +163,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
 
     respond_to do |format|
-      if @item.update_attributes(params[:item])
+      if @item.update_attributes(item_params)
         # ItemRevision.process_item_associations(@item.current_revision, params)
         format.html { redirect_to item_path(@item), notice: 'Item was successfully updated.' }
         format.json { head :no_content }
@@ -185,4 +185,14 @@ class ItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_item
+        @item = Item.find(params[:id])
+      end
+
+      def item_params
+        params.require(:item).permit(:item_part_no, :item_quantity_in_hand, :item_quantity_on_order, :item_active,
+                                      :item_created_id, :item_updated_id, :item_revisions_attributes, :item_alt_part_no)
+      end
 end

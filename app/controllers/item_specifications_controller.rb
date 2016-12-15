@@ -40,7 +40,7 @@ class ItemSpecificationsController < ApplicationController
   # POST /item_specifications
   # POST /item_specifications.json
   def create
-    @item_specification = ItemSpecification.new(params[:item_specification])
+    @item_specification = ItemSpecification.new(item_specification_params)
 
     respond_to do |format|
       if @item_specification.save
@@ -59,7 +59,7 @@ class ItemSpecificationsController < ApplicationController
     @item_specification = ItemSpecification.find(params[:id])
 
     respond_to do |format|
-      if @item_specification.update_attributes(params[:item_specification])
+      if @item_specification.update_attributes(item_specification_params)
         format.html { redirect_to @item_specification, notice: 'Item specification was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class ItemSpecificationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_item_specification
+        @item_specification = ItemSpecification.find(params[:id])
+      end
+
+      def item_specification_params
+        params.require(:item_specification).permit(:item_revision_id, :specification_id)
+      end
 end

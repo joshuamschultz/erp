@@ -40,7 +40,7 @@ class CustomerQualityLevelsController < ApplicationController
   # POST /customer_quality_levels
   # POST /customer_quality_levels.json
   def create
-    @customer_quality_level = CustomerQualityLevel.new(params[:customer_quality_level])
+    @customer_quality_level = CustomerQualityLevel.new(customer_quality_level_params)
 
     respond_to do |format|
       if @customer_quality_level.save
@@ -59,7 +59,7 @@ class CustomerQualityLevelsController < ApplicationController
     @customer_quality_level = CustomerQualityLevel.find(params[:id])
 
     respond_to do |format|
-      if @customer_quality_level.update_attributes(params[:customer_quality_level])
+      if @customer_quality_level.update_attributes(customer_quality_level_params)
         format.html { redirect_to @customer_quality_level, notice: 'Customer quality level was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class CustomerQualityLevelsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_customer_quality_level
+      @customer_quality_level = CustomerQualityLevel.find(params[:id])
+    end
+
+    def customer_quality_level_params
+      params.require(:customer_quality_level).permit(:customer_quality_id, :master_type_id)
+    end
 end

@@ -112,7 +112,7 @@ class ContactsController < ApplicationController
   # POST /contacts
   # POST /contacts.json
   def create
-    @contact = Contact.new(params[:contact])
+    @contact = Contact.new(contact_params)
     @contactable = @contact.contactable
 
     respond_to do |format|
@@ -133,7 +133,7 @@ class ContactsController < ApplicationController
     @contactable = @contact.contactable
 
     respond_to do |format|
-      if @contact.update_attributes(params[:contact])
+      if @contact.update_attributes(contact_params)
         format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
         format.json { head :no_content }
       else
@@ -178,4 +178,17 @@ class ContactsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_contact
+      @contact = Contact.find(params[:id])
+    end
+
+    def contact_params
+      params.require(:contact).permit(:contact_active, :contact_address_1, :contact_address_2, :contact_city,
+      :contact_country, :contact_created_id, :contact_description, :contact_email, :contact_fax,
+      :contact_notes, :contact_state, :contact_telephone, :contact_title, :contact_updated_id,
+      :contact_website, :contact_zipcode, :contactable_id, :contactable_type, :contact_type,
+      :first_name, :last_name)
+    end
 end

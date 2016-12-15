@@ -41,7 +41,7 @@ class GroupOrganizationsController < ApplicationController
   # POST /group_organizations
   # POST /group_organizations.json
   def create
-    @group_organization = GroupOrganization.new(params[:group_organization])
+    @group_organization = GroupOrganization.new(group_organization_params)
 
     respond_to do |format|
       if @group_organization.save
@@ -60,7 +60,7 @@ class GroupOrganizationsController < ApplicationController
     @group_organization = GroupOrganization.find(params[:id])
 
     respond_to do |format|
-      if @group_organization.update_attributes(params[:group_organization])
+      if @group_organization.update_attributes(group_organization_params)
         format.html { redirect_to @group_organization, notice: 'Group organization was successfully updated.' }
         format.json { head :no_content }
       else
@@ -81,4 +81,13 @@ class GroupOrganizationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_group_organization
+      @group_organization = GroupOrganization.find(params[:id])
+    end
+
+    def group_organization_params
+      params.require(:group_organization).permit(:organization_id, :group_id)
+    end
 end

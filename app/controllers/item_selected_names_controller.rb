@@ -1,7 +1,7 @@
 class ItemSelectedNamesController < ApplicationController
   autocomplete :item_selected_name, :item_name, :display_value => :with_alt_name
 
-  def get_autocomplete_items(parameters)    
+  def get_autocomplete_items(parameters)
     items = active_record_get_autocomplete_items(parameters)
 
     recent_revisions = ItemRevision.recent_revisions
@@ -57,7 +57,7 @@ class ItemSelectedNamesController < ApplicationController
   # POST /item_selected_names
   # POST /item_selected_names.json
   def create
-    @item_selected_name = ItemSelectedName.new(params[:item_selected_name])
+    @item_selected_name = ItemSelectedName.new(item_selected_name_params)
 
     respond_to do |format|
       if @item_selected_name.save
@@ -76,7 +76,7 @@ class ItemSelectedNamesController < ApplicationController
     @item_selected_name = ItemSelectedName.find(params[:id])
 
     respond_to do |format|
-      if @item_selected_name.update_attributes(params[:item_selected_name])
+      if @item_selected_name.update_attributes(item_selected_name_params)
         format.html { redirect_to @item_selected_name, notice: 'Item selected name was successfully updated.' }
         format.json { head :no_content }
       else
@@ -97,4 +97,13 @@ class ItemSelectedNamesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_item_selected_name
+      @item_selected_name = ItemSelectedName.find(params[:id])
+    end
+
+    def item_selected_name_params
+      params.require(:group).permit(:item_revision_id, :item_alt_name_id, :item_name)
+    end
 end

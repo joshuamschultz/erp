@@ -67,7 +67,7 @@ class CheckRegistersController < ApplicationController
   # POST /check_registers
   # POST /check_registers.json
   def create
-    @check_register = CheckRegister.new(params[:check_register])
+    @check_register = CheckRegister.new(check_register_params)
 
     respond_to do |format|
       if @check_register.save
@@ -86,7 +86,7 @@ class CheckRegistersController < ApplicationController
     @check_register = CheckRegister.find(params[:id])
 
     respond_to do |format|
-      if @check_register.update_attributes(params[:check_register])
+      if @check_register.update_attributes(check_register_params)
         format.html { redirect_to @check_register, notice: 'Check register was successfully updated.' }
         format.json { head :no_content }
       else
@@ -106,5 +106,14 @@ class CheckRegistersController < ApplicationController
       format.html { redirect_to check_registers_url }
       format.json { head :no_content }
     end
+  end
+  private
+
+  def set_check_register
+    @check_register = CheckRegister.find(params[:id])
+  end
+
+  def check_register_params
+    params.require(:check_register).permit(:amount, :balance, :check_code, :deposit, :organization_id, :rec, :transaction_date, :payment_id, :receipt_id)
   end
 end

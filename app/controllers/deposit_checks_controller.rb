@@ -60,7 +60,7 @@ class DepositChecksController < ApplicationController
   # POST /deposit_checks
   # POST /deposit_checks.json
   def create
-    @deposit_check = DepositCheck.new(params[:deposit_check])
+    @deposit_check = DepositCheck.new(deposit_check_params)
 
     respond_to do |format|
       if @deposit_check.save
@@ -79,7 +79,7 @@ class DepositChecksController < ApplicationController
     @deposit_check = DepositCheck.find(params[:id])
 
     respond_to do |format|
-      if @deposit_check.update_attributes(params[:deposit_check])
+      if @deposit_check.update_attributes(deposit_check_params)
         format.html { redirect_to @deposit_check, notice: 'Deposit check was successfully updated.' }
         format.json { head :no_content }
       else
@@ -109,4 +109,14 @@ class DepositChecksController < ApplicationController
     @deposit_checks = DepositCheck.where(:active => 1)
     render :layout => false
   end
+  private
+
+    def set_deposit_check
+      @deposit_check = DepositCheck.find(params[:id])
+    end
+
+    def deposit_check_params
+      params.require(:deposit_check).permit(:receipt_id, :status, :check_identifier, :receipt_type, :active)
+    end
+
 end

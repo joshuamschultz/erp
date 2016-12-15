@@ -40,7 +40,7 @@ class ItemProcessesController < ApplicationController
   # POST /item_processes
   # POST /item_processes.json
   def create
-    @item_process = ItemProcess.new(params[:item_process])
+    @item_process = ItemProcess.new(item_process_params)
 
     respond_to do |format|
       if @item_process.save
@@ -59,7 +59,7 @@ class ItemProcessesController < ApplicationController
     @item_process = ItemProcess.find(params[:id])
 
     respond_to do |format|
-      if @item_process.update_attributes(params[:item_process])
+      if @item_process.update_attributes(item_process_params)
         format.html { redirect_to @item_process, notice: 'Item process was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class ItemProcessesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_item_process
+        @item_process = ItemProcess.find(params[:id])
+      end
+
+      def item_process_params
+        params.require(:item_process).permit(:item_revision_id, :process_type_id)
+      end
 end

@@ -81,7 +81,7 @@ class InventoryAdjustmentsController < ApplicationController
   # POST /inventory_adjustments
   # POST /inventory_adjustments.json
   def create
-    @inventory_adjustment = InventoryAdjustment.new(params[:inventory_adjustment])
+    @inventory_adjustment = InventoryAdjustment.new(inventory_adjustment_params)
 
     respond_to do |format|
       if @inventory_adjustment.save
@@ -100,7 +100,7 @@ class InventoryAdjustmentsController < ApplicationController
     @inventory_adjustment = InventoryAdjustment.find(params[:id])
 
     respond_to do |format|
-      if @inventory_adjustment.update_attributes(params[:inventory_adjustment])
+      if @inventory_adjustment.update_attributes(inventory_adjustment_params)
         format.html { redirect_to inventory_adjustments_path, notice: 'Inventory adjustment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -121,4 +121,13 @@ class InventoryAdjustmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_inventory_adjustment
+        @inventory_adjustment = InventoryAdjustment.find(params[:id])
+      end
+
+      def inventory_adjustment_params
+        params.require(:inventory_adjustment).permit(:inventory_adjustment_description, :inventory_adjustment_quantity, :item_alt_name_id, :item_id, :quality_lot_id)
+      end
 end

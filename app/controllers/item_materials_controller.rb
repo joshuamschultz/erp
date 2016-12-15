@@ -40,7 +40,7 @@ class ItemMaterialsController < ApplicationController
   # POST /item_materials
   # POST /item_materials.json
   def create
-    @item_material = ItemMaterial.new(params[:item_material])
+    @item_material = ItemMaterial.new(item_material_params)
 
     respond_to do |format|
       if @item_material.save
@@ -59,7 +59,7 @@ class ItemMaterialsController < ApplicationController
     @item_material = ItemMaterial.find(params[:id])
 
     respond_to do |format|
-      if @item_material.update_attributes(params[:item_material])
+      if @item_material.update_attributes(item_material_params)
         format.html { redirect_to @item_material, notice: 'Item material was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class ItemMaterialsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_item_material
+      @item_material = ItemMaterial.find(params[:id])
+    end
+
+    def item_material_params
+      params.require(:item_material).permit(:item_revision_id, :material_id)
+    end
 end

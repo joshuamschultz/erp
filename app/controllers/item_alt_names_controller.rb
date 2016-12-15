@@ -91,7 +91,7 @@ class ItemAltNamesController < ApplicationController
   # POST /item_alt_names
   # POST /item_alt_names.json
   def create
-    @item_alt_name = ItemAltName.new(params[:item_alt_name])
+    @item_alt_name = ItemAltName.new(item_alt_name_params)
     respond_to do |format|
         if params[:new_item] && params[:item_alt_name][:item_id] == "" &&  params[:item_id] != ""
             @item = Item.new(:item_part_no => params[:item_id])
@@ -116,7 +116,7 @@ class ItemAltNamesController < ApplicationController
     @item_alt_name = ItemAltName.find(params[:id])
 
     respond_to do |format|
-      if @item_alt_name.update_attributes(params[:item_alt_name])
+      if @item_alt_name.update_attributes(item_alt_name_params)
         format.html { redirect_to item_alt_names_path, notice: 'Alt name was successfully updated.' }
         format.json { head :no_content }
       else
@@ -137,4 +137,14 @@ class ItemAltNamesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_item_alt_name
+        @item_alt_name = ItemAltName.find(params[:id])
+      end
+
+      def item_alt_name_params
+        params.require(:item_alt_name).permit(:item_alt_active, :item_alt_created_id, :item_alt_description,
+                                              :item_alt_identifier, :item_alt_notes, :item_alt_updated_id, :item_id, :organization_id)
+      end
 end

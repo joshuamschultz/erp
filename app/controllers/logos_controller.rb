@@ -41,7 +41,7 @@ class LogosController < ApplicationController
   # POST /logos
   # POST /logos.json
   def create
-    @logo = Logo.new(params[:logo])
+    @logo = Logo.new(logo_params)
 
     respond_to do |format|
       if @logo.save
@@ -60,7 +60,7 @@ class LogosController < ApplicationController
     @logo = Logo.find(params[:id])
 
     respond_to do |format|
-      if @logo.update_attributes(params[:logo])
+      if @logo.update_attributes(logo_params)
         format.html { redirect_to @logo, notice: 'Logo was successfully updated.' }
         format.json { head :no_content }
       else
@@ -81,4 +81,15 @@ class LogosController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+      def set_logo
+        @logo = Logo.find(params[:id])
+      end
+
+      def logo_params
+        params.require(:logo).permit(:joint_active, :joint_content_type, :joint_created_id, :joint_description,
+                                     :joint_file_name, :joint_file_size, :joint_notes, :joint_public, :joint_title, :joint_updated_id,
+                                     :jointable_id, :jointable_type, :joint)
+      end
 end

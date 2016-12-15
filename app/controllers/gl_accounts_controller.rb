@@ -72,7 +72,7 @@ class GlAccountsController < ApplicationController
   # POST /gl_accounts
   # POST /gl_accounts.json
   def create
-    @gl_account = GlAccount.new(params[:gl_account])
+    @gl_account = GlAccount.new(gl_account_params)
 
     respond_to do |format|
       if @gl_account.save
@@ -91,7 +91,7 @@ class GlAccountsController < ApplicationController
     @gl_account = GlAccount.find(params[:id])
 
     respond_to do |format|
-      if @gl_account.update_attributes(params[:gl_account])
+      if @gl_account.update_attributes(gl_account_params)
         format.html { redirect_to gl_accounts_path, notice: 'Gl account was successfully updated.' }
         format.json { head :no_content }
       else
