@@ -105,7 +105,7 @@ class DimensionsController < ApplicationController
     @dimension = Dimension.find(params[:id])
 
     respond_to do |format|
-      if @dimension.update_attributes(params[:dimension])
+      if @dimension.update_attributes(dimension_params)
         format.html { redirect_to dimensions_path, notice: 'Dimension type was successfully updated.' }
         format.json { head :no_content }
       else

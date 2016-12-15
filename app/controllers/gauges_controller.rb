@@ -103,7 +103,7 @@ class GaugesController < ApplicationController
     @gauge = Gauge.find(params[:id])
 
     respond_to do |format|
-      if @gauge.update_attributes(params[:gauge])
+      if @gauge.update_attributes(gauge_params)
         format.html { redirect_to gauges_path, notice: 'Instrument was successfully updated.' }
         format.json { head :no_content }
       else

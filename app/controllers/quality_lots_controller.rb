@@ -120,10 +120,10 @@ class QualityLotsController < ApplicationController
               qality_lot[:po_identifier] = CommonActions.linkable(po_header_path(quality_lot.po_header), quality_lot.po_header.po_identifier)
             end
             qality_lot[:cost] = quality_lot.po_line.po_line_cost
-            qality_lot[:inspection_level_name] = quality_lot.inspection_level.type_name if quality_lot.inspection_level
-            qality_lot[:inspection_method_name] = quality_lot.inspection_method.type_name if quality_lot.inspection_method
-            qality_lot[:inspection_type_name] = quality_lot.inspection_type.type_name if quality_lot.inspection_type
-            qality_lot[:inspector_name] = quality_lot.lot_inspector.name if quality_lot.lot_inspector
+            qality_lot[:inspection_level_name] = quality_lot.inspection_level.present? ? quality_lot.inspection_level.type_name : ""
+            qality_lot[:inspection_method_name] =  quality_lot.inspection_method.present? ? quality_lot.inspection_method.type_name : ""
+            qality_lot[:inspection_type_name] = quality_lot.inspection_type.present? ? quality_lot.inspection_type.type_name : ""
+            qality_lot[:inspector_name] = quality_lot.lot_inspector.present? ? quality_lot.lot_inspector.name : ""
             qality_lot[:created_date] = quality_lot.created_at.strftime("%b %d, %y")
             qality_lot[:total_lots] = quality_lot.po_line.quality_lots.count
             i += 1
