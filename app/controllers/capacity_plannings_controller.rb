@@ -1,5 +1,5 @@
 class CapacityPlanningsController < ApplicationController
-    before_filter :set_page_info
+    before_action :set_page_info
   autocomplete :capacity_planning, :capacity_plan_name, :full => true
   def set_page_info
     @menus[:quality][:active] = "active"
@@ -9,17 +9,17 @@ class CapacityPlanningsController < ApplicationController
   def index
     @capacity_plannings = CapacityPlanning.joins(:attachment).all
 
- 
+
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @capacity_plannings = @capacity_plannings.collect{|capacity_planning| 
+      format.json {
+          @capacity_plannings = @capacity_plannings.collect{|capacity_planning|
           attachment = capacity_planning.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(capacity_planning_path(capacity_planning), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(capacity_planning_path(capacity_planning), attachment[:attachment_name])
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_capacity_planning_path(capacity_planning), nil)
           attachment
         }
-        render json: {:aaData => @capacity_plannings} 
+        render json: {:aaData => @capacity_plannings}
       }
     end
   end
@@ -58,8 +58,8 @@ class CapacityPlanningsController < ApplicationController
   # POST /capacity_plannings
   # POST /capacity_plannings.json
   def create
-    @capacity_planning = CapacityPlanning.new(params[:capacity_planning])
-    
+    @capacity_planning = CapacityPlanning.new(capacity_planning_params)
+    p @capacity_planning.attachment
     respond_to do |format|
       @capacity_planning.attachment.created_by = current_user
 
@@ -80,7 +80,7 @@ class CapacityPlanningsController < ApplicationController
 
     respond_to do |format|
       @capacity_planning.attachment.updated_by = current_user
-      if @capacity_planning.update_attributes(params[:capacity_planning])
+      if @capacity_planning.update_attributes(capacity_planning_params)
         format.html { redirect_to capacity_plannings_url, notice: 'Capacity planning was successfully updated.' }
         format.json { head :no_content }
       else
@@ -101,4 +101,18 @@ class CapacityPlanningsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_capacity_planning
+      @capacity_planning = CapacityPlanning.find(params[:id])
+    end
+
+    def capacity_planning_params
+      params.require(:capacity_planning).permit(:capacity_plan_active, :capacity_plan_created_id, :capacity_plan_description,
+      :capacity_plan_name, :capacity_plan_notes, :capacity_plan_updated_id, attachment_attributes: [:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
+                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
+                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
+                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
+                                         :attachment_file_name])
+    end
 end

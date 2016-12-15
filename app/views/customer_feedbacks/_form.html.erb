@@ -48,8 +48,8 @@
     </div>
 <% end %>
 
-<script type="text/javascript">    
-    $(document).ready(function(){ 
+<script type="text/javascript">
+    $(document).ready(function(){
       $("#customer_feedback_organization_id").val("<%= @customer_feedback.organization.organization_name if @customer_feedback.organization %>");
         tab_field_forms["form_for_customer_feedback"] = ["organization_type", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id %>", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id+1 %>", "customer_feedback_customer_feedback_type_id_<%= MasterType.customer_feedback_types.first.id+2 %>","customer_feedback_organization_id", "customer_feedback_title", "customer_feedback_feedback", "customer_feedback_quality_action_id"];
        $("#customer_feedback_quality_action_id").val("<%= @customer_feedback.quality_action.quality_action_no if @customer_feedback.quality_action %>");
@@ -57,29 +57,29 @@
 
        $("#organization_type").focus();     // change_organization_type();
        change_organization_type();
-       
+
         $('#customer_feedback_organization_id').keydown(function(e) {
             var code = e.keyCode || e.which;
-            if (code === 9 || code ===13 ) 
-            {    
+            if (code === 9 || code ===13 )
+            {
                 var ui_id = $(this).autocomplete('widget').attr('id');
                 $('#customer_feedback_organization_id').val($( "#"+ui_id +" li a" ).first().html());
-                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#customer_feedback_organization_id').val()}}, "get_org_id", {}); 
+                initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#customer_feedback_organization_id').val()}}, "get_org_id", {});
             }
-          });  
+          });
     });
 
- 
 
-    $(document).on("change", "#organization_type", function(){         
+
+    $(document).on("change", "#organization_type", function(){
         change_organization_type();
     });
-    function change_organization_type(){ 
-        if($("#organization_type").val() == "vendor"){   
+    function change_organization_type(){
+        if($("#organization_type").val() == "vendor"){
             $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=vendor" );
         }
-        else{ 
-            $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=customer" );   
+        else{
+            $( "#customer_feedback_organization_id" ).attr( "data-autocomplete", "/organizations/autocomplete_organization_organization_name?type=customer" );
        }
     }
     function get_org_id(response){

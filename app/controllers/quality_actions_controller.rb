@@ -1,23 +1,23 @@
 class QualityActionsController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
 
   autocomplete :quality_action, :quality_action_no, :full => true
 
-  before_filter :view_permissions, except: [:index, :show]
+  before_action :view_permissions, except: [:index, :show]
 
-  before_filter :user_permissions
+  before_action :user_permissions
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? )
+    if  user_signed_in? && ( current_user.is_operations? || current_user.is_logistics? )
         authorize! :edit, QualityAction
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, QualityAction
-    end 
+    end
   end
 
 
@@ -48,9 +48,9 @@ class QualityActionsController < ApplicationController
         @quality_actions = QualityAction.status_based_quality_action(params[:status])
         @status = params[:status]
       else
-        @quality_actions = QualityAction.quality_action_filtering 
+        @quality_actions = QualityAction.quality_action_filtering
       end
-    
+
     else
 
       if params[:status]
@@ -67,21 +67,27 @@ class QualityActionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      @quality_actins = Array.new
+      format.json {
          @quality_actions = @quality_actions.select{|quality_action|
-            quality_action[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
-            
-            if (can? :edit , quality_action)
-              quality_action[:links] = quality_action.get_link
-            else
-              quality_action[:links] = nil
+            quality_actin = Hash.new
+            quality_action.attributes.each do |key, value|
+              quality_actin[key] = value
             end
-            quality_action[:user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
-            quality_action[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
-            quality_action[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
+            quality_actin[:created_user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
+
+            if (can? :edit , quality_action)
+              quality_actin[:links] = quality_action.get_link
+            else
+              quality_actin[:links] = nil
+            end
+            quality_actin[:user] = quality_action.created_user.present? ? quality_action.created_user.name : ""
+            quality_actin[:action_no] = CommonActions.linkable(quality_action_path(quality_action), quality_action.quality_action_no)
+            quality_actin[:status_action] = CommonActions.set_quality_status(quality_action.quality_action_status)
+            @quality_actins.push(quality_actin)
 
         }
-        render json: {:aaData => @quality_actions}
+        render json: {:aaData => @quality_actins}
       }
     end
   end
@@ -121,10 +127,10 @@ class QualityActionsController < ApplicationController
     if params[:finish]
       @quality_action = QualityAction.new(params[:quality_action])
       @quality_action[:quality_action_status] = "finished"
-      @quality_action[:submit_time] = Time.now     
+      @quality_action[:submit_time] = Time.now
 
     elsif params[:save]
-      @quality_action = QualityAction.new(params[:quality_action])
+      @quality_action = QualityAction.new(quality_action_params)
       @quality_action[:quality_action_status] = "open"
     end
       @quality_action[:created_user_id] = current_user.id
@@ -146,17 +152,17 @@ class QualityActionsController < ApplicationController
   # PUT /quality_actions/1
   # PUT /quality_actions/1.json
   def update
-     if params[:finish]
+    if params[:finish]
       @quality_action = QualityAction.find(params[:id])
       @quality_action[:quality_action_status] = "finished"
       @quality_action[:submit_time] = Time.now
     elsif params[:save]
       @quality_action = QualityAction.find(params[:id])
       @quality_action[:quality_action_status] = "open"
-    end    
+    end
 
     respond_to do |format|
-      if @quality_action.update_attributes(params[:quality_action])
+      if @quality_action.update_attributes(quality_action_params)
          @quality_action.set_user(params)
         CommonActions.notification_process("QualityAction", @quality_action)
         format.html { redirect_to quality_actions_url, notice: 'Quality action was successfully updated.' }
@@ -192,9 +198,9 @@ class QualityActionsController < ApplicationController
     end
 
     def quality_action_params
-      params.require(:quality_action).permit(:definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active, 
+      params.require(:quality_action).permit(:definition_of_issue, :due_date, :ic_action_id, :organization_quality_type_id, :quality_action_active,
                                              :quality_action_no, :quality_action_status, :quantity, :required_action, :short_term_fix, :submit_time,
-                                             :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id, 
+                                             :item_id, :item_alt_id, :item_revision_id, :cause_analysis_id, :po_header_id, :item_alt_name_id,
                                              :created_user_id, :root_cause, :quality_lot_id, :notification_attributes)
     end
 end

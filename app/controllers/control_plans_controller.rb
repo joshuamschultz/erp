@@ -14,15 +14,15 @@ class ControlPlansController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @control_plans = @control_plans.collect{|control_plan| 
+      format.json {
+        @control_plans = @control_plans.collect{|control_plan|
           attachment = control_plan.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(control_plan_path(control_plan), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(control_plan_path(control_plan), attachment[:attachment_name])
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_control_plan_path(control_plan), nil)
           attachment
         }
-        render json: {:aaData => @control_plans} 
-      }        
+        render json: {:aaData => @control_plans}
+      }
     end
   end
 

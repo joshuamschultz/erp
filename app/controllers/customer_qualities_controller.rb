@@ -1,25 +1,25 @@
 class CustomerQualitiesController < ApplicationController
-  before_filter :set_page_info
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :set_page_info
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_logistics? 
-        authorize! :edit, CustomerQuality
-    end 
+    if  user_signed_in? && current_user.is_logistics?
+      authorize! :edit, CustomerQuality
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, CustomerQuality
-    end 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, CustomerQuality
+    end
   end
 
   def set_page_info
       @menus[:quality][:active] = "active"
   end
-  
+
   # GET /customer_qualities
   # GET /customer_qualities.json
   def index
@@ -27,23 +27,28 @@ class CustomerQualitiesController < ApplicationController
 
       respond_to do |format|
           format.html # index.html.erb
-          format.json { 
+          @customer_qualitis = Array.new
+          format.json {
 
-            @customer_qualities = @customer_qualities.select{|quality| 
-              # quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality), 
+            @customer_qualities = @customer_qualities.select{|quality|
+              qualiti = Hash.new
+              quality.attributes.each do |key, value|
+                qualiti[key] = value
+              end
+              # quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality),
               # customer_quality_path(quality))
 
             if (can? :edit, quality)
-             quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality), 
+             qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality),
               customer_quality_path(quality))
             else
-              quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), nil,nil)
+              qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), nil,nil)
             end
 
-
+            @customer_qualitis.push(qualiti)
             }
 
-            render json: {:aaData => @customer_qualities} 
+            render json: {:aaData => @customer_qualitis}
           }
       end
   end

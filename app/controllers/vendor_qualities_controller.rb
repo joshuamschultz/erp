@@ -4,16 +4,15 @@ class VendorQualitiesController < ApplicationController
 
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )     
-
-        authorize! :edit, VendorQuality
-    end 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, VendorQuality
+    end
   end
 
   def set_page_info
       @menus[:quality][:active] = "active"
   end
-  
+
   # GET /vendor_qualities
   # GET /vendor_qualities.json
   def index
@@ -21,13 +20,19 @@ class VendorQualitiesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @vendor_qualities = @vendor_qualities.select{|quality| 
-          quality[:links] = CommonActions.object_crud_paths(vendor_quality_path(quality), edit_vendor_quality_path(quality), 
+      @vendor_qualitis = Array.new
+      format.json {
+          @vendor_qualities = @vendor_qualities.select{|quality|
+            qualiti = Hash.new
+          quality.attributes.each do |key, value|
+            qualiti[key] = value
+          end
+          qualiti[:links] = CommonActions.object_crud_paths(vendor_quality_path(quality), edit_vendor_quality_path(quality),
                         vendor_quality_path(quality))
+          @vendor_qualitis.push(qualiti)
         }
 
-        render json: {:aaData => @vendor_qualities} 
+        render json: {:aaData => @vendor_qualitis}
       }
     end
   end

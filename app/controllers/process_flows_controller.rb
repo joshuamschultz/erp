@@ -1,5 +1,5 @@
 class ProcessFlowsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   autocomplete :process_flow, :process_name, :full => true
 
@@ -14,14 +14,22 @@ class ProcessFlowsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @process_flows = @process_flows.collect{|process_flow| 
+      @proces_flows = Array.new
+      format.json {
+        @process_flows = @process_flows.collect{|process_flow|
+        proces_flow = Hash.new
+        process_flow.attributes.each do |key, value|
+          proces_flow[key] = value
+        end
         attachment = process_flow.attachment.attachment_fields
-        attachment[:attachment_name] = CommonActions.linkable(process_flow_path(process_flow), attachment.attachment_name)
-        attachment[:links] = CommonActions.object_crud_paths(nil, edit_process_flow_path(process_flow), nil)
-        attachment
+        attachment.each do |key, value|
+          proces_flow[key] = value
+        end
+        proces_flow[:attachment_name] = CommonActions.linkable(process_flow_path(process_flow), attachment[:attachment_name])
+        proces_flow[:links] = CommonActions.object_crud_paths(nil, edit_process_flow_path(process_flow), nil)
+        @proces_flows.push(proces_flow)
         }
-        render json: { :aaData => @process_flows } 
+        render json: { :aaData => @proces_flows }
       }
     end
   end
@@ -61,7 +69,7 @@ class ProcessFlowsController < ApplicationController
     @process_flow = ProcessFlow.new(params[:process_flow])
 
     respond_to do |format|
-      @process_flow.attachment.created_by = current_user   
+      @process_flow.attachment.created_by = current_user
       if @process_flow.save
         format.html { redirect_to process_flows_url, notice: 'Process flow was successfully created.' }
         format.json { render json: @process_flow, status: :created, location: @process_flow }

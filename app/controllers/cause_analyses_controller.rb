@@ -8,15 +8,15 @@ class CauseAnalysesController < ApplicationController
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_logistics?
-        authorize! :edit, CauseAnalysis
-    end 
+    if  user_signed_in? && current_user.is_logistics?
+      authorize! :edit, CauseAnalysis
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
-        authorize! :edit, CauseAnalysis
-    end 
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
+      authorize! :edit, CauseAnalysis
+    end
   end
 
   def set_page_info
@@ -29,20 +29,20 @@ class CauseAnalysesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @cause_analyses = @cause_analyses.collect{|cause_analysis| 
+      format.json {
+          @cause_analyses = @cause_analyses.collect{|cause_analysis|
           attachment = cause_analysis.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(cause_analyasis_path(cause_analysis), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(cause_analysis_path(cause_analysis), attachment[:attachment_name])
           # attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analyasis_path(cause_analysis), nil)
           if can? :edit,cause_analysis
-            attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analyasis_path(cause_analysis), nil)
+            attachment[:links] = CommonActions.object_crud_paths(nil, edit_cause_analysis_path(cause_analysis), nil)
           else
             attachment[:links] =CommonActions.object_crud_paths(nil, nil, nil)
           end
 
           attachment
         }
-        render json: {:aaData => @cause_analyses} 
+        render json: {:aaData => @cause_analyses}
       }
     end
   end
@@ -80,7 +80,7 @@ class CauseAnalysesController < ApplicationController
   # POST /cause_analyses
   # POST /cause_analyses.json
   def create
-    @cause_analyasis = CauseAnalysis.new(params[:cause_analysis])
+    @cause_analyasis = CauseAnalysis.new(cause_analysis_params)
 
     respond_to do |format|
       p @cause_analyasis.attachment
@@ -102,7 +102,7 @@ class CauseAnalysesController < ApplicationController
 
     respond_to do |format|
       @cause_analyasis.attachment.updated_by = current_user
-      if @cause_analyasis.update_attributes(params[:cause_analyasis])
+      if @cause_analyasis.update_attributes(cause_analysis_params)
         format.html { redirect_to cause_analyses_path, notice: 'Cause analysis was successfully updated.' }
         format.json { head :no_content }
       else
@@ -123,4 +123,17 @@ class CauseAnalysesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_cause_analysis
+      @cause_analyasis = CauseAnalysis.find(params[:id])
+    end
+
+    def cause_analysis_params
+      params.require(:cause_analysis).permit(:active, :created_id, :description, :name, :notes, :updated_id, attachment_attributes: [:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
+                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
+                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
+                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
+                                         :attachment_file_name])
+    end
 end

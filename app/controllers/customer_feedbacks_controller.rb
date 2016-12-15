@@ -1,12 +1,12 @@
 class CustomerFeedbacksController < ApplicationController
-    before_filter :set_autocomplete_values, only: [:create, :update]
-    before_filter :set_page_info
-    before_filter :user_permissions
+    before_action :set_autocomplete_values, only: [:create, :update]
+    before_action :set_page_info
+    before_action :user_permissions
 
     def user_permissions
-     if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+      if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
           authorize! :edit, CustomerFeedback
-      end 
+      end
     end
 
     def set_page_info
@@ -26,14 +26,20 @@ class CustomerFeedbacksController < ApplicationController
     @customer_feedbacks = CustomerFeedback.all
     respond_to do |format|
       format.html # index.html.erb
+      @customer_fedbacks = Array.new
       format.json {  @customer_feedbacks = @customer_feedbacks.select{|customer_feedback|
-                    customer_feedback[:title] = CommonActions.linkable(customer_feedback_path(customer_feedback), customer_feedback.title)
-                    customer_feedback[:organization_feed] = customer_feedback.organization.organization_name
-                    customer_feedback[:created] = customer_feedback.created_at.strftime("%d %b %Y")
-                    customer_feedback[:user_feed] = customer_feedback.user.name
-                    customer_feedback[:links] = CommonActions.object_crud_paths(nil, edit_customer_feedback_path(customer_feedback), nil)
+                    customer_fedback = Hash.new
+                    customer_feedback.attributes.each do |key, value|
+                      customer_fedback[key] = value
+                    end
+                    customer_fedback[:title] = CommonActions.linkable(customer_feedback_path(customer_feedback), customer_feedback.title)
+                    customer_fedback[:organization_feed] = customer_feedback.organization.organization_name
+                    customer_fedback[:created] = customer_feedback.created_at.strftime("%d %b %Y")
+                    customer_fedback[:user_feed] = customer_feedback.user.name
+                    customer_fedback[:links] = CommonActions.object_crud_paths(nil, edit_customer_feedback_path(customer_feedback), nil)
+                    @customer_fedbacks.push(customer_fedback)
                  }
-                 render json: {:aaData => @customer_feedbacks}
+                 render json: {:aaData => @customer_fedbacks}
                  }
     end
   end
@@ -68,7 +74,7 @@ class CustomerFeedbacksController < ApplicationController
   # POST /customer_feedbacks
   # POST /customer_feedbacks.json
   def create
-    @customer_feedback = CustomerFeedback.new(params[:customer_feedback])
+    @customer_feedback = CustomerFeedback.new(customer_feedback_params)
     @customer_feedback[:user_id] = current_user.id
 
     respond_to do |format|
@@ -88,7 +94,7 @@ class CustomerFeedbacksController < ApplicationController
     @customer_feedback = CustomerFeedback.find(params[:id])
 
     respond_to do |format|
-      if @customer_feedback.update_attributes(params[:customer_feedback])
+      if @customer_feedback.update_attributes(customer_feedback_params)
         format.html { redirect_to @customer_feedback, notice: 'Customer feedback was successfully updated.' }
         format.json { head :no_content }
       else

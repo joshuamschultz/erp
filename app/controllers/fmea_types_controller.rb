@@ -14,14 +14,14 @@ class FmeaTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @fmea_types = @fmea_types.collect{|fmea_type| 
+      format.json {
+          @fmea_types = @fmea_types.collect{|fmea_type|
           attachment = fmea_type.attachment.attachment_fields
-          attachment[:attachment_name] = CommonActions.linkable(fmea_type_path(fmea_type), attachment.attachment_name)
+          attachment[:attachment_name] = CommonActions.linkable(fmea_type_path(fmea_type), attachment[:attachment_name])
           attachment[:links] = CommonActions.object_crud_paths(nil, edit_fmea_type_path(fmea_type), nil)
           attachment
         }
-        render json: {:aaData => @fmea_types} 
+        render json: {:aaData => @fmea_types}
       }
     end
   end
