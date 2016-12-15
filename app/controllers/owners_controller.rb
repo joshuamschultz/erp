@@ -1,20 +1,20 @@
 class OwnersController < ApplicationController
-  before_filter :set_page_info  
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
+    if  user_signed_in? && ( current_user.is_operations? || current_user.is_clerical? )
         authorize! :edit, User
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
         authorize! :edit, User
-    end 
+    end
   end
 
 
@@ -34,22 +34,28 @@ class OwnersController < ApplicationController
     # end
 
     @owners = Owner.all
-    
+
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @owners = @owners.select{|owner| 
+      @ownrs = Array.new
+      format.json {
+        @owners = @owners.select{|owner|
+          ownr = Hash.new
+          owner.attributes.each do |key, value|
+            ownr[key] = value
+          end
           if can? :edit, owner
-            owner[:links] = CommonActions.object_crud_paths(owner_path(owner), edit_owner_path(owner), 
+            ownr[:links] = CommonActions.object_crud_paths(owner_path(owner), edit_owner_path(owner),
                    owner_path(owner))
           else
-            owner[:links] = CommonActions.object_crud_paths(owner_path(owner), nil, 
+            ownr[:links] = CommonActions.object_crud_paths(owner_path(owner), nil,
                    nil)
           end
-          owner[:owner_commission_type] = owner.commission_type.type_name
-          owner[:owner_commission_percentage] = owner.owner_commission_amount.to_s + "%"
+          ownr[:owner_commission_type] = owner.commission_type.type_name
+          ownr[:owner_commission_percentage] = owner.owner_commission_amount.to_s + "%"
+          @ownrs.push(ownr)
         }
-        render json: {:aaData => @owners} 
+        render json: {:aaData => @ownrs}
       }
     end
   end
@@ -85,7 +91,7 @@ class OwnersController < ApplicationController
   # POST /owners
   # POST /owners.json
   def create
-    @owner = Owner.new(params[:owner])
+    @owner = Owner.new(owner_params)
 
     respond_to do |format|
       if @owner.save
@@ -104,7 +110,7 @@ class OwnersController < ApplicationController
     @owner = Owner.find(params[:id])
 
     respond_to do |format|
-      if @owner.update_attributes(params[:owner])
+      if @owner.update_attributes(owner_params)
         format.html { redirect_to owners_url, notice: 'Owner was successfully updated.' }
         format.json { head :no_content }
       else
@@ -132,8 +138,8 @@ class OwnersController < ApplicationController
     fields = tabel_model.column_names
     str = ""
     fields.each do |value|
-        str += value+" like :search " if value == fields.last 
-        str += value+" like :search or " unless value == fields.last  
+        str += value+" like :search " if value == fields.last
+        str += value+" like :search or " unless value == fields.last
     end
     str
   end
@@ -152,7 +158,7 @@ class OwnersController < ApplicationController
     end
 
     def owner_params
-      params.require(:owner).permit(:owner_commission_amount, :owner_commission_type_id, :owner_description, 
+      params.require(:owner).permit(:owner_commission_amount, :owner_commission_type_id, :owner_description,
                                     :owner_identifier, :owner_created_id, :owner_updated_id, :owner_active)
     end
 

@@ -1,20 +1,20 @@
 class CompanyInfosController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index,:show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index,:show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_quality?  || current_user.is_logistics? || current_user.is_clerical? )
+    if  user_signed_in? && ( current_user.is_quality?  || current_user.is_logistics? || current_user.is_clerical? )
         authorize! :edit, CompanyInfo
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && (current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, CompanyInfo
-    end 
+    end
   end
 
   def set_page_info
@@ -67,7 +67,7 @@ class CompanyInfosController < ApplicationController
   # POST /company_infos
   # POST /company_infos.json
   def create
-    @company_info = CompanyInfo.new(params[:company_info])
+    @company_info = CompanyInfo.new(company_info_params)
 
     respond_to do |format|
       if @company_info.save
@@ -86,7 +86,7 @@ class CompanyInfosController < ApplicationController
     @company_info = CompanyInfo.find(params[:id])
 
     respond_to do |format|
-      if @company_info.update_attributes(params[:company_info])
+      if @company_info.update_attributes(company_info_params)
         format.html { redirect_to @company_info, notice: 'Company info was successfully updated.' }
         format.json { head :no_content }
       else
@@ -94,6 +94,8 @@ class CompanyInfosController < ApplicationController
         format.json { render json: @company_info.errors, status: :unprocessable_entity }
       end
     end
+
+
   end
 
   # DELETE /company_infos/1
@@ -107,4 +109,14 @@ class CompanyInfosController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+    def set_company_info
+      @company_info = CompanyInfo.find(params[:id])
+    end
+
+    def company_info_params
+      params.require(:company_info).permit(:company_active, :company_address1, :company_address2, :company_created_id,
+      :company_fax, :company_mobile, :company_name, :company_phone1, :company_phone2, :company_slogan,
+      :company_updated_id, :company_website, :image_attributes, :logo_attributes)
+    end
 end

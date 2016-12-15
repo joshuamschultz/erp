@@ -1,5 +1,5 @@
 class CommoditiesController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   autocomplete :commodity, :commodity_identifier, :full => true
 
@@ -14,12 +14,18 @@ class CommoditiesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      @commoditis = Array.new
       format.json {
-        @commodities = @commodities.select{|commodity| 
-          commodity[:links] = CommonActions.object_crud_paths(commodity_path(commodity), edit_commodity_path(commodity), 
+        @commodities = @commodities.select{|commodity|
+          commoditi = Hash.new
+          commodity.attributes.each do |key, value|
+            commoditi[key] = value
+          end
+          commoditi[:links] = CommonActions.object_crud_paths(commodity_path(commodity), edit_commodity_path(commodity),
                         commodity_path(commodity))
+          @commoditis.push(commoditi)
         }
-        render json: {:aaData => @commodities}
+        render json: {:aaData => @commoditis}
       }
     end
   end
@@ -54,7 +60,7 @@ class CommoditiesController < ApplicationController
   # POST /commodities
   # POST /commodities.json
   def create
-    @commodity = Commodity.new(params[:commodity])
+    @commodity = Commodity.new(commodity_params)
 
     respond_to do |format|
       if @commodity.save
@@ -73,7 +79,7 @@ class CommoditiesController < ApplicationController
     @commodity = Commodity.find(params[:id])
 
     respond_to do |format|
-      if @commodity.update_attributes(params[:commodity])
+      if @commodity.update_attributes(commodity_params)
         format.html { redirect_to commodities_url, notice: 'Commodity was successfully updated.' }
         format.json { head :no_content }
       else
@@ -94,4 +100,14 @@ class CommoditiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_commodity
+      @commodity = Commodity.find(params[:id])
+    end
+
+    def commodity_params
+      params.require(:commodity).permit(:commodity_active, :commodity_created_id, :commodity_description,
+      :commodity_identifier, :commodity_notes, :commodity_updated_id)
+    end
 end
