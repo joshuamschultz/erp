@@ -40,7 +40,7 @@ class NotificationsController < ApplicationController
   # POST /notifications
   # POST /notifications.json
   def create
-    @notification = Notification.new(params[:notification])
+    @notification = Notification.new(notification_params)
 
     respond_to do |format|
       if @notification.save
@@ -59,7 +59,7 @@ class NotificationsController < ApplicationController
     @notification = Notification.find(params[:id])
 
     respond_to do |format|
-      if @notification.update_attributes(params[:notification])
+      if @notification.update_attributes(notification_params)
         format.html { redirect_to @notification, notice: 'Notification was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class NotificationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_notification
+      @notification = Notification.find(params[:id])
+    end
+
+    def notification_params
+      params.require(:notification).permit(:notable_id, :notable_type, :note_status, :user_id)
+    end
 end

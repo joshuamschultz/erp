@@ -36,7 +36,7 @@ class QualityLotGaugesController < ApplicationController
     @quality_lot = QualityLot.find(params[:quality_lot_id])
     if @quality_lot.quality_lot_gauges.any?
         redirect_to edit_quality_lot_gauge_path(@quality_lot.quality_lot_gauges.first, quality_lot_id: @quality_lot.id)
-    else      
+    else
         @quality_lot_gauge = QualityLotGauge.new
 
         respond_to do |format|
@@ -56,7 +56,7 @@ class QualityLotGaugesController < ApplicationController
   # POST /quality_lot_gauges.json
   def create
     @quality_lot = QualityLot.find(params[:quality_lot_id])
-    @quality_lot_gauge = QualityLotGauge.new(params[:quality_lot_gauge])
+    @quality_lot_gauge = QualityLotGauge.new(quality_lot_gauge_params)
 
     respond_to do |format|
       if @quality_lot_gauge.save
@@ -77,7 +77,7 @@ class QualityLotGaugesController < ApplicationController
     @quality_lot_gauge = QualityLotGauge.find(params[:id])
 
     respond_to do |format|
-      if @quality_lot_gauge.update_attributes(params[:quality_lot_gauge])
+      if @quality_lot_gauge.update_attributes(quality_lot_gauge_params)
         QualityLotGauge.process_gauge_dimensions(@quality_lot_gauge, params)
         format.html { redirect_to(new_quality_lot_gauge_quality_lot_gauge_result_path(@quality_lot_gauge, appraisor: 1), notice: 'Quality lot gauge was successfully updated.') }
         format.json { head :no_content }
@@ -100,4 +100,18 @@ class QualityLotGaugesController < ApplicationController
       format.json { head :no_content }
     end
   end
+   private
+
+    def set_quality_lot_gauge
+      @quality_lot_gauge = QualityLotGauge.find(params[:id])
+    end
+
+    def set_quality_lot
+      @quality_lot = QualityLot.find(params[:quality_lot_id])
+    end
+
+    def quality_lot_gauge_params
+      params.require(:quality_lot_gauge).permit(:lot_gauge_active, :lot_gauge_created_id, :lot_gauge_notes, :lot_gauge_status,
+                                                :lot_gauge_updated_id, :quality_lot_id)
+    end
 end

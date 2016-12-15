@@ -40,7 +40,7 @@ class QualityHistoriesController < ApplicationController
   # POST /quality_histories
   # POST /quality_histories.json
   def create
-    @quality_history = QualityHistory.new(params[:quality_history])
+    @quality_history = QualityHistory.new(quality_history_params)
 
     respond_to do |format|
       if @quality_history.save
@@ -59,7 +59,7 @@ class QualityHistoriesController < ApplicationController
     @quality_history = QualityHistory.find(params[:id])
 
     respond_to do |format|
-      if @quality_history.update_attributes(params[:quality_history])
+      if @quality_history.update_attributes(quality_history_params)
         format.html { redirect_to @quality_history, notice: 'Quality history was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class QualityHistoriesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_quality_history
+      @quality_history = QualityHistory.find(params[:id])
+    end
+
+    def quality_history_params
+      params.require(:quality_history).permit(:quality_lot_id, :quality_status, :user_id)
+    end
 end

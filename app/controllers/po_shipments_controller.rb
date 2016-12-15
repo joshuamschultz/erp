@@ -159,7 +159,7 @@ class PoShipmentsController < ApplicationController
   # POST /po_shipments
   # POST /po_shipments.json
   def create
-    @po_shipment = PoShipment.new(params[:po_shipment])
+    @po_shipment = PoShipment.new(payment_params)
 
     respond_to do |format|
       if @po_shipment.save
@@ -224,7 +224,7 @@ class PoShipmentsController < ApplicationController
     @po_shipment = PoShipment.find(params[:id])
 
     respond_to do |format|
-      if @po_shipment.update_attributes(params[:po_shipment])
+      if @po_shipment.update_attributes(payment_params)
         if  @po_shipment.quality_lot_id
           @quality_lot = QualityLot.find(@po_shipment.quality_lot_id)
           @quality_lot.update_attributes(:lot_quantity => @po_shipment.po_shipped_count, :lot_unit => @po_shipment.po_shipped_unit, :lot_self => @po_shipment.po_shipped_shelf)

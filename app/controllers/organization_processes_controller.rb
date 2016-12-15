@@ -40,7 +40,7 @@ class OrganizationProcessesController < ApplicationController
   # POST /organization_processes
   # POST /organization_processes.json
   def create
-    @organization_process = OrganizationProcess.new(params[:organization_process])
+    @organization_process = OrganizationProcess.new(organization_process_params)
 
     respond_to do |format|
       if @organization_process.save
@@ -59,7 +59,7 @@ class OrganizationProcessesController < ApplicationController
     @organization_process = OrganizationProcess.find(params[:id])
 
     respond_to do |format|
-      if @organization_process.update_attributes(params[:organization_process])
+      if @organization_process.update_attributes(organization_process_params)
         format.html { redirect_to @organization_process, notice: 'Organization process was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,14 @@ class OrganizationProcessesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_organization_process
+      @organization_process = OrganizationProcess.find(params[:id])
+    end
+
+    def organization_process_params
+      params.require(:organization_process).permit(:org_process_active, :org_process_created_id, :org_process_updated_id,
+                                                   :organization_id, :process_type_id)
+    end
 end

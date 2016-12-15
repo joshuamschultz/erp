@@ -130,7 +130,7 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   # POST /organizations.json
   def create
-    @organization = Organization.new(params[:organization])
+    @organization = Organization.new(organization_params)
 
     respond_to do |format|
       if @organization.save
@@ -152,7 +152,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
 
     respond_to do |format|
-      if @organization.update_attributes(params[:organization])
+      if @organization.update_attributes(organization_params)
         CommonActions.notification_process("Organization", @organization)
         format.html { redirect_to @organization, notice: 'Organization was successfully updated.' }
         format.json { head :no_content }
@@ -219,7 +219,19 @@ class OrganizationsController < ApplicationController
   end
 
 
+  private
+
+    def set_organization
+      @organization = Organization.find(params[:id])
+    end
+
     def organization_params
-      params.required(:organization).permit(:organization_expiration_date)
+      params.require(:organization).permit(:customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id,
+                                           :organization_address_1, :organization_address_2, :organization_city, :organization_country,
+                                           :organization_created_id, :organization_description, :organization_email, :organization_fax,
+                                           :organization_name, :organization_notes, :organization_short_name, :organization_state,
+                                           :organization_telephone, :organization_type_id, :organization_updated_id, :organization_website,
+                                           :organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id,
+                                           :vendor_quality_id, :organization_complete, :organization_active,  :notification_attributes)
     end
 end

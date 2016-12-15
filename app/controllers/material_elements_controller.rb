@@ -99,7 +99,7 @@ class MaterialElementsController < ApplicationController
   # POST /material_elements.json
   def create
     @material = Material.find(params[:material_id])
-    @material_element = MaterialElement.new(params[:material_element])
+    @material_element = MaterialElement.new(material_element_params)
 
     respond_to do |format|
       if @material_element.save
@@ -120,7 +120,7 @@ class MaterialElementsController < ApplicationController
     @material_element = @material.material_elements.find(params[:id])
 
     respond_to do |format|
-      if @material_element.update_attributes(params[:material_element])
+      if @material_element.update_attributes(material_element_params)
         format.html { redirect_to material_material_elements_path(@material), notice: 'Material element was successfully updated.' }
         # material_material_element_path(@material, @material_element)
         format.json { head :no_content }
@@ -143,4 +143,15 @@ class MaterialElementsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_material
+      @material = Material.find(params[:material_id])
+    end
+
+    def material_element_params
+      params.require(:material_element).permit(:material_id, :element_active, :element_created_id,
+                                    :element_high_range, :element_low_range, :element_name, :element_symbol,
+                                    :element_updated_id, :element_id)
+    end
 end

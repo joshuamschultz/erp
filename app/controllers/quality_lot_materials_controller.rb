@@ -72,7 +72,7 @@ class QualityLotMaterialsController < ApplicationController
   # POST /quality_lot_materials.json
   def create
     @quality_lot = QualityLot.find(params[:quality_lot_id])
-    @quality_lot_material = QualityLotMaterial.new(params[:quality_lot_material])
+    @quality_lot_material = QualityLotMaterial.new(quality_lot_material_params)
 
     respond_to do |format|
       if @quality_lot_material.save
@@ -92,7 +92,7 @@ class QualityLotMaterialsController < ApplicationController
     @quality_lot_material = QualityLotMaterial.find(params[:id])
 
     respond_to do |format|
-      if @quality_lot_material.update_attributes(params[:quality_lot_material])
+      if @quality_lot_material.update_attributes(quality_lot_material_params)
         format.html { redirect_to quality_lot_materials_url, notice: 'Material test was successfully updated.' }
         format.json { head :no_content }
       else
@@ -113,5 +113,19 @@ class QualityLotMaterialsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
 
+    def set_quality_lot_material
+      @quality_lot_material = QualityLotMaterial.find(params[:id])
+    end
+
+    def set_quality_lot
+      @quality_lot = QualityLot.find(params[:quality_lot_id])
+    end
+
+    def quality_lot_material_params
+      params.require(:quality_lot_material).permit(:lot_material_active, :lot_material_created_id, :lot_material_notes,
+                                                    :lot_material_result, :lot_material_tested, :lot_material_updated_id, :quality_lot_id,
+                                                    :material_element_id, :lot_element_low_range, :lot_element_high_range)
+    end
 end

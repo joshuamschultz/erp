@@ -150,7 +150,7 @@ class PayablesController < ApplicationController
     if params[:shipments].present?
         @payable = PoHeader.process_payable_po_lines(params)
     else
-        @payable = Payable.new(params[:payable])
+        @payable = Payable.new(payable_params)
     end
 
     respond_to do |format|
@@ -192,7 +192,7 @@ class PayablesController < ApplicationController
     # CommonActions.update_gl_accounts('ACCOUNTS PAYABLE', 'decrement',accountsPayableAmt, @payable.id )
 
     respond_to do |format|
-      if @payable.update_attributes(params[:payable])
+      if @payable.update_attributes(payable_params)
         if Payable.find_by_payable_disperse("unassigned").present?
           payable = Payable.find_by_payable_disperse("unassigned")
           payable.update_attributes(:payable_disperse => "assigned")
@@ -233,4 +233,17 @@ class PayablesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_payable
+      @payable = Payable.find(params[:id])
+    end
+
+    def payable_params
+      params.require(:payable).permit(:payable_active, :payable_cost, :payable_created_id, :payable_description,
+                                      :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date,
+                                      :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
+                                      :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice,
+                                      :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type, :payable_disperse)
+    end
 end

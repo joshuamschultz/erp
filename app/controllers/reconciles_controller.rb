@@ -100,7 +100,7 @@ class ReconcilesController < ApplicationController
   # POST /reconciles
   # POST /reconciles.json
   def create
-    @reconcile = Reconcile.new(params[:reconcile])
+    @reconcile = Reconcile.new(reconcile_params)
 
     respond_to do |format|
       if @reconcile.save
@@ -119,7 +119,7 @@ class ReconcilesController < ApplicationController
     @reconcile = Reconcile.find(params[:id])
 
     respond_to do |format|
-      if @reconcile.update_attributes(params[:reconcile])
+      if @reconcile.update_attributes(reconcile_params)
         format.html { redirect_to @reconcile, notice: 'Reconcile was successfully updated.' }
         format.json { head :no_content }
       else

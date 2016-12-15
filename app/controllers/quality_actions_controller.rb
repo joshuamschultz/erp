@@ -125,7 +125,7 @@ class QualityActionsController < ApplicationController
   # POST /quality_actions.json
   def create
     if params[:finish]
-      @quality_action = QualityAction.new(params[:quality_action])
+      @quality_action = QualityAction.new(quality_action_params)
       @quality_action[:quality_action_status] = "finished"
       @quality_action[:submit_time] = Time.now
 

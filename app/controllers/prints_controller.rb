@@ -75,7 +75,7 @@ class PrintsController < ApplicationController
   # POST /prints
   # POST /prints.json
   def create
-    @print = Print.new(params[:print])
+    @print = Print.new(print_params)
 
     respond_to do |format|
       @print.attachment.created_by = current_user
@@ -97,7 +97,7 @@ class PrintsController < ApplicationController
 
     respond_to do |format|
       @print.attachment.updated_by = current_user
-      if @print.update_attributes(params[:print])
+      if @print.update_attributes(print_params)
         CommonActions.notification_process("Print", @print)
         format.html { redirect_to prints_path, notice: 'Print was successfully updated.' }
         format.json { head :no_content }
@@ -119,4 +119,14 @@ class PrintsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_print
+      @print = Print.find(params[:id])
+    end
+
+    def print_params
+      params.require(:print).permit(:print_active, :print_created_id, :print_description, :print_identifier,
+                                    :print_notes, :print_updated_id, :attachment_attributes, :notification_attributes)
+    end
 end

@@ -69,7 +69,7 @@ class VendorQualitiesController < ApplicationController
   # POST /vendor_qualities
   # POST /vendor_qualities.json
   def create
-    @vendor_quality = VendorQuality.new(params[:vendor_quality])
+    @vendor_quality = VendorQuality.new(vendor_quality_params)
 
     respond_to do |format|
       if @vendor_quality.save
@@ -88,7 +88,7 @@ class VendorQualitiesController < ApplicationController
     @vendor_quality = VendorQuality.find(params[:id])
 
     respond_to do |format|
-      if @vendor_quality.update_attributes(params[:vendor_quality])
+      if @vendor_quality.update_attributes(vendor_quality_params)
         format.html { redirect_to vendor_qualities_url, notice: 'Quality ID was successfully updated.' }
         format.json { head :no_content }
       else
@@ -121,5 +121,14 @@ class VendorQualitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
 
+    def set_vendor_quality
+      @vendor_quality = VendorQuality.find(params[:id])
+    end
+
+    def vendor_quality_params
+      params.require(:vendor_quality).permit(:quality_active, :quality_created_id, :quality_description,
+                                             :quality_name, :quality_notes, :quality_updated_id)
+    end
 end

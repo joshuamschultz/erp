@@ -158,7 +158,7 @@ class QuotesController < ApplicationController
     # POST /quotes
     # POST /quotes.json
     def create
-        @quote = Quote.new(params[:quote])
+        @quote = Quote.new(quote_params)
         if params[:vendor_type] == 'Vendor'
             @quote.group_id = ''
         end
@@ -188,7 +188,7 @@ class QuotesController < ApplicationController
                 else
                     format.html { redirect_to  quote_path(@quote)}
                 end
-            elsif params[:quote_po_type].nil? && @quote.update_attributes(params[:quote])
+            elsif params[:quote_po_type].nil? && @quote.update_attributes(quote_params)
                 Quote.process_quote_associations(@quote, params)
                 format.html { redirect_to @quote, notice: 'Quote was successfully updated.' }
                 format.json { head :no_content }

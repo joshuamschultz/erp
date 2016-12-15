@@ -128,7 +128,7 @@ class ReceivablesController < ApplicationController
         @receivable = SoHeader.process_receivable_so_lines(params)
 
     else
-        @receivable = Receivable.new(params[:receivable])
+        @receivable = Receivable.new(receivable_params)
 
     end
 
@@ -164,7 +164,7 @@ class ReceivablesController < ApplicationController
 
 
     respond_to do |format|
-      if @receivable.update_attributes(params[:receivable])
+      if @receivable.update_attributes(receivable_params)
         # @so_header = @receivable.so_header rescue nil
         # genarate_pdf
         if Receivable.find_by_receivable_disperse("unassigned").present?
@@ -225,5 +225,17 @@ private
       p "===================================================="
         puts html
       p "==================================================="
+  end
+
+  def set_receivable
+    @receivable = Receivable.find(params[:id])
+  end
+
+  def receivable_params
+    params.require(:receivable).permit(:receivable_active, :receivable_cost, :receivable_created_id,
+                                       :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status,
+                                       :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description,
+                                       :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id,
+                                       :receivable_accounts_attributes, :receivable_freight, :receivable_disperse)
   end
 end

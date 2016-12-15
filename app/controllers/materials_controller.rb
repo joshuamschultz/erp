@@ -88,7 +88,7 @@ class MaterialsController < ApplicationController
   # POST /materials.json
   def create
     @duplicate = Material.find_by_id(params[:material_id])
-    @material = Material.new(params[:material])
+    @material = Material.new(material_params)
 
     respond_to do |format|
       if @material.valid?
@@ -115,7 +115,7 @@ class MaterialsController < ApplicationController
     @material = Material.find(params[:id])
 
     respond_to do |format|
-      if @material.update_attributes(params[:material])
+      if @material.update_attributes(material_params)
         format.html { redirect_to materials_url, notice: 'Material was successfully updated.' }
         format.json { head :no_content }
       else
@@ -136,4 +136,16 @@ class MaterialsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_material
+      @material = Material.find(params[:id])
+    end
+
+    def material_params
+      params.require(:material).permit(:material_active, :material_created_id,
+                                       :material_description, :material_notes,
+                                       :material_short_name, :material_updated_id)
+    end
+
 end
