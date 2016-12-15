@@ -3,21 +3,21 @@ class ReceivableLinesController < ApplicationController
   # GET receivables/1/receivable_lines.json
 
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && current_user.is_operations?
+    if  user_signed_in? && current_user.is_operations?
         authorize! :edit, Receivable
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
         authorize! :edit, Receivable
-    end 
-  end 
+    end
+  end
 
 
   def index
@@ -26,9 +26,9 @@ class ReceivableLinesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-           @receivable_lines = @receivable_lines.select{|receivable_line|              
-            if can? :edit, Receivable 
+      format.json {
+           @receivable_lines = @receivable_lines.select{|receivable_line|
+            if can? :edit, Receivable
               receivable_line[:links] = CommonActions.object_crud_paths(nil, edit_receivable_receivable_line_path(@receivable, receivable_line), nil)
             else
               receivable_line[:links] = ''

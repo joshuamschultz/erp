@@ -2,7 +2,6 @@ class SoHeadersController < ApplicationController
   before_action :find_relations, only: [:index]
   before_action :set_page_info
   before_action :set_autocomplete_values, only: [:create, :update]
-  # before_filter :check_permissions, :only => [:edit, :destroy]
   autocomplete :so_header, :so_identifier, :full => true
 
   before_action :view_permissions, except: [:index, :show]

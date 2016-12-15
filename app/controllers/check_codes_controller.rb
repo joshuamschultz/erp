@@ -1,5 +1,5 @@
 class CheckCodesController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
   def set_page_info
     @menus[:system][:active] = "active"
   end

@@ -1,5 +1,5 @@
 class ControlPlansController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   autocomplete :control_plan, :plan_name, :full => true
 

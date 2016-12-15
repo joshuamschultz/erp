@@ -1,6 +1,6 @@
 class QualityLotDimensionsController < ApplicationController
-  before_filter :set_page_info
-  
+  before_action :set_page_info
+
   def set_page_info
       @menus[:quality][:active] = "active"
   end
@@ -20,7 +20,7 @@ class QualityLotDimensionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
           @quality_lot_dimensions.each do |lot_dimension|
               go_non_go_status = lot_dimension.item_part_dimension.go_non_go
               lot_dimension[:lot_control_no] = go_non_go_status ? " " : CommonActions.linkable(quality_lot_path(lot_dimension.quality_lot), lot_dimension.quality_lot.lot_control_no)
@@ -36,17 +36,17 @@ class QualityLotDimensionsController < ApplicationController
               # "%0.6f" % (
 
               lot_dimension[:lot_dimension_avg] = go_non_go_status ? " " : (lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count).to_f.round(4)
-              
+
               lot_dimension_values = []
               lot_dimension.all_lot_dimensions.collect(&:lot_dimension_value).each do |value|
                   lot_dimension_values << value.to_f
               end
 
-              lot_dimension[:lot_dimension_std] = go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0) 
+              lot_dimension[:lot_dimension_std] = go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0)
               lot_dimension[:lot_dimension_max] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value).to_f.round(4)
               lot_dimension[:lot_dimension_min] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value).to_f.round(4)
           end
-          render json: { :aaData => @quality_lot_dimensions } 
+          render json: { :aaData => @quality_lot_dimensions }
       }
     end
   end

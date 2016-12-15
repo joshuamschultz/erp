@@ -1,6 +1,6 @@
 class QualityLotMaterialsController < ApplicationController
-  before_filter :set_page_info
-  
+  before_action :set_page_info
+
   def set_page_info
       @menus[:quality][:active] = "active"
   end
@@ -18,7 +18,7 @@ class QualityLotMaterialsController < ApplicationController
     else
         respond_to do |format|
           format.html # index.html.erb
-          format.json { 
+          format.json {
             @quality_lot_materials = QualityLotMaterial.all
 
             @quality_lot_materials = @quality_lot_materials.select{|lot_material|
@@ -27,7 +27,7 @@ class QualityLotMaterialsController < ApplicationController
               lot_material[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_material_path(lot_material), nil)
               lot_material[:created_date] = lot_material.created_at.strftime("%b %d, %y")
             }
-            render json: { :aaData => @quality_lot_materials } 
+            render json: { :aaData => @quality_lot_materials }
           }
         end
     end

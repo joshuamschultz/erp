@@ -1,8 +1,8 @@
 class CreditRegistersController < ApplicationController
   # GET /credit_registers
   # GET /credit_registers.json
-  before_filter :set_page_info
-  before_filter :user_permissions
+  before_action :set_page_info
+  before_action :user_permissions
 
   def user_permissions
     if  user_signed_in? && current_user.is_customer?

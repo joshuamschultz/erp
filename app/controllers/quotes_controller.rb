@@ -1,18 +1,18 @@
 class QuotesController < ApplicationController
-    before_filter :set_autocomplete_values, only: [:create, :update]
-    before_filter :set_page_info
-    before_filter :user_permissions
+    before_action :set_autocomplete_values, only: [:create, :update]
+    before_action :set_page_info
+    before_action :user_permissions
 
     def user_permissions
         if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  || current_user.is_customer? )
-        authorize! :edit, User
-        end 
+         authorize! :edit, User
+        end
     end
 
     def set_page_info
         unless  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?  )
              @menus[:quotes][:active] = "active"
-        end 
+        end
     end
 
     def set_autocomplete_values
@@ -48,7 +48,7 @@ class QuotesController < ApplicationController
                  @quotes = Quote.includes(:quote_vendors).where(quote_vendors: {organization_id: ids})
             end
             format.html # index.html.erb
-           
+
             if item
                  i = 0
                  @qots = Array.new
@@ -157,7 +157,7 @@ class QuotesController < ApplicationController
 
     # POST /quotes
     # POST /quotes.json
-    def create        
+    def create
         @quote = Quote.new(params[:quote])
         if params[:vendor_type] == 'Vendor'
             @quote.group_id = ''
@@ -245,7 +245,7 @@ class QuotesController < ApplicationController
     end
 
     def create_po
-        
+
     end
     private
 
@@ -254,7 +254,7 @@ class QuotesController < ApplicationController
         end
 
         def quote_params
-          params.require(:quote).permit(:quote_active, :quote_created_id, :quote_description, :quote_identifier, 
+          params.require(:quote).permit(:quote_active, :quote_created_id, :quote_description, :quote_identifier,
                                         :quote_notes, :quote_status, :quote_total, :quote_updated_id, :organization_id, :po_header_id,
                                         :quote_po_type, :item_quantity, :customer_id, :group_id, :attachment_public)
         end

@@ -1,8 +1,7 @@
 class ElementsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
   autocomplete :element, :element_name, :full => true, :display_value => :element_symbol_name
-  # before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :user_permissions
 
 
   # def view_permissions
