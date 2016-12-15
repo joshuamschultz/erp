@@ -1,6 +1,6 @@
 class TerritoriesController < ApplicationController
-  before_filter :set_page_info
-  before_filter :check_permissions
+  before_action :set_page_info
+  before_action :check_permissions
   def set_page_info
       @menus[:system][:active] = "active"
   end
@@ -8,7 +8,7 @@ class TerritoriesController < ApplicationController
   def check_permissions
         authorize! :view, Territory
   end
-  
+
   # GET /territories
   # GET /territories.json
   def index
@@ -16,12 +16,18 @@ class TerritoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @territories = @territories.select{|territory| 
-          territory[:links] = CommonActions.object_crud_paths(territory_path(territory), edit_territory_path(territory), 
+      @territoris = Array.new
+      format.json {
+        @territories = @territories.select{|territory|
+          territori = Hash.new
+          territory.attributes.each do |key, value|
+            territori[key] = value
+          end
+          territori[:links] = CommonActions.object_crud_paths(territory_path(territory), edit_territory_path(territory),
                         territory_path(territory))
+          @territoris.push(territori)
         }
-        render json: {:aaData => @territories} 
+        render json: {:aaData => @territoris}
       }
     end
   end
@@ -56,7 +62,7 @@ class TerritoriesController < ApplicationController
   # POST /territories
   # POST /territories.json
   def create
-    @territory = Territory.new(params[:territory])
+    @territory = Territory.new(territory_params)
 
     respond_to do |format|
       if @territory.save
@@ -75,7 +81,7 @@ class TerritoriesController < ApplicationController
     @territory = Territory.find(params[:id])
 
     respond_to do |format|
-      if @territory.update_attributes(params[:territory])
+      if @territory.update_attributes(territory_params)
         format.html { redirect_to territories_url, notice: 'Territory was successfully updated.' }
         format.json { head :no_content }
       else

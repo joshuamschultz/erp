@@ -47,7 +47,7 @@ class CheckCodesController < ApplicationController
   # POST /check_codes
   # POST /check_codes.json
   def create
-    @check_code = CheckCode.new(params[:check_code])
+    @check_code = CheckCode.new(check_code_params)
 
     respond_to do |format|
       if @check_code.save
@@ -66,7 +66,7 @@ class CheckCodesController < ApplicationController
     @check_code = CheckCode.find(params[:id])
 
     respond_to do |format|
-      if @check_code.update_attributes(params[:check_code])
+      if @check_code.update_attributes(check_code_params)
         format.html { redirect_to check_entries_path, notice: 'Check code was successfully updated.' }
         format.json { head :no_content }
       else
@@ -87,4 +87,13 @@ class CheckCodesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_check_code
+      @check_code = CheckCode.find(params[:id])
+    end
+
+    def check_code_params
+      params.require(:check_code).permit(:counter, :counter_type)
+    end
 end

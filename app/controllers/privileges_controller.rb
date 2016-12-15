@@ -1,19 +1,19 @@
 class PrivilegesController < ApplicationController
 
-  before_filter :manager_permissions,  :except => :index
-  before_filter :user_permissions
+  before_action :manager_permissions,  :except => :index
+  before_action :user_permissions
 
 
   def manager_permissions
-   if  user_signed_in? && current_user.is_manager?
+    if  user_signed_in? && current_user.is_manager?
         authorize! :edit, User
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_vendor? || current_user.is_customer?  )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_vendor? || current_user.is_customer?  )
         authorize! :edit, User
-    end 
+    end
   end
 
 
@@ -25,23 +25,28 @@ class PrivilegesController < ApplicationController
   # GET /users.json
   def index
     @users = User.where("id != ?", current_user.id)
-    
+
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-      	 @users = @users.select{ |user| 
-
-          user[:user_email] = "<a href='mailto:#{user.email}' target='_top'>#{user.email}</a>"
+      @usrs = Array.new
+      format.json {
+         @users = @users.select{ |user|
+          usr = Hash.new
+          user.attributes.each do |key, value|
+            usr[key] = value
+          end
+          usr[:user_email] = "<a href='mailto:#{user.email}' target='_top'>#{user.email}</a>"
           if can? :edit, user
-            user[:user_name] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
-            user[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
+            usr[:user_name] = "<a href='#{privilege_path(user)}'>#{user.name}</a>"
+            usr[:links] = CommonActions.object_crud_paths(nil, edit_privilege_path(user), nil)
           else
-            user[:user_name] = user.name
-            user[:links] = CommonActions.object_crud_paths(nil,nil, nil)
-          end    
-          user[:role] = user.role_symbols[0].to_s
+            usr[:user_name] = user.name
+            usr[:links] = CommonActions.object_crud_paths(nil,nil, nil)
+          end
+          usr[:role] = user.role_symbols[0].to_s
+          @usrs.push(usr)
         }
-        render json: {:aaData => @users}
+        render json: {:aaData => @usrs}
       }
     end
   end
@@ -76,18 +81,19 @@ class PrivilegesController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
-    @user.roles = [params[:role]]
+    @user = User.new(user_params)
+    @user.roles = [role_params]
     password_temp = password = Devise.friendly_token.first(8)
+    p password
     @user.password = password_temp
     @user.password_confirmation = password_temp
-	  @user.reset_password_token= User.reset_password_token
+    @user.reset_password_token= User.reset_password_token
     @user.reset_password_sent_at= Time.now
 
     respond_to do |format|
       if @user.save
         User.user_organizations_associations(@user, params)
-      	# @user.send_reset_password_instructions
+        # @user.send_reset_password_instructions
         UserMailer.welcome_email(@user).deliver
         format.html { redirect_to privileges_path, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
@@ -109,7 +115,7 @@ class PrivilegesController < ApplicationController
     @user = User.find(params[:id])
     @user.roles = [params[:role]]
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         User.user_organizations_associations(@user, params)
         format.html { redirect_to privileges_path, notice: 'User was successfully updated.' }
         format.json { head :no_content }
@@ -147,4 +153,13 @@ class PrivilegesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+    def set_user
+      @user = User.find(params[:id])
+    end
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation, :remember_me, :organization_attributes,
+      :name, :gender, :address, :city, :state, :country, :telephone_no, :mobile_no, :active, :roles_mask, :organization_id, :time_zone)
+    end
+
 end

@@ -4,16 +4,16 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable, :confirmable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, 
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable,
   :trackable, :validatable, :lockable, :timeoutable
 
   include RoleModel
   # Setup accessible (or protected) attributes for your model
-  
+
 
   roles_attribute :roles_mask
 
-  roles :superadmin, :manager, :quality, :operations, :clerical, :logistics, :vendor, :customer, :support, :president, 
+  roles :superadmin, :manager, :quality, :operations, :clerical, :logistics, :vendor, :customer, :support, :president,
   :plant_manager, :sales_manager, :operations_manager, :quality_manager, :logistics_manager
 
 
@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
         if user
 
           organizations = params[:organizations] || []
-          user.organization_users.where(:organization_id != organizations).destroy_all
+          user.organization_users.where.not(:organization_id => organizations).destroy_all
           if organizations
               organizations.each do |organization_id|
                 unless user.organization_users.find_by_organization_id(organization_id)
