@@ -40,7 +40,7 @@ class ItemPrintsController < ApplicationController
   # POST /item_prints
   # POST /item_prints.json
   def create
-    @item_print = ItemPrint.new(params[:item_print])
+    @item_print = ItemPrint.new(item_print_params)
 
     respond_to do |format|
       if @item_print.save
@@ -59,7 +59,7 @@ class ItemPrintsController < ApplicationController
     @item_print = ItemPrint.find(params[:id])
 
     respond_to do |format|
-      if @item_print.update_attributes(params[:item_print])
+      if @item_print.update_attributes(item_print_params)
         format.html { redirect_to @item_print, notice: 'Item print was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class ItemPrintsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_item_print
+      @item_print = ItemPrint.find(params[:id])
+    end
+
+    def item_print_params
+      params.require(:item_print).permit(:item_revision_id, :print_id)
+    end
 end

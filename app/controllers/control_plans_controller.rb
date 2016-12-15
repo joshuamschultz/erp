@@ -59,7 +59,7 @@ class ControlPlansController < ApplicationController
   # POST /control_plans
   # POST /control_plans.json
   def create
-    @control_plan = ControlPlan.new(params[:control_plan])
+    @control_plan = ControlPlan.new(control_plan_params)
 
     respond_to do |format|
       @control_plan.attachment.created_by = current_user
@@ -80,7 +80,7 @@ class ControlPlansController < ApplicationController
 
     respond_to do |format|
       @control_plan.attachment.updated_by = current_user
-      if @control_plan.update_attributes(params[:control_plan])
+      if @control_plan.update_attributes(control_plan_params)
         format.html { redirect_to control_plans_url, notice: 'Control plan was successfully updated.' }
         format.json { head :no_content }
       else
@@ -101,4 +101,14 @@ class ControlPlansController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_control_plan
+      @control_plan = ControlPlan.find(params[:id])
+    end
+
+    def control_plan_params
+      params.require(:control_plan).permit(:plan_active, :plan_created_id, :plan_description, :plan_name,
+                                           :plan_notes, :plan_updated_id, :attachment_attributes)
+    end
 end

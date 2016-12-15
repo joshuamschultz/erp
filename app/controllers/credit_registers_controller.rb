@@ -84,7 +84,7 @@ class CreditRegistersController < ApplicationController
   # POST /credit_registers
   # POST /credit_registers.json
   def create
-    @credit_register = CreditRegister.new(params[:credit_register])
+    @credit_register = CreditRegister.new(credit_register_params)
 
     respond_to do |format|
       if @credit_register.save
@@ -103,7 +103,7 @@ class CreditRegistersController < ApplicationController
     @credit_register = CreditRegister.find(params[:id])
 
     respond_to do |format|
-      if @credit_register.update_attributes(params[:credit_register])
+      if @credit_register.update_attributes(credit_register_params)
         format.html { redirect_to @credit_register, notice: 'Credit register was successfully updated.' }
         format.json { head :no_content }
       else
@@ -124,4 +124,13 @@ class CreditRegistersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_credit_register
+      @credit_register = CreditRegister.find(params[:id])
+    end
+
+    def credit_register_params
+      params.require(:credit_register).permit(:amount, :balance, :organization_id, :payment_id, :rec, :transaction_date)
+    end
 end

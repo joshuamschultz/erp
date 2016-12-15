@@ -59,7 +59,7 @@ class FmeaTypesController < ApplicationController
   # POST /fmea_types
   # POST /fmea_types.json
   def create
-    @fmea_type = FmeaType.new(params[:fmea_type])
+    @fmea_type = FmeaType.new(fmea_type_params)
 
     respond_to do |format|
       @fmea_type.attachment.created_by = current_user
@@ -80,7 +80,7 @@ class FmeaTypesController < ApplicationController
 
     respond_to do |format|
       @fmea_type.attachment.updated_by = current_user
-      if @fmea_type.update_attributes(params[:fmea_type])
+      if @fmea_type.update_attributes(fmea_type_params)
         format.html { redirect_to fmea_types_url, notice: 'Fmea type was successfully updated.' }
         format.json { head :no_content }
       else
@@ -101,4 +101,13 @@ class FmeaTypesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_fmea_type
+      @fmea_type = FmeaType.find(params[:id])
+    end
+
+    def fmea_type_params
+      params.require(:fmea_type).permit(:fmea_active, :fmea_created_id, :fmea_description, :fmea_name, :fmea_notes, :fmea_updated_id,:attachment_attributes)
+    end
 end

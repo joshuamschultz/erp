@@ -40,7 +40,7 @@ class ItemLotsController < ApplicationController
   # POST /item_lots
   # POST /item_lots.json
   def create
-    @item_lot = ItemLot.new(params[:item_lot])
+    @item_lot = ItemLot.new(item_lot_params)
 
     respond_to do |format|
       if @item_lot.save
@@ -59,7 +59,7 @@ class ItemLotsController < ApplicationController
     @item_lot = ItemLot.find(params[:id])
 
     respond_to do |format|
-      if @item_lot.update_attributes(params[:item_lot])
+      if @item_lot.update_attributes(item_lot_params)
         format.html { redirect_to @item_lot, notice: 'Item lot was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,4 +80,13 @@ class ItemLotsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_item_lot
+      @item_lot = ItemLot.find(params[:id])
+    end
+
+    def item_lot_params
+      params.require(:item_lot).permit(:item_id, :item_lot_count, :quality_lot_id)
+    end
 end

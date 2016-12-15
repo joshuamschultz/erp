@@ -32,7 +32,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     respond_to do |format|
-      if @event.update_attributes(params[:event])
+      if @event.update_attributes(event_params)
         # @event.create_similar_events
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
         format.json { head :no_content }
@@ -47,7 +47,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     respond_to do |format|
-      if @event.update_attributes(params[:event])
+      if @event.update_attributes(event_params)
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
         format.json { head :no_content }
       else
@@ -58,7 +58,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(params[:event])
+    @event = Event.new(event_params)
     respond_to do |format|
       if @event.save
         @event.create_similar_events
@@ -89,4 +89,13 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_event
+      @event = Event.find(params[:id])
+    end
+
+    def event_params
+      params.require(:event).permit( :title, :start_at, :end_at, :allDay, :description, :repeats, :user_id, :frequency, :parent_id)
+    end
 end

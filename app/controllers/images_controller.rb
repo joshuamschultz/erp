@@ -41,7 +41,7 @@ class ImagesController < ApplicationController
   # POST /images
   # POST /images.json
   def create
-    @image = Image.new(params[:image])
+    @image = Image.new(image_params)
 
     respond_to do |format|
       if @image.save
@@ -62,7 +62,7 @@ class ImagesController < ApplicationController
     @image = Image.find(params[:id])
 
     respond_to do |format|
-      if @image.update_attributes(params[:image])
+      if @image.update_attributes(image_params)
         format.html { redirect_to @image, notice: 'Image was successfully updated.' }
         format.json { head :no_content }
       else
@@ -83,4 +83,16 @@ class ImagesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_image
+      @image = Image.find(params[:id])
+    end
+
+    def image_params
+      params.require(:image).permit(:image_active, :image_content_type, :image_created_id, :image_description,
+                                    :image_file_name, :image_file_size, :image_notes, :image_public, :image_title, :image_updated_id,
+                                    :imageable_id, :imageable_type, :image)
+    end
+
 end

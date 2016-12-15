@@ -81,7 +81,7 @@ class ElementsController < ApplicationController
   # POST /elements
   # POST /elements.json
   def create
-    @element = Element.new(params[:element])
+    @element = Element.new(element_params)
 
     respond_to do |format|
       if @element.save
@@ -100,7 +100,7 @@ class ElementsController < ApplicationController
     @element = Element.find(params[:id])
 
     respond_to do |format|
-      if @element.update_attributes(params[:element])
+      if @element.update_attributes(element_params)
         format.html { redirect_to elements_path, notice: 'Element was successfully updated.' }
         format.json { head :no_content }
       else
@@ -121,4 +121,13 @@ class ElementsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_element
+      @element = Element.find(params[:id])
+    end
+
+    def element_params
+      params.require(:element).permit(:element_active, :element_created_id, :element_name, :element_notes, :element_symbol, :element_updated_id)
+    end
 end

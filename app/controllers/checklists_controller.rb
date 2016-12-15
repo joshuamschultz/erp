@@ -60,7 +60,7 @@ class ChecklistsController < ApplicationController
   # POST /checklists
   # POST /checklists.json
   def create
-    @checklist = Checklist.new(params[:checklist])
+    @checklist = Checklist.new(checklist_params)
 
     respond_to do |format|
       if @checklist.save
@@ -79,7 +79,7 @@ class ChecklistsController < ApplicationController
     @checklist = Checklist.find(params[:id])
 
     respond_to do |format|
-      if @checklist.update_attributes(params[:checklist])
+      if @checklist.update_attributes(checklist_params)
         format.html { redirect_to @checklist, notice: 'Checklist was successfully updated.' }
         format.json { head :no_content }
       else
@@ -100,4 +100,13 @@ class ChecklistsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  private
+
+    def set_checklist
+      @checklist = Checklist.find(params[:id])
+    end
+
+    def checklist_params
+      params.require(:checklist).permit(:checklist_status, :quality_lot_id, :po_line_id, :customer_quality_id)
+    end
 end
