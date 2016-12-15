@@ -1,11 +1,11 @@
 class ChecklistsController < ApplicationController
-  before_filter :set_page_info
-  before_filter :user_permissions
+  before_action :set_page_info
+  before_action :user_permissions
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical?   || current_user.is_vendor? || current_user.is_customer?  )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical?   || current_user.is_vendor? || current_user.is_customer?  )
         authorize! :edit, Checklist
-    end 
+    end
   end
 
   def set_page_info
@@ -18,7 +18,7 @@ class ChecklistsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
         @checklists = @checklists.select{|checklist|
           checklist[:id_name] = CommonActions.linkable(checklist_path(checklist), checklist.id)
           checklist[:lot_control_no] = CommonActions.linkable(quality_lot_path(checklist.quality_lot), checklist.quality_lot.lot_control_no)
@@ -26,7 +26,7 @@ class ChecklistsController < ApplicationController
           checklist[:links] = ""
         }
         render json: {:aaData => @checklists}
-      }     
+      }
     end
   end
 

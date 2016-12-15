@@ -1,5 +1,5 @@
 class CheckEntriesController < ApplicationController
-  before_filter :user_permissions
+  before_action :user_permissions
 
 
   def user_permissions

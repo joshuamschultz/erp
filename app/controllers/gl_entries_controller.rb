@@ -1,8 +1,8 @@
 class GlEntriesController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
 
-  before_filter :user_permissions
+  before_action :user_permissions
 
   def user_permissions
     if  user_signed_in? && (current_user.is_logistics? || current_user.is_operations? || current_user.is_clerical?  || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?)

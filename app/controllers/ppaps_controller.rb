@@ -1,20 +1,20 @@
 class PpapsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
-  before_filter :view_permissions, except: [:index, :show]
-  before_filter :user_permissions
+  before_action :view_permissions, except: [:index, :show]
+  before_action :user_permissions
 
 
   def view_permissions
-   if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
+    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
         authorize! :edit, Ppap
-    end 
+    end
   end
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
         authorize! :edit, Ppap
-    end 
+    end
   end
 
   def set_page_info
@@ -28,7 +28,7 @@ class PpapsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
         @ppaps = @ppaps.select{|ppap|
           ppap[:id_link] = CommonActions.linkable(ppap_path(ppap), ppap.id)
           if can? :edit, ppap
@@ -40,7 +40,7 @@ class PpapsController < ApplicationController
           end
         }
         render json: {:aaData => @ppaps}
-      }     
+      }
     end
   end
 
@@ -68,7 +68,7 @@ class PpapsController < ApplicationController
   end
 
   # GET /ppaps/1/edit
-  def edit    
+  def edit
     @ppap = Ppap.find(params[:id])
     @quality_lot = @ppap.quality_lot
   end

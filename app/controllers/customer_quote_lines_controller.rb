@@ -1,8 +1,8 @@
 class CustomerQuoteLinesController < ApplicationController
-    before_filter :set_page_info
-    before_filter :set_autocomplete_values, only: [:create, :update]
-    before_filter :view_permissions, except: [:index, :show]
-    before_filter :user_permissions
+    before_action :set_page_info
+    before_action :set_autocomplete_values, only: [:create, :update]
+    before_action :view_permissions, except: [:index, :show]
+    before_action :user_permissions
 
 
     def view_permissions

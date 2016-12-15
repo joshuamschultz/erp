@@ -1,5 +1,5 @@
 class FmeaTypesController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   autocomplete :fmea_type, :fmea_name, :full => true
 

@@ -1,12 +1,12 @@
 class EventsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   def set_page_info
     @menus[:system][:active] = "active"
   end
 
   def show
-    @event = Event.find(params[:id])   
+    @event = Event.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,15 +25,15 @@ class EventsController < ApplicationController
   end
 
   def edit
-    @event = Event.find(params[:id])   
+    @event = Event.find(params[:id])
   end
 
   def update
     @event = Event.find(params[:id])
 
     respond_to do |format|
-      if @event.update_attributes(params[:event])                
-        # @event.create_similar_events 
+      if @event.update_attributes(params[:event])
+        # @event.create_similar_events
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
         format.json { head :no_content }
       else
@@ -45,7 +45,7 @@ class EventsController < ApplicationController
 
   def change_date
     @event = Event.find(params[:id])
-    
+
     respond_to do |format|
       if @event.update_attributes(params[:event])
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
@@ -61,7 +61,7 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     respond_to do |format|
       if @event.save
-        @event.create_similar_events                    
+        @event.create_similar_events
         format.html { redirect_to events_path, notice: 'Event created successfully.' }
           format.json { head :no_content }
       else
@@ -72,11 +72,11 @@ class EventsController < ApplicationController
   end
 
   def index
-    @events = Event.between(params['start'], params['end']) if (params['start'] && params['end']) 
-    p @events 
-    respond_to do |format| 
+    @events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
+    p @events
+    respond_to do |format|
       format.html
-      format.json { render :json => @events } 
+      format.json { render :json => @events }
     end
   end
 

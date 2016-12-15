@@ -1,31 +1,31 @@
 class DepositChecksController < ApplicationController
   # GET /deposit_checks
   # GET /deposit_checks.json
-  before_filter :user_permissions
+  before_action :user_permissions
 
   def user_permissions
-   if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
-        authorize! :edit, DepositCheck
-    end 
-  end 
+    if  user_signed_in? && (current_user.is_logistics? || current_user.is_quality?   || current_user.is_vendor? || current_user.is_customer?  )
+      authorize! :edit, DepositCheck
+    end
+  end
   def index
     @deposit_checks = DepositCheck.where(:active => 1)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
           @deposit_checks = @deposit_checks.select{|deposit_check|
 
-              deposit_check[:receipt_type] = CommonActions.linkable(deposit_check_path(deposit_check), deposit_check.receipt_type)              
+              deposit_check[:receipt_type] = CommonActions.linkable(deposit_check_path(deposit_check), deposit_check.receipt_type)
               deposit_check[:check_code] = CommonActions.linkable(receipt_path(deposit_check.receipt),deposit_check.check_identifier)
               receivables = deposit_check.get_receivables
               deposit_check[:receivables] = receivables
-              deposit_check[:receipt_customer] = CommonActions.linkable(organization_path(deposit_check.receipt.organization), deposit_check.receipt.organization.organization_name)            
+              deposit_check[:receipt_customer] = CommonActions.linkable(organization_path(deposit_check.receipt.organization), deposit_check.receipt.organization.organization_name)
               deposit_check[:receipt_check_amount] = deposit_check.receipt.receipt_check_amount
-              deposit_check[:links] = CommonActions.object_crud_paths(nil, edit_deposit_check_path(deposit_check), nil)     
+              deposit_check[:links] = CommonActions.object_crud_paths(nil, edit_deposit_check_path(deposit_check), nil)
 
           }
-         render json: {:aaData => @deposit_checks }  
+         render json: {:aaData => @deposit_checks }
       }
     end
   end
@@ -89,7 +89,7 @@ class DepositChecksController < ApplicationController
       if @deposit_check.status == "closed"
         reconcile = Reconcile.find_by_deposit_check_id(@deposit_check.id)
         reconcile.update_attribute(:tag, "not reconciled")
-      end  
+      end
     end
   end
 
@@ -105,7 +105,7 @@ class DepositChecksController < ApplicationController
     end
   end
 
-   def report
+  def report
     @deposit_checks = DepositCheck.where(:active => 1)
     render :layout => false
   end

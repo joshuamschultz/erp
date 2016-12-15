@@ -1,5 +1,5 @@
 class QualityDocumentsController < ApplicationController
-before_filter :set_page_info
+before_action :set_page_info
 
   def set_page_info
     @menus[:documentation][:active] = "active"
@@ -10,7 +10,7 @@ before_filter :set_page_info
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
+      format.json {
           @quality_documents = @quality_documents.select{|quality_document|
               quality_document[:id] = quality_document.id
               quality_document[:name] = "<a href='#{quality_document.logo.joint.url(:original)}' target='_blank'><i>#{quality_document.quality_document_name}</i></a> " if quality_document.logo.joint

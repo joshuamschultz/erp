@@ -1,9 +1,9 @@
 class ItemAltNamesController < ApplicationController
-  before_filter :set_page_info
-  before_filter :set_autocomplete_values, only: [:create, :update]
+  before_action :set_page_info
+  before_action :set_autocomplete_values, only: [:create, :update]
   autocomplete :item_alt_name, :item_alt_identifier, :display_value => :alt_item_name
-  before_filter :user_permissions, only: [:create, :show, :edit]
-  before_filter :unauthorized
+  before_action :user_permissions, only: [:create, :show, :edit]
+  before_action :unauthorized
 
   def unauthorized
     if  user_signed_in? && current_user.is_customer?

@@ -1,8 +1,8 @@
 class PrintsController < ApplicationController
-  before_filter :set_page_info
+  before_action :set_page_info
 
   autocomplete :print, :print_identifier, :full => true
-  before_filter :user_permissions
+  before_action :user_permissions
 
 
   def user_permissions

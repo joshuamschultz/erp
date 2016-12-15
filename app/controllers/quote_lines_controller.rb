@@ -1,17 +1,17 @@
 class QuoteLinesController < ApplicationController
-before_filter :set_autocomplete_values, only: [:create, :update]
-  
-  
-  before_filter :set_page_info
+before_action :set_autocomplete_values, only: [:create, :update]
+
+
+  before_action :set_page_info
 
   def set_page_info
       @menus[:quotes][:active] = "active"
   end
-  
-  def set_autocomplete_values    
+
+  def set_autocomplete_values
     params[:quote_line][:item_alt_name_id], params[:alt_name_id] = params[:alt_name_id], params[:quote_line][:item_alt_name_id]
     params[:quote_line][:item_alt_name_id] = params[:org_alt_name_id] if params[:quote_line][:item_alt_name_id] == "" || params[:quote_line][:item_alt_name_id].nil?
-  
+
     params[:quote_line][:organization_id], params[:organization_id] = params[:organization_id], params[:quote_line][:organization_id]
     params[:quote_line][:organization_id] = params[:org_organization_id] if params[:quote_line][:organization_id] == ""
   end
@@ -23,7 +23,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
     respond_to do |format|
       format.html # index.html.erb
       @qote_lines = Array.new
-      format.json { 
+      format.json {
         @quote_lines = @quote_lines.select{|quote_line|
               qote_line = Hash.new
               quote_line.attributes.each do |key, value|
@@ -33,7 +33,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
               qote_line[:item_part_no] = quote_line.item_name_sub unless quote_line.item && quote_line.item_alt_name
               # quote_line[:customer_name] = quote_line.organization ? CommonActions.linkable(organization_path(quote_line.organization), quote_line.organization.organization_name) : ""
               #quote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), nil)
-              if user_signed_in? &&  current_user.is_vendor? 
+              if user_signed_in? &&  current_user.is_vendor?
                 qote_line[:links] = CommonActions.object_crud_paths(nil, nil,nil)
               else
                 qote_line[:links] = CommonActions.object_crud_paths(nil, edit_quote_quote_line_path(@quote, quote_line), quote_quote_line_path(@quote, quote_line))
@@ -79,7 +79,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
 
   # POST quotes/1/quote_lines
   # POST quotes/1/quote_lines.json
-  def create    
+  def create
     @quote = Quote.find(params[:quote_id])
     params[:quote_line][:item_name_sub] = params[:alt_name_id]
     @quote_line = @quote.quote_lines.build(params[:quote_line])
@@ -90,7 +90,7 @@ before_filter :set_autocomplete_values, only: [:create, :update]
           @quote.quote_vendors.each do |quote_vendor|
               QuoteLineCost.create(quote_vendor_id: quote_vendor.id, quote_line_id: @quote_line.id)
           end
-          
+
           format.html { redirect_to new_quote_quote_line_path(@quote), :notice => 'Quote line was successfully created.' }
           format.json { render :json => @quote_line, :status => :created, :location => [@quote_line.quote, @quote_line] }
           # if @quote.quote_vendors.count > 0

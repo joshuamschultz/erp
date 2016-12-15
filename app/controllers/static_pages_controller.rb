@@ -1,7 +1,7 @@
 class StaticPagesController < ActionController::Base
   include CommonActions
-  
-  before_filter :initialize_request
+
+  before_action :initialize_request
 
   layout "application"
 
