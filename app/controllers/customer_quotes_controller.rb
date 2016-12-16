@@ -162,7 +162,7 @@ class CustomerQuotesController < ApplicationController
     @customer_quote = CustomerQuote.find(params[:id])
 
     respond_to do |format|
-      if @customer_quote.update_attributes(params[:customer_quote])
+      if @customer_quote.update_attributes(customer_quote_params)
         format.html { redirect_to @customer_quote, notice: 'Customer quote was successfully updated.' }
         format.json { head :no_content }
       else

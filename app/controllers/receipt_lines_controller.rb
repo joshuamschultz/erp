@@ -103,4 +103,14 @@ class ReceiptLinesController < ApplicationController
       format.json { head :ok }
     end
   end
+  private
+
+    def set_receipt
+      @receipt = Receipt.find(params[:receipt_id])
+    end
+
+    def receipt_line_params
+      params.require(:receipt_line).permit(:receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
+                                           :receipt_id, :receivable_id)
+    end
 end

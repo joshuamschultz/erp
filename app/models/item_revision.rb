@@ -81,13 +81,13 @@ class ItemRevision < ActiveRecord::Base
           # item_revision.item_selected_names.where(:item_alt_name_id != alt_name_ids).destroy_all
 
           processes = params[:processes] || []
-          item_revision.item_processes.where(:process_type_id != processes).destroy_all
+          item_revision.item_processes.where.not(:process_type_id => processes).destroy_all
 
           # prints = params[:prints] || []
           # item_revision.item_prints.where(:print_id != prints).destroy_all
 
           specs = params[:specs] || []
-          item_revision.item_specifications.where(:specification_id != specs).destroy_all
+          item_revision.item_specifications.where.not(:specification_id => specs).destroy_all
 
           # materials = params[:materials] || []
           # item_revision.item_materials.where(:material_id != materials).destroy_all

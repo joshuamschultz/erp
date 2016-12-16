@@ -154,6 +154,7 @@ class ReceiptsController < ApplicationController
     def receipt_params
       params.require(:receipt).permit(:receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
                                       :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
-                                      :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount, :receipt_type)
+                                      :receipt_type_id, :receipt_updated_id, :organization_id,  :deposit_check_id, :receipt_discount, :receipt_type, receipt_lines_attributes: [:receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
+                                           :receipt_id, :receivable_id])
     end
 end

@@ -2,111 +2,111 @@
 <% unless type.nil? %>
 <script type="text/template" class="<%= type %>-template" style="display:none">
 <% case(type) %>
-	<% when "address-select-box" %>
-			{{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_description}}</option>{{/ aaData}}
-	<% when "revision-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{item_revision_name}}</option>{{/ aaData}}
-	<% when "line-item-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{po_line_item_name}}</option>{{/ aaData}}
-	<% when "lot-control-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{lot_control_no}}</option>{{/ aaData}}
-	<% when "process-type-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{process_short_name}}</option>{{/ aaData}}
-	<% when "contact-email-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{contact_email}}</option>{{/ aaData}}
-	<% when "element-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{element_with_symbol}}</option>{{/ aaData}}
-	<% when "item-dimension-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{item_part_letter}}</option>{{/ aaData}}
-	<% when "payable-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{payable_identifier}}</option>{{/ aaData}}
-	<% when "account-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{gl_account_title}}</option>{{/ aaData}}
-	<% when "po-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{po_identifier}}</option>{{/ aaData}}
-	<% when "account-row-html" %>
-			<tr>
+    <% when "address-select-box" %>
+            {{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_description}}</option>{{/ aaData}}
+    <% when "revision-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{item_revision_name}}</option>{{/ aaData}}
+    <% when "line-item-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{po_line_item_name}}</option>{{/ aaData}}
+    <% when "lot-control-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{lot_control_no}}</option>{{/ aaData}}
+    <% when "process-type-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{process_short_name}}</option>{{/ aaData}}
+    <% when "contact-email-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{contact_email}}</option>{{/ aaData}}
+    <% when "element-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{element_with_symbol}}</option>{{/ aaData}}
+    <% when "item-dimension-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{item_part_letter}}</option>{{/ aaData}}
+    <% when "payable-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{payable_identifier}}</option>{{/ aaData}}
+    <% when "account-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{gl_account_title}}</option>{{/ aaData}}
+    <% when "po-select-box" %>
+            {{# aaData}}<option value="{{id}}">{{po_identifier}}</option>{{/ aaData}}
+    <% when "account-row-html" %>
+            <tr>
                 <td>
-                	<div class="control-group select required <%= account_type %>_<%= account_type %>_accounts_gl_account">
-                		<div class="controls">
-                			<select name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][gl_account_id]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_gl_account_id" class="select required account_new gl_account">
-							</select>
-						</div>
-					</div>
-				</td>
-                <td>
-                	<div class="control-group string optional <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_description">
-                		<div class="controls">
-                			<input type="text" value="" size="50" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_description]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_description" class="string optional <%= account_type %>_account_description">
-                		</div>
-                	</div>
+                    <div class="control-group select required <%= account_type %>_<%= account_type %>_accounts_gl_account">
+                        <div class="controls">
+                            <select name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][gl_account_id]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_gl_account_id" class="select required account_new gl_account">
+                            </select>
+                        </div>
+                    </div>
                 </td>
                 <td>
-                	<div class="control-group decimal required <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_amount">
-                		<div class="controls">
-                			<input type="number" value="" step="any" required="required" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_amount]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_amount" class="numeric decimal required <%= account_type %>_account_amount">
-        				</div>
-    				</div>
+                    <div class="control-group string optional <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_description">
+                        <div class="controls">
+                            <input type="text" value="" size="50" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_description]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_description" class="string optional <%= account_type %>_account_description">
+                        </div>
+                    </div>
                 </td>
                 <td>
-                	<a onclick="$(this).parent().parent().remove(); return false" ,="" class="btn-action glyphicons remove_2 btn-danger" href="#"><i></i></a>
+                    <div class="control-group decimal required <%= account_type %>_<%= account_type %>_accounts_<%= account_type %>_account_amount">
+                        <div class="controls">
+                            <input type="number" value="" step="any" required="required" name="<%= account_type %>[<%= account_type %>_accounts_attributes][{{row_count}}][<%= account_type %>_account_amount]" id="<%= account_type %>_<%= account_type %>_accounts_attributes_{{row_count}}_<%= account_type %>_account_amount" class="numeric decimal required <%= account_type %>_account_amount">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a onclick="$(this).parent().parent().remove(); return false" ,="" class="btn-action glyphicons remove_2 btn-danger" href="#"><i></i></a>
                 </td>
             </tr>
-			
-	<% when "payment-line-row-html" %>
-			<tr>
-		      <td>
-		        <div class='control-group select required payment_payment_lines_payable'>
-		          <div class='controls'>
-		            <select name='payment[payment_lines_attributes][{{row_count}}][payable_id]' id='payment_payment_lines_attributes_{{row_count}}_payable_id' class='select required payment_payable_new'>
-		            		// {{row_data}}
-		            </select>
-		          </div>
-		        </div>
-		      </td>
-		      <td><input type='text' value='' name='invoice_date' id='invoice_date' disabled='disabled'></td>
-		      <td><input type='text' value='' name='invoice_due_date' id='invoice_due_date' disabled='disabled'></td>
-		      <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
-		      <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
-		      <td>
-		        <div class='control-group decimal required payment_payment_lines_payment_line_amount'>
-		          <div class='controls'>
-		            <input type="number" value="0.0" step="any" min="0" required="required" name="payment[payment_lines_attributes][{{row_count}}][payment_line_amount]' id='payment_payment_lines_attributes_{{row_count}}_payment_line_amount' class='numeric decimal required payment_payable_amount commoncls">
-		          </div>
-		        </div>
-		      </td>
-		      <td>
-		      	<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
-		      </td>
-      		</tr>
+
+    <% when "payment-line-row-html" %>
+            <tr>
+              <td>
+                <div class='control-group select required payment_payment_lines_payable'>
+                  <div class='controls'>
+                    <select name='payment[payment_lines_attributes][{{row_count}}][payable_id]' id='payment_payment_lines_attributes_{{row_count}}_payable_id' class='select required payment_payable_new'>
+                            // {{row_data}}
+                    </select>
+                  </div>
+                </div>
+              </td>
+              <td><input type='text' value='' name='invoice_date' id='invoice_date' disabled='disabled'></td>
+              <td><input type='text' value='' name='invoice_due_date' id='invoice_due_date' disabled='disabled'></td>
+              <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
+              <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
+              <td>
+                <div class='control-group decimal required payment_payment_lines_payment_line_amount'>
+                  <div class='controls'>
+                    <input type="number" value="0" step="any" min="0" required="required" name="payment[payment_lines_attributes][{{row_count}}][payment_line_amount]" id="payment_payment_lines_attributes_{{row_count}}_payment_line_amount" class="numeric decimal required payment_payable_amount commoncls">
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
+              </td>
+            </tr>
     <% when "receivable-select-box" %>
-			{{# aaData}}<option value="{{id}}">{{receivable_identifier}}</option>{{/ aaData}}
-	<% when "receipt-line-row-html" %>
-			<tr>
-		      <td>
-		        <div class='control-group select required receipt_receipt_lines_receivable'>
-		          <div class='controls'>
-		            <select name='receipt[receipt_lines_attributes][{{row_count}}][receivable_id]' id='receipt_receipt_lines_attributes_{{row_count}}_receivable_id' class='select required receipt_receivable_new'>
-		            		// {{row_data}}
-		            </select>
-		          </div>
-		        </div>
-		      </td>
-		      <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
-		      <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
-		      <td>
-		        <div class='control-group decimal required receipt_receipt_lines_receipt_line_amount'>
-		          <div class='controls'>
-		            <input type='number' value='0.0' step='1' min='0' required='required' name='receipt[receipt_lines_attributes][{{row_count}}]receipt_line_amount]' id='receipt_receipt_lines_attributes_{{row_count}}_receipt_line_amount' class='numeric decimal required receipt_receivable_amount commoncls'>
-		          </div>
-		        </div>
-		      </td>
-		      <td>
-		      	<a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
-		      </td>
-      		</tr>
-	
-	<% else %>
+            {{# aaData}}<option value="{{id}}">{{receivable_identifier}}</option>{{/ aaData}}
+    <% when "receipt-line-row-html" %>
+            <tr>
+              <td>
+                <div class='control-group select required receipt_receipt_lines_receivable'>
+                  <div class='controls'>
+                    <select name='receipt[receipt_lines_attributes][{{row_count}}][receivable_id]' id='receipt_receipt_lines_attributes_{{row_count}}_receivable_id' class='select required receipt_receivable_new'>
+                            // {{row_data}}
+                    </select>
+                  </div>
+                </div>
+              </td>
+              <td><input type='text' value='' name='invoice_amount' id='invoice_amount' disabled='disabled'></td>
+              <td><input type='text' value='' name='invoice_balance' id='invoice_balance' disabled='disabled'></td>
+              <td>
+                <div class='control-group decimal required receipt_receipt_lines_receipt_line_amount'>
+                  <div class='controls'>
+                    <input type='number' value='0.0' step='1' min='0' required='required' name='receipt[receipt_lines_attributes][{{row_count}}]receipt_line_amount]' id='receipt_receipt_lines_attributes_{{row_count}}_receipt_line_amount' class='numeric decimal required receipt_receivable_amount commoncls'>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <a href='#' class='btn-action glyphicons remove_2 btn-danger', onclick='$(this).parent().parent().remove(); return false' ><i></i></a>
+              </td>
+            </tr>
+
+    <% else %>
 
 <% end%>
 </script>

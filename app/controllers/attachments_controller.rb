@@ -116,7 +116,7 @@ class AttachmentsController < ApplicationController
     CommonActions.record_ownership(@attachment, current_user)
 
     respond_to do |format|
-      if @attachment.update_attributes(params[:attachment])
+      if @attachment.update_attributes(attachment_params)
         CommonActions.record_ownership(@attachment, current_user)
         format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }

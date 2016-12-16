@@ -88,7 +88,7 @@ class ItemRevisionsController < ApplicationController
   # POST items/1/item_revisions.json
   def create
     @item = Item.find(params[:item_id])
-    @item_revision = @item.item_revisions.build(params[:item_revision])
+    @item_revision = @item.item_revisions.build(item_revision_params)
 
     respond_to do |format|
       if @item_revision.save
@@ -109,7 +109,7 @@ class ItemRevisionsController < ApplicationController
     @item_revision = @item.item_revisions.find(params[:id])
 
     respond_to do |format|
-      if @item_revision.update_attributes(params[:item_revision])
+      if @item_revision.update_attributes(item_revision_params)
         ItemRevision.process_item_associations(@item_revision, params)
         format.html { redirect_to(@item, :notice => 'Item revision was successfully updated.') }
         format.json { head :ok }
@@ -137,4 +137,16 @@ class ItemRevisionsController < ApplicationController
       end
     end
   end
+  private
+
+    def set_item
+      @item = Item.find(params[:item_id])
+    end
+
+    def item_revision_params
+      params.require(:item_revision).permit(:item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
+                                            :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
+                                            :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
+                                            :item_revision_complete, :item_sell)
+    end
 end
