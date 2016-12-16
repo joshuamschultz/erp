@@ -244,6 +244,7 @@ class PayablesController < ApplicationController
                                       :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date,
                                       :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
                                       :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice,
-                                      :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type, :payable_disperse)
+                                      :gl_account_id,:gl_account_amount, :payable_type, :payable_disperse, payable_accounts_attributes: [:payable_id, :gl_account_id, :payable_account_amount, :payable_account_created_id,
+                                      :payable_account_description, :payable_account_updated_id, :gl_entry_id])
     end
 end

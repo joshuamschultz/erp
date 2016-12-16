@@ -7,12 +7,12 @@ class PayableAccountsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-          @payable_accounts = @payable_accounts.includes(:gl_account).select{|payable_account| 
+      format.json {
+          @payable_accounts = @payable_accounts.includes(:gl_account).select{|payable_account|
             payable_account[:links] = CommonActions.object_crud_paths(nil, nil, payable_payable_account_path(@payable, payable_account))
             payable_account[:payable_account_name] = payable_account.gl_account ? CommonActions.linkable(gl_account_path(payable_account.gl_account), payable_account.gl_account.gl_account_title) : ""
           }
-          render json: {:aaData => @payable_accounts} 
+          render json: {:aaData => @payable_accounts}
       }
     end
   end
@@ -51,7 +51,7 @@ class PayableAccountsController < ApplicationController
   # POST payables/1/payable_accounts.json
   def create
     @payable = Payable.find(params[:payable_id])
-    @payable_account = @payable.payable_accounts.build(params[:payable_account])
+    @payable_account = @payable.payable_accounts.build(payable_account_params)
 
     respond_to do |format|
       if @payable_account.save
@@ -71,7 +71,7 @@ class PayableAccountsController < ApplicationController
     @payable_account = @payable.payable_accounts.find(params[:id])
 
     respond_to do |format|
-      if @payable_account.update_attributes(params[:payable_account])
+      if @payable_account.update_attributes(payable_account_params)
         format.html { redirect_to(@payable, :notice => 'Payable account was successfully updated.') }
         format.json { head :ok }
       else
@@ -93,4 +93,14 @@ class PayableAccountsController < ApplicationController
       format.json { head :ok }
     end
   end
+  private
+
+    def set_payable
+      @payable = Payable.find(params[:payable_id])
+    end
+
+    def payable_account_params
+      params.require(:payable_account).permit(:payable_id, :gl_account_id, :payable_account_amount, :payable_account_created_id,
+                                              :payable_account_description, :payable_account_updated_id, :gl_entry_id)
+    end
 end

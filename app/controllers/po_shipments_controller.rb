@@ -159,7 +159,7 @@ class PoShipmentsController < ApplicationController
   # POST /po_shipments
   # POST /po_shipments.json
   def create
-    @po_shipment = PoShipment.new(payment_params)
+    @po_shipment = PoShipment.new(po_shipment_params)
 
     respond_to do |format|
       if @po_shipment.save
@@ -224,7 +224,7 @@ class PoShipmentsController < ApplicationController
     @po_shipment = PoShipment.find(params[:id])
 
     respond_to do |format|
-      if @po_shipment.update_attributes(payment_params)
+      if @po_shipment.update_attributes(po_shipment_params)
         if  @po_shipment.quality_lot_id
           @quality_lot = QualityLot.find(@po_shipment.quality_lot_id)
           @quality_lot.update_attributes(:lot_quantity => @po_shipment.po_shipped_count, :lot_unit => @po_shipment.po_shipped_unit, :lot_self => @po_shipment.po_shipped_shelf)
@@ -251,14 +251,14 @@ class PoShipmentsController < ApplicationController
   end
   private
 
-    def set_payment
-      @payment = Payment.find(params[:id])
+     private
+
+    def set_po_shipment
+      @po_shipment = PoShipment.find(params[:id])
     end
 
-    def payment_params
-      params.require(:payment).permit(:payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
-                                      :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
-                                      :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
-                                      :check_entry_attributes, :next_check_code, :payment_check_code_type,:update_po_total)
+    def po_shipment_params
+      params.require(:po_shipment).permit(:po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
+                                           :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id)
     end
 end

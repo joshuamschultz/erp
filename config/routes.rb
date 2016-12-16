@@ -12,7 +12,7 @@ end
 
   resources :events do
     member do
-      get 'change_date' 
+      get 'change_date'
     end
   end
 
@@ -59,10 +59,10 @@ end
 
 
   resources :deposit_checks do
-    collection do      
+    collection do
       get 'report'
     end
-  end 
+  end
 
   resources :reconciles
 
@@ -73,7 +73,7 @@ end
   resources :quality_actions do
     member do
       get 'quality_report'
-    end 
+    end
     get :autocomplete_quality_action_quality_action_no, :on => :collection
   end
 
@@ -110,7 +110,7 @@ end
   resources :check_codes
 
   resources :receivables do
-    member do 
+    member do
       get 'invoice_report'
 
     end
@@ -122,18 +122,18 @@ end
 
   resources :payables do
     collection do
-      get 'manual_new'      
-    end  
+      get 'manual_new'
+    end
      member do
-      get 'manual_edit' 
-     end 
+      get 'manual_edit'
+     end
     resources :payable_accounts
   end
 
   resources :check_entries do
     collection do
       post 'generate_check_entry'
-      get 'report'     
+      get 'report'
     end
   end
 
@@ -244,11 +244,11 @@ end
   end
 
   resources :so_headers do
-    member do 
+    member do
       get 'report'
-      get 'packing_report' 
-      get 'pick_report'     
-    end    
+      get 'packing_report'
+      get 'pick_report'
+    end
     resources :so_lines
     member do
       get 'populate'
@@ -268,8 +268,8 @@ end
   resources :customer_quality_levels
 
   resources :po_headers do
-    member do 
-   
+    member do
+
       get 'purchase_report'
     end
     resources :po_lines
@@ -279,7 +279,7 @@ end
     end
     get :autocomplete_po_header_po_identifier, :on => :collection
   end
-  
+
   resources :quality_lots, except: :new do
     get :autocomplete_quality_lot_lot_control_no, :on => :collection
     member do
@@ -391,7 +391,7 @@ end
   resources :master_types
 
 
-  resources :process_types  do 
+  resources :process_types  do
     collection do
       get 'process_specs'
     end
@@ -476,4 +476,5 @@ end
   # match ':not_found' => 'account#dashboard', :constraints => { :not_found => /.*/ }
 
   # match "*path", :to => "static_pages#error_404"
+  root :to => "account#dashboard"
 end

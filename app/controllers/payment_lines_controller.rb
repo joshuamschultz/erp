@@ -102,4 +102,14 @@ class PaymentLinesController < ApplicationController
       format.json { head :ok }
     end
   end
+  private
+
+    def set_payment_line
+      @payment_line = PaymentLine.find(params[:id])
+    end
+
+    def payment_line_params
+      params.require(:payment_line).permit(:payment_line_amount, :payment_line_created_id, :payment_line_updated_id,
+                                           :payment_id, :payable_id)
+    end
 end

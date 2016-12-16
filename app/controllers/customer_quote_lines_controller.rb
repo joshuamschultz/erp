@@ -90,7 +90,7 @@ class CustomerQuoteLinesController < ApplicationController
     def create
         @customer_quote = CustomerQuote.find(params[:customer_quote_id])
         params[:customer_quote_line][:item_name_sub] = params[:alt_name_id]
-        @customer_quote_line = @customer_quote.customer_quote_lines.build(params[:customer_quote_line])
+        @customer_quote_line = @customer_quote.customer_quote_lines.build(customer_quote_line_params)
         @attachable = @customer_quote
 
         respond_to do |format|
@@ -112,7 +112,7 @@ class CustomerQuoteLinesController < ApplicationController
         @attachable = @customer_quote
 
         respond_to do |format|
-          if @customer_quote_line.update_attributes(params[:customer_quote_line])
+          if @customer_quote_line.update_attributes(customer_quote_line_params)
             format.html { redirect_to customer_quote_path(@customer_quote), :notice => 'Customer quote line was successfully updated.' }
             format.json { head :ok }
           else
@@ -134,4 +134,16 @@ class CustomerQuoteLinesController < ApplicationController
           format.json { head :ok }
         end
     end
+    private
+
+        def set_customer_quote
+            @customer_quote = CustomerQuote.find(params[:customer_quote_id])
+        end
+
+        def customer_quote_line_params
+            params.require(:customer_quote_line).permit(:customer_quote_line_active, :customer_quote_line_cost, :customer_quote_line_created_id,
+                                                      :customer_quote_line_description, :customer_quote_line_identifier, :customer_quote_line_notes, :lead_time,
+                                                      :customer_quote_line_quantity, :customer_quote_line_status, :customer_quote_line_updated_id, :customer_quote_id,
+                                                      :item_id, :item_revision, :item_alt_name_id, :customer_quote_line_tooling_cost, :customer_quote_line_total, :item_name_sub, :quote_id)
+        end
 end

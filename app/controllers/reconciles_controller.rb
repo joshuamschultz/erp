@@ -62,7 +62,7 @@ class ReconcilesController < ApplicationController
               else
                 reconcil[:links] = ""
               end
-              reconcil[:checkboxes] = CommonActions.check_boxes(reconcile[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
+              reconcil[:checkboxes] = CommonActions.check_boxes(reconcil[:amt],i ,'calcBalance(' + i.to_s + ',"'+reconcile.reconcile_type+'");' )
               @reconcils.push(reconcil)
           }
           render json: {:aaData => @reconcils}

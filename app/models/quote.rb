@@ -7,7 +7,7 @@ class Quote < ActiveRecord::Base
     has_many :attachments, :as => :attachable, :dependent => :destroy
     has_many :comments, :as => :commentable, :dependent => :destroy
 
-    
+
 
     attr_accessor :quote_po_type
 
@@ -37,7 +37,7 @@ class Quote < ActiveRecord::Base
             end
         else
             vendors = params[:vendors] || []
-            quote.quote_vendors.where(:organization_id != vendors).destroy_all
+            quote.quote_vendors.where.not(:organization_id => vendors).destroy_all
 
             if vendors
                 vendors.each do |vendor_id|
@@ -61,7 +61,7 @@ class Quote < ActiveRecord::Base
 
         if self.quote_po_type == "existing_po"
             errors.add(:po_header_id, "can't be blank") unless self.po_header
-        else            
+        else
             self.po_header = nil
         end
     end
@@ -126,7 +126,7 @@ class Quote < ActiveRecord::Base
             end
             # self.quote_active = true
         end
-    end    
+    end
     end
 
     def process_quotes(quote_po_type, organization_id, po_header_id, item_quantity)
@@ -139,12 +139,12 @@ class Quote < ActiveRecord::Base
         if self.quote_po_type == "existing_po"
             errors.add(:po_header_id, "can't be blank") unless self.po_header
             return false
-        else            
+        else
             self.po_header = nil
-        end            
+        end
     end
 
-    if (self.quote_lines.first.quote_line_quantity.to_i >= item_quantity.to_i)  && item_quantity.present? 
+    if (self.quote_lines.first.quote_line_quantity.to_i >= item_quantity.to_i)  && item_quantity.present?
         if self.organization.present?
             po_header = self.po_header
             unless po_header.present?
@@ -152,7 +152,7 @@ class Quote < ActiveRecord::Base
                 if po_header.save
                     self.po_header = po_header
                     QuotesPoHeader.create(:quote_id => self.id, :po_header_id => po_header.id)
-                end                 
+                end
             end
 
             if po_header.present?
@@ -166,7 +166,7 @@ class Quote < ActiveRecord::Base
                         po_line.po_line_cost = quote_line_cost.present? ? quote_line_cost.quote_line_cost : 0
                         po_line.organization = line.organization
                         po_line.po_line_customer_po = line.quote_line_description
-                        if po_line.save                            
+                        if po_line.save
                             line.update_attributes(po_line_id: po_line.id)
                         else
                             puts po_line.errors.to_yaml
@@ -175,7 +175,7 @@ class Quote < ActiveRecord::Base
                     line.quote_line_quantity = (line.quote_line_quantity.to_i - item_quantity.to_i)
                     line.save(:validate => false)
                 end
-                
+
             end
         end
     else
@@ -199,22 +199,22 @@ class Quote < ActiveRecord::Base
         part_nos.join(",")
     end
 
-    def self.get_quote_item_prices(quote, item_id)        
+    def self.get_quote_item_prices(quote, item_id)
         line_vendor_cost = []
         quote_costs = quote.quote_lines.where("item_id = ?", item_id)
         quote_costs.each do |quote_cost|
-            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')            
+            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')
         end
-        line_vendor_cost.join(",")        
+        line_vendor_cost.join(",")
     end
 
-    def self.get_quote_item_prices_org(quote, item_id)        
+    def self.get_quote_item_prices_org(quote, item_id)
         line_vendor_cost = []
         quote_costs = quote.quote_lines.where("item_id = ?", item_id)
         quote_costs.each do |quote_cost|
-            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')            
+            line_vendor_cost << quote_cost.quote_line_costs.collect{|quote_line_cos| quote_line_cos.quote_line_cost}.join(',')
         end
-        line_vendor_cost.join(",")        
+        line_vendor_cost.join(",")
     end
 
     def self.get_item_prices(quote_id, item_id)
@@ -226,7 +226,7 @@ class Quote < ActiveRecord::Base
         price = price.join(' ,')
         item_detail["price"] = price
         if quote_line.item_alt_name.present?
-            item_detail["alt_name"] = quote_line.item_alt_name.present? ? quote_line.item_alt_name.item_alt_identifier : "" 
+            item_detail["alt_name"] = quote_line.item_alt_name.present? ? quote_line.item_alt_name.item_alt_identifier : ""
             item_detail["item_id"] = item_id
             item_detail["alt_name_id"] = quote_line.item_alt_name.id
         else
@@ -245,6 +245,4 @@ class Quote < ActiveRecord::Base
         # # tes.delete("0.0")
         # tes.join(',')
     end
-
-
 end
