@@ -1,7 +1,7 @@
 # Sample localization file for English. Add more files in this directory for other locales.
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  Login area: "Login area"
-  Remember me: "Remember me"
-  Please enter your username and password: "Please enter your username and password"
+de:
+  Login area: "Login-Bereich"
+  Remember me: "Erinnere dich an mich"
+  Please enter your username and password: "Bitte gib deinen Benutzernamen und dein Passwort ein"

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include CommonActions
   protect_from_forgery
 
+  before_action :set_locale
   before_action :authenticate_user!
   before_action :initialize_request
 
@@ -13,6 +14,9 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
   around_action :set_time_zone
 
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
   def set_time_zone(&block)
     if current_user.present?
       Time.use_zone(current_user.time_zone, &block)
