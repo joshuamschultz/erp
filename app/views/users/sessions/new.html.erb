@@ -3,22 +3,22 @@
 <!-- Wrapper -->
 <div id="login">
 
-  <div class="container">  
+  <div class="container">
 
-    <div class="wrapper">    
+    <div class="wrapper">
 
         <h1 class="glyphicons lock"><%= @home[:name] %><br>POS Solution<!-- <i></i> --></h1>
-      
+
         <!-- Box -->
-        <div class="widget">        
+        <div class="widget">
             <div class="widget-head">
-                <h3 class="heading">Login area</h3>
-                <!-- <div class="pull-right">Don't have an account? 
+                <h3 class="heading"><%= t 'Login area'%></h3>
+                <!-- <div class="pull-right">Don't have an account?
                     <a href="#" class="btn btn-inverse btn-mini">Sign up</a>
                 </div> -->
             </div>
 
-            <div class="widget-body">          
+            <div class="widget-body">
               <!-- Form -->
               <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
                 <%= content_tag(:div, flash[:error], :id => "flash_error", :class => "alert alert-error") if flash[:error] %>
@@ -33,7 +33,7 @@
                 <label>Password <!-- <a class="password" href="">forgot your password?</a> --> </label>
                 <%= f.password_field :password, :class => "input-block-level margin-none", :placeholder=> "Password" %>
 
-                <div class="separator bottom"></div> 
+                <div class="separator bottom"></div>
 
                 <div class="row-fluid">
                     <div class="span8">
@@ -41,7 +41,7 @@
                         <label class="checkbox">
                             <div id="uniform-undefined" class="checker">
                                 <span><% if devise_mapping.rememberable? %><%= f.check_box :remember_me %><% end %></span>
-                            </div>Remember me
+                            </div><%= t 'Remember me' %>
                         </label>
                         </div>
                     </div>
@@ -49,19 +49,19 @@
                     <div class="span4 center">
                         <button class="btn btn-block btn-primary" type="submit">Sign in</button>
                     </div>
-                </div>            
+                </div>
               <% end %>
-              <!-- // Form END -->                
+              <!-- // Form END -->
             </div>
 
             <div class="widget-footer">
-                <p class="glyphicons lock"><i></i>Please enter your username and password ...</p>
+                <p class="glyphicons lock"><i></i><%= t "Please enter your username and password" %>...</p>
             </div>
         </div>
-        <!-- // Box END -->      
+        <!-- // Box END -->
     </div>
-    
+
   </div>
-  
+
 </div>
-<!-- // Wrapper END --> 
+<!-- // Wrapper END -->
