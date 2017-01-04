@@ -1,5 +1,5 @@
 unless User.find_by_email('joshua@alliance.com')
-   user = User.new(email: 'joshua@alliance.com', name: 'joshua', password: '12345678', password_confirmation: '12345678')
+   user = User.new(email: 'joshua@alliance.com', name: 'Erin', password: '12345678', password_confirmation: '12345678')
    user.roles = [:superadmin]
    user.save
 end
@@ -124,7 +124,7 @@ Owner.create!([
 =end
 
 CompanyInfo.create!([
-  {company_name: "Chess Group", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil, company_created_id: nil, company_updated_id: nil}
+  {company_name: "MM & WM ERP", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil, company_created_id: nil, company_updated_id: nil}
 ])
 =begin
 

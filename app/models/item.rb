@@ -23,7 +23,7 @@ class Item < ActiveRecord::Base
   has_many :inventory_adjustments, :dependent => :destroy
 
   has_many :item_lots
-  
+
   accepts_nested_attributes_for :item_revisions, :allow_destroy => true
 
   after_initialize :default_values
@@ -56,9 +56,9 @@ class Item < ActiveRecord::Base
         customer_quote_line.save(:validate => false)
       end
       unless self.item_alt_part_no == ""
-        self.item_alt_names.new(:item_alt_identifier => self.item_alt_part_no).save(:validate => false)  
+        self.item_alt_names.new(:item_alt_identifier => self.item_alt_part_no).save(:validate => false)
       end
-      
+
   end
 
   after_update :update_alt_name
@@ -70,9 +70,9 @@ class Item < ActiveRecord::Base
           alt_name.save(:validate => false)
       end
   end
-  
+
   (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :minimum => 2, :maximum => 50) if validates_presence_of :item_part_no
-   
+
   def current_revision
       # self.item_revisions.find_by_latest_revision(true)
       self.item_revisions.order("item_revision_date desc").first
@@ -96,19 +96,20 @@ class Item < ActiveRecord::Base
 
   def sales_orders
       SoHeader.joins(:so_lines).where("so_lines.item_id = ?", self.id).order('created_at desc')
-  end 
+  end
 
   def qty_on_order(revision)
     # self.po_lines.sum(:po_line_quantity)
     # self.last.po_lines.joins(:po_header).where(po_headers: {po_status: "open"}).sum(:po_line_quantity)
-    item_revision = ItemRevision.find(revision)
+
+    item_revision = ItemRevision.where(:id => revision).first
     item_revision.po_lines.where(:po_line_status => "open").includes(:po_header).where(po_headers: {po_status: "open"}).sum("po_line_quantity - po_line_shipped")
 
   end
 
   def qty_on_order_item
     # self.po_lines.sum(:po_line_quantity)
- 
+
     self.po_lines.where(:po_line_status => "open").includes(:po_header).where(po_headers: {po_status: "open"}).sum("po_line_quantity - po_line_shipped")
 
   end
@@ -156,7 +157,7 @@ class Item < ActiveRecord::Base
   def time_stock(item_revision)
     (item_revision.item_revision_weekly_usage != nil && item_revision.item_revision_weekly_usage != 0) ? item_revision.item.stock(item_revision) / item_revision.item_revision_weekly_usage.to_f : 0
   end
-  
+
   def run_out(item_revision)
     (item_revision.item_revision_lead_time != nil && item_revision.item_revision_lead_time != 0) ?  item_revision.item.time_stock(item_revision).to_f / item_revision.item_revision_lead_time.to_f : 0
   end
@@ -182,7 +183,7 @@ class Item < ActiveRecord::Base
     len = items.length
     i,j,flag = 1,1,1
 
-    content = '' 
+    content = ''
     items.select{|item|
       item.item_revisions.each_with_index do |item_revision, index|
 
@@ -194,7 +195,7 @@ class Item < ActiveRecord::Base
             content = '<div class="wrapper"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="left" valign="top"><td align="center"><img class="logo" alt=Smallest  src=http://erp.chessgroupinc.com/'+CompanyInfo.first.image.image.url(:original)+' /></td></tr></table></div>'
             flag = 0
           end
-          
+
           if i == 1
             content += '<div id="main-wrapper">'
             content += '<div class="wrapper-1"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tbody><tr><th align="center" valign="middle">Part No</th><th align="center" valign="middle">Revision</th><th align="center" valign="middle">Stock</th><th align="center" valign="middle">In Process</th><th align="center" valign="middle">Committed</th><th align="center" valign="middle">Time Stock</th><th align="center" valign="middle">Run Out</th><th align="center" valign="middle">Usage</th><th align="center" valign="middle">TS</th><th align="center" valign="middle">RO</th></tr>'
@@ -208,7 +209,7 @@ class Item < ActiveRecord::Base
 
           if i==20
             content += '</tbody></table></div></div>'
-            content +='<div style="page-break-after: always; "> &nbsp;  </div>'  
+            content +='<div style="page-break-after: always; "> &nbsp;  </div>'
           end
 
           if len == index+1
@@ -216,14 +217,14 @@ class Item < ActiveRecord::Base
 
           i+=1
 
-          if i==21 
+          if i==21
             i= 1
             j = 1
-            content 
+            content
           end
         end
       end
-    }    
+    }
     html = '<!DOCTYPE html><title>Inventory_Report</title><!--[if lt IE 9]><script src="html5.js"></script><![endif]--><style type="text/css">@charset "utf-8";body {font-family: Arial, Helvetica, sans-serif;font-size: 12px;background-color: #FFF;margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;}/* New Style */.clear {clear: both;}#main-wrapper {float: left;height: auto;width: 640px;border:1px solid #000;}table {border-collapse: collapse;}.logo {width: 180px;}.wrapper-1 td {border: 1px solid #000;padding: 6px;}.wrapper-1 th {border: 1px solid #000;font-size: 12px;padding: 6px;} .wrapper {width: 640px;</style>
             '+content+'
         '
