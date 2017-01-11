@@ -68,8 +68,7 @@ GEM
       sass (~> 3.2)
     builder (3.2.2)
     cancancan (1.15.0)
-    climate_control (0.0.3)
-      activesupport (>= 3.0)
+    climate_control (0.1.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coffee-rails (4.2.1)
@@ -125,6 +124,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mimemagic (0.3.2)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     money (6.7.1)
@@ -138,12 +138,12 @@ GEM
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
-    paperclip (3.4.1)
-      activemodel (>= 3.0.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (~> 0.5.0)
+    paperclip (5.0.0)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      cocaine (~> 0.5.5)
       mime-types
+      mimemagic (~> 0.3.0)
     pdfkit (0.8.2)
     protected_attributes_continued (1.2.4)
       activemodel (>= 4.0.1, < 6.0)
@@ -259,7 +259,7 @@ DEPENDENCIES
   kaminari
   mysql2
   nested_scaffold
-  paperclip (= 3.4.1)
+  paperclip (~> 5.0.0.beta1)
   pdfkit
   protected_attributes_continued
   rails (= 5.0.0.1)
