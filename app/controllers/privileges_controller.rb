@@ -82,13 +82,16 @@ class PrivilegesController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.roles = [role_params]
+    @user.roles = [params[:role]]
     password_temp = password = Devise.friendly_token.first(8)
     p password
+
     @user.password = password_temp
     @user.password_confirmation = password_temp
-    @user.reset_password_token= User.reset_password_token
-    @user.reset_password_sent_at= Time.now
+
+    enc = Devise.token_generator.generate(User, :reset_password_token)
+    @user.reset_password_token = enc
+    @user.reset_password_sent_at = Time.now
 
     respond_to do |format|
       if @user.save
