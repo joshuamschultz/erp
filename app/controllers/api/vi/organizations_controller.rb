@@ -4,7 +4,7 @@ class Api::Vi::OrganizationsController < ApplicationController
     skip_before_action :authenticate_user!
 
     before_action :cors_preflight_check
-    after_filter :cors_set_access_control_headers
+    after_action :cors_set_access_control_headers
 
     # For all responses in this controller, return the CORS access control headers.
 
