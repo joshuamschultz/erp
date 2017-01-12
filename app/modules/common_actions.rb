@@ -559,7 +559,7 @@ module CommonActions
             common_process_model(model_type,model_id,quality_user)
 
         elsif model_type == "PoLine"
-            if model_id.organization.present? && model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
+            if model_id.organization.present? && model_id.organization.min_vendor_quality.present? && model_id.organization.min_vendor_quality.quality_name.ord <= model_id.po_header.organization.vendor_quality.quality_name.ord
                 common_process_model(model_type,model_id,quality_user)
             end
       end
@@ -702,13 +702,16 @@ module CommonActions
             #   product_description = '&nbsp'
             end
             if i== 1
-
+                logo_src = ''
+                if @company_info.logo.present?
+                   logo_src = $sitename+@company_info.logo.joint.url(:original)
+                end
                 content += '<section>
 
    <article>
             <div class="ms_image">
                 <div class="ms_image-wrapper">
-                    <img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' />
+                    <img alt=Report_heading src='+logo_src+' />
                 </div>
 
                 <div class="ms_image-text">

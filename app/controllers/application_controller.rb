@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_action :set_locale
+  before_action :determine_website
   before_action :authenticate_user!
   before_action :initialize_request
 
@@ -33,4 +34,7 @@ class ApplicationController < ActionController::Base
     CommonActions.clear_temp_objects
     root_path
   end
+   def determine_website
+     $sitename = request.host_with_port
+   end
 end
