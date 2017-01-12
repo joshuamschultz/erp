@@ -6,7 +6,7 @@ class Attachment < ActiveRecord::Base
   has_attached_file :attachment, :url  => "/attachments/documents/:id/:style/:basename.:extension",
   :path => ":rails_root/public/attachments/documents/:id/:style/:basename.:extension"
 
-  # validates_attachment_content_type :attachment, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
+  validates_attachment_content_type :attachment, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'application/pdf']
   validate :check_attachment_revision_title
   def check_attachment_revision_title
     unless self.is_process_type?
