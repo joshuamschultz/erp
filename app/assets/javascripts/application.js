@@ -22,4 +22,6 @@
 //= require jquery.multiselect.filter
 //= require autocomplete-rails
 //= require mustache
+//= require rails.validations
+//= require rails.validations.simple_form
 var tab_field_forms = {}, date_box_fields = [];
