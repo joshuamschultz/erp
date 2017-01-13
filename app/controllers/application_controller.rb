@@ -34,7 +34,8 @@ class ApplicationController < ActionController::Base
     CommonActions.clear_temp_objects
     root_path
   end
-   def determine_website
-     $sitename = request.host_with_port
-   end
+  def determine_website
+   $sitename = request.host_with_port
+   ActionMailer::Base.default_url_options = {:host => request.host_with_port}
+  end
 end

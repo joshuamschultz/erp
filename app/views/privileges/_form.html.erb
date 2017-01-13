@@ -1,7 +1,7 @@
-<%= simple_form_for(@user,:url => {:action => "create"}, :html => {:id => "form_for_previlage", :class => "form-horizontal"}) do |f| %>
+<%= simple_form_for(@user,:url => {:action => "create"}, :validate => true, :html => {:id => "form_for_previlage", :class => "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">    
+  <div class="form-inputs">
     <%= f.input :email, :autofocus => true %>
     <%= f.input :name %>
     <div class="control-group string optional user_state">
@@ -22,11 +22,11 @@
 
 
     <%= f.input :gender, label: 'Gender', collection: [['Male'], ['Female']], as: :radio_buttons, :checked => "Male"  %>
-    <%= f.input :address %>  
-    <%= f.input :city %> 
-    <%= f.input :state %>  
-    <%= f.input :country %> 
-    <%= f.input :telephone_no %>  
+    <%= f.input :address %>
+    <%= f.input :city %>
+    <%= f.input :state %>
+    <%= f.input :country %>
+    <%= f.input :telephone_no %>
     <%= f.input :mobile_no %>
     <%= f.input :active %>
   </div>
@@ -42,7 +42,7 @@
 <script type="text/javascript">
     tab_field_forms["form_for_previlage"] = ["user_email", "user_name", "role", "user_organization_id", "user_gender_male", "user_gender_female", "user_address", "user_city", "user_state", "user_country", "user_telephone_no", "user_mobile_no", "user_active"];
 </script>
-<!-- 
+<!--
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Roles</label>
         <div class="controls">
@@ -50,4 +50,3 @@
         </div>
     </div>
  -->
-

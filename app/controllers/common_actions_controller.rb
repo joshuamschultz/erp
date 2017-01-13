@@ -41,15 +41,15 @@ class CommonActionsController < ApplicationController
                 if notification.notable_type == 'Print'
                   result = (notification.notable.item_revisions.present? && notification.notable.item_revisions.last.item.present?) ? "/items/"+notification.notable.item_revisions.last.item.id.to_s : "http://erp.chessgroupinc.com"+notification.notable.attachment.attachment.url
                 elsif notification.notable_type == "Specification"
-                  result = "http://erp.chessgroupinc.com/specifications/"+notification.notable.id.to_s
+                  result = "#{RAILS_ROOT}/specifications/"+notification.notable.id.to_s
                 elsif notification.notable_type == "ProcessType"
-                  result = "http://erp.chessgroupinc.com/process_types/"+notification.notable.id.to_s
+                  result = "#{RAILS_ROOT}/process_types/"+notification.notable.id.to_s
                 elsif notification.notable_type == "PoLine"
-                  result = "http://erp.chessgroupinc.com/po_headers/"+notification.notable.po_header.id.to_s
+                  result = "#{RAILS_ROOT}/po_headers/"+notification.notable.po_header.id.to_s
                 elsif notification.notable_type == "Organization"
-                  result = "http://erp.chessgroupinc.com/organizations/"+notification.notable.id.to_s
+                  result = "#{RAILS_ROOT}/organizations/"+notification.notable.id.to_s
                 elsif notification.notable_type == "QualityAction"
-                  result = "http://erp.chessgroupinc.com/quality_actions/"+notification.notable.id.to_s
+                  result = "#{RAILS_ROOT}/quality_actions/"+notification.notable.id.to_s
                 elsif notification.notable_type == "Event"
                   result = "#{RAILS_ROOT}/events/"+notification.notable.id.to_s
                 end
@@ -327,7 +327,7 @@ class CommonActionsController < ApplicationController
                       source += temp
 
                       if i== 1
-                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
+                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=#{RAILS_ROOT}'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
                         content += '<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
                         if flag ==1
                           content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+so_b_c_title.to_s+'</h2> <h6> '+so_b_c_address_1.to_s+'</h6> <h6>'+so_b_c_address_2.to_s+'</h6><h6>'+so_b_c_state.to_s+'</h6><div class="dd"><h6 class="ds">'+so_b_c_country.to_s+'</h6>   <span id ="pk100_so_b_c_zipcode">'+so_b_c_zipcode.to_s
