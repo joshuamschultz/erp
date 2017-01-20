@@ -256,6 +256,8 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode_utils (1.4.0)
     uuidtools (2.1.5)
+    validates_email_format_of (1.6.3)
+      i18n
     validates_formatting_of (0.9.0)
       activemodel
     warden (1.2.6)
@@ -300,6 +302,7 @@ DEPENDENCIES
   string-urlize (~> 1.0.2)
   therubyracer (~> 0.10.2)
   uglifier (>= 1.0.3)
+  validates_email_format_of
   validates_formatting_of
   wkhtmltopdf-binary
 
