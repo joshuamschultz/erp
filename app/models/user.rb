@@ -49,7 +49,9 @@ class User < ActiveRecord::Base
 
   has_many :quotes
   validates_presence_of :email, :name
-
+  validates :email, email_format: { message: "doesn't look like an email address" }
+  validates_length_of :name, :within => 4..100, :too_long => "pick a shorter name", :too_short => "pick a longer name"
+  validates :telephone_no, :mobile_no,   format: { with: /\A(?:\+?\d{1,3}\s*-?)?\(?(?:\d{3})?\)?[- ]?\d{3}[- ]?\d{4}\z/,  message: "Invalid phone"}
   before_create :process_before_create
 
   def process_before_create

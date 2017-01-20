@@ -74,6 +74,7 @@ gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'string-urlize', '~> 1.0.2'
 gem 'protected_attributes_continued'
+gem 'validates_email_format_of'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.4'
