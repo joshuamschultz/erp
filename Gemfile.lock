@@ -93,6 +93,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    ebay (1.1)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -109,6 +110,7 @@ GEM
       activesupport (>= 4.1.0)
     haml (4.0.7)
       tilt
+    httpclient (2.8.3)
     i18n (0.7.0)
     i18n_data (0.7.0)
     jquery-rails (4.2.2)
@@ -234,6 +236,8 @@ GEM
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
     sixarm_ruby_unaccent (1.1.1)
+    soap4r (1.5.8)
+      httpclient (>= 2.1.1)
     sort_alphabetical (1.1.0)
       unicode_utils (>= 1.2.2)
     sprockets (3.7.1)
@@ -281,6 +285,7 @@ DEPENDENCIES
   countries
   country_select
   devise (~> 4.2)
+  ebay
   execjs (= 1.4.0)
   factory_girl_rails
   faker (~> 1.6, >= 1.6.3)
@@ -299,6 +304,7 @@ DEPENDENCIES
   rspec-rails (~> 3.4)
   sass-rails (~> 5.0, >= 5.0.4)
   simple_form
+  soap4r (~> 1.5, >= 1.5.8)
   string-urlize (~> 1.0.2)
   therubyracer (~> 0.10.2)
   uglifier (>= 1.0.3)

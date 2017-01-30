@@ -70,6 +70,10 @@ class PoShipment < ActiveRecord::Base
 
 
   end
+
+  def self.updateChannel(po_shipment_id)
+      system "rake ebay:add_item[#{po_shipment_id}]"
+  end
   # after_commit :after_commit_process
   # def after_commit_process
   #   if self.quality_lot
