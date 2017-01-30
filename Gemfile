@@ -81,6 +81,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker', '~> 1.6', '>= 1.6.3'
 end
-
+gem 'ebay'
+gem 'soap4r', '~> 1.5', '>= 1.5.8'
 
 # gem "fast_seeder"

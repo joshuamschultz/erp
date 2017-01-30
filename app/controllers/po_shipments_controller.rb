@@ -163,8 +163,6 @@ class PoShipmentsController < ApplicationController
 
     respond_to do |format|
       if @po_shipment.save
-
-
         @item_lot = ItemLot.create(item_id: @po_shipment.po_line.item_id)
         inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
@@ -180,7 +178,7 @@ class PoShipmentsController < ApplicationController
           # @quality_lot.set_lot_control_no
         end
 
-
+        PoShipment.updateChannel(@po_shipment.id)
 
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
         quality_lot = @po_shipment.quality_lot
