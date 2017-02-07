@@ -7,6 +7,10 @@ AllianceFasteners::Application.configure do
   ENV['ROOT_URL'] = 'http://localhost:3000/'
   config.cache_classes = false
 
+
+
+
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
