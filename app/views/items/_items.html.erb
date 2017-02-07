@@ -176,7 +176,7 @@
      function updateeBay_result(response, callback_params, api_params){
         if (JSON.stringify(response.aaData.added) == "true")
         {
-            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Added the item to eBay");
+            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Added/Updated the item to eBay");
             $(".loading").css("display", "none");
 
         }
