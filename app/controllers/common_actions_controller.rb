@@ -606,6 +606,21 @@ class CommonActionsController < ApplicationController
 
               result = gl_account_titles
 
+            when "update_ebay"
+              updated = Hash.new
+              item_id = params[:item_id]
+              item_revision_id = params[:item_revision_id]
+              rake_command = "rake ebay:add_item["+item_id
+              rake_command = rake_command + ","
+              rake_command = rake_command + item_revision_id
+              rake_command = rake_command + "]"
+              res = system rake_command
+
+              updated["itemId"]  = item_id
+              updated["itemRevisionId"] = item_revision_id
+              updated["added"] = res
+              result = updated
+
             when "after_print_checks"
               if params[:id].present?
                 check_entry = CheckEntry.find(params[:id])

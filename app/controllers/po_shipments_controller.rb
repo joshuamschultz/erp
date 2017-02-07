@@ -178,8 +178,6 @@ class PoShipmentsController < ApplicationController
           # @quality_lot.set_lot_control_no
         end
 
-        PoShipment.updateChannel(@po_shipment.id)
-
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
         quality_lot = @po_shipment.quality_lot
 

@@ -4,14 +4,14 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Items</h4>
             <span class="span6 heading right">
-               <% if can? :edit, Item %> 
+               <% if can? :edit, Item %>
                     <%= link_to 'New Item', new_item_path, :class => "btn btn-mini btn-success" %>
-               <% end %> 
+               <% end %>
             </span>
-        </div> 
+        </div>
     </div>
     <!-- // Widget heading END -->
-
+<div class="loading" style="display: none;"> <div id="load">  <p>Processing...</p></div> </div>
 <% unless  user_signed_in? &&  (current_user.is_vendor? || current_user.is_customer? )%>
     <div class="widget-body">
         <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
@@ -27,64 +27,67 @@
                 <th>Tooling</th>
                 <% if @organization.present? && @organization.type_name == "customer"%>
                     <th> Sell </th>
-                <%  end %>                
+                <%  end %>
                 <th>Notes</th>
-                <th>Active</th> 
-                <th>Quantity on Hand</th>  
-                <th>Quantity on Order</th> 
-                <th>Alt Names</th>  
+                <th>Active</th>
+                <th>Quantity on Hand</th>
+                <th>Quantity on Order</th>
+                <th>Alt Names</th>
+                <th span="2">Update Channels</th>
                 <!-- <th></th> -->
               </tr>
             </thead>
             <body>
-                
+
             </body>
         </table>
     </div>
 </div>
 
-<% if @organization.present? && @organization.type_name == "customer" %> 
+<% if @organization.present? && @organization.type_name == "customer" %>
 
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false},
             :columns => '[
-                            { "mData": "owner_name", "bVisible": false },                        
+                            { "mData": "owner_name", "bVisible": false },
                             { "mData": "item_part_no" },
                             { "mData": "item_name", "bVisible": false },
                             { "mData": "item_description", "bVisible": false },
-                            { "mData": "vendor_name", "bVisible": false },                       
-                            { "mData": "item_revision_name" },
-                            { "mData": "item_revision_date", "bVisible": false},
-                            { "mData": "item_tooling", "bVisible": false },                            
-                            { "mData": "item_sell" },                       
-                            { "mData": "item_notes", "bVisible": false},
-                            { "mData": "item_active", "bVisible": false },
-                            { "mData": "item_quantity_in_hand" },
-                            { "mData": "item_quantity_on_order" },
-                            { "mData": "item_alt_parts" }
-                        ]'
-        } 
-    %>
-<% else %>
-     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
-            :columns => '[
-                            { "mData": "owner_name", "bVisible": false },                        
-                            { "mData": "item_part_no" },
-                            { "mData": "item_name", "bVisible": false },
-                            { "mData": "item_description", "bVisible": false },
-                            { "mData": "vendor_name", "bVisible": false },                       
+                            { "mData": "vendor_name", "bVisible": false },
                             { "mData": "item_revision_name" },
                             { "mData": "item_revision_date", "bVisible": false},
                             { "mData": "item_tooling", "bVisible": false },
-                                                 
+                            { "mData": "item_sell" },
                             { "mData": "item_notes", "bVisible": false},
                             { "mData": "item_active", "bVisible": false },
                             { "mData": "item_quantity_in_hand" },
                             { "mData": "item_quantity_on_order" },
                             { "mData": "item_alt_parts" }
                         ]'
-        } 
+        }
+    %>
+<% else %>
+     <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false},
+            :columns => '[
+                            { "mData": "owner_name", "bVisible": false },
+                            { "mData": "item_part_no" },
+                            { "mData": "item_name", "bVisible": false },
+                            { "mData": "item_description", "bVisible": false },
+                            { "mData": "vendor_name", "bVisible": false },
+                            { "mData": "item_revision_name" },
+                            { "mData": "item_revision_date", "bVisible": false},
+                            { "mData": "item_tooling", "bVisible": false },
+
+                            { "mData": "item_notes", "bVisible": false},
+                            { "mData": "item_active", "bVisible": false },
+                            { "mData": "item_quantity_in_hand" },
+                            { "mData": "item_quantity_on_order" },
+                            { "mData": "item_alt_parts" },
+                            { "mData": "push_eBay" },
+                            { "mData": "push_Amazon" },
+                        ]'
+        }
     %>
 <% end %>
 <% else %>
@@ -103,64 +106,99 @@
                 <th>Tooling</th>
                 <% if @organization.present? && @organization.type_name == "customer"%>
                     <th> Sell </th>
-                <%  end %>                
+                <%  end %>
                 <th>Notes</th>
-                <th>Active</th> 
-                <th>Quantity on Hand</th>  
-                <th>Quantity on Order</th> 
-                <th>Alt Names</th>  
+                <th>Active</th>
+                <th>Quantity on Hand</th>
+                <th>Quantity on Order</th>
+                <th>Alt Names</th>
                 <!-- <th></th> -->
               </tr>
             </thead>
             <body>
-                
+
             </body>
         </table>
     </div>
 </div>
 
-<% if @organization.present? && @organization.type_name == "customer" %> 
+<% if @organization.present? && @organization.type_name == "customer" %>
 
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false},
             :columns => '[
-                            { "mData": "owner_name", "bVisible": false },                        
+                            { "mData": "owner_name", "bVisible": false },
                             { "mData": "item_part_no" },
                             { "mData": "item_name", "bVisible": false },
                             { "mData": "item_description", "bVisible": false },
-                            { "mData": "vendor_name", "bVisible": false },                       
+                            { "mData": "vendor_name", "bVisible": false },
                             { "mData": "item_revision_name" },
                             { "mData": "item_revision_date", "bVisible": false},
                             { "mData": "item_tooling", "bVisible": false },
-                            { "mData": "item_sell" },                       
+                            { "mData": "item_sell" },
                             { "mData": "item_notes", "bVisible": false},
                             { "mData": "item_active", "bVisible": false },
                             { "mData": "item_quantity_in_hand" },
                             { "mData": "item_quantity_on_order" },
                             { "mData": "item_alt_parts" }
                         ]'
-        } 
+        }
     %>
 <% else %>
-     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false}, 
+     <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+        {:name => "table_report_items", :path => items_path(:organization_id => (@organization.nil? ? nil : @organization.id)), :extras => {:slno => false},
             :columns => '[
-                            { "mData": "owner_name", "bVisible": false },                        
+                            { "mData": "owner_name", "bVisible": false },
                             { "mData": "item_part_no" },
                             { "mData": "item_name", "bVisible": false },
                             { "mData": "item_description", "bVisible": false },
-                            { "mData": "vendor_name", "bVisible": false },                       
+                            { "mData": "vendor_name", "bVisible": false },
                             { "mData": "item_revision_name" },
                             { "mData": "item_revision_date", "bVisible": false},
-                            { "mData": "item_tooling", "bVisible": false },                      
+                            { "mData": "item_tooling", "bVisible": false },
                             { "mData": "item_notes", "bVisible": false},
                             { "mData": "item_active", "bVisible": false },
                             { "mData": "item_quantity_in_hand" },
                             { "mData": "item_quantity_on_order" },
                             { "mData": "item_alt_parts" }
                         ]'
-        } 
+        }
     %>
 <% end %>
 
 <% end %>
+<script type="text/javascript">
+    function updateeBay(item_id, item_revision_id){
+
+        $(".loading").css("display", "block");
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "update_ebay", "item_id" : item_id, 'item_revision_id' : item_revision_id}}, "updateeBay_result", {});
+    }
+     function updateeBay_result(response, callback_params, api_params){
+        if (JSON.stringify(response.aaData.added) == "true")
+        {
+            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Added the item to eBay");
+            $(".loading").css("display", "none");
+
+        }
+        else
+        {
+            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Add Item to eBay Failed!");
+            $(".loading").css("display", "none");
+
+        }
+
+    }
+    function updateAmazon(i, type){
+        alert("Yet to implement");
+
+    }
+</script>
+<style>
+
+#load {background: url("/assets/images/loading.GIF") no-repeat scroll 0 0 rgba(0, 0, 0, 0);color:#fff;height: 55px;left: 0;margin: 0 auto;
+position: absolute;right: 25%;
+text-align: center;top: 40%;width: 55px;}
+.loading {background-color: rgba(0, 0, 0, 0.8);height: 100%;position: fixed;top: 0;width: 100%;z-index: 999}
+#load p {margin-top: 65px;font-family: Arial, Helvetica, sans-serif;font-size: 14px;}
+
+</style>
