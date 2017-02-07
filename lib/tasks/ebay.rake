@@ -1,12 +1,13 @@
 namespace :ebay do
   desc "Ebay Integration"
-  task :add_item, [:po_shipment_id] => :environment do |t, args|
-    @po_shipment = PoShipment.find(args.po_shipment_id)
-    sku =  @po_shipment.po_line.item.item_part_no
-    title = @po_shipment.po_line.item_revision.item_name
-    description = @po_shipment.po_line.item_revision.item_description
-    start_price = @po_shipment.po_line.po_line_cost
-    quantity = @po_shipment.po_line.po_line_shipped
+  task :add_item, [:item_id, :item_revision_id] => :environment do |t, args|
+    @item = Item.find(args.item_id)
+    @item_revision = ItemRevision.find(args.item_revision_id)
+    sku =  @item.item_part_no
+    title = @item_revision.item_name
+    description = @item_revision.item_description
+    start_price = @item.weighted_cost
+    quantity = @item.stock(ItemRevision.find(@item_revision.id))
     if description == ''
       description = 'Test Description'
     end
@@ -136,6 +137,7 @@ namespace :ebay do
                           )
 
   puts "New Item #" + resp.itemID + " added."
+  resp
   end
 
 end

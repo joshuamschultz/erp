@@ -96,6 +96,16 @@ class ItemsController < ApplicationController
                 item_with_revision[:item_active] = item.item_active
               end
               item_with_revision[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
+              funct = 'updateeBay(' + item.id.to_s
+              funct = funct + ','
+              funct = funct + item_revision.id.to_s
+              funct = funct + ');'
+              ebay_res_div = ' eBay <div id="ebay_update_info_'+ item_revision.id.to_s
+              ebay_res_div = ebay_res_div + '"></div>'
+              amazon_res_div = ' Amazon <div id="amazon_update_info_'+ item_revision.id.to_s
+              amazon_res_div = amazon_res_div + '"></div>'
+              item_with_revision[:push_eBay] = CommonActions.check_boxes(item.item_part_no, item_revision.id, funct) + ebay_res_div
+              item_with_revision[:push_Amazon] = CommonActions.check_boxes(item.item_part_no, item_revision.id,funct ) + amazon_res_div
               @items_new << item_with_revision
             }
           }
