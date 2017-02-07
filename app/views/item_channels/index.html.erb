@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Item Channels</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Item revision</th>
+      <th>Channel</th>
+      <th>Channel item</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @item_channels.each do |item_channel| %>
+      <tr>
+        <td><%= item_channel.item_revision_id %></td>
+        <td><%= item_channel.channel %></td>
+        <td><%= item_channel.channel_item_id %></td>
+        <td><%= link_to 'Show', item_channel %></td>
+        <td><%= link_to 'Edit', edit_item_channel_path(item_channel) %></td>
+        <td><%= link_to 'Destroy', item_channel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item Channel', new_item_channel_path %>

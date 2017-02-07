@@ -1,0 +1,2 @@
+class ItemChannel < ApplicationRecord
+end
