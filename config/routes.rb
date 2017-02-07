@@ -1,4 +1,5 @@
 AllianceFasteners::Application.routes.draw do
+  resources :item_channels
 get "auto_complete" => 'so_lines#auto_complete'
 
   namespace :api do

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Item revision:</strong>
+  <%= @item_channel.item_revision_id %>
+</p>
+
+<p>
+  <strong>Channel:</strong>
+  <%= @item_channel.channel %>
+</p>
+
+<p>
+  <strong>Channel item:</strong>
+  <%= @item_channel.channel_item_id %>
+</p>
+
+<%= link_to 'Edit', edit_item_channel_path(@item_channel) %> |
+<%= link_to 'Back', item_channels_path %>
