@@ -97,16 +97,22 @@ class ItemsController < ApplicationController
               end
               item_with_revision[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
 
-              funct = 'updateeBay(' + item.id.to_s
-              funct = funct + ','
-              funct = funct + item_revision.id.to_s
-              funct = funct + ');'
+              funct_ebay = 'updateeBay(' + item.id.to_s
+
+              funct_ebay = funct_ebay + ','
+              funct_ebay = funct_ebay + item_revision.id.to_s
+              funct_ebay = funct_ebay + ');'
+
+              funct_amazon = 'updateAmazon(' + item.id.to_s
+              funct_amazon = funct_amazon + ','
+              funct_amazon = funct_amazon + item_revision.id.to_s
+              funct_amazon = funct_amazon + ');'
               ebay_res_div = ' eBay <div id="ebay_update_info_'+ item_revision.id.to_s
               ebay_res_div = ebay_res_div + '"></div>'
               amazon_res_div = ' Amazon <div id="amazon_update_info_'+ item_revision.id.to_s
               amazon_res_div = amazon_res_div + '"></div>'
-              item_with_revision[:push_eBay] = CommonActions.check_boxes(item.item_part_no, item_revision.id, funct) + ebay_res_div
-              item_with_revision[:push_Amazon] = CommonActions.check_boxes(item.item_part_no, item_revision.id,funct ) + amazon_res_div
+              item_with_revision[:push_eBay] = CommonActions.check_boxes(item.item_part_no, item_revision.id, funct_ebay) + ebay_res_div
+              item_with_revision[:push_Amazon] = CommonActions.check_boxes(item.item_part_no, item_revision.id,funct_amazon ) + amazon_res_div
 
               @items_new << item_with_revision
             }
