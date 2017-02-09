@@ -15,13 +15,12 @@ namespace :ebay do
      @item_channel =  ItemChannel.where(:item_revision_id => args.item_revision_id, :channel => "eBay").first
     require 'eBayAPI'
     require 'eBay'
-
     # load('myCredentials.rb')
     eBay = EBay::API.new(Rails.application.config.ebay_auth_token,Rails.application.config.ebay_dev_id,Rails.application.config.app_id,Rails.application.config.cert_id, :sandbox => true)
     unless defined? @item_channel.channel_item_id
-      puts "Not exist"
-
       # Notice how we nest hashes to mimic the XML structure of an AddItem request
+      resp = ''
+     begin
       resp = eBay.AddItem(:Item => EBay.Item(:PrimaryCategory => EBay.Category(:CategoryID => 111422),
                                               :SKU => sku,
                                               :Title => title,
@@ -55,19 +54,33 @@ namespace :ebay do
                                                                 :ReturnsAcceptedOption => "ReturnsAccepted"
                                                                )
                                               ))
-
-        puts "New Item #" + resp.itemID + " added."
-        puts "Exist"
-        ItemChannel.create(:item_revision_id => args.item_revision_id, :channel => "eBay", :channel_item_id => resp.itemID)
+          if defined? resp.itemID
+           puts "New Item #" + resp.itemID + " added."
+          end
+          ItemChannel.create(:item_revision_id => args.item_revision_id, :channel => "eBay", :channel_item_id => resp.itemID)
+        rescue Exception => msg
+          result = msg.to_s
+          puts result
+          next
+        end
       else
-
-        resp = eBay.ReviseItem(:Item =>EBay.Item(
+        begin
+          resp = eBay.ReviseItem(:Item =>EBay.Item(
                                             :StartPrice => start_price,
                                             :Quantity => quantity,
                                             :ItemID => @item_channel.channel_item_id,
                                             ))
-        puts "Item updated"
+
+          if defined? resp.itemID
+            puts resp.itemID + " updated"
+          end
+        rescue Exception => msg
+          result = msg.to_s
+          puts result
+          next
+        end
       end
+      result
   end
 
   task add_item_multiple: :environment do  ###Not yet completed
