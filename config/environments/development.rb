@@ -8,6 +8,7 @@ AllianceFasteners::Application.configure do
   config.cache_classes = false
 
 
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 

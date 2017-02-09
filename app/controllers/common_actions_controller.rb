@@ -614,10 +614,10 @@ class CommonActionsController < ApplicationController
               rake_command = rake_command + ","
               rake_command = rake_command + item_revision_id
               rake_command = rake_command + "]"
-              res = system rake_command
-
+              res = %x[#{rake_command}]
               updated["itemId"]  = item_id
               updated["itemRevisionId"] = item_revision_id
+
               updated["added"] = res
               result = updated
 

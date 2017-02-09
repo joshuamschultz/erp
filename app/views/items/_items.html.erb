@@ -174,18 +174,18 @@
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "update_ebay", "item_id" : item_id, 'item_revision_id' : item_revision_id}}, "updateeBay_result", {});
     }
      function updateeBay_result(response, callback_params, api_params){
-        if (JSON.stringify(response.aaData.added) == "true")
-        {
-            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Added/Updated the item to eBay");
-            $(".loading").css("display", "none");
-
-        }
-        else
-        {
-            $("#ebay_update_info_"+response.aaData.itemRevisionId).append("Add Item to eBay Failed!");
-            $(".loading").css("display", "none");
-
-        }
+            if(JSON.stringify(response.aaData.added) == "Internal error to the application.\n")
+            {
+               $("#ebay_update_info_"+response.aaData.itemRevisionId).append("eBay server error! Please try again!");
+               $(".loading").css("display", "none");
+            }
+            else
+            {
+                res = JSON.stringify(response.aaData.added).replace(/\"/g, "");
+                res = res.substring(0, res.length - 2);
+                $("#ebay_update_info_"+response.aaData.itemRevisionId).append(res);
+                $(".loading").css("display", "none");
+            }
 
     }
     function updateAmazon(i, type){
