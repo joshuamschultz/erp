@@ -621,6 +621,21 @@ class CommonActionsController < ApplicationController
               updated["added"] = res
               result = updated
 
+            when "sync_add_ebay"
+              updated = Hash.new
+              item_revision_ids = params[:item_revision_ids]
+              itemRevisionIds = "'" + item_revision_ids.join(" ") + "'"
+              rake_command = "rake ebay:add_item_multiple[" + "#{itemRevisionIds}" +  "]"
+              # rake_command = rake_command + ","
+              # rake_command = rake_command + item_revision_id
+              # rake_command = rake_command + "]"
+              res = %x[#{rake_command}]
+              updated["itemId"]  = item_id
+              updated["itemRevisionId"] = item_revision_id
+
+              updated["added"] = res
+              result = updated
+
             when "after_print_checks"
               if params[:id].present?
                 check_entry = CheckEntry.find(params[:id])

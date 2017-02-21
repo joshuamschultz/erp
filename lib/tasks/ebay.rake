@@ -44,7 +44,6 @@ namespace :ebay do
                                                                       :ShippingServiceAdditionalCost => '0.0')]),
                                                                 :ShippingTermsInDescription => false,
                                                                 :ShipToLocations => "US",
-                                                                :ShipToLocations => "US",
                                               :DispatchTimeMax => '3',
                                               :ListingType => 'FixedPriceItem',
                                               :PaymentMethods => ["AmEx"],
@@ -83,84 +82,95 @@ namespace :ebay do
       result
   end
 
-  task add_item_multiple: :environment do  ###Not yet completed
-    require 'eBayAPI'
-    require 'eBay'
+  task :add_item_multiple, [:item_revision_ids] => :environment do |t, args|
+    addItemReqContainerArray = Array.new
+    itemRevIds = args.item_revision_ids.split(" ")
+    if itemRevIds.length > 0 then
+      i = 0
+      sku = Array.new
+      title = Array.new
+      description = Array.new
+      start_price = Array.new
+      quantity = Array.new
+      itemRevIds.each do |item_revision_id|
+        @item_revision = ItemRevision.find(item_revision_id)
+        item_id = @item_revision.item_id
+        @item = Item.find(item_id)
+        sku[i] =  @item.item_part_no
+        title[i] = @item_revision.item_name
+        description[i] = @item_revision.item_description
+        start_price[i] = @item.weighted_cost
+        quantity[i] = @item.stock(ItemRevision.find(@item_revision.id))
+        if description[i] == ''
+          description[i] = 'Test Description'
+        end
+        start_price[i] = start_price[i].to_d.to_s
+        i = i + 1
+      end
+      i = 0
+      require 'eBayAPI'
+      require 'eBay'
+      itemRevIds.each do |item_revision_id|
+      addItemReqContainerArray.push(EBay.AddItemRequestContainer(:Item => EBay.Item(:PrimaryCategory => EBay.Category(:CategoryID => 111422),
+                                              :Title => title[i],
+                                              :ConditionID => '1000',
+                                              :Description => description[i],
+                                              :Location => 'On Earth',
+                                              :StartPrice => start_price[i],
+                                              :Quantity => quantity[i],
+                                              :ListingDuration => "Days_7",
+                                              :Country => "US",
+                                              :Currency => "USD",
+                                              :Site => "US",
+                                              :ShippingDetails => EBay.ShippingDetails(
+                                                                  :ShippingServiceOptions => [
+                                                                    EBay.ShippingServiceOptions(
+                                                                      :ShippingService => ShippingServiceCodeType::USPSPriority,
+                                                                      :ShippingServiceCost => '0.0',
+                                                                      :ShippingServiceAdditionalCost => '0.0'),
+                                                                    EBay.ShippingServiceOptions(
+                                                                      :ShippingService => ShippingServiceCodeType::USPSPriorityFlatRateBox,
+                                                                      :ShippingServiceCost => '7.0',
+                                                                      :ShippingServiceAdditionalCost => '0.0')]),
+                                                                :ShippingTermsInDescription => false,
+                                                                :ShipToLocations => "US",
+                                              :DispatchTimeMax => '3',
+                                              :ListingType => 'FixedPriceItem',
+                                              :PaymentMethods => ["AmEx"],
+                                              :ReturnPolicy => EBay.ReturnPolicy(
+                                                                :Description => "No return policy",
+                                                                :ReturnsAccepted => "without damage",
+                                                                :ReturnsAcceptedOption => "ReturnsAccepted"
+                                                               )
 
-    # load('myCredentials.rb')
+
+                                            ),
+                                            :MessageID => "test" + i.to_s + "0"
+                                          ))
+        i = i + 1
+      end
+    end
+
+    # load Credentials
 
     eBay = EBay::API.new(Rails.application.config.ebay_auth_token,Rails.application.config.ebay_dev_id,Rails.application.config.app_id,Rails.application.config.cert_id, :sandbox => true)
-
-      # Notice how we nest hashes to mimic the XML structure of an AddItem request
-      resp = eBay.AddItems(:AddItemRequestContainer => EBay.AddItemsRequest(:Item => EBay.Item(:PrimaryCategory => EBay.Category(:CategoryID => 57882),
-                                             :Title => "Harry Potter and the Philosopher's Stone - III",
-                                             :ConditionID => '1000',
-                                             :Description => 'This is the first book in the Harry Potter series. In excellent condition!',
-                                             :Location => 'On Earth',
-                                             :StartPrice => '12.0',
-                                             :Quantity => 1,
-                                             :ListingDuration => "Days_7",
-                                             :Country => "US",
-                                             :Currency => "USD",
-                                             :ShippingDetails => EBay.ShippingDetails(
-                                                                :ShippingServiceOptions => [
-                                                                  EBay.ShippingServiceOptions(
-                                                                    :ShippingService => ShippingServiceCodeType::USPSPriority,
-                                                                    :ShippingServiceCost => '0.0',
-                                                                    :ShippingServiceAdditionalCost => '0.0'),
-                                                                  EBay.ShippingServiceOptions(
-                                                                    :ShippingService => ShippingServiceCodeType::USPSPriorityFlatRateBox,
-                                                                    :ShippingServiceCost => '7.0',
-                                                                    :ShippingServiceAdditionalCost => '0.0')]),
-                                                              :ShippingTermsInDescription => false,
-                                                              :ShipToLocations => "US",
-                                                              :ShipToLocations => "US",
-                                             :DispatchTimeMax => '3',
-                                             :ListingType => 'Chinese',
-                                             :PaymentMethods => ["AmEx"],
-                                             :ReturnPolicy => EBay.ReturnPolicy(
-                                                              :Description => "No return policy",
-                                                              :ReturnsAccepted => "without damage",
-                                                              :ReturnsAcceptedOption => "ReturnsAccepted"
-                                                             )
-                                            )),
-                            :AddItemRequestContainer => EBay.AddItemsRequest(:Item => EBay.Item(:PrimaryCategory => EBay.Category(:CategoryID => 57882),
-                                             :Title => "Harry Potter and the Philosopher's Stone - IV",
-                                             :ConditionID => '1000',
-                                             :Description => 'This is the first book in the Harry Potter series. In excellent condition!',
-                                             :Location => 'On Earth',
-                                             :StartPrice => '12.0',
-                                             :Quantity => 1,
-                                             :ListingDuration => "Days_7",
-                                             :Country => "US",
-                                             :Currency => "USD",
-                                             :ShippingDetails => EBay.ShippingDetails(
-                                                                :ShippingServiceOptions => [
-                                                                  EBay.ShippingServiceOptions(
-                                                                    :ShippingService => ShippingServiceCodeType::USPSPriority,
-                                                                    :ShippingServiceCost => '0.0',
-                                                                    :ShippingServiceAdditionalCost => '0.0'),
-                                                                  EBay.ShippingServiceOptions(
-                                                                    :ShippingService => ShippingServiceCodeType::USPSPriorityFlatRateBox,
-                                                                    :ShippingServiceCost => '7.0',
-                                                                    :ShippingServiceAdditionalCost => '0.0')]),
-                                                              :ShippingTermsInDescription => false,
-                                                              :ShipToLocations => "US",
-                                                              :ShipToLocations => "US",
-                                             :DispatchTimeMax => '3',
-                                             :ListingType => 'Chinese',
-                                             :PaymentMethods => ["AmEx"],
-                                             :ReturnPolicy => EBay.ReturnPolicy(
-                                                              :Description => "No return policy",
-                                                              :ReturnsAccepted => "without damage",
-                                                              :ReturnsAcceptedOption => "ReturnsAccepted"
-                                                             )
-                                            )
-                                        )
-                          )
-
-  puts "New Item #" + resp.itemID + " added."
-  resp
+    begin
+      resp = eBay.AddItems(:AddItemRequestContainer => addItemReqContainerArray)
+      res = Hash.new
+      i = 0
+      if resp.addItemResponseContainer.kind_of?(Array)
+        resp.addItemResponseContainer.each do |response_container|
+          res[itemRevIds[i]] = response_container.itemID.present? ? response_container.itemID : "Errors in Input Data"
+          i = i + 1
+        end
+      else
+        res[itemRevIds[i]] = resp.addItemResponseContainer.itemID.present? ? resp.addItemResponseContainer.itemID : "Errors in Input Data"
+      end
+      puts res.to_json
+    rescue Exception => msg
+      result = msg.to_s
+      puts result.to_json
+      next
+    end
   end
-
 end
