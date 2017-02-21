@@ -152,6 +152,9 @@ class ItemRevision < ActiveRecord::Base
         end
   end
 
+    def self.item_sync_checkbox(itemRevision)
+     "<input type='checkbox' class='item_sync' name='item_revision_#{itemRevision.id}' id='item_revision_#{itemRevision.id}' value='#{itemRevision.id}'>  "
+    end
     def redirect_path
         item_path(self.item, revision_id: self.id)
     end

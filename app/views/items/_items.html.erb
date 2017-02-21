@@ -1,6 +1,18 @@
+ <div class="row-fluid">
+        <div class="span9">
+           <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="sync_items_ebay();return false;">
+                      <span class="glyphicons refresh"><i></i></span>
+                      <span class="txt">Add Items to eBay</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
+        </div>
+    </div>
 <div class="widget">
     <!-- Widget heading -->
     <div class="widget-head">
+
         <div class="row-fluid">
             <h4 class="span6 heading">Items</h4>
             <span class="span6 heading right">
@@ -84,8 +96,8 @@
                             { "mData": "item_quantity_in_hand" },
                             { "mData": "item_quantity_on_order" },
                             { "mData": "item_alt_parts" },
-                            { "mData": "push_eBay" },
-                            { "mData": "push_Amazon" },
+                            { "mData": "item_part_sync" },
+
                         ]'
         }
     %>
@@ -168,6 +180,42 @@
 
 <% end %>
 <script type="text/javascript">
+
+    function sync_items_ebay()
+    {
+
+          var itemRevisionIDs = $("input:checkbox:checked").map(function () {
+              return $(this).val();
+          }).get();
+          if(itemRevisionIDs.length <= 0)
+            alert("Please select item/items to add");
+          else
+          {
+            $(".loading").css("display", "block");
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "sync_add_ebay",  'item_revision_ids' : itemRevisionIDs}}, "sync_add_ebay_result", {});
+          }
+
+    }
+    function sync_add_ebay_result(response, callback_params, api_params){
+            var finalData = response.aaData.added;
+            finalData = finalData.substring(0, finalData.indexOf('}') + 1);
+            if(finalData)
+            {
+                finalData = JSON.parse(finalData);
+                $.each(finalData, function(i, item) {
+                    $("#item_revision_"+i).closest('td').append("eBay Item Id:"+item)
+                });
+
+                $(".loading").css("display", "none");
+            }
+            else
+            {
+                finalData = response.aaData.added;
+               alert(finalData);
+               $(".loading").css("display", "none");
+            }
+
+    }
     function updateeBay(item_id, item_revision_id){
 
         $(".loading").css("display", "block");
