@@ -173,4 +173,28 @@ namespace :ebay do
       next
     end
   end
+
+  task :getItemsList => :environment do
+    require 'eBayAPI'
+    require 'eBay'
+    eBay = EBay::API.new(Rails.application.config.ebay_auth_token,Rails.application.config.ebay_dev_id,Rails.application.config.app_id,Rails.application.config.cert_id, :sandbox => true)
+    begin
+      resp = eBay.GetSellerList(:StartTimeFrom => '2016-12-01',
+                                :StartTimeTo => '2017-03-01',
+                                :DetailLevel => DetailLevelCodeType::ItemReturnAttributes,
+                                :Pagination => EBay.Pagination(:EntriesPerPage => 10,
+                                                               :PageNumber => 18),
+                                :GranularityLevel => GranularityLevelCodeType::Fine
+                                )
+                                # :UserID => "testuser_rehna"   )
+      resp.itemArray.each do |field, val|
+        puts "Item ID: " + field.itemID.to_s
+        puts "Quantity:"  + field.quantity.to_s
+        puts "Title:" + field.title.to_s
+        puts "Price:" + field.startPrice.to_s
+      end
+    rescue Exception => msg
+      puts msg.to_json
+    end
+  end
 end

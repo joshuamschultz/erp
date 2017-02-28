@@ -636,6 +636,18 @@ class CommonActionsController < ApplicationController
               updated["added"] = res
               result = updated
 
+            when "pull_ebay_items"
+
+              rake_command = "rake ebay:getItemsList"
+              # rake_command = rake_command + ","
+              # rake_command = rake_command + item_revision_id
+              # rake_command = rake_command + "]"
+              res = %x[#{rake_command}]
+
+
+              result = res
+
+
             when "after_print_checks"
               if params[:id].present?
                 check_entry = CheckEntry.find(params[:id])
