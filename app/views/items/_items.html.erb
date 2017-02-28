@@ -7,8 +7,16 @@
                       <div class="clearfix"></div>
                   </a>
             </div>
+            <div class="span4 well">
+                  <a class="widget-stats" href="#" id="contacts_btn" onclick="pull_items_ebay();return false;">
+                      <span class="glyphicons refresh"><i></i></span>
+                      <span class="txt">Pull Items From eBay</span>
+                      <div class="clearfix"></div>
+                  </a>
+            </div>
         </div>
     </div>
+
 <div class="widget">
     <!-- Widget heading -->
     <div class="widget-head">
@@ -214,6 +222,25 @@
                alert(finalData);
                $(".loading").css("display", "none");
             }
+
+    }
+     function pull_items_ebay()
+    {
+
+
+            $(".loading").css("display", "block");
+            initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "pull_ebay_items",}}, "pull_items_ebay_result", {});
+
+
+    }
+    function pull_items_ebay_result(response, callback_params, api_params){
+               $(".loading").css("display", "none");
+               $("#result_table").css("display", "block");
+
+               alert(response.aaData)
+
+
+
 
     }
     function updateeBay(item_id, item_revision_id){
