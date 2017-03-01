@@ -1,3 +1,22 @@
+<div class="modal hide" id="result_table">
+    <div class="modal-header">
+        <h3>Items</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >x</button>
+    </div>
+    <div class = "modal-body">
+        <table class="dynamicTable table table-striped table-bordered">
+            <thead>
+                <tr>
+                <th>Item Id</th>
+                <th>Quantity</th>
+                <th>Title</th>
+                <th>Price</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
  <div class="row-fluid">
         <div class="span9">
            <div class="span4 well">
@@ -9,7 +28,7 @@
             </div>
             <div class="span4 well">
                   <a class="widget-stats" href="#" id="contacts_btn" onclick="pull_items_ebay();return false;">
-                      <span class="glyphicons refresh"><i></i></span>
+                      <span class="glyphicons down_arrow"><i></i></span>
                       <span class="txt">Pull Items From eBay</span>
                       <div class="clearfix"></div>
                   </a>
@@ -235,14 +254,29 @@
     }
     function pull_items_ebay_result(response, callback_params, api_params){
                $(".loading").css("display", "none");
-               $("#result_table").css("display", "block");
-
-               alert(response.aaData)
 
 
+
+
+
+
+                var res = jQuery.parseJSON(response.aaData);
+                $.each(res, function(idx,obj) {
+                 item_row ='<tr class="odd">'
+                 $.each(obj, function(key, value){
+                    item_row = item_row + '<td>' + value + '</td>';
+
+                    });
+                    item_row = item_row + '</tr>';
+                   $('#result_table tr:last').after( item_row );
+                });
+                $("#result_table").css("display", "block");
 
 
     }
+    $(".close").click(function() {
+        $("#result_table").hide();
+    });
     function updateeBay(item_id, item_revision_id){
 
         $(".loading").css("display", "block");
