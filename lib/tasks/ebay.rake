@@ -183,7 +183,7 @@ namespace :ebay do
                                 :StartTimeTo => '2017-04-01',
                                 :DetailLevel => DetailLevelCodeType::ItemReturnAttributes,
                                 :Pagination => EBay.Pagination(:EntriesPerPage => 10,
-                                                               :PageNumber => 18),
+                                                               :PageNumber => 1),
                                 :GranularityLevel => GranularityLevelCodeType::Fine
                                 )
                                 # :UserID => "testuser_rehna"   )
