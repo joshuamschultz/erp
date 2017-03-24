@@ -14,9 +14,9 @@ development:
   reconnect: false
   database: alliance_fasteners_development
   pool: 5
-  username: root
-  password: redhat
-  socket: /var/run/mysqld/mysqld.sock
+  #username: root
+  #password: redhat
+  #socket: /var/run/mysqld/mysqld.sock
 
 
 
