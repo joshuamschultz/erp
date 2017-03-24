@@ -32,54 +32,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "attachment_status_id"
     t.integer  "attachment_created_id"
     t.integer  "attachment_updated_id"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
-  end
-
-  create_table "blazer_audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "user_id"
-    t.integer  "query_id"
-    t.text     "statement",   limit: 65535
-    t.string   "data_source"
     t.datetime "created_at"
-  end
-
-  create_table "blazer_checks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "creator_id"
-    t.integer  "query_id"
-    t.string   "state"
-    t.string   "schedule"
-    t.text     "emails",      limit: 65535
-    t.string   "check_type"
-    t.text     "message",     limit: 65535
-    t.datetime "last_run_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  create_table "blazer_dashboard_queries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "dashboard_id"
-    t.integer  "query_id"
-    t.integer  "position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  create_table "blazer_dashboards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "creator_id"
-    t.text     "name",       limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  create_table "blazer_queries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "creator_id"
-    t.string   "name"
-    t.text     "description", limit: 65535
-    t.text     "statement",   limit: 65535
-    t.string   "data_source"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "updated_at"
   end
 
   create_table "capacity_plannings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -89,8 +43,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "capacity_plan_active"
     t.integer  "capacity_plan_created_id"
     t.integer  "capacity_plan_updated_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cause_analyses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -100,23 +54,23 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "active"
     t.integer  "created_id"
     t.integer  "updated_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "check_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "counter"
     t.string   "counter_type"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "check_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "check_identifier"
     t.string   "check_code"
     t.boolean  "check_active"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "status"
   end
 
@@ -124,8 +78,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "checklist_id"
     t.integer  "master_type_id"
     t.boolean  "check_list_status"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["checklist_id"], name: "index_check_list_lines_on_checklist_id", using: :btree
     t.index ["master_type_id"], name: "index_check_list_lines_on_master_type_id", using: :btree
   end
@@ -138,8 +92,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "deposit",          precision: 10
     t.decimal  "balance",          precision: 10
     t.boolean  "rec"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "payment_id"
     t.integer  "receipt_id"
   end
@@ -149,8 +103,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "checklist_status"
     t.integer  "po_line_id"
     t.integer  "customer_quality_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["customer_quality_id"], name: "index_checklists_on_customer_quality_id", using: :btree
     t.index ["po_line_id"], name: "index_checklists_on_po_line_id", using: :btree
     t.index ["quality_lot_id"], name: "index_checklists_on_quality_lot_id", using: :btree
@@ -164,25 +118,23 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "comment_active"
     t.integer  "comment_created_id"
     t.integer  "comment_updated_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "commodities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.boolean  "commodity_active"
-    t.integer  "commodity_created_id"
-    t.integer  "commodity_updated_id"
     t.string   "commodity_identifier"
     t.string   "commodity_description"
     t.text     "commodity_notes",       limit: 65535
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "company_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "company_name"
-    t.text     "company_address1",   limit: 65535
-    t.text     "company_address2",   limit: 65535
+    t.text     "company_address1", limit: 65535
+    t.text     "company_address2", limit: 65535
     t.string   "company_phone1"
     t.string   "company_phone2"
     t.string   "company_mobile"
@@ -190,10 +142,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "company_website"
     t.string   "company_slogan"
     t.boolean  "company_active"
-    t.integer  "company_created_id"
-    t.integer  "company_updated_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -216,8 +166,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "contact_active"
     t.integer  "contact_created_id"
     t.integer  "contact_updated_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "first_name"
     t.string   "last_name"
   end
@@ -229,8 +179,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "plan_active"
     t.integer  "plan_created_id"
     t.integer  "plan_updated_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "credit_registers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -240,8 +190,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "amount",           precision: 10
     t.decimal  "balance",          precision: 10
     t.boolean  "rec"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "receipt_id"
   end
 
@@ -251,8 +201,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.text     "feedback",                  limit: 65535
     t.integer  "quality_action_id"
     t.integer  "user_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "customer_feedback_type_id"
     t.index ["organization_id"], name: "index_customer_feedbacks_on_organization_id", using: :btree
     t.index ["user_id"], name: "index_customer_feedbacks_on_user_id", using: :btree
@@ -261,32 +211,17 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "customer_qualities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "quality_name"
     t.string   "quality_description"
-    t.text     "quality_notes",            limit: 65535
+    t.text     "quality_notes",       limit: 65535
     t.boolean  "quality_active"
-    t.integer  "quality_created_id"
-    t.integer  "quality_updated_id"
-    t.boolean  "quality_supplier_a"
-    t.boolean  "quality_supplier_b"
-    t.boolean  "quality_floor_plan"
-    t.boolean  "quality_form"
-    t.boolean  "quality_packaging"
-    t.boolean  "quality_psw"
-    t.boolean  "quality_control_plan"
-    t.boolean  "quality_fmea"
-    t.boolean  "quality_process_flow"
-    t.boolean  "quality_gauge"
-    t.boolean  "quality_study"
-    t.boolean  "quality_dimensional_cofc"
-    t.boolean  "quality_material_cofc"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "customer_quality_levels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "customer_quality_id"
     t.integer  "master_type_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["customer_quality_id"], name: "index_customer_quality_levels_on_customer_quality_id", using: :btree
     t.index ["master_type_id"], name: "index_customer_quality_levels_on_master_type_id", using: :btree
   end
@@ -307,8 +242,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "customer_quote_line_created_id"
     t.integer  "customer_quote_line_updated_id"
     t.decimal  "customer_quote_line_tooling_cost",               precision: 25, scale: 10, default: "0.0"
-    t.datetime "created_at",                                                                               null: false
-    t.datetime "updated_at",                                                                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.decimal  "customer_quote_line_total",                      precision: 25, scale: 10, default: "0.0"
     t.string   "lead_time"
     t.string   "item_name_sub"
@@ -329,16 +264,16 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "customer_quote_active"
     t.integer  "customer_quote_created_id"
     t.integer  "customer_quote_updated_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["organization_id"], name: "index_customer_quotes_on_organization_id", using: :btree
   end
 
   create_table "deposit_checks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "status"
     t.integer  "payment_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "receipt_id"
     t.string   "receipt_type"
     t.string   "check_identifier"
@@ -353,8 +288,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "dimension_active"
     t.integer  "dimension_created_id"
     t.integer  "dimension_updated_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "elements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -364,8 +299,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "element_created_id"
     t.integer  "element_updated_id"
     t.boolean  "element_active"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -374,8 +309,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "end_at"
     t.string   "allDay"
     t.string   "user_name"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "repeats"
     t.text     "description", limit: 65535
     t.integer  "user_id"
@@ -390,8 +325,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "fmea_active"
     t.integer  "fmea_created_id"
     t.integer  "fmea_updated_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "gauges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -405,8 +340,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "gauge_active"
     t.integer  "gauge_created_id"
     t.integer  "gauge_updated_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["organization_id"], name: "index_gauges_on_organization_id", using: :btree
   end
 
@@ -416,8 +351,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "gl_account_identifier"
     t.string   "gl_account_description"
     t.boolean  "gl_account_active"
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.decimal  "gl_account_amount",      precision: 15, scale: 10, default: "0.0"
     t.boolean  "key_account",                                      default: true
     t.index ["gl_type_id"], name: "index_gl_accounts_on_gl_type_id", using: :btree
@@ -427,13 +362,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "gl_entry_identifier"
     t.integer  "gl_account_id"
     t.string   "gl_entry_description"
-    t.date     "gl_entry_date",                                                 default: '2016-03-28'
+    t.date     "gl_entry_date",                                                 default: '2017-01-17'
     t.decimal  "gl_entry_credit",                     precision: 25, scale: 10, default: "0.0"
     t.decimal  "gl_entry_debit",                      precision: 25, scale: 10, default: "0.0"
     t.text     "gl_entry_notes",        limit: 65535
     t.boolean  "gl_entry_active",                                               default: true
-    t.datetime "created_at",                                                                           null: false
-    t.datetime "updated_at",                                                                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "payable_id"
     t.integer  "payable_account_id"
     t.integer  "receivable_account_id"
@@ -450,15 +385,15 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "gl_identifier"
     t.string   "gl_description"
     t.boolean  "gl_active"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "group_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "organization_id"
     t.integer  "group_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["group_id"], name: "index_group_organizations_on_group_id", using: :btree
     t.index ["organization_id"], name: "index_group_organizations_on_organization_id", using: :btree
   end
@@ -466,8 +401,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "group_name"
     t.string   "group_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -483,8 +418,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "image_active"
     t.integer  "image_created_id"
     t.integer  "image_updated_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "inventory_adjustments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -493,8 +428,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "item_id"
     t.integer  "item_alt_name_id"
     t.integer  "quality_lot_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "item_alt_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -504,8 +439,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "item_alt_active"
     t.integer  "item_alt_created_id"
     t.integer  "item_alt_updated_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "organization_id"
     t.integer  "item_id"
   end
@@ -522,15 +457,15 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "quality_lot_id"
     t.integer  "item_id"
     t.integer  "item_lot_count"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "item_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "material_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_revision_id"], name: "index_item_materials_on_item_revision_id", using: :btree
     t.index ["material_id"], name: "index_item_materials_on_material_id", using: :btree
   end
@@ -548,8 +483,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "item_part_active"
     t.integer  "item_part_created_id"
     t.integer  "item_part_updated_id"
-    t.datetime "created_at",                                                                      null: false
-    t.datetime "updated_at",                                                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "go_non_go",                                                       default: false
     t.string   "dimension_string"
     t.index ["dimension_id"], name: "index_item_part_dimensions_on_dimension_id", using: :btree
@@ -560,8 +495,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "item_prints", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "print_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_revision_id"], name: "index_item_prints_on_item_revision_id", using: :btree
     t.index ["print_id"], name: "index_item_prints_on_print_id", using: :btree
   end
@@ -569,8 +504,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "item_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "process_type_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_revision_id"], name: "index_item_processes_on_item_revision_id", using: :btree
     t.index ["process_type_id"], name: "index_item_processes_on_process_type_id", using: :btree
   end
@@ -578,8 +513,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "item_revision_item_part_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "item_part_dimension_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "item_revisions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -597,8 +532,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "item_cost",                              precision: 25, scale: 10, default: "0.0"
     t.integer  "item_revision_created_id"
     t.integer  "item_revision_updated_id"
-    t.datetime "created_at",                                                                       null: false
-    t.datetime "updated_at",                                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "print_id"
     t.integer  "material_id"
     t.boolean  "latest_revision"
@@ -615,8 +550,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "item_selected_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "item_alt_name_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_alt_name_id"], name: "index_item_selected_names_on_item_alt_name_id", using: :btree
     t.index ["item_revision_id"], name: "index_item_selected_names_on_item_revision_id", using: :btree
   end
@@ -624,8 +559,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "item_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "item_revision_id"
     t.integer  "specification_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_revision_id"], name: "index_item_specifications_on_item_revision_id", using: :btree
     t.index ["specification_id"], name: "index_item_specifications_on_specification_id", using: :btree
   end
@@ -637,8 +572,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "item_active"
     t.integer  "item_created_id"
     t.integer  "item_updated_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lot_count"
     t.string   "item_alt_part_no"
   end
@@ -657,8 +592,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "joint_active"
     t.integer  "joint_created_id"
     t.integer  "joint_updated_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "master_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -666,8 +601,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "type_description"
     t.string   "type_category"
     t.boolean  "type_active",         default: true
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "type_value"
     t.string   "master_type"
     t.integer  "quality_document_id"
@@ -681,10 +616,9 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "element_low_range",  precision: 25, scale: 10, default: "0.0"
     t.decimal  "element_high_range", precision: 25, scale: 10, default: "0.0"
     t.boolean  "element_active",                               default: true
-    t.integer  "element_created_id"
-    t.integer  "element_updated_id"
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["element_id"], name: "index_material_elements_on_element_id", using: :btree
     t.index ["material_id"], name: "index_material_elements_on_material_id", using: :btree
   end
 
@@ -692,17 +626,15 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "material_short_name"
     t.string   "material_description"
     t.text     "material_notes",       limit: 65535
-    t.integer  "material_created_id"
-    t.integer  "material_updated_id"
     t.boolean  "material_active",                    default: true
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "max_control_strings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "control_string"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "control_string_second"
   end
 
@@ -711,8 +643,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "notable_type"
     t.string   "note_status"
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "organization_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -721,8 +653,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "org_process_active"
     t.integer  "org_process_created_id"
     t.integer  "org_process_updated_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["organization_id"], name: "index_organization_processes_on_organization_id", using: :btree
     t.index ["process_type_id"], name: "index_organization_processes_on_process_type_id", using: :btree
   end
@@ -730,8 +662,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "organization_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "organization_id"
     t.string   "user_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -760,8 +692,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "organization_active"
     t.integer  "organization_created_id"
     t.integer  "organization_updated_id"
-    t.datetime "created_at",                                             null: false
-    t.datetime "updated_at",                                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "customer_min_quality_id"
     t.boolean  "organization_complete",                  default: false
     t.index ["customer_quality_id"], name: "index_organizations_on_customer_quality_id", using: :btree
@@ -775,11 +707,9 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "owner_description"
     t.integer  "owner_commission_type_id"
     t.decimal  "owner_commission_amount",  precision: 25, scale: 10, default: "0.0"
-    t.integer  "owner_created_id"
-    t.integer  "owner_updated_id"
     t.boolean  "owner_active",                                       default: true
-    t.datetime "created_at",                                                         null: false
-    t.datetime "updated_at",                                                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -823,8 +753,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "unit_load_file_size"
     t.datetime "unit_load_updated_at"
     t.string   "unit_load_file_name"
-    t.datetime "created_at",                                                null: false
-    t.datetime "updated_at",                                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "dunnage_manufacturer",         limit: 65535
     t.text     "container_color_manufacturer", limit: 65535
     t.text     "container_type_manufacturer",  limit: 65535
@@ -879,8 +809,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "payable_account_amount",      precision: 25, scale: 10, default: "0.0"
     t.integer  "payable_account_created_id"
     t.integer  "payable_account_updated_id"
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "gl_entry_id"
     t.index ["gl_account_id"], name: "index_payable_accounts_on_gl_account_id", using: :btree
     t.index ["payable_id"], name: "index_payable_accounts_on_payable_id", using: :btree
@@ -896,16 +826,16 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "payable_line_active"
     t.integer  "payable_line_created_id"
     t.integer  "payable_line_updated_id"
-    t.datetime "created_at",                                                                       null: false
-    t.datetime "updated_at",                                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["payable_id"], name: "index_payable_lines_on_payable_id", using: :btree
   end
 
   create_table "payable_po_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "po_shipment_id"
     t.integer  "payable_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["payable_id"], name: "index_payable_po_shipments_on_payable_id", using: :btree
     t.index ["po_shipment_id"], name: "index_payable_po_shipments_on_po_shipment_id", using: :btree
   end
@@ -918,8 +848,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "payable_shipment_cost",       precision: 25, scale: 10, default: "0.0"
     t.integer  "payable_shipment_created_id"
     t.integer  "payable_shipment_updated_id"
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["payable_id"], name: "index_payable_shipments_on_payable_id", using: :btree
     t.index ["po_line_id"], name: "index_payable_shipments_on_po_line_id", using: :btree
   end
@@ -940,8 +870,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "payable_active"
     t.integer  "payable_created_id"
     t.integer  "payable_updated_id"
-    t.datetime "created_at",                                                                   null: false
-    t.datetime "updated_at",                                                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.decimal  "payable_freight",                    precision: 25, scale: 10, default: "0.0"
     t.string   "payable_invoice"
     t.integer  "gl_account_id"
@@ -958,8 +888,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "payment_line_amount",     precision: 25, scale: 10, default: "0.0"
     t.integer  "payment_line_created_id"
     t.integer  "payment_line_updated_id"
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["payable_id"], name: "index_payment_lines_on_payable_id", using: :btree
     t.index ["payment_id"], name: "index_payment_lines_on_payment_id", using: :btree
   end
@@ -977,8 +907,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "payment_active"
     t.integer  "payment_created_id"
     t.integer  "payment_updated_id"
-    t.datetime "created_at",                                                                      null: false
-    t.datetime "updated_at",                                                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "check_entry_id"
     t.integer  "check_register_id"
     t.string   "payment_check_code_type"
@@ -997,8 +927,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "po_active"
     t.integer  "po_created_id"
     t.integer  "po_updated_id"
-    t.datetime "created_at",                                                              null: false
-    t.datetime "updated_at",                                                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "customer_id"
     t.integer  "po_bill_to_id"
     t.integer  "po_ship_to_id"
@@ -1027,8 +957,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "po_line_active"
     t.integer  "po_line_created_id"
     t.integer  "po_line_updated_id"
-    t.datetime "created_at",                                                                    null: false
-    t.datetime "updated_at",                                                                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "po_line_shipped",                                               default: 0
     t.integer  "alt_name_transfer_id"
     t.decimal  "po_line_sell",                        precision: 25, scale: 10, default: "0.0"
@@ -1053,8 +983,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "po_shipped_status"
     t.integer  "po_shipment_created_id"
     t.integer  "po_shipment_updated_id"
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "quality_lot_id"
     t.index ["po_line_id"], name: "index_po_shipments_on_po_line_id", using: :btree
   end
@@ -1100,16 +1030,16 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "maximum_weekly_capacity"
     t.string   "lathe_cnc"
     t.text     "comment",                    limit: 65535
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["quality_lot_id"], name: "index_ppaps_on_quality_lot_id", using: :btree
   end
 
   create_table "printing_screens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "status"
     t.integer  "payment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["payment_id"], name: "index_printing_screens_on_payment_id", using: :btree
   end
 
@@ -1120,8 +1050,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "print_identifier"
     t.string   "print_description"
     t.text     "print_notes",       limit: 65535
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "process_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1132,15 +1062,15 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "process_active"
     t.integer  "process_created_id"
     t.integer  "process_updated_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "process_type_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "process_type_id"
     t.integer  "specification_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "process_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1148,16 +1078,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "process_description"
     t.text     "process_notes",       limit: 65535
     t.boolean  "process_active",                    default: true
-    t.integer  "process_created_id"
-    t.integer  "process_updated_id"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "quality_action_numbers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "next_action_no", default: 0
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "quality_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1178,8 +1106,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "quality_action_active"
     t.datetime "submit_time"
     t.integer  "created_user_id"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "root_cause",                   limit: 65535
     t.integer  "quality_lot_id"
     t.index ["cause_analysis_id"], name: "index_quality_actions_on_cause_analysis_id", using: :btree
@@ -1192,15 +1120,15 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "quality_actions_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "quality_action_id"
     t.integer  "user_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["quality_action_id"], name: "index_quality_actions_users_on_quality_action_id", using: :btree
     t.index ["user_id"], name: "index_quality_actions_users_on_user_id", using: :btree
   end
 
   create_table "quality_documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "quality_document_name"
   end
 
@@ -1208,8 +1136,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "quality_lot_id"
     t.string   "quality_status"
     t.integer  "user_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "quality_lot_capabilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1221,8 +1149,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "lot_dimension_active"
     t.integer  "lot_dimension_created_id"
     t.integer  "lot_dimension_updated_id"
-    t.datetime "created_at",                                                                       null: false
-    t.datetime "updated_at",                                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_part_dimension_id"], name: "index_quality_lot_capabilities_on_item_part_dimension_id", using: :btree
     t.index ["quality_lot_id"], name: "index_quality_lot_capabilities_on_quality_lot_id", using: :btree
   end
@@ -1236,8 +1164,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "lot_dimension_active"
     t.integer  "lot_dimension_created_id"
     t.integer  "lot_dimension_updated_id"
-    t.datetime "created_at",                                                                       null: false
-    t.datetime "updated_at",                                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_part_dimension_id"], name: "index_quality_lot_dimensions_on_item_part_dimension_id", using: :btree
     t.index ["quality_lot_id"], name: "index_quality_lot_dimensions_on_quality_lot_id", using: :btree
   end
@@ -1246,8 +1174,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "quality_lot_gauge_id"
     t.integer  "item_part_dimension_id"
     t.boolean  "lot_gauge_dimension_active"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item_part_dimension_id"], name: "index_quality_lot_gauge_dimensions_on_item_part_dimension_id", using: :btree
     t.index ["quality_lot_gauge_id"], name: "index_quality_lot_gauge_dimensions_on_quality_lot_gauge_id", using: :btree
   end
@@ -1258,8 +1186,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "lot_gauge_result_appraiser"
     t.decimal  "lot_gauge_result_value",     precision: 15, scale: 10, default: "0.0"
     t.string   "lot_gauge_result_status"
-    t.datetime "created_at",                                                           null: false
-    t.datetime "updated_at",                                                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "lot_gauge_result_trial"
     t.integer  "lot_gauge_result_row"
     t.index ["item_part_dimension_id"], name: "index_quality_lot_gauge_results_on_item_part_dimension_id", using: :btree
@@ -1273,8 +1201,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "lot_gauge_active"
     t.integer  "lot_gauge_created_id"
     t.integer  "lot_gauge_updated_id"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["quality_lot_id"], name: "index_quality_lot_gauges_on_quality_lot_id", using: :btree
   end
 
@@ -1289,8 +1217,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "lot_material_active"
     t.integer  "lot_material_created_id"
     t.integer  "lot_material_updated_id"
-    t.datetime "created_at",                                                                      null: false
-    t.datetime "updated_at",                                                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["material_element_id"], name: "index_quality_lot_materials_on_material_element_id", using: :btree
     t.index ["quality_lot_id"], name: "index_quality_lot_materials_on_quality_lot_id", using: :btree
   end
@@ -1314,8 +1242,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "lot_active"
     t.integer  "lot_created_id"
     t.integer  "lot_updated_id"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "lot_shelf_idenifier"
     t.integer  "lot_shelf_unit"
     t.integer  "lot_shelf_number"
@@ -1340,8 +1268,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.text     "quote_line_cost_notes",       limit: 65535
     t.integer  "quote_line_cost_created_id"
     t.integer  "quote_line_cost_updated_id"
-    t.datetime "created_at",                                                                          null: false
-    t.datetime "updated_at",                                                                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.decimal  "quote_line_cost_tooling",                   precision: 25, scale: 10, default: "0.0"
     t.string   "quote_line_cost_lead"
     t.string   "quote_line_cost_description"
@@ -1366,8 +1294,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "quote_line_active",                                              default: false
     t.integer  "quote_line_created_id"
     t.integer  "quote_line_updated_id"
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "item_name_sub"
     t.index ["item_alt_name_id"], name: "index_quote_lines_on_item_alt_name_id", using: :btree
     t.index ["item_id"], name: "index_quote_lines_on_item_id", using: :btree
@@ -1383,8 +1311,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "quote_vendor_status"
     t.integer  "quote_vendor_created_id"
     t.integer  "quote_vendor_updated_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["organization_id"], name: "index_quote_vendors_on_organization_id", using: :btree
     t.index ["quote_id"], name: "index_quote_vendors_on_quote_id", using: :btree
   end
@@ -1400,8 +1328,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "quote_active"
     t.integer  "quote_created_id"
     t.integer  "quote_updated_id"
-    t.datetime "created_at",                                                                null: false
-    t.datetime "updated_at",                                                                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "customer_id"
     t.integer  "group_id"
     t.boolean  "attachment_public",                                         default: false
@@ -1414,8 +1342,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "quotes_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "organization_id"
     t.integer  "quote_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["organization_id"], name: "index_quotes_organizations_on_organization_id", using: :btree
     t.index ["quote_id"], name: "index_quotes_organizations_on_quote_id", using: :btree
   end
@@ -1423,8 +1351,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "quotes_po_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "po_header_id"
     t.integer  "quote_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["po_header_id"], name: "index_quotes_po_headers_on_po_header_id", using: :btree
     t.index ["quote_id"], name: "index_quotes_po_headers_on_quote_id", using: :btree
   end
@@ -1436,8 +1364,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "table"
     t.integer  "month",      limit: 2
     t.bigint   "year"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
   end
 
@@ -1447,8 +1375,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "receipt_line_amount",     precision: 25, scale: 10, default: "0.0"
     t.integer  "receipt_line_created_id"
     t.integer  "receipt_line_updated_id"
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["receipt_id"], name: "index_receipt_lines_on_receipt_id", using: :btree
     t.index ["receivable_id"], name: "index_receipt_lines_on_receivable_id", using: :btree
   end
@@ -1466,8 +1394,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "receipt_active"
     t.integer  "receipt_created_id"
     t.integer  "receipt_updated_id"
-    t.datetime "created_at",                                                                   null: false
-    t.datetime "updated_at",                                                                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "check_entry_id"
     t.integer  "deposit_check_id"
     t.decimal  "receipt_discount",                   precision: 25, scale: 10, default: "0.0"
@@ -1482,8 +1410,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "receivable_account_amount",      precision: 25, scale: 10, default: "0.0"
     t.integer  "receivable_account_created_id"
     t.integer  "receivable_account_updated_id"
-    t.datetime "created_at",                                                               null: false
-    t.datetime "updated_at",                                                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "gl_entry_id"
     t.index ["gl_account_id"], name: "index_receivable_accounts_on_gl_account_id", using: :btree
     t.index ["receivable_id"], name: "index_receivable_accounts_on_receivable_id", using: :btree
@@ -1499,8 +1427,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "receivable_line_active"
     t.integer  "receivable_line_created_id"
     t.integer  "receivable_line_updated_id"
-    t.datetime "created_at",                                                                          null: false
-    t.datetime "updated_at",                                                                          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["receivable_id"], name: "index_receivable_lines_on_receivable_id", using: :btree
   end
 
@@ -1512,8 +1440,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.decimal  "receivable_shipment_cost",       precision: 25, scale: 10, default: "0.0"
     t.integer  "receivable_shipment_created_id"
     t.integer  "receivable_shipment_updated_id"
-    t.datetime "created_at",                                                               null: false
-    t.datetime "updated_at",                                                               null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["receivable_id"], name: "index_receivable_shipments_on_receivable_id", using: :btree
     t.index ["so_line_id"], name: "index_receivable_shipments_on_so_line_id", using: :btree
   end
@@ -1521,8 +1449,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
   create_table "receivable_so_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "so_shipment_id"
     t.integer  "receivable_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["receivable_id"], name: "index_receivable_so_shipments_on_receivable_id", using: :btree
     t.index ["so_shipment_id"], name: "index_receivable_so_shipments_on_so_shipment_id", using: :btree
   end
@@ -1540,8 +1468,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "receivable_active"
     t.integer  "receivable_created_id"
     t.integer  "receivable_updated_id"
-    t.datetime "created_at",                                                                     null: false
-    t.datetime "updated_at",                                                                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "receivable_invoice"
     t.integer  "gl_account_id"
     t.decimal  "receivable_freight",                   precision: 25, scale: 10, default: "0.0"
@@ -1553,8 +1481,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
 
   create_table "reconcileds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.float    "balance",    limit: 24
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "reconciles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1564,8 +1492,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "deposit_check_id"
     t.integer  "printing_screen_id"
     t.string   "reconcile_status"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "receipt_id"
     t.index ["deposit_check_id"], name: "index_reconciles_on_deposit_check_id", using: :btree
     t.index ["payment_id"], name: "index_reconciles_on_payment_id", using: :btree
@@ -1579,8 +1507,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "run_at_rate_active"
     t.integer  "run_at_rate_created_id"
     t.integer  "run_at_rate_updated_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "so_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -1596,8 +1524,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "so_status"
     t.integer  "so_created_id"
     t.integer  "so_updated_id"
-    t.datetime "created_at",                                                                    null: false
-    t.datetime "updated_at",                                                                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "so_header_customer_po"
     t.date     "so_due_date"
     t.index ["organization_id"], name: "index_so_headers_on_organization_id", using: :btree
@@ -1620,8 +1548,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.boolean  "so_line_active"
     t.integer  "so_line_created_id"
     t.integer  "so_line_updated_id"
-    t.datetime "created_at",                                                                  null: false
-    t.datetime "updated_at",                                                                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "so_line_shipped",                                             default: 0
     t.decimal  "so_line_sell",                      precision: 25, scale: 10, default: "0.0"
     t.string   "so_line_vendor_po"
@@ -1645,8 +1573,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "so_shipped_status"
     t.integer  "so_shipment_created_id"
     t.integer  "so_shipment_updated_id"
-    t.datetime "created_at",                                                       null: false
-    t.datetime "updated_at",                                                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "quality_lot_id",                                   default: 0
     t.integer  "so_header_id"
     t.string   "shipment_process_id"
@@ -1655,49 +1583,70 @@ ActiveRecord::Schema.define(version: 20170207090706) do
 
   create_table "specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.boolean  "specification_active"
-    t.integer  "specification_created_id"
-    t.integer  "specification_updated_id"
     t.string   "specification_identifier"
     t.string   "specification_description"
     t.text     "specification_notes",       limit: 65535
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
+    t.index ["context"], name: "index_taggings_on_context", using: :btree
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
+    t.index ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy", using: :btree
+    t.index ["taggable_id"], name: "index_taggings_on_taggable_id", using: :btree
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type", using: :btree
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type", using: :btree
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id", using: :btree
+  end
+
+  create_table "tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string  "name",                       collation: "utf8_bin"
+    t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
   end
 
   create_table "territories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.boolean  "territory_active"
-    t.integer  "territory_created_id"
-    t.integer  "territory_updated_id"
     t.string   "territory_identifier"
     t.string   "territory_description"
     t.string   "territory_zip"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "test_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "test_package_id"
     t.string   "item_name"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["test_package_id"], name: "index_test_items_on_test_package_id", using: :btree
   end
 
   create_table "test_packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.string   "email",                                default: "",                           null: false
-    t.string   "encrypted_password",                   default: "",                           null: false
-    t.string   "name",                                 default: "",                           null: false
-    t.string   "gender",                               default: ""
+    t.string   "email",                                                                       null: false
+    t.string   "encrypted_password",                                                          null: false
+    t.string   "name",                                                                        null: false
+    t.string   "gender"
     t.text     "address",                limit: 65535
-    t.string   "city",                                 default: ""
-    t.string   "state",                                default: ""
-    t.string   "country",                              default: ""
+    t.string   "city"
+    t.string   "state"
+    t.string   "country"
     t.string   "telephone_no"
     t.string   "mobile_no"
     t.string   "fax"
@@ -1719,8 +1668,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "locked_at"
     t.string   "authentication_token"
     t.integer  "roles_mask"
-    t.datetime "created_at",                                                                  null: false
-    t.datetime "updated_at",                                                                  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "organization_id"
     t.string   "time_zone",                            default: "Eastern Time (US & Canada)"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
@@ -1735,10 +1684,8 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "quality_description"
     t.text     "quality_notes",       limit: 65535
     t.boolean  "quality_active"
-    t.integer  "quality_created_id"
-    t.integer  "quality_updated_id"
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

@@ -10,13 +10,13 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', '~> 5.0', '>= 5.0.4'
-  gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
+    gem 'sass-rails', '~> 5.0', '>= 5.0.4'
+    gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+    # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+    # gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+    gem 'uglifier', '>= 1.0.3'
 end
 
 gem 'jquery-rails'
@@ -39,14 +39,14 @@ gem 'rails3-jquery-autocomplete'
 
 gem 'devise', '~> 4.2'
 
-gem 'therubyracer', '~> 0.10.2'
+gem 'therubyracer', '~> 0.12.3'
 gem 'execjs', '1.4.0'
 gem 'bootstrap-sass', '~> 2.3.1.0'
 gem 'kaminari'
 
-#group :production do
+# group :production do
 #   gem 'pg', '0.14.1'
-#end
+# end
 
 gem 'simple_form'
 gem 'countries'
@@ -55,7 +55,7 @@ gem 'validates_formatting_of'
 gem 'bootstrap-datetimepicker-rails'
 
 gem 'paperclip', '~> 5.0.0.beta1'
-#gem 'rmagick', '2.13.2'
+# gem 'rmagick', '2.13.2'
 gem 'rmagick'
 gem 'aws-sdk', '1.8.5'
 
@@ -66,10 +66,10 @@ gem 'role_model'
 
 gem 'rails_admin'
 
-gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
-gem 'client_side_validations-simple_form',github: 'DavyJonesLocker/client_side_validations-simple_form', branch: 'rails5'
-#gem 'client_side_validations-simple_form'#, '~> 3.3', '>= 3.3.1'
-#gem 'ruby-standard-deviation', '~> 2.0.0'
+# gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations', branch: 'rails5'
+# gem 'client_side_validations-simple_form',github: 'DavyJonesLocker/client_side_validations-simple_form', branch: 'rails5'
+# gem 'client_side_validations-simple_form'#, '~> 3.3', '>= 3.3.1'
+# gem 'ruby-standard-deviation', '~> 2.0.0'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'string-urlize', '~> 1.0.2'
@@ -77,11 +77,17 @@ gem 'protected_attributes_continued'
 gem 'validates_email_format_of'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.4'
-  gem 'factory_girl_rails'
-  gem 'faker', '~> 1.6', '>= 1.6.3'
+    gem 'rspec-rails', '~> 3.4'
+    gem 'factory_girl_rails'
+    gem 'faker', '~> 1.6', '>= 1.6.3'
 end
 gem 'ebay'
 gem 'soap4r', '~> 1.5', '>= 1.5.8'
 
-# gem "fast_seeder"
+gem 'cocoon'
+gem 'rails-erd'
+gem 'annotate'
+gem 'responders'
+gem 'sidekiq'
+gem 'haml-rails'
+# gem 'fast_seeder'
