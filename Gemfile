@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '5.0.1'
+gem 'rails', '~> 5.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -92,3 +92,10 @@ gem 'sidekiq'
 gem 'haml-rails'
 
 gem 'acts-as-taggable-on', '~> 4.0'
+
+group :development do
+    gem 'capistrano', '~> 3.7', '>= 3.7.1'
+    gem 'capistrano-rails', '~> 1.2'
+    gem 'capistrano-passenger', '~> 0.2.0'
+    gem 'capistrano-rbenv', '~> 2.1'
+end
