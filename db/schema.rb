@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207090706) do
+ActiveRecord::Schema.define(version: 20170110144208) do
 
-  create_table "attachments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "attachments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "attachable_id"
     t.string   "attachable_type"
     t.string   "attachment_file_name"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "capacity_plannings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "capacity_plannings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "capacity_plan_name"
     t.string   "capacity_plan_description"
     t.text     "capacity_plan_notes",       limit: 65535
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "cause_analyses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "cause_analyses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "description"
     t.text     "notes",       limit: 65535
@@ -58,14 +58,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "check_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "check_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "counter"
     t.string   "counter_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "check_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "check_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "check_identifier"
     t.string   "check_code"
     t.boolean  "check_active"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "status"
   end
 
-  create_table "check_list_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "check_list_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "checklist_id"
     t.integer  "master_type_id"
     t.boolean  "check_list_status"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["master_type_id"], name: "index_check_list_lines_on_master_type_id", using: :btree
   end
 
-  create_table "check_registers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "check_registers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date     "transaction_date"
     t.string   "check_code"
     t.integer  "organization_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "receipt_id"
   end
 
-  create_table "checklists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "checklists", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.string   "checklist_status"
     t.integer  "po_line_id"
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_checklists_on_quality_lot_id", using: :btree
   end
 
-  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "comment"
     t.string   "comment_type"
     t.integer  "commentable_id"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "commodities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "commodities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean  "commodity_active"
     t.string   "commodity_identifier"
     t.string   "commodity_description"
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "company_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "company_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "company_name"
     t.text     "company_address1", limit: 65535
     t.text     "company_address2", limit: 65535
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "contactable_id"
     t.string   "contactable_type"
     t.string   "contact_type"
@@ -172,7 +172,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "last_name"
   end
 
-  create_table "control_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "control_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "plan_name"
     t.string   "plan_description"
     t.text     "plan_notes",       limit: 65535
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "credit_registers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "credit_registers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date     "transaction_date"
     t.integer  "payment_id"
     t.integer  "organization_id"
@@ -195,7 +195,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "receipt_id"
   end
 
-  create_table "customer_feedbacks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "customer_feedbacks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.string   "title"
     t.text     "feedback",                  limit: 65535
@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["user_id"], name: "index_customer_feedbacks_on_user_id", using: :btree
   end
 
-  create_table "customer_qualities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "customer_qualities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "quality_name"
     t.string   "quality_description"
     t.text     "quality_notes",       limit: 65535
@@ -217,7 +217,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "customer_quality_levels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "customer_quality_levels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "customer_quality_id"
     t.integer  "master_type_id"
     t.datetime "created_at"
@@ -226,7 +226,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["master_type_id"], name: "index_customer_quality_levels_on_master_type_id", using: :btree
   end
 
-  create_table "customer_quote_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "customer_quote_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "customer_quote_id"
     t.integer  "item_id"
     t.integer  "item_revision_id"
@@ -255,7 +255,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_vendor_id"], name: "index_customer_quote_lines_on_quote_vendor_id", using: :btree
   end
 
-  create_table "customer_quotes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "customer_quotes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.string   "customer_quote_identifier"
     t.string   "customer_quote_description"
@@ -269,7 +269,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_customer_quotes_on_organization_id", using: :btree
   end
 
-  create_table "deposit_checks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "deposit_checks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "status"
     t.integer  "payment_id"
     t.datetime "created_at"
@@ -281,7 +281,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["payment_id"], name: "index_deposit_checks_on_payment_id", using: :btree
   end
 
-  create_table "dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "dimension_identifier"
     t.string   "dimension_description"
     t.text     "dimension_notes",       limit: 65535
@@ -292,7 +292,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "elements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "elements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "element_name"
     t.string   "element_symbol"
     t.text     "element_notes",      limit: 65535
@@ -303,7 +303,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "title"
     t.datetime "start_at"
     t.datetime "end_at"
@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "parent_id"
   end
 
-  create_table "fmea_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "fmea_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "fmea_name"
     t.string   "fmea_description"
     t.text     "fmea_notes",       limit: 65535
@@ -329,7 +329,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "gauges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "gauges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.string   "gauge_tool_name"
     t.string   "gauge_tool_category"
@@ -345,7 +345,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_gauges_on_organization_id", using: :btree
   end
 
-  create_table "gl_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "gl_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "gl_type_id"
     t.string   "gl_account_title"
     t.string   "gl_account_identifier"
@@ -358,11 +358,11 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["gl_type_id"], name: "index_gl_accounts_on_gl_type_id", using: :btree
   end
 
-  create_table "gl_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "gl_entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gl_entry_identifier"
     t.integer  "gl_account_id"
     t.string   "gl_entry_description"
-    t.date     "gl_entry_date",                                                 default: '2017-01-17'
+    t.date     "gl_entry_date",                                                 default: '2017-06-21'
     t.decimal  "gl_entry_credit",                     precision: 25, scale: 10, default: "0.0"
     t.decimal  "gl_entry_debit",                      precision: 25, scale: 10, default: "0.0"
     t.text     "gl_entry_notes",        limit: 65535
@@ -378,7 +378,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["gl_account_id"], name: "index_gl_entries_on_gl_account_id", using: :btree
   end
 
-  create_table "gl_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "gl_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "gl_name"
     t.string   "gl_side"
     t.string   "gl_report"
@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "group_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "group_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "group_id"
     t.datetime "created_at"
@@ -398,14 +398,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_group_organizations_on_organization_id", using: :btree
   end
 
-  create_table "groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "group_name"
     t.string   "group_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "imageable_id"
     t.string   "imageable_type"
     t.string   "image_title"
@@ -422,7 +422,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "inventory_adjustments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "inventory_adjustments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "inventory_adjustment_quantity"
     t.string   "inventory_adjustment_description"
     t.integer  "item_id"
@@ -432,7 +432,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "item_alt_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_alt_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "item_alt_identifier"
     t.string   "item_alt_description"
     t.text     "item_alt_notes",       limit: 65535
@@ -445,15 +445,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "item_id"
   end
 
-  create_table "item_channels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer  "item_revision_id"
-    t.string   "channel"
-    t.string   "channel_item_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  create_table "item_lots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_lots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.integer  "item_id"
     t.integer  "item_lot_count"
@@ -461,7 +453,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "item_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "material_id"
     t.datetime "created_at"
@@ -470,7 +462,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["material_id"], name: "index_item_materials_on_material_id", using: :btree
   end
 
-  create_table "item_part_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_part_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "dimension_id"
     t.integer  "gauge_id"
@@ -492,7 +484,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["item_revision_id"], name: "index_item_part_dimensions_on_item_revision_id", using: :btree
   end
 
-  create_table "item_prints", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_prints", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "print_id"
     t.datetime "created_at"
@@ -501,7 +493,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["print_id"], name: "index_item_prints_on_print_id", using: :btree
   end
 
-  create_table "item_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "process_type_id"
     t.datetime "created_at"
@@ -510,14 +502,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["process_type_id"], name: "index_item_processes_on_process_type_id", using: :btree
   end
 
-  create_table "item_revision_item_part_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_revision_item_part_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "item_part_dimension_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "item_revisions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_revisions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "item_revision_name",                                               default: "0"
     t.date     "item_revision_date"
     t.integer  "item_id"
@@ -547,7 +539,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["vendor_quality_id"], name: "index_item_revisions_on_vendor_quality_id", using: :btree
   end
 
-  create_table "item_selected_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_selected_names", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "item_alt_name_id"
     t.datetime "created_at"
@@ -556,7 +548,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["item_revision_id"], name: "index_item_selected_names_on_item_revision_id", using: :btree
   end
 
-  create_table "item_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "item_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "item_revision_id"
     t.integer  "specification_id"
     t.datetime "created_at"
@@ -565,7 +557,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["specification_id"], name: "index_item_specifications_on_specification_id", using: :btree
   end
 
-  create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "item_part_no"
     t.integer  "item_quantity_on_order"
     t.integer  "item_quantity_in_hand"
@@ -578,7 +570,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "item_alt_part_no"
   end
 
-  create_table "logos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "logos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "jointable_id"
     t.string   "jointable_type"
     t.string   "joint_title"
@@ -596,7 +588,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "master_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "master_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "type_name"
     t.string   "type_description"
     t.string   "type_category"
@@ -608,7 +600,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.integer  "quality_document_id"
   end
 
-  create_table "material_elements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "material_elements", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "material_id"
     t.integer  "element_id"
     t.string   "element_symbol"
@@ -622,7 +614,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["material_id"], name: "index_material_elements_on_material_id", using: :btree
   end
 
-  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "material_short_name"
     t.string   "material_description"
     t.text     "material_notes",       limit: 65535
@@ -631,14 +623,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "max_control_strings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "max_control_strings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "control_string"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "control_string_second"
   end
 
-  create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "notifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "notable_id"
     t.string   "notable_type"
     t.string   "note_status"
@@ -647,7 +639,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "organization_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "organization_processes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "process_type_id"
     t.boolean  "org_process_active"
@@ -659,14 +651,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["process_type_id"], name: "index_organization_processes_on_process_type_id", using: :btree
   end
 
-  create_table "organization_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "organization_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.string   "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.integer  "organization_type_id"
     t.integer  "territory_id"
@@ -702,7 +694,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["vendor_quality_id"], name: "index_organizations_on_vendor_quality_id", using: :btree
   end
 
-  create_table "owners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "owners", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "owner_identifier"
     t.string   "owner_description"
     t.integer  "owner_commission_type_id"
@@ -712,7 +704,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.decimal  "part_size_length",                           precision: 10
     t.decimal  "part_size_width",                            precision: 10
@@ -802,7 +794,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.string   "supplier_code"
   end
 
-  create_table "payable_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payable_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "payable_id"
     t.integer  "gl_account_id"
     t.string   "payable_account_description"
@@ -816,7 +808,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["payable_id"], name: "index_payable_accounts_on_payable_id", using: :btree
   end
 
-  create_table "payable_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payable_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "payable_id"
     t.string   "payable_line_identifier"
     t.string   "payable_line_description"
@@ -831,7 +823,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["payable_id"], name: "index_payable_lines_on_payable_id", using: :btree
   end
 
-  create_table "payable_po_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payable_po_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_shipment_id"
     t.integer  "payable_id"
     t.datetime "created_at"
@@ -840,7 +832,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_shipment_id"], name: "index_payable_po_shipments_on_po_shipment_id", using: :btree
   end
 
-  create_table "payable_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payable_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "payable_id"
     t.integer  "po_line_id"
     t.string   "payable_shipment_identifier"
@@ -854,7 +846,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_line_id"], name: "index_payable_shipments_on_po_line_id", using: :btree
   end
 
-  create_table "payables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "po_header_id"
     t.integer  "payable_to_id"
@@ -882,7 +874,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_header_id"], name: "index_payables_on_po_header_id", using: :btree
   end
 
-  create_table "payment_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payment_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "payment_id"
     t.integer  "payable_id"
     t.decimal  "payment_line_amount",     precision: 25, scale: 10, default: "0.0"
@@ -894,7 +886,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["payment_id"], name: "index_payment_lines_on_payment_id", using: :btree
   end
 
-  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "payments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "payment_type_id"
     t.string   "payment_check_code"
@@ -916,7 +908,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_payments_on_organization_id", using: :btree
   end
 
-  create_table "po_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "po_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_type_id"
     t.integer  "organization_id"
     t.string   "po_identifier"
@@ -938,7 +930,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["so_header_id"], name: "index_po_headers_on_so_header_id", using: :btree
   end
 
-  create_table "po_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "po_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_header_id"
     t.integer  "organization_id"
     t.integer  "so_line_id"
@@ -974,7 +966,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["vendor_quality_id"], name: "index_po_lines_on_vendor_quality_id", using: :btree
   end
 
-  create_table "po_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "po_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_line_id"
     t.integer  "po_shipped_count",                                 default: 0
     t.decimal  "po_shipped_cost",        precision: 25, scale: 10, default: "0.0"
@@ -989,7 +981,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_line_id"], name: "index_po_shipments_on_po_line_id", using: :btree
   end
 
-  create_table "ppaps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "ppaps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.boolean  "initial_submission",                       default: false
     t.boolean  "re_submission",                            default: false
@@ -1035,7 +1027,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_ppaps_on_quality_lot_id", using: :btree
   end
 
-  create_table "printing_screens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "printing_screens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "status"
     t.integer  "payment_id"
     t.datetime "created_at"
@@ -1043,7 +1035,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["payment_id"], name: "index_printing_screens_on_payment_id", using: :btree
   end
 
-  create_table "prints", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "prints", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean  "print_active"
     t.integer  "print_created_id"
     t.integer  "print_updated_id"
@@ -1054,7 +1046,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "process_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "process_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "process_identifier"
     t.string   "process_name"
     t.string   "process_description"
@@ -1066,14 +1058,14 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "process_type_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "process_type_specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "process_type_id"
     t.integer  "specification_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "process_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "process_types", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "process_short_name"
     t.string   "process_description"
     t.text     "process_notes",       limit: 65535
@@ -1082,13 +1074,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "quality_action_numbers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_action_numbers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "next_action_no", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "quality_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_action_no"
     t.integer  "ic_action_id"
     t.integer  "organization_quality_type_id"
@@ -1117,7 +1109,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_header_id"], name: "index_quality_actions_on_po_header_id", using: :btree
   end
 
-  create_table "quality_actions_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_actions_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_action_id"
     t.integer  "user_id"
     t.datetime "created_at"
@@ -1126,13 +1118,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["user_id"], name: "index_quality_actions_users_on_user_id", using: :btree
   end
 
-  create_table "quality_documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "quality_document_name"
   end
 
-  create_table "quality_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.string   "quality_status"
     t.integer  "user_id"
@@ -1140,7 +1132,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "quality_lot_capabilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_capabilities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.integer  "item_part_dimension_id"
     t.decimal  "lot_dimension_value",                    precision: 25, scale: 10, default: "0.0"
@@ -1155,7 +1147,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_quality_lot_capabilities_on_quality_lot_id", using: :btree
   end
 
-  create_table "quality_lot_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.integer  "item_part_dimension_id"
     t.decimal  "lot_dimension_value",                    precision: 25, scale: 10, default: "0.0"
@@ -1170,7 +1162,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_quality_lot_dimensions_on_quality_lot_id", using: :btree
   end
 
-  create_table "quality_lot_gauge_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_gauge_dimensions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_gauge_id"
     t.integer  "item_part_dimension_id"
     t.boolean  "lot_gauge_dimension_active"
@@ -1180,7 +1172,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_gauge_id"], name: "index_quality_lot_gauge_dimensions_on_quality_lot_gauge_id", using: :btree
   end
 
-  create_table "quality_lot_gauge_results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_gauge_results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_gauge_id"
     t.integer  "item_part_dimension_id"
     t.string   "lot_gauge_result_appraiser"
@@ -1194,7 +1186,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_gauge_id"], name: "index_quality_lot_gauge_results_on_quality_lot_gauge_id", using: :btree
   end
 
-  create_table "quality_lot_gauges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_gauges", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.string   "lot_gauge_status"
     t.text     "lot_gauge_notes",      limit: 65535
@@ -1206,7 +1198,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_quality_lot_gauges_on_quality_lot_id", using: :btree
   end
 
-  create_table "quality_lot_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lot_materials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quality_lot_id"
     t.integer  "material_element_id"
     t.decimal  "lot_element_low_range",                 precision: 25, scale: 10, default: "0.0"
@@ -1223,7 +1215,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quality_lot_id"], name: "index_quality_lot_materials_on_quality_lot_id", using: :btree
   end
 
-  create_table "quality_lots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quality_lots", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_header_id"
     t.integer  "po_line_id"
     t.integer  "item_revision_id"
@@ -1261,7 +1253,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_line_id"], name: "index_quality_lots_on_po_line_id", using: :btree
   end
 
-  create_table "quote_line_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quote_line_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quote_vendor_id"
     t.integer  "quote_line_id"
     t.decimal  "quote_line_cost",                           precision: 25, scale: 10, default: "0.0"
@@ -1277,7 +1269,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_vendor_id"], name: "index_quote_line_costs_on_quote_vendor_id", using: :btree
   end
 
-  create_table "quote_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quote_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quote_id"
     t.integer  "item_id"
     t.integer  "item_revision_id"
@@ -1305,7 +1297,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_id"], name: "index_quote_lines_on_quote_id", using: :btree
   end
 
-  create_table "quote_vendors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quote_vendors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "quote_id"
     t.integer  "organization_id"
     t.string   "quote_vendor_status"
@@ -1317,7 +1309,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_id"], name: "index_quote_vendors_on_quote_id", using: :btree
   end
 
-  create_table "quotes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quotes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "po_header_id"
     t.string   "quote_identifier"
@@ -1339,7 +1331,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["po_header_id"], name: "index_quotes_on_po_header_id", using: :btree
   end
 
-  create_table "quotes_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quotes_organizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "quote_id"
     t.datetime "created_at"
@@ -1348,7 +1340,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_id"], name: "index_quotes_organizations_on_quote_id", using: :btree
   end
 
-  create_table "quotes_po_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "quotes_po_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "po_header_id"
     t.integer  "quote_id"
     t.datetime "created_at"
@@ -1357,7 +1349,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["quote_id"], name: "index_quotes_po_headers_on_quote_id", using: :btree
   end
 
-  create_table "rails_admin_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "rails_admin_histories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "message",    limit: 65535
     t.string   "username"
     t.integer  "item"
@@ -1369,7 +1361,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
   end
 
-  create_table "receipt_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receipt_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "receipt_id"
     t.integer  "receivable_id"
     t.decimal  "receipt_line_amount",     precision: 25, scale: 10, default: "0.0"
@@ -1381,7 +1373,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["receivable_id"], name: "index_receipt_lines_on_receivable_id", using: :btree
   end
 
-  create_table "receipts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receipts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "receipt_type_id"
     t.string   "receipt_check_code"
@@ -1403,7 +1395,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_receipts_on_organization_id", using: :btree
   end
 
-  create_table "receivable_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receivable_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "receivable_id"
     t.integer  "gl_account_id"
     t.string   "receivable_account_description"
@@ -1417,7 +1409,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["receivable_id"], name: "index_receivable_accounts_on_receivable_id", using: :btree
   end
 
-  create_table "receivable_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receivable_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "receivable_id"
     t.string   "receivable_line_identifier"
     t.string   "receivable_line_description"
@@ -1432,7 +1424,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["receivable_id"], name: "index_receivable_lines_on_receivable_id", using: :btree
   end
 
-  create_table "receivable_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receivable_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "receivable_id"
     t.integer  "so_line_id"
     t.string   "receivable_shipment_identifier"
@@ -1446,7 +1438,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["so_line_id"], name: "index_receivable_shipments_on_so_line_id", using: :btree
   end
 
-  create_table "receivable_so_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receivable_so_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "so_shipment_id"
     t.integer  "receivable_id"
     t.datetime "created_at"
@@ -1455,7 +1447,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["so_shipment_id"], name: "index_receivable_so_shipments_on_so_shipment_id", using: :btree
   end
 
-  create_table "receivables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "receivables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.integer  "so_header_id"
     t.string   "receivable_identifier"
@@ -1479,13 +1471,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["so_header_id"], name: "index_receivables_on_so_header_id", using: :btree
   end
 
-  create_table "reconcileds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "reconcileds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.float    "balance",    limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "reconciles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "reconciles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "reconcile_type"
     t.integer  "payment_id"
     t.string   "tag"
@@ -1500,7 +1492,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["printing_screen_id"], name: "index_reconciles_on_printing_screen_id", using: :btree
   end
 
-  create_table "run_at_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "run_at_rates", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "run_at_rate_name"
     t.string   "run_at_rate_description"
     t.text     "run_at_rate_notes",       limit: 65535
@@ -1511,7 +1503,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "so_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "so_headers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "organization_id"
     t.string   "so_identifier"
     t.integer  "so_bill_to_id"
@@ -1531,7 +1523,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["organization_id"], name: "index_so_headers_on_organization_id", using: :btree
   end
 
-  create_table "so_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "so_lines", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "so_header_id"
     t.integer  "item_id"
     t.integer  "item_revision_id"
@@ -1564,7 +1556,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["vendor_quality_id"], name: "index_so_lines_on_vendor_quality_id", using: :btree
   end
 
-  create_table "so_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "so_shipments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "so_line_id"
     t.integer  "so_shipped_count",                                 default: 0
     t.decimal  "so_shipped_cost",        precision: 25, scale: 10, default: "0.0"
@@ -1581,7 +1573,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["so_line_id"], name: "index_so_shipments_on_so_line_id", using: :btree
   end
 
-  create_table "specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "specifications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean  "specification_active"
     t.string   "specification_identifier"
     t.string   "specification_description"
@@ -1590,12 +1582,12 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "taggings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "tag_id"
-    t.integer  "taggable_id"
     t.string   "taggable_type"
-    t.integer  "tagger_id"
+    t.integer  "taggable_id"
     t.string   "tagger_type"
+    t.integer  "tagger_id"
     t.string   "context",       limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context", using: :btree
@@ -1609,13 +1601,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id", using: :btree
   end
 
-  create_table "tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name",                       collation: "utf8_bin"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
   end
 
-  create_table "territories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "territories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean  "territory_active"
     t.string   "territory_identifier"
     t.string   "territory_description"
@@ -1624,7 +1616,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.datetime "updated_at"
   end
 
-  create_table "test_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "test_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "test_package_id"
     t.string   "item_name"
     t.datetime "created_at"
@@ -1632,13 +1624,13 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["test_package_id"], name: "index_test_items_on_test_package_id", using: :btree
   end
 
-  create_table "test_packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "test_packages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email",                                                                       null: false
     t.string   "encrypted_password",                                                          null: false
     t.string   "name",                                                                        null: false
@@ -1679,7 +1671,7 @@ ActiveRecord::Schema.define(version: 20170207090706) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   end
 
-  create_table "vendor_qualities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+  create_table "vendor_qualities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "quality_name"
     t.string   "quality_description"
     t.text     "quality_notes",       limit: 65535
