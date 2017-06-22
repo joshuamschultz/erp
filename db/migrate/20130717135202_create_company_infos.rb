@@ -11,8 +11,6 @@ class CreateCompanyInfos < ActiveRecord::Migration
       t.string :company_website
       t.string :company_slogan
       t.boolean :company_active
-      t.integer :company_created_id
-      t.integer :company_updated_id
 
       t.timestamps
     end

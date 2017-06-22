@@ -90,11 +90,11 @@ mastertypes.each do |master|
 end
 
 # GL Types & Categories
-FastSeeder.seed_csv!(GlType, "gl_types.csv", :gl_name, :gl_side, :gl_report, :gl_identifier)
-FastSeeder.seed_csv!(GlAccount,"gl_accounts.csv", :gl_type_id, :gl_account_title, :gl_account_identifier)
-GlAccount.all.each do |account|
-  account.update_attributes(:key_account => true, :gl_account_active => true)
-end
+#FastSeeder.seed_csv!(GlType, "gl_types.csv", :gl_name, :gl_side, :gl_report, :gl_identifier)
+#FastSeeder.seed_csv!(GlAccount,"gl_accounts.csv", :gl_type_id, :gl_account_title, :gl_account_identifier)
+#GlAccount.all.each do |account|
+#  account.update_attributes(:key_account => true, :gl_account_active => true)
+#end
 
 
 check_codes = [
@@ -117,14 +117,14 @@ Organization.create!([
   {user_id: nil, organization_type_id: 7, territory_id: nil, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Cal-Vibration", organization_short_name: "Calation", organization_description: "Calibrators", organization_address_1: "", organization_address_2: "", organization_city: "", organization_state: "", organization_country: "United States", organization_zipcode: "", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
   {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-27", organization_name: "Ephesus Lighting", organization_short_name: "Ephesus", organization_description: "Home Office", organization_address_1: "76 jefferson street", organization_address_2: "", organization_city: "Syracuse", organization_state: "NY", organization_country: "United States", organization_zipcode: "130089", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: false}
 ])
-
-Owner.create!([
-  {owner_identifier: "Chess Group", owner_description: "", owner_commission_type_id: 1, owner_commission_amount: "5.0", owner_created_id: nil, owner_updated_id: nil, owner_active: true}
-])
 =end
+Owner.create!([
+  {owner_identifier: "Chess Group Inc", owner_description: "", owner_commission_type_id: 1, owner_commission_amount: "5.0", owner_active: true}
+])
+
 
 CompanyInfo.create!([
-  {company_name: "MM & WM ERP", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil, company_created_id: nil, company_updated_id: nil}
+  {company_name: "Chess Group Inc", company_address1: "7010 Fly Road", company_address2: "East Syracuse, NY 13057", company_phone1: "315.200.1037", company_phone2: nil, company_mobile: nil, company_fax: "315.432.0899", company_website: "www.chessgroupinc.com", company_slogan: "Always One Step Ahead", company_active: nil}
 ])
 =begin
 

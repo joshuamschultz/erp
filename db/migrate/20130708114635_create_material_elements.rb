@@ -1,6 +1,6 @@
 class CreateMaterialElements < ActiveRecord::Migration
   def change
-    create_table :material_elements do |t|
+    create_table :material_elements, id: false do |t|
       t.references :material
       t.references :element
       t.string :element_symbol
@@ -8,11 +8,10 @@ class CreateMaterialElements < ActiveRecord::Migration
       t.string :element_low_range
       t.string :element_high_range
       t.boolean :element_active, :default => true
-      t.integer :element_created_id
-      t.integer :element_updated_id
 
       t.timestamps
     end
     add_index :material_elements, :material_id
+    add_index :material_elements, :element_id
   end
 end
