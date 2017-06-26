@@ -6,9 +6,20 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-server '138.197.31.221', user: 'deploy', roles: %w{app db web}
+server '138.197.31.221', user: 'deploy', roles: %w{app db web}, primary: true
 
 set :stage, :production
+
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+
+# in case you want to set ruby version from the file:
+set :rbenv_ruby, File.read('.ruby-version').strip
+
+# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+# set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
+
+set :branch, :master
 # role-based syntax
 # ==================
 
