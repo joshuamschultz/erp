@@ -31,7 +31,7 @@ module AllianceFasteners
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
     config.active_record.default_timezone = :local
-    config.time_zone = 'UTC'
+    config.time_zone = 'EST'
     # config.active_record.default_timezone = 'UTC'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
@@ -63,7 +63,7 @@ module AllianceFasteners
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css", "app_validation.js","pk100.css", "jr100.css"]
+    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css","pk100.css", "jr100.css"]
 
     config.middleware.use PDFKit::Middleware, :print_media_type => true
 
