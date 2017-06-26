@@ -10,7 +10,7 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-    gem 'sass-rails', '~> 5.0', '>= 5.0.4'
+    gem 'sass-rails', '~> 5.0'
     gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
     # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -41,7 +41,7 @@ gem 'devise', '~> 4.2'
 
 gem 'therubyracer', '~> 0.12.3'
 gem 'execjs', '1.4.0'
-gem 'bootstrap-sass', '~> 2.3.1.0'
+gem 'bootstrap-sass', '~> 2.3'
 gem 'kaminari'
 
 # group :production do
