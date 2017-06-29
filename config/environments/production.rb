@@ -17,7 +17,7 @@ AllianceFasteners::Application.configure do
     config.assets.compress = true
 
     # Don't fallback to assets pipeline if a precompiled asset is missed
-    config.assets.compile = true
+    config.assets.compile = false
 
     # Generate digests for assets URLs
     config.assets.digest = true
@@ -33,7 +33,7 @@ AllianceFasteners::Application.configure do
     # config.force_ssl = true
 
     # See everything in the log (default is :info)
-    # config.log_level = :debug
+    config.log_level = :debug
 
     # Prepend all log lines with the following tags
     # config.log_tags = [ :subdomain, :uuid ]
@@ -84,10 +84,7 @@ AllianceFasteners::Application.configure do
     }
 
     # Expands the lines which load the assets
-    config.assets.debug = false
+    config.assets.debug = true
 
-    # Enable to show log error in browser....
-    config.consider_all_requests_local = false
 
-    config.action_controller.perform_caching = true
 end
