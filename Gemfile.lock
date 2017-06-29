@@ -368,7 +368,7 @@ DEPENDENCIES
   soap4r (~> 1.5, >= 1.5.8)
   string-urlize (~> 1.0.2)
   therubyracer (~> 0.12.3)
-  uglifier (>= 1.0.3)
+  uglifier
   validates_email_format_of
   validates_formatting_of
   wkhtmltopdf-binary
