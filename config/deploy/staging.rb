@@ -19,7 +19,7 @@ set :rbenv_ruby, File.read('.ruby-version').strip
 # set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
-set :branch, :master
+set :branch, :develop
 # role-based syntax
 # ==================
 
