@@ -1,0 +1,27 @@
+!!!
+/[if lt IE 7] <html class="ie lt-ie9 lt-ie8 lt-ie7">
+/[if IE 7] <html class="ie lt-ie9 lt-ie8">
+/[if IE 8] <html class="ie lt-ie9">
+/[if gt IE 8] <html class="ie gt-ie8">
+/ [if !IE]><!
+%html
+  %head
+    %title= @home[:name]
+    %meta{:charset => "UTF-8"}
+    %meta{:content => "width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0", name: "viewport"}
+    %meta{:content => "yes", name: "apple-mobile-web-app-capable"}
+    %meta{:content => "black", name: "apple-mobile-web-app-status-bar-style"}
+    %meta{:content => "IE=9; IE=8; IE=7; IE=EDGE", "http-equiv" => "X-UA-Compatible"}
+    = csrf_meta_tags
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application", :media => "all"
+    = stylesheet_link_tag "jr100", :media => "all"
+    = javascript_include_tag "commoncls"
+    = javascript_include_tag "less.min", :media => "all"
+
+  %body{class: "#{yield :page_level_body_class}"}
+    - if current_user && params[:layout]
+      = render partial: 'layouts/app_layouts/main_layout'
+    - else
+      = yield
+  -#= javascript_include_tag "application", :media => "all"

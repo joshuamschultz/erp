@@ -44,6 +44,10 @@ gem 'country_select'
 gem 'validates_formatting_of'
 gem 'bootstrap-datetimepicker-rails'
 
+# For using simple_form as: :date_picker
+#gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+#gem 'momentjs-rails', '~> 2.9', github: 'derekprior/momentjs-rails'
+
 gem 'paperclip', '~> 5.0.0.beta1'
 gem 'rmagick'
 gem 'aws-sdk', '1.8.5'
@@ -80,11 +84,18 @@ gem 'responders'
 gem 'sidekiq'
 gem 'haml-rails'
 
+
 gem 'acts-as-taggable-on', '~> 4.0'
+
+
 
 group :development do
     gem 'capistrano', '~> 3.7', '>= 3.7.1'
     gem 'capistrano-rails', '~> 1.2'
     gem 'capistrano-passenger', '~> 0.2.0'
     gem 'capistrano-rbenv', '~> 2.1'
+end
+
+source 'https://rails-assets.org' do
+    gem 'rails-assets-DataTables'
 end

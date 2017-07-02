@@ -4,25 +4,6 @@
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
 // or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
 //
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// the compiled file.
-//
-// WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
-// GO AFTER THE REQUIRES BELOW.
 //
 //= require_self
-//= require jquery
-//= require jquery_ujs
-//= require theme_js/less.min
-//= require theme_js/jquery.min
-//= require jquery-ui
-//= require theme_js/modernizr
-//= require theme_js/bootstrap-datetimepicker.min
-//= require jquery.multiselect
-//= require jquery.multiselect.filter
-//= require autocomplete-rails
-//= require mustache
-//= require rails.validations
-//= require rails.validations.simple_form
-var tab_field_forms = {},
-  date_box_fields = [];
+//= require main
