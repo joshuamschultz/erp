@@ -11,16 +11,16 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require_self
-//= require ./theme_js/jquery.cookie
-//= require ./theme_js/jquery.slimscroll.min
-//= require ./theme_js/common
-//= require ./theme_js/holder
-//= require ./theme_js/jquery.uniform.min
-//= require ./theme_js/jquery.dataTables.min
-//= require ./theme_js/DT_bootstrap
-//= require ./theme_js/jquery.dataTables.rowGrouping
-//= require ./theme_js/select2
-//= require ./theme_js/jasny-bootstrap.min
-//= require ./theme_js/bootstrap-fileupload
-//= require ./theme_js/plupload.full.js
-//= require ./theme_js/dropzone.min.js
+//= require theme_js/jquery.cookie
+//= require theme_js/jquery.slimscroll.min
+//= require theme_js/common
+//= require theme_js/holder
+//= require theme_js/jquery.uniform.min
+//= require theme_js/jquery.dataTables.min
+//= require theme_js/DT_bootstrap
+//= require theme_js/jquery.dataTables.rowGrouping
+//= require theme_js/select2
+//= require theme_js/jasny-bootstrap.min
+//= require theme_js/bootstrap-fileupload
+//= require theme_js/plupload.full.js
+//= require theme_js/dropzone.min.js
