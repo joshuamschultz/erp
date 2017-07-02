@@ -13,15 +13,16 @@
 //= require_self
 //= require jquery
 //= require jquery_ujs
-//= require ./theme_js/less.min
-//= require ./theme_js/jquery.min
+//= require theme_js/less.min
+//= require theme_js/jquery.min
 //= require jquery-ui
-//= require ./theme_js/modernizr
-//= require ./theme_js/bootstrap-datetimepicker.min
+//= require theme_js/modernizr
+//= require theme_js/bootstrap-datetimepicker.min
 //= require jquery.multiselect
 //= require jquery.multiselect.filter
 //= require autocomplete-rails
 //= require mustache
 //= require rails.validations
 //= require rails.validations.simple_form
-var tab_field_forms = {}, date_box_fields = [];
+var tab_field_forms = {},
+  date_box_fields = [];
