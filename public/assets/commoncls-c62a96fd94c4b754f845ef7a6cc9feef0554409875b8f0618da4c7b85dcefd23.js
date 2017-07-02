@@ -1,1 +1,0 @@
-$(document).ready(function(){$(".commoncls").keyup(function(){var a=$(this).val();(parseInt(a)<0||isNaN(a))&&(alert("please enter valid values"),$(this).val(""),$(this).focus())})});
