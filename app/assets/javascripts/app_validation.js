@@ -1,4 +1,3 @@
-// removed "=" to make regular comment
-// require rails.validations
-// require rails.validations.simple_form
-// require ClientSideValidations_TwitterBoostrap_SimpleForm
+//= require validations/rails.validations
+//= require validations/rails.validations.simple_form
+//= require validations/ClientSideValidations_TwitterBoostrap_SimpleForm
