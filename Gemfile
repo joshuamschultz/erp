@@ -2,22 +2,21 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.0.1'
 
+
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-    gem 'sass-rails', '~> 5.0'
-    gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', :platforms => :ruby
 
-    # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-    # gem 'therubyracer', :platforms => :ruby
+gem 'uglifier'
 
-    gem 'uglifier'
-end
 
 gem 'jquery-rails'
 gem 'rails3-jquery-autocomplete'
