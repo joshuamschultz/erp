@@ -16,12 +16,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
     <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "application", media: "all" %>
+    <%= stylesheet_link_tag("application",
+                            :media => "all",
+                            "data-turbolinks-track" => true) %>
+
+    <%= javascript_include_async_tag("application",
+                                     "data-turbolinks-track" => true) %>
+
     <%= stylesheet_link_tag "jr100", :media => "all" %>
     <%= javascript_include_tag "commoncls" %>
-
   </head>
+
   <body class="<%= yield :page_level_body_class %>">
     <% if current_user && params[:layout] %>
     <%= render :partial => 'layouts/app_layouts/main_layout' %>
