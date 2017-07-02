@@ -6,19 +6,15 @@
 @import "theme_css/select2";
 @import 'jquery.multiselect';
 @import "theme_css/jasny-bootstrap.min";
-@import "theme_css/jasny-bootstrap-responsive.min"; //@import "extend/bootstrap-wysihtml5/css/bootstrap-wysihtml5-0.0.2";
-//@import "extend/bootstrap-select/bootstrap-select";
-//@import "extend/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons";
+@import "theme_css/jasny-bootstrap-responsive.min";
 @import 'fullcalendar';
 @import 'jquery-ui';
-@import 'fullcalendar'; //@import "scripts/plugins/color/jquery-miniColors/jquery.miniColors.css";
-//@import "scripts/plugins/notifications/Gritter/css/jquery.gritter";
-//@import "scripts/plugins/system/jquery-ui/css/smoothness/jquery-ui-1.9.2.custom.min";
-@import "theme_css/dropzone.css"; //@import "scripts/plugins/tables/DataTables/media/css/DT_bootstrap";
-@import "jquery.multiselect"; //@import "global";
+@import 'fullcalendar';
+@import "theme_css/dropzone.css";
+@import "jquery.multiselect";
 @import "theme_css/style-dark";
 @import 'jr100';
-@import 'pk100'; //@import 'scaffolds';
+@import 'pk100';
 /*.datetimepicker{color:black;}*/
 .form-inputs textarea {
 	height: 100px;
