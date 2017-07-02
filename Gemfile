@@ -2,12 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.0.1'
 
-
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'mysql2'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
@@ -17,9 +13,12 @@ gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
 gem 'uglifier'
 
-
 gem 'jquery-rails'
-gem 'rails3-jquery-autocomplete'
+gem 'jquery-ui-rails'
+
+# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'turbolinks'
+gem 'rails-jquery-autocomplete'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -27,11 +26,6 @@ gem 'rails3-jquery-autocomplete'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano', '~> 3.0.1'
 
 # To use debugger
 # gem 'debugger'
@@ -43,9 +37,6 @@ gem 'execjs', '1.4.0'
 gem 'bootstrap-sass', '~> 2.3'
 gem 'kaminari'
 
-# group :production do
-#   gem 'pg', '0.14.1'
-# end
 
 gem 'simple_form'
 gem 'countries'
@@ -54,7 +45,6 @@ gem 'validates_formatting_of'
 gem 'bootstrap-datetimepicker-rails'
 
 gem 'paperclip', '~> 5.0.0.beta1'
-# gem 'rmagick', '2.13.2'
 gem 'rmagick'
 gem 'aws-sdk', '1.8.5'
 
