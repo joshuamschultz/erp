@@ -13,6 +13,7 @@ gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
 
 gem 'uglifier'
 
+
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
@@ -32,7 +33,7 @@ gem 'rails-jquery-autocomplete'
 
 gem 'devise', '~> 4.2'
 
-gem 'therubyracer', '~> 0.12.3'
+#gem 'therubyracer', '~> 0.12.3'
 gem 'execjs', '1.4.0'
 #gem 'bootstrap-sass', '~> 2.3'
 gem 'kaminari'
