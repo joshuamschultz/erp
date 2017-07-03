@@ -19,7 +19,6 @@
 //= require theme_js/plupload.full.js
 //= require scripts/plugins/color/jquery-miniColors/jquery.miniColors
 //= require scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker
-//= require app_validation
 //= require jquery.multiselect
 //= require jquery.multiselect.filter
 //= require cocoon
