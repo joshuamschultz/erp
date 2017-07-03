@@ -7,7 +7,9 @@ gem 'rails', '~> 5.0.2'
 gem 'mysql2'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+# since the theme is old, using older gems below
+#gem 'sass-rails', '~> 5.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -52,7 +54,8 @@ gem 'rails-jquery-autocomplete'
 gem 'devise', '~> 4.2'
 
 gem 'execjs', '1.4.0'
-#gem 'bootstrap-sass', '~> 2.3'
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'sass-rails', '>= 3.2'
 gem 'kaminari'
 
 
