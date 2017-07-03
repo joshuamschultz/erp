@@ -1,5 +1,6 @@
 //= require_self
 //= require scripts/plugins/system/jquery.min
+//= bootstrap-sprockets
 //= require jquery_ujs
 //= require scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom
 //= require scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch
