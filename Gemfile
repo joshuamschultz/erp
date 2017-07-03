@@ -34,7 +34,7 @@ gem 'devise', '~> 4.2'
 
 gem 'therubyracer', '~> 0.12.3'
 gem 'execjs', '1.4.0'
-gem 'bootstrap-sass', '~> 2.3'
+#gem 'bootstrap-sass', '~> 2.3'
 gem 'kaminari'
 
 
