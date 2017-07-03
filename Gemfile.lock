@@ -47,6 +47,8 @@ GEM
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 13.0)
     arel (7.1.4)
+    autoprefixer-rails (6.4.0.2)
+      execjs
     aws-sdk (1.8.5)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
@@ -54,6 +56,9 @@ GEM
     bcrypt (3.1.11)
     bindex (0.5.0)
     bootstrap-datetimepicker-rails (0.0.11)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.3)
     byebug (9.0.6)
     cancancan (1.17.0)
@@ -349,6 +354,7 @@ DEPENDENCIES
   annotate
   aws-sdk (= 1.8.5)
   bootstrap-datetimepicker-rails
+  bootstrap-sass (~> 3.3.6)
   byebug
   cancancan (~> 1.9)
   capistrano (~> 3.7, >= 3.7.1)
@@ -382,7 +388,7 @@ DEPENDENCIES
   rmagick
   role_model
   rspec-rails (~> 3.4)
-  sass-rails (~> 5.0)
+  sass-rails (>= 3.2)
   sidekiq
   simple_form
   spring
