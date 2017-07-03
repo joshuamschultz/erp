@@ -6,12 +6,12 @@ require 'pdfkit'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(assets: %w[development test]))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module AllianceFasteners
+module Erp
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -39,7 +39,7 @@ module AllianceFasteners
     config.i18n.default_locale = :en
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
@@ -57,38 +57,20 @@ module AllianceFasteners
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
 
-    # Enable the asset pipeline
-    config.assets.enabled = true
+    config.middleware.use PDFKit::Middleware, print_media_type: true
 
-    # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-
-    config.assets.precompile += ['bootstrap.min.js', 'app_theme.js', "main.js", "main.css","pk100.css", "jr100.css"]
-
-    config.middleware.use PDFKit::Middleware, :print_media_type => true
-
-    config.assets.initialize_on_precompile = false
-    # In `config/environments/development.rb`
-    #  config.action_controller.asset_host = "http://localhost:3001"
-
-    # # In `config/environments/production.rb`
-    # config.action_controller.asset_host = "http://erp.chessgroupinc.com"
-
-    config.cache_counts_by_default = true
-
-    #add these lines
-        config.generators do |g|
-          g.stylesheets false
-          g.javascripts false
-          g.test_framework :rspec,
-            :fixtures => true,
-            :view_specs => false,
-            :helper_specs => false,
-            :routing_specs => false,
-            :controller_specs => true,
-            :request_specs => true
-          g.fixture_replacement :factory_girl, :dir => "spec/factories"
-        end
-
+    # add these lines
+    config.generators do |g|
+      g.stylesheets false
+      g.javascripts false
+      g.test_framework :rspec,
+                       fixtures: true,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       controller_specs: true,
+                       request_specs: true
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+    end
   end
 end
