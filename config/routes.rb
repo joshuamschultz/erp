@@ -1,15 +1,14 @@
-AllianceFasteners::Application.routes.draw do
+Rails.application.routes.draw do
   resources :item_channels
-get "auto_complete" => 'so_lines#auto_complete'
+  get 'auto_complete' => 'so_lines#auto_complete'
 
   namespace :api do
-  namespace :vi do
-    resources :organizations
+    namespace :vi do
+      resources :organizations
+    end
   end
-end
 
   resources :item_lots
-
 
   resources :events do
     member do
@@ -17,47 +16,34 @@ end
     end
   end
 
-
-  get "permissions/error"
+  get 'permissions/error'
 
   resources :quality_histories
 
-
   resources :notifications
-
 
   resources :credit_registers
 
-
   resources :check_registers
-
 
   resources :process_type_specifications
 
-
   resources :inventory_adjustments
 
-
   resources :quality_documents
-
 
   resources :so_mails
   resources :logos
 
-
-  get "home/index"
+  get 'home/index'
 
   resources :ppaps
 
-
   resources :check_list_lines
-
 
   resources :checklists
 
-
   resources :printing_screens
-
 
   resources :deposit_checks do
     collection do
@@ -67,53 +53,43 @@ end
 
   resources :reconciles
 
-
   resources :packages
-
 
   resources :quality_actions do
     member do
       get 'quality_report'
     end
-    get :autocomplete_quality_action_quality_action_no, :on => :collection
+    get :autocomplete_quality_action_quality_action_no, on: :collection
   end
 
   resources :cause_analyses do
-    get :autocomplete_cause_analysis_name, :on => :collection
+    get :autocomplete_cause_analysis_name, on: :collection
   end
-
 
   resources :customer_feedbacks
 
-
   resources :capacity_plannings
 
-
   resources :run_at_rates do
-    get :autocomplete_run_at_rate_run_at_rate_name, :on => :collection
+    get :autocomplete_run_at_rate_run_at_rate_name, on: :collection
   end
-
 
   resources :customer_quotes do
     resources :customer_quote_lines
-         get 'populate', on: :member
+    get 'populate', on: :member
   end
 
-  #resources :customer_quotes
-
+  # resources :customer_quotes
 
   resources :group_organizations
 
-
   resources :groups
-
 
   resources :check_codes
 
   resources :receivables do
     member do
       get 'invoice_report'
-
     end
     collection do
       get 'report'
@@ -125,9 +101,9 @@ end
     collection do
       get 'manual_new'
     end
-     member do
+    member do
       get 'manual_edit'
-     end
+    end
     resources :payable_accounts
   end
 
@@ -138,7 +114,6 @@ end
     end
   end
 
-
   resources :gl_entries do
     member do
       get 'populate'
@@ -148,7 +123,7 @@ end
   resources :gl_types
 
   resources :gl_accounts do
-    get :autocomplete_gl_account_gl_account_title, :on => :collection
+    get :autocomplete_gl_account_gl_account_title, on: :collection
     member do
       get 'gl_account_info'
     end
@@ -170,19 +145,16 @@ end
 
   resources :quality_lot_gauges
 
-  get "quotes/quotes-history" => 'quotes#history', as: :quotes_history
+  get 'quotes/quotes-history' => 'quotes#history', as: :quotes_history
 
   resources :quotes do
     resources :quote_vendors
   end
 
-
-
   resources :quotes do
     resources :quote_lines
-      get 'populate', on: :member
+    get 'populate', on: :member
   end
-
 
   resources :quotes
 
@@ -222,26 +194,25 @@ end
 
   resources :quality_lot_dimensions
 
-  get "common_actions/get_info"
-  get "quality_lots/lot_info"
+  get 'common_actions/get_info'
+  get 'quality_lots/lot_info'
 
   resources :control_plans do
-    get :autocomplete_control_plan_plan_name, :on => :collection
+    get :autocomplete_control_plan_plan_name, on: :collection
   end
 
   resources :fmea_types do
-    get :autocomplete_fmea_type_fmea_name, :on => :collection
+    get :autocomplete_fmea_type_fmea_name, on: :collection
   end
 
   resources :quality_lot_materials
 
-
   resources :process_flows do
-    get :autocomplete_process_flow_process_name, :on => :collection
+    get :autocomplete_process_flow_process_name, on: :collection
   end
 
   resources :elements do
-    get :autocomplete_element_element_name, :on => :collection
+    get :autocomplete_element_element_name, on: :collection
   end
 
   resources :so_headers do
@@ -255,22 +226,21 @@ end
       get 'populate'
       get 'so_info'
     end
-    get :autocomplete_so_header_so_identifier, :on => :collection
+    get :autocomplete_so_header_so_identifier, on: :collection
   end
 
   resources :po_shipments
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  devise_for :users, :path => 'auth', :path_names => { :sign_in => "login", :sign_out => "logout", :sign_up => "register", :password => 'password' } do
-    root :to => 'devise/sessions#new'
+  devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'register', password: 'password' } do
+    root to: 'devise/sessions#new'
   end
 
   resources :customer_quality_levels
 
   resources :po_headers do
     member do
-
       get 'purchase_report'
     end
     resources :po_lines
@@ -278,11 +248,11 @@ end
       get 'populate'
       get 'po_info'
     end
-    get :autocomplete_po_header_po_identifier, :on => :collection
+    get :autocomplete_po_header_po_identifier, on: :collection
   end
 
   resources :quality_lots, except: :new do
-    get :autocomplete_quality_lot_lot_control_no, :on => :collection
+    get :autocomplete_quality_lot_lot_control_no, on: :collection
     member do
       get 'populate'
       get 'material_report'
@@ -303,13 +273,13 @@ end
     resources :item_revisions do
       resources :item_part_dimensions
     end
-    get :autocomplete_item_item_part_no, :on => :collection
+    get :autocomplete_item_item_part_no, on: :collection
   end
 
   resources :privileges
 
   resources :item_selected_names do
-    get :autocomplete_item_selected_name_item_name, :on => :collection
+    get :autocomplete_item_selected_name_item_name, on: :collection
   end
 
   resources :item_processes
@@ -321,11 +291,11 @@ end
   resources :item_prints
 
   resources :prints do
-    get :autocomplete_print_print_identifier, :on => :collection
+    get :autocomplete_print_print_identifier, on: :collection
   end
 
   resources :item_alt_names do
-    get :autocomplete_item_alt_name_item_alt_identifier, :on => :collection
+    get :autocomplete_item_alt_name_item_alt_identifier, on: :collection
   end
 
   resources :gauges
@@ -351,68 +321,57 @@ end
       get 'add_comment'
       get 'organization_info'
     end
-    get :autocomplete_organization_organization_name, :on => :collection
+    get :autocomplete_organization_organization_name, on: :collection
   end
 
-  get "static_pages/landing"
+  get 'static_pages/landing'
 
-  get "static_pages/empty"
+  get 'static_pages/empty'
 
-  get "static_pages/error_404"
+  get 'static_pages/error_404'
 
-  get "static_pages/error_500"
+  get 'static_pages/error_500'
 
   resources :specifications
 
-
   resources :territories
 
-
   resources :commodities do
-    get :autocomplete_commodity_commodity_identifier, :on => :collection
+    get :autocomplete_commodity_commodity_identifier, on: :collection
   end
 
-
   resources :company_infos
-
 
   resources :customer_qualities do
     get 'set_default'
   end
 
-
   resources :vendor_qualities do
     get 'set_default'
   end
 
-
   resources :owners
-
 
   resources :master_types
 
-
-  resources :process_types  do
+  resources :process_types do
     collection do
       get 'process_specs'
     end
   end
 
-
   resources :materials do
     resources :material_elements
-    get :autocomplete_material_material_short_name, :on => :collection
+    get :autocomplete_material_material_short_name, on: :collection
   end
 
   resources :test_items
 
-
   resources :test_packages
 
-  match "/tester" => "account#tester", via: [:get, :post]
+  match '/tester' => 'account#tester', via: %i[get post]
 
-
-  get "account/dashboard"
+  get 'account/dashboard'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -471,11 +430,11 @@ end
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  get "/404" => "static_pages#error_404"
-  get "/500" => "static_pages#error_500"
+  get '/404' => 'static_pages#error_404'
+  get '/500' => 'static_pages#error_500'
 
   # match ':not_found' => 'account#dashboard', :constraints => { :not_found => /.*/ }
 
   # match "*path", :to => "static_pages#error_404"
-  root :to => "account#dashboard"
+  root to: 'account#dashboard'
 end
