@@ -562,7 +562,8 @@ body>.container-fluid.fixed #content {
 #menu {
     width: 228px;
     float: left;
-    position: absolute;
+    /* Josh - did this to fix hidden menu
+       position: absolute; */
     left: 0;
     top: 0;
     overflow: visible;
