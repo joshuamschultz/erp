@@ -54,7 +54,7 @@ gem 'rails-jquery-autocomplete'
 gem 'devise', '~> 4.2'
 
 gem 'execjs', '1.4.0'
-gem 'bootstrap-sass', '~> 3.3.6'
+#gem 'bootstrap-sass', '~> 3.3.6'
 gem 'sass-rails', '>= 3.2'
 gem 'kaminari'
 
@@ -100,6 +100,6 @@ gem 'haml-rails'
 gem 'acts-as-taggable-on', '~> 4.0'
 
 
-source 'https://rails-assets.org' do
-    gem 'rails-assets-DataTables'
-end
+#source 'https://rails-assets.org' do
+#    gem 'rails-assets-DataTables'
+#end
