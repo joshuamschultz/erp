@@ -1,62 +1,93 @@
 <%= simple_form_for(@company_info, :html => {:id => "form_for_company",:class => "form-horizontal", :multipart => true }) do |f| %>
-  <%= f.error_notification %>
+<%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :company_name, :label => "Name", :autofocus => true %>
-    <%= f.input :company_slogan, :label => "Slogan" %>
-    <%= f.input :company_address1, :label => "Address 1" %>
-    <%= f.input :company_address2, :label => "Address 2" %>
-    <%= f.input :company_phone1, :label => "Telephone" %>
-    <%#= f.input :company_phone2, :label => "Telephone 2" %>
-    <%#= f.input :company_mobile, :label => "Mobile" %>
-    <%= f.input :company_fax, :label => "Fax" %>
-    <%= f.input :company_website, :label => "Website" %>
-
-    <div class="control-group string optional company_info_company_website">
-        <label class="control-label">Choose Logo <br/>(Only if changed)</label>
-        <div class="controls">
-              <%= f.fields_for :image, Image.new do |g| %>
-                  <div data-provides="fileupload" class="fileupload fileupload-exists">                      
-                      <span class="btn btn-default btn-file">
-                          <span class="fileupload-new">Browse/Drop File</span>
-                          <span class="fileupload-exists">Browse/Drop File</span>
-                          <%= g.file_field :image %>
-                      </span>
-                      <span class="fileupload-preview"></span>
-                      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
-                  </div>
-              <% end %>
-        </div>
-    </div>    
+<div class="form-inputs">
+  <div class="row-fluid">
+    <div class="span6">
+      <%= f.input :company_name, :label => "Name", :autofocus => true %>
+    </div>
+    <div class="span6">
+      <%= f.input :company_slogan, :label => "Slogan" %>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <%= f.input :company_address1, :label => "Address 1", :as => :string %>
+    </div>
+    <div class="span6">
+      <%= f.input :company_phone1, :label => "Telephone" %>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <%= f.input :company_address2, :label => "City, State Zip",:as => :string %>
+    </div>
+    <div class="span6">
+      <%= f.input :company_fax, :label => "Fax" %>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6"></div>
+    <div class="span6">
+      <%= f.input :company_website, :label => "Website" %>
+    </div>
   </div>
 
-   <div class="control-group string optional company_info_company_website">
-        <label class="control-label">Choose Logo2 <br/>(Only if changed)</label>
-        <div class="controls">
-              <%= f.fields_for :logo, Logo.new do |g| %>
-                  <div data-provides="fileupload" class="fileupload fileupload-exists">                      
-                      <span class="btn btn-default btn-file">
-                          <span class="fileupload-new">Browse/Drop File</span>
-                          <span class="fileupload-exists">Browse/Drop File</span>
-                          <%= g.file_field :joint %>
-                      </span>
-                      <span class="fileupload-preview"></span>
-                      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
-                  </div>
-              <% end %>
-        </div>
-    </div>    
+  <div class="control-group string optional company_info_company_website">
+    <label class="control-label">Choose Logo
+      <br/>(Only if changed)</label>
+    <div class="controls">
+      <%= f.fields_for :image, Image.new do |g| %>
+      <div data-provides="fileupload" class="fileupload fileupload-exists">
+        <span class="btn btn-default btn-file">
+          <span class="fileupload-new">Browse/Drop File</span>
+          <span class="fileupload-exists">Browse/Drop File</span>
+          <%= g.file_field :image %>
+        </span>
+        <span class="fileupload-preview"></span>
+        <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+      </div>
+      <% end %>
+    </div>
   </div>
+</div>
 
-  <div class="separator bottom"></div>
-
-  <div class="form-actions">
-    <% if can? :edit, @company_info %>
-        <%= f.button :submit %>
+<div class="control-group string optional company_info_company_website">
+  <label class="control-label">Choose Logo2
+    <br/>(Only if changed)</label>
+  <div class="controls">
+    <%= f.fields_for :logo, Logo.new do |g| %>
+    <div data-provides="fileupload" class="fileupload fileupload-exists">
+      <span class="btn btn-default btn-file">
+        <span class="fileupload-new">Browse/Drop File</span>
+        <span class="fileupload-exists">Browse/Drop File</span>
+        <%= g.file_field :joint %>
+      </span>
+      <span class="fileupload-preview"></span>
+      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+    </div>
     <% end %>
   </div>
+</div>
+</div>
+
+<div class="separator bottom"></div>
+
+<div class="form-actions">
+<% if can? :edit, @company_info %>
+<%= f.button :submit %>
+<% end %>
+</div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_company"] = ["company_info_company_name", "company_info_company_slogan", "company_info_company_address1", "company_info_company_address2", "company_info_company_phone1", "company_info_company_fax", "company_info_company_website"];
+tab_field_forms["form_for_company"] = [
+  "company_info_company_name",
+  "company_info_company_slogan",
+  "company_info_company_address1",
+  "company_info_company_address2",
+  "company_info_company_phone1",
+  "company_info_company_fax",
+  "company_info_company_website"
+];
 </script>
