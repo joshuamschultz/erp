@@ -12,8 +12,7 @@ class CompanyInfosController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @company_info = CompanyInfo.new
@@ -37,6 +36,7 @@ class CompanyInfosController < ApplicationController
   end
 
   def update
+    respond_to do |format|
       if @company_info.update_attributes(company_info_params)
         format.html { redirect_to @company_info, notice: 'Corporate Information was successfully updated.' }
         format.json { head :no_content }
