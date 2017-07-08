@@ -81,10 +81,12 @@ class CompanyInfosController < ApplicationController
   def company_info_params
     params.require(:company_info).permit(:company_active, :company_address1, :company_address2, :company_created_id,
                                          :company_fax, :company_mobile, :company_name, :company_phone1, :company_phone2, :company_slogan,
-                                         :company_updated_id, :company_website, image_attributes: %i[image_active image_content_type image_created_id image_description
-                                                                                                     image_file_name image_file_size image_notes image_public image_title image_updated_id
-                                                                                                     imageable_id imageable_type image], logo_attributes: %i[joint_active joint_content_type joint_created_id joint_description
-                                                                                                                                                             joint_file_name joint_file_size joint_notes joint_public joint_title joint_updated_id
-                                                                                                                                                             jointable_id jointable_type joint])
+                                         :company_updated_id, :company_website,
+                                         image_attributes: %i[image_active image_content_type image_created_id image_description
+                                                              image_file_name image_file_size image_notes image_public image_title image_updated_id
+                                                              imageable_id imageable_type image],
+                                         logo_attributes: %i[joint_active joint_content_type joint_created_id joint_description
+                                                             joint_file_name joint_file_size joint_notes joint_public joint_title joint_updated_id
+                                                             jointable_id jointable_type joint])
   end
 end
