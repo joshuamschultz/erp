@@ -23,7 +23,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :organization_email
       t.string :organization_website
       t.text :organization_notes
-      t.boolean :organization_active
+      t.boolean :organization_active, default: true
       t.integer :organization_created_id
       t.integer :organization_updated_id
 
