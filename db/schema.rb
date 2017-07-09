@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110144208) do
+ActiveRecord::Schema.define(version: 20170709171127) do
 
   create_table "attachments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "attachable_id"
@@ -681,7 +681,7 @@ ActiveRecord::Schema.define(version: 20170110144208) do
     t.string   "organization_email"
     t.string   "organization_website"
     t.text     "organization_notes",       limit: 65535
-    t.boolean  "organization_active"
+    t.boolean  "organization_active",                    default: true
     t.integer  "organization_created_id"
     t.integer  "organization_updated_id"
     t.datetime "created_at"

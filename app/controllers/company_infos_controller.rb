@@ -1,6 +1,6 @@
 class CompanyInfosController < ApplicationController
-  before_action :set_page_info
   before_action :set_company_info, except: %i[index new]
+  before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
 
