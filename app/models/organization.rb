@@ -201,16 +201,13 @@ class Organization < ActiveRecord::Base
       end
   end
 
-  # Text transformation
+  # Text transformation for Table headings
   def organization_type_title
-    case organization_type.type_value
-    when 'customer'
-      ' With Customer'
-    when 'vendor'
-      ' With Vendor'
+    if organization_name
+      ' Associated With ' + organization_name
     else
       ''
-      end
+    end
   end
 
   # All po line items which have a PO header to them (vendor only)
