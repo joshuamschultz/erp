@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include CommonActions
   protect_from_forgery
 
-  respond_to :html, :json
+  respond_to :html, :json, :xml, :xhr
 
   before_action :set_locale
   before_action :determine_website

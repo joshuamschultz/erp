@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: gl_types
+#
+#  id             :integer          not null, primary key
+#  gl_name        :string(255)
+#  gl_side        :string(255)
+#  gl_report      :string(255)
+#  gl_identifier  :string(255)
+#  gl_description :string(255)
+#  gl_active      :boolean
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class GlType < ActiveRecord::Base
   attr_accessible :gl_active, :gl_description, :gl_identifier, :gl_name, :gl_report, :gl_side
 

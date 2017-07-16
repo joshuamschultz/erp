@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: contacts
+#
+#  id                  :integer          not null, primary key
+#  contactable_id      :integer
+#  contactable_type    :string(255)
+#  contact_type        :string(255)
+#  contact_title       :string(255)
+#  contact_description :string(255)
+#  contact_address_1   :text(65535)
+#  contact_address_2   :text(65535)
+#  contact_city        :string(255)
+#  contact_state       :string(255)
+#  contact_country     :string(255)
+#  contact_zipcode     :string(255)
+#  contact_telephone   :string(255)
+#  contact_fax         :string(255)
+#  contact_email       :string(255)
+#  contact_website     :string(255)
+#  contact_notes       :text(65535)
+#  contact_active      :boolean
+#  contact_created_id  :integer
+#  contact_updated_id  :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#  first_name          :string(255)
+#  last_name           :string(255)
+#
+
 class Contact < ActiveRecord::Base
   attr_accessible :contact_active, :contact_address_1, :contact_address_2, :contact_city, 
   :contact_country, :contact_created_id, :contact_description, :contact_email, :contact_fax, 

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: quote_vendors
+#
+#  id                      :integer          not null, primary key
+#  quote_id                :integer
+#  organization_id         :integer
+#  quote_vendor_status     :string(255)
+#  quote_vendor_created_id :integer
+#  quote_vendor_updated_id :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class QuoteVendor < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

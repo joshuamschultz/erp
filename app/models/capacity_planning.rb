@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: capacity_plannings
+#
+#  id                        :integer          not null, primary key
+#  capacity_plan_name        :string(255)
+#  capacity_plan_description :string(255)
+#  capacity_plan_notes       :text(65535)
+#  capacity_plan_active      :boolean
+#  capacity_plan_created_id  :integer
+#  capacity_plan_updated_id  :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#
+
 class CapacityPlanning < ActiveRecord::Base
         include Rails.application.routes.url_helpers
 

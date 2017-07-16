@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: gl_accounts
+#
+#  id                     :integer          not null, primary key
+#  gl_type_id             :integer
+#  gl_account_title       :string(255)
+#  gl_account_identifier  :string(255)
+#  gl_account_description :string(255)
+#  gl_account_active      :boolean
+#  created_at             :datetime
+#  updated_at             :datetime
+#  gl_account_amount      :decimal(15, 10)  default(0.0)
+#  key_account            :boolean          default(TRUE)
+#
+
 class GlAccount < ActiveRecord::Base
   
 

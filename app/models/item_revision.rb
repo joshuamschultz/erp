@@ -1,3 +1,32 @@
+# == Schema Information
+#
+# Table name: item_revisions
+#
+#  id                       :integer          not null, primary key
+#  item_revision_name       :string(255)      default("0")
+#  item_revision_date       :date
+#  item_id                  :integer
+#  owner_id                 :integer
+#  organization_id          :integer
+#  vendor_quality_id        :integer
+#  customer_quality_id      :integer
+#  item_name                :string(255)
+#  item_description         :text(65535)
+#  item_notes               :text(65535)
+#  item_tooling             :decimal(25, 10)  default(0.0)
+#  item_cost                :decimal(25, 10)  default(0.0)
+#  item_revision_created_id :integer
+#  item_revision_updated_id :integer
+#  created_at               :datetime
+#  updated_at               :datetime
+#  print_id                 :integer
+#  material_id              :integer
+#  latest_revision          :boolean
+#  item_revision_complete   :boolean          default(FALSE)
+#  item_sell                :decimal(15, 10)
+#  lot_count                :integer          default(0)
+#
+
 class ItemRevision < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: receivables
+#
+#  id                     :integer          not null, primary key
+#  organization_id        :integer
+#  so_header_id           :integer
+#  receivable_identifier  :string(255)
+#  receivable_description :string(255)
+#  receivable_cost        :decimal(25, 10)  default(0.0)
+#  receivable_discount    :decimal(25, 10)  default(0.0)
+#  receivable_total       :decimal(25, 10)  default(0.0)
+#  receivable_notes       :text(65535)
+#  receivable_status      :string(255)
+#  receivable_active      :boolean
+#  receivable_created_id  :integer
+#  receivable_updated_id  :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  receivable_invoice     :string(255)
+#  gl_account_id          :integer
+#  receivable_freight     :decimal(25, 10)  default(0.0)
+#  receivable_disperse    :string(255)
+#
+
 class Receivable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

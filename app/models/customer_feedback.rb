@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: customer_feedbacks
+#
+#  id                        :integer          not null, primary key
+#  organization_id           :integer
+#  title                     :string(255)
+#  feedback                  :text(65535)
+#  quality_action_id         :integer
+#  user_id                   :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#  customer_feedback_type_id :integer
+#
+
 class CustomerFeedback < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

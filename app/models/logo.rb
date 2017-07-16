@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: logos
+#
+#  id                 :integer          not null, primary key
+#  jointable_id       :integer
+#  jointable_type     :string(255)
+#  joint_title        :string(255)
+#  joint_description  :string(255)
+#  joint_notes        :text(65535)
+#  joint_file_name    :string(255)
+#  joint_file_size    :string(255)
+#  joint_content_type :string(255)
+#  joint_updated_at   :datetime
+#  joint_public       :boolean
+#  joint_active       :boolean
+#  joint_created_id   :integer
+#  joint_updated_id   :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 class Logo < ActiveRecord::Base
     attr_accessible :joint_active, :joint_content_type, :joint_created_id, :joint_description,
   :joint_file_name, :joint_file_size, :joint_notes, :joint_public, :joint_title, :joint_updated_id,

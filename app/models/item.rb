@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: items
+#
+#  id                     :integer          not null, primary key
+#  item_part_no           :string(255)
+#  item_quantity_on_order :integer
+#  item_quantity_in_hand  :integer
+#  item_active            :boolean
+#  item_created_id        :integer
+#  item_updated_id        :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  lot_count              :integer
+#  item_alt_part_no       :string(255)
+#
+
 class Item < ActiveRecord::Base
   attr_accessible :item_part_no, :item_quantity_in_hand, :item_quantity_on_order, :item_active,
   :item_created_id, :item_updated_id, :item_revisions_attributes, :item_alt_part_no

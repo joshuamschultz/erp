@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: payable_lines
+#
+#  id                       :integer          not null, primary key
+#  payable_id               :integer
+#  payable_line_identifier  :string(255)
+#  payable_line_description :string(255)
+#  payable_line_cost        :decimal(25, 10)  default(0.0)
+#  payable_line_notes       :text(65535)
+#  payable_line_status      :string(255)
+#  payable_line_active      :boolean
+#  payable_line_created_id  :integer
+#  payable_line_updated_id  :integer
+#  created_at               :datetime
+#  updated_at               :datetime
+#
+
 class PayableLine < ActiveRecord::Base
     belongs_to :payable
     attr_accessible :payable_line_active, :payable_line_cost, :payable_line_created_id, 

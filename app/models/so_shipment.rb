@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: so_shipments
+#
+#  id                     :integer          not null, primary key
+#  so_line_id             :integer
+#  so_shipped_count       :integer          default(0)
+#  so_shipped_cost        :decimal(25, 10)  default(0.0)
+#  so_shipped_shelf       :string(255)
+#  so_shipped_unit        :string(255)
+#  so_shipped_status      :string(255)
+#  so_shipment_created_id :integer
+#  so_shipment_updated_id :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  quality_lot_id         :integer          default(0)
+#  so_header_id           :integer
+#  shipment_process_id    :string(255)
+#
+
 class SoShipment < ActiveRecord::Base
   belongs_to :so_line
   belongs_to :item

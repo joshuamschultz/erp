@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: run_at_rates
+#
+#  id                      :integer          not null, primary key
+#  run_at_rate_name        :string(255)
+#  run_at_rate_description :string(255)
+#  run_at_rate_notes       :text(65535)
+#  run_at_rate_active      :boolean
+#  run_at_rate_created_id  :integer
+#  run_at_rate_updated_id  :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class RunAtRate < ActiveRecord::Base
 	include Rails.application.routes.url_helpers
 

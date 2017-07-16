@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: quotes
+#
+#  id                :integer          not null, primary key
+#  organization_id   :integer
+#  po_header_id      :integer
+#  quote_identifier  :string(255)
+#  quote_description :string(255)
+#  quote_total       :decimal(25, 10)  default(0.0)
+#  quote_status      :string(255)
+#  quote_notes       :text(65535)
+#  quote_active      :boolean
+#  quote_created_id  :integer
+#  quote_updated_id  :integer
+#  created_at        :datetime
+#  updated_at        :datetime
+#  customer_id       :integer
+#  group_id          :integer
+#  attachment_public :boolean          default(FALSE)
+#  user_id           :integer
+#
+
 class Quote < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 

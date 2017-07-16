@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: fmea_types
+#
+#  id               :integer          not null, primary key
+#  fmea_name        :string(255)
+#  fmea_description :string(255)
+#  fmea_notes       :text(65535)
+#  fmea_active      :boolean
+#  fmea_created_id  :integer
+#  fmea_updated_id  :integer
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+
 class FmeaType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

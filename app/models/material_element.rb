@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: material_elements
+#
+#  id                 :integer          not null, primary key
+#  material_id        :integer
+#  element_id         :integer
+#  element_symbol     :string(255)
+#  element_name       :string(255)
+#  element_low_range  :decimal(25, 10)  default(0.0)
+#  element_high_range :decimal(25, 10)  default(0.0)
+#  element_active     :boolean          default(TRUE)
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 class MaterialElement < ActiveRecord::Base
   belongs_to :material
   belongs_to :element

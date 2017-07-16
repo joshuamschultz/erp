@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: quality_lot_gauges
+#
+#  id                   :integer          not null, primary key
+#  quality_lot_id       :integer
+#  lot_gauge_status     :string(255)
+#  lot_gauge_notes      :text(65535)
+#  lot_gauge_active     :boolean
+#  lot_gauge_created_id :integer
+#  lot_gauge_updated_id :integer
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 class QualityLotGauge < ActiveRecord::Base
     has_many :quality_lot_gauge_results, :dependent => :destroy
     has_many :quality_lot_gauge_dimensions, :dependent => :destroy

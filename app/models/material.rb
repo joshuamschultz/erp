@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: materials
+#
+#  id                   :integer          not null, primary key
+#  material_short_name  :string(255)
+#  material_description :string(255)
+#  material_notes       :text(65535)
+#  material_active      :boolean          default(TRUE)
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+
 class Material < ActiveRecord::Base
   attr_accessible :material_active, :material_created_id, 
   					:material_description, :material_notes, 

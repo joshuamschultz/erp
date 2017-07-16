@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: cause_analyses
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  description :string(255)
+#  notes       :text(65535)
+#  active      :boolean
+#  created_id  :integer
+#  updated_id  :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
 class CauseAnalysis < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 

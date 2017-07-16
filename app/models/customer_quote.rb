@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: customer_quotes
+#
+#  id                         :integer          not null, primary key
+#  organization_id            :integer
+#  customer_quote_identifier  :string(255)
+#  customer_quote_description :string(255)
+#  customer_quote_status      :string(255)
+#  customer_quote_notes       :text(65535)
+#  customer_quote_active      :boolean
+#  customer_quote_created_id  :integer
+#  customer_quote_updated_id  :integer
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
 class CustomerQuote < ActiveRecord::Base
     include Rails.application.routes.url_helpers
     has_many :customer_quote_lines

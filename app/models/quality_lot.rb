@@ -1,3 +1,42 @@
+# == Schema Information
+#
+# Table name: quality_lots
+#
+#  id                   :integer          not null, primary key
+#  po_header_id         :integer
+#  po_line_id           :integer
+#  item_revision_id     :integer
+#  process_flow_id      :integer
+#  control_plan_id      :integer
+#  fmea_type_id         :integer
+#  lot_control_no       :string(255)
+#  lot_quantity         :integer
+#  inspection_level_id  :integer
+#  inspection_method_id :integer
+#  inspection_type_id   :integer
+#  lot_inspector_id     :integer
+#  lot_finalized_at     :datetime
+#  lot_aql_no           :string(255)      default("1")
+#  lot_notes            :text(65535)
+#  lot_active           :boolean
+#  lot_created_id       :integer
+#  lot_updated_id       :integer
+#  created_at           :datetime
+#  updated_at           :datetime
+#  lot_shelf_idenifier  :string(255)
+#  lot_shelf_unit       :integer
+#  lot_shelf_number     :integer
+#  run_at_rate_id       :integer
+#  fai                  :string(255)
+#  finished             :boolean          default(FALSE)
+#  quantity_on_hand     :integer
+#  lot_status           :string(255)
+#  final_date           :datetime
+#  lot_print_status     :string(255)
+#  lot_unit             :string(255)
+#  lot_self             :string(255)
+#
+
 class QualityLot < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 

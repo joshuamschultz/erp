@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: receivable_so_shipments
+#
+#  id             :integer          not null, primary key
+#  so_shipment_id :integer
+#  receivable_id  :integer
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class ReceivableSoShipment < ActiveRecord::Base
   belongs_to :so_shipment
   belongs_to :receivable

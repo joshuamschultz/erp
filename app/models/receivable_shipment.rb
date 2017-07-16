@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: receivable_shipments
+#
+#  id                             :integer          not null, primary key
+#  receivable_id                  :integer
+#  so_line_id                     :integer
+#  receivable_shipment_identifier :string(255)
+#  receivable_shipment_count      :integer          default(0)
+#  receivable_shipment_cost       :decimal(25, 10)  default(0.0)
+#  receivable_shipment_created_id :integer
+#  receivable_shipment_updated_id :integer
+#  created_at                     :datetime
+#  updated_at                     :datetime
+#
+
 class ReceivableShipment < ActiveRecord::Base
   belongs_to :receivable
   belongs_to :so_line

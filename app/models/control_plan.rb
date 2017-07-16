@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: control_plans
+#
+#  id               :integer          not null, primary key
+#  plan_name        :string(255)
+#  plan_description :string(255)
+#  plan_notes       :text(65535)
+#  plan_active      :boolean
+#  plan_created_id  :integer
+#  plan_updated_id  :integer
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+
 class ControlPlan < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
