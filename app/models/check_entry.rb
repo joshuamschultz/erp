@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: check_entries
+#
+#  id               :integer          not null, primary key
+#  check_identifier :string(255)
+#  check_code       :string(255)
+#  check_active     :boolean
+#  created_at       :datetime
+#  updated_at       :datetime
+#  status           :string(255)
+#
+
 class CheckEntry < ActiveRecord::Base
   include Rails.application.routes.url_helpers 
 

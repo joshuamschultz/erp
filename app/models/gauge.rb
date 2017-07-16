@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: gauges
+#
+#  id                        :integer          not null, primary key
+#  organization_id           :integer
+#  gauge_tool_name           :string(255)
+#  gauge_tool_category       :string(255)
+#  gauge_tool_no             :string(255)
+#  gage_caliberation_last_at :date
+#  gage_caliberation_due_at  :date
+#  gage_caliberaion_period   :integer
+#  gauge_active              :boolean
+#  gauge_created_id          :integer
+#  gauge_updated_id          :integer
+#  created_at                :datetime
+#  updated_at                :datetime
+#
+
 class Gauge < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

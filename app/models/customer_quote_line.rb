@@ -1,3 +1,31 @@
+# == Schema Information
+#
+# Table name: customer_quote_lines
+#
+#  id                               :integer          not null, primary key
+#  customer_quote_id                :integer
+#  item_id                          :integer
+#  item_revision_id                 :integer
+#  item_alt_name_id                 :integer
+#  quote_vendor_id                  :integer
+#  customer_quote_line_description  :string(255)
+#  customer_quote_line_identifier   :string(255)
+#  customer_quote_line_quantity     :integer
+#  customer_quote_line_cost         :decimal(25, 10)  default(0.0)
+#  customer_quote_line_status       :string(255)
+#  customer_quote_line_notes        :text(65535)
+#  customer_quote_line_active       :boolean
+#  customer_quote_line_created_id   :integer
+#  customer_quote_line_updated_id   :integer
+#  customer_quote_line_tooling_cost :decimal(25, 10)  default(0.0)
+#  created_at                       :datetime
+#  updated_at                       :datetime
+#  customer_quote_line_total        :decimal(25, 10)  default(0.0)
+#  lead_time                        :string(255)
+#  item_name_sub                    :string(255)
+#  quote_id                         :integer
+#
+
 class CustomerQuoteLine < ActiveRecord::Base
 	belongs_to :customer_quote
 	belongs_to :item

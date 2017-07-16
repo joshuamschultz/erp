@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: quality_action_numbers
+#
+#  id             :integer          not null, primary key
+#  next_action_no :integer          default(0)
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class QualityActionNumber < ActiveRecord::Base
   attr_accessible :next_action_no
 

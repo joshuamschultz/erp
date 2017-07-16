@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: item_alt_names
+#
+#  id                   :integer          not null, primary key
+#  item_alt_identifier  :string(255)
+#  item_alt_description :string(255)
+#  item_alt_notes       :text(65535)
+#  item_alt_active      :boolean
+#  item_alt_created_id  :integer
+#  item_alt_updated_id  :integer
+#  created_at           :datetime
+#  updated_at           :datetime
+#  organization_id      :integer
+#  item_id              :integer
+#
+
 class ItemAltName < ActiveRecord::Base
   attr_accessible :item_alt_active, :item_alt_created_id, :item_alt_description, 
   :item_alt_identifier, :item_alt_notes, :item_alt_updated_id, :item_id, :organization_id

@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: so_headers
+#
+#  id                    :integer          not null, primary key
+#  organization_id       :integer
+#  so_identifier         :string(255)
+#  so_bill_to_id         :integer
+#  so_ship_to_id         :integer
+#  so_cofc               :boolean
+#  so_squality           :boolean
+#  so_total              :decimal(25, 10)  default(0.0)
+#  so_notes              :text(65535)
+#  so_comments           :text(65535)
+#  so_status             :string(255)
+#  so_created_id         :integer
+#  so_updated_id         :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  so_header_customer_po :string(255)
+#  so_due_date           :date
+#
+
 class SoHeader < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   

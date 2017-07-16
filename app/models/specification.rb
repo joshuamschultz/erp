@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: specifications
+#
+#  id                        :integer          not null, primary key
+#  specification_active      :boolean
+#  specification_identifier  :string(255)
+#  specification_description :string(255)
+#  specification_notes       :text(65535)
+#  created_at                :datetime
+#  updated_at                :datetime
+#
+
 class Specification < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

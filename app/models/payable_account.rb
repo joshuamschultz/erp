@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: payable_accounts
+#
+#  id                          :integer          not null, primary key
+#  payable_id                  :integer
+#  gl_account_id               :integer
+#  payable_account_description :string(255)
+#  payable_account_amount      :decimal(25, 10)  default(0.0)
+#  payable_account_created_id  :integer
+#  payable_account_updated_id  :integer
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#  gl_entry_id                 :integer
+#
+
 class PayableAccount < ActiveRecord::Base
   belongs_to :payable
   belongs_to :gl_account

@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: so_lines
+#
+#  id                  :integer          not null, primary key
+#  so_header_id        :integer
+#  item_id             :integer
+#  item_revision_id    :integer
+#  item_alt_name_id    :integer
+#  organization_id     :integer
+#  vendor_quality_id   :integer
+#  customer_quality_id :integer
+#  so_line_cost        :decimal(25, 10)  default(0.0)
+#  so_line_price       :decimal(25, 10)  default(0.0)
+#  so_line_quantity    :integer          default(0)
+#  so_line_freight     :decimal(25, 10)  default(0.0)
+#  so_line_status      :string(255)
+#  so_line_notes       :text(65535)
+#  so_line_active      :boolean
+#  so_line_created_id  :integer
+#  so_line_updated_id  :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#  so_line_shipped     :integer          default(0)
+#  so_line_sell        :decimal(25, 10)  default(0.0)
+#  so_line_vendor_po   :string(255)
+#  po_header_id        :integer
+#  po                  :string(255)
+#
+
 class SoLine < ActiveRecord::Base
   belongs_to :so_header
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}

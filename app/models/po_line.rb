@@ -1,3 +1,35 @@
+# == Schema Information
+#
+# Table name: po_lines
+#
+#  id                    :integer          not null, primary key
+#  po_header_id          :integer
+#  organization_id       :integer
+#  so_line_id            :integer
+#  vendor_quality_id     :integer
+#  customer_quality_id   :integer
+#  item_id               :integer
+#  item_revision_id      :integer
+#  item_selected_name_id :integer
+#  item_alt_name_id      :integer
+#  po_line_customer_po   :string(255)
+#  po_line_cost          :decimal(25, 10)  default(0.0)
+#  po_line_quantity      :integer          default(0)
+#  po_line_total         :decimal(25, 10)  default(0.0)
+#  po_line_status        :string(255)
+#  po_line_notes         :text(65535)
+#  po_line_active        :boolean
+#  po_line_created_id    :integer
+#  po_line_updated_id    :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  po_line_shipped       :integer          default(0)
+#  alt_name_transfer_id  :integer
+#  po_line_sell          :decimal(25, 10)  default(0.0)
+#  quality_lot_id        :integer
+#  process_type_id       :integer
+#
+
 class PoLine < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

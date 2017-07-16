@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: comments
+#
+#  id                 :integer          not null, primary key
+#  comment            :string(255)
+#  comment_type       :string(255)
+#  commentable_id     :integer
+#  commentable_type   :string(255)
+#  comment_active     :boolean
+#  comment_created_id :integer
+#  comment_updated_id :integer
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 class Comment < ActiveRecord::Base
   
 

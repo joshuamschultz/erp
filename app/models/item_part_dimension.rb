@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: item_part_dimensions
+#
+#  id                      :integer          not null, primary key
+#  item_revision_id        :integer
+#  dimension_id            :integer
+#  gauge_id                :integer
+#  item_part_letter        :string(255)
+#  item_part_dimension     :decimal(15, 10)  default(0.0)
+#  item_part_pos_tolerance :decimal(15, 10)  default(0.0)
+#  item_part_neg_tolerance :decimal(15, 10)  default(0.0)
+#  item_part_critical      :boolean
+#  item_part_notes         :text(65535)
+#  item_part_active        :boolean
+#  item_part_created_id    :integer
+#  item_part_updated_id    :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#  go_non_go               :boolean          default(FALSE)
+#  dimension_string        :string(255)
+#
+
 class ItemPartDimension < ActiveRecord::Base
 	# belongs_to :item_revision
 	belongs_to :dimension

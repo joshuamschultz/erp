@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: receipt_lines
+#
+#  id                      :integer          not null, primary key
+#  receipt_id              :integer
+#  receivable_id           :integer
+#  receipt_line_amount     :decimal(25, 10)  default(0.0)
+#  receipt_line_created_id :integer
+#  receipt_line_updated_id :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class ReceiptLine < ActiveRecord::Base
   belongs_to :receipt
   belongs_to :receivable

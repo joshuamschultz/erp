@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: commodities
+#
+#  id                    :integer          not null, primary key
+#  commodity_active      :boolean
+#  commodity_identifier  :string(255)
+#  commodity_description :string(255)
+#  commodity_notes       :text(65535)
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
 class Commodity < ActiveRecord::Base
   after_initialize :default_values
 

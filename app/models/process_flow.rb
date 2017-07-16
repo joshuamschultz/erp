@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: process_flows
+#
+#  id                  :integer          not null, primary key
+#  process_identifier  :string(255)
+#  process_name        :string(255)
+#  process_description :string(255)
+#  process_notes       :text(65535)
+#  process_active      :boolean
+#  process_created_id  :integer
+#  process_updated_id  :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 class ProcessFlow < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: item_lots
+#
+#  id             :integer          not null, primary key
+#  quality_lot_id :integer
+#  item_id        :integer
+#  item_lot_count :integer
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class ItemLot < ActiveRecord::Base
   attr_accessible :item_id, :item_lot_count, :quality_lot_id
 

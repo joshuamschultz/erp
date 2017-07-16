@@ -1,3 +1,52 @@
+# == Schema Information
+#
+# Table name: ppaps
+#
+#  id                         :integer          not null, primary key
+#  quality_lot_id             :integer
+#  initial_submission         :boolean          default(FALSE)
+#  re_submission              :boolean          default(FALSE)
+#  change_to_materials_used   :boolean          default(FALSE)
+#  revision_change            :boolean          default(FALSE)
+#  camo_pattern_new_to_part   :boolean          default(FALSE)
+#  tooling_replacement        :boolean          default(FALSE)
+#  process_change             :boolean          default(FALSE)
+#  Change_in_mfg_source       :boolean          default(FALSE)
+#  level1                     :boolean          default(FALSE)
+#  level2                     :boolean          default(FALSE)
+#  level3                     :boolean          default(FALSE)
+#  level4                     :boolean          default(FALSE)
+#  level5                     :boolean          default(FALSE)
+#  purchasing_agreement       :boolean          default(FALSE)
+#  first_article_parts        :boolean          default(FALSE)
+#  part_submission_warrant    :boolean          default(FALSE)
+#  fai_dimensional_inspection :boolean          default(FALSE)
+#  packaging_shipping         :boolean          default(FALSE)
+#  fai_material_test_result   :boolean          default(FALSE)
+#  component_review_meeting   :boolean          default(FALSE)
+#  guage_review               :boolean          default(FALSE)
+#  dfmea_desing               :boolean          default(FALSE)
+#  measurement_analysis       :boolean          default(FALSE)
+#  process_flow_diagram       :boolean          default(FALSE)
+#  process_capabilty_study    :boolean          default(FALSE)
+#  pfmea_analysis             :boolean          default(FALSE)
+#  production_run_rate        :boolean          default(FALSE)
+#  control_plan               :boolean          default(FALSE)
+#  appearance_report          :boolean          default(FALSE)
+#  Other                      :boolean          default(FALSE)
+#  result_meeting_yes         :boolean          default(FALSE)
+#  result_meeting_no          :boolean          default(FALSE)
+#  past_hour                  :integer
+#  hour_run                   :integer
+#  date                       :integer
+#  commited_weekly_capacity   :integer
+#  maximum_weekly_capacity    :integer
+#  lathe_cnc                  :string(255)
+#  comment                    :text(65535)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
 class Ppap < ActiveRecord::Base
   belongs_to :quality_lot
   attr_accessible :Change_in_mfg_source, :Other, :appearance_report, :camo_pattern_new_to_part, 

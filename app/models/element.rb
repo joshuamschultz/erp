@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: elements
+#
+#  id                 :integer          not null, primary key
+#  element_name       :string(255)
+#  element_symbol     :string(255)
+#  element_notes      :text(65535)
+#  element_created_id :integer
+#  element_updated_id :integer
+#  element_active     :boolean
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+
 class Element < ActiveRecord::Base
   attr_accessible :element_active, :element_created_id, :element_name, 
   :element_notes, :element_symbol, :element_updated_id

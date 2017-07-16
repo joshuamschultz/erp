@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: receivable_accounts
+#
+#  id                             :integer          not null, primary key
+#  receivable_id                  :integer
+#  gl_account_id                  :integer
+#  receivable_account_description :string(255)
+#  receivable_account_amount      :decimal(25, 10)  default(0.0)
+#  receivable_account_created_id  :integer
+#  receivable_account_updated_id  :integer
+#  created_at                     :datetime
+#  updated_at                     :datetime
+#  gl_entry_id                    :integer
+#
+
 class ReceivableAccount < ActiveRecord::Base
   belongs_to :receivable
   belongs_to :gl_account

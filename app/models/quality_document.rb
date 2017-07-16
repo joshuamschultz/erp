@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: quality_documents
+#
+#  id                    :integer          not null, primary key
+#  created_at            :datetime
+#  updated_at            :datetime
+#  quality_document_name :string(255)
+#
+
 class QualityDocument < ActiveRecord::Base
    attr_accessible :logo_attributes, :quality_document_name
 

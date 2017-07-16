@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: quality_lot_gauge_results
+#
+#  id                         :integer          not null, primary key
+#  quality_lot_gauge_id       :integer
+#  item_part_dimension_id     :integer
+#  lot_gauge_result_appraiser :string(255)
+#  lot_gauge_result_value     :decimal(15, 10)  default(0.0)
+#  lot_gauge_result_status    :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  lot_gauge_result_trial     :integer
+#  lot_gauge_result_row       :integer
+#
+
 class QualityLotGaugeResult < ActiveRecord::Base
   belongs_to :quality_lot_gauge
   belongs_to :item_part_dimension

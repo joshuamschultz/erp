@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: prints
+#
+#  id                :integer          not null, primary key
+#  print_active      :boolean
+#  print_created_id  :integer
+#  print_updated_id  :integer
+#  print_identifier  :string(255)
+#  print_description :string(255)
+#  print_notes       :text(65535)
+#  created_at        :datetime
+#  updated_at        :datetime
+#
+
 class Print < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

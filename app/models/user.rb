@@ -1,3 +1,43 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  email                  :string(255)      not null
+#  encrypted_password     :string(255)      not null
+#  name                   :string(255)      not null
+#  gender                 :string(255)
+#  address                :text(65535)
+#  city                   :string(255)
+#  state                  :string(255)
+#  country                :string(255)
+#  telephone_no           :string(255)
+#  mobile_no              :string(255)
+#  fax                    :string(255)
+#  active                 :boolean          default(TRUE)
+#  reset_password_token   :string(255)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0)
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string(255)
+#  last_sign_in_ip        :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
+#  failed_attempts        :integer          default(0)
+#  unlock_token           :string(255)
+#  locked_at              :datetime
+#  authentication_token   :string(255)
+#  roles_mask             :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  organization_id        :integer
+#  time_zone              :string(255)      default("Eastern Time (US & Canada)")
+#
+
 require 'role_model'
 
 class User < ActiveRecord::Base

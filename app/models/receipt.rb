@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: receipts
+#
+#  id                   :integer          not null, primary key
+#  organization_id      :integer
+#  receipt_type_id      :integer
+#  receipt_check_code   :string(255)
+#  receipt_check_amount :decimal(25, 10)  default(0.0)
+#  receipt_check_no     :string(255)
+#  receipt_identifier   :string(255)
+#  receipt_description  :string(255)
+#  receipt_notes        :text(65535)
+#  receipt_status       :string(255)
+#  receipt_active       :boolean
+#  receipt_created_id   :integer
+#  receipt_updated_id   :integer
+#  created_at           :datetime
+#  updated_at           :datetime
+#  check_entry_id       :integer
+#  deposit_check_id     :integer
+#  receipt_discount     :decimal(25, 10)  default(0.0)
+#
+
 class Receipt < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: check_codes
+#
+#  id           :integer          not null, primary key
+#  counter      :string(255)
+#  counter_type :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class CheckCode < ActiveRecord::Base	 
 
 	def self.get_next_check_code

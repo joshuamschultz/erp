@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: inventory_adjustments
+#
+#  id                               :integer          not null, primary key
+#  inventory_adjustment_quantity    :integer
+#  inventory_adjustment_description :string(255)
+#  item_id                          :integer
+#  item_alt_name_id                 :integer
+#  quality_lot_id                   :integer
+#  created_at                       :datetime
+#  updated_at                       :datetime
+#
+
 class InventoryAdjustment < ActiveRecord::Base
   attr_accessible :inventory_adjustment_description, :inventory_adjustment_quantity, :item_alt_name_id, :item_id, :quality_lot_id
 
