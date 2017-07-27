@@ -15,48 +15,12 @@
   <div class="span3 well view_organization_details">
     <%= render :partial => 'organizations/organization_info', :locals => {:organization => @organization} %>
   </div>
-
-  <div class="span9">
-    <div class="row-fluid">
-      <div class="span6 well ">
-        <a class="widget-stats" onclick="get_address('address');" id="alt_address_btn">
-          <span class="glyphicons pin_flag">
-            <i></i>
-          </span>
-          <span class="txt">Alternate Addresses</span>
-          <div class="clearfix"></div>
-        </a>
-      </div>
-
-      <div class="span6 well">
-        <a class=" widget-stats" onclick=" get_address('contact');" id=" contacts_btn">
-          <span class="glyphicons adress_book">
-            <i></i>
-          </span>
-          <span class="txt">Contacts</span>
-          <div class="clearfix"></div>
-        </a>
-      </div>
-    </div>
-
-    <div class="row-fluid">
-      <div id="organization_table_data" class="span12 wel">
-        <div id="org_contact">
-          <%= render 'contacts/org_contacts' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Attachments -->
-<div class="row-fluid">
   <div class="attachment-pulp">
-    <%= render :partial => 'attachments/droppable_form_plup_less' %>
-  </div>
-  <div class="span8 ed">
+    <%= render :partial => 'attachments/droppable_form_plup_less' %></div>
+  <div class='span6'>
     <%= render 'attachments/attachments_less' %>
   </div>
+
 </div>
 
 <div class="separator bottom"></div>
@@ -64,331 +28,368 @@
 <!-- Tabs -->
 <div class="box-generic">
 
+  <div class="separator bottom"></div>
+
   <!-- Tabs Heading -->
   <div class="tabsbar">
     <ul>
-      <li class="glyphicons camera active">
-        <a href="#tab1-3" data-toggle="tab">
-          <i></i>Items<strong></strong>
-        </a>
-      </li>
       <li class="glyphicons folder_open">
-        <a href="#tab2-3" data-toggle="tab">
-          <i></i>Purchase Orders<strong></strong>
+        <a href="#tab2-4" data-toggle="tab">
+          <i></i>Addresses<strong></strong>
         </a>
       </li>
       <li class="glyphicons circle_plus tab-stacked">
-        <a href="#tab3-3" data-toggle="tab">
+        <a href="#tab3-4" data-toggle="tab">
           <i></i>
-          <span>Sales Orders
-          </span>
-        </a>
-      </li>
+          <span>Contacts</span>
+        </span>
+      </a>
+    </li>
+    <li class="glyphicons camera active">
+      <a href="#tab1-3" data-toggle="tab">
+        <i></i>Items<strong></strong>
+      </a>
+    </li>
+    <li class="glyphicons folder_open">
+      <a href="#tab2-3" data-toggle="tab">
+        <i></i>Purchase Orders<strong></strong>
+      </a>
+    </li>
+    <li class="glyphicons circle_plus tab-stacked">
+      <a href="#tab3-3" data-toggle="tab">
+        <i></i>
+        <span>Sales Orders
+        </span>
+      </a>
+    </li>
 
-    </ul>
-  </div>
-  <!-- // Tabs Heading END -->
+  </ul>
+</div>
+<!-- // Tabs Heading END -->
 
-  <div class="tab-content">
+<div class="tab-content">
 
-    <!-- Tab content -->
-    <div class="tab-pane active" id="tab1-3">
-      <div class="new_widget">
-        <div class="row-fluid">
-          <%= render :partial => 'items/items' %>
+  <!-- Tab content -->
+  <div class="tab-pane" id="tab2-4">
+    <div class="new_widget">
+      <div class="row-fluid">
+        <div id="org_contact">
+          <%= render 'contacts/org_contacts' %>
         </div>
       </div>
     </div>
-    <!-- end tab content -->
+  </div>
+  <!-- end tab content -->
 
-    <!-- Tab content -->
-    <div class="tab-pane" id="tab2-3">
-      <div class="new_widget">
-        <div class="row-fluid">
-          <% if can? :view, PoHeader %>
-          <div id="po_header">
-            <%= render :partial => 'po_headers/po_list', locals: { all_path: organization_path(@organization), open_path: organization_path(@organization, :po_status => "open"), closed_path: organization_path(@organization, :po_status => "closed"), index_path:
+  <!-- Tab content -->
+  <div class="tab-pane" id="tab3-4">
+    <div class="new_widget">
+      <div class="row-fluid">
+        <div id="org_contact">
+          Will rework and add later
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab content -->
+  <div class="tab-pane active" id="tab1-3">
+    <div class="new_widget">
+      <div class="row-fluid">
+        <%= render :partial => 'items/items' %>
+      </div>
+    </div>
+  </div>
+  <!-- end tab content -->
+
+  <!-- Tab content -->
+  <div class="tab-pane" id="tab2-3">
+    <div class="new_widget">
+      <div class="row-fluid">
+        <% if can? :view, PoHeader %>
+        <div id="po_header">
+          <%= render :partial => 'po_headers/po_list', locals: { all_path: organization_path(@organization), open_path: organization_path(@organization, :po_status => "open"), closed_path: organization_path(@organization, :po_status => "closed"), index_path:
               po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id), new_path: new_po_header_path } %>
-          </div>
-          <% end %>
         </div>
-      </div>
-    </div>
-    <!-- end tab content -->
-
-    <!-- Tab content -->
-    <div class="tab-pane" id="tab3-3">
-      <div class="new_widget">
-        <div class="row-fluid">
-          <% if can? :view, PoHeader %>
-          <div id="so_header">
-            <%= render :partial => 'so_headers/so_list', locals: { all_path: organization_path(@organization), open_path: organization_path(@organization, :so_status => "open"), closed_path: organization_path(@organization, :so_status => "closed"), index_path:
-              so_headers_path(:so_status => params[:so_status], :organization_id => @organization.id), new_path: new_so_header_path } %>
-          </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <!-- end tab content -->
-
-  </div>
-
-  <div class="separator bottom"></div>
-
-  <% unless @organization.type_name == "customer"%>
-  <h5>Processes :
-    <span></span>
-  </h5>
-  <div class="well">
-    <div class="row-fluid">
-      <div class="span12">
-        <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
-        <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]},
-          @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)),
-          :multiple => true, :size => 5, :class => "multi_select_box" %>
         <% end %>
       </div>
     </div>
   </div>
-  <% end %>
+  <!-- end tab content -->
 
-  <%= render :partial => 'comments/comments',
+  <!-- Tab content -->
+  <div class="tab-pane" id="tab3-3">
+    <div class="new_widget">
+      <div class="row-fluid">
+        <% if can? :view, PoHeader %>
+        <div id="so_header">
+          <%= render :partial => 'so_headers/so_list', locals: { all_path: organization_path(@organization), open_path: organization_path(@organization, :so_status => "open"), closed_path: organization_path(@organization, :so_status => "closed"), index_path:
+              so_headers_path(:so_status => params[:so_status], :organization_id => @organization.id), new_path: new_so_header_path } %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- end tab content -->
+</div>
+
+<div class="separator bottom"></div>
+
+<% unless @organization.type_name == "customer"%>
+<h5>Processes :
+  <span></span>
+</h5>
+<div class="well">
+  <div class="row-fluid">
+    <div class="span12">
+      <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
+      <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]},
+          @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)),
+          :multiple => true, :size => 5, :class => "multi_select_box" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
+</div>
+
+<%= render :partial => 'comments/comments',
 :locals => {:extras => {:link => add_comment_organization_path(type: "note", id: @organization.id)}} %>
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-      <% user = 'false' %>
-      <% if user_signed_in? &&  !current_user.is_vendor? %>
-      <% user = 'true' %>
-      <% end %>
-      var current_user = <%= user %>
-      if (current_user == false) {
-        window.location = "/permissions/error";
-      }
+<script type="text/javascript">
+$(document).ready(function () {
+  <% user = 'false' %>
+  <% if user_signed_in? &&  !current_user.is_vendor? %>
+  <% user = 'true' %>
+  <% end %>
+  var current_user = <%= user %>
+  if (current_user == false) {
+    window.location = "/permissions/error";
+  }
 
-      var length = $(".select2-choices li").map(function () {
+  var length = $(".select2-choices li").map(function () {
+    return $(this).text()
+  }).get().length;
+  $("#organization_tags").select2({tags: <%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
+
+  // $("#submit_org_tags").on("click", function(e){   $("#organization_tag_list").val($("#organization_tags").select2("val")); });
+  $("#processes_").on("change", function search(e) {
+    set_process($("#processes_").val());
+  });
+
+  $(".select2-input").on("keydown", function search(e) {
+    if (e.keyCode == 13 || e.keyCode == 8) {
+      set_tag($(".select2-choices li").map(function () {
         return $(this).text()
-      }).get().length;
-      $("#organization_tags").select2({tags: <%= Commodity.all.collect(&:commodity_identifier).to_s.html_safe %>});
+      }).get());
+    }
+  });
 
-      // $("#submit_org_tags").on("click", function(e){   $("#organization_tag_list").val($("#organization_tags").select2("val")); });
-      $("#processes_").on("change", function search(e) {
-        set_process($("#processes_").val());
-      });
+});
 
-      $(".select2-input").on("keydown", function search(e) {
-        if (e.keyCode == 13 || e.keyCode == 8) {
-          set_tag($(".select2-choices li").map(function () {
-            return $(this).text()
-          }).get());
+function set_tag(data) {
+  if ($(".select2-choices li").map(function () {
+    return $(this).text()
+  }).get().length != length) {
+    length = $(".select2-choices li").map(function () {
+      return $(this).text()
+    }).get().length;
+    initialize_api_call({
+      "url": "/common_actions/get_info",
+      "type": "GET",
+      "data_type": "json",
+      "params": {
+        "mode": "set_tag",
+        "id": "<%= @organization.id%>",
+        "value": data
+      }
+    }, "status_result", {});
+  }
+}
+
+function status_result(response, callback_params, api_params) {
+  if (response["aaData"] == "fail") {}
+
+}
+
+function set_process(data) {
+  initialize_api_call({
+    "url": "/common_actions/get_info",
+    "type": "GET",
+    "data_type": "json",
+    "params": {
+      "mode": "set_process",
+      "id": "<%= @organization.id%>",
+      "value": data
+    }
+  }, "status_result", {});
+}
+
+// function search(ele) {     if(event.keyCode == 13) {         alert(ele.value);     } }
+
+function callback_for_contacts(response, callback_params, api_params) {
+  $("#organization_table_data").html(response);
+}
+
+function get_address(type) {
+  $('#org_contact').html("");
+  var address_label = "Addresses";
+  var address_button = "Address"
+  if (type === 'address') {
+    address_label = "Addresses";
+    address_button = "Address"
+  } else if (type === 'contact') {
+    address_label = "Contacts";
+    address_button = "Contact"
+  }
+  var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">' + address_label + '</h4><span class="span6 heading right"><a href="/contacts/new?contact_type=' + type + '&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New ' + address_button + '</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>Description</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>' $('#org_contact').html(adress);
+
+  data_table_report_contacts = $('#table_report_contacts').dataTable({
+    "bAutoWidth": false,
+    "bProcessing": true,
+    "sAjaxSource": '/contacts?contact_type=' + type + '&amp;object_id=<%= @organization.id %>',
+    "aaSorting": [
+      [0, "asc"]
+    ],
+    "aoColumns": [
+      {
+        "mData": "contact_title"
+      }, {
+        "mData": "contact_description"
+      }, {
+        "mData": "contact_city"
+      }, {
+        "mData": "contact_telephone"
+      }, {
+        "mData": "contact_email"
+      }, {
+        "mData": "contact_fax"
+      }, {
+        "mData": "links",
+        "bSortable": false,
+        "bSearchable": false
+      }
+    ],
+    "bFilter": true,
+    "bLengthChange": true
+  });
+
+}
+//ajax load po order
+function get_po_header(status) {
+  var link = "/po_headers?organization_id=<%= @organization.id %>"
+  if (status == 2) {
+    link = "/po_headers?organization_id=<%= @organization.id %>&po_status=open"
+  } else if (status == 3) {
+    link = "/po_headers?organization_id=<%= @organization.id %>&po_status=closed"
+  } else {}
+
+  $('#po_header').html("");
+  var po_header = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading"> Purchase Order  </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(3); return false;">Closed</a><a href="/po_headers/new" class="btn btn-mini btn-success">New P' +
+      'O</a></span></div></div><div class="widget-body"><table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Index</th><th>PO ID</th><th>PO Type</th><th>Vendor</th><th>Identifier</th><th>Description</th><th>Total</th><th>Status</th><th>Active</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+  $('#po_header').html(po_header);
+  var data_table_report_po_header_list;
+  data_table_report_po_header_list = $('#table_report_po_header_list').dataTable({
+    "bAutoWidth": false,
+    "bProcessing": true,
+    "sAjaxSource": link,
+    "aaSorting": [
+      [0, "asc"]
+    ],
+    "aoColumns": [
+      {
+        "mData": "index",
+        "bVisible": false
+      }, {
+        "mData": "po_id"
+      }, {
+        "mData": "po_type_name"
+      }, {
+        "mData": "vendor_name"
+      }, {
+        "mData": "po_identifier",
+        "bVisible": false
+      }, {
+        "mData": "po_description",
+        "bVisible": false
+      }, {
+        "mData": "po_total",
+        "bVisible": false
+      }, {
+        "mData": "po_status"
+      }, {
+        "mData": "po_active",
+        "bVisible": false
+      }, {
+        "mData": "links",
+        "bSortable": false,
+        "bSearchable": false
+      }
+    ],
+    "bFilter": true,
+    "bDestroy": true,
+    "bLengthChange": true
+  });
+}
+
+function get_so_header(status) {
+  var link = "/so_headers?organization_id=<%= @organization.id %>"
+  if (status == 2) {
+    link = "/so_headers?organization_id=<%= @organization.id %>&so_status=open"
+  } else if (status == 3) {
+    link = "/so_headers?organization_id=<%= @organization.id %>&so_status=closed"
+  } else {}
+
+  $('#so_header').html("");
+  var so_headers = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Sales Orders   </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(3); return false;">Closed</a><a href="/so_headers/new" class="btn btn-mini btn-success">New SO<' +
+      '/a></span></div> </div><div class="widget-body"><table id="table_report_so_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>index</th><th>SO ID</th><th>Customer</th><th>Bill To</th><th>Ship To</th><th>Cofc</th><th>Squality</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div></div>';
+  $('#so_header').html(so_headers);
+  var data_table_report_so_header_list;
+  $(document).ready(function () {
+    data_table_report_so_header_list = $('#table_report_so_header_list').dataTable({
+      "bAutoWidth": false,
+      "bProcessing": true,
+      "sAjaxSource": link,
+      "aaSorting": [
+        [0, "asc"]
+      ],
+      "aoColumns": [
+        {
+          "mData": "index",
+          "bVisible": false
+        }, {
+          "mData": "so_id"
+        }, {
+          "mData": "customer_name"
+        }, {
+          "mData": "bill_to_address_name"
+        }, {
+          "mData": "ship_to_address_name"
+        }, {
+          "mData": "so_cofc"
+        }, {
+          "mData": "so_squality"
+        }, {
+          "mData": "so_status"
+        }, {
+          "mData": "links",
+          "bSortable": false,
+          "bSearchable": false
         }
-      });
 
+      ],
+
+      "bFilter": true,
+      "bLengthChange": true
     });
+  });
+}
+</script>
 
-    function set_tag(data) {
-      if ($(".select2-choices li").map(function () {
-        return $(this).text()
-      }).get().length != length) {
-        length = $(".select2-choices li").map(function () {
-          return $(this).text()
-        }).get().length;
-        initialize_api_call({
-          "url": "/common_actions/get_info",
-          "type": "GET",
-          "data_type": "json",
-          "params": {
-            "mode": "set_tag",
-            "id": "<%= @organization.id%>",
-            "value": data
-          }
-        }, "status_result", {});
-      }
-    }
+<style>
+.span8.ed {
+  float: left;
+  width: 60%;
+}
 
-    function status_result(response, callback_params, api_params) {
-      if (response["aaData"] == "fail") {}
-
-    }
-
-    function set_process(data) {
-      initialize_api_call({
-        "url": "/common_actions/get_info",
-        "type": "GET",
-        "data_type": "json",
-        "params": {
-          "mode": "set_process",
-          "id": "<%= @organization.id%>",
-          "value": data
-        }
-      }, "status_result", {});
-    }
-
-    // function search(ele) {     if(event.keyCode == 13) {         alert(ele.value);     } }
-
-    function callback_for_contacts(response, callback_params, api_params) {
-      $("#organization_table_data").html(response);
-    }
-
-    function get_address(type) {
-      $('#org_contact').html("");
-      var address_label = "Addresses";
-      var address_button = "Address"
-      if (type === 'address') {
-        address_label = "Addresses";
-        address_button = "Address"
-      } else if (type === 'contact') {
-        address_label = "Contacts";
-        address_button = "Contact"
-      }
-      var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">' + address_label + '</h4><span class="span6 heading right"><a href="/contacts/new?contact_type=' + type + '&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New ' + address_button + '</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>Description</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>' $('#org_contact').html(adress);
-
-      data_table_report_contacts = $('#table_report_contacts').dataTable({
-        "bAutoWidth": false,
-        "bProcessing": true,
-        "sAjaxSource": '/contacts?contact_type=' + type + '&amp;object_id=<%= @organization.id %>',
-        "aaSorting": [
-          [0, "asc"]
-        ],
-        "aoColumns": [
-          {
-            "mData": "contact_title"
-          }, {
-            "mData": "contact_description"
-          }, {
-            "mData": "contact_city"
-          }, {
-            "mData": "contact_telephone"
-          }, {
-            "mData": "contact_email"
-          }, {
-            "mData": "contact_fax"
-          }, {
-            "mData": "links",
-            "bSortable": false,
-            "bSearchable": false
-          }
-        ],
-        "bFilter": true,
-        "bLengthChange": true
-      });
-
-    }
-    //ajax load po order
-    function get_po_header(status) {
-      var link = "/po_headers?organization_id=<%= @organization.id %>"
-      if (status == 2) {
-        link = "/po_headers?organization_id=<%= @organization.id %>&po_status=open"
-      } else if (status == 3) {
-        link = "/po_headers?organization_id=<%= @organization.id %>&po_status=closed"
-      } else {}
-
-      $('#po_header').html("");
-      var po_header = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading"> Purchase Order  </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(3); return false;">Closed</a><a href="/po_headers/new" class="btn btn-mini btn-success">New P' +
-          'O</a></span></div></div><div class="widget-body"><table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Index</th><th>PO ID</th><th>PO Type</th><th>Vendor</th><th>Identifier</th><th>Description</th><th>Total</th><th>Status</th><th>Active</th><th></th></tr></thead><tbody></tbody></table></div></div>';
-      $('#po_header').html(po_header);
-      var data_table_report_po_header_list;
-      data_table_report_po_header_list = $('#table_report_po_header_list').dataTable({
-        "bAutoWidth": false,
-        "bProcessing": true,
-        "sAjaxSource": link,
-        "aaSorting": [
-          [0, "asc"]
-        ],
-        "aoColumns": [
-          {
-            "mData": "index",
-            "bVisible": false
-          }, {
-            "mData": "po_id"
-          }, {
-            "mData": "po_type_name"
-          }, {
-            "mData": "vendor_name"
-          }, {
-            "mData": "po_identifier",
-            "bVisible": false
-          }, {
-            "mData": "po_description",
-            "bVisible": false
-          }, {
-            "mData": "po_total",
-            "bVisible": false
-          }, {
-            "mData": "po_status"
-          }, {
-            "mData": "po_active",
-            "bVisible": false
-          }, {
-            "mData": "links",
-            "bSortable": false,
-            "bSearchable": false
-          }
-        ],
-        "bFilter": true,
-        "bDestroy": true,
-        "bLengthChange": true
-      });
-    }
-
-    function get_so_header(status) {
-      var link = "/so_headers?organization_id=<%= @organization.id %>"
-      if (status == 2) {
-        link = "/so_headers?organization_id=<%= @organization.id %>&so_status=open"
-      } else if (status == 3) {
-        link = "/so_headers?organization_id=<%= @organization.id %>&so_status=closed"
-      } else {}
-
-      $('#so_header').html("");
-      var so_headers = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Sales Orders   </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(3); return false;">Closed</a><a href="/so_headers/new" class="btn btn-mini btn-success">New SO<' +
-          '/a></span></div> </div><div class="widget-body"><table id="table_report_so_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>index</th><th>SO ID</th><th>Customer</th><th>Bill To</th><th>Ship To</th><th>Cofc</th><th>Squality</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div></div>';
-      $('#so_header').html(so_headers);
-      var data_table_report_so_header_list;
-      $(document).ready(function () {
-        data_table_report_so_header_list = $('#table_report_so_header_list').dataTable({
-          "bAutoWidth": false,
-          "bProcessing": true,
-          "sAjaxSource": link,
-          "aaSorting": [
-            [0, "asc"]
-          ],
-          "aoColumns": [
-            {
-              "mData": "index",
-              "bVisible": false
-            }, {
-              "mData": "so_id"
-            }, {
-              "mData": "customer_name"
-            }, {
-              "mData": "bill_to_address_name"
-            }, {
-              "mData": "ship_to_address_name"
-            }, {
-              "mData": "so_cofc"
-            }, {
-              "mData": "so_squality"
-            }, {
-              "mData": "so_status"
-            }, {
-              "mData": "links",
-              "bSortable": false,
-              "bSearchable": false
-            }
-
-          ],
-
-          "bFilter": true,
-          "bLengthChange": true
-        });
-      });
-    }
-  </script>
-
-  <style>
-    .span8.ed {
-      float: left;
-      width: 60%;
-    }
-
-  </style>
+</style>

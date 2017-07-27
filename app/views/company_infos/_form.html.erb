@@ -38,15 +38,7 @@
       <br/>(Only if changed)</label>
     <div class="controls">
       <%= f.fields_for :image, Image.new do |g| %>
-      <div data-provides="fileupload" class="fileupload fileupload-exists">
-        <span class="btn btn-default btn-file">
-          <span class="fileupload-new">Browse/Drop File</span>
-          <span class="fileupload-exists">Browse/Drop File</span>
-          <%= g.file_field :image %>
-        </span>
-        <span class="fileupload-preview"></span>
-        <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
-      </div>
+      <%= g.file_field :image, label: false %>
       <% end %>
     </div>
   </div>
