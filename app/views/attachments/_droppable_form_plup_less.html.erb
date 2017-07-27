@@ -1,79 +1,89 @@
-    <!-- Widget -->
-    <div class="widget widget-003 ee eee">
-        <!-- Widget heading -->
-        <div class="widget-head">
-            <div class="span6">
-                <h4 class="heading glyphicons file_import"><i></i>Dropzone For Attachments</h4>
-            </div>
-            <div class="span6 right">
-                <%= link_to "Clear", "#", onclick: "plupupload_clear_queue(); return false", class: "btn btn-small btn-success" %>
-            </div>
-        </div>
-        <!-- // Widget heading END -->
-        
-        <div class="widget-body widget-body-002"> 
-            <!-- Dropzone -->
-            <div id="dropzone">
-                <form action="/attachments?attachment_process_type=droppable&attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>" class="dropzone" method="post" id="attachment_dropzone">
-                    <div class="fallback">
-                        <input name="file" type="file" multiple />
-                    </div>
-                </form>
-            </div>
-            <div class="separator bottom"></div>      
-        </div>
+<!-- Widget -->
+<div class="widget widget-003 ee eee">
+  <!-- Widget heading -->
+  <div class="widget-head">
+    <div class="span6">
+      <h4 class="heading glyphicons file_import">
+        <i></i>Dropzone For Attachments</h4>
     </div>
+    <div class="span6 right">
+      <%= link_to "Clear", "#", onclick: "plupupload_clear_queue(); return false", class: "btn btn-small btn-success" %>
+    </div>
+  </div>
+  <!-- // Widget heading END -->
+
+  <div class="widget-body widget-body-002">
+    <!-- Dropzone -->
+    <div id="dropzone">
+      <form action="/attachments?attachment_process_type=droppable&attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>" class="dropzone" method="post" id="attachment_dropzone">
+        <div class="fallback">
+          <input name="file" type="file" multiple/>
+        </div>
+      </form>
+    </div>
+    <div class="separator bottom"></div>
+  </div>
+</div>
 
 <!-- // Widget END -->
 
 <script type="text/javascript">
-    function plupupload_complete_callback(response){        
-        data_table_report_attachments.fnDestroy();
+  function plupupload_complete_callback(response) {
+    data_table_report_attachments.fnDestroy();
 
-        data_table_report_attachments = $('#table_report_attachments').dataTable({
-            "bAutoWidth": false,
-            "bProcessing": true,
-            "sAjaxSource": '/attachments?attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>&hide_info=true',
-            "aoColumns": [
-                        { "mData": "attachment_name" },
-                        { "mData": "attachment_public" },
-                        { "mData": "uploaded_date", "bVisible": false },
-                        { "mData": "uploaded_by" },
-                        { "mData": "links" }
-                    ]        
-        });
-    }
+    data_table_report_attachments = $('#table_report_attachments').dataTable({
+      "bAutoWidth": false,
+      "bProcessing": true,
+      "sAjaxSource": '/attachments?attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>&hide_info=true',
+      "aoColumns": [
+        {
+          "mData": "attachment_name"
+        }, {
+          "mData": "attachment_public"
+        }, {
+          "mData": "uploaded_date",
+          "bVisible": false
+        }, {
+          "mData": "uploaded_by"
+        }, {
+          "mData": "links"
+        }
+      ]
+    });
+  }
 
-    function plupupload_clear_queue(){
-        $("#attachment_dropzone").html('<div class="default message"><span>Drop files here to upload</span></div>');
-        $("#attachment_dropzone").removeClass("started");
-    }
+  function plupupload_clear_queue() {
+    $("#attachment_dropzone").html('<div class="default message"><span>Drop files here to upload</span></div>');
+    $("#attachment_dropzone").removeClass("started");
+  }
 </script>
 
 <style>
-.widget.widget-003.ee {
+  .widget.widget-003.ee {
     float: left;
-    min-height: 256px;
-    width: 37%;
-}
+    max-height: 420px;
+    /* set to match organizational height of dropzone */
+    width: 22%;
+    margin-left: 15px;
+  }
 
-
-
-.dropzone .default.message {
+  .dropzone .default.message {
     background-image: url("/assets/images/spritemap.png");
     background-position: 0 0;
     background-repeat: no-repeat;
     background-size: cover;
     filter: none;
-    height: 73px;
+    height: 50px;
     left: 71%;
     margin-left: -214px;
     margin-top: -61.5px;
+    padding-left: 5px;
+    width: 275px;
     opacity: 1;
     position: absolute;
     top: 100%;
     transition: opacity 0.3s ease-in-out 0s;
-    width: 275px;
-}
+
+  }
 
 </style>

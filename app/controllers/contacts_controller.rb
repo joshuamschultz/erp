@@ -2,6 +2,7 @@ class ContactsController < ApplicationController
   before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
+  before_action :set_contact, only: %i[show edit update destroy]
 
   def view_permissions
     authorize! :edit, Contact if user_signed_in? && current_user.is_logistics?
@@ -73,15 +74,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1
   # GET /contacts/1.json
-  def show
-    @contact = Contact.find(params[:id])
-    @contactable = @contact.contactable
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @contact }
-    end
-  end
+  def show; end
 
   # GET /contacts/new
   # GET /contacts/new.json
@@ -92,11 +85,7 @@ class ContactsController < ApplicationController
       @contact.contact_type = params[:contact_type] || 'address'
       @contact.contactable_id = @contactable.id
       @contact.contactable_type = @contactable.class
-
-      respond_to do |format|
-        format.html # new.html.erb
-        format.json { render json: @contact }
-      end
+      respond_with @contact
     else
       redirect_to organizations_path
     end
@@ -104,8 +93,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1/edit
   def edit
-    @contact = Contact.find(params[:id])
-    @contactable = @contact.contactable
+    @referrer = request.controller_class
   end
 
   # POST /contacts
@@ -113,53 +101,28 @@ class ContactsController < ApplicationController
   def create
     @contact = Contact.new(contact_params)
     @contactable = @contact.contactable
-
-    respond_to do |format|
-      if @contact.save
-        format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully created.' }
-        format.json { render json: @contact, status: :created, location: @contact }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
-    end
+    @contact.save
+    respond_with @contactable
   end
 
   # PUT /contacts/1
   # PUT /contacts/1.json
   def update
-    @contact = Contact.find(params[:id])
-    @contactable = @contact.contactable
-
-    respond_to do |format|
-      if @contact.update_attributes(contact_params)
-        format.html { redirect_to @contactable, notice: @contact.contact_type.titlecase + ' was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
-    end
+    @contact.update(contact_params)
+    @contact.save
+    respond_with @contactable
   end
 
   # DELETE /contacts/1
   # DELETE /contacts/1.json
   def destroy
-    @contact = Contact.find(params[:id])
-    @contactable = @contact.contactable
     @contact_type = @contact.contact_type || 'address'
+    @referrer = params[:referrer]
     @contact.destroy
-
-    respond_to do |format|
-      format.html do
-        case params[:redirect_to]
-        when 'index'
-          redirect_to contacts_path(object_id: @contactable.id, contact_type: @contact_type)
-        else
-          redirect_to request.referrer
-        end
-      end
-      format.json { head :no_content }
+    if @referrer == OrganizationsController
+      redirect_to @contactable
+    else
+      redirect_to :contacts
     end
   end
 
@@ -182,6 +145,7 @@ class ContactsController < ApplicationController
 
   def set_contact
     @contact = Contact.find(params[:id])
+    @contactable = @contact.contactable
   end
 
   def contact_params
