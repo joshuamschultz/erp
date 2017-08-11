@@ -1,0 +1,8 @@
+.nested-fields
+  -#= f.association :material, as: :hidden, :input_html => { :value => @material }
+  = f.association :element, label_method: :element_name
+  -#= f.association :element, :url => autocomplete_element_element_name_elements_path, :as => :autocomplete, :id_element => '#element_id', required: true, :label => "Element"
+  -#= hidden_field_tag :element_id, (@material_element.element.id if @material_element.element)
+  = f.input :element_low_range, :label => "Low Range"
+  = f.input :element_high_range, :label => "High Range"
+  = link_to_remove_association "remove element", f
