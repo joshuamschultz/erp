@@ -1,8 +1,7 @@
 class ElementsController < ApplicationController
   before_action :set_page_info
-  autocomplete :element, :element_name, :full => true, :display_value => :element_symbol_name
+  autocomplete :element, :element_name, full: true, display_value: :element_symbol_name
   before_action :user_permissions
-
 
   # def view_permissions
   #  if  user_signed_in? && current_user.is_customer?
@@ -11,18 +10,19 @@ class ElementsController < ApplicationController
   # end
 
   def user_permissions
-    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? || current_user.is_customer?)
-        authorize! :edit, Element
+    if user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? || current_user.is_vendor? || current_user.is_customer?)
+      authorize! :edit, Element
     end
   end
+
   def set_page_info
-    @menus[:inventory][:active] = "active"
+    @menus[:inventory][:active] = 'active'
   end
 
   def get_autocomplete_items(parameters)
     items = active_record_get_autocomplete_items(parameters)
-    input_term = "%" + params[:term] + "%"
-    items = Element.where("element_name like ? or element_symbol like ?", input_term, input_term)
+    input_term = '%' + params[:term] + '%'
+    items = Element.where('element_name like ? or element_symbol like ?', input_term, input_term)
   end
 
   # GET /elements
@@ -32,22 +32,23 @@ class ElementsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      @elemens = Array.new
-      format.json { @elements.select{ |element|
-        elemend = Hash.new
-        element.attributes.each do |key, value|
-          elemend[key] = value
+      @elemens = []
+      format.json do
+        @elements.select do |element|
+          elemend = {}
+          element.attributes.each do |key, value|
+            elemend[key] = value
+          end
+          elemend[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
+          if can? :edit, element
+            elemend[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
+          else
+            elemend[:links] = nil
+          end
+          @elemens.push(elemend)
         end
-        elemend[:element_name] = "<a href='#{element_path(element)}'>#{element[:element_name]}</a>"
-        if can? :edit, element
-          elemend[:links] = CommonActions.object_crud_paths(nil, edit_element_path(element), nil)
-        else
-          elemend[:links] = nil
-        end
-        @elemens.push(elemend)
-      }
-        render json: {:aaData => @elemens}
-      }
+        render json: { aaData: @elemens }
+      end
     end
   end
 
@@ -88,7 +89,7 @@ class ElementsController < ApplicationController
         format.html { redirect_to elements_path, notice: 'Element was successfully created.' }
         format.json { render json: @element, status: :created, location: @element }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @element.errors, status: :unprocessable_entity }
       end
     end
@@ -104,7 +105,7 @@ class ElementsController < ApplicationController
         format.html { redirect_to elements_path, notice: 'Element was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @element.errors, status: :unprocessable_entity }
       end
     end
@@ -121,13 +122,14 @@ class ElementsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   private
 
-    def set_element
-      @element = Element.find(params[:id])
-    end
+  def set_element
+    @element = Element.find(params[:id])
+  end
 
-    def element_params
-      params.require(:element).permit(:element_active, :element_created_id, :element_name, :element_notes, :element_symbol, :element_updated_id)
-    end
+  def element_params
+    params.require(:element).permit(:element_active, :element_name, :element_notes, :element_symbol)
+  end
 end
