@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: dimensions
+#
+#  id                    :integer          not null, primary key
+#  dimension_identifier  :string(255)
+#  dimension_description :string(255)
+#  dimension_notes       :text(65535)
+#  dimension_active      :boolean
+#  dimension_created_id  :integer
+#  dimension_updated_id  :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
 class Dimension < ActiveRecord::Base  
 
   after_initialize :default_values

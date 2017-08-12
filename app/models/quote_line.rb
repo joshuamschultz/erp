@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: quote_lines
+#
+#  id                     :integer          not null, primary key
+#  quote_id               :integer
+#  item_id                :integer
+#  item_revision_id       :integer
+#  item_alt_name_id       :integer
+#  po_line_id             :integer
+#  organization_id        :integer
+#  quote_line_description :string(255)
+#  quote_line_identifier  :string(255)
+#  quote_line_quantity    :integer
+#  quote_line_cost        :decimal(25, 10)  default(0.0)
+#  quote_line_total       :decimal(25, 10)  default(0.0)
+#  quote_line_status      :string(255)
+#  quote_line_notes       :text(65535)
+#  quote_line_active      :boolean          default(FALSE)
+#  quote_line_created_id  :integer
+#  quote_line_updated_id  :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  item_name_sub          :string(255)
+#
+
 class QuoteLine < ActiveRecord::Base
   belongs_to :quote
   belongs_to :item

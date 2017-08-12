@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id          :integer          not null, primary key
+#  title       :string(255)
+#  start_at    :datetime
+#  end_at      :datetime
+#  allDay      :string(255)
+#  user_name   :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  repeats     :string(255)
+#  description :text(65535)
+#  user_id     :integer
+#  frequency   :integer
+#  parent_id   :integer
+#
+
 class Event < ActiveRecord::Base  
   belongs_to :user
   attr_accessible :title, :start_at, :end_at, :allDay, :description, :repeats, :user_id, :frequency, :parent_id

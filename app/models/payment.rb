@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: payments
+#
+#  id                      :integer          not null, primary key
+#  organization_id         :integer
+#  payment_type_id         :integer
+#  payment_check_code      :string(255)
+#  payment_check_amount    :decimal(25, 10)  default(0.0)
+#  payment_check_no        :string(255)
+#  payment_identifier      :string(255)
+#  payment_description     :string(255)
+#  payment_notes           :text(65535)
+#  payment_status          :string(255)
+#  payment_active          :boolean
+#  payment_created_id      :integer
+#  payment_updated_id      :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#  check_entry_id          :integer
+#  check_register_id       :integer
+#  payment_check_code_type :string(255)
+#
+
 class Payment < ActiveRecord::Base
     include Rails.application.routes.url_helpers
 

@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: master_types
+#
+#  id                  :integer          not null, primary key
+#  type_name           :string(255)
+#  type_description    :string(255)
+#  type_category       :string(255)
+#  type_active         :boolean          default(TRUE)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  type_value          :string(255)
+#  master_type         :string(255)
+#  quality_document_id :integer
+#
+
 class MasterType < ActiveRecord::Base
 
   belongs_to :quality_document

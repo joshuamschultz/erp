@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: deposit_checks
+#
+#  id               :integer          not null, primary key
+#  status           :string(255)
+#  payment_id       :integer
+#  created_at       :datetime
+#  updated_at       :datetime
+#  receipt_id       :integer
+#  receipt_type     :string(255)
+#  check_identifier :string(255)
+#  active           :integer
+#
+
 class DepositCheck < ActiveRecord::Base
   include Rails.application.routes.url_helpers 
   belongs_to :payment

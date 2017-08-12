@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: territories
+#
+#  id                    :integer          not null, primary key
+#  territory_active      :boolean
+#  territory_identifier  :string(255)
+#  territory_description :string(255)
+#  territory_zip         :string(255)
+#  created_at            :datetime
+#  updated_at            :datetime
+#
+
 class Territory < ActiveRecord::Base
   after_initialize :default_values
 

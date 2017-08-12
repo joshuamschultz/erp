@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: receivable_lines
+#
+#  id                          :integer          not null, primary key
+#  receivable_id               :integer
+#  receivable_line_identifier  :string(255)
+#  receivable_line_description :string(255)
+#  receivable_line_cost        :decimal(25, 10)  default(0.0)
+#  receivable_line_notes       :text(65535)
+#  receivable_line_status      :string(255)
+#  receivable_line_active      :boolean
+#  receivable_line_created_id  :integer
+#  receivable_line_updated_id  :integer
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#
+
 class ReceivableLine < ActiveRecord::Base
 	belongs_to :receivable
 	

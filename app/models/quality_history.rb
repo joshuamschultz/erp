@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: quality_histories
+#
+#  id             :integer          not null, primary key
+#  quality_lot_id :integer
+#  quality_status :string(255)
+#  user_id        :integer
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+
 class QualityHistory < ActiveRecord::Base
   attr_accessible :quality_lot_id, :quality_status, :user_id
   belongs_to :quality_lot

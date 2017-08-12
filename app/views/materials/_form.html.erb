@@ -1,22 +1,32 @@
 <%= simple_form_for(@material, :html => {:id => "form_for_materials",:class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :material_short_name, :autofocus => true, :label => "Short Name" %>
-    <%= f.input :material_description, :label => "Description" %>
-    <%= f.input :material_notes, :label => "Notes" %>
-    <%= f.input :material_active, :label => "Active" %>
-    <%= (hidden_field_tag "material_id", @duplicate.id) if @duplicate.present? %>
-  </div>
+<div class="form-inputs">
+  <%= f.input :material_short_name, :autofocus => true, :label => "Specification & Number" %>
+  <%= f.input :material_description, :label => "Informal Name" %>
+  <%= f.input :material_notes, :label => "Notes" %>
+  <%= f.input :material_active, :label => "Active" %>
+  <%= (hidden_field_tag "material_id", @duplicate.id) if @duplicate.present? %>
+</div>
 
-  <div class="form-actions">
-  <% if can? :edit, Material %>
-    <%= f.button :submit, :class => "btn" %>
+<h3>Elements</h3>
+<div id="material_elements">
+  <%= f.simple_fields_for :material_elements do |material_element| %>
+  <%= render 'material_element_fields', f: material_element %>
   <% end %>
-    <%= link_to 'Back to Materials', materials_path, :class => "btn" %>
+  <div class="links">
+    <%= link_to_add_association 'add element', f, :material_elements %>
   </div>
+</div>
+
+<div class="form-actions">
+  <% if can? :edit, Material %>
+  <%= f.button :submit, :class => "btn" %>
+  <% end %>
+  <%= link_to 'Back to Materials', materials_path, :class => "btn" %>
+</div>
 <% end %>
 
 <script type="text/javascript">
-    tab_field_forms["form_for_materials"] = ["material_material_short_name", "material_material_description", "material_material_notes", "material_material_active"];
+  tab_field_forms["form_for_materials"] = ["material_material_short_name", "material_material_description", "material_material_notes", "material_material_active"];
 </script>

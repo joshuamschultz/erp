@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: process_types
+#
+#  id                  :integer          not null, primary key
+#  process_short_name  :string(255)
+#  process_description :string(255)
+#  process_notes       :text(65535)
+#  process_active      :boolean          default(TRUE)
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 class ProcessType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

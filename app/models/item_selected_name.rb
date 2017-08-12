@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: item_selected_names
+#
+#  id               :integer          not null, primary key
+#  item_revision_id :integer
+#  item_alt_name_id :integer
+#  created_at       :datetime
+#  updated_at       :datetime
+#
+
 class ItemSelectedName < ActiveRecord::Base
   belongs_to :item_revision
   # belongs_to :item, :through => :item_revision

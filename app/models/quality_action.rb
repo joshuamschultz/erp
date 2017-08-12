@@ -1,3 +1,31 @@
+# == Schema Information
+#
+# Table name: quality_actions
+#
+#  id                           :integer          not null, primary key
+#  quality_action_no            :integer
+#  ic_action_id                 :integer
+#  organization_quality_type_id :integer
+#  item_id                      :integer
+#  item_revision_id             :integer
+#  item_alt_name_id             :integer
+#  po_header_id                 :integer
+#  quantity                     :integer
+#  definition_of_issue          :text(65535)
+#  short_term_fix               :text(65535)
+#  cause_analysis_id            :integer
+#  required_action              :text(65535)
+#  quality_action_status        :string(255)
+#  due_date                     :date
+#  quality_action_active        :boolean
+#  submit_time                  :datetime
+#  created_user_id              :integer
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#  root_cause                   :text(65535)
+#  quality_lot_id               :integer
+#
+
 class QualityAction < ActiveRecord::Base
     include Rails.application.routes.url_helpers
     belongs_to :item

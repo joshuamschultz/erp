@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: quality_lot_materials
+#
+#  id                      :integer          not null, primary key
+#  quality_lot_id          :integer
+#  material_element_id     :integer
+#  lot_element_low_range   :decimal(25, 10)  default(0.0)
+#  lot_element_high_range  :decimal(25, 10)  default(0.0)
+#  lot_material_tested     :boolean
+#  lot_material_result     :string(255)
+#  lot_material_notes      :text(65535)
+#  lot_material_active     :boolean
+#  lot_material_created_id :integer
+#  lot_material_updated_id :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class QualityLotMaterial < ActiveRecord::Base
   belongs_to :quality_lot
   belongs_to :material_element
