@@ -238,7 +238,6 @@ module CommonActions
 
       menus[:inventory][:sub_menu].push(path: prints_path, name: 'Prints')
 
-      menus[:inventory][:sub_menu].push(path: elements_path, name: 'Elements')
     end
 
     menus[:inventory][:sub_menu].push(path: materials_path, name: 'Materials')
