@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: payable_shipments
+#
+#  id                          :integer          not null, primary key
+#  payable_id                  :integer
+#  po_line_id                  :integer
+#  payable_shipment_identifier :string(255)
+#  payable_shipment_count      :integer          default(0)
+#  payable_shipment_cost       :decimal(25, 10)  default(0.0)
+#  payable_shipment_created_id :integer
+#  payable_shipment_updated_id :integer
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#
+
 class PayableShipment < ActiveRecord::Base
   belongs_to :payable
   belongs_to :po_line

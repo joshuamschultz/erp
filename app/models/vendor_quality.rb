@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: vendor_qualities
+#
+#  id                  :integer          not null, primary key
+#  quality_name        :string(255)
+#  quality_description :string(255)
+#  quality_notes       :text(65535)
+#  quality_active      :boolean
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 class VendorQuality < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 

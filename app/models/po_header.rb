@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: po_headers
+#
+#  id              :integer          not null, primary key
+#  po_type_id      :integer
+#  organization_id :integer
+#  po_identifier   :string(255)
+#  po_description  :string(255)
+#  po_total        :decimal(25, 10)  default(0.0)
+#  po_status       :string(255)
+#  po_notes        :text(65535)
+#  po_active       :boolean
+#  po_created_id   :integer
+#  po_updated_id   :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  customer_id     :integer
+#  po_bill_to_id   :integer
+#  po_ship_to_id   :integer
+#  cusotmer_po     :string(255)
+#  so_header_id    :integer
+#
+
 class PoHeader < ActiveRecord::Base 
   include Rails.application.routes.url_helpers
 

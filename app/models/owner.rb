@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: owners
+#
+#  id                       :integer          not null, primary key
+#  owner_identifier         :string(255)
+#  owner_description        :string(255)
+#  owner_commission_type_id :integer
+#  owner_commission_amount  :decimal(25, 10)  default(0.0)
+#  owner_active             :boolean          default(TRUE)
+#  created_at               :datetime
+#  updated_at               :datetime
+#
+
 class Owner < ActiveRecord::Base
 
   after_initialize :default_values

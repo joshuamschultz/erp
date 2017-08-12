@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: payment_lines
+#
+#  id                      :integer          not null, primary key
+#  payment_id              :integer
+#  payable_id              :integer
+#  payment_line_amount     :decimal(25, 10)  default(0.0)
+#  payment_line_created_id :integer
+#  payment_line_updated_id :integer
+#  created_at              :datetime
+#  updated_at              :datetime
+#
+
 class PaymentLine < ActiveRecord::Base
   belongs_to :payment
   belongs_to :payable

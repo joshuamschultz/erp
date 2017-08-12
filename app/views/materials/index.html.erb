@@ -1,47 +1,39 @@
 <!-- Widget -->
 <div class="widget">
-    <!-- Widget heading -->
-    <div class="widget-head">
-        <div class="row-fluid">
-            <h4 class="span6 heading">Materials</h4>
-            <span class="span6 heading right">
-            <% if can? :edit, Material %>
-                <%= link_to 'New Material', new_material_path, :class => "btn btn-mini btn-success" %>
-            <% end %>
-            </span>
-        </div> 
+  <!-- Widget heading -->
+  <div class="widget-head">
+    <div class="row-fluid">
+      <h4 class="span6 heading">Materials</h4>
+      <span class="span6 heading right">
+        <% if can? :edit, Material %>
+        <%= link_to 'New Material', new_material_path, :class => "btn btn-mini btn-success" %>
+        <% end %>
+      </span>
     </div>
-    <!-- // Widget heading END -->
+  </div>
+  <!-- // Widget heading END -->
 
-    <div class="widget-body">
-      <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
-        <thead>
-          <tr>
-            <th>SLNO</th>
-            <th>Short Name</th>
-            <th>Description</th>
-            <th>Notes</th>
-            <th>Active</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-    </div>
+  <div class="widget-body">
+    <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Specification</th>
+          <th>Metal Name</th>
+          <th>Active</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @materials.each do |material|%>
+        <tr>
+          <td><%= link_to(material.material_short_name, material_path(material))%></td>
+          <td><%= material.material_description %></td>
+          <td><%= material.material_active %></td>
+          <td><%= link_to("Edit", edit_material_path(material))%></td>
+          <td><%= link_to("Duplicate", new_material_path(material_id: material.id))%></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => materials_path,
-        :columns => '[
-                        { "mData": "id" },
-                        { "mData": "material_short_name" },
-                        { "mData": "material_description" },
-                        { "mData": "material_notes", "bVisible": false },
-                        { "mData": "material_active" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>

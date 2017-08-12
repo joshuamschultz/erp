@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: gl_entries
+#
+#  id                    :integer          not null, primary key
+#  gl_entry_identifier   :string(255)
+#  gl_account_id         :integer
+#  gl_entry_description  :string(255)
+#  gl_entry_date         :date             default(Wed, 21 Jun 2017)
+#  gl_entry_credit       :decimal(25, 10)  default(0.0)
+#  gl_entry_debit        :decimal(25, 10)  default(0.0)
+#  gl_entry_notes        :text(65535)
+#  gl_entry_active       :boolean          default(TRUE)
+#  created_at            :datetime
+#  updated_at            :datetime
+#  payable_id            :integer
+#  payable_account_id    :integer
+#  receivable_account_id :integer
+#  receivable_id         :integer
+#  payment_id            :integer
+#  receipt_id            :integer
+#
+
 class GlEntry < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   

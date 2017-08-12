@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: po_shipments
+#
+#  id                     :integer          not null, primary key
+#  po_line_id             :integer
+#  po_shipped_count       :integer          default(0)
+#  po_shipped_cost        :decimal(25, 10)  default(0.0)
+#  po_shipped_shelf       :string(255)
+#  po_shipped_unit        :string(255)
+#  po_shipped_status      :string(255)
+#  po_shipment_created_id :integer
+#  po_shipment_updated_id :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  quality_lot_id         :integer
+#
+
 class PoShipment < ActiveRecord::Base
   belongs_to :po_line
 

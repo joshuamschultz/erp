@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: test_packages
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class TestPackage < ActiveRecord::Base
   attr_accessible :name
 

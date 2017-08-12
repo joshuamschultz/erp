@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: quality_lot_dimensions
+#
+#  id                       :integer          not null, primary key
+#  quality_lot_id           :integer
+#  item_part_dimension_id   :integer
+#  lot_dimension_value      :decimal(25, 10)  default(0.0)
+#  lot_dimension_status     :string(255)
+#  lot_dimension_notes      :text(65535)
+#  lot_dimension_active     :boolean
+#  lot_dimension_created_id :integer
+#  lot_dimension_updated_id :integer
+#  created_at               :datetime
+#  updated_at               :datetime
+#
+
 class QualityLotDimension < ActiveRecord::Base
   belongs_to :quality_lot
   belongs_to :item_part_dimension

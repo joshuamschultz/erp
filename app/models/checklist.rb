@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: checklists
+#
+#  id                  :integer          not null, primary key
+#  quality_lot_id      :integer
+#  checklist_status    :string(255)
+#  po_line_id          :integer
+#  customer_quality_id :integer
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+
 class Checklist < ActiveRecord::Base
   belongs_to :quality_lot
   belongs_to :po_line
