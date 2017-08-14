@@ -1,1 +1,67 @@
-<%= render :partial => 'attachments/relational_attachments_specification', :locals => {list_path: specifications_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_specification_path, name: "specification"} %>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Specifications</h4>
+            <span class="span6 heading right">
+                <%= link_to "New Specification", new_specification_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div>
+    </div>
+    <div class="widget-body">
+      <table id="specifications" class="dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Standard</th>
+                <th>Description</th>
+                <th>Revision</th>
+                <th>Rev Date</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @specifications.each do |specification| %>
+              <tr>
+                  <td><%= link_to(specification.specification_identifier, specification_path(specification))%></td>
+                  <td><%= specification.specification_description %></td>
+                  <td><%= specification.revision %></td>
+                  <td><%= specification.revision_date %></td>
+                  <td><%= specification.specification_active %></td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var data_specifications;
+    $(document).ready(function(){
+        data_specifications = $('#specifications').dataTable({
+
+            dom: '<"html5buttons"B>lTfgitp',
+              colReorder: true,
+              buttons: [
+                  {extend: 'copy'},
+                  {extend: 'csv', title: 'specifications'},
+                  {extend: 'excel', title: 'specifications'},
+                  {extend: 'pdf', title: 'specifications'},
+
+                  {extend: 'print',
+                   customize: function (win){
+                          $(win.document.body).addClass('white-bg');
+                          $(win.document.body).css('font-size', '10px');
+
+                          $(win.document.body).find('table')
+                                  .addClass('compact')
+                                  .css('font-size', 'inherit');
+                  }
+                  }
+              ]
+
+          });
+      });
+
+
+</script>
