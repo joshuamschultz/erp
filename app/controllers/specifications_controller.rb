@@ -1,5 +1,5 @@
 class SpecificationsController < ApplicationController
-  before_action :set_specification, %i[show edit update destroy]
+  before_action :set_specification, only: %i[show edit update destroy]
   before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
