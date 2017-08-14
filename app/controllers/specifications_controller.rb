@@ -1,40 +1,25 @@
 class SpecificationsController < ApplicationController
+  before_action :set_specification, %i[show edit update destroy]
   before_action :set_page_info
-
-  before_action :view_permissions, except: [:index, :show]
+  before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
-
-
-  def view_permissions
-    if  user_signed_in? && ( current_user.is_vendor? || current_user.is_customer? )
-      authorize! :edit, Specification
-    end
-  end
-
-  def user_permissions
-    if  user_signed_in? && (current_user.is_logistics? || current_user.is_clerical? )
-      authorize! :edit, Specification
-    end
-  end
-
-  def set_page_info
-      @menus[:inventory][:active] = "active"
-  end
 
   # GET /specifications
   # GET /specifications.json
   def index
+    # if there is an item in the params, show those specs for the item.
+    # Otherwise grab all specs in the system
     if params[:item_id].present?
-      @specifications =Specification.item_specification(params[:item_id])
+      @specifications = Specification.item_specification(params[:item_id])
     else
       @specifications = Specification.joins(:attachment).all
     end
     respond_to do |format|
       format.html # index.html.erb
-      @specificasions = Array.new
-      format.json {
-        @specifications = @specifications.collect{|specification|
-          specificasion = Hash.new
+      @specificasions = []
+      format.json do
+        @specifications = @specifications.collect do |specification|
+          specificasion = {}
           specification.attributes.each do |key, value|
             specificasion[key] = value
           end
@@ -50,21 +35,16 @@ class SpecificationsController < ApplicationController
           end
 
           @specificasions.push(specificasion)
-        }
-        render json: {:aaData => @specificasions}
-      }
+        end
+        render json: { aaData: @specificasions }
+      end
     end
   end
 
   # GET /specifications/1
   # GET /specifications/1.json
   def show
-    @specification = Specification.find(params[:id])
     @attachment = @specification.attachment
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @specification }
-    end
   end
 
   # GET /specifications/new
@@ -72,18 +52,11 @@ class SpecificationsController < ApplicationController
   def new
     @specification = Specification.new
     @specification.build_attachment
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @specification }
-    end
   end
 
   # GET /specifications/1/edit
   def edit
-    @specification = Specification.find(params[:id])
     @attachment = @specification.attachment
-
   end
 
   # POST /specifications
@@ -94,11 +67,11 @@ class SpecificationsController < ApplicationController
     respond_to do |format|
       @specification.attachment.created_by = current_user
       if @specification.save
-        CommonActions.notification_process("Specification", @specification)
+        CommonActions.notification_process('Specification', @specification)
         format.html { redirect_to specifications_url, notice: 'Specification was successfully created.' }
         format.json { render json: @specification, status: :created, location: @specification }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @specification.errors, status: :unprocessable_entity }
       end
     end
@@ -107,16 +80,14 @@ class SpecificationsController < ApplicationController
   # PUT /specifications/1
   # PUT /specifications/1.json
   def update
-    @specification = Specification.find(params[:id])
-
     respond_to do |format|
       @specification.attachment.updated_by = current_user
       if @specification.update_attributes(specification_params)
-        CommonActions.notification_process("Specification", @specification)
+        CommonActions.notification_process('Specification', @specification)
         format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @specification.errors, status: :unprocessable_entity }
       end
     end
@@ -125,26 +96,38 @@ class SpecificationsController < ApplicationController
   # DELETE /specifications/1
   # DELETE /specifications/1.json
   def destroy
-    @specification = Specification.find(params[:id])
     @specification.destroy
+    respond_with :specifications
+  end
 
-    respond_to do |format|
-      format.html { redirect_to specifications_url }
-      format.json { head :no_content }
+  def view_permissions
+    if user_signed_in? && (current_user.is_vendor? || current_user.is_customer?)
+      authorize! :edit, Specification
     end
   end
+
+  def user_permissions
+    if user_signed_in? && (current_user.is_logistics? || current_user.is_clerical?)
+      authorize! :edit, Specification
+    end
+  end
+
+  def set_page_info
+    @menus[:inventory][:active] = 'active'
+  end
+
   private
 
-    def set_specification
-      @specification = Specification.find(params[:id])
-    end
+  def set_specification
+    @specification = Specification.find(params[:id])
+  end
 
-    def specification_params
-      params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description,
-                                            :specification_identifier, :specification_notes, :specification_updated_id, attachment_attributes: [:attachable_id, :attachable_type, :attachment_revision_title, :attachment_revision_date,
-                                         :attachment_effective_date, :attachment_name, :attachment_description, :attachment_document_type,
-                                         :attachment_document_type_id, :attachment_notes, :attachment_public, :attachment_active,
-                                         :attachment_status, :attachment_status_id, :attachment_created_id, :attachment_updated_id, :attachment,
-                                         :attachment_file_name], notification_attributes:  [:notable_id, :notable_type, :note_status, :user_id])
-    end
+  def specification_params
+    params.require(:specification).permit(:specification_active, :specification_created_id, :specification_description,
+                                          :specification_identifier, :specification_notes, :specification_updated_id, attachment_attributes: %i[attachable_id attachable_type attachment_revision_title attachment_revision_date
+                                                                                                                                                attachment_effective_date attachment_name attachment_description attachment_document_type
+                                                                                                                                                attachment_document_type_id attachment_notes attachment_public attachment_active
+                                                                                                                                                attachment_status attachment_status_id attachment_created_id attachment_updated_id attachment
+                                                                                                                                                attachment_file_name], notification_attributes:  %i[notable_id notable_type note_status user_id])
+  end
 end
