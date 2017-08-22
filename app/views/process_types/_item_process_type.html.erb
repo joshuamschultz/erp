@@ -1,5 +1,3 @@
-
-
 <!-- Widget -->
 <div class="widget">
     <!-- Widget heading -->
@@ -11,7 +9,7 @@
                 <%= link_to 'New  Process Type', new_process_type_path, :class => "btn btn-mini btn-success" %>
             <% end %>
             </span>
-        </div> 
+        </div>
     </div>
     <!-- // Widget heading END -->
 
@@ -33,15 +31,15 @@
         </table>
     </div>
 </div>
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>
     {:name => "table_report_process_types", :path => process_types_path(item_id:  (@item.nil? ? nil : @item.id)),
-        :extras => {:slno => false}, 
-        :columns => '[                        
+        :extras => {:slno => false},
+        :columns => '[
                         { "mData": "attachment_name" },
                         { "mData": "effective_date" },
                         { "mData": "attachment_active" },
                         { "mData": "uploaded_by" },
                         { "mData": "links" }
                     ]'
-    } 
+    }
 %>
