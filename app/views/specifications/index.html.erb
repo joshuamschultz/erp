@@ -25,8 +25,8 @@
               <tr>
                   <td><%= link_to(specification.specification_identifier, specification_path(specification))%></td>
                   <td><%= specification.specification_description %></td>
-                  <td><%= specification.revision %></td>
-                  <td><%= specification.revision_date %></td>
+                  <td><%= specification.attachment.attachment_revision_title || ""%></td>
+                  <td><%= specification.attachment.attachment_revision_date || "" %></td>
                   <td><%= specification.specification_active %></td>
               </tr>
             <% end %>
