@@ -64,16 +64,12 @@ class SpecificationsController < ApplicationController
   def create
     @specification = Specification.new(specification_params)
 
-    respond_to do |format|
-      @specification.attachment.created_by = current_user
-      if @specification.save
-        CommonActions.notification_process('Specification', @specification)
-        format.html { redirect_to specifications_url, notice: 'Specification was successfully created.' }
-        format.json { render json: @specification, status: :created, location: @specification }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @specification.errors, status: :unprocessable_entity }
-      end
+    @specification.attachment.created_by = current_user
+    if @specification.save
+      CommonActions.notification_process('Specification', @specification)
+      respond_with :specifications
+    else
+      respond_with @specification
     end
   end
 

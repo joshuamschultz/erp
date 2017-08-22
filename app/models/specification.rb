@@ -43,7 +43,7 @@ class Specification < ActiveRecord::Base
 
   def before_save_values
     self.specification_identifier = attachment.attachment_name
-  end
+    end
 
   def self.item_specification(item)
     # create an array called specifications

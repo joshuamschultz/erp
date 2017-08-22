@@ -5,17 +5,17 @@
         <div class="row-fluid">
             <h4 class="span6 heading"><%= name.titlecase.pluralize %></h4>
             <span class="span6 heading right">
-                <%= link_to "New #{name.titlecase}", new_path, :class => "btn btn-mini btn-success" %>                
+                <%= link_to "New #{name.titlecase}", new_path, :class => "btn btn-mini btn-success" %>
             </span>
-        </div> 
+        </div>
     </div>
     <div class="widget-body">
         <table id="table_report_<%= name %>" class="dynamicTable table table-striped table-bordered table-condensed">
             <thead>
-              <tr>                
+              <tr>
                 <th>Name</th>
                 <th>Revision</th>
-                <th>Effective Date</th>
+                <th>Revision Date</th>
                 <th>Description</th>
                 <th>Notes</th>
                 <th>Public</th>
@@ -32,13 +32,13 @@
 </div>
 
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_#{name}", :path => list_path, 
-        :extras => {:slno => false}, 
-        :columns => '[                        
+<%= render :partial => 'layouts/app_layouts/data_table', :locals =>
+    {:name => "table_report_#{name}", :path => list_path,
+        :extras => {:slno => false},
+        :columns => '[
                         { "mData": "attachment_name" },
                         { "mData": "attachment_revision_title" },
-                        { "mData": "effective_date" },
+                        { "mData": "attachment_revision_date" },
                         { "mData": "attachment_description", "bVisible": false },
                         { "mData": "attachment_notes", "bVisible": false },
                         { "mData": "attachment_public" },
@@ -49,5 +49,5 @@
                         { "mData": "approved_by", "bVisible": false },
                         { "mData": "links" }
                     ]'
-    } 
+    }
 %>

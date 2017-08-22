@@ -1,9 +1,11 @@
 <div class="row-fluid span8">
   <%= render 'attachments/attachment_info' %>
   <div class="form-actions">
-      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
+    <% if @attachment.attachment_file_name%>
+      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %>
+      <% end %>
       <% if can? :edit, Specification %>
-	      <%= link_to 'Edit', edit_specification_path(@specification), :class => "btn btn-small"%> 
+	      <%= link_to 'Edit', edit_specification_path(@specification), :class => "btn btn-small"%>
 	      <%= link_to 'Delete', specification_path(@specification), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
       <% end %>
       <%= link_to 'Back', specifications_path, :class => "btn btn-small" %>
