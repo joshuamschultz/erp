@@ -76,16 +76,12 @@ class SpecificationsController < ApplicationController
   # PUT /specifications/1
   # PUT /specifications/1.json
   def update
-    respond_to do |format|
-      @specification.attachment.updated_by = current_user
-      if @specification.update_attributes(specification_params)
-        CommonActions.notification_process('Specification', @specification)
-        format.html { redirect_to specifications_url, notice: 'Specification was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @specification.errors, status: :unprocessable_entity }
-      end
+    @specification.attachment.updated_by = current_user
+    if @specification.update_attributes(specification_params)
+      CommonActions.notification_process('Specification', @specification)
+      respond_with @specification
+    else
+      respond_with @specification
     end
   end
 
