@@ -41,11 +41,13 @@
       <%= g.file_field :image, label: false %>
       <% end %>
     </div>
+    <div><%= @company_info.image.image_file_name if @company_info.image && @company_info.persisted? %></div>
   </div>
 </div>
 
+
 <div class="control-group string optional company_info_company_website">
-  <label class="control-label">Choose Logo2
+  <label class="control-label">Choose Report Header
     <br/>(Only if changed)</label>
   <div class="controls">
     <%= f.fields_for :logo, Logo.new do |g| %>
@@ -59,6 +61,7 @@
       <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
     </div>
     <% end %>
+    <div><%= @company_info.logo.joint_file_name if @company_info.logo && @company_info.persisted? %></div>
   </div>
 </div>
 </div>

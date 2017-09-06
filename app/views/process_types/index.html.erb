@@ -1,1 +1,66 @@
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Processes</h4>
+            <span class="span6 heading right">
+                <%= link_to "New Process", new_process_type_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div>
+    </div>
+    <div class="widget-body">
+      <table id="processes" class="dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Process</th>
+                <th>Description</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @process_types.each do |process| %>
+              <tr>
+                  <td><%= link_to(process.process_short_name, process_type_path(process))%></td>
+                  <td><%= process.process_description %></td>
+                  <td><%= process.process_active %></td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var data_processes;
+    $(document).ready(function(){
+        data_processes = $('#processes').dataTable({
+
+            dom: '<"html5buttons"B>lTfgitp',
+              colReorder: true,
+              buttons: [
+                  {extend: 'copy'},
+                  {extend: 'csv', title: 'processes'},
+                  {extend: 'excel', title: 'processes'},
+                  {extend: 'pdf', title: 'processes'},
+
+                  {extend: 'print',
+                   customize: function (win){
+                          $(win.document.body).addClass('white-bg');
+                          $(win.document.body).css('font-size', '10px');
+
+                          $(win.document.body).find('table')
+                                  .addClass('compact')
+                                  .css('font-size', 'inherit');
+                  }
+                  }
+              ]
+
+          });
+      });
+
+
+</script>
+
+
 <%= render :partial => 'attachments/relational_attachments_process_type', :locals => {list_path: process_types_path(item_id:  (@item.nil? ? nil : @item.id)), new_path: new_process_type_path, name: "process_type"} %>
