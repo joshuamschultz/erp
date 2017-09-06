@@ -130,7 +130,7 @@ unless Element.count > 0
   elements = ActiveSupport::JSON.decode(File.read('db/seeds/elements.json'))
 
   elements.each do |element|
-    Element.create!(element_active: true, element_name: element['name'], element_symbol: element['symbol'], without_protection: true)
+    Element.create!(element_active: true, element_name: element['name'], element_symbol: element['symbol'])
   end
 end
 
