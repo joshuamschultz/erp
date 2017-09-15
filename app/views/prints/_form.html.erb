@@ -2,16 +2,16 @@
   <%= g.error_notification %>
 
   <%= g.simple_fields_for :attachment do |f| %>
-    <div class="form-inputs">        
-        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>    
+    <div class="form-inputs">
+        <%= render :partial => 'attachments/attachment_fields', :locals => {f: f} %>
     </div>
   <% end %>
 
-  <div class="separator bottom"></div> 
+  <div class="separator bottom"></div>
 
   <div class="form-actions">
     <%= g.button :submit, :class => "btn" %>
-         
+
     <%= link_to 'Delete', print_path(@print), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @print.new_record? %>
 
     <%= link_to 'Back to Prints', prints_path, :class =>"btn" %>
@@ -22,7 +22,7 @@
 <script type="text/javascript">
   tab_field_forms["form_for_print"] = ["print_attachment_attributes_attachment_name", "print_attachment_attributes_attachment_revision_title", "print_attachment_attributes_attachment_revision_date", "print_attachment_attributes_attachment_description", "print_attachment_attributes_attachment_public", "print_attachment_attributes_attachment"];
 
-  <% date_box_date = @print.new_record? ? Date.today : @print.attachment.attachment_revision_date %> 
+  <% date_box_date = @print.new_record? ? Date.today : @print.attachment.attachment_revision_date %>
 
   date_box_fields = date_box_fields.concat([{"name":"print_attachment_attributes_attachment_revision_date", "value":"<%= date_box_date %>"}]);
 </script>
