@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814185939) do
+ActiveRecord::Schema.define(version: 20171029220120) do
+
+  create_table "addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "addressable_id"
+    t.string   "addressable_type"
+    t.string   "address_type"
+    t.string   "address_title"
+    t.string   "address_description"
+    t.text     "address_address_1",   limit: 65535
+    t.text     "address_address_2",   limit: 65535
+    t.string   "address_city"
+    t.string   "address_state"
+    t.string   "address_country"
+    t.string   "address_zipcode"
+    t.string   "address_telephone"
+    t.string   "address_fax"
+    t.string   "address_email"
+    t.string   "address_website"
+    t.text     "address_notes",       limit: 65535
+    t.boolean  "address_active"
+    t.integer  "address_created_id"
+    t.integer  "address_updated_id"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
 
   create_table "attachments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "attachable_id"
