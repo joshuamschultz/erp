@@ -3,42 +3,61 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading">Quality ID</h4>
+            <h4 class="span6 heading">Quality IDs</h4>
             <span class="span6 heading right">
-                <%= link_to 'New Quality ID', new_vendor_quality_path, :class => "btn btn-mini btn-success" %>
+                <%= link_to "New Quality ID", new_vendor_quality_path, :class => "btn btn-mini btn-success" %>
             </span>
-        </div> 
+        </div>
     </div>
-    <!-- // Widget heading END -->
-
     <div class="widget-body">
-        <table id="table_report" class="dynamicTable table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>SLNO</th>
+      <table id="vendor_quality" class="dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Notes</th>
-                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @vendor_qualities.each do |id| %>
+              <tr>
+                  <td><%=link_to id.quality_name, vendor_quality_path(id)%></td>
+                  <td><%=id.quality_description  %></td>
+                  <td><%=id.quality_notes  %></td>
               </tr>
-            </thead>
-
-            <tbody>
-
-            </tbody>
-        </table>
-    </div> 
+            <% end %>
+        </tbody>
+      </table>
+    </div>
 </div>
 
-<%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {
-        :name => "table_report", :path => vendor_qualities_path,
-        :columns => '[
-                        { "mData": "id" },
-                        { "mData": "quality_name" },
-                        { "mData": "quality_description" },
-                        { "mData": "quality_notes" },
-                        { "mData": "links", "bSortable": false, "bSearchable": false }
-                    ]'
-    } 
-%>
+<script type="text/javascript">
+    var datavendorquality;
+    $(document).ready(function(){
+        datavendorquality = $('#vendor_quality').dataTable({
+
+            dom: '<"html5buttons"B>lTfgitp',
+              colReorder: true,
+              buttons: [
+                  {extend: 'copy'},
+                  {extend: 'csv', title: '__resources__'},
+                  {extend: 'excel', title: '__resources__'},
+                  {extend: 'pdf', title: '__resources__'},
+
+                  {extend: 'print',
+                   customize: function (win){
+                          $(win.document.body).addClass('white-bg');
+                          $(win.document.body).css('font-size', '10px');
+
+                          $(win.document.body).find('table')
+                                  .addClass('compact')
+                                  .css('font-size', 'inherit');
+                  }
+                  }
+              ]
+
+          });
+      });
+
+
+</script>
