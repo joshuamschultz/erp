@@ -193,7 +193,6 @@ class OrganizationsController < ApplicationController
       note = {}
       note['status'] = 'fail'
     end
-
     render json: { result: note }
   end
 
