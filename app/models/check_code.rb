@@ -9,7 +9,7 @@
 #  updated_at   :datetime
 #
 
-class CheckCode < ActiveRecord::Base	 
+class CheckCode < ActiveRecord::Base
 
 	def self.get_next_check_code
 		temp = CheckCode.find_by_counter_type("check_code")
@@ -22,6 +22,7 @@ class CheckCode < ActiveRecord::Base
 		temp.update_attributes(:counter => temp.counter.next)
 		temp.counter
 	end
+	
 	def check_code_params
 		params.require(:check_code).permit(:counter, :counter_type)
 	end
