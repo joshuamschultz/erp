@@ -35,14 +35,6 @@
 #
 
 class Organization < ActiveRecord::Base
-  include Rails.application.routes.url_helpers
-  # attr_accessible :customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id,
-  #                :organization_address_1, :organization_address_2, :organization_city, :organization_country,
-  #                :organization_created_id, :organization_description, :organization_email, :organization_fax,
-  #                :organization_name, :organization_notes, :organization_short_name, :organization_state,
-  #                :organization_telephone, :organization_type_id, :organization_updated_id, :organization_website,
-  #                :organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id,
-  #                :vendor_quality_id, :organization_complete, :organization_active, :notification_attributes, :organization_expiration_date
 
   attr_accessor :organization_expiration_date, :links
 
@@ -60,8 +52,10 @@ class Organization < ActiveRecord::Base
   belongs_to :min_vendor_quality,
              class_name: 'VendorQuality',
              foreign_key: 'customer_min_quality_id'
+             
   has_one :notification, as: :notable, dependent: :destroy
   accepts_nested_attributes_for :notification, allow_destroy: true
+
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :contacts, as: :contactable, dependent: :destroy
   has_many :organization_processes, dependent: :destroy
