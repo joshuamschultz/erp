@@ -27,6 +27,7 @@
 #
 
 class Attachment < ActiveRecord::Base
+
   belongs_to :attachable, polymorphic: true
   belongs_to :created_by, class_name: 'User', foreign_key: 'attachment_created_id'
   belongs_to :updated_by, class_name: 'User', foreign_key: 'attachment_updated_id'
@@ -38,16 +39,16 @@ class Attachment < ActiveRecord::Base
 
   before_create :create_level_default
 
-  # attachment_status - pending/approved/rejected
-  def is_process_type?
-    attachable_type == 'ProcessType'
-  end
-
   def create_level_default
     self.attachment_status = 'pending'
     # attachment_secret = SecureRandom.hex(4)
     # self.attachment_name = File.basename(self.attachment_file_name, ".*") + "_" + attachment_secret if (self.attachment_name.nil? || self.attachment_name == "") && self.attachment_file_name.present?
     self.attachment_name = attachment_file_name if (attachment_name.nil? || attachment_name == '') && attachment_file_name.present?
+  end
+
+  # attachment_status - pending/approved/rejected
+  def is_process_type?
+    attachable_type == 'ProcessType'
   end
 
   def attachment_fields
