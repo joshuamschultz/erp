@@ -12,10 +12,12 @@
 #
 
 class Material < ActiveRecord::Base
+  
+  has_many :item_revisions
   has_many :material_elements, inverse_of: :material, dependent: :destroy
   has_many :elements, through: :material_elements
   accepts_nested_attributes_for :material_elements, reject_if: :all_blank, allow_destroy: true
-  has_many :item_revisions
+
   belongs_to :created_by, class_name: 'User', foreign_key: 'material_created_id'
   belongs_to :updated_by, class_name: 'User', foreign_key: 'material_updated_id'
 
