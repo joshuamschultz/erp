@@ -1,1 +1,72 @@
-<%= render :partial => 'items/items' %>
+<!-- Widget -->
+<div class="widget">
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="row-fluid">
+            <h4 class="span6 heading">Items</h4>
+            <span class="span6 heading right">
+                <%= link_to "New Item", new_item_path, :class => "btn btn-mini btn-success" %>
+            </span>
+        </div>
+    </div>
+    <div class="widget-body">
+      <table id="items" class="dynamicTable table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Revision</th>
+                <th> Description</th>
+                <th>Lots</th>
+                <th>Qty on Hand</th>
+                <th>Qty on Order</th>
+                <th>Alternates</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @items.each do |item| %>
+              <tr>
+                  <td><%=link_to item.item_part_no, item_path(item, revision_id: item.current_revision.id) %></td>
+                  <td><%= item.current_revision.item_revision_name %></td>
+                  <td><%= item.current_revision.item_description %></td>
+                  <td>
+                  <td><%= item.item_quantity_in_hand %></td>
+                  <td><%= item.item_quantity_on_order %></td>
+                  <!-- TODO move to model as a method to list alt names -->
+                  <td><%= item.customer_alt_names.collect{|alt| alt.item_alt_identifier }.join(",  ").html_safe %></td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var dataitems;
+    $(document).ready(function(){
+        dataitems = $('#items').dataTable({
+
+            dom: '<"html5buttons"B>lTfgitp',
+              colReorder: true,
+              buttons: [
+                  {extend: 'copy'},
+                  {extend: 'csv', title: 'items'},
+                  {extend: 'excel', title: 'items'},
+                  {extend: 'pdf', title: 'items'},
+
+                  {extend: 'print',
+                   customize: function (win){
+                          $(win.document.body).addClass('white-bg');
+                          $(win.document.body).css('font-size', '10px');
+
+                          $(win.document.body).find('table')
+                                  .addClass('compact')
+                                  .css('font-size', 'inherit');
+                  }
+                  }
+              ]
+
+          });
+      });
+
+
+</script>
