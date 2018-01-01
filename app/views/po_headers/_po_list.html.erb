@@ -4,8 +4,8 @@
     <!-- Widget heading -->
     <div class="widget-head">
         <div class="row-fluid">
-            <h4 class="span6 heading"><%= "Add Lots for a " if lot_info %> Purchase Order <%= @organization.organization_type_title if @organization %> 
-                <%#= "With Selected Revision" if @item_revision %> 
+            <h4 class="span6 heading"><%= "Add Lots for a " if lot_info %> Purchase Order <%= @organization.organization_type_title if @organization %>
+                <%#= "With Selected Revision" if @item_revision %>
             </h4>
             <span class="span6 heading right">
                 <%= link_to 'All', "#", :class => "btn btn-mini btn-success", :onclick=>"get_po_header(1); return false;" %>
@@ -15,7 +15,7 @@
                     <%= link_to 'New PO', new_path, :class => "btn btn-mini btn-success" unless lot_info %>
                 <% end %>
             </span>
-        </div> 
+        </div>
     </div>
     <!-- // Widget heading END -->
     <div class="widget-body search-box">
@@ -29,7 +29,7 @@
                     <th>Identifier</th>
                     <th>Description</th>
                     <th>Total</th>
-                    <% if @item.present? %> <th>Cost</th> 
+                    <% if @item.present? %> <th>Cost</th>
                     <th>Quantity Ordered</th>
                     <% end %>
                     <th>Status</th>
@@ -37,14 +37,14 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>                
+            <tbody>
             </tbody>
         </table>
     </div>
 </div>
 
 <% if @item.present? %>
-        <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+        <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
         {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false, :order => "desc"},
             :columns => '[
                             { "mData": "index","bVisible": false },
@@ -60,10 +60,10 @@
                             { "mData": "po_active", "bVisible": false },
                             { "mData": "links", "bSortable": false, "bSearchable": false }
                         ]'
-        } 
+        }
     %>
 <% elsif @organization.present? %>
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
         {:name => "table_report_po_header_list", :path => index_path, :extras => {:slno => false},
             :columns => '[
                             { "mData": "index","bVisible": false },
@@ -77,10 +77,10 @@
                             { "mData": "po_active", "bVisible": false },
                             { "mData": "links", "bSortable": false, "bSearchable": false }
                         ]'
-        } 
+        }
     %>
 <% else %>
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
+    <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
         {:name => "table_report_po_header_list", :path => open_path, :extras => {:slno => false},
             :columns => '[
                             { "mData": "index","bVisible": false },
@@ -94,6 +94,6 @@
                             { "mData": "po_active", "bVisible": false },
                             { "mData": "links", "bSortable": false, "bSearchable": false }
                         ]'
-        } 
+        }
     %>
 <% end %>
