@@ -1,6 +1,7 @@
 class PoLinesController < ApplicationController
   before_action :set_page_info
   before_action :set_autocomplete_values, only: [:create, :update]
+  before_action :set_po_line, only: %i[show edit update destroy]
 
   before_action :view_permissions, except: [:index, :show]
   before_action :user_permissions
@@ -78,8 +79,6 @@ class PoLinesController < ApplicationController
   # GET po_headers/1/po_lines/1
   # GET po_headers/1/po_lines/1.json
   def show
-    @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -107,15 +106,14 @@ class PoLinesController < ApplicationController
 
   # GET po_headers/1/po_lines/1/edit
   def edit
-    @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])
+
   end
 
   # POST po_headers/1/po_lines
   # POST po_headers/1/po_lines.json
   def create
     @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.build(params[:po_line])
+    @po_line = @po_header.po_lines.build(po_line_params)
 
     respond_to do |format|
       if @po_line.save
@@ -133,11 +131,10 @@ class PoLinesController < ApplicationController
   # PUT po_headers/1/po_lines/1
   # PUT po_headers/1/po_lines/1.json
   def update
-    @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])
+
 
     respond_to do |format|
-      if @po_line.update_attributes(params[:po_line])
+      if @po_line.update_attributes(po_line_params)
         CommonActions.notification_process("PoLine", @po_line)
         # genarate_pdf
         format.html { redirect_to new_po_header_po_line_path(@po_header), :notice => 'Line item was successfully updated.' }
@@ -152,8 +149,7 @@ class PoLinesController < ApplicationController
   # DELETE po_headers/1/po_lines/1
   # DELETE po_headers/1/po_lines/1.json
   def destroy
-    @po_header = PoHeader.find(params[:po_header_id])
-    @po_line = @po_header.po_lines.find(params[:id])
+
     @po_line.so_line.destroy if @po_line.destroy && @po_line.so_line
 
     respond_to do |format|
@@ -163,6 +159,18 @@ class PoLinesController < ApplicationController
   end
 
 private
+  def set_po_line
+    @po_header = PoHeader.find(params[:po_header_id])
+    @po_line = @po_header.po_lines.find(params[:id])
+  end
+
+  def po_line_params
+    params.require(:po_line).permit(:po_line_active, :po_line_cost, :po_line_created_id, :po_line_customer_po,
+                                    :po_line_notes, :po_line_quantity, :po_line_status, :po_line_total, :po_line_updated_id,
+                                    :po_header_id, :organization_id, :so_line_id, :vendor_quality_id, :customer_quality_id,
+                                    :item_id, :item_revision_id, :item_selected_name_id, :item_alt_name_id, :po_line_shipped,
+                                    :alt_name_transfer_id, :po_line_sell, :notification_attributes, :quality_lot_id, :process_type_id)
+  end
 
   def genarate_pdf
       html = render_to_string(:layout => false , :partial => 'po_headers/purchase_report')
