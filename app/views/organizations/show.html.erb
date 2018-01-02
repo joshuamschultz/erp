@@ -104,16 +104,7 @@
 
   <!-- Tab content -->
   <div class="tab-pane" id="tab2-3">
-    <div class="new_widget">
-      <div class="row-fluid">
-        <% if can? :view, PoHeader %>
-        <div id="po_header">
-          <%= render :partial => 'po_headers/po_list', locals: { all_path: organization_path(@organization), open_path: organization_path(@organization, :po_status => "open"), closed_path: organization_path(@organization, :po_status => "closed"), index_path:
-              po_headers_path(:po_status => params[:po_status], :organization_id => @organization.id), new_path: new_po_header_path } %>
-        </div>
-        <% end %>
-      </div>
-    </div>
+    <%= render 'po_index' %>
   </div>
   <!-- end tab content -->
 
