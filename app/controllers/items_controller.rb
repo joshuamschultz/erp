@@ -93,6 +93,7 @@ class ItemsController < ApplicationController
       @item_revision = @item.item_revisions.find_by_id(params[:revision_id])
       @item_revision = @item.current_revision unless @item_revision
       @attachable = @item_revision
+      @po_lines = PoLine.where(item_revision_id: @item_revision.id)
     end
 
     respond_to do |format|
