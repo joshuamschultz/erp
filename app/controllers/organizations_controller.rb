@@ -106,6 +106,9 @@ class OrganizationsController < ApplicationController
     # load tags
     @tags = @organization.present? ? @organization.comments.where(comment_type: 'tag').order('created_at desc') : []
 
+    # load Purchase Orders
+    @po_headers = PoHeader.where(organization: @organization)
+
     respond_to do |format|
       format.html # show.html.erb
       format.json do

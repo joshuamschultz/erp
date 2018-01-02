@@ -10,9 +10,14 @@ class PoHeadersController < ApplicationController
   autocomplete :po_header, :po_identifier, :full => true
 
   def index
-    @po_headers = PoHeader.all
+    if params[:po_status]
+      @po_headers = PoHeader.status_based_pos(params[:po_status])
+    else
+      @po_headers = PoHeader.all
+    end
     # TODO can move this to an automated nightly job via sidekiq?
-    @po_headers.find_by_po_identifier("Unassigned").delete if @po_headers.find_by_po_identifier("Unassigned").present?
+    # TODO technically many can be created, but if nonoe goes to index.. they will remain and throw off the count
+    PoHeader.find_by_po_identifier("Unassigned").delete if @po_headers.find_by_po_identifier("Unassigned").present?
   end
 
   def show
@@ -33,7 +38,8 @@ class PoHeadersController < ApplicationController
 
   def create
     @po_header = PoHeader.new(po_header_params)
-    respond_with @po_header
+    @po_header.save
+    redirect_to new_po_header_po_line_path(@po_header.id)
   end
 
   def update
