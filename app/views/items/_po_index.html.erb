@@ -5,9 +5,6 @@
         <div class="row-fluid">
             <h4 class="span6 heading">Purchase Orders</h4>
             <span class="span6 heading right">
-                <%= link_to "Open", po_headers_path(po_status: 'open'), :class => "btn btn-mini btn-success" %>
-                <%= link_to "Closed", po_headers_path(po_status: 'closed'), :class => "btn btn-mini btn-success" %>
-                <%= link_to "All", po_headers_path, :class => "btn btn-mini btn-success" %>
                 <%= link_to "New Purchase Order", new_po_header_path, :class => "btn btn-mini btn-success" %>
             </span>
         </div>
@@ -19,18 +16,18 @@
                 <th>PO Number</th>
                 <th>Type</th>
                 <th>Vendor</th>
-                <th>Total</th>
-                <th>Status</th>
+                <th>Cost</th>
+                <th>Quantity Ordered</th>
             </tr>
         </thead>
         <tbody>
-            <% @po_headers.each do |po| %>
+            <% @po_lines.each do |po_item| %>
               <tr>
-                <td><%= link_to po.po_identifier, po_header_path(po) %></td>
-                <td><%= po.po_type.type_name %></td>
-                <td><%= po.organization.organization_name%></td>
-                <td><%= po.po_total %></td>
-                <td><%= po.po_status %></td>
+                <td><%= link_to po_item.po_header.po_identifier, po_header_path(po_item) %></td>
+                <td><%= po_item.po_header.po_type.type_name %></td>
+                <td><%= po_item.po_header.organization.organization_name%></td>
+                <td><%= po_item.po_line_cost %></td>
+                <td><%= po_item.po_line_quantity %></td>
               </tr>
             <% end %>
         </tbody>
@@ -39,10 +36,10 @@
 </div>
 
 <script type="text/javascript">
-    var datapo_header;
-    $(document).ready(function(){
-        datapo_header = $('#po_header').dataTable();
-      });
+   var datapo_header;
+   $(document).ready(function(){
+       datapo_header = $('#po_header').dataTable();
+     });
 
 
 </script>

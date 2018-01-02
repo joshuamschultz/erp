@@ -209,25 +209,16 @@
             </div>
           </div>
 
-          <div class="new_widget">
-            <div class="row-fluid">
-              <div class="span6">
-                <div id="po_header">
-                  <% if can? :manage, PoHeader %>
-                  <%= render :partial => 'po_headers/po_list', locals: { all_path: item_path(@item, :revision_id => @item_revision.id), open_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "open"), closed_path: item_path(@item, :revision_id => @item_revision.id, :po_status => "closed"), index_path: po_headers_path(:po_status => params[:po_status], :item_id => @item.id), new_path: new_po_header_path } %>
-                  <% end %>
-                </div>
-              </div>
-              <div class="span6">
-                <% unless  user_signed_in? &&  current_user.is_vendor? %>
-                <div id="so_header">
-                  <%= render :partial => 'so_headers/so_list', locals: { all_path: item_path(@item, :revision_id => @item_revision.id), open_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "open"), closed_path: item_path(@item, :revision_id => @item_revision.id, :so_status => "closed"), index_path: so_headers_path(:so_status => params[:so_status], :item_id => @item.id), new_path: new_so_header_path } %>
-                </div>
-
-                <% end %>
-              </div>
+          <div class="row-fluid">
+            <div class="span6">
+              <%= render "po_index" %>
+            </div>
+            <div class="span6">
+              <!-- -->
             </div>
           </div>
+
+
 
           <div class="new_widget">
             <div class="row-fluid">
@@ -258,224 +249,59 @@
 
     <% #render :partial => 'process_types/process_specs', :locals => {item_id:  @item.nil? ? nil : @item.id, :process_types => "1"} %>
 
-    <script type="text/javascript">
 
-      $(document).ready(function () {
+<script type="text/javascript">
+  var datapo_header;
+  $(document).ready(function(){
+    datapo_header = $('#po_header').dataTable();
 
-        $("#hide_new").hide();
-        $("#customer_new").hide();
+    $("#hide_new").hide();
+    $("#customer_new").hide();
 
-      });
-      // ajax load quote
-      function get_quote() {
-        $('#send_quote').html("");
-        var quote = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Quotes</h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_customer_quote(); return false">Customer</a><a href="#" class="btn btn-mini btn-success" onclick="get_quote(); return false">Vendor</a></span></div> </div><div class="widget-body"><table id="table_report_quote_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>' +
-            'Quote</th><th>Vendors</th><th>Price</th><th>Quantity</th><th>Notes</th><th>Created at</th></tr></thead><tbody></tbody></table></div></div>'
-        $('#send_quote').html(quote);
 
-        var data_table_report_quote_list;
 
-        data_table_report_quote_list = $('#table_report_quote_list').dataTable({
-          "bAutoWidth": false,
-          "bProcessing": true,
-          "sAjaxSource": '/quotes?item_id=<%=@item.id%>',
-          "aaSorting": [
-            [0, "desc"]
-          ],
-          "aoColumns": [
-            {
-              "mData": "quote_group_id"
-            }, {
-              "mData": "vendor_name"
-            }, {
-              "mData": "price"
-            }, {
-              "mData": "quantity"
-            }, {
-              "mData": "notes"
-            }, {
-              "mData": "created"
-            }
-          ],
-          "bFilter": true,
-          "bLengthChange": true
-        });
 
-      }
 
-      // ajax load customer quote
-      function get_customer_quote() {
-        $('#send_quote').html("");
-        var customer_quote = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Customer Quotes</h4><span class="span6 heading right"><a href="/customer_quotes/new" class="btn btn-mini btn-success">New Customer Quote</a><a href="#" class="btn btn-mini btn-success" onclick="get_customer_quote(); return false">Customer</a><a href="#" class="btn btn-mini btn-success" onclick="get_quote(); return false">Vendor</a></span></div> </div><div class="widget-body"><table id="table_report_cust' +
-            'omer_quote_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Quote Send Id</th><th>Customer</th><th>Prices</th><th>Quantity</th><th>Description</th><th>Created at</th></tr></thead><tbody></tbody></table></div></div>'
-        $('#send_quote').html(customer_quote);
-        data_table_report_customer_quote_list = $('#table_report_customer_quote_list').dataTable({
-          "bAutoWidth": false,
-          "bProcessing": true,
-          "sAjaxSource": '/customer_quotes?item_id=<%=@item.id%>',
-          "aaSorting": [
-            [0, "asc"]
-          ],
-          "aoColumns": [
-            {
-              "mData": "customer_quote_identifier"
-            }, {
-              "mData": "customer_name"
-            }, {
-              "mData": "price"
-            }, {
-              "mData": "quantity"
-            }, {
-              "mData": "customer_quote_description"
-            }, {
-              "mData": "created"
-            }
-          ],
-          "bFilter": true,
-          "bLengthChange": true
-        });
+    // insert sales order here
 
-      }
-      //ajax load po order
-      function get_po_header(status) {
-        var link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>"
-        if (status == 2) {
-          link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&po_status=open"
-        } else if (status == 3) {
-          link = "/po_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&po_status=closed"
-        } else {}
+  });
 
-        $('#po_header').html("");
-        var po_header = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading"> Purchase Order  </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_po_header(3); return false;">Closed</a><a href="/po_headers/new" class="btn btn-mini btn-success">New P' +
-            'O</a></span></div></div><div class="widget-body"><table id="table_report_po_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>Index</th><th>PO ID</th><th>PO Type</th><th>Vendor</th><th>Identifier</th><th>Description</th><th>Cost</th><th>Total</th><th>Status</th><th>Active</th><th></th></tr></thead><tbody></tbody></table></div></div>';
-        $('#po_header').html(po_header);
-        var data_table_report_po_header_list;
-        data_table_report_po_header_list = $('#table_report_po_header_list').dataTable({
-          "bAutoWidth": false,
-          "bProcessing": true,
-          "sAjaxSource": link,
-          "aaSorting": [
-            [0, "asc"]
-          ],
-          "aoColumns": [
-            {
-              "mData": "index",
-              "bVisible": false
-            }, {
-              "mData": "po_id"
-            }, {
-              "mData": "po_type_name"
-            }, {
-              "mData": "vendor_name"
-            }, {
-              "mData": "po_identifier",
-              "bVisible": false
-            }, {
-              "mData": "po_description",
-              "bVisible": false
-            }, {
-              "mData": "po_total",
-              "bVisible": false
-            }, {
-              "mData": "po_line_price"
-            }, {
-              "mData": "po_status"
-            }, {
-              "mData": "po_active",
-              "bVisible": false
-            }, {
-              "mData": "links",
-              "bSortable": false,
-              "bSearchable": false
-            }
-          ],
-          "bFilter": true,
-          "bLengthChange": true
-        });
-      }
-      //ajax load So header
-      function get_so_header(status) {
-        var link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>"
-        if (status == 2) {
-          link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&so_status=open"
-        } else if (status == 3) {
-          link = "/so_headers?item_id=<%= @item.id %>&revision_id=<%= @item_revision.id %>&so_status=closed"
-        } else {}
 
-        $('#so_header').html("");
-        var so_headers = '<div class="widget"><div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">Sales Orders   </h4><span class="span6 heading right"><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(1); return false;">All</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(2); return false;">Open</a><a href="#" class="btn btn-mini btn-success" onclick="get_so_header(3); return false;">Closed</a><a href="/so_headers/new" class="btn btn-mini btn-success">New SO<' +
-            '/a></span></div> </div><div class="widget-body"><table id="table_report_so_header_list" class="dynamicTable table table-striped table-bordered table-condensed"><thead><tr><th>index</th><th>SO ID</th><th>Customer</th><th>Ship To</th><th>Sell</th><th>Quantity Ordered</th><th>Status</th><th></th></tr></thead><tbody></tbody></table></div></div>';
-        $('#so_header').html(so_headers);
-        var data_table_report_so_header_list;
-        $(document).ready(function () {
-          data_table_report_so_header_list = $('#table_report_so_header_list').dataTable({
-            "bAutoWidth": false,
-            "bProcessing": true,
-            "sAjaxSource": link,
-            "aaSorting": [
-              [0, "asc"]
-            ],
-            "aoColumns": [
-              {
-                "mData": "index",
-                "bVisible": false
-              }, {
-                "mData": "so_id"
-              }, {
-                "mData": "customer_name"
-              }, {
-                "mData": "ship_to_address_name"
-              }, {
-                "mData": "so_line_price"
-              }, {
-                "mData": "so_type_qty"
-              }, {
-                "mData": "so_status"
-              }, {
-                "mData": "links",
-                "bSortable": false,
-                "bSearchable": false
-              }
 
-            ],
-            "bFilter": true,
-            "bLengthChange": true
-          });
-        });
-      }
-    </script>
 
-    <style>
+</script>
 
-      .span6.ee-10 {
-        width: 34%;
-      }
+  <style>
 
-      .span6.ee-11 {
-        width: 64%;
-      }
+    .span6.ee-10 {
+      width: 34%;
+    }
 
-      .span9.ee-10 {
-        padding: 0 0 0 20px;
-      }
-      .span8.ee-11 {
-        width: 73%;
-      }
-      .e_rr1 {
-        margin: 0 0 0 17px !important;
-      }
-      .e_rr {
-        margin: 0 0 0 17px !important;
-        width: 49% !important;
-      }
+    .span6.ee-11 {
+      width: 64%;
+    }
 
-      .e_rr1 .default.message {
-        display: block;
-        margin-left: -178px;
-        width: 256px;
-      }
+    .span9.ee-10 {
+      padding: 0 0 0 20px;
+    }
+    .span8.ee-11 {
+      width: 73%;
+    }
+    .e_rr1 {
+      margin: 0 0 0 17px !important;
+    }
+    .e_rr {
+      margin: 0 0 0 17px !important;
+      width: 49% !important;
+    }
 
-      .e_rr1 .widget-003 {
-        height: 275px;
-      }
-    </style>
+    .e_rr1 .default.message {
+      display: block;
+      margin-left: -178px;
+      width: 256px;
+    }
+
+    .e_rr1 .widget-003 {
+      height: 275px;
+    }
+  </style>
