@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   resources :item_channels
   get 'auto_complete' => 'so_lines#auto_complete'

@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 # Be sure to restart your server when you modify this file.
 #
 # This file contains migration options to ease your Rails 5.2 upgrade.
@@ -12,6 +11,11 @@
 # Rails.application.config.active_record.cache_versioning = true
 
 # Use AES-256-GCM authenticated encryption for encrypted cookies.
+# Also, embed cookie expiry in signed or encrypted cookies for increased security.
+#
+# This option is not backwards compatible with earlier Rails versions.
+# It's best enabled when your entire app is migrated and stable on 5.2.
+#
 # Existing cookies will be converted on read then written with the new scheme.
 # Rails.application.config.action_dispatch.use_authenticated_cookie_encryption = true
 
@@ -29,3 +33,6 @@
 
 # Use SHA-1 instead of MD5 to generate non-sensitive digests, such as the ETag header.
 # Rails.application.config.active_support.use_sha1_digests = true
+
+# Make `form_with` generate id attributes for any generated HTML tags.
+# Rails.application.config.action_view.form_with_generates_ids = true

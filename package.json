@@ -1,0 +1,8 @@
+{
+  "name": "ChessERP",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:JoshuaMSchultz/chess-erp.git",
+  "author": "Joshua Schultz <joshuamschultz@gmail.com>",
+  "license": "MIT"
+}
