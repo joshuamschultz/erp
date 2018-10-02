@@ -34,7 +34,7 @@ gem 'redis', '~> 4.0.1' # used for sidekiq
 gem 'mini_magick', '~> 4.8'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '~> 1.3.1', require: false
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
