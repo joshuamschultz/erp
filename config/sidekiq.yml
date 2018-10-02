@@ -1,0 +1,8 @@
+---
+:concurrency: 5
+:pidfile: ./tmp/pids/sidekiq.pid
+:logfile: ./log/sidekiq.log
+:queues:
+  - default
+  - supplier_qualification_queue
+  - [high_priority, 2]

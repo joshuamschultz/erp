@@ -22,6 +22,28 @@
 /public/files
 /public/attachments
 
+# Ignore application configuration
+/config/secrets.yml
+
+# Dont include files I upload during testing
+/public/uploads/*
+
+# Ignore uploaded files in development
+/storage/*
+
+/public/assets
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+/node_modules
+/yarn-error.log
+
+
+.DS_Store
+.vscode
+
 # Ignore unwanted files
 *.psd
 *.pdf

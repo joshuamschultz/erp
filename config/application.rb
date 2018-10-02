@@ -1,51 +1,42 @@
-require File.expand_path('../boot', __FILE__)
+# frozen_string_literal: true
+
+require_relative 'boot'
 
 require 'rails/all'
 
-require 'pdfkit'
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
 
-if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(assets: %w[development test]))
-  # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
-end
+#require 'pdfkit'
 
 module Erp
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.2
+
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
-    # Custom directories with classes and modules you want to be autoloadable.
-    # config.autoload_paths += %W(#{config.root}/extras)
+    # Use the responders controller from the responders gem
+    config.app_generators.scaffold_controller :responders_controller
+    config.time_zone = 'Eastern Time (US & Canada)'
 
-    # Only load the plugins named here, in the order given (default is alphabetical).
-    # :all can be used as a placeholder for all plugins not explicitly named.
-    # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-    # Activate observers that should always be running.
-    # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-    config.active_record.default_timezone = :local
-    config.time_zone = 'EST'
-    # config.active_record.default_timezone = 'UTC'
+    config.active_job.queue_adapter = :sidekiq
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :en
+    #config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    #config.i18n.default_locale = :en
 
-    # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = 'utf-8'
+  
 
     # Configure sensitive parameters which will be filtered from the log file.
-    config.filter_parameters += [:password]
+    #config.filter_parameters += [:password]
 
     # Enable escaping HTML in JSON.
-    config.active_support.escape_html_entities_in_json = true
+    #config.active_support.escape_html_entities_in_json = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -57,20 +48,24 @@ module Erp
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
 
-    config.middleware.use PDFKit::Middleware, print_media_type: true
+    #config.middleware.use PDFKit::Middleware, print_media_type: true
 
-    # add these lines
     config.generators do |g|
-      g.stylesheets false
+      g.helper false
       g.javascripts false
+      g.jbuilder = false
+      g.stylesheets false
+      g.system_tests = nil
+
       g.test_framework :rspec,
                        fixtures: true,
-                       view_specs: false,
+                       controller_specs: false,
                        helper_specs: false,
+                       model_specs: true,
+                       request_specs: false,
                        routing_specs: false,
-                       controller_specs: true,
-                       request_specs: true
-      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+                       view_specs: false
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
   end
 end
