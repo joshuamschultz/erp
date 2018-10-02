@@ -13,7 +13,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: chess_2_development
+  database: chess_development
   pool: 5
 
 
@@ -24,7 +24,7 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: chess_2_test
+  database: chess_test
   pool: 5
 
 
@@ -32,5 +32,5 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: chess_2_production
+  database: chess_production
   pool: 5
