@@ -12,4 +12,4 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
-Rails.application.config.assets.precompile += %w[less.min.js commoncls.js app_validation.js jr100.css *.png *.jpg *.jpeg *.gif *.woff *.ttf *.eot *.svg]
+Rails.application.config.assets.precompile += ['less.min.js', 'commoncls.js', 'app_validation.js', 'jr100.css']
