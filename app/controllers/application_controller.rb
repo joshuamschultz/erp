@@ -1,7 +1,12 @@
-class ApplicationController < ActionController::Base
-  include CommonActions
-  protect_from_forgery
+require 'application_responder'
 
+class ApplicationController < ActionController::Base
+  protect_from_forgery prepend: true
+
+  self.responder = ApplicationResponder
+
+  include CommonActions
+  
   respond_to :html, :json, :xml, :xhr
 
   before_action :set_locale
