@@ -30,7 +30,11 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
+<<<<<<< HEAD
   #config.active_storage.service = :local
+=======
+  config.active_storage.service = :local
+>>>>>>> hotfix/no-bootsnap
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -49,7 +53,11 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
+<<<<<<< HEAD
   config.assets.debug = false
+=======
+  config.assets.debug = true
+>>>>>>> hotfix/no-bootsnap
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
@@ -60,9 +68,12 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+<<<<<<< HEAD
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.action_mailer.delivery_method = :letter_opener
 
+=======
+>>>>>>> hotfix/no-bootsnap
 end
 
