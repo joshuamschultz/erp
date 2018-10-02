@@ -8,7 +8,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require 'pdfkit'
+#require 'pdfkit'
 
 module Erp
   class Application < Rails::Application
@@ -27,8 +27,8 @@ module Erp
     config.active_job.queue_adapter = :sidekiq
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :en
+    #config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    #config.i18n.default_locale = :en
 
   
 
@@ -36,7 +36,7 @@ module Erp
     #config.filter_parameters += [:password]
 
     # Enable escaping HTML in JSON.
-    config.active_support.escape_html_entities_in_json = true
+    #config.active_support.escape_html_entities_in_json = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -48,7 +48,7 @@ module Erp
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
 
-    config.middleware.use PDFKit::Middleware, print_media_type: true
+    #config.middleware.use PDFKit::Middleware, print_media_type: true
 
     config.generators do |g|
       g.helper false
