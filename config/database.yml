@@ -14,6 +14,8 @@ development:
   encoding: utf8
   reconnect: false
   database: chess_development
+  username: root
+  password: Huds0n
   pool: 5
 
 
@@ -25,6 +27,8 @@ test:
   encoding: utf8
   reconnect: false
   database: chess_test
+  username: root
+  password: Huds0n
   pool: 5
 
 

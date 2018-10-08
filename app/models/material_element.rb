@@ -17,8 +17,8 @@
 class MaterialElement < ActiveRecord::Base
   belongs_to :material
   belongs_to :element
-  belongs_to :created_by, class_name: 'User', foreign_key: 'element_created_id'
-  belongs_to :updated_by, class_name: 'User', foreign_key: 'element_updated_id'
+  belongs_to :created_by, class_name: 'User', foreign_key: 'element_created_id', required: false
+  belongs_to :updated_by, class_name: 'User', foreign_key: 'element_updated_id', required: false
   has_many :quality_lot_materials, dependent: :destroy
 
   validates_presence_of :element, :element_high_range, :element_low_range
