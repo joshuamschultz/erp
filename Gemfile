@@ -75,7 +75,7 @@ gem 'responders'
 
 gem 'rails-jquery-autocomplete'
 
-gem 'devise'
+gem 'devise', '~> 4.4.3'
 
 gem 'execjs', '1.4.0'
 #gem 'bootstrap-sass', '~> 3.3.6'
@@ -95,7 +95,7 @@ gem 'bootstrap-datetimepicker-rails'
 
 gem 'paperclip', '~> 5.0.0.beta1'
 gem 'rmagick'
-gem 'aws-sdk', '1.8.5'
+gem 'aws-sdk-s3', require: false
 
 gem 'nested_scaffold'
 
@@ -111,7 +111,7 @@ gem 'rails_admin'
 gem 'pdfkit'
 gem 'wkhtmltopdf-binary'
 gem 'string-urlize', '~> 1.0.2'
-gem 'protected_attributes_continued'
+#gem 'protected_attributes_continued'
 gem 'validates_email_format_of'
 
 
@@ -120,8 +120,3 @@ gem 'annotate'
 gem 'sidekiq', '~> 5.1.3'
 gem 'haml-rails'
 gem 'acts-as-taggable-on', '~> 4.0'
-
-
-#source 'https://rails-assets.org' do
-#    gem 'rails-assets-DataTables'
-#end

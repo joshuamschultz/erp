@@ -1,5 +1,5 @@
 unless User.find_by_email('joshua@alliance.com')
-  user = User.new(email: 'joshua@alliance.com', name: 'Erin', password: '12345678', password_confirmation: '12345678')
+  user = User.new(email: 'joshua@alliance.com', name: 'Joshua', password: '12345678', password_confirmation: '12345678')
   user.roles = [:superadmin]
   user.save
 end

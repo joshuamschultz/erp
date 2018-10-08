@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
 
   # has_one :organization
-  belongs_to :organization
+  belongs_to :organization, required: false
   accepts_nested_attributes_for :organization
 
   has_many :inspected_lots, :class_name => "QualityLot", :foreign_key => "lot_inspector_id"

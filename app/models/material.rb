@@ -18,8 +18,8 @@ class Material < ActiveRecord::Base
   has_many :elements, through: :material_elements
   accepts_nested_attributes_for :material_elements, reject_if: :all_blank, allow_destroy: true
 
-  belongs_to :created_by, class_name: 'User', foreign_key: 'material_created_id'
-  belongs_to :updated_by, class_name: 'User', foreign_key: 'material_updated_id'
+  belongs_to :created_by, class_name: 'User', foreign_key: 'material_created_id', required: false
+  belongs_to :updated_by, class_name: 'User', foreign_key: 'material_updated_id', required: false
 
   (validates_uniqueness_of :material_short_name if validates_length_of :material_short_name, minimum: 2, maximum: 20) if validates_presence_of :material_short_name
   (validates_length_of :material_description, minimum: 2, maximum: 50) if validates_presence_of :material_description
