@@ -36,4 +36,6 @@ Rails.application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.active_record.belongs_to_required_by_default = false
 end
