@@ -58,7 +58,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'capistrano', '~> 3.7', '>= 3.7.1'
   gem 'capistrano-bundler', require: false
-  #gem 'capistrano-chruby'
+  gem 'capistrano-chruby'
   gem 'capistrano-faster-assets', '~> 1.0'
   gem 'capistrano-rails', require: false
   gem 'capistrano-safe-deploy-to', '~> 1.1.1'

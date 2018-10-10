@@ -32,7 +32,7 @@
 #  updated_at               :datetime
 #  customer_min_quality_id  :integer
 #  organization_complete    :boolean          default(FALSE)
-#
+
 
 class Organization < ActiveRecord::Base
 
