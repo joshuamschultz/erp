@@ -1,3 +1,6 @@
+
+set :rails_env, 'staging'
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
@@ -6,20 +9,10 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-server '138.197.31.221', user: 'deploy', roles: %w{app db web}, primary: true
 
-set :stage, :production
+server '138.197.31.221', user: 'deploy', port: 22, roles: %i[web app db], primary: true
+# set :nginx_server_name, 'mydomain.com'
 
-set :rbenv_type, :user # or :system, depends on your rbenv setup
-
-# in case you want to set ruby version from the file:
-set :rbenv_ruby, File.read('.ruby-version').strip
-
-# set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
-# set :rbenv_map_bins, %w{rake gem bundle ruby rails}
-set :rbenv_roles, :all # default value
-
-set :branch, :develop
 # role-based syntax
 # ==================
 
@@ -32,8 +25,6 @@ set :branch, :develop
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
 
-
-
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
@@ -42,7 +33,9 @@ set :branch, :develop
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
+set :chruby_ruby, '2.5.1'
 
+set :branch, :develop
 
 # Custom SSH Options
 # ==================
@@ -53,10 +46,11 @@ set :branch, :develop
 # Global options
 # --------------
 #  set :ssh_options, {
-#    keys: %w(/home/rlisowski/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
+#    user: fetch(:user),
+#    keys: %w(~/.ssh/id_rsa),
+#    forward_agent: true,
 #  }
+
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------
