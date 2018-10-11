@@ -427,7 +427,7 @@ DEPENDENCIES
   bundler-audit
   byebug
   cancancan (~> 1.9)
-  capistrano (~> 3.7, >= 3.7.1)
+  capistrano
   capistrano-bundler
   capistrano-chruby
   capistrano-faster-assets (~> 1.0)
