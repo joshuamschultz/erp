@@ -1,4 +1,4 @@
-class CreateQualityHistories < ActiveRecord::Migration
+class CreateQualityHistories < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_histories do |t|
       t.integer :quality_lot_id

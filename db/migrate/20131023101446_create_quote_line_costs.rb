@@ -1,4 +1,4 @@
-class CreateQuoteLineCosts < ActiveRecord::Migration
+class CreateQuoteLineCosts < ActiveRecord::Migration[5.0]
   def change
     create_table :quote_line_costs do |t|
       t.references :quote_vendor

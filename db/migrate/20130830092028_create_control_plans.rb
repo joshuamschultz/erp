@@ -1,4 +1,4 @@
-class CreateControlPlans < ActiveRecord::Migration
+class CreateControlPlans < ActiveRecord::Migration[5.0]
   def change
     create_table :control_plans do |t|
       t.string :plan_name

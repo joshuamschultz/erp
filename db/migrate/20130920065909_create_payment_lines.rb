@@ -1,4 +1,4 @@
-class CreatePaymentLines < ActiveRecord::Migration
+class CreatePaymentLines < ActiveRecord::Migration[5.0]
   def change
     create_table :payment_lines do |t|
       t.references :payment

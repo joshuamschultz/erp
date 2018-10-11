@@ -1,4 +1,4 @@
-class CreateItemLots < ActiveRecord::Migration
+class CreateItemLots < ActiveRecord::Migration[5.0]
   def change
     create_table :item_lots do |t|
       t.integer :quality_lot_id

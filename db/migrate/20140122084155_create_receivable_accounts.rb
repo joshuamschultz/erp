@@ -1,4 +1,4 @@
-class CreateReceivableAccounts < ActiveRecord::Migration
+class CreateReceivableAccounts < ActiveRecord::Migration[5.0]
   def change
     create_table :receivable_accounts do |t|
       t.references :receivable

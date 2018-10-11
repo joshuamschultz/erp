@@ -1,4 +1,4 @@
-class CreateGlTypes < ActiveRecord::Migration
+class CreateGlTypes < ActiveRecord::Migration[5.0]
   def change
     create_table :gl_types do |t|
       t.string :gl_name

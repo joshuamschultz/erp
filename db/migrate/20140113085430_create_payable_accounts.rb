@@ -1,4 +1,4 @@
-class CreatePayableAccounts < ActiveRecord::Migration
+class CreatePayableAccounts < ActiveRecord::Migration[5.0]
   def change
     create_table :payable_accounts do |t|
       t.references :payable

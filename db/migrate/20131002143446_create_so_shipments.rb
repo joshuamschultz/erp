@@ -1,4 +1,4 @@
-class CreateSoShipments < ActiveRecord::Migration
+class CreateSoShipments < ActiveRecord::Migration[5.0]
   def change
     create_table :so_shipments do |t|
       t.references :so_line

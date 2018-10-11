@@ -1,4 +1,4 @@
-class CreateQuotesPoHeaders < ActiveRecord::Migration
+class CreateQuotesPoHeaders < ActiveRecord::Migration[5.0]
   def change
     create_table :quotes_po_headers do |t|
       t.references :po_header

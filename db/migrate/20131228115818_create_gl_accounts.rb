@@ -1,4 +1,4 @@
-class CreateGlAccounts < ActiveRecord::Migration
+class CreateGlAccounts < ActiveRecord::Migration[5.0]
   def change
     create_table :gl_accounts do |t|
       t.references :gl_type

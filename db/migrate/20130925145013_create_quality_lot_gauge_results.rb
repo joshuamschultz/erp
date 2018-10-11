@@ -1,4 +1,4 @@
-class CreateQualityLotGaugeResults < ActiveRecord::Migration
+class CreateQualityLotGaugeResults < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_lot_gauge_results do |t|
       t.references :quality_lot_gauge

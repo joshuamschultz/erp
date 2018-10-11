@@ -1,4 +1,4 @@
-class CreateDepositChecks < ActiveRecord::Migration
+class CreateDepositChecks < ActiveRecord::Migration[5.0]
   def change
     create_table :deposit_checks do |t|
       t.string :status

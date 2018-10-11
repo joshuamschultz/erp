@@ -1,4 +1,4 @@
-class CreateVendorQualities < ActiveRecord::Migration
+class CreateVendorQualities < ActiveRecord::Migration[5.0]
   def change
     create_table :vendor_qualities do |t|
       t.string :quality_name

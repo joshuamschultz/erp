@@ -1,4 +1,4 @@
-class CreatePpaps < ActiveRecord::Migration
+class CreatePpaps < ActiveRecord::Migration[5.0]
   def change
     create_table :ppaps do |t|
       t.references :quality_lot

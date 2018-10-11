@@ -1,4 +1,4 @@
-class CreateCapacityPlannings < ActiveRecord::Migration
+class CreateCapacityPlannings < ActiveRecord::Migration[5.0]
   def change
     create_table :capacity_plannings do |t|
       t.string :capacity_plan_name

@@ -1,4 +1,4 @@
-class CreateProcessTypes < ActiveRecord::Migration
+class CreateProcessTypes < ActiveRecord::Migration[5.0]
   def change
     create_table :process_types do |t|
       t.string :process_short_name

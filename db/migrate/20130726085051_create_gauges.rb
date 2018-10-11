@@ -1,4 +1,4 @@
-class CreateGauges < ActiveRecord::Migration
+class CreateGauges < ActiveRecord::Migration[5.0]
   def change
     create_table :gauges do |t|
       t.references :organization

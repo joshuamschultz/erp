@@ -1,4 +1,4 @@
-class CreateCustomerQuoteLines < ActiveRecord::Migration
+class CreateCustomerQuoteLines < ActiveRecord::Migration[5.0]
   def change
     create_table :customer_quote_lines do |t|
       t.references :customer_quote

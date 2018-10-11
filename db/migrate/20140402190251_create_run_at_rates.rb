@@ -1,4 +1,4 @@
-class CreateRunAtRates < ActiveRecord::Migration
+class CreateRunAtRates < ActiveRecord::Migration[5.0]
   def change
     create_table :run_at_rates do |t|
       t.string :run_at_rate_name

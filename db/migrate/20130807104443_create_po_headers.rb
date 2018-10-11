@@ -1,4 +1,4 @@
-class CreatePoHeaders < ActiveRecord::Migration
+class CreatePoHeaders < ActiveRecord::Migration[5.0]
   def change
     create_table :po_headers do |t|
       t.integer :po_type_id

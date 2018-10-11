@@ -1,4 +1,4 @@
-class AddKgToPackage < ActiveRecord::Migration
+class AddKgToPackage < ActiveRecord::Migration[5.0]
   def change
   	add_column :packages, :in_to_mm1, :decimal
   	add_column :packages, :in_to_mm2, :decimal

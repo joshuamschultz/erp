@@ -1,4 +1,4 @@
-class CreateItemSelectedNames < ActiveRecord::Migration
+class CreateItemSelectedNames < ActiveRecord::Migration[5.0]
   def change
     create_table :item_selected_names do |t|
       t.references :item_revision

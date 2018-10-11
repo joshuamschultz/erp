@@ -1,4 +1,4 @@
-class CreateQualityActions < ActiveRecord::Migration
+class CreateQualityActions < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_actions do |t|
       t.integer :quality_action_no

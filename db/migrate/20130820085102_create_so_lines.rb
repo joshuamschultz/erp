@@ -1,4 +1,4 @@
-class CreateSoLines < ActiveRecord::Migration
+class CreateSoLines < ActiveRecord::Migration[5.0]
   def change
     create_table :so_lines do |t|
       t.references :so_header

@@ -1,4 +1,4 @@
-class CreateQuoteVendors < ActiveRecord::Migration
+class CreateQuoteVendors < ActiveRecord::Migration[5.0]
   def change
     create_table :quote_vendors do |t|
       t.references :quote

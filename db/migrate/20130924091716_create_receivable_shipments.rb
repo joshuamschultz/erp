@@ -1,4 +1,4 @@
-class CreateReceivableShipments < ActiveRecord::Migration
+class CreateReceivableShipments < ActiveRecord::Migration[5.0]
   def change
     create_table :receivable_shipments do |t|
       t.references :receivable

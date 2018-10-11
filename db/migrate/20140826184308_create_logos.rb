@@ -1,4 +1,4 @@
-class CreateLogos < ActiveRecord::Migration
+class CreateLogos < ActiveRecord::Migration[5.0]
   def change
     create_table :logos do |t|
       t.integer :jointable_id

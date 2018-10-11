@@ -1,4 +1,4 @@
-class CreateOrganizationProcesses < ActiveRecord::Migration
+class CreateOrganizationProcesses < ActiveRecord::Migration[5.0]
   def change
     create_table :organization_processes do |t|
       t.references :organization

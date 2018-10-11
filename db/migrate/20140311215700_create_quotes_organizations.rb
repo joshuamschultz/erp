@@ -1,4 +1,4 @@
-class CreateQuotesOrganizations < ActiveRecord::Migration
+class CreateQuotesOrganizations < ActiveRecord::Migration[5.0]
   def change
     create_table :quotes_organizations do |t|
     	t.references :organization

@@ -1,4 +1,4 @@
-class CreateItemSpecifications < ActiveRecord::Migration
+class CreateItemSpecifications < ActiveRecord::Migration[5.0]
   def change
     create_table :item_specifications do |t|
       t.references :item_revision

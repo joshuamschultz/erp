@@ -1,4 +1,4 @@
-class CreateItemPartDimensions < ActiveRecord::Migration
+class CreateItemPartDimensions < ActiveRecord::Migration[5.0]
   def change
     create_table :item_part_dimensions do |t|
       t.references :item_revision

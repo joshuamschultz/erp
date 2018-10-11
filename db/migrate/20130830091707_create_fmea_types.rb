@@ -1,4 +1,4 @@
-class CreateFmeaTypes < ActiveRecord::Migration
+class CreateFmeaTypes < ActiveRecord::Migration[5.0]
   def change
     create_table :fmea_types do |t|
       t.string :fmea_name

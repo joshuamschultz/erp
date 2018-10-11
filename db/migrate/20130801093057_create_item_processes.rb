@@ -1,4 +1,4 @@
-class CreateItemProcesses < ActiveRecord::Migration
+class CreateItemProcesses < ActiveRecord::Migration[5.0]
   def change
     create_table :item_processes do |t|
       t.references :item_revision

@@ -1,4 +1,4 @@
-class CreateItemPrints < ActiveRecord::Migration
+class CreateItemPrints < ActiveRecord::Migration[5.0]
   def change
     create_table :item_prints do |t|
       t.references :item_revision

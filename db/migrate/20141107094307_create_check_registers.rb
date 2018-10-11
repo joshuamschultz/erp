@@ -1,4 +1,4 @@
-class CreateCheckRegisters < ActiveRecord::Migration
+class CreateCheckRegisters < ActiveRecord::Migration[5.0]
   def change
     create_table :check_registers do |t|
       t.date :transaction_date

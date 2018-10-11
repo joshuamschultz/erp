@@ -1,4 +1,4 @@
-class ChangeFieldsInItemDimension < ActiveRecord::Migration
+class ChangeFieldsInItemDimension < ActiveRecord::Migration[5.0]
   def change
 	change_column :item_part_dimensions, :item_part_dimension, :decimal, :precision => 15, :scale => 10, :default => 0
 	change_column :item_part_dimensions, :item_part_pos_tolerance, :decimal, :precision => 15, :scale => 10, :default => 0

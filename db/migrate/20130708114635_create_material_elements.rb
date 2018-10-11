@@ -1,4 +1,4 @@
-class CreateMaterialElements < ActiveRecord::Migration
+class CreateMaterialElements < ActiveRecord::Migration[5.0]
   def change
     create_table :material_elements, id: false do |t|
       t.references :material
