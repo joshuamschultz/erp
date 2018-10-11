@@ -18,7 +18,7 @@ class QualityLotGaugeResult < ActiveRecord::Base
   belongs_to :quality_lot_gauge
   belongs_to :item_part_dimension
 
-  attr_accessible :lot_gauge_result_appraiser, :lot_gauge_result_value, :quality_lot_gauge_id, 
+  attr_accessor :lot_gauge_result_appraiser, :lot_gauge_result_value, :quality_lot_gauge_id, 
   :item_part_dimension_id, :lot_gauge_result_status, :lot_gauge_result_trial, :lot_gauge_result_row
 
   @@gauge_app = 3

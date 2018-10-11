@@ -18,7 +18,7 @@ class PayableShipment < ActiveRecord::Base
   belongs_to :payable
   belongs_to :po_line
 
-  attr_accessible :payable_shipment_cost, :payable_shipment_count, :payable_shipment_created_id, 
+  attr_accessor :payable_shipment_cost, :payable_shipment_count, :payable_shipment_created_id, 
   :payable_shipment_identifier, :payable_shipment_updated_id, :payable_id, :po_line_id
 
   before_save :process_before_save

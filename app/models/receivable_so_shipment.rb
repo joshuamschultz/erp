@@ -12,7 +12,7 @@
 class ReceivableSoShipment < ActiveRecord::Base
   belongs_to :so_shipment
   belongs_to :receivable
-  attr_accessible :so_shipment_id, :receivable_id
+  attr_accessor :so_shipment_id, :receivable_id
 
   after_destroy :process_after_destroy
 

@@ -24,7 +24,7 @@ class PoShipment < ActiveRecord::Base
   belongs_to :quality_lot, :dependent => :destroy
 
 
-  attr_accessible :po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
+  attr_accessor :po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
   :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id, :update_po_total
 
   # validates_presence_of :po_shipped_shelf, message: "Shelf can't be blank!"

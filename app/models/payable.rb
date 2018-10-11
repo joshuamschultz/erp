@@ -30,7 +30,7 @@
 class Payable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessible :payable_active, :payable_cost, :payable_created_id, :payable_description,
+  attr_accessor :payable_active, :payable_cost, :payable_created_id, :payable_description,
   :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date,
   :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
   :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice,

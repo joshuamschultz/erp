@@ -34,7 +34,7 @@ class QuoteLine < ActiveRecord::Base
 
   has_many :quote_line_costs, :dependent => :destroy
 
-  attr_accessible :quote_line_active, :quote_line_cost, :quote_line_created_id, :quote_line_identifier,
+  attr_accessor :quote_line_active, :quote_line_cost, :quote_line_created_id, :quote_line_identifier,
   :quote_line_notes, :quote_line_quantity, :quote_line_status, :quote_line_total, :quote_line_updated_id,
   :quote_id, :item_id, :item_revision_id, :item_alt_name_id, :po_line_id, :organization_id,
   :quote_line_description, :item_name_sub

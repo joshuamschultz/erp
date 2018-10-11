@@ -49,7 +49,7 @@
 
 class Ppap < ActiveRecord::Base
   belongs_to :quality_lot
-  attr_accessible :Change_in_mfg_source, :Other, :appearance_report, :camo_pattern_new_to_part, 
+  attr_accessor :Change_in_mfg_source, :Other, :appearance_report, :camo_pattern_new_to_part, 
   :change_to_materials_used, :comment, :commited_weekly_capacity, :component_review_meeting, 
   :control_plan, :date, :dfmea_desing, :fai_dimensional_inspection, :fai_material_test_result, 
   :first_article_parts, :guage_review, :hour_run, :initial_submission, :lathe_cnc, :level1, 

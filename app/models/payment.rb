@@ -34,7 +34,7 @@ class Payment < ActiveRecord::Base
 
     belongs_to :organization
 
-    attr_accessible :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
+    attr_accessor :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
         :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
         :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
         :check_entry_attributes, :next_check_code, :payment_check_code_type

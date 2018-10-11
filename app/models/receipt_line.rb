@@ -16,7 +16,7 @@ class ReceiptLine < ActiveRecord::Base
   belongs_to :receipt
   belongs_to :receivable
 
-  attr_accessible :receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
+  attr_accessor :receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
   :receipt_id, :receivable_id
 
   validates_presence_of :receipt_line_amount, :receivable_id

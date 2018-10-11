@@ -33,7 +33,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 	belongs_to :item_alt_name
 	belongs_to :quote
 
-	attr_accessible :customer_quote_line_active, :customer_quote_line_cost, :customer_quote_line_created_id,
+	attr_accessor :customer_quote_line_active, :customer_quote_line_cost, :customer_quote_line_created_id,
 	:customer_quote_line_description, :customer_quote_line_identifier, :customer_quote_line_notes, :lead_time,
 	:customer_quote_line_quantity, :customer_quote_line_status, :customer_quote_line_updated_id, :customer_quote_id,
 	:item_id, :item_revision, :item_alt_name_id, :customer_quote_line_tooling_cost, :customer_quote_line_total, :item_name_sub, :quote_id

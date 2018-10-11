@@ -9,7 +9,7 @@
 #
 
 class QualityDocument < ActiveRecord::Base
-   attr_accessible :logo_attributes, :quality_document_name
+   attr_accessor :logo_attributes, :quality_document_name
 
    has_many :master_types, :dependent => :destroy
 
