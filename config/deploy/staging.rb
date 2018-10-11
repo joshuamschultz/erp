@@ -1,6 +1,6 @@
 
 set :rails_env, 'staging'
-set :stage, :production
+set :stage, :staging
 
 # server-based syntax
 # ======================
