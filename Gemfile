@@ -56,14 +56,14 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'capistrano', '~> 3.7', '>= 3.7.1'
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-chruby'
-  gem 'capistrano-faster-assets', '~> 1.0'
+  gem 'capistrano',         require: false
+  gem 'capistrano-chruby', require: false
   gem 'capistrano-rails', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma', require: false
+  gem 'capistrano-faster-assets', '~> 1.0'
   gem 'capistrano-safe-deploy-to', '~> 1.1.1'
   gem 'capistrano-sidekiq'
-  gem 'capistrano3-puma'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console'
@@ -94,7 +94,7 @@ gem 'bootstrap-datetimepicker-rails'
 #gem 'momentjs-rails', '~> 2.9', github: 'derekprior/momentjs-rails'
 
 gem 'paperclip', '~> 5.0.0.beta1'
-gem 'rmagick'
+#gem 'rmagick'
 gem 'aws-sdk-s3', require: false
 
 gem 'nested_scaffold'
@@ -117,6 +117,6 @@ gem 'validates_email_format_of'
 
 gem 'cocoon'
 gem 'annotate'
-gem 'sidekiq', '~> 5.1.3'
+gem 'sidekiq'
 gem 'haml-rails'
 gem 'acts-as-taggable-on', '~> 4.0'

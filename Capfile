@@ -30,16 +30,18 @@ install_plugin Capistrano::SCM::Git
 #
 
 # General
-require 'capistrano/bundler'
 require 'capistrano/rails'
-require 'capistrano/rails/assets'
-require 'capistrano/faster_assets'
-require 'capistrano/rails/migrations'
+require 'capistrano/bundler'
 require 'capistrano/chruby'
-require 'capistrano/console'
+require 'capistrano/puma'
+#require 'capistrano/rails/assets'
+#require 'capistrano/faster_assets'
+#require 'capistrano/rails/migrations'
+
+#require 'capistrano/console'
 
 # Puma
-require 'capistrano/puma'
+
 install_plugin Capistrano::Puma # Default puma tasks
 install_plugin Capistrano::Puma::Workers # if you want to control the workers (in cluster mode)
 # install_plugin Capistrano::Puma::Jungle # if you need the jungle tasks
