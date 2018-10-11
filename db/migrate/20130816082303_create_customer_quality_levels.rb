@@ -1,4 +1,4 @@
-class CreateCustomerQualityLevels < ActiveRecord::Migration
+class CreateCustomerQualityLevels < ActiveRecord::Migration[5.0]
   def change
     create_table :customer_quality_levels do |t|
       t.references :customer_quality

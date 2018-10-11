@@ -1,4 +1,4 @@
-class CreateSoHeaders < ActiveRecord::Migration
+class CreateSoHeaders < ActiveRecord::Migration[5.0]
   def change
     create_table :so_headers do |t|
       t.references :organization

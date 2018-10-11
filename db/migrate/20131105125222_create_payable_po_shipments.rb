@@ -1,4 +1,4 @@
-class CreatePayablePoShipments < ActiveRecord::Migration
+class CreatePayablePoShipments < ActiveRecord::Migration[5.0]
   def change
     create_table :payable_po_shipments do |t|
       t.references :po_shipment

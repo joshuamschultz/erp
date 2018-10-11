@@ -1,4 +1,4 @@
-class CreateQualityLotDimensions < ActiveRecord::Migration
+class CreateQualityLotDimensions < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_lot_dimensions do |t|
       t.references :quality_lot

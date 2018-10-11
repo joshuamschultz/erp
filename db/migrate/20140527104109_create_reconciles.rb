@@ -1,4 +1,4 @@
-class CreateReconciles < ActiveRecord::Migration
+class CreateReconciles < ActiveRecord::Migration[5.0]
   def change
     create_table :reconciles do |t|
       t.string :reconcile_type

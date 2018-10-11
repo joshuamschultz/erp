@@ -1,4 +1,4 @@
-class CreateGlEntries < ActiveRecord::Migration
+class CreateGlEntries < ActiveRecord::Migration[5.0]
   def change
     create_table :gl_entries do |t|
       t.string :gl_entry_identifier

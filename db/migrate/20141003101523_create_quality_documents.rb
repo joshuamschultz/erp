@@ -1,4 +1,4 @@
-class CreateQualityDocuments < ActiveRecord::Migration
+class CreateQualityDocuments < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_documents do |t|
 

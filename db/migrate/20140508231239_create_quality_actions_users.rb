@@ -1,4 +1,4 @@
-class CreateQualityActionsUsers < ActiveRecord::Migration
+class CreateQualityActionsUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_actions_users do |t|
       t.references :quality_action

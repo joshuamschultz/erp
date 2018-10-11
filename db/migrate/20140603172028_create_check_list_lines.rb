@@ -1,4 +1,4 @@
-class CreateCheckListLines < ActiveRecord::Migration
+class CreateCheckListLines < ActiveRecord::Migration[5.0]
   def change
     create_table :check_list_lines do |t|
       t.references :checklist

@@ -1,4 +1,4 @@
-class AddToolingToQuote < ActiveRecord::Migration
+class AddToolingToQuote < ActiveRecord::Migration[5.0]
   def change
   	add_column :quote_line_costs, :quote_line_cost_tooling, :decimal, :precision => 25, :scale => 10, :default => 0
   	add_column :quote_line_costs, :quote_line_cost_lead, :string

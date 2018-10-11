@@ -1,4 +1,4 @@
-class CreateCheckEntries < ActiveRecord::Migration
+class CreateCheckEntries < ActiveRecord::Migration[5.0]
   def change
     create_table :check_entries do |t|
       t.string :check_identifier

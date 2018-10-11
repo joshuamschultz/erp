@@ -1,4 +1,4 @@
-class CreateGroupOrganizations < ActiveRecord::Migration
+class CreateGroupOrganizations < ActiveRecord::Migration[5.0]
   def change
     create_table :group_organizations do |t|
       t.references :organization

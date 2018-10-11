@@ -1,4 +1,4 @@
-class CreateCommodities < ActiveRecord::Migration
+class CreateCommodities < ActiveRecord::Migration[5.0]
   def change
     create_table :commodities do |t|
       t.boolean :commodity_active

@@ -1,4 +1,4 @@
-class CreateProcessFlows < ActiveRecord::Migration
+class CreateProcessFlows < ActiveRecord::Migration[5.0]
   def change
     create_table :process_flows do |t|
       t.string :process_identifier

@@ -1,4 +1,4 @@
-class CreateSpecifications < ActiveRecord::Migration
+class CreateSpecifications < ActiveRecord::Migration[5.0]
   def change
     create_table :specifications do |t|
       t.boolean :specification_active

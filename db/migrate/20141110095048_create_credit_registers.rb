@@ -1,4 +1,4 @@
-class CreateCreditRegisters < ActiveRecord::Migration
+class CreateCreditRegisters < ActiveRecord::Migration[5.0]
   def change
     create_table :credit_registers do |t|
       t.date :transaction_date

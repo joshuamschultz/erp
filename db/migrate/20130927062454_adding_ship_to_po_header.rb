@@ -1,4 +1,4 @@
-class AddingShipToPoHeader < ActiveRecord::Migration
+class AddingShipToPoHeader < ActiveRecord::Migration[5.0]
 	def change
 		add_column :po_headers, :customer_id, :integer
 		add_column :po_headers, :po_bill_to_id, :integer

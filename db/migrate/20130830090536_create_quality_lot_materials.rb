@@ -1,4 +1,4 @@
-class CreateQualityLotMaterials < ActiveRecord::Migration
+class CreateQualityLotMaterials < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_lot_materials do |t|
       t.references :quality_lot

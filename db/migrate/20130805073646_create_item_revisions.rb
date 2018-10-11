@@ -1,4 +1,4 @@
-class CreateItemRevisions < ActiveRecord::Migration
+class CreateItemRevisions < ActiveRecord::Migration[5.0]
   def change
     create_table :item_revisions do |t|
       t.string :item_revision_name

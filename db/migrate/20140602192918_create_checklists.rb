@@ -1,4 +1,4 @@
-class CreateChecklists < ActiveRecord::Migration
+class CreateChecklists < ActiveRecord::Migration[5.0]
   def change
     create_table :checklists do |t|
       t.references :quality_lot

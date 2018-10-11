@@ -1,4 +1,4 @@
-class CreateReceivableLines < ActiveRecord::Migration
+class CreateReceivableLines < ActiveRecord::Migration[5.0]
   def change
     create_table :receivable_lines do |t|
       t.references :receivable

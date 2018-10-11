@@ -1,4 +1,4 @@
-class CreateCustomerQualities < ActiveRecord::Migration
+class CreateCustomerQualities < ActiveRecord::Migration[5.0]
   def change
     create_table :customer_qualities do |t|
       t.string :quality_name

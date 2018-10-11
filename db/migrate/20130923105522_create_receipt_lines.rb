@@ -1,4 +1,4 @@
-class CreateReceiptLines < ActiveRecord::Migration
+class CreateReceiptLines < ActiveRecord::Migration[5.0]
   def change
     create_table :receipt_lines do |t|
       t.references :receipt

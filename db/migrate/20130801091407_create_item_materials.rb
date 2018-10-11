@@ -1,4 +1,4 @@
-class CreateItemMaterials < ActiveRecord::Migration
+class CreateItemMaterials < ActiveRecord::Migration[5.0]
   def change
     create_table :item_materials do |t|
       t.references :item_revision

@@ -1,4 +1,4 @@
-class CreateInventoryAdjustments < ActiveRecord::Migration
+class CreateInventoryAdjustments < ActiveRecord::Migration[5.0]
   def change
     create_table :inventory_adjustments do |t|
       t.integer :inventory_adjustment_quantity

@@ -1,4 +1,4 @@
-class CreateQualityLotCapabilities < ActiveRecord::Migration
+class CreateQualityLotCapabilities < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_lot_capabilities do |t|
       t.references :quality_lot

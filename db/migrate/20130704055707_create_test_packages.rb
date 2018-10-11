@@ -1,4 +1,4 @@
-class CreateTestPackages < ActiveRecord::Migration
+class CreateTestPackages < ActiveRecord::Migration[5.0]
   def change
     create_table :test_packages do |t|
       t.string :name

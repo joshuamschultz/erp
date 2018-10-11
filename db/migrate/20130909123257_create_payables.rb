@@ -1,4 +1,4 @@
-class CreatePayables < ActiveRecord::Migration
+class CreatePayables < ActiveRecord::Migration[5.0]
   def change
     create_table :payables do |t|
       t.references :organization

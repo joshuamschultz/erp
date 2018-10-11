@@ -1,4 +1,4 @@
-class CreateQualityLots < ActiveRecord::Migration
+class CreateQualityLots < ActiveRecord::Migration[5.0]
   def change
     create_table :quality_lots do |t|
       t.references :po_header

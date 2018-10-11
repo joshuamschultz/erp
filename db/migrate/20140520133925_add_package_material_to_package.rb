@@ -1,4 +1,4 @@
-class AddPackageMaterialToPackage < ActiveRecord::Migration
+class AddPackageMaterialToPackage < ActiveRecord::Migration[5.0]
   def change
   	add_column :packages, :dunnage_manufacturer, :text
   	add_column :packages, :container_color_manufacturer, :text

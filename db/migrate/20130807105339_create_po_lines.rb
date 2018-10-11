@@ -1,4 +1,4 @@
-class CreatePoLines < ActiveRecord::Migration
+class CreatePoLines < ActiveRecord::Migration[5.0]
   def change
     create_table :po_lines do |t|
       t.references :po_header

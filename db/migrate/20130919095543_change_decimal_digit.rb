@@ -1,4 +1,4 @@
-class ChangeDecimalDigit < ActiveRecord::Migration
+class ChangeDecimalDigit < ActiveRecord::Migration[5.0]
   def change
   	change_column :item_revisions, :item_tooling, :decimal, :precision => 25, :scale => 10, :default => 0  	
   	change_column :item_revisions, :item_cost, :decimal, :precision => 25, :scale => 10, :default => 0

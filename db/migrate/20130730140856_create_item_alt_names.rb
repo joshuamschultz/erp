@@ -1,4 +1,4 @@
-class CreateItemAltNames < ActiveRecord::Migration
+class CreateItemAltNames < ActiveRecord::Migration[5.0]
   def change
     create_table :item_alt_names do |t|
       t.string :item_alt_identifier
