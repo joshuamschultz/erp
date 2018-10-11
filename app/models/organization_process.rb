@@ -13,7 +13,7 @@
 #
 
 class OrganizationProcess < ActiveRecord::Base
-  attr_accessible :org_process_active, :org_process_created_id, :org_process_updated_id,
+  attr_accessor :org_process_active, :org_process_created_id, :org_process_updated_id,
   :organization_id, :process_type_id
 
   after_initialize :default_values

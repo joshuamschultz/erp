@@ -38,3 +38,12 @@ production:
   reconnect: false
   database: chess_production
   pool: 5
+
+staging:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: chess_staging
+  username: root
+  password: Huds0n
+  pool: 5

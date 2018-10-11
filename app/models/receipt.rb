@@ -31,7 +31,7 @@ class Receipt < ActiveRecord::Base
   has_one :deposit_check, :dependent => :destroy
   has_one :check_register
 
-  attr_accessible :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
+  attr_accessor :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
     :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
     :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount
 

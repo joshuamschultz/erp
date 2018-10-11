@@ -38,7 +38,7 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :customer_quality
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}
 
-  attr_accessible :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
+  attr_accessor :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
   :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
   :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
   :item_revision_complete, :item_sell, :item_revision_weekly_usage, :item_revision_lead_time

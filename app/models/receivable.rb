@@ -26,7 +26,7 @@
 class Receivable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessible :receivable_active, :receivable_cost, :receivable_created_id,
+  attr_accessor :receivable_active, :receivable_cost, :receivable_created_id,
   :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status,
   :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description,
   :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id,

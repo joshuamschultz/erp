@@ -38,7 +38,7 @@ class SoLine < ActiveRecord::Base
   belongs_to :customer_quality
   belongs_to :po_header
 
-  attr_accessible :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity,
+  attr_accessor :so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity,
   :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
   :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped, :so_line_sell,
   :so_line_vendor_po, :po_header_id, :po, :item_revision_id

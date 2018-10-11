@@ -9,7 +9,7 @@
 #
 
 class QualityActionNumber < ActiveRecord::Base
-  attr_accessible :next_action_no
+  attr_accessor :next_action_no
 
   def self.get_next_quality_action_number
 		temp = QualityActionNumber.first.next_action_no

@@ -19,7 +19,7 @@ class DepositCheck < ActiveRecord::Base
   belongs_to :receipt
   has_one :reconcile
 
-   attr_accessible :receipt_id, :status, :check_identifier, :receipt_type, :active
+   attr_accessor :receipt_id, :status, :check_identifier, :receipt_type, :active
 
 
   def get_receivables

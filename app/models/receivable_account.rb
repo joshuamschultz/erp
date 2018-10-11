@@ -19,7 +19,7 @@ class ReceivableAccount < ActiveRecord::Base
   belongs_to :gl_account
   has_one :gl_entry, :dependent => :destroy
 
-  attr_accessible :receivable_id, :gl_account_id, :receivable_account_amount, :receivable_account_created_id, 
+  attr_accessor :receivable_id, :gl_account_id, :receivable_account_amount, :receivable_account_created_id, 
   :receivable_account_description, :receivable_account_updated_id, :gl_entry_id
 
 

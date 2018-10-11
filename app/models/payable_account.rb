@@ -19,7 +19,7 @@ class PayableAccount < ActiveRecord::Base
   belongs_to :gl_account
   has_one :gl_entry, :dependent => :destroy
   
-  attr_accessible :payable_id, :gl_account_id, :payable_account_amount, :payable_account_created_id, 
+  attr_accessor :payable_id, :gl_account_id, :payable_account_amount, :payable_account_created_id, 
   :payable_account_description, :payable_account_updated_id, :gl_entry_id
 
   validates_presence_of :payable, :gl_account, :payable_account_amount

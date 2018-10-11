@@ -11,7 +11,7 @@
 #
 
 class ItemLot < ActiveRecord::Base
-  attr_accessible :item_id, :item_lot_count, :quality_lot_id
+  attr_accessor :item_id, :item_lot_count, :quality_lot_id
 
   belongs_to :item
   

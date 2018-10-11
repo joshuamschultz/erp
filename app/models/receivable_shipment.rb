@@ -18,7 +18,7 @@ class ReceivableShipment < ActiveRecord::Base
   belongs_to :receivable
   belongs_to :so_line
 
-  attr_accessible :receivable_shipment_cost, :receivable_shipment_count, 
+  attr_accessor :receivable_shipment_cost, :receivable_shipment_count, 
   :receivable_shipment_created_id, :receivable_shipment_identifier, 
   :receivable_shipment_updated_id, :receivable_id, :so_line_id
 
