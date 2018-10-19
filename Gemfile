@@ -10,7 +10,6 @@ gem 'rails', '~> 5.2.1'
 #database for active record
 gem 'mysql2'
 
-gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 # since the theme is old, using older gems below
 #gem 'sass-rails', '~> 5.0'

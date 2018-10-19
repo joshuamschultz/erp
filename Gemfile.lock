@@ -456,7 +456,6 @@ DEPENDENCIES
   paperclip (~> 5.0.0.beta1)
   pdfkit
   pry-rails
-  puma (~> 3.11)
   rails (~> 5.2.1)
   rails-jquery-autocomplete
   rails_admin
