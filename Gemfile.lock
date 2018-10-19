@@ -423,6 +423,7 @@ DEPENDENCIES
   byebug
   cancancan (~> 1.9)
   capistrano (~> 3.7, >= 3.7.1)
+  capistrano-bundler
   capistrano-faster-assets (~> 1.0)
   capistrano-passenger (~> 0.2.0)
   capistrano-rails (~> 1.2)
