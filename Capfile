@@ -31,9 +31,12 @@ install_plugin Capistrano::SCM::Git
 
 # General
 require 'capistrano/rails'
-require 'capistrano/bundler'
 require 'capistrano/passenger'
-require 'capistrano/chruby'
+
+# If you are using rbenv add these lines:
+# require 'capistrano/rbenv'
+# set :rbenv_type, :user
+# set :rbenv_ruby, '2.5.1'
 #require 'capistrano/puma'
 require 'capistrano/rails/assets'
 #require 'capistrano/faster_assets'
