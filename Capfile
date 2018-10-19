@@ -33,7 +33,7 @@ install_plugin Capistrano::SCM::Git
 require 'capistrano/rails'
 require 'capistrano/bundler'
 require 'capistrano/chruby'
-require 'capistrano/puma'
+#require 'capistrano/puma'
 #require 'capistrano/rails/assets'
 #require 'capistrano/faster_assets'
 #require 'capistrano/rails/migrations'
