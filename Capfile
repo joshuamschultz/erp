@@ -31,13 +31,13 @@ install_plugin Capistrano::SCM::Git
 
 # General
 require 'capistrano/rails'
-require 'capistrano/passenger'
 require 'capistrano/bundler'
+require 'capistrano/passenger'
 require 'capistrano/chruby'
 #require 'capistrano/puma'
-#require 'capistrano/rails/assets'
+require 'capistrano/rails/assets'
 #require 'capistrano/faster_assets'
-#require 'capistrano/rails/migrations'
+require 'capistrano/rails/migrations'
 
 #require 'capistrano/console'
 
