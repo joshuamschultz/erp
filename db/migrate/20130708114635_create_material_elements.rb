@@ -11,7 +11,7 @@ class CreateMaterialElements < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_index :material_elements, :material_id
+    #add_index :material_elements, :material_id
     add_index :material_elements, :element_id
   end
 end
