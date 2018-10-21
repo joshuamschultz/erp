@@ -635,7 +635,7 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["element_id"], name: "index_material_elements_on_element_id"
-    t.index ["material_id"], name: "index_material_elements_on_material_id"
+    #t.index ["material_id"], name: "index_material_elements_on_material_id"
   end
 
   create_table "materials", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
