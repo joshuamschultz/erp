@@ -30,6 +30,7 @@ install_plugin Capistrano::SCM::Git
 #
 
 # General
+
 require 'capistrano/rails'
 require 'capistrano/passenger'
 

@@ -34,7 +34,6 @@ server '68.183.31.206', user: 'deploy', port: 22, roles: %i[web app db], primary
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-set :chruby_ruby, '2.5.1'
 
 set :branch, :develop
 
