@@ -5,7 +5,7 @@
 set :repo_url,        'git@github.com:JoshuaMSchultz/chess-erp.git'
 set :application,     'chess-erp'
 set :user,            'deploy'
-set :rbenv_type, :deploy
+set :rbenv_type, :user
 set :rbenv_ruby, '2.5.1'
 
 # Settings

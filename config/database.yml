@@ -46,6 +46,6 @@ staging:
   encoding: utf8
   reconnect: false
   database: chess_staging
-  username: root
+  username: deploy
   password: LhrMaqsRjRuEpex6rgcFvAHt
   pool: 5

@@ -59,8 +59,8 @@ group :development do
   gem 'capistrano-passenger', '~> 0.2.0'
   gem 'capistrano-rbenv', '~> 2.1'
   gem 'capistrano-bundler', require: false
-  gem 'capistrano-faster-assets', '~> 1.0'
-  gem 'capistrano-safe-deploy-to', '~> 1.1.1'
+  #gem 'capistrano-faster-assets', '~> 1.0'
+  #gem 'capistrano-safe-deploy-to', '~> 1.1.1'
   gem 'capistrano-sidekiq'
   gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
