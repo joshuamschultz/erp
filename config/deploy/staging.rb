@@ -11,7 +11,7 @@ set :stage, :staging
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-server '142.93.122.161', user: 'deploy', port: 22, roles: %i[web app db], primary: true
+server '68.183.31.206', user: 'deploy', port: 22, roles: %i[web app db], primary: true
 # set :nginx_server_name, 'mydomain.com'
 
 # role-based syntax
