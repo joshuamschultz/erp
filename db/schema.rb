@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_10_29_220120) do
+ActiveRecord::Schema.define(version: 2018_11_01_121918) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "addressable_id"
@@ -635,7 +635,6 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["element_id"], name: "index_material_elements_on_element_id"
-    #t.index ["material_id"], name: "index_material_elements_on_material_id"
   end
 
   create_table "materials", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -694,8 +693,8 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.string "organization_name"
     t.string "organization_short_name"
     t.string "organization_description"
-    t.text "organization_address_1"
-    t.text "organization_address_2"
+    t.string "organization_address_1"
+    t.string "organization_address_2"
     t.string "organization_city"
     t.string "organization_state"
     t.string "organization_country"
