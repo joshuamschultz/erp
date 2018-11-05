@@ -10,7 +10,6 @@
 #
 
 class Group < ActiveRecord::Base
-  attr_accessor :group_name, :group_type
 
   has_many :organizations, through: :group_organizations
   has_many :group_organizations, dependent: :destroy
