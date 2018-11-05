@@ -112,7 +112,7 @@ module CommonActions
   end
 
   def self.linkable(path, title, _extras = {})
-    "<a href='#{path}'>#{title}</a>"
+    "<a href='#{path}' target='_blank'>#{title}</a>"
   end
 
   def self.nil_or_blank(attribute)
