@@ -56,6 +56,8 @@ class ContactsController < ApplicationController
           conct[:organization] = CommonActions.linkable(organization_path(contact.contactable), 'Organization : ' + contact.contactable.organization_short_name)
           conct[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == 'contact'
           conct[:contact_name] = contact.contact_title
+          conct[:contact_telephone] = "#{view_context.number_to_phone(contact.contact_telephone)}"
+          conct[:contact_fax] = "#{view_context.number_to_phone(contact.contact_fax)}"
           conct[:contact_default] = contact.default_address.present? ? 'selected' : ''
           conct[:contact_title] = CommonActions.linkable(contact_path(contact), contact[:contact_title]) if @contact_type == 'address'
           conct[:contact_email] = "<a href='mailto:#{contact.contact_email}' target='_top'>#{contact.contact_email}</a>"
