@@ -144,8 +144,9 @@
 <% end %>
 </div>
 
-<%= render :partial => 'comments/comments',
-:locals => {:extras => {:link => add_comment_organization_path(type: "note", id: @organization.id)}} %>
+<div class="comments">
+  <%= render :partial => 'comments/comments'%>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function () {

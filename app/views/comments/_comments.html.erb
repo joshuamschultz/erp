@@ -5,8 +5,10 @@
         <div class="row-fluid">    
             <div class="span12">
                 <div class="input-append span11">
-                    <input name="comment" class="span11" type="text" placeholder="Add a note..." id="comment-text"/>
-                    <button class="btn btn-default" type="submit" onclick="setcomment();">Save</button>
+                  <%= form_tag add_comment_organization_path(type: "note",id: params[:id]), remote: true do %>
+                  <%= text_field_tag :comment,nil,{ :class => "span11",  placeholder: "Add a note..." ,id: "comment-text" }%>
+                    <%= submit_tag 'Save', class: "btn btn-default" %>
+                  <% end %>
                 </div>      
             </div>
         </div>
@@ -21,6 +23,7 @@
                             <span class="date timeline_comment_date"><%#= note.created_at.strftime("%m/%d/%Y") %><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
                             <span class="glyphicons activity-icon user"><i></i></span>
                             <span class="ellipsis" style="height: auto !important; white-space: normal !important;"><a href="#"><%= note.created_by.name %></a> : <%= note.comment %></span>
+                          <%= link_to( "<i></i>".html_safe, delete_comment_organization_path(id: params[:id], comment_id: note.id), method: :delete, remote:true, :'data-confirm' =>  "Are you sure?", class: 'btn-action btn glyphicons remove_2 btn-danger f-right') %>
                         </li>
                     <% end %>
                 </ul>
@@ -28,28 +31,3 @@
         </div>
     </div>
 <% end %>
-<script type="text/javascript">
-    function setcomment(){
-        var comment = $("#comment-text").val();
-        initialize_api_call({"url": "<%= extras[:link].html_safe %>", "type": "GET", "data_type": "json", "params": {"comment": comment }}, "set_comment_list", {});
-    }
-    function set_comment_list(response, callback_params, api_params){
-        $("#comment-text").val("");
-        if(response["result"]["status"] ==  "success"){
-            var a = '<li style="height: auto !important;"><span class="date timeline_comment_date">'+response["result"]["time"];
-            a += '</span><span class="glyphicons activity-icon user"><i></i></span><span style="height: auto !important; white-space: normal !important;" class="ellipsis"><a href="#">'+response["result"]["created_user"];        
-            a += '</a> : '+response["result"]["comment"];
-            a += '</span></li>'
-            $("#comment_list").prepend(a).show('normal'); 
-        }
-             
-    }
-    $( document ).ready(function() {
-        $("#comment-text").keypress(function(e) {
-        if(e.which == 13) {
-            setcomment();
-            }
-        });
-    });
-    
-</script>
