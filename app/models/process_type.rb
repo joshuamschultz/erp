@@ -20,7 +20,7 @@ class ProcessType < ActiveRecord::Base
   has_many :item_revisions, through: :item_processes
   has_many :specifications, through: :process_type_specifications
   has_many :process_type_specifications, dependent: :destroy
-  has_many :specifications, through: :process_type_specifications
+  # has_many :specifications, through: :process_type_specifications
 
   has_one :attachment, as: :attachable, dependent: :destroy
   accepts_nested_attributes_for :attachment, allow_destroy: true
@@ -48,7 +48,8 @@ class ProcessType < ActiveRecord::Base
       if specs
         specs.each do |specification_id|
           unless process_type.process_type_specifications.find_by_specification_id(specification_id)
-            process_type.process_type_specifications.new(specification_id: specification_id).save
+            # process_type.process_type_specifications.new(specification_id: specification_id).save
+            process_type.process_type_specifications.build(:specification => Specification.find(specification_id)).save
           end
         end
       end
