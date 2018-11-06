@@ -322,7 +322,8 @@ Rails.application.routes.draw do
     get 'main_address'
     member do
       post 'populate'
-      get 'add_comment'
+      post 'add_comment'
+      delete 'delete_comment'
       get 'organization_info'
     end
     get :autocomplete_organization_organization_name, on: :collection
