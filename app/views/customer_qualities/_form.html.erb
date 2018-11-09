@@ -9,7 +9,7 @@
     <div class="control-group">
         <label for="item_processes" class="optional control-label">Quality Levels</label>
         <div class="controls">
-            <%= select_tag "customer_quality_levels[]", options_for_select(MasterType.quality_levels.collect {|quality| [quality.type_name, quality.id]}, @customer_quality.persisted? ? (@customer_quality.customer_quality_levels.empty? ? [] : @customer_quality.customer_quality_levels.collect(&:master_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
+            <%= select_tag "customer_quality_levels[]", options_for_select(MasterType.quality_levels.collect {|quality| [quality.type_name, quality.id]}, @customer_quality.persisted? ? (@customer_quality.customer_quality_levels.empty? ? [] : @customer_quality.customer_quality_levels.pluck(:master_type_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "customer_quality_levels" %>
         </div>
     </div>
 
