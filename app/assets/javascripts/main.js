@@ -10,13 +10,13 @@
 //= require scripts/plugins/other/holder/holder
 //= require scripts/plugins/forms/pixelmatrix-uniform/jquery.uniform
 //= require extend_bootstrap
-//= require scripts/plugins/forms/dropzone/dropzone.js
 //= require scripts/plugins/forms/select2/select2.js
 //= require theme_js/jquery.cookie
 //= require theme_js/jquery.dataTables.min
 //= require theme_js/DT_bootstrap
 //= require theme_js/jquery.dataTables.rowGrouping
 //= require theme_js/plupload.full.js
+//= require theme_js/dropzone.min.js
 //= require scripts/plugins/color/jquery-miniColors/jquery.miniColors
 //= require scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker
 //= require jquery.multiselect
