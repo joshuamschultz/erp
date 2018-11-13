@@ -354,8 +354,6 @@ Rails.application.routes.draw do
     get 'set_default'
   end
 
-  resources :owners
-
   resources :master_types
 
   resources :process_types do
