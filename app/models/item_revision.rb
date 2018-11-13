@@ -31,7 +31,6 @@ class ItemRevision < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   belongs_to :item
-  belongs_to :owner
   belongs_to :print
   belongs_to :material
   belongs_to :vendor_quality
@@ -39,7 +38,7 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}
 
   attr_accessor :item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
-  :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
+  :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id,
   :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
   :item_revision_complete, :item_sell, :item_revision_weekly_usage, :item_revision_lead_time
   before_save :process_before_save
@@ -53,7 +52,7 @@ class ItemRevision < ActiveRecord::Base
         CommonActions.nil_or_blank(self.item_revision_name) ||
         CommonActions.nil_or_blank(self.item_cost) ||
         CommonActions.nil_or_blank(self.item_tooling) ||
-        self.owner.nil? || self.print.nil? || self.material.nil?
+        self.print.nil? || self.material.nil?
           self.item_revision_complete = true
       else
           self.item_revision_complete = false
@@ -62,10 +61,9 @@ class ItemRevision < ActiveRecord::Base
       return true
   end
 
-  validates_presence_of :owner, :item_revision_date
   validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
   validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
-  validates_numericality_of :item_cost if validates_presence_of :item_cost
+  # validates_numericality_of :item_cost if validates_presence_of :item_cost
   validates_numericality_of :item_tooling if validates_presence_of :item_tooling
 
   validates :item_revision_name, uniqueness: {scope: :item_id}
