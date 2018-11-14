@@ -90,7 +90,7 @@ class Organization < ActiveRecord::Base
   # validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
   validates_formatting_of :organization_email, using: :email, if: proc { |o| (o.contact_type.present? && o.contact_type.type_value == 'email') || o.organization_email.present? }
   validates_length_of :organization_fax, in: 10..32, if: proc { |o| (o.contact_type.present? && o.contact_type.type_value == 'fax') || o.organization_fax.present? }
-
+  validates_length_of :organization_address_1, :organization_address_2, maximum: 150, allow_blank: true
   after_initialize :default_values
   after_create :process_after_create
   before_save :process_before_save
