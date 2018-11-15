@@ -49,7 +49,10 @@
       </div>
       <% end %>
     </div>
-    <div><%= @company_info.image.image_file_name if @company_info.image && @company_info.persisted? %></div>
+    <% if @company_info.image.present? && @company_info.persisted? %>
+      <div class="company-info-image"><%= @company_info.image.image_file_name %><a style="float: none" data-dismiss="fileupload" class="fileupload-exists" href="#" id="delete_image">×</a>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -93,4 +96,22 @@ tab_field_forms["form_for_company"] = [
   "company_info_company_fax",
   "company_info_company_website"
 ];
+$("#delete_image").on("click", function(event) {
+  event.preventDefault();
+  var url = document.URL.split("/");
+  var meth_id = url[4];
+  $.ajax({
+    url: '/company_infos/'+meth_id,
+    type: 'PATCH',
+    dataType: 'json',
+    data: {"extra": "delete_image"},
+    complete: function (jqXHR, textStatus) {
+    },
+    success: function (data, textStatus, jqXHR) {
+      $(".company-info-image").remove()
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+    }
+  });
+});
 </script>
