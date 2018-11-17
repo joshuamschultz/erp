@@ -41,10 +41,6 @@
                 </td>
               </tr>           
 
-              <tr>
-                <td>Owner:</td>
-                <td><%= link_to @item_revision.owner.owner_identifier, owner_path(@item_revision.owner) if @item_revision.owner %></td>
-              </tr>
               <% unless  user_signed_in? &&  current_user.is_customer? %>  
               <tr>
                 <td>Vendor:</td>

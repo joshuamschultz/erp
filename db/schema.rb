@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_10_29_220120) do
+ActiveRecord::Schema.define(version: 2018_11_13_131955) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "addressable_id"
@@ -537,7 +537,6 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.string "item_revision_name", default: "0"
     t.date "item_revision_date"
     t.integer "item_id"
-    t.integer "owner_id"
     t.integer "organization_id"
     t.integer "vendor_quality_id"
     t.integer "customer_quality_id"
@@ -559,7 +558,6 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.index ["customer_quality_id"], name: "index_item_revisions_on_customer_quality_id"
     t.index ["item_id"], name: "index_item_revisions_on_item_id"
     t.index ["organization_id"], name: "index_item_revisions_on_organization_id"
-    t.index ["owner_id"], name: "index_item_revisions_on_owner_id"
     t.index ["vendor_quality_id"], name: "index_item_revisions_on_vendor_quality_id"
   end
 
@@ -716,16 +714,6 @@ ActiveRecord::Schema.define(version: 2017_10_29_220120) do
     t.index ["territory_id"], name: "index_organizations_on_territory_id"
     t.index ["user_id"], name: "index_organizations_on_user_id"
     t.index ["vendor_quality_id"], name: "index_organizations_on_vendor_quality_id"
-  end
-
-  create_table "owners", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "owner_identifier"
-    t.string "owner_description"
-    t.integer "owner_commission_type_id"
-    t.decimal "owner_commission_amount", precision: 25, scale: 10, default: "0.0"
-    t.boolean "owner_active", default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "packages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
