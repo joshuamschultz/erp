@@ -10,7 +10,7 @@
   <div class="form-actions">
       <%= f.button :submit, "Save" %>
       <%= link_to 'Delete', attachment_path(@attachment), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @attachment.new_record? %>
-      <%= link_to 'Back', @attachment.attachable.redirect_path, :class =>"btn" %>
+      <%= link_to 'Back', @attachment.attachable, :class =>"btn" %>
   </div>
 
 <% end %>

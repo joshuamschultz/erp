@@ -100,7 +100,7 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       if bool_saved
-        format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully created.' }
+        format.html { redirect_to @attachment.attachable, notice: 'Attachment was successfully created.' }
         format.json { render json: @attachment, status: :created, location: @attachment }
       else
         format.html { render action: 'new' }
@@ -118,7 +118,7 @@ class AttachmentsController < ApplicationController
     respond_to do |format|
       if @attachment.update_attributes(attachment_params)
         CommonActions.record_ownership(@attachment, current_user)
-        format.html { redirect_to @attachment.attachable.redirect_path, notice: 'Attachment was successfully updated.' }
+        format.html { redirect_to @attachment.attachable, notice: 'Attachment was successfully updated.' }
         format.json { head :no_content }
       else
         # puts @attachment.errors.to_yaml
@@ -136,7 +136,7 @@ class AttachmentsController < ApplicationController
     @attachment.destroy
 
     respond_to do |format|
-      format.html { redirect_to @attachable.redirect_path }
+      format.html { redirect_to @attachable }
       format.json { head :no_content }
     end
   end

@@ -193,7 +193,7 @@ class ItemsController < ApplicationController
       def item_params
         params.require(:item).permit(:item_part_no, :item_quantity_in_hand, :item_quantity_on_order, :item_active,
                                       :item_created_id, :item_updated_id, :item_alt_part_no, item_revisions_attributes: [:item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
-                                            :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id, :owner_id,
+                                            :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id,
                                             :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
                                             :item_revision_complete, :item_sell])
       end
