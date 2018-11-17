@@ -43,6 +43,7 @@ class Specification < ActiveRecord::Base
 
   def before_save_values
     self.specification_identifier = attachment.attachment_name
+    self.specification_description = attachment.attachment_description
     end
 
   def self.item_specification(item)
