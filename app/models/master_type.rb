@@ -31,7 +31,7 @@ class MasterType < ActiveRecord::Base
   scope :inspection_method, -> {where type_category: 'inspection_method'}
   scope :inspection_type, -> {where type_category: 'inspection_method'}
   scope :customer_quality_level, -> {where type_category: 'customer_quality_level'}
-  has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
+  # has_many :owners, :class_name => "Owner", :foreign_key => "owner_commission_type_id"
 
   has_many :type_based_organizations, :class_name => "Organization", :foreign_key => "organization_type_id"
 

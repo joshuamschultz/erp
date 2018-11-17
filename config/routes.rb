@@ -322,7 +322,8 @@ Rails.application.routes.draw do
     get 'main_address'
     member do
       post 'populate'
-      get 'add_comment'
+      post 'add_comment'
+      delete 'delete_comment'
       get 'organization_info'
     end
     get :autocomplete_organization_organization_name, on: :collection
@@ -353,8 +354,6 @@ Rails.application.routes.draw do
   resources :vendor_qualities do
     get 'set_default'
   end
-
-  resources :owners
 
   resources :master_types
 

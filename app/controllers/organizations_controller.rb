@@ -1,5 +1,5 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: %i[show edit update destroy organization_info populate add_comment]
+  before_action :set_organization, only: %i[show edit update destroy organization_info populate add_comment delete_comment]
   before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
@@ -188,15 +188,19 @@ class OrganizationsController < ApplicationController
   def add_comment
     if params[:comment].present? && params[:type] == 'note'
       Comment.process_comments(current_user, @organization, [params[:comment]], params[:type])
-      note = @organization.comments.where(comment_type: 'note').order('created_at desc').first if @organization
-      note['time'] = note.created_at.strftime('%m/%d/%Y %H:%M')
-      note['created_user'] = note.created_by.name
-      note['status'] = 'success'
-    else
-      note = {}
-      note['status'] = 'fail'
+      @notes = @organization.comments.where(comment_type: 'note').order('created_at desc') if @organization
+      respond_to do |format|
+        format.js { render 'comment.js.erb' }
+      end
     end
-    render json: { result: note }
+  end
+
+  def delete_comment
+    @organization.comments.where(id: params[:comment_id]).first.destroy!
+    @notes = @organization.comments.where(comment_type: 'note').order('created_at desc') if @organization
+    respond_to do |format|
+      format.js { render 'comment.js.erb' }
+    end
   end
 
   def organization_info
@@ -214,7 +218,7 @@ class OrganizationsController < ApplicationController
   private
 
   def set_organization
-    @organization = Organization.find(params[:id])
+    @organization = Organization.find_by(id: params[:id])
   end
 
   def organization_params
