@@ -372,10 +372,6 @@ module CommonActions
         menus[:system][:sub_menu].push(path: territories_path, name: 'Territories')
       end
 
-      if can? :view, Owner
-        menus[:system][:sub_menu].push(path: owners_path, name: 'Owners')
-      end
-
       menus[:system][:sub_menu].push(path: check_code_path(CheckCode.first), name: 'Counters')
 
       if can? :view, User
@@ -393,7 +389,7 @@ module CommonActions
     [{ name: 'System', class: 'glyphicons cogwheels', drop_down: true, path: '#',
        sub_menu: [
          { path: company_infos_path, name: 'Company Info', class: '', drop_down: false, sub_menu: [] },
-         { path: owners_path, name: 'Owners', class: '', drop_down: false, sub_menu: [] },
+         # { path: owners_path, name: 'Owners', class: '', drop_down: false, sub_menu: [] },
          { path: territories_path, name: 'Territories', class: '', drop_down: false, sub_menu: [] },
          { path: commodities_path, name: 'Commodities', class: '', drop_down: false, sub_menu: [] }
          # {:path => specifications_path, :name => "Specifications", :class => "", :drop_down => false, :sub_menu => []},
