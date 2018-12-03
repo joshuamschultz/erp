@@ -39,6 +39,9 @@ class CompanyInfosController < ApplicationController
     if params[:extra] && params[:extra] == "delete_image"
       @company_info.image = nil
     end
+    if params[:extra] && params[:extra] == "delete_report"
+      @company_info.logo = nil
+    end
     if params[:company_info].present? && params[:company_info].has_key?(:image_attributes) && params[:company_info][:image_attributes][:image] === ""
       params[:company_info].delete(:image_attributes)
     end
