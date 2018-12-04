@@ -98,7 +98,7 @@ class OrganizationsController < ApplicationController
     @attachable = @organization
 
     # default contact type to show is addresses
-    @contact_type = params[:contact_type] || 'address'
+    @contact_type = 'contact'
 
     # load comments
     @notes = @organization.comments.where(comment_type: 'note').order('created_at desc') if @organization
