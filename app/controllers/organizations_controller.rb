@@ -96,9 +96,11 @@ class OrganizationsController < ApplicationController
     # set polymorphic
     @contactable = @organization
     @attachable = @organization
-
+    @addressable = @organization
     # default contact type to show is addresses
     @contact_type = 'contact'
+
+    @address_type = 'address'
 
     # load comments
     @notes = @organization.comments.where(comment_type: 'note').order('created_at desc') if @organization
