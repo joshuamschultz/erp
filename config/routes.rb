@@ -316,6 +316,8 @@ Rails.application.routes.draw do
     get 'set_default'
   end
 
+  resources :addresses
+
   resources :comments
 
   resources :organizations do

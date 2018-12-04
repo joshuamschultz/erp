@@ -1,0 +1,39 @@
+<!-- Widget -->
+<div class="widget">
+  <!-- Widget heading -->
+  <div class="widget-head">
+    <div class="row-fluid">
+      <h4 class="span6 heading"><%= @address_type.titlecase.pluralize %></h4>
+      <span class="span6 heading right">
+        <% if can? :edit, @address %>
+        <%= link_to 'New ' + @address_type.titlecase, new_address_path(:object_id => @addressable.id), :class => "btn btn-mini btn-success" %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <!-- // Widget heading END -->
+
+  <div class="widget-body">
+    <table id="table_report_addresses" class="dynamicTable table table-striped table-bordered table-condensed row-fluid">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>City</th>
+          <th>Telephone</th>
+          <th>Email</th>
+          <th>Fax</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<% contact_fields = ' ' %>
+
+<% address_fields = (@address_type == "address") ? '{"mData": "address_description"}, {"mData": "address_city"},' : ' ' %>
+
+<%= render :partial => 'layouts/app_layouts/data_table', :locals => { :name => "table_report_addresses", :path => addresses_path(:object_id => @addressable.id, :address_type => @address_type), :extras => {:slno => false}, :columns => '[' + contact_fields + ' { "mData": "address_title" }, ' + address_fields + ' { "mData": "address_telephone" }, { "mData": "address_email" }, { "mData": "address_fax" }, { "mData": "links", "bSortable": false, "bSearchable": false } ]' } %>
