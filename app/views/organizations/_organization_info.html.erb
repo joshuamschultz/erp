@@ -16,11 +16,11 @@
   <br/>
 
   <abbr>Telephone:</abbr>
-  <%= organization.organization_telephone %>
+  <%= number_to_phone(organization.organization_telephone) %>
   <br/>
 
   <abbr>Fax:</abbr>
-  <%= organization.organization_fax %>
+  <%= number_to_phone(organization.organization_fax) %>
   <br/>
 
   <abbr>Website:</abbr>

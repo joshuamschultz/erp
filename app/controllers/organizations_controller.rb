@@ -64,6 +64,8 @@ class OrganizationsController < ApplicationController
             org[key] = value
           end
           org[:organization_name] = "<a href='#{organization_path(organization)}'>#{organization[:organization_name]}</a>"
+          org[:organization_telephone] = "#{view_context.number_to_phone(organization.organization_telephone)}"
+          org[:organization_fax] = "#{view_context.number_to_phone(organization.organization_fax)}"
           org[:organization_expiration_date] = organization.vendor_expiration_date
           org[:quality_rating] = organization. vendor_quality.quality_name if params[:type1].present? && params[:type2].present?
           org[:organization_email] = "<a href='mailto:#{organization.organization_email}' target='_top'>#{organization.organization_email}</a>"
