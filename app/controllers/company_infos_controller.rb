@@ -36,8 +36,22 @@ class CompanyInfosController < ApplicationController
   end
 
   def update
+    if params[:extra] && params[:extra] == "delete_image"
+      @company_info.image = nil
+    end
+    if params[:extra] && params[:extra] == "delete_report"
+      @company_info.logo = nil
+    end
+    if params[:company_info].present? && params[:company_info].has_key?(:image_attributes) && params[:company_info][:image_attributes][:image] === ""
+      params[:company_info].delete(:image_attributes)
+    end
+    if params[:company_info].present? && params[:company_info].has_key?(:logo_attributes) && params[:company_info][:logo_attributes][:joint] === ""
+      params[:company_info].delete(:logo_attributes)
+    end
     respond_to do |format|
-      if @company_info.update_attributes(company_info_params)
+      if params[:extra].present?
+        format.json { head :no_content }
+      elsif @company_info.update_attributes(company_info_params)
         format.html { redirect_to @company_info, notice: 'Corporate Information was successfully updated.' }
         format.json { head :no_content }
       else
