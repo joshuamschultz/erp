@@ -38,10 +38,22 @@
       <br/>(Only if changed)</label>
     <div class="controls">
       <%= f.fields_for :image, Image.new do |g| %>
-      <%= g.file_field :image, label: false %>
+      <div data-provides="fileupload" class="fileupload fileupload-exists">
+        <span class="btn btn-default btn-file">
+          <span class="fileupload-new">Choose File</span>
+          <span class="fileupload-exists">Choose File</span>
+          <%= g.file_field :image, label: false %>
+        </span>
+        <span class="fileupload-preview"></span>
+        <!-- <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a> -->
+      </div>
       <% end %>
     </div>
-    <div><%= @company_info.image.image_file_name if @company_info.image && @company_info.persisted? %></div>
+    <% if @company_info.image.present? && @company_info.persisted? %>
+      <div class="company-info-image"><%= @company_info.image.image_file_name %>
+        <a style="float: none" data-dismiss="fileupload" class="fileupload-exists" href="#" id="delete_image">×</a>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -58,10 +70,16 @@
         <%= g.file_field :joint %>
       </span>
       <span class="fileupload-preview"></span>
-      <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a>
+      <!-- <a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="#">×</a> -->
     </div>
     <% end %>
-    <div><%= @company_info.logo.joint_file_name if @company_info.logo && @company_info.persisted? %></div>
+    <% if @company_info.logo.present? && @company_info.persisted? %>
+      <div class="company-report-image"><%= @company_info.logo.joint_file_name %>
+        <a style="float: none" data-dismiss="fileupload" class="fileupload-exists" href="#" id="delete_report">×</a>
+      </div>
+    <% end %>
+
+    <!-- <div><%#= @company_info.logo.joint_file_name if @company_info.logo && @company_info.persisted? %></div> -->
   </div>
 </div>
 </div>
@@ -85,4 +103,30 @@ tab_field_forms["form_for_company"] = [
   "company_info_company_fax",
   "company_info_company_website"
 ];
+$("#delete_image").on("click", function(event) {
+  event.preventDefault();
+  isUpdateLogo("delete_image","company-info-image")
+});
+$("#delete_report").on("click", function(event) {
+  event.preventDefault();
+  isUpdateLogo("delete_report","company-report-image")
+});
+
+function isUpdateLogo(extra_val, class_name){
+  var url = document.URL.split("/");
+  var meth_id = url[4];
+  $.ajax({
+    url: '/company_infos/'+meth_id,
+    type: 'PATCH',
+    dataType: 'json',
+    data: {"extra": extra_val},
+    complete: function (jqXHR, textStatus) {
+    },
+    success: function (data, textStatus, jqXHR) {
+      $("."+class_name).remove()
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+    }
+  });
+}
 </script>
