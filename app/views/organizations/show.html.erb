@@ -136,7 +136,7 @@
       <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
       <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]},
           @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)),
-          :multiple => true, :size => 5, :class => "multi_select_box1" %>
+          :multiple => true, :size => 5, :class => "multi_select_box1 w-100 select_radious" %>
       <% end %>
     </div>
   </div>
