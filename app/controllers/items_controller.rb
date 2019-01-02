@@ -18,7 +18,9 @@ class ItemsController < ApplicationController
         @items =  []
       end
     else
-     @items = Item.item_with_recent_revisions.order('item_part_no asc')
+      # NOTE: commented until the scope is fixed. 
+     #@items = Item.item_with_recent_revisions.order('item_part_no asc')
+     @items = Item.all
     end
 
     #respond_to do |format|
