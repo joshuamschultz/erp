@@ -1,0 +1,50 @@
+<%= simple_form_for(@address, :html => {:id => "form_for_address",:class => "form-horizontal"}) do |f| %>
+<%= f.error_notification %>
+
+<div class="form-inputs">
+  <%= f.hidden_field :addressable_id %>
+  <%= f.hidden_field :addressable_type %>
+  <%= f.hidden_field :address_type %>
+
+  <%= f.input :address_title, :label => "Title", :autofocus => true %>
+  <%= f.input :address_description, :label => "Description" %>
+  <%= f.input :address_address_1, :label => "Address 1", input_html: {style: "height: 24px;"} %>
+  <%= f.input :address_address_2, :label => "Address 2", input_html: {style: "height: 24px;"} %>
+  <%= f.input :address_city, :label => "City" %>
+  <%= f.input :address_state, :label => "State" %>
+  <%= f.input :address_country, as: :country, :label => "Country", :priority => ['United States', 'Mexico', 'China', 'Taiwan']%>
+  <%= f.input :address_zipcode, :label => "Zipcode" %>
+  <%= f.input :address_telephone, :label => "Telephone" %>
+  <%= f.input :address_fax, :label => "Fax" %>
+  <%= f.input :address_email, :input_html => {class: "email_field"}, :label => "Email" %>
+  <%= f.input :address_website, :label => "Website" %>
+  <%= f.input :address_notes, :label => "Notes" %>
+  <%= f.hidden_field :address_active, :label => "Active" %>
+</div>
+
+<div class="form-actions">
+  <% if can? :edit, Address %>
+  <%= f.button :submit, "Save " + @address.address_type.titlecase %>
+  <% end %>
+  <%= link_to 'Delete', address_path(@address, referrer: @referrer), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => "btn btn-small" unless @address.new_record? %>
+  <%= link_to 'Back to ' + @addressable.class.to_s, @addressable, :class => "btn btn-small" %>
+</div>
+<% end %>
+
+<script type="text/javascript">
+  tab_field_forms["form_for_address"] = [
+    "address_address_title",
+    "address_address_description",
+    "address_address_address_1",
+    "address_address_address_2",
+    "address_address_city",
+    "address_address_state",
+    "address_address_country",
+    "address_address_zipcode",
+    "address_address_telephone",
+    "address_address_fax",
+    "address_address_email",
+    "address_address_website",
+    "address_address_notes"
+  ];
+</script>
