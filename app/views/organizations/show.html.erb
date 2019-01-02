@@ -33,7 +33,7 @@
   <!-- Tabs Heading -->
   <div class="tabsbar">
     <ul>
-      <li class="glyphicons folder_open">
+      <li class="glyphicons folder_open tab2-4">
         <a href="#tab2-4" data-toggle="tab">
           <i></i>Addresses<strong></strong>
         </a>
@@ -150,6 +150,14 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+    var data = '<%= params[:tab] %>'
+    if (data != ''){
+      $(".tabsbar li").removeClass("active");
+      $(".tab-content div").removeClass("active");
+      $(('#'+data)).addClass('active')
+      $(('.'+data)).addClass('active')
+    }
+
     $('.multi_select_box1').select2({
       placeholder: "Select options"
     });
