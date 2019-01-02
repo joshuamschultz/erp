@@ -36,6 +36,7 @@ class Item < ActiveRecord::Base
 
   (validates_uniqueness_of :item_part_no if validates_length_of :item_part_no, :minimum => 2, :maximum => 50) if validates_presence_of :item_part_no
 
+  # TODO: this isn't working, so fix and then uncomment the item model call for the index view in controller#index
   scope :item_with_recent_revisions, -> { joins(:item_revisions).where('item_revisions.latest_revision = ?', true) }
 
   after_initialize :default_values
