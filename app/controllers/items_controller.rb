@@ -20,7 +20,7 @@ class ItemsController < ApplicationController
     else
       # NOTE: commented until the scope is fixed. 
      #@items = Item.item_with_recent_revisions.order('item_part_no asc')
-     @items = Item.all
+     @items = Item.all.order('item_part_no asc')
     end
 
     #respond_to do |format|
