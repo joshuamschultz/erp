@@ -136,7 +136,7 @@
       <%= form_tag(populate_organization_path(type: "process"), method: "post") do %>
       <%= select_tag "processes[]", options_for_select(ProcessType.all.map {|process| [process.process_short_name, process.id]},
           @organization.organization_processes.empty? ? [] : @organization.organization_processes.collect(&:process_type_id)),
-          :multiple => true, :size => 5, :class => "multi_select_box" %>
+          :multiple => true, :size => 5, :class => "multi_select_box1 w-100 select_radious" %>
       <% end %>
     </div>
   </div>
@@ -149,7 +149,10 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function () {
+  $(document).ready(function() {
+    $('.multi_select_box1').select2({
+      placeholder: "Select options"
+    });
   <% user = 'false' %>
   <% if user_signed_in? &&  !current_user.is_vendor? %>
   <% user = 'true' %>
@@ -234,7 +237,8 @@ function get_address(type) {
     address_label = "Contacts";
     address_button = "Contact"
   }
-  var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">' + address_label + '</h4><span class="span6 heading right"><a href="/contacts/new?contact_type=' + type + '&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New ' + address_button + '</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>Description</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>' $('#org_contact').html(adress);
+  var adress = '<div class="widget-head"><div class="row-fluid"><h4 class="span6 heading">' + address_label + '</h4><span class="span6 heading right"><a href="/contacts/new?contact_type=' + type + '&amp;object_id=<%= @organization.id %>" class="btn btn-mini btn-success">New ' + address_button + '</a></span></div></div><div class="widget-body"><table id="table_report_contacts" class="dynamicTable table table-striped table-bordered table-condensed row-fluid"><thead><tr><th>Title</th><th>Description</th><th>City</th><th>Telephone</th><th>Email</th><th>Fax</th><th></th></tr></thead><tbody></tbody></table></div></div>'
+  $('#org_contact').html(adress);
 
   data_table_report_contacts = $('#table_report_contacts').dataTable({
     "bAutoWidth": false,
@@ -382,6 +386,9 @@ function get_so_header(status) {
 .span8.ed {
   float: left;
   width: 60%;
+}
+.multi_select_box1 .select2-input{
+  width: 100% !important;
 }
 
 </style>
