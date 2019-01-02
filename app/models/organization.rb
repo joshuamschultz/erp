@@ -58,6 +58,7 @@ class Organization < ActiveRecord::Base
 
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :contacts, as: :contactable, dependent: :destroy
+  has_many :addresses, as: :addressable, dependent: :destroy
   has_many :organization_processes, dependent: :destroy
   has_many :process_types, through: :organization_processes
   has_many :gauges, dependent: :destroy
@@ -118,12 +119,21 @@ class Organization < ActiveRecord::Base
   # Creates a Contact for the organization with contact_type 'address'
   # The information mirrors the organizational entity.
   def process_after_create
-    contact = contacts.build(contact_address_1: organization_address_1, contact_address_2: organization_address_2,
-                             contact_city: organization_city, contact_country: organization_country, contact_description: organization_description,
-                             contact_email: organization_email, contact_fax: organization_fax, contact_notes: organization_notes,
-                             contact_state: organization_state, contact_telephone: organization_telephone, contact_title: organization_name,
-                             contact_website: organization_website, contact_zipcode: organization_zipcode, contact_type: 'address')
-    contact.save
+    # Note: Both contacts and addresses fields are same so when organization create then address info will store in Address table so commented the code for contact :- Vishal
+
+    # contact = contacts.build(contact_address_1: organization_address_1, contact_address_2: organization_address_2,
+    #                          contact_city: organization_city, contact_country: organization_country, contact_description: organization_description,
+    #                          contact_email: organization_email, contact_fax: organization_fax, contact_notes: organization_notes,
+    #                          contact_state: organization_state, contact_telephone: organization_telephone, contact_title: organization_name,
+    #                          contact_website: organization_website, contact_zipcode: organization_zipcode, contact_type: 'address')
+    # contact.save
+
+     address = addresses.build(address_address_1: organization_address_1, address_address_2: organization_address_2,
+                             address_city: organization_city, address_country: organization_country, address_description: organization_description,
+                             address_email: organization_email, address_fax: organization_fax, address_notes: organization_notes,
+                             address_state: organization_state, address_telephone: organization_telephone, address_title: organization_name,
+                             address_website: organization_website, address_zipcode: organization_zipcode, address_type: 'address')
+    address.save
   end
 
   # Creates a Zipcode Territory if one does not already exist.

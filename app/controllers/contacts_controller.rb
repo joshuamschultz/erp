@@ -84,7 +84,7 @@ class ContactsController < ApplicationController
     @contactable = Organization.find_by_id(params[:object_id])
     if @contactable
       @contact = Contact.new
-      @contact.contact_type = params[:contact_type] || 'address'
+      @contact.contact_type = params[:contact_type] || 'contact'
       @contact.contactable_id = @contactable.id
       @contact.contactable_type = @contactable.class
       respond_with @contact
