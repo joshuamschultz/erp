@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_131955) do
+ActiveRecord::Schema.define(version: 2019_01_07_124633) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "addressable_id"
@@ -461,8 +461,6 @@ ActiveRecord::Schema.define(version: 2018_11_13_131955) do
     t.string "item_alt_description"
     t.text "item_alt_notes"
     t.boolean "item_alt_active"
-    t.integer "item_alt_created_id"
-    t.integer "item_alt_updated_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "organization_id"
@@ -583,9 +581,7 @@ ActiveRecord::Schema.define(version: 2018_11_13_131955) do
     t.string "item_part_no"
     t.integer "item_quantity_on_order"
     t.integer "item_quantity_in_hand"
-    t.boolean "item_active"
-    t.integer "item_created_id"
-    t.integer "item_updated_id"
+    t.boolean "item_active", default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "lot_count"

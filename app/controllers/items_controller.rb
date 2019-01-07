@@ -1,12 +1,10 @@
 class ItemsController < ApplicationController
   before_action :set_page_info
   before_action :set_autocomplete_values, only: [:create]
-  before_action :view_permissions, except: [:index, :show]
+  before_action :set_item, only: %i[show edit update destroy]
 
   autocomplete :item, :item_part_no, :full => true
 
-  # GET /items
-  # GET /items.json
   def index
     if params[:organization_id].present?
       @organization = Organization.find(params[:organization_id])
@@ -86,85 +84,39 @@ class ItemsController < ApplicationController
     #end
   end
 
-  # GET /items/1
-  # GET /items/1.json
   def show
-    @item = Item.find(params[:id])
-    @quote_type_item = params[:type] if params[:type]
-    if @item
-      @item_revision = @item.item_revisions.find_by_id(params[:revision_id])
-      @item_revision = @item.current_revision unless @item_revision
-      @attachable = @item_revision
-      @po_lines = PoLine.where(item_revision_id: @item_revision.id)
-    end
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @item_revision }
-    end
+    @item_revision = @item.item_revisions.find_by_id(params[:revision_id])
+    @item_revision = @item.current_revision unless @item_revision
+    @attachable = @item_revision
+    @po_lines = PoLine.where(item_revision_id: @item_revision.id)
   end
 
-  # GET /items/new
-  # GET /items/new.json
   def new
     @item = Item.new
     @item.item_revisions.build
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @item }
-    end
   end
 
-  # GET /items/1/edit
   def edit
-    @item = Item.find(params[:id])
   end
 
-  # POST /items
-  # POST /items.json
   def create
     @item = Item.new(item_params)
-
-    respond_to do |format|
-      if @item.save
-        ItemRevision.process_item_associations(@item.current_revision, params)
-        format.html { redirect_to item_path(@item), notice: 'Item was successfully created.' }
-        format.json { render json: @item, status: :created, location: @item }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.save
+      ItemRevision.process_item_associations(@item.current_revision, params)
+      redirect_to items_path
+    else
+      render :new
     end
   end
 
-  # PUT /items/1
-  # PUT /items/1.json
   def update
-    @item = Item.find(params[:id])
-
-    respond_to do |format|
       if @item.update_attributes(item_params)
-        # ItemRevision.process_item_associations(@item.current_revision, params)
-        format.html { redirect_to item_path(@item), notice: 'Item was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+        ItemRevision.process_item_associations(@item.current_revision, params)
     end
   end
 
-  # DELETE /items/1
-  # DELETE /items/1.json
   def destroy
-    @item = Item.find(params[:id])
     @item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to items_path }
-      format.json { head :no_content }
-    end
   end
 
   def set_autocomplete_values
@@ -178,12 +130,6 @@ class ItemsController < ApplicationController
 
   def set_page_info
     @menus[:inventory][:active] = "active"
-  end
-
-  def view_permissions
-    if  user_signed_in? && ( current_user.is_logistics?  || current_user.is_vendor? || current_user.is_customer?)
-      authorize! :edit, Item
-    end
   end
 
   private

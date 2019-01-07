@@ -16,23 +16,8 @@
 #
 
 class ItemAltName < ActiveRecord::Base
-  attr_accessor :item_alt_active, :item_alt_created_id, :item_alt_description, 
-  :item_alt_identifier, :item_alt_notes, :item_alt_updated_id, :item_id, :organization_id
-  
-  after_initialize :default_values
-
-  def default_values
-    self.item_alt_active = true if self.item_alt_active.nil?
-  end
-
   belongs_to :item
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("customer").id}, optional: true
-  
-  #validates :item_id, :uniqueness => {:scope => :organization_id, :message => "already exists for the customer!" }
-
-  # validates_uniqueness_of :item_alt_identifier
-  validates_presence_of :item#, :organization
-  validates_length_of :item_alt_identifier, :maximum => 50 if validates_presence_of :item_alt_identifier
 
   has_many :item_selected_names, :dependent => :destroy
   has_many :item_revisions, :through => :item_selected_names
@@ -43,6 +28,11 @@ class ItemAltName < ActiveRecord::Base
 
   has_many :transferring_po_lines, :foreign_key => "alt_name_transfer_id", :class_name => "PoLine"
   has_many :inventory_adjustments, :dependent => :destroy
+
+  # validates :item_id, :uniqueness => {:scope => :organization_id, :message => "already exists for the customer!" }
+  # validates_uniqueness_of :item_alt_identifier
+  validates_presence_of :item#, :organization
+  validates_length_of :item_alt_identifier, :maximum => 50 if validates_presence_of :item_alt_identifier
 
   def alt_item_name
       self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")

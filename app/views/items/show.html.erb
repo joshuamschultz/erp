@@ -1,14 +1,11 @@
 <div class="row-fluid">
-  <h4 class="span3 left">Item Info<%#= @item.item_part_no %>
+  <h4 class="span3 left"><%= @item.item_part_no %>
     <span></span>
   </h4>
   <span class="span9 right">
     <%= link_to 'Back to Current Revision', @item, :class => "btn btn-small btn-success" unless @item_revision == @item.current_revision %>
-    <% if can? :edit, Item %>
     <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
     <%= link_to 'Edit Revision', edit_item_item_revision_path(@item, @item_revision), :class => "btn btn-small" if @item_revision %>
-    <% end %>
-    <%#= link_to 'Change Part No', edit_item_path(@item), :class => "btn btn-small" %>
     <%= link_to 'Back to Items', items_path, :class => "btn btn-small" %>
   </span>
 </div>
