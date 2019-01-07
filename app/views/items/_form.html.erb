@@ -1,68 +1,38 @@
 <%= simple_form_for(@item, :html => {:id => "form_for_items",:class => "form-horizontal"}) do |f| %>
-  <%= f.error_notification %>
+<%= f.error_notification %>
 
-  <div class="form-inputs">
+<div class="form-inputs">
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
     <%= f.input :item_alt_part_no, :label => "Alt Part No" %>
-    
+
     <% unless @item.persisted? %>
-    <%= f.simple_fields_for :item_revisions do |g| %>
-            <%#= g.input :item_name, :label => "Name" %>
-
-            <%= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Part Name" %>
-
+        <%= f.simple_fields_for :item_revisions do |g| %>
+            <%= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Commodity Type" %>
             <%= g.input :item_description, :label => "Description" %>
-
-            <!-- <div class="control-group">
-                <label for="item_processes" class="optional control-label">Alt Names</label>
-                <div class="controls">
-                    <input type="hidden" id="item_names" style="width: 100%;" name="alt_names" value="<%#= @item.current_revision.item_alt_names.collect(&:item_alt_identifier).join(",") if @item.persisted? %>" />
-                </div>
-            </div> -->
-
             <%= g.input :item_revision_name, :label => "Revision" %>
-            <%#= g.input :item_revision_weekly_usage, :label => "Weekly Usage" %>
-            <%#= g.input :item_revision_lead_time, :label => "Lead Time" %>
             <%= g.input :item_revision_date, :as => "string", :label => "Revision Date" %>
 
             <%#= g.association :organization, :label => "Vendor", :label_method => 'organization_short_name',:label_value => "id", :include_blank => false %>
-
             <%#= g.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "vendor"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Vendor" %>
-
             <%#= hidden_field_tag :organization_id, (g.object.organization.id if g.object && g.object.organization) %>
-
             <%#= hidden_field_tag :org_organization_id, (g.object.organization.id if g.object && g.object.organization) %>
-
             <%#= g.association :vendor_quality, :label => "Quality", :label_method => 'quality_name', :label_value => "id", :include_blank => false %>
             <%#= g.input :item_cost, :label => "Cost" %>
-             <%= g.input :item_tooling, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Tooling" %>
 
-            <!-- <div class="control-group">
-                <label for="item_prints" class="optional control-label">Prints</label>
-                <div class="controls">
-                    <%#= select_tag "prints[]", options_for_select(Print.all.map {|print| [print.print_identifier, print.id]}, @item.persisted? ? (@item.current_revision.item_prints.empty? ? [] : @item.item_prints.collect(&:print_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_prints" %>
-                </div>
-            </div> -->
-
-            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', :label => "Print" %>             
-
+            <%= g.input :item_tooling, :input_html => { :class => 'commoncls', :min => 0, :step => 'any' }, :label => "Tooling" %>
+            
+            <%= g.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', :label => "Print" %>
             <div class="control-group">
                 <label for="item_processes" class="optional control-label"></label>
-                <div class="controls"> <%= link_to 'New Print', new_print_path, :class => "btn btn-small", :target => "_blank" %> </div>
+                <div class="controls">
+                    <%= link_to 'New Print', new_print_path, :class => "btn btn-small", :target => "_blank" %>
+                </div>
             </div>
-
             <%= hidden_field_tag :print_id, (g.object.print.id if g.object && g.object.print) %>
             <%= hidden_field_tag :org_print_id, (g.object.print.id if g.object && g.object.print) %>
 
-            <!-- <div class="control-group">
-                <label for="item_materials" class="optional control-label">Materials</label>
-                <div class="controls">
-                    <%#= select_tag "materials[]", options_for_select(Material.all.map {|material| [material.material_short_name, material.id]}, @item.persisted? ? (@item.current_revision.item_materials.empty? ? [] : @item.item_materials.collect(&:material_id)) : []), :multiple => true, :size => 5, :class => "multi_select_box", :id => "item_materials" %>
-                </div>
-            </div> -->
 
             <%= g.association :material, :url => autocomplete_material_material_short_name_materials_path, :as => :autocomplete, :id_element => '#material_id', :label => "Material" %>
-
             <%= hidden_field_tag :material_id, (g.object.material.id if g.object && g.object.material) %>
             <%= hidden_field_tag :org_material_id, (g.object.material.id if g.object && g.object.material) %>
 
@@ -80,44 +50,53 @@
                 </div>
             </div>
 
-            <%= g.input :item_notes, :label => "PO Comments" %> 
+            <%= g.input :item_notes, :label => "PO Comments" %>
 
-            <script type="text/javascript">
-                $(document).ready(function(){ 
-                    // $("#item_item_revisions_attributes_0_organization_id").val("<%#= g.object.organization.organization_name if g.object && g.object.organization %>");
-                    $("#item_item_revisions_attributes_0_print_id").val("<%= g.object.print.print_identifier if g.object && g.object.print %>");
-                    $("#item_item_revisions_attributes_0_material_id").val("<%= g.object.material.material_short_name if g.object && g.object.material %>");
-                });
-            </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                // $("#item_item_revisions_attributes_0_organization_id").val("<%#= g.object.organization.organization_name if g.object && g.object.organization %>");
+                $("#item_item_revisions_attributes_0_print_id").val(
+                    "<%= g.object.print.print_identifier if g.object && g.object.print %>");
+                $("#item_item_revisions_attributes_0_material_id").val(
+                    "<%= g.object.material.material_short_name if g.object && g.object.material %>");
+            });
+        </script>
+        <% end %>
     <% end %>
-    <% end %>
-    
-    <%#= f.input :item_quantity_on_order, :label => "Quantity On Order" %>
-    <%#= f.input :item_quantity_in_hand, :label => "Quantity In Hand" %>   
 
     <%= f.input :item_active, :label => "Active" %>
-  </div>
+</div>
 
-  <div class="separator bottom"></div>
+<div class="separator bottom"></div>
 
-  <div class="form-actions">
+<div class="form-actions">
     <%= f.button :submit, "Submit" %>
     <%= link_to 'Delete', item_path(@item), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @item.new_record? %>
     <%= link_to 'Back', @item, :class =>"btn" %>
-  </div>
+</div>
 <% end %>
 
 <script type="text/javascript">
     <% unless @item.persisted? %>
-        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name", "item_item_revisions_attributes_0_item_revision_name", "item_item_revisions_attributes_0_item_revision_date","item_item_revisions_attributes_0_item_cost", "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id", "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes", "item_item_active"];
+        tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_revisions_attributes_0_item_name",
+            "item_item_revisions_attributes_0_item_revision_name",
+            "item_item_revisions_attributes_0_item_revision_date", "item_item_revisions_attributes_0_item_cost",
+            "item_item_revisions_attributes_0_item_tooling", "item_item_revisions_attributes_0_print_id",
+            "item_item_revisions_attributes_0_material_id", "item_item_revisions_attributes_0_item_notes",
+            "item_item_active"
+        ];
 
-        <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %> 
+        <% date_box_date = @item.new_record? ? Date.today : @item.item_revision_date %>
 
-        date_box_fields = date_box_fields.concat([{"name":"item_item_revisions_attributes_0_item_revision_date", "value":"<%= date_box_date %>"}]);
+        date_box_fields = date_box_fields.concat([{
+            "name": "item_item_revisions_attributes_0_item_revision_date",
+            "value": "<%= date_box_date %>"
+        }]);
     <% else %>
         tab_field_forms["form_for_items"] = ["item_item_part_no", "item_item_active"];
     <% end %>
 </script>
+
 <style type="text/css">
     #item_item_revisions_attributes_0_item_description {
         height: 50px;

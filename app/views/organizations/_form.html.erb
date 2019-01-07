@@ -60,7 +60,9 @@
 <script type="text/javascript">
   var org_form_fields0 = [];
 
-  var org_form_fields1 = ["organization_organization_name", "organization_organization_short_name", "organization_organization_description"];
+  var org_form_fields1 = ["organization_organization_name", "organization_organization_short_name",
+    "organization_organization_description"
+  ];
 
   var org_form_fields2 = [
     "organization_customer_contact_type_id",
@@ -81,26 +83,27 @@
   var customer_fields = ["organization_customer_quality_id", "organization_customer_min_quality_id"];
 
   var vendor_fields = ["organization_vendor_quality_id", "organization_vendor_expiration_date"];
-  $('#organization_organization_telephone, #organization_organization_fax').val(function(i, text) {
+  $('#organization_organization_telephone, #organization_organization_fax').val(function (i, text) {
     return text.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, '$1-$2-$3');
   });
 
   $(document).ready(function () {
     var num = "8989889898"
-    var test = "<%= number_to_phone("num") %>"
-      $("#organization_organization_telephone, #organization_organization_fax").keypress(function (e) {
-          if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-              return false;
-          }
-          var curchr = this.value.length;
-          var curval = $(this).val();
-          if (curchr == 3 && e.which != 8 && e.which != 0) {
-              $(this).val(curval + "-");
-          } else if (curchr == 7 && e.which != 8 && e.which != 0) {
-              $(this).val(curval + "-");
-          }
-          $(this).attr('maxlength', '12');
-      });
+    var test = "<%= number_to_phone("
+    num ") %>"
+    $("#organization_organization_telephone, #organization_organization_fax").keypress(function (e) {
+      if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+        return false;
+      }
+      var curchr = this.value.length;
+      var curval = $(this).val();
+      if (curchr == 3 && e.which != 8 && e.which != 0) {
+        $(this).val(curval + "-");
+      } else if (curchr == 7 && e.which != 8 && e.which != 0) {
+        $(this).val(curval + "-");
+      }
+      $(this).attr('maxlength', '12');
+    });
     <% user = 'false' %>
     <% if user_signed_in? &&  !current_user.is_vendor? %>
     <% user = 'true' %>
@@ -134,7 +137,8 @@
       org_form_fields0.push($(this).attr('id'));
     });
 
-    tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, customer_fields, org_form_fields2);
+    tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, customer_fields,
+      org_form_fields2);
 
     organization_type_changed($('.organization_type_option:checked').parent().text());
 
@@ -165,17 +169,20 @@
       }
     });
   }
+
   function organization_type_changed(org_type) {
     if (org_type == "Customer") {
       $('#customer_part').show();
       $('#vendor_part').hide();
       // $('#organization_organization_name').focus();
-      tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, customer_fields, org_form_fields2);
+      tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, customer_fields,
+        org_form_fields2);
     } else if (org_type == "Vendor") {
       $('#customer_part').hide();
       $('#vendor_part').show();
       // $('#organization_vendor_quality_id').focus();
-      tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, vendor_fields, org_form_fields2);
+      tab_field_forms["form_for_oraganizations"] = org_form_fields0.concat(org_form_fields1, vendor_fields,
+        org_form_fields2);
     } else {
       $('#customer_part').hide();
       $('#vendor_part').hide();
@@ -187,10 +194,8 @@
 
   <% date_box_date = @organization.new_record? ? Date.today : @organization.vendor_expiration_date %>
 
-  date_box_fields = date_box_fields.concat([
-    {
-      "name": "organization_vendor_expiration_date",
-      "value": "<%= date_box_date %>"
-    }
-  ]);
+  date_box_fields = date_box_fields.concat([{
+    "name": "organization_vendor_expiration_date",
+    "value": "<%= date_box_date %>"
+  }]);
 </script>
