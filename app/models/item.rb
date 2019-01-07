@@ -48,30 +48,7 @@ class Item < ActiveRecord::Base
   end
 
   def create_alt_name
-      self.item_alt_names.new(:item_alt_identifier => self.item_part_no).save(:validate => false)
-
-      quotes_lines = QuoteLine.where("item_name_sub = ?",self.item_part_no)
-      customer_quote_lines = CustomerQuoteLine.where("item_name_sub = ?", self.item_part_no)
-      item_alt_name = ItemAltName.find_by_item_alt_identifier(self.item_part_no)
-      quotes_lines.each do |quote_line|
-        quote_line.item_id = self.id
-        quote_line.item_revision_id = self.current_revision.id
-        quote_line.item_alt_name_id = item_alt_name.id
-        quote_line.item_name_sub = ""
-        quote_line.save(:validate => false)
-      end
-
-      customer_quote_lines.each do |customer_quote_line|
-        customer_quote_line.item_id = self.id
-        customer_quote_line.item_revision_id = self.current_revision.id
-        customer_quote_line.item_alt_name_id = item_alt_name.id
-        customer_quote_line.item_name_sub = ""
-        customer_quote_line.save(:validate => false)
-      end
-      unless self.item_alt_part_no == ""
-        self.item_alt_names.new(:item_alt_identifier => self.item_alt_part_no).save(:validate => false)
-      end
-
+      self.item_alt_names.new(item_alt_identifier: self.item_part_no).save(validate: false)
   end
 
   def update_alt_name
