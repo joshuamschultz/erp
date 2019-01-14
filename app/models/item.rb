@@ -32,7 +32,7 @@ class Item < ActiveRecord::Base
   has_many :inventory_adjustments, dependent: :destroy
   has_many :item_lots
 
-  accepts_nested_attributes_for :item_revisions, allow_destroy: true
+  accepts_nested_attributes_for :item_revisions, allow_destroy: true, reject_if: :all_blank
 
   validates :item_part_no, presence: true, length: { in: 2..50 }, uniqueness: true
 
