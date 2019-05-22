@@ -11,7 +11,7 @@
             <%= simple_form_for([@so_header, @so_line], :html => {:id => "form_for_so_line",:class => "form-horizontal"}) do |f| %>
                 <%= f.error_notification %>     
 
-                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path(organization_id: @so_header.organization.id), :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %>
+                <%= f.association :item_alt_name, :url => autocomplete_item_alt_name_item_alt_identifier_item_alt_names_path, :as => :autocomplete, :id_element => '#alt_name_id', required: true, :label => "Item" %> <!-- #organization_id: @so_header.organization.id) -->
 
                 <%= hidden_field_tag :alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
