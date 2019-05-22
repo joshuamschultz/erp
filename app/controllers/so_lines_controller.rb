@@ -157,9 +157,10 @@ class SoLinesController < ApplicationController
   end
 
   def so_line_params
-    params.require(:so_line).permit(:id, :so_header_id, :item_id, :item_revision_id, :item_alt_name_id, :organization_id, :vendor_quality_id,
-                                    :customer_quality_id, :so_line_cost, :so_line_price, :so_line_quantity, :so_line_freight, :so_line_status, :so_line_notes, :so_line_active,
-                                    :so_line_created_id, :so_line_updated_id, :created_at, :updated_at, :so_line_shipped, :so_line_sell, :so_line_vendor_po, :po_header_id, :po)
+    params.require(:so_line).permit(:so_line_cost, :so_line_created_id, :so_line_freight, :so_line_price, :so_line_quantity,
+                                    :so_line_status, :so_line_updated_id, :organization_id, :item_id, :so_header_id, :item_alt_name_id,
+                                    :so_line_notes, :so_line_active, :vendor_quality_id, :customer_quality_id, :so_line_shipped, :so_line_sell,
+                                    :so_line_vendor_po, :po_header_id, :po, :item_revision_id)
   end
 
   def genarate_pdf
