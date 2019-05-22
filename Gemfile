@@ -93,7 +93,7 @@ gem 'bootstrap-datetimepicker-rails'
 #gem 'momentjs-rails', '~> 2.9', github: 'derekprior/momentjs-rails'
 
 gem 'paperclip', '~> 5.0.0.beta1'
-#gem 'rmagick'
+gem 'rmagick'
 gem 'aws-sdk-s3', require: false
 
 gem 'nested_scaffold'
