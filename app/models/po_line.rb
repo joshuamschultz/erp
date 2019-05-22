@@ -31,9 +31,8 @@
 #
 
 class PoLine < ActiveRecord::Base
-
   belongs_to :po_header
-  belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("customer").id}
+  belongs_to :organization, -> { where organization_type_id: MasterType.find_by_type_value("customer").id }
   belongs_to :so_line
   belongs_to :vendor_quality
   belongs_to :customer_quality
@@ -49,7 +48,7 @@ class PoLine < ActiveRecord::Base
   has_one :quote_line
   has_many :checklists
 
-  has_one :notification, :as => :notable,  dependent: :destroy
+  has_one :notification, :as => :notable, dependent: :destroy
 
   accepts_nested_attributes_for :notification, :allow_destroy => true
 
@@ -93,8 +92,9 @@ class PoLine < ActiveRecord::Base
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(1) : self.po_header.po_identifier
     po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
     po_header_status = (po_status_count == 0) ? "closed" : "open"
-    self.po_header.update_attributes(po_identifier: po_identifier,po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
+    self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
     generate_pdf
+    #TODO: this slows down, need in background job - pdf generate
   end
 
   def process_before_save
@@ -102,13 +102,13 @@ class PoLine < ActiveRecord::Base
     if self.po_header.po_is?("direct")
       so_line = self.so_line.present? ? self.so_line : SoLine.new
       so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id,
-        customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost,
-        so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+                                customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost,
+                                so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
       self.so_line_id = so_line.id
-    # if transfer PO setup sales order lines (and shipment lines)
+      # if transfer PO setup sales order lines (and shipment lines)
     elsif self.po_header.po_is?("transer")
       so_line = self.so_line.present? ? self.so_line : SoLine.new
-      so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id ,so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+      so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
       self.po_header.so_header.update_attributes(organization_id: self.organization_id)
       self.so_line_id = so_line.id
     end
@@ -120,14 +120,14 @@ class PoLine < ActiveRecord::Base
     po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(0) : self.po_header.po_identifier
     po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
     po_header_status = (po_status_count == 0) ? "closed" : "open"
-    i= 1
+    i = 1
     loop do
       i += 1
-      po_header = PoHeader.where('po_identifier = ? && id != ?', po_identifier,self.po_header.id ).first
-      break unless(po_header.present?)
+      po_header = PoHeader.where("po_identifier = ? && id != ?", po_identifier, self.po_header.id).first
+      break unless (po_header.present?)
       po_identifier = PoHeader.new_po_identifier(i)
     end
-    self.po_header.update_attributes(po_identifier: po_identifier,po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
+    self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
     generate_pdf
   end
 
@@ -138,23 +138,22 @@ class PoLine < ActiveRecord::Base
       obj[key] = value
     end
     if po_line.po_header != nil
-      if User.current_user.present? &&  !User.current_user.is_operations? && !User.current_user.is_clerical?
+      if User.current_user.present? && !User.current_user.is_operations? && !User.current_user.is_clerical?
         obj[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
         obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization),po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
+        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
         obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
-        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality),po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality),po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name) || ""
+        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
+        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name) || ""
         obj[:po_line_quantity] = po_line.po_line_quantity
         obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
         obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
 
         unless shipment
-
           obj[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
           obj[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
-          obj[:po_line_unit] =  "<div class='po_line_unit_input'><input type='text'></div>"
-          obj[:po_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/po_headers/#{po_line.po_header.id}' style='color: #8ec657;padding-left:10px;' >"+po_line.po_header.po_identifier+"</a> "
+          obj[:po_line_unit] = "<div class='po_line_unit_input'><input type='text'></div>"
+          obj[:po_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/po_headers/#{po_line.po_header.id}' style='color: #8ec657;padding-left:10px;' >" + po_line.po_header.po_identifier + "</a> "
           obj[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
           obj[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success po_#{po_line.po_header.id}' href='#'>Fill</a></div>"
 
@@ -167,10 +166,10 @@ class PoLine < ActiveRecord::Base
       else
         obj[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
         obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization),po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
+        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
         obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
         obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization ) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
         obj[:po_line_quantity] = po_line.po_line_quantity
         obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
         obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
@@ -178,10 +177,9 @@ class PoLine < ActiveRecord::Base
         unless shipment
           obj[:po_line_shipping] = ""
           obj[:po_line_shelf] = ""
-          obj[:po_line_unit] =  ""
+          obj[:po_line_unit] = ""
           obj[:po_identifier] += ""
           obj[:po_identifier] += ""
-
 
           obj[:links] = ""
           obj[:links] += ""
@@ -194,23 +192,23 @@ class PoLine < ActiveRecord::Base
   end
 
   def generate_pdf
-    html = CommonActions.purchase_report(self.po_header.id)+'<style>#blank_page{display: none;} .art-01.art-04.art-07{  min-height: 445px;} .art-01.art-04{  min-height: 445px;} article.art-05{min-height: 137px;} article.art-01{min-height: 70px;} article.art-02{margin-top: 61px;height: 80px;} @page{size:21cm 29.7cm;margin: 12mm 5mm 2mm 10mm;}</style>'
+    html = CommonActions.purchase_report(self.po_header.id) + "<style>#blank_page{display: none;} .art-01.art-04.art-07{  min-height: 445px;} .art-01.art-04{  min-height: 445px;} article.art-05{min-height: 137px;} article.art-01{min-height: 70px;} article.art-02{margin-top: 61px;height: 80px;} @page{size:21cm 29.7cm;margin: 12mm 5mm 2mm 10mm;}</style>"
     # if Rails.env == "production"
     #   # html = "http://erp.chessgroupinc.com/po_headers/#{self.po_header.id}/purchase_report"
     # end
-    kit = PDFKit.new(html, :page_size => 'A4' )
+    kit = PDFKit.new(html, :page_size => "A4")
     # Get an inline PDF
     pdf = kit.to_pdf
     p pdf
     # Save the PDF to a file
-    path = Rails.root.to_s+"/public/purchase_report"
+    path = Rails.root.to_s + "/public/purchase_report"
     if File.directory? path
-    path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
-    kit.to_file(path)
+      path = path + "/" + self.po_header.po_identifier.to_s + ".pdf"
+      kit.to_file(path)
     else
-    Dir.mkdir path
-    path = path+"/"+self.po_header.po_identifier.to_s+".pdf"
-    kit.to_file(path)
+      Dir.mkdir path
+      path = path + "/" + self.po_header.po_identifier.to_s + ".pdf"
+      kit.to_file(path)
     end
   end
 end
