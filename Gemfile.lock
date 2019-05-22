@@ -316,6 +316,7 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
+    rmagick (2.16.0)
     role_model (0.8.2)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
@@ -459,6 +460,7 @@ DEPENDENCIES
   rb-readline
   redis (~> 4.0.1)
   responders
+  rmagick
   role_model
   rspec-rails (~> 3.7)
   sass-rails (>= 3.2)
