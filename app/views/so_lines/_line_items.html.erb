@@ -4,89 +4,58 @@
         <div class="row-fluid">
             <h4 class="span6 heading">SO Line Items</h4>
             <span class="span6 heading right">
-            <% if can? :edit , SoLine %>
-                <%= link_to 'New Line Item', new_so_header_so_line_path(@so_header), :class => "btn btn-mini btn-success" %>
-            <% end %>
+
+                <%= link_to 'New Line Item', new_so_header_so_line_path(@so_header), class: "btn btn-mini btn-success" %>
+
             </span>
-        </div> 
-    </div>
-    <!-- // Widget heading END -->
-<% if user_signed_in? && current_user.is_customer? %>
-    <% if can? :view, SoLine %>
-         <div class="widget-body">
-            <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
-                <thead>
-                  <tr>
-                    <th>Part No</th>                   
-                    <th>Sell</th>      
-                    <th>Quantity</th>
-                    <th>Status</th>              
-                    <th></th>
-                  </tr>
-                </thead>
-                <body>
-                    
-                </body>
-            </table>
         </div>
     </div>
 
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => so_header_so_lines_path(@so_header), :extras => {:slno => false},
-            :columns => '[
-                            { "mData": "item_part_no" },                            
-                            { "mData": "so_line_sell" },
-                            { "mData": "so_line_quantity" },
-                            { "mData": "so_line_status" },
-                            { "mData": "links", "bSortable": false, "bSearchable": false }
-                            
-                        ]'
-        } 
-    %>
-
-    <% end %>
-<% else %>
-            <div class="widget-body">
-            <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
-                <thead>
-                  <tr>
+    <div class="widget-body">
+        <table id="table_report_items" class="dynamicTable table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
                     <th>Part No</th>
                     <th>Vendor</th>
-                    <th>Vendor PO</th>                    
+                    <th>Vendor PO</th>
                     <th>Status</th>
-                    <th>Sell</th>      
+                    <th>Sell</th>
                     <th>Quantity</th>
-                    <th>Freight</th>
-                    <th>Total</th>                
+                    <th>Total</th>
                     <th></th>
-                  </tr>
-                </thead>
-                <body>
-                    
-                </body>
-            </table>
-        </div>
+                </tr>
+            </thead>
+            <tbody>
+                <% @so_header.so_lines.each do |so_line| %>
+                <tr>
+                    <th><%= link_to so_line.item_alt_name.item_alt_identifier, item_path(so_line.item) %></th>
+                    <th><%= link_to so_line.po_header.organization.organization_name, organization_path(so_line.po_header.organization) if so_line.po_header %></th>
+                    <th><%= link_to so_line.po_header.po_identifier, po_header_path(so_line.po_header) if so_line.po_header %></th>
+                    <th><%= so_line.so_line_status %></th>
+                    <th><%= so_line.so_line_sell %></th>
+                    <th><%= so_line.so_line_quantity %></th>
+                    <th><%= so_line.so_line_price %></th>
+                    <th><%= link_to "edit", edit_so_header_so_line_path(@so_header, so_line) %></th>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
     </div>
-
-    <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-        {:name => "table_report_items", :path => so_header_so_lines_path(@so_header), :extras => {:slno => false},
-            :columns => '[
-                            { "mData": "item_part_no" },
-                            { "mData": "vendor_name" },
-                            { "mData": "vendor_po" },                            
-                            { "mData": "so_line_status" },
-                            { "mData": "so_line_sell" },
-                            { "mData": "so_line_quantity" },
-                            { "mData": "so_line_freight" },
-                            { "mData": "so_line_price" },
-                            { "mData": "links", "bSortable": false, "bSearchable": false }
-                            
-                        ]'
-        } 
-    %>
+</div>
 
 
 
-<% end %>
+
+
+
+
+
+
+<script type="text/javascript">
+    var dataso_header;
+    $(document).ready(function () {
+        dataso_header = $('#table_report_items').dataTable();
+    });
+</script>
 
 <%= link_to 'SAVE', so_header_path(@so_header), {:style =>'font-size: 14px; padding: 4px 18px; margin-top:5px;',  :class =>"btn btn-mini btn-success btn-007"} if @so_header && @so_line %>
