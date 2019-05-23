@@ -24,15 +24,11 @@
 #
 
 class SoHeader < ActiveRecord::Base
-  include Rails.application.routes.url_helpers
-
-  validates_presence_of :organization
-
   belongs_to :organization
-  belongs_to :bill_to_address, -> { where("contactable_type = ? and contact_type = ?", "Organization", "address") },
-             :class_name => "Contact", :foreign_key => "so_bill_to_id"
-  belongs_to :ship_to_address, -> { where("contactable_type = ? and contact_type = ?", "Organization", "address") },
-             :class_name => "Contact", :foreign_key => "so_ship_to_id"
+  belongs_to :bill_to_address, -> { where("addressable_type = ?", "Organization") },
+             :class_name => "Address", :foreign_key => "so_bill_to_id"
+  belongs_to :ship_to_address, -> { where("addressable_type = ?", "Organization") },
+             :class_name => "Address", :foreign_key => "so_ship_to_id"
 
   has_one :po_header
 
@@ -42,23 +38,14 @@ class SoHeader < ActiveRecord::Base
   has_many :receivables, dependent: :destroy
 
   default_scope { order("created_at DESC") }
+  scope :status_based_sos, lambda { |status| where(:so_status => status) }
 
-  before_create :before_create_level_defaults
+  before_create :set_defaults
 
-  def before_create_level_defaults
+  def set_defaults
     self.so_status = "open"
     self.so_identifier = "Unassigned"
-
-    # self.so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + 1))
-    # self.so_identifier.slice!(2)
-    # self.so_identifier = "S" + self.so_identifier
   end
-
-  def redirect_path
-    so_header_path(self)
-  end
-
-  scope :status_based_sos, lambda { |status| where(:so_status => status) }
 
   def self.new_so_identifier(i)
     so_identifier = Time.now.strftime("%m%y") + ("%03d" % (SoHeader.where("month(created_at) = ?", Date.today.month).count + i))
@@ -84,6 +71,6 @@ class SoHeader < ActiveRecord::Base
   end
 
   def so_report
-    CommonActions.sales_report(self.id).html_safe
+    CommonActions.sales_report(id).html_safe
   end
 end
