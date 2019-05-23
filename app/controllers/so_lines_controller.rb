@@ -126,7 +126,7 @@ class SoLinesController < ApplicationController
     @so_line = @so_header.so_lines.find(params[:id])
 
     respond_to do |format|
-      if @so_line.update_attributes(params[:so_line])
+      if @so_line.update_attributes(so_line_params)
         format.html { redirect_to(new_so_header_so_line_path(@so_header), :notice => "So line was successfully updated.") }
         format.json { head :ok }
       else
