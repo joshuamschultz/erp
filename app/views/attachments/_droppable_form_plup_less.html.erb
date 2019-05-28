@@ -1,34 +1,64 @@
-<!-- Widget -->
-<div class="widget widget-003 ee eee">
-  <!-- Widget heading -->
-  <div class="widget-head">
-    <div class="span6">
-      <h4 class="heading glyphicons file_import">
-        <i></i>Dropzone For Attachments</h4>
-    </div>
-    <div class="span6 right">
-      <%= link_to "Clear", "#", onclick: "plupupload_clear_queue(); return false", class: "btn btn-small btn-success" %>
-    </div>
-  </div>
-  <!-- // Widget heading END -->
+<style>
+  #upload-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999999999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: visibility 175ms, opacity 175ms;
+    display: table;
+    vertical-align: center;
+    text-shadow: 1px 1px 2px #000;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45);
+    font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
+  }
 
-  <div class="widget-body widget-body-002">
-    <!-- Dropzone -->
-    <div id="dropzone">
-      <form action="/attachments?attachment_process_type=droppable&attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>" class="dropzone" method="post" id="attachment_dropzone">
-        <div class="fallback">
-          <input name="file" type="file" multiple/>
+  #dropzone{
+    vertical-align: center;
+    text-align: center;
+  }
+</style>
+
+<!-- Widget -->
+<div class="widget widget-003" style="visibility:hidden; opacity:1" id='upload-container'>
+    <!-- Widget heading -->
+    <div class="widget-head">
+        <div class="span6">
+            <h4 class="heading glyphicons file_import"><i></i>Dropzone For Attachments</h4>
         </div>
-      </form>
+        <div class="span6 right">
+            <%= link_to "Close", "#", onclick: "plupupload_clear_queue(); return false", class: "btn btn-small btn-success" %>
+        </div>
     </div>
-    <div class="separator bottom"></div>
-  </div>
+    <!-- // Widget heading END -->
+    
+    <div class="widget-body widget-body-002"> 
+        <!-- Dropzone -->
+        <div id="dropzone">
+            <form action="/attachments?attachment_process_type=droppable&attachable_id=<%= @attachable.id %>&attachable_type=<%= @attachable.class.name %>" class="dropzone" method="post" id="attachment_dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+            </form>
+            DROP FILES ABOVE HERE....
+        </div>
+        <div class="separator bottom"></div>      
+    </div>
 </div>
 
 <!-- // Widget END -->
 
 <script type="text/javascript">
+
+  document.addEventListener("dragenter", function (e) {
+    document.querySelector("#upload-container").style.visibility = "";
+  });
+
   function plupupload_complete_callback(response) {
+    $("#upload-container")[0].style.visibility = "hidden";
     data_table_report_attachments.fnDestroy();
 
     data_table_report_attachments = $('#table_report_attachments').dataTable({
@@ -55,6 +85,7 @@
   function plupupload_clear_queue() {
     $("#attachment_dropzone").html('<div class="default message"><span>Drop files here to upload</span></div>');
     $("#attachment_dropzone").removeClass("started");
+    $("#upload-container")[0].style.visibility = "hidden";
   }
 </script>
 
