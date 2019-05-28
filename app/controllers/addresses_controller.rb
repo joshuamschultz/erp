@@ -50,6 +50,7 @@ class AddressesController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html # index.html.erb
       @addss = []
       format.json do
         @addresses = @addresses.select do |address|
@@ -57,7 +58,12 @@ class AddressesController < ApplicationController
           address.attributes.each do |key, value|
             adds[key] = value
           end
-          adds[:organization] = CommonActions.linkable(organization_path(address.addressable), 'Organization : ' + address.addressable.organization_short_name)
+          if address.addressable.organization_short_name.blank?
+            org_name = address.addressable.organization_name
+          else
+            org_name = address.addressable.organization_short_name
+          end
+          adds[:organization] = CommonActions.linkable(organization_path(address.addressable), 'Organization : ' + org_name)
           adds[:address_name] = address.address_title
           adds[:address_default] = address.default_address.present? ? 'selected' : ''
           adds[:address_title] = CommonActions.linkable(address_path(address), address[:address_title]) if @address_type == 'address'
