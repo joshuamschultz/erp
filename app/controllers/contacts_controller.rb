@@ -24,7 +24,7 @@ class ContactsController < ApplicationController
   # GET /contacts.json
   def index
     # default contact_type to show to address
-    @contact_type = params[:contact_type] || 'address'
+    @contact_type = 'contact'#params[:contact_type] || 'address'
     # set organization as contactable
     @contactable = Organization.find_organization(params)
 
@@ -53,7 +53,12 @@ class ContactsController < ApplicationController
           contact.attributes.each do |key, value|
             conct[key] = value
           end
-          conct[:organization] = CommonActions.linkable(organization_path(contact.contactable), 'Organization : ' + contact.contactable.organization_short_name)
+          if contact.contactable.organization_short_name.blank?
+            org_name = contact.contactable.organization_name
+          else
+            org_name = contact.contactable.organization_short_name
+          end
+          conct[:organization] = CommonActions.linkable(organization_path(contact.contactable), 'Organization : ' +org_name )
           conct[:first_name] = CommonActions.linkable(contact_path(contact), contact[:first_name]) if @contact_type == 'contact'
           conct[:contact_name] = contact.contact_title
           conct[:contact_telephone] = "#{view_context.number_to_phone(contact.contact_telephone)}"
