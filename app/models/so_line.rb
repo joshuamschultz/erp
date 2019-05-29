@@ -39,41 +39,49 @@ class SoLine < ActiveRecord::Base
   belongs_to :po_header
 
   has_one :po_line
-  has_many :receivable_shipments, :dependent => :destroy
-  has_many :so_shipments, :dependent => :destroy
+
+  has_many :receivable_shipments, dependent: :destroy
+  has_many :so_shipments, dependent: :destroy
 
   validates_presence_of :so_header, :item_alt_name, :so_line_cost, :so_line_quantity
   validates_numericality_of :so_line_cost, :so_line_sell
   validates_numericality_of :so_line_quantity, greater_than: 0
 
   before_create :create_level_default
-  before_save :update_item_total
-  after_save :update_so_total
-  after_destroy :update_so_total
+  before_validation :set_item
+  before_validation :update_item_total
+  after_save :update_so
+  after_destroy :update_so
 
   def create_level_default
     self.so_line_status = "open"
   end
 
   def update_item_total
-    self.so_line_price = (self.so_line_sell.round(10) * self.so_line_quantity.round(10)) #+ self.so_line_freight.round(10)
-    self.item = self.item_alt_name.item
-    #self.item_revision = self.item_alt_name.item.current_revision
+    self.so_line_price = so_line_sell * so_line_quantity
   end
 
-  def update_so_total
-    so_identifier = (self.so_header.so_identifier == "Unassigned") ? SoHeader.new_so_identifier(0) : self.so_header.so_identifier
-    so_status_count = self.so_header.so_lines.where("so_line_status = ?", "open").count
-    so_header_status = (so_status_count == 0) ? "closed" : "open"
-    i = 2
-    loop do
-      i += 1
-      so_header = SoHeader.where("so_identifier = ? && id != ?", so_identifier, self.so_header.id).first
-      break unless (so_header.present?)
-      so_identifier = SoHeader.new_so_identifier(i)
-    end
-    self.so_header.update_attributes(so_identifier: so_identifier, so_status: so_header_status, so_total: self.so_header.so_lines.sum(:so_line_price))
+  def set_item
+    self.item = item_alt_name.item
+  end
+
+  def update_so
+    # until the SO has an item, it should be unassigned. So we check and assign here
+    set_so_identifier if so_header.so_identifier == "Unassigned"
+    close_sales_order
+    so_header.update_attributes(so_total: so_header.so_lines.sum(:so_line_price))
     #generate_pdf
+  end
+
+  def close_sales_order
+    #TODO: this should be moved to receiving, not sure why here.
+    so_status_count = so_header.so_lines.where("so_line_status = ?", "open").count
+    so_header_status = "closed" if so_status_count == 0
+    so_header.update_attributes(so_status: so_header_status)
+  end
+
+  def set_so_identifier
+    so_header.update_attributes(so_identifier: SoHeader.new_so_identifier(0))
   end
 
   def so_line_item_name
