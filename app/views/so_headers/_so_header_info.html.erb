@@ -1,26 +1,30 @@
 <table class="table">
-    <tbody>
-        <tr>
-          <td class="span2">SO ID:</td>
-          <td class="span5"><strong><%= link_to @so_header.so_identifier, @so_header %></strong></td>
-        </tr>
+  <tbody>
+    <tr>
+      <td class="span2">SO ID:</td>
+      <td class="span5"><strong><%= link_to @so_header.so_identifier, @so_header %></strong></td>
+    </tr>
 
-         <tr>
-          <td class="span2">Customer PO:</td>
-          <td class="span5"><strong><%= @so_header.so_header_customer_po %></strong></td>
-        </tr>
+    <tr>
+      <td class="span2">Customer PO:</td>
+      <td class="span5"><strong><%= @so_header.so_header_customer_po %></strong></td>
+    </tr>
 
-        <tr>
-          <td class="span2">Bill To:</td>
-          <td class="span5"><strong><%= @so_header.bill_to_address ? link_to(@so_header.bill_to_address.contact_description, @so_header.bill_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong></td>
-        </tr>
+    <tr>
+      <td class="span2">Bill To:</td>
+      <td class="span5">
+        <strong><%= @so_header.bill_to_address ? link_to(@so_header.bill_to_address.contact_description, @so_header.bill_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong>
+      </td>
+    </tr>
 
-        <tr>
-          <td class="span3">Ship To:</td>
-          <td class="span5"><strong><%= @so_header.ship_to_address ? link_to(@so_header.ship_to_address.contact_description, @so_header.ship_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong></td>
-        </tr>
+    <tr>
+      <td class="span3">Ship To:</td>
+      <td class="span5">
+        <strong><%= @so_header.ship_to_address ? link_to(@so_header.ship_to_address.contact_description, @so_header.ship_to_address) : link_to(@so_header.organization.organization_name, organization_main_address_path(@so_header.organization)) %></strong>
+      </td>
+    </tr>
 
-        <!-- <tr>
+    <!-- <tr>
           <td class="span3">COFC:</td>
           <td class="span5"><strong><%#= @so_header.so_cofc %></strong></td>
         </tr>
@@ -30,28 +34,30 @@
           <td class="span5"><strong><%#= @so_header.so_squality %></strong></td>
         </tr> -->
 
-        <tr>
-          <td class="span3">Status:</td>
-          <td class="span5"><strong><%= @so_header.so_status %></strong></td>
-        </tr>
+    <tr>
+      <td class="span3">Status:</td>
+      <td class="span5"><strong><%= @so_header.so_status %></strong></td>
+    </tr>
 
-         <tr>
-          <td class="span3">Total:</td>
-          <td class="span5"><strong><h4>$<%= @so_header.so_total.to_f %></h4></strong></td>
-        </tr>
+    <tr>
+      <td class="span3">Total:</td>
+      <td class="span5"><strong>
+          <h4>$<%= @so_header.so_total.to_f %></h4>
+        </strong></td>
+    </tr>
 
-        <!-- "%0.5f" %  -->
+    <!-- "%0.5f" %  -->
 
-        <!-- <tr>
+    <!-- <tr>
           <td class="span3">Notes:</td>
           <td class="span5"><%#= @po_header.po_notes %></td>
         </tr> -->
 
-        <!-- <tr>
+    <!-- <tr>
           <td class="span3">Active :</td>
           <td class="span5"><%#= @po_header.po_active %></td>
         </tr> -->
-    </tbody>
+  </tbody>
 </table>
 
 <div class="separator bottom"></div>
