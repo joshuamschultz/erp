@@ -23,19 +23,33 @@
 
 class ItemPartDimension < ActiveRecord::Base
 	# belongs_to :item_revision
+	after_initialize :default_values
 	belongs_to :dimension
 	belongs_to :gauge
+	belongs_to :item_revision
 
-	after_initialize :default_values
+	# has_many :item_revision_item_part_dimensions, dependent: :destroy
+	# has_many :item_revisions, through: :item_revision_item_part_dimensions
+	has_many :quality_lot_dimensions, :dependent => :destroy
+	has_many :quality_lot_capabilities, :dependent => :destroy
+	has_many :quality_lot_gauge_dimensions, :dependent => :destroy
+	has_many :quality_lot_gauge_results, :dependent => :destroy
+
+	accepts_nested_attributes_for :dimension, reject_if: :all_blank, allow_destroy: true
+	accepts_nested_attributes_for :gauge, reject_if: :all_blank, allow_destroy: true
+
+	# act as belongs to relation
+	delegate :item, to: :item_revision, allow_nil: true
+
+	# validates_presence_of :item_revision
+	validates_presence_of :dimension_id
+	validates_presence_of :gauge_id
+ 	validate :check_dimension
 	before_save :before_save_process
 
-	has_many :item_revision_item_part_dimensions, dependent: :destroy
-	has_many :item_revisions, through: :item_revision_item_part_dimensions
-
-	attr_accessor :dimension_id, :item_part_active, :item_part_created_id, :item_part_critical,
+	attr_accessor :item_part_active, :item_part_created_id, :item_part_critical,
 		:item_part_letter, :item_part_neg_tolerance, :item_part_notes, :item_part_pos_tolerance,
-		:item_part_dimension, :item_part_updated_id, :gauge_id, :go_non_go, :dimension_string
-
+		:item_part_dimension, :item_part_updated_id, :go_non_go, :dimension_string
 
 	def before_save_process
 		unless self.go_non_go
@@ -46,8 +60,6 @@ class ItemPartDimension < ActiveRecord::Base
 	def default_values
 		self.item_part_active = true if self.item_part_active.nil?
 	end
-
- 	validate :check_dimension	
 
  	def check_dimension
  		if self.go_non_go == false
@@ -65,20 +77,10 @@ class ItemPartDimension < ActiveRecord::Base
  		end
  	end
 
-	# validates_presence_of :item_revision
-	validates_presence_of :dimension
-	validates_presence_of :gauge
-
-	has_many :quality_lot_dimensions, :dependent => :destroy
-	has_many :quality_lot_capabilities, :dependent => :destroy
-	has_many :quality_lot_gauge_dimensions, :dependent => :destroy
-	has_many :quality_lot_gauge_results, :dependent => :destroy
-
-
-  def self.process_dimension(item_part_dimension, item_revision)
-        if item_part_dimension
-           item_revision_dimension = item_part_dimension.item_revision_item_part_dimensions.create(:item_revision_id => item_revision.id)
-           item_revision_dimension.save
-        end
-   end
+	def self.process_dimension(item_part_dimension, item_revision)
+		# if item_part_dimension
+		# 	item_revision_dimension = item_part_dimension.item_revision_item_part_dimensions.create(:item_revision_id => item_revision.id)
+		# 	item_revision_dimension.save
+		# end
+	end
 end

@@ -36,6 +36,36 @@ class ItemRevision < ActiveRecord::Base
   belongs_to :vendor_quality, optional: true
   belongs_to :customer_quality, optional: true
   belongs_to :organization, -> {where organization_type_id: MasterType.find_by_type_value("vendor").id}, optional: true
+  # has_one :item_print, :dependent => :destroy
+  # has_one :print, :through => :item_print
+
+  has_many :item_processes, :dependent => :destroy
+  has_many :process_types, :through => :item_processes
+  has_many :item_specifications, :dependent => :destroy
+  has_many :specifications, :through => :item_specifications
+  has_many :item_selected_names, :dependent => :destroy
+  has_many :item_alt_names, :through => :item_selected_names
+  has_many :item_part_dimensions, :dependent => :destroy
+  has_many :attachments, :as => :attachable, :dependent => :destroy
+  has_many :po_lines, :dependent => :destroy
+  has_many :so_lines, :dependent => :destroy
+  has_many :quality_lots, :dependent => :destroy
+  has_many :quote_lines, :dependent => :destroy
+  has_many :quality_actions, :dependent => :destroy
+  # has_many :item_materials, :dependent => :destroy
+  # has_many :materials, :through => :item_materials
+  # has_many :item_revision_item_part_dimensions, dependent: :destroy
+  # has_many :item_part_dimensions, through: :item_revision_item_part_dimensions
+
+  validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
+  validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
+  validates_numericality_of :item_tooling if validates_presence_of :item_tooling
+  validates :item_revision_name, uniqueness: {scope: :item_id}
+  #validates_numericality_of :item_cost if validates_presence_of :item_cost
+
+  after_save :update_recent_revision
+
+  scope :recent_revisions, -> { joins(:item).where('item_revisions.latest_revision = ?', true) }
 
   def process_before_save
       self.item_revision_name ||= "0"
@@ -54,15 +84,6 @@ class ItemRevision < ActiveRecord::Base
       return true
   end
 
-  validates_length_of :item_name, :minimum => 2, :maximum => 50 if validates_presence_of :item_name
-  validates_length_of :item_revision_name, :maximum => 50 if validates_presence_of :item_revision_name
-  # validates_numericality_of :item_cost if validates_presence_of :item_cost
-  validates_numericality_of :item_tooling if validates_presence_of :item_tooling
-
-  validates :item_revision_name, uniqueness: {scope: :item_id}
-
-  after_save :update_recent_revision
-
   def update_recent_revision
       ItemRevision.skip_callback("save", :after, :update_recent_revision, raise: false)
       recent_revison = self.item.item_revisions.order("item_revision_date desc").first
@@ -71,28 +92,6 @@ class ItemRevision < ActiveRecord::Base
       ItemRevision.set_callback("save", :after, :update_recent_revision)
   end
 
-  # has_one :item_print, :dependent => :destroy
-  # has_one :print, :through => :item_print
-
-  # has_many :item_materials, :dependent => :destroy
-  # has_many :materials, :through => :item_materials
-
-  has_many :item_processes, :dependent => :destroy
-  has_many :process_types, :through => :item_processes
-  has_many :item_specifications, :dependent => :destroy
-  has_many :specifications, :through => :item_specifications
-  has_many :item_selected_names, :dependent => :destroy
-  has_many :item_alt_names, :through => :item_selected_names
-  # has_many :item_part_dimensions, :dependent => :destroy
-  has_many :attachments, :as => :attachable, :dependent => :destroy
-  has_many :po_lines, :dependent => :destroy
-  has_many :so_lines, :dependent => :destroy
-  has_many :quality_lots, :dependent => :destroy
-  has_many :quote_lines, :dependent => :destroy
-  has_many :quality_actions, :dependent => :destroy
-
-  has_many :item_revision_item_part_dimensions, dependent: :destroy
-  has_many :item_part_dimensions, through: :item_revision_item_part_dimensions
 
   def self.process_item_associations(item_revision, params)
         if item_revision
@@ -159,16 +158,18 @@ class ItemRevision < ActiveRecord::Base
           #     end
           # end
 
-          item_part_dimension_ids = item_revision.item.item_part_dimensions.collect(&:id)
-
-            if item_part_dimension_ids.present?
-              item_part_dimension_ids.each do |item_part_dimension_id|
-                unless item_revision.item_revision_item_part_dimensions.find_by_item_part_dimension_id(item_part_dimension_id)
-                   item_revision_dimension = item_revision.item_revision_item_part_dimensions.create(:item_part_dimension_id => item_part_dimension_id)
-                   item_revision_dimension.save
-                end
-              end
-            end
+          # NOT SURE WHEN THIS WILL HAPPEN OR IS IT EVEN REQUIRED
+          # Item_part_dimension belongs to item_revision -> every item_part_dimension has item_revision
+          # All Items have item_revisions
+          # Items (1) -> (M) item_revisions (1) -> (M) item_part_dimensions
+          # if item_part_dimension_ids.present?
+          #   item_part_dimension_ids.each do |item_part_dimension_id|
+          #     unless item_revision.item_part_dimensions.where(id: item_part_dimension_id).exists?
+          #        item_revision_dimension = item_revision.create(:item_part_dimension_id => item_part_dimension_id)
+          #        item_revision_dimension.save
+          #     end
+          #   end
+          # end
         end
   end
 
@@ -186,8 +187,5 @@ class ItemRevision < ActiveRecord::Base
     def sales_orders
         SoHeader.joins(:so_lines).where("so_lines.item_revision_id = ?", self.id)
     end
-
-
-    scope :recent_revisions, -> { joins(:item).where('item_revisions.latest_revision = ?', true) }
 
 end

@@ -79,7 +79,6 @@ class ItemPartDimensionsController < ApplicationController
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
     @item_part_dimension = @item_revision.item_part_dimensions.new(item_part_dimension_params)
-
     respond_to do |format|
       if @item_part_dimension.save
         ItemPartDimension.process_dimension(@item_part_dimension, @item_revision)
@@ -130,8 +129,9 @@ class ItemPartDimensionsController < ApplicationController
     end
 
     def item_part_dimension_params
-      params.require(:item_part_dimension).permit(:dimension_id, :item_part_active, :item_part_created_id, :item_part_critical,
+      params.require(:item_part_dimension).permit(:item_part_active, :item_part_created_id, :item_part_critical,
                                     :item_part_letter, :item_part_neg_tolerance, :item_part_notes, :item_part_pos_tolerance,
-                                    :item_part_dimension, :item_part_updated_id, :gauge_id, :go_non_go, :dimension_string)
+                                    :item_part_dimension, :item_part_updated_id, :go_non_go, :dimension_string, :item_revision_id, :dimension_id, :gauge_id)
+
     end
 end
