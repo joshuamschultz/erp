@@ -194,6 +194,7 @@ module CommonActions
       menus[:contacts][:sub_menu] = [
         { path: organizations_path, name: 'Companies' },
         { path: contacts_path, name: 'Contacts' },
+        { path: addresses_path, name: 'Addresses' },
         { path: groups_path, name: 'Group' }
       ]
     end
