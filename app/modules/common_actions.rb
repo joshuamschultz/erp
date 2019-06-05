@@ -112,7 +112,16 @@ module CommonActions
   end
 
   def self.linkable(path, title, _extras = {})
-    "<a href='#{path}' target='_blank'>#{title}</a>"
+    params = ''
+    _extras.each do |key, value|
+      params += "&#{key}=#{value}"
+    end
+    params = params[1..-1]
+    if params.present?
+      "<a href='#{path}?#{params}' target='_blank'>#{title}</a>"
+    else
+      "<a href='#{path}' target='_blank'>#{title}</a>"
+    end
   end
 
   def self.nil_or_blank(attribute)

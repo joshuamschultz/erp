@@ -51,9 +51,9 @@ class QualityLot < ActiveRecord::Base
     # before_create :before_create_values
     after_create :after_create_values
     # before_save :before_save_values
-    def before_create_values
-        self.lot_control_no = self.set_lot_control_no
-    end
+    # def before_create_values
+    #     self.lot_control_no = self.set_lot_control_no
+    # end
 
     # def  before_save_values
     #   self.quantity_on_hand = self.lot_quantity
