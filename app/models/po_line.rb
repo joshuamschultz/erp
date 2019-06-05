@@ -131,66 +131,6 @@ class PoLine < ActiveRecord::Base
     generate_pdf
   end
 
-  def po_line_data_list(object, shipment)
-    po_line = shipment ? object.po_line : object
-    obj = Hash.new
-    object.attributes.each do |key, value|
-      obj[key] = value
-    end
-    if po_line.po_header != nil
-      if User.current_user.present? && !User.current_user.is_operations? && !User.current_user.is_clerical?
-        obj[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
-        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
-        obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
-        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name) || ""
-        obj[:po_line_quantity] = po_line.po_line_quantity
-        obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
-        obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
-
-        unless shipment
-          obj[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_line.po_header.id}' type='text' value='0'></div>"
-          obj[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
-          obj[:po_line_unit] = "<div class='po_line_unit_input'><input type='text'></div>"
-          obj[:po_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/po_headers/#{po_line.po_header.id}' style='color: #8ec657;padding-left:10px;' >" + po_line.po_header.po_identifier + "</a> "
-          obj[:po_identifier] += "<a onclick='process_all_open(#{po_line.po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
-          obj[:po_identifier] += "<a onclick='fill_po_items(#{po_line.po_header.id}); return false' class='pull-right btn btn-small btn-success po_#{po_line.po_header.id}' href='#'>Fill</a></div>"
-
-          #object[:links] = "<a po_line_id='#{po_line.id}' po_shipped_status='rejected' class='pull-right btn_save_shipped btn-action glyphicons ban btn-danger' href='#'><i></i></a> "
-          #object[:links] = " <a po_line_id='#{po_line.id}' po_shipped_status='on hold' class='pull-right btn_save_shipped btn-action glyphicons circle_exclamation_mark btn-warning' href='#'><i></i></a> "
-          obj[:links] = " <a po_line_id='#{po_line.id}' po_shipped_status='received' class='pull-right btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> "
-          obj[:links] += " <div class='pull-right shipping_status'></div>"
-        end
-        obj
-      else
-        obj[:po_identifier] = CommonActions.linkable(po_header_path(po_line.po_header), po_line.po_header.po_identifier)
-        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier)
-        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_line.po_header.organization), po_line.po_header.organization.organization_name) if po_line.po_header.organization) || ""
-        obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
-        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_line.po_header.organization.vendor_quality), po_line.po_header.organization.vendor_quality.quality_name) if po_line.po_header.organization && po_line.po_header.organization.vendor_quality) || ""
-        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
-        obj[:po_line_quantity] = po_line.po_line_quantity
-        obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
-        obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
-
-        unless shipment
-          obj[:po_line_shipping] = ""
-          obj[:po_line_shelf] = ""
-          obj[:po_line_unit] = ""
-          obj[:po_identifier] += ""
-          obj[:po_identifier] += ""
-
-          obj[:links] = ""
-          obj[:links] += ""
-          obj[:links] += ""
-          obj[:links] += ""
-        end
-        obj
-      end
-    end
-  end
-
   def generate_pdf
     html = CommonActions.purchase_report(self.po_header.id) + "<style>#blank_page{display: none;} .art-01.art-04.art-07{  min-height: 445px;} .art-01.art-04{  min-height: 445px;} article.art-05{min-height: 137px;} article.art-01{min-height: 70px;} article.art-02{margin-top: 61px;height: 80px;} @page{size:21cm 29.7cm;margin: 12mm 5mm 2mm 10mm;}</style>"
     # if Rails.env == "production"
