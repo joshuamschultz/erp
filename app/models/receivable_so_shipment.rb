@@ -12,8 +12,6 @@
 class ReceivableSoShipment < ActiveRecord::Base
   belongs_to :so_shipment
   belongs_to :receivable
-  attr_accessor :so_shipment_id, :receivable_id
-
   after_destroy :process_after_destroy
 
   def process_after_destroy

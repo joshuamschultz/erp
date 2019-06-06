@@ -97,31 +97,33 @@ class SoShipmentsController < ApplicationController
                @so_shipments = SoShipment.all_revision_shipments(item_revision.id)
             elsif @item
                 if params[:type].present?
-                  @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments).order("created_at desc") : SoShipment.open_shipments(@item.so_shipments).order("created_at desc")
+                  @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@item.so_shipments) : SoShipment.open_shipments(@item.so_shipments)
                 else
                   @so_shipments = SoShipment.all_shipments(@item.id)
                 end
             elsif  @quality_lot
                   if params[:type].present?
-                    @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@quality_lot.so_shipments).order("created_at desc") : SoShipment.open_shipments(@quality_lot.so_shipments).order("created_at desc")
+                    @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(@quality_lot.so_shipments) : SoShipment.open_shipments(@quality_lot.so_shipments)
                   else
                     @so_shipments = @quality_lot.so_shipments.where(:so_shipped_status => ["shipped","ship_out"])
                   end
 
             else
-                @so_shipments = (params[:type] == "history") ? SoShipment.closed_shipments(nil).order("created_at desc") : SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["shipped"])
-                 # @so_shipments  =  @so_shipments +  @so_ship_outs
-                 # @so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
-                if params[:type] == "process"
-
-                  @so_shipments =  SoShipment.open_shipments(nil).order("created_at desc").where(:so_shipped_status => ["process", "ship_close", "ship_in"])
+                if params[:type] == 'history'
+                  @so_shipments = SoShipment.closed_shipments
+                  #@so_shipments  =  @so_shipments +  @so_ship_outs
+                  #@so_shipments = @so_shipments + SoShipment.where(:so_shipped_status => "ship_out")
+                elsif params[:type] == "process"
+                  @so_shipments =  SoShipment.open_shipments.where(:so_shipped_status => ["process", "ship_close", "ship_in"])
+                else
+                  @so_shipments = SoShipment.open_shipments.where(:so_shipped_status => ["shipped"])
                 end
 
             end
             i = 0
             # @so_shipments = (@so_shipments.includes(:so_line).order(:so_line_id) + @so_ship_outs.order(:so_line_id)) .select{|so_shipment|
             @so_shipmnts = Array.new
-            @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id)  .select{|so_shipment|
+            @so_shipments = @so_shipments.includes(:so_line).order(:so_line_id).select{|so_shipment|
                 so_shipmnt = Hash.new
                 so_shipment.attributes.each do |key, value|
                   so_shipmnt[key] = value
@@ -248,9 +250,9 @@ class SoShipmentsController < ApplicationController
       else
         if @so_shipment.save
           @so_shipment.set_quality_on_hand
-          @so_shipment.so_line.update_so_total
+          # @so_shipment.so_line.update_so_total
           so_shipmnt = Hash.new
-          so_shipmnt.attributes.each do |key, value|
+          @so_shipment.attributes.each do |key, value|
             so_shipmnt[key] = value
           end
           so_shipmnt["quantity_open"] = @so_shipment.so_line.so_line_quantity - @so_shipment.so_line.so_line_shipped
