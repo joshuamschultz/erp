@@ -31,16 +31,16 @@ class PoShipmentsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json {
-
         if params[:type] == "shipping"
             @po_lins = Array.new
-            @po_lines = PoLine.where(:po_line_status => "open").includes(:po_header).select{|po_line|
+            @po_lines = PoLine.where(:po_line_status => "open").preload(:po_header)
+            @po_lines.each do |po_line|
                 po_lin = Hash.new
-                po_line = po_line.po_line_data_list(po_line, false)
-                po_line.each do |key, value|
+                po_line_obj = po_line_data_list(po_line, false)
+                po_line_obj.each do |key, value|
                   po_lin[key] = value
                 end
-                po_line = PoLine.find(po_line["id"])
+                # po_line = PoLine.find(po_line["id"])
                 po_line.attributes.each do |key, value|
                   po_lin[key] = value
                 end
@@ -49,7 +49,7 @@ class PoShipmentsController < ApplicationController
 
                 # po_line = so_line_data_list(po_line, false)
                 @po_lins.push(po_lin)
-             }
+             end
             render json: {:aaData => @po_lins}
         else
             @item = Item.find(params[:item_id]) if params[:item_id].present?
@@ -79,7 +79,7 @@ class PoShipmentsController < ApplicationController
                 po_shipmnt = Hash.new
 
                 po_shipmnt[:index] =  i
-                po_shipment = po_shipment.po_line.po_line_data_list(po_shipment, true)
+                po_shipment = po_line_data_list(po_shipment, true)
                 po_shipment.each do |key, value|
                   po_shipmnt[key] = value
                 end
@@ -160,10 +160,8 @@ class PoShipmentsController < ApplicationController
   # POST /po_shipments.json
   def create
     @po_shipment = PoShipment.new(po_shipment_params)
-
     respond_to do |format|
       if @po_shipment.save
-        @item_lot = ItemLot.create(item_id: @po_shipment.po_line.item_id)
         inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]
         inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
         inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]
@@ -173,9 +171,9 @@ class PoShipmentsController < ApplicationController
         @quality_lot.lot_inspector = current_user
 
         if @quality_lot.save
-          # lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : self.po_line.item.quality_lots.count
-          @item_lot.update_attribute(:quality_lot_id , @quality_lot.id)
-          # @quality_lot.set_lot_control_no
+          lot_count = (@po_shipment.po_line.item.quality_lots.count == 0) ? 1 : @po_shipment.po_line.item.quality_lots.count
+          @item_lot = ItemLot.create!({item_id: @quality_lot.po_line.item_id, quality_lot_id: @quality_lot.id, item_lot_count: lot_count })
+          @quality_lot.set_lot_control_no
         end
 
         @po_shipment.update_attribute(:quality_lot_id , @quality_lot.id)
@@ -187,7 +185,7 @@ class PoShipmentsController < ApplicationController
         # end
         # else
                   # @po_shipment.set_quality_on_hand
-          quality_lot = @po_shipment.quality_lot
+          # quality_lot = @po_shipment.quality_lot
           po_shipmnt = Hash.new
           @po_shipment.attributes.each do |key, value|
             po_shipmnt[key] = value
@@ -245,16 +243,78 @@ class PoShipmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   private
 
-     private
+  def set_po_shipment
+    @po_shipment = PoShipment.find(params[:id])
+  end
 
-    def set_po_shipment
-      @po_shipment = PoShipment.find(params[:id])
-    end
+  def po_shipment_params
+    params.require(:po_shipment).permit(:po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
+                                         :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id)
+  end
 
-    def po_shipment_params
-      params.require(:po_shipment).permit(:po_line_id, :po_shipment_created_id, :po_shipment_updated_id,
-                                           :po_shipped_count, :po_shipped_cost, :po_shipped_shelf, :po_shipped_unit, :po_shipped_status, :quality_lot_id)
+  def po_line_data_list(object, shipment)
+    po_line = shipment ? object.po_line : object
+    obj = Hash.new
+    object.attributes.each do |key, value|
+      obj[key] = value
     end
+    if po_line.po_header != nil
+      po_header = po_line.po_header
+      revision_id = po_line.item_revision_id || po_line.item.item_revisions.last.id
+      if User.current_user.present? && !User.current_user.is_operations? && !User.current_user.is_clerical?
+        obj[:po_identifier] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
+        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id})
+        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name) if po_header.organization) || ""
+        obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
+        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_header.organization.vendor_quality), po_header.organization.vendor_quality.quality_name) if po_header.organization && po_header.organization.vendor_quality) || ""
+        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name) || ""
+        obj[:po_line_quantity] = po_line.po_line_quantity
+        obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
+        obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
+
+        unless shipment
+          obj[:po_line_shipping] = "<div class='po_line_shipping_input'><input po_line_id='#{po_line.id}' po_shipped_status='received' class='shipping_input_field shipping_input_po_#{po_header.id}' type='text' value='0'></div>"
+          obj[:po_line_shelf] = "<div class='po_line_shelf_input'><input type='text'></div>"
+          obj[:po_line_unit] = "<div class='po_line_unit_input'><input type='text'></div>"
+          obj[:po_identifier] = "<div style='background-color:#484848;height:30px;'><a href='/po_headers/#{po_header.id}' style='color: #8ec657;padding-left:10px;' >" + po_header.po_identifier + "</a> "
+          obj[:po_identifier] += "<a onclick='process_all_open(#{po_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Receive All</a>"
+          obj[:po_identifier] += "<a onclick='fill_po_items(#{po_header.id}); return false' class='pull-right btn btn-small btn-success po_#{po_header.id}' href='#'>Fill</a></div>"
+
+          #object[:links] = "<a po_line_id='#{po_line.id}' po_shipped_status='rejected' class='pull-right btn_save_shipped btn-action glyphicons ban btn-danger' href='#'><i></i></a> "
+          #object[:links] = " <a po_line_id='#{po_line.id}' po_shipped_status='on hold' class='pull-right btn_save_shipped btn-action glyphicons circle_exclamation_mark btn-warning' href='#'><i></i></a> "
+          obj[:links] = " <a po_line_id='#{po_line.id}' po_shipped_status='received' class='pull-right btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> "
+          obj[:links] += " <div class='pull-right shipping_status'></div>"
+        end
+        obj
+      else
+        obj[:po_identifier] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
+        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id})
+        obj[:vendor_name] = (CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name) if po_header.organization) || ""
+        obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
+        obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_header.organization.vendor_quality), po_header.organization.vendor_quality.quality_name) if po_header.organization && po_header.organization.vendor_quality) || ""
+        obj[:quality_level_name] = (CommonActions.linkable(customer_quality_path(po_line.customer_quality), po_line.customer_quality.quality_name) if po_line.organization) || CommonActions.linkable(customer_quality_path(CustomerQuality.first), CustomerQuality.first.quality_name)
+        obj[:po_line_quantity] = po_line.po_line_quantity
+        obj[:po_line_quantity_shipped] = "<div class='po_line_shipping_total'>#{po_line.po_line_shipped}</div>"
+        obj[:po_line_quantity_open] = "<div class='po_line_quantity_open'>#{po_line.po_line_quantity - po_line.po_line_shipped}</div>"
+
+        unless shipment
+          obj[:po_line_shipping] = ""
+          obj[:po_line_shelf] = ""
+          obj[:po_line_unit] = ""
+          obj[:po_identifier] += ""
+          obj[:po_identifier] += ""
+
+          obj[:links] = ""
+          obj[:links] += ""
+          obj[:links] += ""
+          obj[:links] += ""
+        end
+        obj
+      end
+    end
+  end
+
 end
