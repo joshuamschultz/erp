@@ -14,7 +14,7 @@
 #
 
 class GlType < ActiveRecord::Base
-  attr_accessor :gl_active, :gl_description, :gl_identifier, :gl_name, :gl_report, :gl_side
+  # attr_accessor :gl_active, :gl_description, :gl_identifier, :gl_name, :gl_report, :gl_side
 
   after_initialize :default_values
 

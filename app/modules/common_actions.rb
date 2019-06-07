@@ -29,20 +29,20 @@ module CommonActions
     address_info = {}
     @so_header = address_id
     if @so_header.bill_to_address.present?
-      address_info['b_c_title'] = @so_header.bill_to_address.contact_title
-      address_info['b_c_address_1'] = @so_header.bill_to_address.contact_address_1
-      address_info['b_c_address_2'] = @so_header.bill_to_address.contact_address_2
-      address_info['b_c_state'] = @so_header.bill_to_address.contact_state
-      address_info['b_c_country'] = @so_header.bill_to_address.contact_country
-      address_info['b_c_zipcode'] = @so_header.bill_to_address.contact_zipcode
+      address_info['b_c_title'] = @so_header.bill_to_address.address_title
+      address_info['b_c_address_1'] = @so_header.bill_to_address.address_address_1
+      address_info['b_c_address_2'] = @so_header.bill_to_address.address_address_2
+      address_info['b_c_state'] = @so_header.bill_to_address.address_state
+      address_info['b_c_country'] = @so_header.bill_to_address.address_country
+      address_info['b_c_zipcode'] = @so_header.bill_to_address.address_zipcode
     end
     if @so_header.ship_to_address.present?
-      address_info['s_c_title'] = @so_header.ship_to_address.contact_title
-      address_info['s_c_address_1'] = @so_header.ship_to_address.contact_address_1
-      address_info['s_c_address_2'] = @so_header.ship_to_address.contact_address_2
-      address_info['s_c_state'] = @so_header.ship_to_address.contact_state
-      address_info['s_c_country'] = @so_header.ship_to_address.contact_country
-      address_info['s_c_zipcode'] = @so_header.ship_to_address.contact_zipcode
+      address_info['s_c_title'] = @so_header.ship_to_address.address_title
+      address_info['s_c_address_1'] = @so_header.ship_to_address.address_address_1
+      address_info['s_c_address_2'] = @so_header.ship_to_address.address_address_2
+      address_info['s_c_state'] = @so_header.ship_to_address.address_state
+      address_info['s_c_country'] = @so_header.ship_to_address.address_country
+      address_info['s_c_zipcode'] = @so_header.ship_to_address.address_zipcode
     end
 
     unless @so_header.bill_to_address.present? && @so_header.ship_to_address.present?
@@ -83,7 +83,7 @@ module CommonActions
       # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
       so_line = SoLine.find(soLineId)
       if so_line.item.present?
-        quality_lots = so_line.item.quality_lots.includes(:quality_histories).where(quality_histories: { 'quality_status' => 'accepted' }).where('finished not in (?)', [true]).map { |x| [x.id, x.lot_control_no, x.quantity_on_hand] }
+        quality_lots = so_line.item.quality_lots.includes(:quality_histories).where(quality_histories: { 'quality_status' => 'accepted' }).where('finished <> ?', true).map { |x| [x.id, x.lot_control_no, x.quantity_on_hand] }
         quality_lots.each do |quality_lot|
           divdata += "<option id='#{quality_lot[2]}' value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
         end
@@ -94,11 +94,12 @@ module CommonActions
   end
 
   def self.get_location_div(soLineId)
+    location_div = ''
     if soLineId.present?
       # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
       so_line = SoLine.find(soLineId)
       if so_line.item.present?
-        quality_lot = so_line.item.quality_lots.where('finished not in (?)', [true]).first
+        quality_lot = so_line.item.quality_lots.where('finished <> ?', true).first
         po_shipment = quality_lot.po_shipment if quality_lot
         location = po_shipment.nil? ? '-' : po_shipment.po_shipped_unit.to_s + ' - ' + po_shipment.po_shipped_shelf
         location_div = "<div id='location_#{soLineId}'>#{location}</div>"
@@ -112,7 +113,16 @@ module CommonActions
   end
 
   def self.linkable(path, title, _extras = {})
-    "<a href='#{path}' target='_blank'>#{title}</a>"
+    params = ''
+    _extras.each do |key, value|
+      params += "&#{key}=#{value}"
+    end
+    params = params[1..-1]
+    if params.present?
+      "<a href='#{path}?#{params}' target='_blank'>#{title}</a>"
+    else
+      "<a href='#{path}' target='_blank'>#{title}</a>"
+    end
   end
 
   def self.nil_or_blank(attribute)
@@ -337,7 +347,8 @@ module CommonActions
         { path: new_po_shipment_path, name: 'Receiving' },
         { path: new_so_shipment_path, name: 'Shipping' },
         { path: so_shipments_path(type: 'process'), name: 'In Process' },
-        { path: po_shipments_path(type: 'history'), name: 'History' }
+        { path: po_shipments_path(type: 'history'), name: 'Purchase History' },
+        { path: so_shipments_path(type: 'history'), name: 'Sales History' }
       ]
     end
     if user_signed_in? && !current_user.is_vendor? && !current_user.is_customer?

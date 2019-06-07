@@ -21,8 +21,8 @@
 class SoShipment < ActiveRecord::Base
   belongs_to :so_line
   belongs_to :item
-  attr_accessor :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
-  :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id
+  # attr_accessor :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
+  # :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id
 
   validate :check_total_shipped
 
@@ -90,7 +90,7 @@ class SoShipment < ActiveRecord::Base
   def set_so_line_status
     if self.so_line
       SoLine.skip_callback("save", :before, :update_item_total, raise: false)
-      SoLine.skip_callback("save", :after, :update_so_total, raise: false)
+      # SoLine.skip_callback("save", :after, :update_so_total, raise: false)
       so_shipped = (self.so_shipped_status == "ship_close") ? self.so_line.so_line_quantity : self.so_total_shipped
       so_status = (so_shipped == self.so_line.so_line_quantity) ? "closed" : "open"
       self.so_line.update_attributes(:so_line_shipped => so_shipped, :so_line_status => so_status)
@@ -98,7 +98,7 @@ class SoShipment < ActiveRecord::Base
       so_header_status = (so_status_count == 0) ? "closed" : "open"
       self.so_line.so_header.update_attributes(:so_status => so_header_status)
       SoLine.set_callback("save", :before, :update_item_total)
-      SoLine.set_callback("save", :after, :update_so_total)
+      # SoLine.set_callback("save", :after, :update_so_total)
     end
   end
 
@@ -109,12 +109,12 @@ class SoShipment < ActiveRecord::Base
   # scope :open_shipments, where("id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id))
   # scope :closed_shipments, where(:id => ReceivableSoShipment.all.collect(&:so_shipment_id))
 
-  def self.open_shipments(shipments)
+  def self.open_shipments(shipments=nil)
       shipments ||= SoShipment
-      shipments.where("so_shipments.id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
+      shipments.where("id not in (?)", [0] + ReceivableSoShipment.all.collect(&:so_shipment_id).compact).order('created_at desc')
   end
 
-  def self.closed_shipments(shipments)
+  def self.closed_shipments(shipments=nil)
       shipments ||= SoShipment
       shipments.where("so_shipments.id in (?)", ReceivableSoShipment.all.collect(&:so_shipment_id)).order('created_at desc')
   end

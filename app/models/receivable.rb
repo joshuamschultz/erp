@@ -65,7 +65,7 @@ class Receivable < ActiveRecord::Base
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total = receivable_total - self.receivable_freight
+      receivable_total = receivable_total.to_f - self.receivable_freight.to_f
 
       total_amount = 0
       self.receivable_accounts.each{|b| total_amount += b.receivable_account_amount.to_f }
@@ -126,7 +126,7 @@ class Receivable < ActiveRecord::Base
       receivable_total = self.receivable_lines.sum(:receivable_line_cost)
       receivable_total += self.so_shipments.sum(:so_shipped_cost) if self.so_header
       # receivable_discount_val = (receivable_total / 100) * self.receivable_discount rescue 0
-      receivable_total + receivable_freight
+      receivable_total.to_f + receivable_freight.to_f
   end
 
   def receivable_discount_val
@@ -149,8 +149,8 @@ class Receivable < ActiveRecord::Base
   end
 
   def check_receivable_account_total
-       sales_income_gl_id = GlAccount.where(:gl_account_identifier => '41010-010' ).first.id
-       sales_freight_gl_id = GlAccount.where(:gl_account_identifier =>'51020-020').first.id
+       sales_income_gl_id = GlAccount.first.id || GlAccount.where(:gl_account_identifier => '41010-010' ).first.id
+       sales_freight_gl_id = GlAccount.first.id || GlAccount.where(:gl_account_identifier =>'51020-020').first.id
        sum_of_receivable_account = self.receivable_accounts.where(gl_account_id: sales_income_gl_id).sum(:receivable_account_amount) - self.receivable_accounts.where(gl_account_id: sales_freight_gl_id).sum(:receivable_account_amount)
        ( sum_of_receivable_account == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
@@ -220,8 +220,8 @@ class Receivable < ActiveRecord::Base
 
 
         if i== 1
-          content += ' <section><article class="ff"><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /> </div><div class="ms_image-text"><h3> '+@company_info.company_address1+' <br> '+@company_info.company_address2+' </h3><h5><span> P:</span>  '+@company_info.company_phone1+' <br><span> F:&nbsp;</span> '+@company_info.company_fax
-          content +=' </h5></div></div><div class="ms_image-2"><h2> Invoice</h2><div class="ms_image-5"><div class="ms_image-6"><h4> Date</h4><h5> '+self.created_at.strftime("%m/%d/%Y")+' </h5><div class="space"></div><h4> Chess S.O.#</h4> <h5> '+@so_header.so_identifier+' </h5> </div><div class="ms_image-6 ms_image-7"><h4> Inv No</h4><h5> '+self.receivable_identifier+' </h5><div class="space"></div><h4> Customer P.O.#</h4> <h5> '+@so_header.so_header_customer_po
+          content += ' <section><article class="ff"><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.try(:logo).try(:joint).try(:url, :original).to_s+' /> </div><div class="ms_image-text"><h3> '+@company_info.company_address1+' <br> '+@company_info.company_address2+' </h3><h5><span> P:</span>  '+@company_info.company_phone1+' <br><span> F:&nbsp;</span> '+@company_info.company_fax
+          content +=' </h5></div></div><div class="ms_image-2"><h2> Invoice</h2><div class="ms_image-5"><div class="ms_image-6"><h4> Date</h4><h5> '+self.created_at.strftime("%m/%d/%Y")+' </h5><div class="space"></div><h4> Chess S.O.#</h4> <h5> '+@so_header.so_identifier.to_s+' </h5> </div><div class="ms_image-6 ms_image-7"><h4> Inv No</h4><h5> '+self.receivable_identifier.to_s+' </h5><div class="space"></div><h4> Customer P.O.#</h4> <h5> '+@so_header.so_header_customer_po.to_s
           content +='  </h5>  </div><div class="clear"></div></div></div></article>'
           if flag ==1
              content += '<article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+in_contact_title.to_s+''+in_contact_address1.to_s+''+in_contact_address2.to_s+''+in_contact_state.to_s+''+in_contact_czip.to_s+'</h2></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'
