@@ -23,11 +23,10 @@ class PoShipment < ActiveRecord::Base
   has_one :payable, through: :payable_po_shipment
   belongs_to :quality_lot, :dependent => :destroy
 
-
-
   after_save :update_status
   after_save :set_po_line_status
   after_destroy :set_po_line_status
+
 
   validate :check_total_shipped
 

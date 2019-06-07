@@ -268,7 +268,7 @@ class CommonActionsController < ApplicationController
               if params[:shipment_process_id].present?
                   so_shipment_process = SoShipment.where(:shipment_process_id => params[:shipment_process_id],:so_shipped_status => ['process', 'ship_close','ship_in'])
                   so_shipment = {}
-                  item_revision = item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = content = so_total =  notes = cusomter_po = ""
+                  item_revision = item_part = temp = source = item_desc  = item_qty = item_shipped = item_alt_part = item_lot = content = so_total =  notes = cusomter_po = ''
                   so_b_c_title = so_b_c_address_1 = so_b_c_address_2 = so_b_c_state = so_b_c_country = so_b_c_zipcode = ''
                   so_s_c_title = so_s_c_address_1 = so_s_c_address_2 = so_s_c_state = so_s_c_country = so_s_c_zipcode = ''
                   if so_shipment_process.count > 0
@@ -306,10 +306,10 @@ class CommonActionsController < ApplicationController
 
                     notes = @so_header.so_notes if @so_header.so_notes
                     so_total = (@so_header.so_total.to_f).to_s
-                    len = so_shipment_process.group(:so_line_id).length
+                    len = so_shipment_process.length
                     @company_info = CompanyInfo.first
 
-                    so_shipment_process.group(:so_line_id).each_with_index do |shipment, index|
+                    so_shipment_process.each_with_index do |shipment, index|
                       item_part = (shipment.so_line.po_line.present? && shipment.so_line.po_line.process_type_id.present?) ? ProcessType.find(shipment.so_line.po_line.process_type_id).process_short_name : shipment.so_line.item.item_part_no
                       if shipment.so_line.item_revision.present?
                         item_desc = shipment.so_line.item_revision.item_description if shipment.so_line.item_revision.item_description.present?
@@ -325,9 +325,9 @@ class CommonActionsController < ApplicationController
                       temp = '';
                       temp += '<tr align="center"><td id="pk100_part_no" scope="row">' + item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td>'+item_revision+'</td> <td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
                       source += temp
-
                       if i== 1
-                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=#{RAILS_ROOT}'+@company_info.logo.joint.url(:original)+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
+                        byebug
+                        content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=#{RAILS_ROOT}'+@company_info.try(:logo).try(:joint).try(:url, :original).to_s+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
                         content += '<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
                         if flag ==1
                           content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">'+so_b_c_title.to_s+'</h2> <h6> '+so_b_c_address_1.to_s+'</h6> <h6>'+so_b_c_address_2.to_s+'</h6><h6>'+so_b_c_state.to_s+'</h6><div class="dd"><h6 class="ds">'+so_b_c_country.to_s+'</h6>   <span id ="pk100_so_b_c_zipcode">'+so_b_c_zipcode.to_s
@@ -335,7 +335,6 @@ class CommonActionsController < ApplicationController
                           content +='</h6>   <span id ="pk100_so_s_c_zipcode" class="ss">'+so_s_c_zipcode.to_s+'</span></div></div></article>'
                           flag =0;
                         end
-
                         if flag2 ==1
                           content += '<div class="b_content">  <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td><td width="28%">Revision</td> <td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
                           flag2=0;
@@ -343,35 +342,20 @@ class CommonActionsController < ApplicationController
                           content += '<div class="c_content"> <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr align="center" class="fon-004"><td width="28%">CUST P/N - ALL P/N</td> <td width="28%">Revision</td> <td width="28%">Description</td><td width="29%">QTY</td><td width="30%">Shipped</td></tr>'
                         end
                       end
-
                       content += temp
-
                       if i==7
                         content += ' </table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article></section></div> <div style="page-break-after:always;">&nbsp; </div>'
                       end
-
                       if len == index+1 && i != 7
-                        # j = 1
-                        # j+=1
                         content += '</table></div><article><div class="footer-2"><div class="page"><h3>Page </h3><h4>'+j.to_s+'</h4></div><div class="page-center-2"><h6 id="pk100_so_notes">'+notes+'</h6></div><div class="original"><h3>Customer Copy </h3><h4 id="so_total">$'+so_total+'</h4></div></article>'
-
                       end
-
                       i +=1
-
                       if i==8
                         j+=1
                         i= 1
                         content
                       end
-
-
-
-
-
                     end
-                    puts content
-
                     so_shipment["part_number"] = content
 
 

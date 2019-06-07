@@ -46,7 +46,7 @@ class Item < ActiveRecord::Base
     # Creates the part in the alt database which is used for creating purchase and sales orders
     # This is needed since they must have the their own part numbers showing on the reports
 
-    alt_name = item_alt_names.create(item_alt_identifier: item_part_no)
+    alt_name = item_alt_names.create(item_alt_identifier: item_part_no, item_alt_active: true)
     alt_name.save
   end
 
