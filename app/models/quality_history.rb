@@ -11,7 +11,6 @@
 #
 
 class QualityHistory < ActiveRecord::Base
-  attr_accessor :quality_lot_id, :quality_status, :user_id
   belongs_to :quality_lot
   def self.lot_all_status(lot_id)
   	quality_lot = QualityLot.find(lot_id)
