@@ -22,6 +22,16 @@ Rails.application.routes.draw do
 
   get 'permissions/error'
 
+  resources :comments
+  concern :commentable do
+    resources :comments do
+      member do
+        delete 'delete_comment'
+        post 'add_comment'
+      end
+    end
+  end
+
   resources :quality_histories
 
   resources :notifications
@@ -220,6 +230,7 @@ Rails.application.routes.draw do
   end
 
   resources :so_headers do
+    concerns :commentable
     member do
       get 'report'
       get 'packing_report'
@@ -244,6 +255,7 @@ Rails.application.routes.draw do
   resources :customer_quality_levels
 
   resources :po_headers do
+    concerns :commentable
     member do
       get 'purchase_report'
     end
@@ -318,14 +330,12 @@ Rails.application.routes.draw do
 
   resources :addresses
 
-  resources :comments
 
   resources :organizations do
+    concerns :commentable
     get 'main_address'
     member do
       post 'populate'
-      post 'add_comment'
-      delete 'delete_comment'
       get 'organization_info'
     end
     get :autocomplete_organization_organization_name, on: :collection

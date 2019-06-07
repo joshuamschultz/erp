@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
 
   include CommonActions
-  
   respond_to :html, :json, :xml, :xhr
 
   before_action :set_locale
@@ -20,6 +19,7 @@ class ApplicationController < ActionController::Base
   before_action :initialize_request
   before_action :set_current_user
   around_action :set_time_zone
+  before_action :set_record_for_comments
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to main_app.permissions_error_url, alert: exception.message
@@ -49,5 +49,11 @@ class ApplicationController < ActionController::Base
   def determine_website
     $sitename = request.host_with_port
     ActionMailer::Base.default_url_options = { host: request.host_with_port }
+  end
+
+  def set_record_for_comments
+    if ['organizations', 'po_headers', 'so_headers'].include?(params[:controller]) and params[:action] == 'show'
+      @record = params[:controller].singularize.camelcase.constantize.find params[:id]
+    end
   end
 end

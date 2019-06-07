@@ -1,6 +1,8 @@
 class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
+  before_action :set_record, only: %i[delete_comment add_comment]
+
   def index
     @comments = Comment.all
 
@@ -80,14 +82,43 @@ class CommentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def add_comment
+    if params[:comment].present? && params[:type] == "note"
+      Comment.process_comments(current_user, @record, [params[:comment]], params[:type])
+      @notes = @record.comments.where(comment_type: "note").order("created_at desc") if @record
+      respond_to do |format|
+        format.js { render "comment.js.erb" }
+      end
+    end
+  end
+
+  def delete_comment
+    Comment.where(id: params[:id]).first.destroy!
+    @notes = @record.comments.where(comment_type: "note").order("created_at desc") if @record
+    respond_to do |format|
+      format.js { render "comment.js.erb" }
+    end
+  end
+
   private
 
-    def set_comment
-      @comment = Comment.find(params[:id])
+  def set_record
+    if params[:organization_id].present?
+      @record = Organization.find params[:organization_id]
+    elsif params[:po_header_id].present?
+      @record = PoHeader.find params[:po_header_id]
+    elsif params[:so_header_id].present?
+      @record = SoHeader.find params[:so_header_id]
     end
+  end
 
-    def comment_params
-      params.require(:comment).permit(:comment, :comment_active, :comment_created_id, :comment_updated_id,
-      :commentable_id, :commentable_type, :comment_type)
-    end
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:comment, :comment_active, :comment_created_id, :comment_updated_id,
+    :commentable_id, :commentable_type, :comment_type)
+  end
 end
