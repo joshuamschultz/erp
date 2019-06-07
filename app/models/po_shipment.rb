@@ -23,36 +23,44 @@ class PoShipment < ActiveRecord::Base
   has_one :payable, through: :payable_po_shipment
   belongs_to :quality_lot, :dependent => :destroy
 
+  after_save :update_status
+  after_save :set_po_line_status
+  after_destroy :set_po_line_status
+
+
+  validate :check_total_shipped
+
+
   # validates_presence_of :po_shipped_shelf, message: "Shelf can't be blank!"
   # validates_presence_of :po_shipped_unit, message: "Unit can't be blank!"
   # validates_presence_of :po_shipped_count, message: "Receiving can't be blank!"
 
-  before_save :process_before_save
-
-  def process_before_save
-
-        self.po_shipped_cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
-
-
-      unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
-          self.po_shipped_status = "received"
-      end
+  def update_status
+	  cost = self.po_shipped_count.to_f * self.po_line.po_line_cost
+    unless ["received", "on hold", "rejected"].include?(self.po_shipped_status)
+      status = 'received'
+    else
+    	status = self.po_shipped_status
+    end
+    self.update_columns(po_shipped_status: status, po_shipped_cost: cost)
   end
 
   def payable_checkbox(mode)
     (mode == "history") ? "" : "<input type='checkbox' class='payable_po_lines payable_po_lines_#{self.po_line.po_header_id}' name='payable_po_lines' value='#{self.id}'>  "
   end
 
-  validate :check_total_shipped
 
   def check_total_shipped
-    total_shipped = self.other_po_shipments.sum(:po_shipped_count) + self.po_shipped_count
+    total_shipped = self.other_po_shipments.map(&:po_shipped_count).sum + self.po_shipped_count.to_i
 
-    puts self.other_po_shipments.sum(:po_shipped_count)
-    puts self.po_shipped_count
+    # puts self.other_po_shipments.sum(:po_shipped_count)
+    # puts self.po_shipped_count
 
     if total_shipped > self.po_line.po_line_quantity
       errors.add(:po_shipped_count, "Exceeded than ordered!")
+    else
+    	puts 'validation success..'
+    	true
     end
   end
 
@@ -64,22 +72,14 @@ class PoShipment < ActiveRecord::Base
       self.po_line.po_shipments.sum(:po_shipped_count)
   end
 
-  after_save :set_po_line_status
-  after_destroy :set_po_line_status
-
   def set_po_line_status
     if self.po_line
-      PoLine.skip_callback(:save, :before, :update_item_total, raise: false)
-      PoLine.skip_callback(:save, :after, :update_po_total, raise: false)
-
       po_shipped = self.po_total_shipped
-      po_status = (po_shipped == self.po_line.po_line_quantity) ? "closed" : "open"
-      self.po_line.update_attributes(:po_line_shipped => po_shipped, :po_line_status => po_status)
-      po_status_count = self.po_line.po_header.po_lines.where("po_line_status = ?", "open").count
-      po_header_status = (po_status_count == 0) ? "closed" : "open"
-      self.po_line.po_header.update_attributes(:po_status => po_header_status)
-      PoLine.set_callback("save", :before, :update_item_total, raise: false)
-      PoLine.set_callback("save", :after, :update_po_total, raise: false)
+      po_status = (po_shipped == self.po_line.po_line_quantity) ? 'closed' : 'open'
+      self.po_line.update_columns(po_line_shipped: po_shipped, po_line_status: po_status)
+      po_status_count = self.po_line.po_header.po_lines.where('po_line_status = ?', 'open').count
+      po_header_status = (po_status_count == 0) ? 'closed' : 'open'
+      self.po_line.po_header.update_column(:po_status, po_header_status)
     end
 
 
@@ -150,4 +150,11 @@ class PoShipment < ActiveRecord::Base
     finished
   end
 
+  def po_line
+    if self.new_record?
+      PoLine.where(id: self.po_line_id).first
+    else
+      super
+    end
+  end
 end
