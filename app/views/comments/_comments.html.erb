@@ -5,7 +5,8 @@
         <div class="row-fluid">    
             <div class="span12">
                 <div class="input-append span11">
-                  <%= form_tag add_comment_organization_path(type: "note",id: params[:id]), remote: true do %>
+                  <%= form_tag polymorphic_path([:add_comment, @record, :comment]), remote: true do %>
+                  <%= hidden_field_tag :type,'note'%>
                   <%= text_field_tag :comment,nil,{ :class => "span11",  placeholder: "Add a note..." ,id: "comment-text" }%>
                     <%= submit_tag 'Save', class: "btn btn-default" %>
                   <% end %>
@@ -23,7 +24,7 @@
                             <span class="date timeline_comment_date"><%#= note.created_at.strftime("%m/%d/%Y") %><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
                             <span class="glyphicons activity-icon user"><i></i></span>
                             <span class="ellipsis" style="height: auto !important; white-space: normal !important;"><a href="#"><%= note.created_by.name %></a> : <%= note.comment %></span>
-                          <%= link_to( "<i></i>".html_safe, delete_comment_organization_path(id: params[:id], comment_id: note.id), method: :delete, remote:true, :'data-confirm' =>  "Are you sure?", class: 'btn-action btn glyphicons remove_2 btn-danger f-right') %>
+                          <%= link_to( "<i></i>".html_safe, polymorphic_path([:delete_comment, @record, note]), method: :delete, remote:true, :'data-confirm' =>  "Are you sure?", class: 'btn-action btn glyphicons remove_2 btn-danger f-right') %>
                         </li>
                     <% end %>
                 </ul>
