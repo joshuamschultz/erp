@@ -31,10 +31,6 @@ class Receipt < ActiveRecord::Base
   has_one :deposit_check, :dependent => :destroy
   has_one :check_register
 
-  attr_accessor :receipt_active, :receipt_check_amount, :receipt_check_code, :receipt_check_no,
-    :receipt_created_id, :receipt_description, :receipt_identifier, :receipt_notes, :receipt_status,
-    :receipt_type_id, :receipt_updated_id, :organization_id, :receipt_lines_attributes, :deposit_check_id, :receipt_discount
-
   scope :status_based_receipts, lambda{|status| where(:receipt_status => status) }
 
   accepts_nested_attributes_for :receipt_lines, :reject_if => lambda { |b| b[:receipt_line_amount].blank? || b[:receivable_id].blank? }
@@ -45,6 +41,11 @@ class Receipt < ActiveRecord::Base
   # belongs_to :check_entry, :class_name => "CheckEntry", :foreign_key => "receipt_check_code", :primary_key => 'check_code'
 
   validates_presence_of :organization
+  validate :receipt_total_amount
+
+  before_create :process_before_create
+  after_save :process_after_save
+
 
   def process_removed_lines(receipt_lines)
     if receipt_lines && receipt_lines.any?
@@ -61,7 +62,6 @@ class Receipt < ActiveRecord::Base
     receipt_lines
   end
 
-  validate :receipt_total_amount
 
   def receipt_total_amount
     receivable_ids = self.receipt_lines.collect(&:receivable_id)
@@ -81,14 +81,11 @@ class Receipt < ActiveRecord::Base
     end
   end
 
-  before_create :process_before_create
-
   def process_before_create
     self.receipt_identifier = CommonActions.get_new_identifier(Receipt, :receipt_identifier, "R")
     self.receipt_status = "open"
   end
 
-  after_save :process_after_save
 
   def process_after_save
     if self.receipt_type.present? &&  self.receipt_type.type_value == "check"

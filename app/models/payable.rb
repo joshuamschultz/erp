@@ -30,11 +30,11 @@
 class Payable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessor :payable_active, :payable_cost, :payable_created_id, :payable_description,
-  :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date,
-  :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
-  :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice,
-  :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type, :payable_disperse
+  # attr_accessor :payable_active, :payable_cost, :payable_created_id, :payable_description,
+  # :payable_discount, :payable_due_date, :payable_identifier, :payable_invoice_date,
+  # :payable_notes, :payable_status, :payable_to_id, :payable_total, :payable_updated_id,
+  # :organization_id, :po_header_id, :payable_freight, :po_shipments_attributes, :payable_invoice,
+  # :gl_account_id, :payable_accounts_attributes, :gl_account_amount, :payable_type, :payable_disperse
 
   # belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("vendor").id]
 
@@ -75,9 +75,9 @@ class Payable < ActiveRecord::Base
         payable_total = self.payable_total
       else
         payable_total = self.payable_lines.sum(:payable_line_cost)
-        payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
-        payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
-        payable_total = payable_total - payable_discount_val + self.payable_freight
+        payable_total += self.po_shipments.sum(:po_shipped_cost).to_f if self.po_header
+        payable_discount_val = (payable_total / 100) * self.payable_discount.to_f
+        payable_total = payable_total - payable_discount_val + self.payable_freight.to_f
       end
 
       total_amount = 0
@@ -147,15 +147,15 @@ class Payable < ActiveRecord::Base
   def update_payable_total
       payable_total = self.payable_lines.sum(:payable_line_cost)
       payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
-      payable_discount_val = (payable_total / 100) * self.payable_discount rescue 0
-      payable_total - payable_discount_val + payable_freight
+      payable_discount_val = (payable_total / 100) * self.payable_discount.to_f
+      payable_total - payable_discount_val + payable_freight.to_f
   end
 
   def amount_to_dispers
     # payable_total = self.payable_lines.sum(:payable_line_cost)
     # payable_total += self.po_shipments.sum(:po_shipped_cost) if self.po_header
     # (payable_total / 100) * self.payable_discount
-    self.payable_total - self.payable_accounts.sum(:payable_account_amount)
+    self.payable_total.to_f - self.payable_accounts.sum(:payable_account_amount)
 
   end
 
@@ -166,7 +166,7 @@ class Payable < ActiveRecord::Base
   end
 
   def payable_current_balance
-      self.payable_total - self.payment_lines.sum(:payment_line_amount)
+      payable_total - payment_lines.sum(:payment_line_amount)
   end
 
   def redirect_path
@@ -178,19 +178,13 @@ class Payable < ActiveRecord::Base
   end
 
   def update_payable_status
-      Payable.skip_callback("save", :before, :process_before_save, raise: false)
-      Payable.skip_callback("save", :after, :process_after_save, raise: false)
-
-      payable_balance = self.payable_current_balance
-      if payable_balance > 0
-          self.update_attributes(:payable_status => "open")
+      if self.payable_current_balance > 0
+          self.update_attribute(:payable_status, "open")
       else
-          self.update_attributes(:payable_status => "closed")
+          self.update_attribute(:payable_status, "closed")
       end
-
-      Payable.set_callback("save", :before, :process_before_save)
-      Payable.set_callback("save", :after, :process_after_save)
   end
+
   def self.all_payables(item)
     payables = []
     @item = Item.find(item)

@@ -11,5 +11,4 @@
 
 class PrintingScreen < ActiveRecord::Base
   belongs_to :payment
-  attr_accessor :status, :payment_id
 end

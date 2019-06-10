@@ -16,9 +16,6 @@ class ReceiptLine < ActiveRecord::Base
   belongs_to :receipt
   belongs_to :receivable
 
-  attr_accessor :receipt_line_amount, :receipt_line_created_id, :receipt_line_updated_id,
-  :receipt_id, :receivable_id
-
   validates_presence_of :receipt_line_amount, :receivable_id
 
   validates_numericality_of :receipt_line_amount
@@ -26,6 +23,11 @@ class ReceiptLine < ActiveRecord::Base
   # validates :receivable_id, uniqueness: { scope: :receipt_id }
 
   validate :check_total_received
+
+  after_save :process_after_save
+  after_destroy :process_after_save
+
+  before_create :process_before_create
 
   def other_receipt_lines
       self.receivable.receipt_lines.where("id != ?", self.id)
@@ -36,22 +38,20 @@ class ReceiptLine < ActiveRecord::Base
       if total_shipped > self.receivable.receivable_total
           errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
       end
-      if self.receipt_line_amount > (self.receivable.receivable_total - ((self.receivable.receivable_total*self.receipt.receipt_discount)/100).round(2))
+      if self.receipt_line_amount > self.receivable.receivable_total
          errors.add(:receipt_line_amount, "exceeded than receivable total - discount!")
       end
-      # if self.receipt.new_record?
-      #     receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
-      #     errors.add(:receipt_line_amount, "duplicate receivable entry!") unless receivable_ids.uniq == receivable_ids
-      # end
+      unless self.receipt.new_record?
+          receivable_ids = self.receipt.receipt_lines.collect(&:receivable_id)
+          errors.add(:receipt_line_amount, "duplicate receivable entry!") unless receivable_ids.uniq == receivable_ids
+      end
   end
 
-  after_save :process_after_save
-  after_destroy :process_after_save
-  # before_create :process_before_create
 
-  # def process_before_create
-  #   self.receipt_line_amount = (self.receivable.receivable_total - ((self.receipt_line_amount*self.receipt.receipt_discount)/100).round(2))
-  # end
+
+  def process_before_create
+    self.receipt_line_amount = (self.receivable.receivable_total - ((self.receipt_line_amount*self.receipt.receipt_discount)/100).round(2))
+  end
 
   def process_after_save
       Receivable.skip_callback("save", :before, :process_before_save, raise: false)

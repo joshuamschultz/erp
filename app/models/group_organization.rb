@@ -10,7 +10,6 @@
 #
 
 class GroupOrganization < ActiveRecord::Base
-	attr_accessor :organization_id, :group_id
 
 	belongs_to :organization
 	belongs_to :group

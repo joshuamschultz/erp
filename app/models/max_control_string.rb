@@ -10,6 +10,5 @@
 #
 
 class MaxControlString < ActiveRecord::Base
-  attr_accessor :control_string, :control_string_second
   validates :control_string, uniqueness: true
 end

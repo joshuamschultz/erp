@@ -91,27 +91,14 @@ class PoShipment < ActiveRecord::Base
   #   end
   # end
 
-  def self.open_shipments(po_shipments)
-      po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
+  def self.open_shipments(po_shipments=nil)
+      po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
   end
 
-  def self.closed_shipments(po_shipments)
-      po_shipments = PoShipment.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
-  end
-
-  # scope :open_shipments, where("id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id))
-  # scope :closed_shipments, where(:id => PayablePoShipment.all.collect(&:po_shipment_id))
-
-  def self.open_shipments(shipments)
-      shipments ||= PoShipment
-      shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
-  end
-
-  def self.closed_shipments(shipments)
-      shipments ||= PoShipment
-      shipments.where("po_shipments.id in (?)", PayablePoShipment.all.collect(&:po_shipment_id)).order('created_at desc')
+  def self.closed_shipments(po_shipments=nil)
+      po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
   end
 
   def self.all_shipments(itemId)

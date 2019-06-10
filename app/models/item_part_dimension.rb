@@ -47,10 +47,6 @@ class ItemPartDimension < ActiveRecord::Base
  	validate :check_dimension
 	before_save :before_save_process
 
-	attr_accessor :item_part_active, :item_part_created_id, :item_part_critical,
-		:item_part_letter, :item_part_neg_tolerance, :item_part_notes, :item_part_pos_tolerance,
-		:item_part_dimension, :item_part_updated_id, :go_non_go, :dimension_string
-
 	def before_save_process
 		unless self.go_non_go
 			self.item_part_dimension = self.dimension_string.to_f

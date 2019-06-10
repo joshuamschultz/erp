@@ -30,7 +30,7 @@
               <tr>
                 <td><%= link_to so.so_identifier, so_header_path(so) %></td>
                 <td><%= so.organization.organization_name %></td>
-                <td><%= so.ship_to_address%></td>
+                <td><%= so.ship_to_address.address_title%></td>
                 <td><%= so.so_total %></td>
                 <td><%= so.so_status %></td>
               </tr>

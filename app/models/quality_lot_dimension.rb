@@ -19,10 +19,6 @@ class QualityLotDimension < ActiveRecord::Base
   belongs_to :quality_lot
   belongs_to :item_part_dimension
 
-  attr_accessor :lot_dimension_active, :lot_dimension_created_id, :lot_dimension_notes,
-  :lot_dimension_status, :lot_dimension_updated_id, :quality_lot_id, :item_part_dimension_id,
-  :lot_dimension_value
-
   validates_presence_of :quality_lot, :item_part_dimension_id
 
   after_save :process_after_save

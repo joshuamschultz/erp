@@ -21,8 +21,6 @@
 class SoShipment < ActiveRecord::Base
   belongs_to :so_line
   belongs_to :item
-  # attr_accessor :so_line_id, :so_shipment_updated_id, :so_shipment_created_id, :quality_lot_id,
-  # :so_shipped_cost, :so_shipped_count, :so_shipped_shelf, :so_shipped_unit, :so_shipped_status, :shipment_process_id, :so_header_id, :item_id
 
   validate :check_total_shipped
 
