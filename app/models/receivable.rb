@@ -26,12 +26,6 @@
 class Receivable < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessor :receivable_active, :receivable_cost, :receivable_created_id,
-  :receivable_discount, :receivable_identifier, :receivable_notes, :receivable_status,
-  :receivable_total, :receivable_updated_id, :so_header_id, :receivable_description,
-  :organization_id, :receivable_shipments_attributes, :receivable_invoice, :gl_account_id,
-  :receivable_accounts_attributes, :receivable_freight, :receivable_disperse
-
   scope :status_based_receivables, lambda{|status| where(:receivable_status => status) }
   # belongs_to :organization, :conditions => ['organization_type_id = ?', MasterType.find_by_type_value("customer").id]
    belongs_to :organization
@@ -56,6 +50,12 @@ class Receivable < ActiveRecord::Base
 
   validate :validate_receivable_account_total, on: :update
 
+  after_create :process_after_create
+  before_create :process_before_create
+
+  before_save :process_before_save
+  after_save :process_after_save
+
   def validate_receivable_account_total
       gl_account_ids = self.receivable_accounts.collect(&:gl_account_id)
       if gl_account_ids.uniq != gl_account_ids
@@ -73,31 +73,16 @@ class Receivable < ActiveRecord::Base
       errors.add(:receivable_invoice, "total (#{self.receivable_total}) < dispersed account total (#{total_amount})") if total_amount > receivable_total
   end
 
-  before_save :process_before_save
 
   def process_before_save
       self.organization = self.so_header.organization if self.so_header
       # self.receivable_total = self.update_receivable_total
   end
 
-  after_save :process_after_save
-
-  def process_after_save
-      self.process_receivable_total
-      # self.update_gl_account
-      if self.so_header.present?
-        generate_pdf
-      end
-  end
-
-  before_create :process_before_create
-
   def process_before_create
       self.receivable_identifier = CommonActions.get_new_identifier(Receivable, :receivable_identifier, "I")
       self.receivable_status = "open"
   end
-
-  after_create :process_after_create
 
   def process_after_create
       if self.so_header
@@ -112,6 +97,17 @@ class Receivable < ActiveRecord::Base
       end
       self.process_receivable_total
   end
+
+  def process_after_save
+      self.process_receivable_total
+      # self.update_gl_account
+      if self.so_header.present?
+        generate_pdf
+      end
+  end
+
+
+
 
   def process_receivable_total
       Receivable.skip_callback("save", :before, :process_before_save)
@@ -149,8 +145,8 @@ class Receivable < ActiveRecord::Base
   end
 
   def check_receivable_account_total
-       sales_income_gl_id = GlAccount.first.id || GlAccount.where(:gl_account_identifier => '41010-010' ).first.id
-       sales_freight_gl_id = GlAccount.first.id || GlAccount.where(:gl_account_identifier =>'51020-020').first.id
+       sales_income_gl_id = GlAccount.where(:gl_account_identifier => '41010-010' ).first.id
+       sales_freight_gl_id = GlAccount.where(:gl_account_identifier =>'51020-020').first.id
        sum_of_receivable_account = self.receivable_accounts.where(gl_account_id: sales_income_gl_id).sum(:receivable_account_amount) - self.receivable_accounts.where(gl_account_id: sales_freight_gl_id).sum(:receivable_account_amount)
        ( sum_of_receivable_account == self.receivable_total) ? "" : "(<strong style='color: red'>Mismatch b/w Receivable and Account Total)</strong>)".html_safe
   end
@@ -363,7 +359,7 @@ class Receivable < ActiveRecord::Base
 
 
         if i== 1
-          content += ' <section><article class="ff"><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.logo.joint.url(:original)+' /> </div><div class="ms_image-text"><h3> '+@company_info.company_address1+' <br> '+@company_info.company_address2+' </h3><h5><span> P:</span>  '+@company_info.company_phone1+' <br><span> F:&nbsp;</span> '+@company_info.company_fax
+          content += ' <section><article class="ff"><div class="ms_image"><div class="ms_image-wrapper"><img alt=Report_heading src=http://erp.chessgroupinc.com/'+@company_info.try(:logo).try(:joint).try(:url,:original).to_s+' /> </div><div class="ms_image-text"><h3> '+@company_info.company_address1+' <br> '+@company_info.company_address2+' </h3><h5><span> P:</span>  '+@company_info.company_phone1+' <br><span> F:&nbsp;</span> '+@company_info.company_fax
           content +=' </h5></div></div><div class="ms_image-2"><h2> Invoice</h2><div class="ms_image-5"><div class="ms_image-6"><h4> Date</h4><h5> '+self.created_at.strftime("%m/%d/%Y")+' </h5><div class="space"></div><h4> Chess S.O.#</h4> <h5> '+@so_header.so_identifier+' </h5> </div><div class="ms_image-6 ms_image-7"><h4> Inv No</h4><h5> '+self.receivable_identifier+' </h5><div class="space"></div><h4> Customer P.O.#</h4> <h5> '
           content +=@so_header.so_header_customer_po+'  </h5>  </div><div class="clear"></div></div></div></article>'
           if flag ==1

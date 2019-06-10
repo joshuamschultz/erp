@@ -19,7 +19,6 @@
 
 class Event < ActiveRecord::Base  
   belongs_to :user
-  attr_accessor :title, :start_at, :end_at, :allDay, :description, :repeats, :user_id, :frequency, :parent_id
   # scope :between, lambda {|start_time, end_time| {:conditions => ["? < starts_at and starts_at < ?", Event.format_date(start_time), Event.format_date(end_time)] }}
    validates_presence_of :title
    validates_presence_of :frequency,  :if => :present_repeats?, :message => "Please provide No. of Occurence"

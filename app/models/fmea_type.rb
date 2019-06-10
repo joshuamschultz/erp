@@ -16,9 +16,6 @@
 class FmeaType < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  attr_accessor :fmea_active, :fmea_created_id, :fmea_description, 
-       :fmea_name, :fmea_notes, :fmea_updated_id,:attachment_attributes
-
   after_initialize :default_values
 
   def default_values

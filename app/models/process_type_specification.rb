@@ -10,7 +10,6 @@
 #
 
 class ProcessTypeSpecification < ActiveRecord::Base
-  attr_accessor :process_type_id, :specification_id
   belongs_to :process_type
   belongs_to :specification
 end

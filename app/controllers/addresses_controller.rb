@@ -38,7 +38,7 @@ class AddressesController < ApplicationController
     @addressable = Organization.find_organization(params)
 
     if @addressable
-      p  @addresses = @addressable.addresses.where(address_type: @address_type)
+      @addresses = @addressable.addresses.where(address_type: @address_type)
     else
       if params[:org_type]
         @org_type = MasterType.find_by_type_value(params[:org_type] ||= 'vendor')

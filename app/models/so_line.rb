@@ -76,8 +76,9 @@ class SoLine < ActiveRecord::Base
   def close_sales_order
     #TODO: this should be moved to receiving, not sure why here.
     so_status_count = so_header.so_lines.where("so_line_status = ?", "open").count
-    so_header_status = "closed" if so_status_count == 0
-    so_header.update_attributes(so_status: so_header_status)
+    if so_status_count == 0
+      so_header.update_attribute(:so_status, 'closed')
+    end
   end
 
   def set_so_identifier
