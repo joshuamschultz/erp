@@ -46,11 +46,31 @@ class SoHeadersController < ApplicationController
 
   def index
     # TODO: deleting empty SO should be moved to a job at night - not every load
-    if @so_headers.find_by_so_identifier("Unassigned").present?
+    if @so_headers.find_by_so_identifier("Unassigned").present? and !request.xhr?
       @so_headers.find_by_so_identifier("Unassigned").delete
       redirect_to action: "index"
-    elsif params[:so_status]
-      @so_headers = SoHeader.status_based_sos(params[:so_status])
+    elsif params[:so_status] || request.xhr?
+      @so_headers = SoHeader.status_based_sos(params[:so_status].present? ? params[:so_status] : 'open')
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json {
+          @so_header_result = []
+          @so_headers.each do |so_header|
+            data = {}
+            data['so_id'] = so_header.so_identifier
+            data['customer_name'] = ""
+            data['bill_to_address_name'] = Address.find(so_header.so_bill_to_id).try(:address_title).to_s
+            data['ship_to_address_name'] = Address.find(so_header.so_ship_to_id).try(:address_title).to_s
+            data['so_cofc'] = so_header.so_cofc.to_s
+            data['so_squality'] = so_header.so_squality
+            data['so_status']= so_header.so_status
+            data['links'] = ''
+            @so_header_result << data
+          end
+          render json: {:aaData => @so_header_result}
+        }
+      end
+
     else
       @so_headers = SoHeader.status_based_sos("open")
     end

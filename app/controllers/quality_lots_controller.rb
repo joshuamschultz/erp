@@ -84,7 +84,7 @@ class QualityLotsController < ApplicationController
             @quality_lots = @quality_lots.delete_if {|entry| !@po_headers.include? entry[:po_header_id]}
           end
           @qality_lots = Array.new
-          @quality_lots = @quality_lots.select{|quality_lot|
+          @quality_lots.each{ |quality_lot|
             qality_lot = Hash.new
             quality_lot.attributes.each do |key, value|
               qality_lot[key] = value

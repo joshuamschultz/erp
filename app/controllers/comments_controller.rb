@@ -104,12 +104,14 @@ class CommentsController < ApplicationController
   private
 
   def set_record
-    if params[:organization_id].present?
-      @record = Organization.find params[:organization_id]
+    @record = if params[:organization_id].present?
+      Organization.find params[:organization_id]
     elsif params[:po_header_id].present?
-      @record = PoHeader.find params[:po_header_id]
+      PoHeader.find params[:po_header_id]
     elsif params[:so_header_id].present?
-      @record = SoHeader.find params[:so_header_id]
+      SoHeader.find params[:so_header_id]
+    elsif params[:quality_lot_id].present?
+      QualityLot.find params[:quality_lot_id]
     end
   end
 
