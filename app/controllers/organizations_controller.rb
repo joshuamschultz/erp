@@ -1,9 +1,8 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: %i[show edit update destroy organization_info populate add_comment delete_comment]
+  before_action :set_organization, only: %i[show edit update destroy organization_info populate]
   before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
-
   autocomplete :organization, :organization_name, full: true
 
   def view_permissions
@@ -187,24 +186,6 @@ class OrganizationsController < ApplicationController
       OrganizationProcess.process_organization_processes(current_user, @organization, params[:processes])
     end
     redirect_to @organization
-  end
-
-  def add_comment
-    if params[:comment].present? && params[:type] == "note"
-      Comment.process_comments(current_user, @organization, [params[:comment]], params[:type])
-      @notes = @organization.comments.where(comment_type: "note").order("created_at desc") if @organization
-      respond_to do |format|
-        format.js { render "comment.js.erb" }
-      end
-    end
-  end
-
-  def delete_comment
-    @organization.comments.where(id: params[:comment_id]).first.destroy!
-    @notes = @organization.comments.where(comment_type: "note").order("created_at desc") if @organization
-    respond_to do |format|
-      format.js { render "comment.js.erb" }
-    end
   end
 
   def organization_info
