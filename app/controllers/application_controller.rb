@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_record_for_comments
-    if ['organizations', 'po_headers', 'so_headers'].include?(params[:controller]) and params[:action] == 'show'
+    if ['organizations', 'po_headers', 'so_headers', 'quality_lots'].include?(params[:controller]) and params[:action] == 'show'
       @record = params[:controller].singularize.camelcase.constantize.find params[:id]
     end
   end

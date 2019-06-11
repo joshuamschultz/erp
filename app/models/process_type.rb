@@ -18,8 +18,8 @@ class ProcessType < ActiveRecord::Base
   has_many :organizations, through: :organization_processes
   has_many :item_processes, dependent: :destroy
   has_many :item_revisions, through: :item_processes
-  has_many :specifications, through: :process_type_specifications
   has_many :process_type_specifications, dependent: :destroy
+  has_many :specifications, through: :process_type_specifications
   # has_many :specifications, through: :process_type_specifications
 
   has_one :attachment, as: :attachable, dependent: :destroy
@@ -72,7 +72,7 @@ class ProcessType < ActiveRecord::Base
         process_types << process.process_type if process.present?
       end
     end
-    process_types = process_types.uniq
+    process_types = process_types.uniq.compact
     process_types
   end
 
