@@ -30,7 +30,7 @@ class ContactsController < ApplicationController
 
     # if organization present, get contacts for that organziation
     if @contactable
-      p  @contacts = @contactable.contacts.where(contact_type: @contact_type)
+      @contacts = @contactable.contacts.where(contact_type: @contact_type)
     else
       # if there is org_type, get all contacts for that org type
       if params[:org_type]

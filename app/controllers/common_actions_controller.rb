@@ -326,7 +326,6 @@ class CommonActionsController < ApplicationController
                       temp += '<tr align="center"><td id="pk100_part_no" scope="row">' + item_part+'<table><tr><td align="center" id="pk100_alt_part_no">'+item_alt_part+'</td></tr><tr> <td align="center" id="pk100_control_no">'+item_lot+'</td></tr></table></td><td>'+item_revision+'</td> <td id="pk100_part_description">'+item_desc+'</td><td class="text-6" id="pk100_so_qty">'+item_qty+'</td><td id="pk100_shipped_part">'+item_shipped+'</td></tr>'
                       source += temp
                       if i== 1
-                        byebug
                         content += '<div class="ms_wrapper"><section><article><div class="ms_image-5"><div class="ms_image-wrapper"><img alt=Report_heading src=#{RAILS_ROOT}'+@company_info.try(:logo).try(:joint).try(:url, :original).to_s+' /></div><div class="ms_image-text"><h5>'+@company_info.company_address1+'<br/>'+@company_info.company_address2+'<hr><b>P:&nbsp;</b>'+@company_info.company_phone1+'<br/>&nbsp;<b>F:&nbsp;</b>'+@company_info.company_fax
                         content += '<hr></h5></div></div><div class="ms_image-3"><h3>Packing Slip Number</h3><h2>'+ @so_header.so_identifier+'</h2><h5> Sales Order Date :'+@so_header.created_at.strftime("%m/%d/%Y")+'</h5><h5>Customer P.O: '+cusomter_po+'</h5></div></article>'
                         if flag ==1

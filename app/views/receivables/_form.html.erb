@@ -17,7 +17,7 @@
     <% if @receivable.persisted? %>
         <%= f.label :Customer %>
          <div class="controls">
-        <%= f.text_field :organization_id, :readonly => true, input_html: { class: 'special_font' } %>
+        <%= f.text_field :organization_id, :readonly => true %>
     </div>
     <% else %>
         <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
@@ -73,6 +73,7 @@
 <% end %>
 <% end %>
 
+
 <script type="text/javascript">
     tab_field_forms["form_for_receivables"] = ["receivable_organization_id", "receivable_receivable_notes", "receivable_receivable_discount", "receivable_receivable_freight"];
 
@@ -85,8 +86,8 @@
                 $('#receivable_receivable_freight').select();
             }
         });  
-    $("#accounts_dispersal_table").hide();
-    $("#hide_me").hide();
+        //$("#accounts_dispersal_table").hide();
+        //$("#hide_me").hide();
         // $("#receivable_receivable_discount " ).on("focusout", function(){
         //   $("#update_invoice").attr('disabled',true);  
         //  });   
@@ -108,21 +109,9 @@
             $("#receivable_organization_id").val("<%= @receivable.organization.organization_name if @receivable.organization %>");
 
             $("#receivable_gl_account_id").val("<%= @receivable.gl_account.gl_account_title if @receivable.gl_account %>");
-        <% end %>
-
-        $(document).on("keydown", ".receivable_shipment_count", function(e){
-            receivable_fine_to_submit = true;
-            receivable_fine_to_submit = table_row_next_focus(e, "#form_for_receivables", $(this), ".receivable_shipment_count", true);
-        });
-
-        $("#form_for_receivables").submit(function(e){
-            if(receivable_fine_to_submit == false)
-                e.preventDefault();
-            else
-                receivable_fine_to_submit = true;
-        });
-        $('#receivable_organization_id').on('autocompletechange change', function ()
-         { 
+        <% else %>
+            $('#receivable_organization_id').on('autocompletechange change', function ()
+            { 
             selected_val = this.value 
             matched = 0
             $( "#ui-id-1 li a" ).each(function() {
@@ -139,7 +128,22 @@
                 $('#receivable_organization_id').val($( "#ui-id-1 li a" ).first().html());
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#receivable_organization_id').val()}}, "get_org_id", {}); 
               }    
-          }).change();
+            }).change();
+        <% end %>
+
+
+        $(document).on("keydown", ".receivable_shipment_count", function(e){
+            receivable_fine_to_submit = true;
+            receivable_fine_to_submit = table_row_next_focus(e, "#form_for_receivables", $(this), ".receivable_shipment_count", true);
+        });
+
+        $("#form_for_receivables").submit(function(e){
+            if(receivable_fine_to_submit == false)
+                e.preventDefault();
+            else
+                receivable_fine_to_submit = true;
+        });
+
 
         // $('#receivable_organization_id').keydown(function(e) {
         //     var code = e.keyCode || e.which;
@@ -272,7 +276,7 @@
     }
 </script>
 
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
+<%#= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
 
 <div class="separator bottom"></div>
 

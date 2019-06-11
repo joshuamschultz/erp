@@ -15,7 +15,6 @@
 #
 
 class CreditRegister < ActiveRecord::Base
-  attr_accessor :amount, :balance, :organization_id, :payment_id, :rec, :transaction_date, :receipt_id
 
   belongs_to :payment
   belongs_to :receipt

@@ -58,12 +58,12 @@ class PoShipmentsController < ApplicationController
                @po_shipments = PoShipment.all_revision_shipments(item_revision.id)
             elsif @item
               if params[:type].present?
-                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments).order("created_at desc") : PoShipment.open_shipments(@item.po_shipments).order("created_at desc")
+                @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(@item.po_shipments) : PoShipment.open_shipments(@item.po_shipments)
               else
                 @po_shipments = PoShipment.all_shipments(@item.id)
               end
             else
-              @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments(nil).order("created_at desc") : PoShipment.open_shipments(nil).order("created_at desc")
+              @po_shipments = (params[:type] == "history") ? PoShipment.closed_shipments : PoShipment.open_shipments
             end
             @po_shipments = @po_shipments.includes(:po_line).order(:po_line_id)
             if  user_signed_in? && current_user.is_vendor?
@@ -75,15 +75,14 @@ class PoShipmentsController < ApplicationController
             end
             i = 0
             @po_shipmnts = Array.new
-            @po_shipments = @po_shipments.select{|po_shipment|
+            @po_shipments.each{|po_s|
                 po_shipmnt = Hash.new
-
                 po_shipmnt[:index] =  i
-                po_shipment = po_line_data_list(po_shipment, true)
-                po_shipment.each do |key, value|
+                po_shipment_hash = po_line_data_list(po_s, true)
+                po_shipment_hash.each do |key, value|
                   po_shipmnt[key] = value
                 end
-                po_shipment = PoShipment.find(po_shipment["id"])
+                po_shipment = PoShipment.find(po_shipment_hash["id"])
 
                 po_shipment.attributes.each do |key, value|
                   po_shipmnt[key] = value

@@ -2,6 +2,8 @@
 <% unless type.nil? %>
 <script type="text/template" class="<%= type %>-template" style="display:none">
 <% case(type) %>
+    <% when "only-address-select-box" %>
+            {{# aaData}}<option value="{{id}}" {{address_default}}>{{address_name}}</option>{{/ aaData}}
     <% when "address-select-box" %>
             {{# aaData}}<option value="{{id}}" {{contact_default}}>{{contact_description}}</option>{{/ aaData}}
     <% when "revision-select-box" %>

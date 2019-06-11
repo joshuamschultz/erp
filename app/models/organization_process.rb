@@ -13,9 +13,6 @@
 #
 
 class OrganizationProcess < ActiveRecord::Base
-  attr_accessor :org_process_active, :org_process_created_id, :org_process_updated_id,
-  :organization_id, :process_type_id
-
   after_initialize :default_values
 
   def default_values

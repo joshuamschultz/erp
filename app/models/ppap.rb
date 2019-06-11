@@ -49,14 +49,6 @@
 
 class Ppap < ActiveRecord::Base
   belongs_to :quality_lot
-  attr_accessor :Change_in_mfg_source, :Other, :appearance_report, :camo_pattern_new_to_part, 
-  :change_to_materials_used, :comment, :commited_weekly_capacity, :component_review_meeting, 
-  :control_plan, :date, :dfmea_desing, :fai_dimensional_inspection, :fai_material_test_result, 
-  :first_article_parts, :guage_review, :hour_run, :initial_submission, :lathe_cnc, :level1, 
-  :level2, :level3, :level4, :level5, :maximum_weekly_capacity, :measurement_analysis, :packaging_shipping, 
-  :part_submission_warrant, :past_hour, :pfmea_analysis, :process_capabilty_study, :process_change, 
-  :process_flow_diagram, :production_run_rate, :purchasing_agreement, :re_submission, :result_meeting_no, 
-  :result_meeting_yes, :revision_change, :tooling_replacement, :quality_lot_id
 
   validate :quality_lot_id
 

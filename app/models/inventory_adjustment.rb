@@ -13,9 +13,6 @@
 #
 
 class InventoryAdjustment < ActiveRecord::Base
-  attr_accessor :inventory_adjustment_description, :inventory_adjustment_quantity, :item_alt_name_id, :item_id, :quality_lot_id
-
-
   belongs_to :item
   belongs_to :item_alt_name
   belongs_to :quality_lot
