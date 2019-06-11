@@ -125,7 +125,7 @@
 
         $("#po_header_customer_id").on("focusout", function(){
             if($("#customer_id").val() != ""){
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#customer_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});               
+                initialize_api_call({"url": "/addresses?address_type=address&object_id=" + $("#customer_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});               
             }
             else{
                 $("#po_header_customer_id").val("");
@@ -183,7 +183,7 @@
     }
 
     function set_customer_addresses(response, callback_params, api_params){        
-        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        var html = $.trim(Mustache.render($(".only-address-select-box-template").html(), response));
         $("#po_header_po_bill_to_id").html(html);
         $("#po_header_po_ship_to_id").html(html);
 
@@ -208,4 +208,4 @@
     }
 </script>
 
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "only-address-select-box"} %>

@@ -135,7 +135,7 @@
         
         $("#so_header_organization_id").on("focusout", function(){
             if($("#organization_id").val() != ""){
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+                initialize_api_call({"url": "/addresses?address_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
 
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
             }
@@ -150,7 +150,7 @@
         $("#so_header_organization_id").val("<%= @so_header.organization.organization_name if @so_header.organization %>");
 
         <% unless @so_header.new_record? %>
-            initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+            initialize_api_call({"url": "/addresses?address_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
 
             initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});            
         <% end %>
@@ -162,7 +162,7 @@
        var org_id_val = JSON.stringify(response.aaData.id);
         $("#organization_id").val(org_id_val);
   
-        initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + org_id_val, "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
+        initialize_api_call({"url": "/addresses?address_type=address&object_id=" + org_id_val, "type": "GET", "data_type": "json", "params": {}}, "set_customer_addresses", {});
 
         initialize_api_call({"url": "/organizations/" + org_id_val + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
          
@@ -174,7 +174,7 @@
     }
 
     function set_customer_addresses(response, callback_params, api_params){        
-        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        var html = $.trim(Mustache.render($(".only-address-select-box-template").html(), response));
         $("#so_header_so_bill_to_id").html(html);
         $("#so_header_so_ship_to_id").html(html);
 
@@ -189,4 +189,4 @@
     }
 </script>
 
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "only-address-select-box"} %>

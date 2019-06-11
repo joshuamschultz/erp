@@ -12,6 +12,5 @@
 #
 
 class Notification < ActiveRecord::Base
-  attr_accessor :notable_id, :notable_type, :note_status, :user_id
   belongs_to :notable, :polymorphic => true
 end

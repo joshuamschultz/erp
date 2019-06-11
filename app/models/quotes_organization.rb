@@ -10,7 +10,7 @@
 #
 
 class QuotesOrganization < ActiveRecord::Base
-  attr_accessor :organization_id, :quote_id
+
   belongs_to :organization
   belongs_to :quote
 end

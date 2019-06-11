@@ -19,9 +19,6 @@ class DepositCheck < ActiveRecord::Base
   belongs_to :receipt
   has_one :reconcile
 
-   attr_accessor :receipt_id, :status, :check_identifier, :receipt_type, :active
-
-
   def get_receivables
       @identifiers = Array.new
       if self.receipt

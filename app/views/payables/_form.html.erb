@@ -116,7 +116,7 @@
          });
         $("#payable_organization_id").on("focusout", function(){
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined){
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+                initialize_api_call({"url": "/address?address_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
 
                 initialize_api_call({"url": "/organizations/" + $("#organization_id").val() + "/organization_info", "type": "GET", "params": {}}, "set_vendor_info", {});
             }
@@ -134,7 +134,7 @@
             // $("#payable_gl_account_id").val("<%#= @payable.gl_account.gl_account_title if @payable.gl_account %>");
 
             if($("#organization_id").val() != "" && $("#organization_id").val() != undefined)
-                initialize_api_call({"url": "/contacts?contact_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
+                initialize_api_call({"url": "/addresses?address_type=address&object_id=" + $("#organization_id").val(), "type": "GET", "data_type": "json", "params": {}}, "set_vendor_addresses", {});
         <% end %>
 
         $(document).on("keydown", ".payable_shipment_count", function(e){
@@ -168,7 +168,7 @@
         return (getNum+1);
     }  
     function set_vendor_addresses(response, callback_params, api_params){
-        var html = $.trim(Mustache.render($(".address-select-box-template").html(), response));
+        var html = $.trim(Mustache.render($(".only-address-select-box-template").html(), response));
         $("#payable_payable_to_id").html(html);
 
         <% if @payable.persisted? && @payable.payable_to_address %>
@@ -262,7 +262,7 @@
     }
 </script>
 
-<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "address-select-box"} %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "only-address-select-box"} %>
 
 <div class="separator bottom"></div>
 <%# @po_header = @payable.po_header if @payable.persisted? %>

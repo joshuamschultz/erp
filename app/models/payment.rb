@@ -31,26 +31,22 @@ class Payment < ActiveRecord::Base
     has_one :printing_screen
     has_many :gl_entries, :dependent => :destroy
     has_one :check_register, :dependent => :destroy
-
     belongs_to :organization
-
-    attr_accessor :payment_active, :payment_check_amount, :payment_check_code, :payment_check_no,
-        :payment_created_id, :payment_description, :payment_identifier, :payment_notes, :payment_status,
-        :payment_type_id, :payment_updated_id, :organization_id, :payment_lines_attributes, :check_entry_id,
-        :check_entry_attributes, :next_check_code, :payment_check_code_type
-
-    accepts_nested_attributes_for :payment_lines, :reject_if => lambda { |b| b[:payment_line_amount].blank? || b[:payable_id].blank? }
-
     belongs_to :payment_type, ->{where('type_category = ? and type_name != ?', 'payment_type', 'cash')},
                               :class_name => "MasterType", :foreign_key => "payment_type_id"
-
     belongs_to :check_entry #, :class_name => "CheckEntry", :foreign_key => "payment_check_code", :primary_key => 'check_code'
 
-    validates_presence_of :organization
+    accepts_nested_attributes_for :payment_lines, :reject_if => lambda { |b| b[:payment_line_amount].blank? || b[:payable_id].blank? }
+    accepts_nested_attributes_for :check_entry, update_only: true, allow_destroy: true, :reject_if => lambda { |b| b[:check_code].nil? || b[:check_code].blank? }
 
     scope :status_based_payments, lambda{|status| where(:payment_status => status) }
 
     before_validation :process_before_validation
+    validates_presence_of :organization
+    validate :payment_total_amount
+
+    before_create :process_before_create
+    after_save :process_after_save
 
     def process_before_validation
         if self.payment_type.present? && self.payment_type.type_value != "check"
@@ -59,7 +55,6 @@ class Payment < ActiveRecord::Base
         end
     end
 
-    accepts_nested_attributes_for :check_entry, update_only: true, allow_destroy: true, :reject_if => lambda { |b| b[:check_code].nil? || b[:check_code].blank? }
 
     # validates_presence_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
     # validates_uniqueness_of :payment_check_code, :if => Proc.new { |o| (o.payment_type.present? && o.payment_type.type_value == "check") }
@@ -79,7 +74,7 @@ class Payment < ActiveRecord::Base
         payment_lines
     end
 
-    validate :payment_total_amount
+
 
     def payment_total_amount
         payable_ids = self.payment_lines.collect(&:payable_id)
@@ -98,14 +93,12 @@ class Payment < ActiveRecord::Base
         end
     end
 
-    before_create :process_before_create
 
     def process_before_create
         self.payment_identifier = CommonActions.get_new_identifier(Payment, :payment_identifier, "C")
         self.payment_status = "open"
     end
 
-    after_save :process_after_save
 
     def process_after_save
         if self.check_entry.nil? && self.payment_type.present? && self.payment_type.type_value == "check"

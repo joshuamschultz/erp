@@ -9,5 +9,5 @@
 #
 
 class Reconciled < ActiveRecord::Base
-  attr_accessor :balance
+
 end
