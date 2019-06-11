@@ -283,6 +283,7 @@ Rails.application.routes.draw do
     collection do
       get 'report'
     end
+    concerns :commentable
   end
 
   resources :items do

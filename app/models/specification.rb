@@ -67,7 +67,7 @@ class Specification < ActiveRecord::Base
       specifications << process_spec
     end
     # get rid of duplicates.
-    specifications.uniq
+    specifications.uniq.compact
   end
   # TODO: if this what I think it is, to assign specs to new parts or something.
   # We need to change
