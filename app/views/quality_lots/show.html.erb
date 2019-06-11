@@ -280,10 +280,9 @@
     <% end %>
     </div>
     
-    <% unless  user_signed_in? &&  current_user.is_customer? %>  
-      <div class="span6">
-        <%= render :partial => 'comments/comments', 
-        :locals => {:extras => {:link => populate_quality_lot_path(@quality_lot, type: "note")}} %>
+    <% unless  user_signed_in? &&  current_user.is_customer? %>
+      <div class="span6 comments">
+        <%= render :partial => 'comments/comments' %>
       </div>
     <% end %>
 
