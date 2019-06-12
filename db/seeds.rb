@@ -1,3 +1,5 @@
+require 'csv'
+
 unless User.find_by_email('joshua@alliance.com')
   user = User.new(email: 'joshua@alliance.com', name: 'Joshua', password: '12345678', password_confirmation: '12345678')
   user.roles = [:superadmin]
@@ -90,11 +92,25 @@ mastertypes.each do |master|
 end
 
 # GL Types & Categories
-# FastSeeder.seed_csv!(GlType, "gl_types.csv", :gl_name, :gl_side, :gl_report, :gl_identifier)
-# FastSeeder.seed_csv!(GlAccount,"gl_accounts.csv", :gl_type_id, :gl_account_title, :gl_account_identifier)
-# GlAccount.all.each do |account|
-#  account.update_attributes(:key_account => true, :gl_account_active => true)
-# end
+CSV.foreach(Rails.root.join('db/seeds/gl_types.csv'), headers: false) do |row|
+  GlType.create! do |model|
+    model.gl_name = row[0]
+    model.gl_side = row[1]
+    model.gl_report = row[2]
+    model.gl_identifier = row[3]
+    model.gl_description = row[3]
+    model.gl_active = true
+  end
+end
+
+CSV.foreach(Rails.root.join('db/seeds/gl_accounts.csv'), headers: false) do |row|
+  GlAccount.create! do |model|
+    model.gl_type_id = row[0]
+    model.gl_account_title = row[1]
+    model.gl_account_identifier = row[2]
+    model.gl_account_active = true
+  end
+end
 
 check_codes = [
   %w[400 check_code],
@@ -114,11 +130,11 @@ end
 #   {user_id: nil, organization_type_id: 7, territory_id: nil, customer_quality_id: 1, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-29", organization_name: "Cal-Vibration", organization_short_name: "Calation", organization_description: "Calibrators", organization_address_1: "", organization_address_2: "", organization_city: "", organization_state: "", organization_country: "United States", organization_zipcode: "", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 1, organization_complete: false},
 #   {user_id: nil, organization_type_id: 5, territory_id: 1, customer_quality_id: 2, customer_contact_type_id: 3, customer_max_quality_id: nil, vendor_quality_id: 1, vendor_expiration_date: "2016-01-27", organization_name: "Ephesus Lighting", organization_short_name: "Ephesus", organization_description: "Home Office", organization_address_1: "76 jefferson street", organization_address_2: "", organization_city: "Syracuse", organization_state: "NY", organization_country: "United States", organization_zipcode: "130089", organization_telephone: "", organization_fax: "", organization_email: "dutch@chessgroupinc.com", organization_website: "", organization_notes: "", organization_active: true, organization_created_id: nil, organization_updated_id: nil, customer_min_quality_id: 3, organization_complete: false}
 # ])
-unless Owner.find_by_owner_identifier('Chess Group Inc')
-  Owner.create!([
-                  { owner_identifier: 'Chess Group Inc', owner_description: '', owner_commission_type_id: 1, owner_commission_amount: '5.0', owner_active: true }
-                ])
-end
+#unless Owner.find_by_owner_identifier('Chess Group Inc')
+#  Owner.create!([
+#                  { owner_identifier: 'Chess Group Inc', owner_description: '', owner_commission_type_id: 1, owner_commission_amount: '5.0', owner_active: true }
+#                ])
+#end
 
 unless CompanyInfo.find_by_company_name('Chess Group Inc')
   CompanyInfo.create!([
