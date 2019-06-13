@@ -380,8 +380,10 @@
                                   <strong><%= so_line.item.item_part_no %></strong>
                                   <strong><%= so_line.item_alt_name.item_alt_identifier %></strong>
                             <%  end %>
+                            <% so_line.so_shipments.each do |so_shipment| %>
 
-                            <strong>control on </strong>
+                                <strong><%= so_shipment.quality_lot.present? ? so_shipment.quality_lot.lot_control_no : ''%></strong>
+                            <% end %>
                         <% end %>
                 </div>
 
