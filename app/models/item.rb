@@ -39,10 +39,10 @@ class Item < ActiveRecord::Base
   # TODO: this isn't working, so fix and then uncomment the item model call for the index view in controller#index
   scope :item_with_recent_revisions, -> { joins(:item_revisions).where('item_revisions.latest_revision = ?', true) }
 
+  after_create :create_self_alt_name
   after_create :create_alt_name
-  after_update :update_alt_name
 
-  def create_alt_name
+  def create_self_alt_name
     # Creates the part in the alt database which is used for creating purchase and sales orders
     # This is needed since they must have the their own part numbers showing on the reports
 
@@ -50,11 +50,19 @@ class Item < ActiveRecord::Base
     alt_name.save
   end
 
-  def update_alt_name
-    alt_name = item_alt_names.first
-    alt_name.item_alt_identifier = item_part_no
-    alt.save
+  def create_alt_name
+    if self.item_alt_part_no.present?
+      item_alt_names.create(item_alt_identifier: item_alt_part_no, item_alt_active: true)
+    end
   end
+
+
+  # this is redundant method
+  # def update_alt_name
+  #   alt_name = item_alt_names.first
+  #   alt_name.item_alt_identifier = item_part_no
+  #   alt.save
+  # end
 
   def current_revision
     item_revisions.order('item_revision_date desc').first
