@@ -12,8 +12,13 @@ class UserMailer < ActionMailer::Base
     @po_header = po_header
     @vendor_email = vendor_email
     file_name = @po_header.po_identifier
-    file_path = "#{Rails.root.to_s}/public/purchase_report/#{@po_header.po_identifier}.pdf"
-    attachments[file_name.to_s + '.pdf'] = File.read(file_path)
+    html = render_to_string(:layout => false, :partial => "po_headers/purchase_report")
+    kit = PDFKit.new(html, :page_size => "A4")
+    # Get an inline PDF
+    pdf = kit.to_pdf
+    # Save the PDF to a file
+    # file_path = "#{Rails.root.to_s}/public/purchase_report/#{@po_header.po_identifier}.pdf"
+    attachments[file_name.to_s + '.pdf'] = pdf#File.read(file_path)
     mail( to: "#{@po_header.organization.organization_email}",
            cc: @vendor_email,
           subject: "Purchase Order [#{@po_header.po_identifier}]"
@@ -24,8 +29,12 @@ class UserMailer < ActionMailer::Base
     @so_header = so_header
     @customer_email = customer_email
     file_name = @so_header.so_identifier
-    file_path = "#{Rails.root.to_s}/public/sales_report/#{@so_header.so_identifier}.pdf"
-    attachments[file_name.to_s + '.pdf'] = File.read(file_path)
+    # file_path = "#{Rails.root.to_s}/public/sales_report/#{@so_header.so_identifier}.pdf"
+    html = render_to_string(:layout => false, :partial => "so_headers/sales_report")
+    kit = PDFKit.new(html, :page_size => "A4")
+    # Get an inline PDF
+    pdf = kit.to_pdf
+    attachments[file_name.to_s + '.pdf'] = pdf#File.read(file_path)
     mail( to: "#{@so_header.organization.organization_email}",
           cc: @customer_email,
           subject: "Sales Order [#{@so_header.so_identifier}]"

@@ -414,7 +414,7 @@ class Receivable < ActiveRecord::Base
         <article class="art-01"><div class="ms_text-wra"><h2></h2><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+in_contact_title.to_s+''+in_contact_address1.to_s+''+in_contact_address2.to_s+''+in_contact_state.to_s+''+in_contact_czip.to_s+'</h2></div></div></div><div class="ms_text-wra-02"><h2></h2><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6"><h2 class="ms_sub-heading">'+ship_contact_title.to_s+''+ship_contact_address1.to_s+''+ship_contact_address2.to_s+''+ship_contact_state.to_s+''+ship_contact_czip.to_s+'</div></div></div></article>
         <article class="art-01 art-04 "><table cellspacing="0" cellpadding="0" border="0" width="640"><tbody><tr align="center" class="hea"><td width="72">ORDERED</td><td width="75">SHIPPED</td><td width="67">P/N</td><td width="224">DESCRIPTION</td><td width="95">PRICE/E</td><td width="107">TOTAL</td></tr> <tr valign="top" align="left" class="h-pad"><td></td><td></td><td><table border="0" width="100%"><tbody><tr><th scope="row"></th></tr></tbody></table></td><td></td><td></td><td></td></tr></tbody></table></article>
         <article ><div class="footer"><div class="page"><h3>Page</h3><span>1 </span></div><div class="original"><table width="250" border="0" cellpadding="0" cellspacing="0"><tr><th width="169" align="right" scope="row">SUB TOTAL :</th><td width="131" align="right">'+sub_total.to_s+'</td></tr><tr><th align="right" scope="row">FREIGHT :</th><td align="right">'+self.receivable_freight.to_s+'</td></tr><tr><th align="right" scope="row">TOTAL :</th><td align="right">'+s_sub_total.to_s+'  </td></tr></table></div></div></article> </section>
-        </section><div style="page-break-after:always;">&nbsp; </div>'.html_safe
+        </section><div style="page-break-after:always;">&nbsp; </div>'
 
 
 
@@ -443,6 +443,7 @@ class Receivable < ActiveRecord::Base
     html += '.ms_image-wrapper{float:left;height:69px;margin:20px 0 0 3px;width:150px}.ms_image-wrapper img{width:128px}.ms_image-text span{font-weight:700}.ms_image-text{float:right;margin:6px 10px 0 0;width:120px}.ms_image-text h2{font-size:13px;margin:19px 0 8px;text-decoration:underline}.ms_image-text h3{border-bottom:1px solid #555;font-size:9px;font-weight:400;margin:12px 0 6px;padding:0 0 7px}'
     html += '.ms_image-text h5{border-bottom:1px solid #555;font-size:9px;font-weight:400;margin:0;padding:0 0 7px}'
     html += '.page-center{float:left;margin:8px 36px;width:394px}.page-center h3{font-size:14px;font-weight:700;margin:12px 0 0}.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.h-pad th{font-weight:400}.foot{background-color:#fff}.top-003{position:fixed;top:0;background-color:#fff}.art-01.to-003{padding:130px 0 0}.art-01.art-04{height:444px;padding:0 0 20px}'
-    html += '.art-01.hei{height:575px}</style></head><body><div class="ms_wrapper" >#{content}</div><div style="page-break-after: always;"> </div> </body></html>'.html_safe
+    html += ".art-01.hei{height:575px}</style></head><body><div class='ms_wrapper' >#{content}</div><div style='page-break-after: always;''> </div> </body></html>"
+    html.html_safe
   end
 end

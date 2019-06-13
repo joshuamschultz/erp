@@ -603,7 +603,7 @@ module CommonActions
       item_description = so_line.item_revision.present? ? so_line.item_revision.item_description : so_line.item.item_revisions.last.item_description
       so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
       if i == 1
-        content += '<section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/' + @company_info.logo.joint.url(:original) + ' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>' + @so_header.so_identifier + '</h2><h5>Sales Order Date :' + @so_header.created_at.strftime('%m/%d/%Y') + '</h5><h5> Customer P.O:' + cusomter_po + '</h5></div></article>'
+        content += '<section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/' + @company_info.try(:logo).try(:joint).try(:url, :original).to_s + ' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>' + @so_header.so_identifier + '</h2><h5>Sales Order Date :' + @so_header.created_at.strftime('%m/%d/%Y') + '</h5><h5> Customer P.O:' + cusomter_po + '</h5></div></article>'
         if flag == 1
           content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">' + b_c_title.to_s + '</h2> <strong>' + b_c_address_1.to_s + '</strong> <strong>' + b_c_address_2.to_s + '</strong><strong>' + b_c_state.to_s + '</strong><strong>' + b_c_country.to_s + '&nbsp;' + b_c_zipcode.to_s + '</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">' + s_c_title.to_s + '</h2> <strong>' + s_c_address_1.to_s + '</strong> <strong>'
           content += s_c_address_2.to_s + '</strong><strong>' + s_c_state.to_s + '</strong><strong>' + s_c_country.to_s + '&nbsp; ' + s_c_zipcode.to_s + '</strong></div></article>'
@@ -649,7 +649,7 @@ module CommonActions
     html += '.ms_image2{margin:0 20px 0 0;border:1px solid #ccc;padding:20px 0;text-align:center;font-size:22px}.ms_image2 h2{font-size:17px;margin:0}.ms_image2 strong{color:maroon;float:left;font-size:22px;margin:0 0 8px;width:100%}.ms_image2 p{font-size:18px;margin:0;color:navy}.footer{width:630px;border:2px solid #444;float:left;margin:0 0 10px}.page{float:left;margin:0 0 0 20px}.page h3{font-size:14px;font-weight:700;margin:12px 0 0}.page'
     html += 'h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original{float:right;margin:0 20px 0 0}.original h3{font-size:14px;font-weight:700;margin:12px 0 0}.original h4{color:maroon;font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.original h4 span{color:#000;margin:0 4px 0 0}.page-center{float:left;text-align:center;width:411px}.page-center h3{color:maroon;font-size:14px;font-weight:700;margin:12px 0 0}'
     html += '.page-center h4{font-size:12px;font-weight:400;margin:5px 0 12px;text-align:center}.text-6{color:maroon;margin:0 14px 0 0!important;width:auto!important}.text-7{float:left;margin:22px 0 0;width:100%}.ms_image img{width:196px}.h-pad>td{font-size:14px;margin:30px 0 12px;padding:0;text-align:center;width:90px}.hea.art-002>td{float:left;font-size:14px;padding:3px 0;text-align:center;width:128px}.ww-01{border-bottom:1px solid #000;text-align:center;padding:2px 0}'
-    html += '.de{margin:35px 0 0;min-height:420px}.sal_tab2{height:628px} @page{size:21cm 29.7cm;margin: 10mm 5mm 2mm 10mm;}</style>#{content}'
+    html += ".de{margin:35px 0 0;min-height:420px}.sal_tab2{height:628px} @page{size:21cm 29.7cm;margin: 10mm 5mm 2mm 10mm;}</style>#{content}"
   end
 
   def self.purchase_report(po_id)
@@ -685,7 +685,7 @@ module CommonActions
       if i == 1
         logo_src = ''
         if @company_info.logo.present?
-          logo_src = $sitename + @company_info.logo.joint.url(:original)
+          logo_src = $sitename + @company_info.try(:logo).try(:joint).try(:url, :original).to_s
         end
         content += '<section>
 
