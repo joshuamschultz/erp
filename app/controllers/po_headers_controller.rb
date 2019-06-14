@@ -38,8 +38,12 @@ class PoHeadersController < ApplicationController
 
   def create
     @po_header = PoHeader.new(po_header_params)
-    @po_header.save
-    redirect_to new_po_header_po_line_path(@po_header.id)
+    if @po_header.save
+      redirect_to new_po_header_po_line_path(@po_header.id)
+    else
+      flash[:notice] = 'Customer PO cannot be blank.'
+      redirect_to action: "new"
+    end
   end
 
   def update
@@ -149,5 +153,4 @@ class PoHeadersController < ApplicationController
                                         :po_status, :po_total, :po_type_id, :po_updated_id, :organization_id, :customer_id,
                                         :po_bill_to_id, :po_ship_to_id, :cusotmer_po, :so_header_id)
     end
-
 end

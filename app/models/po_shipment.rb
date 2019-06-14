@@ -90,25 +90,6 @@ class PoShipment < ActiveRecord::Base
   #     QualityLot.summa(self.quality_lot)
   #   end
   # end
-
-  def self.open_shipments(po_shipments=nil)
-      po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
-  end
-
-  def self.closed_shipments(po_shipments=nil)
-      po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
-      po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
-  end
-
-  def self.all_shipments(itemId)
-    PoShipment.joins(:po_line).where(:po_lines => {:item_id => itemId})
-  end
-
-  def self.all_revision_shipments(itemRevisionId)
-    PoShipment.joins(:quality_lot).where(:quality_lots => {:item_revision_id => itemRevisionId})
-  end
-
   def set_quality_on_hand
     if self.quality_lot.present?
       quality_lotss = self.quality_lot
@@ -144,4 +125,46 @@ class PoShipment < ActiveRecord::Base
       super
     end
   end
+
+  def has_direct_po?
+    po_lines.first.po_header.po_type.type_name.to_s.downcase == 'direct'
+  end
+
+  def process_direct_po
+    po_lines.each do |po_line|
+      so_line = po_line.so_line
+      so_line.so_line_shipped = so_line.so_line_quantity
+      so_shipment = so_line.so_shipments.new
+      so_shipment.so_shipped_count = so_line.so_line_shipped
+      so_shipment.quality_lot = self.quality_lot
+      so_shipment.so_shipped_status = 'process'
+      if so_shipment.save
+        so_shipment.set_quality_on_hand
+        true
+      else
+        false
+      end
+    end
+  end
+
+  class << self
+    def open_shipments(po_shipments=nil)
+        po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+        po_shipments.where("po_shipments.id not in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
+    end
+
+    def closed_shipments(po_shipments=nil)
+        po_shipments ||= PoShipment#.joins(:po_line).order("po_lines.po_header_id, po_shipments.created_at") if po_shipments.nil?
+        po_shipments.where("po_shipments.id in (?)", [0] + PayablePoShipment.all.collect(&:po_shipment_id).compact).order('po_shipments.created_at desc')
+    end
+
+    def all_shipments(itemId)
+      PoShipment.joins(:po_line).where(:po_lines => {:item_id => itemId})
+    end
+
+    def all_revision_shipments(itemRevisionId)
+      PoShipment.joins(:quality_lot).where(:quality_lots => {:item_revision_id => itemRevisionId})
+    end
+  end
+
 end

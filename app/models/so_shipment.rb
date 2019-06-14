@@ -28,6 +28,13 @@ class SoShipment < ActiveRecord::Base
   has_one :receivable, through: :receivable_so_shipment
   belongs_to :quality_lot
 
+
+
+  after_save :set_so_line_status
+  after_destroy :set_so_line_status
+
+  before_save :process_before_save
+
   def check_total_shipped
     total_shipped = self.other_so_shipments.sum(:so_shipped_count) + self.so_shipped_count
 
@@ -47,13 +54,11 @@ class SoShipment < ActiveRecord::Base
       self.so_line.present? ? self.so_line.so_shipments.sum(:so_shipped_count) : 0
   end
 
-  before_save :process_before_save
-
   def process_before_save
     self.so_shipped_cost = self.so_shipped_count.to_f * self.so_line.so_line_sell
     self.so_header_id = self.so_line.so_header.id
     unless ["shipped", "on hold", "rejected"].include?(self.so_shipped_status)
-      self.so_shipped_status = (self.so_line.so_header.po_header.present? && self.so_line.so_header.po_header.po_type.type_value == "transer") ? "ship_in" : "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
+      self.so_shipped_status = (self.so_line.so_header.po_header.present? && ['transer', 'direct'].include?(self.so_line.so_header.po_header.po_type.type_value)) ? "ship_in" : "process" unless self.so_shipped_status == 'ship_close' || self.so_shipped_status == 'ship_in'
 
 
       unless SoShipment.where('shipment_process_id IS NOT NULL').first.present?
@@ -82,8 +87,6 @@ class SoShipment < ActiveRecord::Base
 
   end
 
-  after_save :set_so_line_status
-  after_destroy :set_so_line_status
 
   def set_so_line_status
     if self.so_line
