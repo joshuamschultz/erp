@@ -66,16 +66,16 @@ class PoHeader < ActiveRecord::Base
   # If it is a transfer
   def process_before_save
     if self.po_is?("direct")
-      self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
       so_header = self.so_header.present? ? self.so_header : SoHeader.new
+      self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
       so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po, so_due_date: Time.now)
       self.so_header_id = so_header.id
       so_header.so_lines.update_all(organization_id: self.organization_id)
     elsif self.po_is?("transer")
-      # self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
       so_header = self.so_header.present? ? self.so_header : SoHeader.new
-      so_header.update_attributes(organization_id: 1, so_due_date: Time.now)
+      so_header.update_attributes(organization_id: Organization.first.id, so_due_date: Time.now)
       self.so_header_id = so_header.id
+      # self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
       # so_header.so_lines.update_all(organization_id: self.organization_id)
     end
   end

@@ -98,20 +98,29 @@ class PoLine < ActiveRecord::Base
   end
 
   def process_before_save
-    # If a direct PO setup sales order lines (and shipment lines)
-    if self.po_header.po_is?("direct")
-      so_line = self.so_line.present? ? self.so_line : SoLine.new
-      so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id,
-                                customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost,
-                                so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
-      self.so_line_id = so_line.id
+    if po_header.po_is?("direct")
+      # If a direct PO setup sales order lines (and shipment lines)
+      process_direct_order
+    elsif po_header.po_is?("transer")
       # if transfer PO setup sales order lines (and shipment lines)
-    elsif self.po_header.po_is?("transer")
-      so_line = self.so_line.present? ? self.so_line : SoLine.new
-      so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
-      self.po_header.so_header.update_attributes(organization_id: self.organization_id)
-      self.so_line_id = so_line.id
+      process_transfer_order
     end
+  end
+
+
+  def process_direct_order
+    so_line = self.so_line.present? ? self.so_line : SoLine.new
+    so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id,
+                              customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost,
+                              so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+    so_line_id = so_line.id
+  end
+
+  def process_transfer_order
+    so_line = self.so_line.present? ? self.so_line : SoLine.new
+    so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+    po_header.so_header.update_attributes(organization_id: self.organization_id)
+    so_line_id = so_line.id
   end
 
   def prcess_after_save
