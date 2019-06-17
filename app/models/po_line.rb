@@ -60,16 +60,16 @@ class PoLine < ActiveRecord::Base
 
   before_create :create_level_default
   before_save :update_item_total
-  before_save :update_po_total
-  before_save :process_before_save
+  after_commit :process_direct_and_transfer_orders
   after_save :prcess_after_save
-  after_destroy :update_po_total
+  # after_save :update_po_total
+  after_destroy :prcess_after_save
 
   def create_level_default
     # Set PO to Open
     self.po_line_status = "open"
     # If PO is direct, the organization is the customer
-    if self.po_header.po_is?("direct")
+    if self.po_header.is_direct?
       self.organization = self.po_header.customer
       self.po_line_customer_po = self.po_header.cusotmer_po
     end
@@ -89,15 +89,15 @@ class PoLine < ActiveRecord::Base
   end
 
   def update_po_total
-    po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(1) : self.po_header.po_identifier
-    po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
-    po_header_status = (po_status_count == 0) ? "closed" : "open"
-    self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
-    generate_pdf
+    # po_identifier = (self.po_header.po_identifier == UNASSIGNED) ? PoHeader.new_po_identifier(1) : self.po_header.po_identifier
+    # po_status_count = self.po_header.po_lines.where("po_line_status = ?", "open").count
+    # po_header_status = (po_status_count == 0) ? "closed" : "open"
+    # self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
+    # generate_pdf
     #TODO: this slows down, need in background job - pdf generate
   end
 
-  def process_before_save
+  def process_direct_and_transfer_orders
     if po_header.po_is?("direct")
       # If a direct PO setup sales order lines (and shipment lines)
       process_direct_order
@@ -107,20 +107,34 @@ class PoLine < ActiveRecord::Base
     end
   end
 
-
   def process_direct_order
     so_line = self.so_line.present? ? self.so_line : SoLine.new
-    so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id,
+    so_line.update_attributes(po_header_id: self.po_header.id, so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_alt_name_id,
                               customer_quality_id: self.po_header.customer.customer_quality_id, so_line_cost: self.po_line_cost,
                               so_line_sell: self.po_line_sell, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
-    so_line_id = so_line.id
+    update_column(:so_line_id, so_line.id)
+    create_po_shipment
+    so_line.process_direct_order
   end
 
   def process_transfer_order
     so_line = self.so_line.present? ? self.so_line : SoLine.new
-    so_line.update_attributes(so_header_id: self.po_header.so_header_id, item_alt_name_id: self.item_transfer_name.id, so_line_cost: self.po_line_cost, so_line_quantity: self.po_line_quantity, organization_id: self.po_header.organization_id)
+    so_line.update_attributes(so_header_id: self.po_header.so_header_id,
+                              item_alt_name_id: self.item_transfer_name.id,
+                              so_line_cost: self.po_line_cost,
+                              so_line_quantity: self.po_line_quantity,
+                              organization_id: self.po_header.organization_id)
     po_header.so_header.update_attributes(organization_id: self.organization_id)
-    so_line_id = so_line.id
+    update_column(:so_line_id, so_line.id)
+  end
+
+  def create_po_shipment
+    po_shipment = self.po_shipments.new(po_shipped_count: self.po_line_quantity, po_shipped_shelf: 'W', po_shipped_unit: '1', po_shipped_status: 'received')
+    if po_shipment.save
+      update_column(:quality_lot_id, po_shipment.quality_lot_id)
+    else
+      self.errors.add(:message, 'shipment could not be created')
+    end
   end
 
   def prcess_after_save

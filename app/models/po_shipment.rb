@@ -25,6 +25,7 @@ class PoShipment < ActiveRecord::Base
 
   after_save :update_status
   after_save :set_po_line_status
+  after_commit :create_and_accept_quality_lot
   after_destroy :set_po_line_status
 
 
@@ -61,6 +62,22 @@ class PoShipment < ActiveRecord::Base
     else
     	puts 'validation success..'
     	true
+    end
+  end
+
+  def create_and_accept_quality_lot
+    #CHECK FOR THE NEED print status
+    if po_line.po_header.is_direct?
+      inspection_level = MasterType.where(:type_name => 'Level 1', :type_category => 'inspection_level').pluck(:id)[0]
+      inspection_method = MasterType.where(:type_name => 'single', :type_category => 'inspection_method').pluck(:id)[0]
+      inspection_type = MasterType.where(:type_name => 'Normal', :type_category => 'inspection_type').pluck(:id)[0]
+      quality_lot = QualityLot.create(:po_header_id => po_line.po_header_id, :po_line_id => po_line.id, :item_revision_id => po_line.item_revision_id, :lot_quantity => po_shipped_count, :quantity_on_hand => po_shipped_count,
+          :inspection_level_id => inspection_level, :inspection_method_id => inspection_method, :inspection_type_id => inspection_type, :lot_unit => po_shipped_unit, :lot_self => po_shipped_shelf)
+      self.update_column(:quality_lot_id, quality_lot.id)
+      lot_count = (po_line.item.quality_lots.count == 0) ? 1 : po_line.item.quality_lots.count
+      ItemLot.create!({item_id: quality_lot.po_line.item_id, quality_lot_id: quality_lot.id, item_lot_count: lot_count })
+      quality_lot.set_lot_control_no
+      self.quality_lot.quality_histories.create(user_id: User.current_user.id, quality_status: 'accepted')
     end
   end
 
@@ -127,23 +144,20 @@ class PoShipment < ActiveRecord::Base
   end
 
   def has_direct_po?
-    po_lines.first.po_header.po_type.type_name.to_s.downcase == 'direct'
+    po_line.po_header.is_direct?
   end
 
   def process_direct_po
-    po_lines.each do |po_line|
-      so_line = po_line.so_line
-      so_line.so_line_shipped = so_line.so_line_quantity
-      so_shipment = so_line.so_shipments.new
-      so_shipment.so_shipped_count = so_line.so_line_shipped
-      so_shipment.quality_lot = self.quality_lot
-      so_shipment.so_shipped_status = 'process'
-      if so_shipment.save
-        so_shipment.set_quality_on_hand
-        true
-      else
-        false
-      end
+    so_line = po_line.so_line
+    so_line.so_line_shipped = so_line.so_line_quantity
+    so_shipment = so_line.so_shipments.new
+    so_shipment.so_shipped_count = so_line.so_line_shipped
+    so_shipment.quality_lot = self.quality_lot
+    so_shipment.so_shipped_status = 'process'
+    if so_shipment.save
+      so_shipment.set_quality_on_hand
+    else
+      errors.add(:failure,  'So Shipment could not be created')
     end
   end
 
