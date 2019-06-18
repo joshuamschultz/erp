@@ -34,6 +34,17 @@ class ItemAltName < ActiveRecord::Base
   validates_presence_of :item#, :organization
   validates_length_of :item_alt_identifier, :maximum => 50 if validates_presence_of :item_alt_identifier
 
+  after_create :add_revision
+  after_update :add_revision
+
+  attr_accessor :item_revision_id
+
+  def add_revision
+    if item_revision_id.present?
+      ItemRevision.where(id: item_revision_id).first.item_selected_names << self
+    end
+  end
+
   def alt_item_name
       self.item_alt_identifier + (self.organization ? " (#{self.organization.organization_name})" : "")
   end

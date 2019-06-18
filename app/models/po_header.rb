@@ -51,7 +51,7 @@ class PoHeader < ActiveRecord::Base
   #(validates_uniqueness_of :po_identifier if validates_length_of :po_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :po_identifier
 
   before_create :before_create_level_defaults
-  before_save :process_before_save
+  after_save :process_direct_and_transfer_orders
 
   # After PO is created set as an 'open' PO
   # Also set the PO number to unassigned.
@@ -64,48 +64,24 @@ class PoHeader < ActiveRecord::Base
 
   # If the PO is a direct PO,
   # If it is a transfer
-  def process_before_save
-    if self.po_is?("direct")
+  def process_direct_and_transfer_orders
+    if self.po_is?("direct") || self.po_is?("transer")
+      so_header = self.so_header.present? ? self.so_header : SoHeader.new
       self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
-      so_header = self.so_header.present? ? self.so_header : SoHeader.new
       so_header.update_attributes(organization_id: self.customer_id, so_bill_to_id: self.po_bill_to_id, so_ship_to_id: self.po_ship_to_id, so_header_customer_po: self.cusotmer_po, so_due_date: Time.now)
-      self.so_header_id = so_header.id
       so_header.so_lines.update_all(organization_id: self.organization_id)
-    elsif self.po_is?("transer")
-      # self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
-      so_header = self.so_header.present? ? self.so_header : SoHeader.new
-      so_header.update_attributes(organization_id: 1, so_due_date: Time.now)
-      self.so_header_id = so_header.id
-      # so_header.so_lines.update_all(organization_id: self.organization_id)
+      update_column(:so_header_id, so_header.id)
+    # elsif
+    #   so_header = self.so_header.present? ? self.so_header : SoHeader.new
+    #   # self.po_lines.update_all(organization_id: self.customer_id, po_line_customer_po: self.cusotmer_po)
+    #   so_header.update_attributes(organization_id: Organization.first.id, so_due_date: Time.now)
+    #   # so_header.so_lines.update_all(organization_id: self.organization_id)
+    #   update_column(:so_header_id, so_header.id)
     end
   end
 
-  # Create the PO number
-  def self.new_po_identifier(i)
-    pos_this_month = PoHeader.where("month(created_at) = ?", Date.today.month).count
-    new_po_suffix = pos_this_month + 1
-    po_identifier = Time.now.strftime("%m%y") + ("%03d" % new_po_suffix)
-    po_identifier.slice!(2)
-    "P" + po_identifier
-  end
-
-  def self.process_payable_po_lines(params)
-    po_shipment = PoShipment.find_by_id(params[:shipments][0]) if params[:shipments].present? && params[:shipments].any?
-    po_header = po_shipment.po_line.po_header if po_shipment && po_shipment.po_line
-    if po_header
-      payable = po_header.payables.build
-      payable.organization = po_header.organization
-      payable.payable_invoice = "Invoice"
-      payable.payable_invoice_date = Date.today
-      payable.payable_due_date = Date.today
-      params[:shipments].each { |shipment_id|
-        po_shipment = PoShipment.find_by_id(shipment_id)
-        payable.po_shipments << po_shipment if po_shipment && po_shipment.po_line && po_shipment.po_line.po_header == po_header
-      }
-      payable
-    else
-      Payable.new
-    end
+  def is_direct?
+    po_is?('direct')
   end
 
   # Grab the PO Type
@@ -121,5 +97,36 @@ class PoHeader < ActiveRecord::Base
   # PO PDF
   def po_report
     CommonActions.purchase_report(self.id).html_safe
+  end
+
+  class << self
+    # Create the PO number
+    def new_po_identifier(i)
+      pos_this_month = PoHeader.where("month(created_at) = ?", Date.today.month).count
+      new_po_suffix = pos_this_month + 1
+      po_identifier = Time.now.strftime("%m%y") + ("%03d" % new_po_suffix)
+      po_identifier.slice!(2)
+      "P" + po_identifier
+    end
+
+    def process_payable_po_lines(params)
+      po_shipment = PoShipment.find_by_id(params[:shipments][0]) if params[:shipments].present? && params[:shipments].any?
+      po_header = po_shipment.po_line.po_header if po_shipment && po_shipment.po_line
+      if po_header
+        payable = po_header.payables.build
+        payable.organization = po_header.organization
+        payable.payable_invoice = "Invoice"
+        payable.payable_invoice_date = Date.today
+        payable.payable_due_date = Date.today
+        params[:shipments].each { |shipment_id|
+          po_shipment = PoShipment.find_by_id(shipment_id)
+          payable.po_shipments << po_shipment if po_shipment && po_shipment.po_line && po_shipment.po_line.po_header == po_header
+        }
+        payable
+      else
+        Payable.new
+      end
+    end
+
   end
 end
