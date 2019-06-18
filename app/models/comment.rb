@@ -15,9 +15,9 @@
 #
 
 class Comment < ActiveRecord::Base
-  belongs_to :commentable, :polymorphic => true
-  belongs_to :created_by, :class_name => "User", :foreign_key => "comment_created_id"
-  belongs_to :updated_by, :class_name => "User", :foreign_key => "comment_updated_id"
+  belongs_to :commentable, polymorphic: true
+  belongs_to :created_by, class_name: "User", foreign_key: "comment_created_id"
+  belongs_to :updated_by, class_name: "User", foreign_key: "comment_updated_id"
 
   validates_presence_of :comment
   validates_presence_of :commentable
@@ -27,8 +27,6 @@ class Comment < ActiveRecord::Base
   def default_values
 	   self.comment_active = true if self.comment_active.nil?
   end
-
-  # comment_type - tag/note
 
   def self.process_comments(current_user, commentable, comments, type)
     if type == "tag"

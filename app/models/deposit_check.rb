@@ -14,9 +14,9 @@
 #
 
 class DepositCheck < ActiveRecord::Base
-  include Rails.application.routes.url_helpers 
   belongs_to :payment
   belongs_to :receipt
+  
   has_one :reconcile
 
   def get_receivables

@@ -21,5 +21,4 @@ class CheckRegister < ActiveRecord::Base
   belongs_to :payment
   belongs_to :receipt
 
-
 end

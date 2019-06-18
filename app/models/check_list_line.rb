@@ -12,7 +12,6 @@
 
 class CheckListLine < ActiveRecord::Base
   belongs_to :checklist
-  # belongs_to :master_type
   belongs_to :master_type
 
   validate :master_type, :checklist

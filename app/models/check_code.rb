@@ -22,7 +22,7 @@ class CheckCode < ActiveRecord::Base
 		temp.update_attributes(:counter => temp.counter.next)
 		temp.counter
 	end
-	
+
 	def check_code_params
 		params.require(:check_code).permit(:counter, :counter_type)
 	end
