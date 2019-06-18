@@ -37,7 +37,7 @@ class CreditRegistersController < ApplicationController
               payable = Payable.find (p)
               @pidentifiers.push(payable.payable_identifier)
             end
-          else
+          elsif credit_register.receipt_id.present?
             receivable_ids = credit_register.receipt.receipt_lines.collect(&:receivable_id)
             receivable_ids.each do |r|
               receivable = Receivable.find (r)
@@ -131,6 +131,6 @@ class CreditRegistersController < ApplicationController
     end
 
     def credit_register_params
-      params.require(:credit_register).permit(:amount, :balance, :organization_id, :payment_id, :rec, :transaction_date)
+      params.require(:credit_register).permit(:amount, :balance, :organization_id, :payment_id, :rec, :transaction_date, :receipt_id)
     end
 end

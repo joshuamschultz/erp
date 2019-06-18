@@ -13,40 +13,45 @@ class QualityLotDimensionsController < ApplicationController
     if @quality_lot
         @item_revision = @quality_lot.item_revision
         @item = @item_revision.item
-        @quality_lot_dimensions = @quality_lot.quality_lot_dimensions.order(:item_part_dimension_id).group(:quality_lot_id, :item_part_dimension_id)
+        @quality_lot_dimensions = @quality_lot.quality_lot_dimensions.order(:item_part_dimension_id)
     else
         @quality_lot_dimensions = []
     end
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {
+        @quality_lot_dimensions = @quality_lot_dimensions.group(:quality_lot_id, :item_part_dimension_id)
+      }
       format.json {
+          quality_lot_dimensions_arr = []
           @quality_lot_dimensions.each do |lot_dimension|
               go_non_go_status = lot_dimension.item_part_dimension.go_non_go
-              lot_dimension[:lot_control_no] = go_non_go_status ? " " : CommonActions.linkable(quality_lot_path(lot_dimension.quality_lot), lot_dimension.quality_lot.lot_control_no)
-              lot_dimension[:item_part_letter] =  CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revisions.first.item, lot_dimension.item_part_dimension.item_revisions.first, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
-              lot_dimension[:item_part_dimensions] =  go_non_go_status ? " " : lot_dimension.item_part_dimension.item_part_dimension.round(4) #CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revision.item, lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
-              lot_dimension[:item_part_pos_tolerance] = go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension + lot_dimension.item_part_dimension.item_part_pos_tolerance).to_f.round(4)
-              lot_dimension[:item_part_neg_tolerance] = go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension - lot_dimension.item_part_dimension.item_part_neg_tolerance).to_f.round(4)
+              lot_dimension_hash = {}
+              lot_dimension_hash[:lot_control_no] = go_non_go_status ? " " : CommonActions.linkable(quality_lot_path(@quality_lot), @quality_lot.lot_control_no)
+              lot_dimension_hash[:item_part_letter] =  CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
+              lot_dimension_hash[:item_part_dimensions] =  go_non_go_status ? " " : lot_dimension.item_part_dimension.item_part_dimension.round(4) #CommonActions.linkable(item_item_revision_item_part_dimension_path(lot_dimension.item_part_dimension.item_revision.item, lot_dimension.item_part_dimension.item_revision, lot_dimension.item_part_dimension), lot_dimension.item_part_dimension.item_part_letter)
+              lot_dimension_hash[:item_part_pos_tolerance] = go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension + lot_dimension.item_part_dimension.item_part_pos_tolerance).to_f.round(4)
+              lot_dimension_hash[:item_part_neg_tolerance] = go_non_go_status ? " " : (lot_dimension.item_part_dimension.item_part_dimension - lot_dimension.item_part_dimension.item_part_neg_tolerance).to_f.round(4)
 
               # lot_dimension_links = []
               # lot_dimension_links <<  {:name => "Accept", :method => "put", :path => quality_lot_dimension_path(lot_dimension, status: "accepted") } if lot_dimension.lot_dimension_status == "rejected" || lot_dimension.lot_dimension_status.nil?
               # lot_dimension_links <<  {:name => "Reject", :method => "put", :path => quality_lot_dimension_path(lot_dimension, status: "rejected") } if lot_dimension.lot_dimension_status == "accepted" || lot_dimension.lot_dimension_status.nil?
-              # lot_dimension[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_dimension_path(lot_dimension, quality_lot_id: @quality_lot.id), nil)
+              # lot_dimension_hash[:links] = CommonActions.object_crud_paths(nil, edit_quality_lot_dimension_path(lot_dimension, quality_lot_id: @quality_lot.id), nil)
               # "%0.6f" % (
 
-              lot_dimension[:lot_dimension_avg] = go_non_go_status ? " " : (lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count).to_f.round(4)
+              lot_dimension_hash[:lot_dimension_avg] = go_non_go_status ? " " : (lot_dimension.all_lot_dimensions.sum(:lot_dimension_value)/lot_dimension.all_lot_dimensions.count).to_f.round(4)
 
               lot_dimension_values = []
               lot_dimension.all_lot_dimensions.collect(&:lot_dimension_value).each do |value|
                   lot_dimension_values << value.to_f
               end
 
-              lot_dimension[:lot_dimension_std] = go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0)
-              lot_dimension[:lot_dimension_max] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value).to_f.round(4)
-              lot_dimension[:lot_dimension_min] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value).to_f.round(4)
+              lot_dimension_hash[:lot_dimension_std] = go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0)
+              lot_dimension_hash[:lot_dimension_max] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value).to_f.round(4)
+              lot_dimension_hash[:lot_dimension_min] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value).to_f.round(4)
+              quality_lot_dimensions_arr << lot_dimension_hash
           end
-          render json: { :aaData => @quality_lot_dimensions }
+          render json: { aaData: quality_lot_dimensions_arr }
       }
     end
   end
