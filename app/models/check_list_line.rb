@@ -12,8 +12,8 @@
 
 class CheckListLine < ActiveRecord::Base
   belongs_to :checklist
+  # belongs_to :master_type
   belongs_to :master_type
-  belongs_to :master_type, -> {where type_category: customer_quality_level}
 
   validate :master_type, :checklist
 
@@ -27,4 +27,11 @@ class CheckListLine < ActiveRecord::Base
     end
   end
 
+  def master_type
+    if super.type_category == 'customer_quality_level'
+      super
+    else
+      nil
+    end
+  end
 end
