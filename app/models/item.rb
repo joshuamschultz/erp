@@ -127,7 +127,7 @@ class Item < ActiveRecord::Base
   end
 
   def stock(item_revision)
-    item_revision.quality_lots.sum(:quantity_on_hand) if item_revision.quality_lots.present?
+    item_revision.quality_lots.present? ? item_revision.quality_lots.sum(:quantity_on_hand) : 0
   end
 
   def time_stock(item_revision)
