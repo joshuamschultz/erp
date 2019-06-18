@@ -22,6 +22,7 @@ class CompanyInfo < ActiveRecord::Base
 
   has_one :image, as: :imageable
   accepts_nested_attributes_for :image, allow_destroy: true
+  
   has_one :logo, as: :jointable
   accepts_nested_attributes_for :logo, allow_destroy: true
 

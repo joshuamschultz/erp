@@ -15,8 +15,8 @@
 
 class CapacityPlanning < ActiveRecord::Base
 
-  has_one :attachment, :as => :attachable, :dependent => :destroy
-  accepts_nested_attributes_for :attachment, :allow_destroy => true
+  has_one :attachment, as: :attachable, dependent: :destroy
+  accepts_nested_attributes_for :attachment, allow_destroy: true
 
   before_save :before_save_values
   after_initialize :default_values

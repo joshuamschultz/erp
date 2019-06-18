@@ -39,6 +39,8 @@ class CustomerQuoteLine < ActiveRecord::Base
 	#validates :item_alt_name_id, :uniqueness => { :scope => :customer_quote_id, :message => "duplicate item entry!" }, :if => :item_alt_name_id?
 
 	before_create :process_before_create
+	before_save :process_before_save
+
 	def process_before_create
 		if self.item_alt_name_id.present?
 			self.customer_quote_line_status = "open"
@@ -52,7 +54,6 @@ class CustomerQuoteLine < ActiveRecord::Base
 			p self.to_json
 	    end
 	end
-
 
 	def self.get_line_items(quotes)
 		item_id = []		
@@ -71,7 +72,6 @@ class CustomerQuoteLine < ActiveRecord::Base
 		item_id
 	end
 
-	before_save :process_before_save
 	def process_before_save
        self.customer_quote_line_total = self.customer_quote_line_cost * self.customer_quote_line_quantity
   	end

@@ -69,7 +69,6 @@ class Address < ActiveRecord::Base
 
   def default_address
     type_category = addressable.contact_type_category('address')
-
     MasterType.find_by_type_category_and_type_value(type_category, id)
   end
 end
