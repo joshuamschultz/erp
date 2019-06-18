@@ -58,36 +58,47 @@ class SoLine < ActiveRecord::Base
   end
 
   def update_item_total
-    self.so_line_price = so_line_sell * so_line_quantity
+    self.so_line_price = self.so_line_sell * self.so_line_quantity
   end
 
   def set_item
-    self.item = item_alt_name.item
+    self.item = self.item_alt_name.item
   end
 
   def update_so
     # until the SO has an item, it should be unassigned. So we check and assign here
     set_so_identifier if so_header.so_identifier == "Unassigned"
     close_sales_order
-    so_header.update_attributes(so_total: so_header.so_lines.sum(:so_line_price))
+    so_header.so_total = so_header.so_lines.sum(:so_line_price)
+    so_header.save
     #generate_pdf
+  end
+
+  def process_direct_order
+    if po_header.is_direct?
+      so_line_shipped = self.so_line_quantity
+      save
+      so_shipment = SoShipment.create(quality_lot_id: po_line.quality_lot_id, so_line_id: id, so_shipped_count: so_line_shipped, so_shipped_status: 'shipped')
+      so_shipment.set_quality_on_hand
+    end
   end
 
   def close_sales_order
     #TODO: this should be moved to receiving, not sure why here.
     so_status_count = so_header.so_lines.where("so_line_status = ?", "open").count
     if so_status_count == 0
-      so_header.update_attribute(:so_status, 'closed')
+      so_header.so_status = 'closed'
     end
   end
 
   def set_so_identifier
-    so_header.update_attributes(so_identifier: SoHeader.new_so_identifier(0))
+    so_header.so_identifier = SoHeader.new_so_identifier(0)
   end
 
   def so_line_item_name
     self.item_alt_name.alt_item_name
   end
+
 
   def generate_pdf
     html = CommonActions.sales_report(self.so_header.id) + "<style>#blank_page{display: none;}.de{margin: 35px 0 0; min-height: 555px;}.sal_tab2 {height: 755px;} @page{size:21cm 29.7cm;margin: 10mm 5mm 2mm 10mm;}</style>"
