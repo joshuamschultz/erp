@@ -68,7 +68,7 @@
   
   <div class="form-actions">    
     <%= f.button :submit, :id => 'update_payable' %>
-    <%= link_to 'Payables', '/payables', :class => "btn" %>
+    <%#= link_to 'Payables', '/payables', :class => "btn" %>
     <%= link_to 'Delete', payable_path(@payable), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @payable.new_record? %>    
   </div>
 

@@ -39,10 +39,10 @@ class CustomerQualitiesController < ApplicationController
               # customer_quality_path(quality))
 
             if (can? :edit, quality)
-             qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality),
+             qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), false,
               customer_quality_path(quality))
             else
-              qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), nil,nil)
+              qualiti[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), false,nil)
             end
 
             @customer_qualitis.push(qualiti)
