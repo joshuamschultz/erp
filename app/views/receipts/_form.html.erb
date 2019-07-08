@@ -68,7 +68,7 @@
   <div class="form-actions">
     <%= f.button :submit, :class => "btn" %>
     <%= link_to 'Add Row', "#", :class => "btn", :onclick => "add_receipt_line_row(); return false" %>
-    <%= link_to 'Delete', receipt_path(@receipt), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receipt.new_record? %>
+    <%#= link_to 'Delete', receipt_path(@receipt), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receipt.new_record? %>
     <%= link_to 'Back to receipts', receipts_path, :class => "btn" %>
   </div>
 <% end %>

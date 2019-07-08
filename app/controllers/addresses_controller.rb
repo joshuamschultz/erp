@@ -1,10 +1,17 @@
 class AddressesController < ApplicationController
+  before_action :set_page_info
   before_action :view_permissions, except: %i[index show]
   before_action :user_permissions
   before_action :set_address, only: %i[show edit update destroy]
 
   def view_permissions
     authorize! :edit, Address if user_signed_in? && current_user.is_logistics?
+  end
+
+  def set_page_info
+    unless user_signed_in? && (current_user.is_vendor? || current_user.is_customer?)
+      @menus[:contacts][:active] = 'active'
+    end
   end
 
   def user_permissions

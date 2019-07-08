@@ -2,7 +2,7 @@
 <div class="row-fluid">
     <h4 class="span3 left">Quality ID Info</h4>
     <span class="span9 right">
-        <%= link_to 'Edit', edit_vendor_quality_path(@vendor_quality), :class => "btn btn-small" %>
+        <%#= link_to 'Edit', edit_vendor_quality_path(@vendor_quality), :class => "btn btn-small" %>
         <%= link_to (@vendor_quality.default_quality.present? ? 'Already Set to Default' : 'Set to Default'), vendor_quality_set_default_path(@vendor_quality), :class => "btn btn-small" %>
         <%= link_to 'Back to Qualities', vendor_qualities_path, :class => "btn btn-small" %>
     </span>

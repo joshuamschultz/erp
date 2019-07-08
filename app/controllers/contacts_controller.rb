@@ -87,6 +87,7 @@ class ContactsController < ApplicationController
   # GET /contacts/new.json
   def new
     @contactable = Organization.find_by_id(params[:object_id])
+    @contact = Contact.new
     if @contactable
       @contact = Contact.new
       @contact.contact_type = params[:contact_type] || 'contact'

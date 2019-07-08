@@ -14,7 +14,9 @@
                 <%= link_to 'Vendor', contacts_path(org_type: "vendor", :contact_type => "contact"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Customer', contacts_path(org_type: "customer", :contact_type => "contact"), :class => "btn btn-mini btn-info" %>
                 <%= link_to 'Support', contacts_path(org_type: "support", :contact_type => "contact"), :class => "btn btn-mini btn-info" %>
-
+                <% if current_user and current_user.organization.present? %>
+                    <%= link_to 'New', new_contact_path(object_id: current_user.organization.id), :class => "btn btn-mini btn-info" %>
+                <% end %>
 
             </span>
         </div> 
