@@ -15,7 +15,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
-    <%= link_to 'Delete', gl_account_path(@gl_account), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_account.new_record? %>
+    <%#= link_to 'Delete', gl_account_path(@gl_account), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_account.new_record? %>
     <%= link_to 'Back to GL Accounts', gl_accounts_path, :class => "btn" %>
   </div>
 <% end %>
