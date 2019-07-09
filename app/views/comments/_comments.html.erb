@@ -21,7 +21,7 @@
                 <ul class="list-timeline" id="comment_list">
                     <% @notes.each do |note| %>
                         <li style="height: auto !important;">
-                            <span class="date timeline_comment_date"><%#= note.created_at.strftime("%m/%d/%Y") %><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
+                            <span class="date timeline_comment_date"><%=  note.created_at.strftime("%m/%d/%Y %H:%M") %></span>
                             <span class="glyphicons activity-icon user"><i></i></span>
                             <span class="ellipsis" style="height: auto !important; white-space: normal !important;"><a href="#"><%= note.created_by.name %></a> : <%= note.comment %></span>
                           <%= link_to( "<i></i>".html_safe, polymorphic_path([:delete_comment, @record, note]), method: :delete, remote:true, :'data-confirm' =>  "Are you sure?", class: 'btn-action btn glyphicons remove_2 btn-danger f-right') %>

@@ -17,7 +17,7 @@
 
         <div class="actions">
             <%= f.submit "Save", :class =>"btn" %>
-            <%= link_to 'Delete', receivable_receivable_line_path(@receivable, @receivable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable_line.new_record? %>
+            <%#= link_to 'Delete', receivable_receivable_line_path(@receivable, @receivable_line), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @receivable_line.new_record? %>
             <%= link_to 'Back to Invoice', receivable_path(@receivable), :class =>"btn" %>
             <%= link_to 'Update Invoice', edit_receivable_path(@receivable),  :class => "btn", :onclick => "add_freight();" if @receivable.id? %>
         </div>

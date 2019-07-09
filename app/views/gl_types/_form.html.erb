@@ -18,7 +18,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
-    <%= link_to 'Delete', gl_type_path(@gl_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_type.new_record? %>
+    <%#= link_to 'Delete', gl_type_path(@gl_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @gl_type.new_record? %>
     <%= link_to 'Back to GL Types', gl_types_path, :class => "btn" %>
   </div>
 <% end %>
