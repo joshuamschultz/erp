@@ -28,7 +28,7 @@ gem 'redis', '~> 4.0.1' # used for sidekiq
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
-
+gem "paranoia"
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.3.0', require: false
 gem 'rb-readline'
