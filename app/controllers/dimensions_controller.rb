@@ -35,7 +35,7 @@ class DimensionsController < ApplicationController
           dimnsion[:dimension_identifier] = "<a href='#{dimension_path(dimension)}'>#{dimension[:dimension_identifier]}</a>"
           # dimension[:instrument_name] = "<a href='#{gauge_path(dimension.gauge)}'>#{dimension.gauge.gauge_tool_name}</a>"
           if can? :edit, Dimension
-            dimnsion[:links] = CommonActions.object_crud_paths(nil, edit_dimension_path(dimension), nil)
+            dimnsion[:links] = CommonActions.object_crud_paths(nil, nil, nil)
           else
             dimnsion[:links] = CommonActions.object_crud_paths(nil, nil, nil)
           end
@@ -82,7 +82,7 @@ class DimensionsController < ApplicationController
     @dimension = Dimension.new(dimension_params)
 
     respond_to do |format|
-      if @dimension.save
+      if @dimension.save!
         format.html {
             item = Item.find_by_id(params[:item_id])
             if item
