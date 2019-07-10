@@ -21,5 +21,6 @@
 </table>
 
 <br />
-
-<%= link_to 'New Group organization', new_group_organization_path %>
+<% if params[:group_id].present? %>
+  <%= link_to 'New Group organization', new_group_organization_path %>
+<%end%>
