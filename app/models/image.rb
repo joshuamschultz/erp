@@ -28,5 +28,5 @@ class Image < ActiveRecord::Base
 
   validates_attachment_content_type :image, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/bmp']
   validates_presence_of :image
-
+  alias joint image
 end
