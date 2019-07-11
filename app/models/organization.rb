@@ -35,7 +35,7 @@
 
 
 class Organization < ActiveRecord::Base
-
+  acts_as_paranoid
   attr_accessor :organization_expiration_date, :links
 
   # belongs_to :user

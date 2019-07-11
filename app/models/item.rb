@@ -16,6 +16,7 @@
 #
 
 class Item < ActiveRecord::Base
+  acts_as_paranoid
   has_many :item_revisions, dependent: :destroy
   has_many :quote_lines, dependent: :destroy
   has_many :quotes, through: :quote_lines
