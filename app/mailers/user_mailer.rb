@@ -13,7 +13,7 @@ class UserMailer < ActionMailer::Base
     @vendor_email = vendor_email
     file_name = @po_header.po_identifier
     html = render_to_string(:layout => false, :partial => "po_headers/purchase_report")
-    kit = PDFKit.new(html, :page_size => "A4")
+    kit = PDFKit.new(html, page_size: "A4")
     # Get an inline PDF
     pdf = kit.to_pdf
     # Save the PDF to a file

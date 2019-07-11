@@ -30,7 +30,7 @@ class Logo < ActiveRecord::Base
   validates_presence_of :joint
 
   before_create :before_create_process
-
+  alias image joint
   def before_create_process
     if self.jointable_type =="QualityDocument"
       # self.joint_file_name=new_quote_identifier+"."+(self.joint_file_name).split('.')[-1]

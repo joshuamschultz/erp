@@ -10,7 +10,7 @@ class CheckEntriesController < ApplicationController
   # GET /check_entries
   # GET /check_entries.json
   def index
-    @check_entries = CheckEntry.where(:check_active => 1)
+    @check_entries = CheckEntry.where(:check_active => true)
     @check_entris = Array.new
     respond_to do |format|
       format.html # index.html.erb
@@ -23,7 +23,7 @@ class CheckEntriesController < ApplicationController
             # check_data = check_entry.check_belongs_to
             # check_entry[:check_identifier] = check_entry.check_belongs_to.nil? ? check_entry.check_code : CommonActions.linkable(check_data[:object].redirect_path, check_entry.check_code)
             check_entri[:links] = CommonActions.object_crud_paths(nil, edit_check_entry_path(check_entry), check_entry_path(check_entry))
-            payables = check_entry.get_payables
+            payables = get_payables(check_entry)
             check_entri[:payables] = payables["payableIds"]
             @check_entris.push(check_entri)
           }
@@ -118,6 +118,24 @@ class CheckEntriesController < ApplicationController
     redirect_to check_entries_url
   end
   private
+
+    def get_payables(entry)
+      identifiers = Array.new
+      result ={}
+      if entry.payment
+        payable_ids = entry.payment.payment_lines.collect(&:payable_id)
+        payable_ids.each do |p|
+          payable = Payable.find (p)
+          if payable.present?
+            identifiers.push(CommonActions.linkable(payable_path(payable), payable.payable_identifier))
+          end
+        end
+        result["payableIds"] = identifiers
+        result["amount"] = entry.payment.payment_check_amount
+      end
+      result
+    end
+
 
     def set_check_entry
       @check_entry = CheckEntry.find(params[:id])

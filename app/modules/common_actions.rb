@@ -685,37 +685,29 @@ module CommonActions
       if i == 1
         logo_src = ''
         if @company_info.logo.present?
-          logo_src = $sitename + @company_info.try(:logo).try(:joint).try(:url, :original).to_s
+          logo_src = @company_info.try(:logo).try(:joint).try(:url, :original).to_s
         end
-        content += '<section>
+        content += '<section><article>
+          <div class="ms_image">
+              <div class="ms_image-wrapper">
+                  <img alt=Report_heading src=' + logo_src + ' />
+              </div>
 
- <article>
-    <div class="ms_image">
-        <div class="ms_image-wrapper">
-            <img alt=Report_heading src=' + logo_src + ' />
-        </div>
+              <div class="ms_image-text">
+                  <h5>' + @company_info.company_address1 + '<br/>
+                  ' + @company_info.company_address2 + '
+                  <hr>
+                  <b>P:&nbsp;</b>' + @company_info.company_phone1 + '<br/>
+                  &nbsp;<b>F:&nbsp;</b>' + @company_info.company_fax + '
+                  <hr></h5>
+              </div>
+          </div>
 
-        <div class="ms_image-text">
-            <h5>' + @company_info.company_address1 + '<br/>
-            ' + @company_info.company_address2 + '
-            <hr>
-            <b>P:&nbsp;</b>' + @company_info.company_phone1 + '<br/>
-            &nbsp;<b>F:&nbsp;</b>' + @company_info.company_fax + '
-            <hr></h5>
-        </div>
-    </div>
-
-    <div class="ms_image-2">
-        <h3> Purchase Order Number</h3>
-        <h2>' + @po_header.po_identifier + '</h2>
-        <h5>Purchase Order Date :' + @po_header.created_at.strftime('%m/%d/%Y') + '</h5>
-    </div>
-
-</article>
-
-
-
-        '
+          <div class="ms_image-2">
+              <h3> Purchase Order Number</h3>
+              <h2>' + @po_header.po_identifier + '</h2>
+              <h5>Purchase Order Date :' + @po_header.created_at.strftime('%m/%d/%Y') + '</h5>
+          </div></article>'
         if flag == 1
           content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">' + @po_header.organization.organization_name + '<br>' + @po_header.organization.organization_address_1 + '' + @po_header.organization.organization_address_2 + '</h2> <h3> ' + @po_header.organization.organization_city + ' ' + @po_header.organization.organization_state + '' + @po_header.organization.organization_country + ''
           content += @po_header.organization.organization_zipcode + '</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">MM & WM ERP </h2> <strong>' + @company_info.company_address1 + '</strong><strong>' + @company_info.company_address2 + '</strong></div></div></article>'
@@ -731,9 +723,7 @@ module CommonActions
           content += '<article class="art-01 art-04 art-07"><table cellspacing="0" cellpadding="0" width="678px" border="0"><tbody><tr align="center" class="hea art-002"><td>QTY</td><td>CUST P/N-ALL P/N</td><td>DESCRIPTION</td><td>COST</td><td>TOTAL</td></tr></tbody>'
         end
       end
-      content += '
-
-      <tr valign="top" align="center" class="h-pad">
+      content += '<tr valign="top" align="center" class="h-pad">
            <td>' + po_line.po_line_quantity.to_s + ' </td>
            <td>' + product1 + '</br>
            ' + product2 + '</td>'
@@ -747,8 +737,7 @@ module CommonActions
                  end
 
       content += '<td>' + po_line.po_line_cost.to_f.to_s + '</td>
-       <td>' + po_line.po_line_total.to_f.to_s + '</td>
-   </tr>'
+       <td>' + po_line.po_line_total.to_f.to_s + '</td></tr>'
       if po_type_name == 'Transfer'
         content += '<tr>
 
@@ -769,62 +758,56 @@ module CommonActions
           </tr>'
       end
       if i == 4
-        content += '</tbody></table></article>
-
-
-<article class="art-02">
-
-    <div class="ms_text-55">
+        content += '</tbody></table></article><article class="art-02"><div class="ms_text-55">
         <h1 class="ms_heading-3">Comments:</h1>
-
         <div class="ms_text-6">
             <strong class="ms-5">' + @po_header.po_notes + '</strong>
 
-<!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
-PLEASE SHIP UPS GROUND ASAP!
-THANK YOU!</strong>
- -->
-        </div>
-    </div>
-
-    <div class="ms_text-2">
-        <div class="ms_text-6">
-            <div class="ms_text-7 ms_text-8 ">
+        <!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
+        PLEASE SHIP UPS GROUND ASAP!
+        THANK YOU!</strong>
+         -->
+                </div>
             </div>
-            <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">' + @po_header.po_total.to_f.to_s + '</strong>
+
+            <div class="ms_text-2">
+                <div class="ms_text-6">
+                    <div class="ms_text-7 ms_text-8 ">
+                    </div>
+                    <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">' + @po_header.po_total.to_f.to_s + '</strong>
+                    </div>
+                </div>
+
+
             </div>
-        </div>
-
-
-    </div>
 
 
 
 
-</article>
+        </article>
 
- <article>
-    <div class="footer">
+         <article>
+            <div class="footer">
 
-        <div class="page">
-            <h3>Date</h3>
-            <h4>' + @po_header.created_at.strftime('%m/%d/%Y') + '</h4>
-        </div>
+                <div class="page">
+                    <h3>Date</h3>
+                    <h4>' + @po_header.created_at.strftime('%m/%d/%Y') + '</h4>
+                </div>
 
-        <div class="page-center">
-            <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
-regulatory agencies reserve the right to audit Seller' + "'" + 's books and records and the right to
-inspect at the Seller' + "'" + 's plant any and all materials and systems.</h4>
-        </div>
+                <div class="page-center">
+                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
+        regulatory agencies reserve the right to audit Seller' + "'" + 's books and records and the right to
+        inspect at the Seller' + "'" + 's plant any and all materials and systems.</h4>
+                </div>
 
-        <div class="original">
-            <h3>Page </h3>
-            <h4>' + j.to_s + '
-</h4>
-        </div>
+                <div class="original">
+                    <h3>Page </h3>
+                    <h4>' + j.to_s + '
+        </h4>
+                </div>
 
-        </div>
-</article>
+                </div>
+        </article>
 
 
 
@@ -839,63 +822,63 @@ inspect at the Seller' + "'" + 's plant any and all materials and systems.</h4>
         # j+=1
         content += '</tbody></table></article>
 
-<article class="art-02">
+        <article class="art-02">
 
-    <div class="ms_text-55">
-        <h1 class="ms_heading-3">Comments:</h1>
+            <div class="ms_text-55">
+                <h1 class="ms_heading-3">Comments:</h1>
 
-        <div class="ms_text-6">
-            <strong class="ms-5">' + @po_header.po_notes + '</strong>
+                <div class="ms_text-6">
+                    <strong class="ms-5">' + @po_header.po_notes + '</strong>
 
-<!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
-PLEASE SHIP UPS GROUND ASAP!
-THANK YOU!</strong>
- -->
-        </div>
-    </div>
-
-    <div class="ms_text-2">
-        <div class="ms_text-6">
-            <div class="ms_text-7 ms_text-8 ">
+        <!--                     <strong class="ms-5">CONFIRM VIA E-MAIL 9/1/14!
+        PLEASE SHIP UPS GROUND ASAP!
+        THANK YOU!</strong>
+         -->
+                </div>
             </div>
-            <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">' + @po_header.po_total.to_f.to_s + '</strong>
+
+            <div class="ms_text-2">
+                <div class="ms_text-6">
+                    <div class="ms_text-7 ms_text-8 ">
+                    </div>
+                    <div class="ms_text-7 ms_text-9 "> <strong class="ms-1">P.O. Total :</strong>  <strong class="ms-2">' + @po_header.po_total.to_f.to_s + '</strong>
+                    </div>
+                </div>
+
+
             </div>
-        </div>
-
-
-    </div>
 
 
 
 
-</article>
+        </article>
 
- <article>
-    <div class="footer">
+         <article>
+            <div class="footer">
 
-        <div class="page">
-            <h3>Date</h3>
-            <h4>' + @po_header.created_at.strftime('%m/%d/%Y') + '</h4>
-        </div>
+                <div class="page">
+                    <h3>Date</h3>
+                    <h4>' + @po_header.created_at.strftime('%m/%d/%Y') + '</h4>
+                </div>
 
-        <div class="page-center">
-            <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
-regulatory agencies reserve the right to audit Seller' + "'" + 's books and records and the right to
-inspect at the Seller' + "'" + 's plant any and all materials and systems.</h4>
-        </div>
+                <div class="page-center">
+                    <h4>Audit Right Reserved - The Buyer, the Customer, the Government,the FAA and / or any other Page
+        regulatory agencies reserve the right to audit Seller' + "'" + 's books and records and the right to
+        inspect at the Seller' + "'" + 's plant any and all materials and systems.</h4>
+                </div>
 
-        <div class="original">
-            <h3>Page </h3>
-            <h4>' + j.to_s + '
-</h4>
-        </div>
+                <div class="original">
+                    <h3>Page </h3>
+                    <h4>' + j.to_s + '
+        </h4>
+                </div>
 
-     </div>
-</article>
+             </div>
+        </article>
 
 
 
-</section></div>'
+        </section></div>'
       end
 
       i += 1

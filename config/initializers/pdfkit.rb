@@ -9,6 +9,6 @@ PDFKit.configure do |config|
     :margin_right=>"0.3in",
     :margin_bottom=>"0.5in",
     :margin_left=>"0.3in",
-    :disable_smart_shrinking=> false
+    :disable_smart_shrinking=> true
   }
 end

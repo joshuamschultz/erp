@@ -64,6 +64,7 @@ group :development do
   gem 'capistrano-safe-deploy-to', '~> 1.1.1'
   gem 'capistrano-sidekiq'
   gem 'letter_opener'
+  gem 'letter_opener_web'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console'
 end
