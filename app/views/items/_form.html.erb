@@ -3,11 +3,19 @@
 
 <div class="form-inputs">
     <%= f.input :item_part_no, :label => "Part No", :autofocus => true %>
-    <%= f.input :item_alt_part_no, :label => "Alt Part No" %>
+    <%#= f.input :item_alt_part_no, :label => "Alt Part No" %>
 
     <% unless @item.persisted? %>
         <%= f.simple_fields_for :item_revisions do |g| %>
-            <%= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Commodity Type" %>
+            <%#= g.input :item_name, :url => autocomplete_commodity_commodity_identifier_commodities_path, :as => :autocomplete, :label => "Commodity Type" %>
+
+            <div class="control-group">
+                <label for="item_name" class="optional control-label">Commodity Type</label>
+                <div class="controls">
+                    <%= select_tag "item[item_revisions_attributes][0][item_name]", options_for_select(Commodity.all.map {|commodity| [commodity.commodity_identifier, commodity.commodity_identifier]}), :multiple => false, :size => 1, :class => "select_box", :id => "item_name" %>
+                </div>
+            </div>
+
             <%= g.input :item_description, :label => "Description" %>
             <%= g.input :item_revision_name, :label => "Revision" %>
             <%= g.input :item_revision_date, :as => "string", :label => "Revision Date" %>

@@ -51,6 +51,7 @@ class Item < ActiveRecord::Base
   end
 
   def create_alt_name
+    # this wont be present as removed from the view
     if self.item_alt_part_no.present?
       item_alt_names.create(item_alt_identifier: item_alt_part_no, item_alt_active: true)
     end

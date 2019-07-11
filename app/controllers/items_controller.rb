@@ -103,7 +103,7 @@ class ItemsController < ApplicationController
       ItemRevision.process_item_associations(@item.current_revision, params)
       redirect_to items_path
     else
-      render :new
+      redirect_to new_item_path, notice: @item.errors.messages.collect{|k,v| [k,v].join(',')}.join(',')
     end
   end
 

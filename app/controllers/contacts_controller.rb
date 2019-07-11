@@ -109,8 +109,13 @@ class ContactsController < ApplicationController
   def create
     @contact = Contact.new(contact_params)
     @contactable = @contact.contactable
-    @contact.save
-    respond_with @contactable
+    if @contact.save
+      if @contactable.class.name == 'Organization' and @contactable.organization_email.nil?
+        @contactable.update_column(:organization_email, @contact.contact_email)
+      end
+    end
+    message = @contact.errors.messages.collect{|k,v| [k,v].join(',')}.join(',')
+    respond_with @contactable, notice: message.present? ? message : 'Contact created!'
   end
 
   # PUT /contacts/1
