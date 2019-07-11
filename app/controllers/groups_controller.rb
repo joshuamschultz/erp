@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
           group.attributes.each do |key, value|
             grup[key] = value
           end
+          grup[:org_names] = group.org_names
           grup[:group_name] = CommonActions.linkable(group_path(group), group.group_name)
           grup[:links] = CommonActions.object_crud_paths(nil, edit_group_path(group), nil)
           @grups.push(grup)

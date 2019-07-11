@@ -49,6 +49,7 @@ class QualityLotDimensionsController < ApplicationController
               lot_dimension_hash[:lot_dimension_std] = go_non_go_status ? " " : (lot_dimension_values.stdev.round(4) rescue 0)
               lot_dimension_hash[:lot_dimension_max] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.maximum(:lot_dimension_value).to_f.round(4)
               lot_dimension_hash[:lot_dimension_min] = go_non_go_status ? " " : lot_dimension.all_lot_dimensions.minimum(:lot_dimension_value).to_f.round(4)
+              lot_dimension_hash[:lot_dimension_status] = lot_dimension.lot_dimension_status.to_s
               quality_lot_dimensions_arr << lot_dimension_hash
           end
           render json: { aaData: quality_lot_dimensions_arr }

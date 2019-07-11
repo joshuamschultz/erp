@@ -17,12 +17,15 @@
     </thead>
     <tbody>
       <% if @group.organizations %>
-      <% @group.organizations.each do |organization| %>
-      <tr>
-        <td><%= CommonActions.linkable(organization_path(organization), organization.organization_name).html_safe %>
-          <td></tr>
-          <% end%>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+        <% @group.group_organizations.each do |grp_organization| %>
+          <tr>
+            <td><%= grp_organization.organization.organization_name %>
+            <td>
+            <td><%= CommonActions.object_crud_paths(organization_path(grp_organization.organization),nil,nil,[{path:  group_organization_path(grp_organization), method: 'delete', name: 'delete'}]).html_safe %>
+            <td>
+          </tr>
+        <% end%>
+      <% end %>
+    </tbody>
+  </table>
+</div>

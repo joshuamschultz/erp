@@ -89,7 +89,7 @@ class Organization < ActiveRecord::Base
   # (validates_uniqueness_of :organization_short_name if validates_length_of :organization_short_name, :minimum => 2, :maximum => 20) if validates_presence_of :organization_short_name
   # validates_formatting_of :organization_telephone, :using => :us_phone if validates_presence_of :organization_telephone
   # validates_formatting_of :organization_zipcode, :using => :us_zip if validates_presence_of :organization_zipcode
-  validates_formatting_of :organization_email, using: :email, if: proc { |o| (o.contact_type.present? && o.contact_type.type_value == 'email') || o.organization_email.present? }
+  # validates_formatting_of :organization_email, using: :email, if: proc { |o| (o.contact_type.present? && o.contact_type.type_value == 'email') || o.organization_email.present? }
   validates_length_of :organization_fax, in: 10..32, if: proc { |o| (o.contact_type.present? && o.contact_type.type_value == 'fax') || o.organization_fax.present? }
   validates_length_of :organization_address_1, :organization_address_2, maximum: 150, allow_blank: true
   after_initialize :default_values
@@ -125,8 +125,8 @@ class Organization < ActiveRecord::Base
     #                          contact_city: organization_city, contact_country: organization_country, contact_description: organization_description,
     #                          contact_email: organization_email, contact_fax: organization_fax, contact_notes: organization_notes,
     #                          contact_state: organization_state, contact_telephone: organization_telephone, contact_title: organization_name,
-    #                          contact_website: organization_website, contact_zipcode: organization_zipcode, contact_type: 'address')
-    # contact.save
+    #                          contact_website: organization_website, contact_zipcode: organization_zipcode, contact_type: 'contact')
+    # contact.save!
 
      address = addresses.build(address_address_1: organization_address_1, address_address_2: organization_address_2,
                              address_city: organization_city, address_country: organization_country, address_description: organization_description,
