@@ -16,6 +16,7 @@
 #
 
 class Item < ActiveRecord::Base
+  acts_as_paranoid
   has_many :item_revisions, dependent: :destroy
   has_many :quote_lines, dependent: :destroy
   has_many :quotes, through: :quote_lines
@@ -51,6 +52,7 @@ class Item < ActiveRecord::Base
   end
 
   def create_alt_name
+    # this wont be present as removed from the view
     if self.item_alt_part_no.present?
       item_alt_names.create(item_alt_identifier: item_alt_part_no, item_alt_active: true)
     end

@@ -11,8 +11,8 @@
 
 class Group < ActiveRecord::Base
 
-  has_many :organizations, through: :group_organizations
   has_many :group_organizations, dependent: :destroy
+  has_many :organizations, through: :group_organizations
   has_many :quotes
 
   def self.process_group_associations(group, params)
@@ -30,4 +30,9 @@ class Group < ActiveRecord::Base
       end
     end
   end
+
+  def org_names
+    organizations.collect(&:organization_name).join(',')
+  end
+
 end
