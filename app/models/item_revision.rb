@@ -130,6 +130,8 @@ class ItemRevision < ActiveRecord::Base
               processes.each do |process_id|
                 unless item_revision.item_processes.find_by_process_type_id(process_id)
                     item_revision.item_processes.new(:process_type_id => process_id).save
+                    process = ProcessType.find process_id
+                    item_revision.specifications << process.specifications
                 end
               end
           end

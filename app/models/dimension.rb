@@ -16,7 +16,7 @@
 class Dimension < ActiveRecord::Base
   has_many :item_part_dimensions, :dependent => :destroy
 
-  (validates_uniqueness_of :dimension_identifier if validates_length_of :dimension_identifier, :minimum => 2, :maximum => 50) if validates_presence_of :dimension_identifier
+  (validates_uniqueness_of :dimension_identifier if validates_length_of :dimension_identifier, :minimum => 1, :maximum => 50) if validates_presence_of :dimension_identifier
 
   after_initialize :default_values
 

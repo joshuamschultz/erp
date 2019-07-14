@@ -20,7 +20,8 @@
 class Gauge < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
-  
+  validates_presence_of :gauge_tool_no
+  validates_uniqueness_of :gauge_tool_no
 
   after_initialize :default_values
 
