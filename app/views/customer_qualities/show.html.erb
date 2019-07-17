@@ -99,6 +99,12 @@
               <td class="span3">Active :</td>
               <td class="span5"><%= @customer_quality.try(:quality_active)%></td>
             </tr>
+            <tr>
+              <td class="span3">Quality Documents :</td>
+            </tr>
+            <% @customer_quality.master_types.each do |document| %>
+              <tr ><td class="span5"><strong><%=document.type_name%></strong></td></tr>
+            <% end %>
             </tbody>
           </table>
     </div>

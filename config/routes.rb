@@ -385,6 +385,10 @@ Rails.application.routes.draw do
 
   resources :test_packages
 
+  ChessErp::Application.routes.draw do
+    mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+  end
+
   match '/tester' => 'account#tester', via: %i[get post]
 
   get 'account/dashboard'
