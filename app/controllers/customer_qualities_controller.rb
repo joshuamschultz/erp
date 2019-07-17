@@ -35,6 +35,7 @@ class CustomerQualitiesController < ApplicationController
               quality.attributes.each do |key, value|
                 qualiti[key] = value
               end
+              qualiti[:documents] = quality.master_types.collect(&:type_name)
               # quality[:links] = CommonActions.object_crud_paths(customer_quality_path(quality), edit_customer_quality_path(quality),
               # customer_quality_path(quality))
 

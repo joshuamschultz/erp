@@ -12,6 +12,6 @@
 class CustomerQualityLevel < ActiveRecord::Base
 
   belongs_to :customer_quality
-  belongs_to :master_type, -> {where type_category: customer_quality_level}
+  belongs_to :master_type, -> {where type_category: 'customer_quality_level'}
 
 end

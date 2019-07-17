@@ -77,7 +77,7 @@ class Payable < ActiveRecord::Base
         payable_total = self.payable_lines.sum(:payable_line_cost)
         payable_total += self.po_shipments.sum(:po_shipped_cost).to_f if self.po_header
         payable_discount_val = (payable_total / 100) * self.payable_discount.to_f
-        payable_total = payable_total - payable_discount_val + self.payable_freight.to_f
+        payable_total = payable_total - payable_discount_val.round(2) + self.payable_freight.to_f.round(2)
       end
 
       total_amount = 0

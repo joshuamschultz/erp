@@ -40,21 +40,4 @@ class CheckEntry < ActiveRecord::Base
 		end
   end
 
-  def get_payables
-      @identifiers = Array.new
-      result ={}
-      if self.payment
-      payable_ids = self.payment.payment_lines.collect(&:payable_id)
-      payable_ids.each do |p|
-        payable = Payable.find (p)
-        if payable.present?
-          @identifiers.push(CommonActions.linkable(payable_path(payable), payable.payable_identifier))
-        end
-      end
-      result["payableIds"] = @identifiers
-      result["amount"] = self.payment.payment_check_amount
-    end
-    result
-  end
-
 end
