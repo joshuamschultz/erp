@@ -8,8 +8,7 @@
 
   <%= hidden_field_tag :org_item_id, (@item_alt_name.item.id if @item_alt_name.item) %>
 
-    <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
-
+  <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
   <%= hidden_field_tag :organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>
 
   <%= hidden_field_tag :org_organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>    

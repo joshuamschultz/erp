@@ -17,7 +17,7 @@
 
                 <%= hidden_field_tag :org_alt_name_id, (@so_line.item_alt_name.id if @so_line.item_alt_name) %>
 
-                <% @item_revisions = ((@so_line.persisted? && @so_line.item.present?) ? @so_line.item.item_revisions : "") %>
+                <% @item_revisions = ((@so_line.persisted? && @so_line.item_alt_name.present?) ? @so_line.item_alt_name.item_revisions : "") %>
                 <% selected_item_revision = ((@so_line.persisted? && @so_line.item_revision.present?) ? @so_line.item_revision : "") %>
 
                 <div class="control-group select required quality_lot_po_line">

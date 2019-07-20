@@ -5,7 +5,11 @@
             <h4 class="span6 heading">Revisions</h4>
             <span class="span6 heading right">
                <%   if can? :edit, Item %>
-                <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
+                <% if params[:item_alt_name_id] %>
+                    <%= link_to 'New Revision', new_item_item_revision_path(@item, item_alt_name_id: params[:item_alt_name_id]), :class => "btn btn-small btn-success" %>
+                <% else %>
+                    <%= link_to 'New Revision', new_item_item_revision_path(@item), :class => "btn btn-small btn-success" %>
+                <% end %>
                <% end %>  
             </span>
         </div> 
@@ -31,7 +35,7 @@
 </div>
 <% unless  user_signed_in? &&  current_user.is_customer? %>  
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_revisions", :path => item_item_revisions_path(@item), :extras => {:slno => false}, 
+    {:name => "table_report_revisions", :path => item_item_revisions_path(@item, item_alt_name_id: @item_alt_name.id), :extras => {:slno => false}, 
         :columns => '[                
                         { "mData": "item_revision_name" },
                         { "mData": "item_revision_date" },
@@ -42,7 +46,7 @@
     %>
 <% else %>
      <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
-    {:name => "table_report_revisions", :path => item_item_revisions_path(@item), :extras => {:slno => false}, 
+    {:name => "table_report_revisions", :path => item_item_revisions_path(@item, item_alt_name_id: @item_alt_name.id), :extras => {:slno => false}, 
         :columns => '[                
                         { "mData": "item_revision_name" },
                         { "mData": "item_revision_date" },                       

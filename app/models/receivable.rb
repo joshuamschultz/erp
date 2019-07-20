@@ -291,25 +291,25 @@ class Receivable < ActiveRecord::Base
 
   end
 
-  def self.open_receivables(item,status)
-    receivables = []
-    @item = Item.find(item)
-    @item.so_lines.each do |so_line|
-      unless so_line.so_header.receivables.empty?
-        receivables= so_line.so_header.receivables.status_based_receivables(status || "open")
-      end
-    end
-    return receivables
-  end
+  # def self.open_receivables(item_revision,status)
+  #   receivables = []
+  #   @item = ItemRevision.find(item_revision)
+  #   @item.so_lines.each do |so_line|
+  #     unless so_line.so_header.receivables.empty?
+  #       receivables= so_line.so_header.receivables.status_based_receivables(status || "open")
+  #     end
+  #   end
+  #   return receivables
+  # end
   def self.open_revision_receivables(item_revision,status)
     receivables = []
     @item_revision = ItemRevision.find(item_revision)
     @item_revision.so_lines.each do |so_line|
       unless so_line.so_header.receivables.empty?
-        receivables= so_line.so_header.receivables.status_based_receivables(status || "open")
+        receivables << so_line.so_header.receivables.order('created_at desc')
       end
     end
-    return receivables
+    return receivables.flatten.compact.uniq
   end
 
   def invoice_code

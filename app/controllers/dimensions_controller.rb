@@ -85,8 +85,9 @@ class DimensionsController < ApplicationController
       if @dimension.save!
         format.html {
             item = Item.find_by_id(params[:item_id])
+            item_alt_name = ItemAltName.find_by_id(params[:item_alt_name_id])
             if item
-                redirect_to item_path(item), notice: 'Dimension type was successfully created.'
+                redirect_to item_path(item, revision_id: item_alt_name.current_revision, item_alt_name_id: item_alt_name), notice: 'Dimension type was successfully created.'
             else
                 redirect_to dimensions_path, notice: 'Dimension type was successfully created.'
             end

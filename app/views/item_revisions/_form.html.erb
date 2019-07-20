@@ -41,6 +41,10 @@
 
         <%= f.association :print, :url => autocomplete_print_print_identifier_prints_path, :as => :autocomplete, :id_element => '#print_id', :label => "Print" %>
 
+        <% if @item_alt_name.present? %>
+            <%= hidden_field_tag :item_alt_name_id, @item_alt_name.id %>
+        <% end %>
+
         <%= hidden_field_tag :print_id, (@item_revision.print.id if @item_revision.print) %>
 
         <%= hidden_field_tag :org_print_id, (@item_revision.print.id if @item_revision.print) %>

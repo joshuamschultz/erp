@@ -11,7 +11,7 @@
       <%= f.input :go_non_go, :label => "Go/NoGo", :checked => @item_part_dimension.go_non_go %>
       <%= f.input :item_part_critical, :label => "Critical" %>
       <%= f.association :item_revision, as: :hidden, input_html: { value: @item_revision.id } %>
-      <%#= f.hidden_field :item_revision_id, value:  @item_revision.id%>
+      <%= f.hidden_field :item_alt_name_id, value:  @item_alt_name.id%>
       <%#= f.hidden_field :item_id, value: @item.id %>
       <%#= f.input :item_part_notes, :label => "Notes" %>
       <%#= f.input :item_part_active, :label => "Active" %>

@@ -10,7 +10,9 @@
 
           <tr>
               <td>Part Number:</td>
-              <td><strong><%= link_to @item.item_part_no, item_path(@item, revision_id: (@item_revision.nil? ? 0 : @item_revision.id)) %></strong></td>
+              <td><strong><%= link_to "#{@item_alt_name.item_alt_identifier}", item_path(@item, revision_id: (@item_revision.nil? ? 0 : @item_revision.id), item_alt_name_id: (
+                @item_alt_name.present? ?  @item_alt_name.id : @item.item_alt_names.first.id
+              )) %></strong></td>
           </tr>
 
           <% if @item_revision %>
@@ -35,10 +37,9 @@
               </tr>
 
               <tr>
-                <td>Alt Names:</td>
-                <td>
-                    <%= @item.customer_alt_names.collect{|alt_name| link_to(alt_name.item_alt_identifier, item_alt_name_path(alt_name))}.join(",  ").html_safe %>
-                </td>
+                <td>Item Name:</td>
+                <td><strong><%= link_to @item.item_part_no, item_path(@item, revision_id: (@item_revision.nil? ? 0 : @item_revision.id), item_alt_name_id: @item_alt_name.id) %></strong></td>
+
               </tr>           
 
               <% unless  user_signed_in? &&  current_user.is_customer? %>  
