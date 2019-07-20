@@ -12,7 +12,7 @@
     <tbody id="receivable_shipments_table_table_body">
         <% @receivable.so_shipments.includes(:so_line, :receivable_so_shipment).each do |so_shipment| %>
             <tr>
-                <td><%= link_to so_shipment.so_line.item_alt_name.item_alt_identifier, item_path(so_shipment.so_line.item) %></td>
+                <td><%= link_to so_shipment.so_line.item_alt_name.item_alt_identifier, item_path(so_shipment.so_line.item, revision_id: so_shipment.so_line.item_revision, item_alt_name_id: so_shipment.so_line.item_alt_name) %></td>
                 <td><%= so_shipment.so_line.so_line_quantity %></td>
                 <td><%= so_shipment.so_shipped_count %></td>
                 <td><%= so_shipment.so_line.so_line_sell %></td>

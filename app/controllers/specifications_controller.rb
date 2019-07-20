@@ -9,8 +9,8 @@ class SpecificationsController < ApplicationController
   def index
     # if there is an item in the params, show those specs for the item.
     # Otherwise grab all specs in the system
-    if params[:item_id].present?
-      @specifications = Specification.item_specification(params[:item_id])
+    if params[:item_alt_name_id].present?
+      @specifications = Specification.item_specification(params[:item_alt_name_id])
     else
       @specifications = Specification.joins(:attachment).all
     end

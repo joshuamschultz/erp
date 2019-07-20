@@ -50,7 +50,7 @@ class ItemAltNamesController < ApplicationController
           alt_name.attributes.each do |key, value|
             alt_nam[key] = value
           end
-          alt_nam[:item_name] = "<a href='#{item_path(alt_name.item)}'> #{alt_name.item.item_part_no} </a>"
+          alt_nam[:item_name] = "<a href='#{item_path(alt_name.item)}?item_alt_name_id=#{alt_name.id}&revision_id=#{alt_name.current_revision.id}'> #{alt_name.item.item_part_no} </a>"
           alt_nam[:customer_name] = alt_name.organization.present? ? "<a href='#{organization_path(alt_name.organization)}'> #{alt_name.organization.organization_name} </a>" : ""
           alt_nam[:links] = CommonActions.object_crud_paths( nil, edit_item_alt_name_path(alt_name), nil)
           @item_alt_nams.push(alt_nam)
@@ -64,7 +64,7 @@ class ItemAltNamesController < ApplicationController
   # GET /item_alt_names/1.json
   def show
     @item_alt_name = ItemAltName.find(params[:id])
-    @current_revision = @item_alt_name.item.current_revision if @item_alt_name.item
+    @current_revision = @item_alt_name.current_revision if @item_alt_name.item
     @current_revision = {item_cost: "No Revision Found!"} if @current_revision.nil?
     respond_to do |format|
       format.html # show.html.erb
@@ -145,6 +145,6 @@ class ItemAltNamesController < ApplicationController
 
       def item_alt_name_params
         params.require(:item_alt_name).permit(:item_alt_active, :item_alt_created_id, :item_alt_description,
-                                              :item_alt_identifier, :item_alt_notes, :item_alt_updated_id, :item_id, :organization_id)
+                                              :item_alt_identifier, :item_alt_notes, :item_alt_updated_id, :item_id, :organization_id, :item_revision_id)
       end
 end

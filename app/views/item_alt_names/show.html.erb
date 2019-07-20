@@ -11,7 +11,7 @@
 
       <tr>
         <td>Item:</td>
-        <td><%= link_to @item_alt_name.item.item_part_no, @item_alt_name.item %></td>
+        <td><%= link_to @item_alt_name.item.item_part_no, item_path(@item_alt_name.item, revision_id: @item_alt_name.item.current_revision.id, item_alt_name_id: @item_alt_name.id) %></td>
       </tr>
 
       <tr>

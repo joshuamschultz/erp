@@ -46,11 +46,11 @@ class Specification < ActiveRecord::Base
     self.specification_description = attachment.attachment_description
     end
 
-  def self.item_specification(item)
+  def self.item_specification(item_alt_name_id)
     # create an array called specifications
     specifications = []
     # Create a loop for each revision
-    Item.find(item).item_revisions.each do |item_revision|
+    ItemAltName.find(item_alt_name_id).item_revisions.each do |item_revision|
       next unless item_revision.present?
       # Grab all the specs for that revision
       # and load them into the specifications array
@@ -59,7 +59,7 @@ class Specification < ActiveRecord::Base
       end
     end
     # get all processes with a a part
-    process_types = ProcessType.item_process_type(item)
+    process_types = ProcessType.item_process_type(item_alt_name_id)
     # grab all specs with the process and create a loop
     # Add those to the specifications array as well.
     process_specifications = ProcessType.process_type_specifications(process_types)

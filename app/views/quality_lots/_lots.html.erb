@@ -50,7 +50,7 @@
 <% unless params[:type].present? %>
     <%= render :partial => 'layouts/app_layouts/data_table', :locals => 
         {
-            :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item.nil? ? nil : @item.id), :revision_id => (params[:revision_id].present? ? @item_revision.id : "")), :extras => {:slno => false},
+            :name => "table_report_lots", :path => quality_lots_path(:item_id => (@item_alt_name.nil? ? nil : @item_alt_name.id), :revision_id => (params[:revision_id].present? ? @item_revision.id : "")), :extras => {:slno => false},
             :columns => '[
                             { "mData": "index","bVisible": false },
                             { "mData": "lot_control_no" },

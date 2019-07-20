@@ -39,7 +39,7 @@ class InventoryAdjustmentsController < ApplicationController
                 inventory_adjustmnt[key] = value
               end
               inventory_adjustmnt[:id] = inventory_adjustment.id
-              inventory_adjustmnt[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier)
+              inventory_adjustmnt[:item_part_no] = CommonActions.linkable(item_path(inventory_adjustment.item), inventory_adjustment.item_alt_name.item_alt_identifier, {revision_id: inventory_adjustment.item_alt_name.current_revision.id, item_alt_name_id: inventory_adjustment.item_alt_name.id})
               inventory_adjustmnt[:inventory_adjustment_quantity] = inventory_adjustment.inventory_adjustment_quantity
               inventory_adjustmnt[:control_no] = CommonActions.linkable(quality_lot_path(inventory_adjustment.quality_lot),inventory_adjustment.quality_lot.lot_control_no)
               inventory_adjustmnt[:inventory_adjustment_description] = inventory_adjustment.inventory_adjustment_description

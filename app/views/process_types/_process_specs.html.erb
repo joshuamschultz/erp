@@ -27,7 +27,7 @@
 
 
 <%= render :partial => 'layouts/app_layouts/data_table', :locals =>
-    {:name => "table_report_specifications", :path => process_specs_process_types_path(:item_id => (@item.nil? ? nil : @item.id),:process_types => "1"), :extras => {:slno => false},
+    {:name => "table_report_specifications", :path => process_specs_process_types_path(:item_alt_name_id => (@item_alt_name.nil? ? nil : @item_alt_name.id),:process_types => "1"), :extras => {:slno => false},
         :columns => '[
                         { "mData": "attachment_name" },
                         { "mData": "attachment_revision" },

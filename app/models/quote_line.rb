@@ -54,13 +54,13 @@ class QuoteLine < ActiveRecord::Base
       self.quote_line_active = false
       self.quote_line_status = "open"
       self.item = self.item_alt_name.item
-      self.item_revision = self.item_alt_name.item.current_revision
+      self.item_revision = self.item_alt_name.current_revision
       self.organization_id = self.quote.customer_id
     else
       self.quote_line_active = false
       self.quote_line_status = "open"
       # self.item = self.item_alt_name.item
-      # self.item_revision = self.item_alt_name.item.current_revision
+      # self.item_revision = self.item_alt_name.current_revision
     end
 
   end

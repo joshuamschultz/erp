@@ -59,12 +59,13 @@ class QualityLotsController < ApplicationController
   # GET po_headers/1/quality_lots
   # GET po_headers/1/quality_lots.json
   def index
-    if params[:revision_id].present?
+    if params[:item_alt_name_id].present?
+        @item_alt_name = ItemAltName.find(params[:item_alt_name_id])
+        @item_revision = @item_alt_name.current_revision
+        @quality_lots = @item_revision.quality_lots.order('created_at desc')
+    elsif params[:revision_id].present?
           @item_revision = ItemRevision.find(params[:revision_id])
           @quality_lots = @item_revision.quality_lots.order('created_at desc')
-    elsif params[:item_id].present?
-        @item = Item.find(params[:item_id])
-        @quality_lots = @item.quality_lots.order('created_at desc')
     elsif params[:type].present?
       @quality_lots = QualityLot.lot_missing_location
     else
@@ -105,8 +106,8 @@ class QualityLotsController < ApplicationController
             # revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier +
             # " (Revision: #{quality_lot.item_revision.item_revision_name})")
 
-            qality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item,
-            revision_id: quality_lot.item_revision_id), quality_lot.po_line.item_alt_name.item_alt_identifier)
+            qality_lot[:item_part_no] = CommonActions.linkable(item_path(quality_lot.item_revision.item), quality_lot.po_line.item_alt_name.item_alt_identifier, {
+            revision_id: quality_lot.item_revision_id, item_alt_name_id: quality_lot.po_line.item_alt_name_id})
 
             qality_lot[:item_revision_name] = quality_lot.item_revision.present? ? CommonActions.linkable(item_path(quality_lot.item_revision.item,
             revision_id: quality_lot.item_revision_id), quality_lot.item_revision.item_revision_name)  : ""

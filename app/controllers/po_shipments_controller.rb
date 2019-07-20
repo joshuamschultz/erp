@@ -263,7 +263,7 @@ class PoShipmentsController < ApplicationController
       revision_id = po_line.item_revision_id || po_line.item.item_revisions.last.id
       if User.current_user.present? && !User.current_user.is_operations? && !User.current_user.is_clerical?
         obj[:po_identifier] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
-        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id})
+        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id, item_alt_name_id: po_line.item_alt_name.id})
         obj[:vendor_name] = (CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name) if po_header.organization) || ""
         obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
         obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_header.organization.vendor_quality), po_header.organization.vendor_quality.quality_name) if po_header.organization && po_header.organization.vendor_quality) || ""
@@ -288,7 +288,7 @@ class PoShipmentsController < ApplicationController
         obj
       else
         obj[:po_identifier] = CommonActions.linkable(po_header_path(po_header), po_header.po_identifier)
-        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id})
+        obj[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: revision_id,item_alt_name_id: po_line.item_alt_name.id})
         obj[:vendor_name] = (CommonActions.linkable(organization_path(po_header.organization), po_header.organization.organization_name) if po_header.organization) || ""
         obj[:customer_name] = (CommonActions.linkable(organization_path(po_line.organization), po_line.organization.organization_name) if po_line.organization) || ""
         obj[:quality_id_name] = (CommonActions.linkable(customer_quality_path(po_header.organization.vendor_quality), po_header.organization.vendor_quality.quality_name) if po_header.organization && po_header.organization.vendor_quality) || ""

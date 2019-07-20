@@ -72,9 +72,9 @@ class PoHeadersController < ApplicationController
       elsif params[:item_revision_id].present?
           @item_revision = ItemRevision.find(params[:item_revision_id])
           @po_headers = @item_revision.present? ? @item_revision.purchase_orders.order("created_at desc")  : []
-      elsif params[:item_id].present?
-          @item = Item.find(params[:item_id])
-          @po_headers = @item.present? ? @item.purchase_orders.order("created_at desc")  : []
+      elsif params[:item_alt_name_id].present?
+          @item_alt_name = ItemAltName.find(params[:item_alt_name_id])
+          @po_headers = @item_alt_name.present? ? @item_alt_name.purchase_orders(@item_alt_name.current_revision).order("created_at desc")  : []
       else
           @po_headers = PoHeader.order("created_at desc")
       end

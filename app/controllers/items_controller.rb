@@ -36,28 +36,25 @@ class ItemsController < ApplicationController
         end
         items_new =Array.new
         @items.each {|item|
-          item.item_revisions.each {|item_revision|
+          item.item_alt_names.each {|item_alt_name|
             item_with_revision = Hash.new
-            if item_revision
-              item_with_revision[:item_part_no] = item_revision.present? ? CommonActions.linkable(item_path(item_revision.item,
-              revision_id: item_revision.id), item.item_part_no)  : ""
-              item_with_revision[:owner_name] = "" #"<strong><a href='#{owner_path(item_revision.owner)}'>#{item_revision.owner.owner_identifier}</a></strong>"
-              item_with_revision[:item_name] = item_revision.item_name
-              item_with_revision[:item_description] = ""
-              item_with_revision[:vendor_name] = ""#"<a href='#{organization_path(item_revision.organization)}'>#{item_revision.organization.organization_short_name}</a>"
-              item_with_revision[:item_revision_name] = item_revision.item_revision_name
-              item_with_revision[:item_revision_date] = item_revision.item_revision_date
-              item_with_revision[:item_tooling] = item_revision.item_tooling
-              item_with_revision[:item_cost] = item.weighted_cost
-              item_with_revision[:item_notes] = item_revision.item_notes
+            if item_alt_name
+              item_with_revision[:item_part_no] = item_alt_name.present? ? CommonActions.linkable(item_path(item_alt_name.item), item_alt_name.item_alt_identifier, {revision_id: item_alt_name.id, item_alt_name_id: item_alt_name.id})  : ""
+              item_with_revision[:owner_name] = "" #"<strong><a href='#{owner_path(item_alt_name.owner)}'>#{item_alt_name.owner.owner_identifier}</a></strong>"
+              item_with_revision[:item_name] = item_alt_name.current_revision.item_name
+              item_with_revision[:item_description] = item_alt_name.description
+              item_with_revision[:vendor_name] = ""#"<a href='#{organization_path(item_alt_name.organization)}'>#{item_alt_name.organization.organization_short_name}</a>"
+              item_with_revision[:item_name] = item_alt_name.item.item_part_no
+              item_with_revision[:item_tooling] = item_alt_name.current_revision.item_tooling
+              item_with_revision[:item_cost] = item.weighted_cost(item_alt_name.current_revision)
+              item_with_revision[:item_notes] = item_alt_name.current_revision.item_notes
               item_with_revision[:item_alt_parts] = item.customer_alt_names.collect{|alt_name| CommonActions.linkable(item_alt_name_path(alt_name), alt_name.item_alt_identifier) }.join(",  ").html_safe
-              item_with_revision[:item_quantity_in_hand] =  item.stock(ItemRevision.find(item_revision.id))
-              item_with_revision[:item_quantity_on_order] = item.qty_on_order(ItemRevision.find(item_revision.id))
-              item_with_revision[:item_sell] = item_revision.item_sell.present? ? item_revision.item_sell : 0.0
+              item_with_revision[:item_quantity_in_hand] =  item.stock(ItemRevision.find(item_alt_name.current_revision.id))
+              item_with_revision[:item_quantity_on_order] = item.qty_on_order(ItemRevision.find(item_alt_name.current_revision.id))
+              item_with_revision[:item_sell] = item_alt_name.current_revision.item_sell.present? ? item_alt_name.current_revision.item_sell : 0.0
               item_with_revision[:item_active] = item.item_active
             else
-              item_with_revision[:item_part_no] = item_revision.present? ? CommonActions.linkable(item_path(item_revision.item,
-              revision_id: item_revision.id), item.item_part_no)  : ""
+              item_with_revision[:item_part_no] = item_alt_name.present? ? CommonActions.linkable(item_path(item_alt_name.item), item_alt_name.item_alt_identifier, {revision_id: item_alt_name.id, item_alt_name_id: item_alt_name.id})  : ""
               item_with_revision[:owner_name] = ""
               item_with_revision[:item_name] = ""
               item_with_revision[:item_description] = ""
@@ -70,7 +67,7 @@ class ItemsController < ApplicationController
               item_with_revision[:item_alt_parts] = ""
               item_with_revision[:item_active] = item.item_active
             end
-            item_with_revision[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
+            #item_with_revision[:links] = CommonActions.object_crud_paths( nil, edit_item_path(item), nil)
 #
             items_new << item_with_revision
           }
@@ -85,6 +82,7 @@ class ItemsController < ApplicationController
   def show
     @item_revision = @item.item_revisions.find_by_id(params[:revision_id])
     @item_revision = @item.current_revision unless @item_revision
+    @item_alt_name = ItemAltName.where(id: params[:item_alt_name_id]).first if params[:item_alt_name_id]
     @attachable = @item_revision
     @po_lines = PoLine.where(item_revision_id: @item_revision.id)
   end
@@ -99,7 +97,7 @@ class ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
-    if @item.save
+    if @item.save!
       ItemRevision.process_item_associations(@item.current_revision, params)
       redirect_to items_path
     else

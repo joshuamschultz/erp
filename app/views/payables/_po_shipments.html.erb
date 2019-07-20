@@ -12,7 +12,7 @@
     <tbody id="payable_shipments_table_table_body">
         <% @payable.po_shipments.includes(:po_line, :payable_po_shipment).each do |po_shipment| %>
             <tr>
-                <td><%= link_to po_shipment.po_line.item_alt_name.item_alt_identifier, item_path(po_shipment.po_line.item) %></td>
+                <td><%= link_to po_shipment.po_line.item_alt_name.item_alt_identifier, item_path(po_shipment.po_line.item, revision_id: po_shipment.po_line.item_revision, item_alt_name_id: po_shipment.po_line.item_alt_name) %></td>
                 <td><%= po_shipment.po_line.po_line_quantity %></td>
                 <td><%= po_shipment.po_shipped_count %></td>
                 <td><%= po_shipment.po_line.po_line_cost %></td>
