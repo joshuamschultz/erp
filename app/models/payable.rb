@@ -185,25 +185,26 @@ class Payable < ActiveRecord::Base
       end
   end
 
-  def self.all_payables(item)
-    payables = []
-    @item = Item.find(item)
-    @item.po_lines.each do |po_line|
-      unless po_line.po_header.payables.empty?
-        payables= po_line.po_header.payables
-      end
-    end
-    payables
-  end
+  # def self.all_payables(item)
+  #   payables = []
+  #   @item = Item.find(item)
+  #   @item.po_lines.each do |po_line|
+  #     unless po_line.po_header.payables.empty?
+  #       payables << po_line.po_header.payables
+  #     end
+  #   end
+  #   payables
+  # end
+
   def self.all_revision_payables(item_revision)
     payables = []
     @item_revision = ItemRevision.find(item_revision)
     @item_revision.po_lines.each do |po_line|
       unless po_line.po_header.payables.empty?
-        payables= po_line.po_header.payables
+        payables << po_line.po_header.payables.order('created_at desc')
       end
     end
-    payables
+    payables.flatten.compact.uniq
   end
 
 end

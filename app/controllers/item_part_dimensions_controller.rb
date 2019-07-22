@@ -58,6 +58,7 @@ class ItemPartDimensionsController < ApplicationController
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
     @item_part_dimension = @item_revision.item_part_dimensions.build
+    @item_alt_name = ItemAltName.find(params[:item_alt_name_id])
 
     respond_to do |format|
       format.html # new.html.erb
@@ -70,6 +71,7 @@ class ItemPartDimensionsController < ApplicationController
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:item_revision_id])
     @item_part_dimension = @item_revision.item_part_dimensions.find(params[:id])
+    @item_alt_name = ItemAltName.find(params[:item_alt_name_id])
   end
 
   # POST /item_part_dimensions
@@ -82,7 +84,7 @@ class ItemPartDimensionsController < ApplicationController
     respond_to do |format|
       if @item_part_dimension.save
         ItemPartDimension.process_dimension(@item_part_dimension, @item_revision)
-        format.html { redirect_to @item, notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to item_path(@item, revision_id: @item_revision.id, item_alt_name_id: params[:item_part_dimension][:item_alt_name_id]), notice: 'Item dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else
         format.html { render action: "new" }

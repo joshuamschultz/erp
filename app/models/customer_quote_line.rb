@@ -46,7 +46,7 @@ class CustomerQuoteLine < ActiveRecord::Base
 			self.customer_quote_line_status = "open"
 			self.customer_quote_line_active = false
 			self.item = self.item_alt_name.item
-			self.item_revision = self.item_alt_name.item.current_revision
+			self.item_revision = self.item_alt_name.current_revision
 			self.item_name_sub = ""
 	    else
 	    	self.customer_quote_line_status = "open"

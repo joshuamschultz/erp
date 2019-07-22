@@ -29,7 +29,7 @@
                 <% @so_header.so_lines.each do |so_line| %>
                     <% if so_line.id.present? %>
                         <tr>
-                            <th><%= CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier, {revision_id:so_line.item.current_revision.id}).html_safe %></th>
+                            <th><%= CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier, {revision_id:so_line.item_revision_id, item_alt_name_id: so_line.item_alt_name_id}).html_safe %></th>
                             <th><%= link_to so_line.po_header.organization.organization_name, organization_path(so_line.po_header.organization) if so_line.po_header %></th>
                             <th><%= link_to so_line.po_header.po_identifier, po_header_path(so_line.po_header) if so_line.po_header %></th>
                             <th><%= so_line.so_line_status %></th>

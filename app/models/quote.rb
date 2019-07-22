@@ -216,7 +216,8 @@ class Quote < ActiveRecord::Base
         part_nos = []
         quote.quote_lines.each do |quote_line|
             if quote_line.item
-                part_nos << "<a href='/items/#{quote_line.item.id}'>#{quote_line.item.item_part_no}</a>"
+                # remember to add revision id and item_alt_name_id
+                #part_nos << "<a href='/items/#{quote_line.item.id}'>#{quote_line.item.item_part_no}</a>"
             end
         end
         part_nos.join(",")

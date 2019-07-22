@@ -41,7 +41,6 @@ class Item < ActiveRecord::Base
   scope :item_with_recent_revisions, -> { joins(:item_revisions).where('item_revisions.latest_revision = ?', true) }
 
   after_create :create_self_alt_name
-  after_create :create_alt_name
 
   def create_self_alt_name
     # Creates the part in the alt database which is used for creating purchase and sales orders
@@ -49,41 +48,31 @@ class Item < ActiveRecord::Base
 
     alt_name = item_alt_names.create(item_alt_identifier: item_part_no, item_alt_active: true)
     alt_name.save
-  end
-
-  def create_alt_name
-    # this wont be present as removed from the view
-    if self.item_alt_part_no.present?
-      item_alt_names.create(item_alt_identifier: item_alt_part_no, item_alt_active: true)
+    # add revision to item-alt-name
+    unless self.current_revision.item_alt_names.where(id: alt_name.id).exists?
+      self.current_revision.item_alt_names << alt_name
     end
   end
 
 
-  # this is redundant method
-  # def update_alt_name
-  #   alt_name = item_alt_names.first
-  #   alt_name.item_alt_identifier = item_part_no
-  #   alt.save
-  # end
-
   def current_revision
-    item_revisions.order('item_revision_date desc').first
+    item_revisions.order('updated_at desc').first
+  end
+
+  def oldest_revision
+    item_revisions.order('updated_at asc').first
   end
 
   def customer_alt_names
-    alt_names = []
-    item_alt_names.each do |alt_name|
-      alt_names << alt_name if alt_name.item_alt_identifier != item_part_no
-    end
-    alt_names
+    item_alt_names.where("item_alt_identifier <> ? ", item_part_no).all
   end
 
-  def purchase_orders
-    PoHeader.joins(:po_lines).where('po_lines.item_id = ?', id).order('created_at desc')
+  def purchase_orders(revision)
+    PoHeader.joins(:po_lines).where('po_lines.item_revision_id = ?', revision.id).order('created_at desc')
   end
 
-  def sales_orders
-    SoHeader.joins(:so_lines).where('so_lines.item_id = ?', id).order('created_at desc')
+  def sales_orders(revision)
+    SoHeader.joins(:so_lines).where('so_lines.item_id = ?', revision.id).order('created_at desc')
   end
 
   def qty_on_order(revision)
@@ -94,30 +83,32 @@ class Item < ActiveRecord::Base
     item_revision.po_lines.where(po_line_status: 'open').includes(:po_header).where(po_headers: { po_status: 'open' }).sum('po_line_quantity - po_line_shipped')
   end
 
-  def qty_on_order_item
-    # self.po_lines.sum(:po_line_quantity)
-
-    po_lines.where(po_line_status: 'open').includes(:po_header).where(po_headers: { po_status: 'open' }).sum('po_line_quantity - po_line_shipped')
-  end
-
   def qty_on_committed(revision)
     item_revision = ItemRevision.find(revision)
     item_revision.so_lines.where(so_line_status: 'open').includes(:so_header).where(so_headers: { so_status: 'open' }).sum('so_line_quantity - so_line_shipped')
   end
 
-  def qty_on_hand
-    quality_lots.sum(:quantity_on_hand).to_f
+  def qty_on_order_item(revision)
+    # self.po_lines.sum(:po_line_quantity)
+
+    po_lines.where(po_line_status: 'open', item_revision_id: revision.id).includes(:po_header).where(po_headers: { po_status: 'open' }).sum('po_line_quantity - po_line_shipped')
   end
 
-  def weighted_cost
-    total = qty_on_hand
+
+  def qty_on_hand(revision)
+    quality_lots.where(item_revision_id: revision.id).sum(:quantity_on_hand).to_f
+  end
+
+  # change this method in ebay.rake
+  def weighted_cost(revision)
+    total = qty_on_hand(revision)
     cost = 0
     if total == 0
       cost
     else
       process_cost = 0
 
-      quality_lots.each do |quality_lot|
+      quality_lots.where(item_revision_id: revision.id).each do |quality_lot|
         if quality_lot.po_line.quality_lot_id.present?
           process_cost = QualityLot.find(quality_lot.po_line.quality_lot_id).po_line.po_line_cost.to_f
         end
@@ -131,8 +122,8 @@ class Item < ActiveRecord::Base
 
   # def item_sell_price
   # end
-  def current_location
-    po_shipment = po_shipments.order(:created_at).last
+  def current_location(revision)
+    po_shipment = po_shipments.where(item_revision_id: revision.id).order(:created_at).last
     po_shipment.nil? ? '-' : po_shipment.po_shipped_unit.to_s + ' - ' + po_shipment.po_shipped_shelf
   end
 

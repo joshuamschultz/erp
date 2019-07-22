@@ -80,10 +80,10 @@ module CommonActions
   def self.get_quality_lot_div(soLineId)
     divdata = "<div class='so_line_lot_input'><select class='quality_lot' name='quality_lot_id' onchange='setLocation(this, #{soLineId})'>"
     if soLineId.present?
-      # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
+      # quality_lots = SoLine.find(soLineId).item_revision.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
       so_line = SoLine.find(soLineId)
-      if so_line.item.present?
-        quality_lots = so_line.item.quality_lots.includes(:quality_histories).where(quality_histories: { 'quality_status' => 'accepted' }).where('finished <> ?', true).map { |x| [x.id, x.lot_control_no, x.quantity_on_hand] }
+      if so_line.item_revision.present?
+        quality_lots = so_line.item_revision.quality_lots.includes(:quality_histories).where(quality_histories: { 'quality_status' => 'accepted' }).where('finished <> ?', true).map { |x| [x.id, x.lot_control_no, x.quantity_on_hand] }
         quality_lots.each do |quality_lot|
           divdata += "<option id='#{quality_lot[2]}' value='#{quality_lot[0]}'>#{quality_lot[1]}</option>"
         end
@@ -96,10 +96,10 @@ module CommonActions
   def self.get_location_div(soLineId)
     location_div = ''
     if soLineId.present?
-      # quality_lots = SoLine.find(soLineId).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
+      # quality_lots = SoLine.find(soLineId).item_revision.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
       so_line = SoLine.find(soLineId)
-      if so_line.item.present?
-        quality_lot = so_line.item.quality_lots.where('finished <> ?', true).first
+      if so_line.item_revision.present?
+        quality_lot = so_line.item_revision.quality_lots.where('finished <> ?', true).first
         po_shipment = quality_lot.po_shipment if quality_lot
         location = po_shipment.nil? ? '-' : po_shipment.po_shipped_unit.to_s + ' - ' + po_shipment.po_shipped_shelf
         location_div = "<div id='location_#{soLineId}'>#{location}</div>"

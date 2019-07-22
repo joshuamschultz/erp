@@ -57,7 +57,7 @@ class QualityAction < ActiveRecord::Base
     def before_save_process
         if self.item_alt_name.present?
             self.item = self.item_alt_name.item
-            self.item_revision = self.item_alt_name.item.current_revision
+            self.item_revision = self.item_alt_name.current_revision
         end
         # notification_process();
     end

@@ -44,7 +44,7 @@ class ItemRevision < ActiveRecord::Base
   has_many :item_specifications, :dependent => :destroy
   has_many :specifications, :through => :item_specifications
   has_many :item_selected_names, :dependent => :destroy
-  has_many :item_alt_names, :through => :item_selected_names
+  has_many :item_alt_names, through: :item_selected_names
   has_many :item_part_dimensions, :dependent => :destroy
   has_many :attachments, :as => :attachable, :dependent => :destroy
   has_many :po_lines, :dependent => :destroy
@@ -86,7 +86,7 @@ class ItemRevision < ActiveRecord::Base
 
   def update_recent_revision
       ItemRevision.skip_callback("save", :after, :update_recent_revision, raise: false)
-      recent_revison = self.item.item_revisions.order("item_revision_date desc").first
+      recent_revison = self.item.current_revision
       recent_revison.update_attributes(:latest_revision => true)
       self.item.item_revisions.where("id != ?", recent_revison.id).update_all(:latest_revision => false)
       ItemRevision.set_callback("save", :after, :update_recent_revision)
@@ -179,7 +179,7 @@ class ItemRevision < ActiveRecord::Base
      "<input type='checkbox' class='item_sync' name='item_revision_#{itemRevision.id}' id='item_revision_#{itemRevision.id}' value='#{itemRevision.id}'>  "
     end
     def redirect_path
-        item_path(self.item, revision_id: self.id)
+        item_path(self.item, revision_id: self.id, item_alt_name_id: self.item_alt_names.last)
     end
 
     def purchase_orders
