@@ -54,6 +54,7 @@ class Item < ActiveRecord::Base
     end
   end
 
+
   def current_revision
     item_revisions.order('updated_at desc').first
   end
