@@ -64,16 +64,15 @@ class ProcessType < ActiveRecord::Base
     self.process_short_name = attachment.attachment_name
   end
 
-  def self.item_process_type(item)
+  def self.item_process_type(item_alt_name_id)
     process_types = []
-    Item.find(item).item_revisions.each do |item_revision|
+    ItemAltName.find(item_alt_name_id).item_revisions.each do |item_revision|
       next unless item_revision.present?
-      item_revision.item_processes.each do |process|
-        process_types << process.process_type if process.present?
+      item_revision.process_types.each do |process_type|
+        process_types << process_type
       end
     end
-    process_types = process_types.uniq.compact
-    process_types
+    process_types.uniq.compact
   end
 
   def self.process_type_specifications(process_types)

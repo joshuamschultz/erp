@@ -19,21 +19,23 @@
                 <th>Lots</th>
                 <th>Qty on Hand</th>
                 <th>Qty on Order</th>
-                <th>Alternates</th>
+                <th>Item Name</th>
             </tr>
         </thead>
         <tbody>
             <% @items.each do |item| %>
+            <%item.item_alt_names.each do |item_alt_name|%>
               <tr>
-                  <td><%=link_to item.item_part_no, item_path(item, revision_id: item.current_revision.id) %></td>
-                  <td><%= item.current_revision.item_revision_name %></td>
-                  <td><%= item.current_revision.item_description %></td>
+                  <td><%=link_to item_alt_name.item_alt_identifier, item_path(item, revision_id: item_alt_name.current_revision.id, item_alt_name_id: item_alt_name) %></td>
+                  <td><%= item_alt_name.current_revision.item_revision_name %></td>
+                  <td><%= item_alt_name.current_revision.item_description %></td>
                   <td>
-                  <td><%= item.item_quantity_in_hand %></td>
-                  <td><%= item.item_quantity_on_order %></td>
+                  <td><%= item.qty_on_hand(item_alt_name.current_revision) %></td>
+                  <td><%= item.qty_on_order(item_alt_name.current_revision) %></td>
                   <!-- TODO move to model as a method to list alt names -->
-                  <td><%= item.customer_alt_names.collect{|alt| alt.item_alt_identifier }.join(",  ").html_safe %></td>
+                  <td><%= item.item_part_no %></td>
               </tr>
+            <% end %>
             <% end %>
         </tbody>
       </table>

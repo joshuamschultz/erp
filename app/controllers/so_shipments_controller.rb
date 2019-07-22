@@ -59,7 +59,7 @@ class SoShipmentsController < ApplicationController
                   so_lin[:so_identifier] += "<a onclick='process_all_open(#{so_line.so_header.id}, $(this)); return false' class='pull-right btn btn-small btn-success' href='#'>Ship All</a>"
                   so_lin[:so_identifier] += "<a onclick='fill_po_items(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Fill</a></div>"
                   # so_line[:so_identifier] += "<a onclick='shipment_process(#{so_line.so_header.id}); return false' class='pull-right btn btn-small btn-success' href='#'>Complete Shipment</a>"
-                  so_lin[:links] = "<a onclick='item_locations(#{so_line.item.id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
+                  so_lin[:links] = "<a onclick='item_locations(#{so_line.item_revision_id}); return false' class='btn-action glyphicons eye_open btn-default' data-toggle='modal' href='#modal-simple'><i></i></a>"
                   so_lin[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='#{default_status}' class='btn_save_shipped btn-action glyphicons check btn-success' href='#'><i></i></a> <div class='pull-right shipping_status'></div>"
                   so_lin[:links] += "<a so_line_id='#{so_line.id}' so_shipped_status='ship_close' class='btn_save_shipped_close btn-action   btn-success' href='#'>Close</a>"
                 else
@@ -168,7 +168,7 @@ class SoShipmentsController < ApplicationController
         obj[key] = value
       end
       obj[:so_identifier] = CommonActions.linkable(so_header_path(so_line.so_header), so_line.so_header.so_identifier)
-      obj[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier)   : ""
+      obj[:item_part_no] = so_line.item.present? ?  CommonActions.linkable(item_path(so_line.item), so_line.item_alt_name.item_alt_identifier, {revision_id: so_line.item_revision_id, item_alt_name_id: so_line.item_alt_name_id})   : ""
       if so_line.so_header.po_header.present? && so_line.so_header.po_header.po_type.type_value == "transer"
          obj[:customer_name] = CommonActions.linkable(organization_path(so_line.so_header.po_header.organization), so_line.so_header.po_header.organization.organization_name)
       else

@@ -328,8 +328,8 @@ function set_quality_lots(response, callback_params, api_params){
  
 
 }
-function item_locations(item_id){
-    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "item_lot_locations", "id": item_id}}, "set_lots", {});    
+function item_locations(item_revision_id){
+    initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "item_lot_locations", "id": item_revision_id}}, "set_lots", {});    
 }
 function set_lots(response, callback_params, api_params){
     $("#my_lot").html("");

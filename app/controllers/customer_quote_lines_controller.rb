@@ -39,6 +39,7 @@ class CustomerQuoteLinesController < ApplicationController
                     customer_quote_line.attributes.each do |key, value|
                         customer_qote_lin[key] = value
                     end
+                    # update this link with revision and item alt name
                     customer_qote_lin[:item_part_no] = CommonActions.linkable(item_path(customer_quote_line.item), customer_quote_line.item_alt_name.item_alt_identifier) if customer_quote_line.item && customer_quote_line.item_alt_name
                     customer_qote_lin[:item_part_no] = customer_quote_line.item_name_sub unless customer_quote_line.item && customer_quote_line.item_alt_name
                     customer_qote_lin[:quote_vendor_name] = customer_quote_line.quote.present? ? CommonActions.linkable(quote_path(customer_quote_line.quote), customer_quote_line.quote.quote_identifier) : ""

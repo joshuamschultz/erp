@@ -5,8 +5,8 @@ class CommonActionsController < ApplicationController
             when "po_line_revisions"
               po_line = PoLine.find(params[:id])
               result = {}
-              result[:aaData] = po_line.present? ? po_line.item.item_revisions : []
-              result[:default] = (po_line.present? && po_line.item.current_revision.present?) ? po_line.item.current_revision.id : 0
+              result[:aaData] = po_line.present? ? po_line.item_alt_name.item_revisions : []
+              result[:default] = (po_line.present? && po_line.item_alt_name.current_revision.present?) ? po_line.item_alt_name.current_revision.id : 0
               latest_received = po_line.po_shipments.order(:created_at).last
               result[:latest_received_count] = latest_received.present? ? latest_received.po_shipped_count : ""
 
@@ -160,7 +160,7 @@ class CommonActionsController < ApplicationController
             when "get_item_revisions"
               if params[:id].present?
                 item_alt_name = ItemAltName.find(params[:id])
-                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item.item_revisions.order("created_at  desc"): []
+                result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item_revisions.order("created_at  desc"): []
                 result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
               end
 
@@ -371,8 +371,8 @@ class CommonActionsController < ApplicationController
               end
             when "item_lot_locations"
               if params[:id].present?
-                @item = Item.find(params[:id])
-                locations = Item.find(params[:id]).quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.lot_quantity,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] }
+                @item_revision = ItemRevision.find(params[:id])
+                locations = @item_revision.quality_lots.order('created_at DESC').map { |x| (x.po_shipment.present? && x.lot_quantity > 0) ? [x.lot_control_no,x.lot_quantity,x.po_shipment.po_shipped_unit.to_s + " - " + x.po_shipment.po_shipped_shelf] : [] }
                 result = locations
               else
                 result = "fail"
@@ -402,7 +402,7 @@ class CommonActionsController < ApplicationController
               end
             when "get_item_description"
               if params[:item_id].present?
-                description = ItemAltName.find(params[:item_id]).item.current_revision.item_description
+                description = Item.find(params[:item_id]).current_revision.item_description
                 result = description if description
                 result = "fail" if !description
               else
@@ -445,9 +445,9 @@ class CommonActionsController < ApplicationController
               end
             when "get_vendor_po"
               if params[:organization_id].present? && params[:alt_name_id]
-                item_id = ItemAltName.find(params[:alt_name_id]).item.id
+                item_alt_name_id = ItemAltName.find(params[:alt_name_id])
                 # organization = Organization.find(params[:organization_id])
-                result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_id = ?", params[:organization_id], item_id).order("po_headers.created_at DESC")
+                result = PoHeader.joins(:po_lines).select("po_headers.po_identifier").where("po_headers.organization_id = ? AND po_lines.item_alt_name_id = ?", params[:organization_id], item_alt_name_id).order("po_headers.created_at DESC")
               end
             when "get_po_header"
               if params[:po_identifier].present?
@@ -558,7 +558,7 @@ class CommonActionsController < ApplicationController
               end
             when "get_quality_lots"
               if params[:id].present?
-                quality_lots = SoLine.find(params[:id]).item.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
+                quality_lots = SoLine.find(params[:id]).item_revision.quality_lots.map { |x| (x && x.quantity_on_hand && x.quantity_on_hand > 0) ? [x.id,x.lot_control_no] : [] }
                 result = quality_lots
               end
 
@@ -566,7 +566,7 @@ class CommonActionsController < ApplicationController
 
             when "get_quality_lots_po"
               if params[:id].present?
-                quality_lots = PoLine.find(params[:id]).item.quality_lots.map { |x| [x.id,x.lot_control_no] }
+                quality_lots = PoLine.find(params[:id]).item_revision.quality_lots.map { |x| [x.id,x.lot_control_no] }
                 result = quality_lots
               end
             when "get_gl_account_title"

@@ -21,7 +21,8 @@ class ItemRevisionsController < ApplicationController
 
   def index
     @item = Item.find(params[:item_id])
-    @item_revisions = @item.item_revisions.order("item_revision_date desc")
+    @item_alt_name = ItemAltName.find(params[:item_alt_name_id])
+    @item_revisions = @item_alt_name.item_revisions.order("item_revision_date desc")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -32,7 +33,7 @@ class ItemRevisionsController < ApplicationController
             revision.attributes.each do |key, value|
               revsion[key] = value
             end
-            revsion[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id)}'>#{revision.item_revision_name}</a>"
+            revsion[:item_revision_name] = "<a href='#{item_path(@item, revision_id: revision.id, item_alt_name_id: @item_alt_name.id)}'>#{revision.item_revision_name}</a>"
            if can? :edit, Item
             revsion[:links] = CommonActions.object_crud_paths(nil, edit_item_item_revision_path(@item, revision), nil)
            else
@@ -68,6 +69,7 @@ class ItemRevisionsController < ApplicationController
         @item_revision = @item.current_revision.dup
         @item_revision.item_processes = @item.current_revision.item_processes
         @item_revision.item_specifications = @item.current_revision.item_specifications
+        @item_alt_name = ItemAltName.find (params[:item_alt_name_id]) if params[:item_alt_name_id]
     else
         @item_revision = @item.item_revisions.build
     end
@@ -82,6 +84,7 @@ class ItemRevisionsController < ApplicationController
   def edit
     @item = Item.find(params[:item_id])
     @item_revision = @item.item_revisions.find(params[:id])
+    @item_alt_name = ItemAltName.find (params[:item_alt_name_id]) if params[:item_alt_name_id]
   end
 
   # POST items/1/item_revisions
@@ -93,10 +96,13 @@ class ItemRevisionsController < ApplicationController
     respond_to do |format|
       if @item_revision.save
         ItemRevision.process_item_associations(@item_revision, params)
-        format.html { redirect_to(@item, :notice => 'Item revision was successfully created.') }
+        if params[:item_alt_name_id].present? and (item_alt_name = ItemAltName.find params[:item_alt_name_id]).present?
+          @item_revision.item_alt_names << item_alt_name
+        end
+        format.html { redirect_back(fallback_location: items_path, :notice => 'Item revision was successfully created.') }
         format.json { render :json => @item_revision, :status => :created, :location => [@item_revision.item, @item_revision] }
       else
-        format.html { render :action => "new" }
+        format.html { redirect_to(new_item_item_revision_path(@item, item_alt_name_id: params[:item_alt_name_id]), notice: @item_revision.errors.messages.collect{|k, v| "#{k}- #{v.join(',')}"}.join(',') )}
         format.json { render :json => @item_revision.errors, :status => :unprocessable_entity }
       end
     end
@@ -111,10 +117,11 @@ class ItemRevisionsController < ApplicationController
     respond_to do |format|
       if @item_revision.update_attributes(item_revision_params)
         ItemRevision.process_item_associations(@item_revision, params)
-        format.html { redirect_to(@item, :notice => 'Item revision was successfully updated.') }
+        format.html { redirect_back(fallback_location: items_path, :notice => 'Item revision was successfully updated.') }
         format.json { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { redirect_to(edit_item_item_revision_path(@item, item_alt_name_id: params[:item_alt_name_id]), notice: @item_revision.errors.messages.collect{|k, v| "#{k}- #{v.join(',')}"}.join(',') )}
+        # format.html { render :action => "edit" }
         format.json { render :json => @item_revision.errors, :status => :unprocessable_entity }
       end
     end
@@ -132,7 +139,7 @@ class ItemRevisionsController < ApplicationController
         format.html { redirect_to items_path, :notice => 'Item revision was successfully deleted.' }
         format.json { head :ok }
       else
-        format.html { redirect_to item_path(@item), :notice => 'Item revision was successfully deleted.' }
+        format.html { redirect_to items_path, :notice => 'Item revision was successfully deleted.' }
         format.json { head :ok }
       end
     end
@@ -147,6 +154,6 @@ class ItemRevisionsController < ApplicationController
       params.require(:item_revision).permit(:item_cost, :item_description, :item_name, :item_notes, :item_revision_created_id,
                                             :item_revision_date, :item_revision_name, :item_revision_updated_id, :item_tooling, :item_id,
                                             :organization_id, :vendor_quality_id, :customer_quality_id, :print_id, :material_id, :latest_revision,
-                                            :item_revision_complete, :item_sell)
+                                            :item_revision_complete, :item_sell, :item_alt_name_id)
     end
 end

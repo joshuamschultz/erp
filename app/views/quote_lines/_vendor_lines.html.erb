@@ -30,6 +30,7 @@
                     <%= f.fields_for :quote_line_costs, quote_vendor.quote_line_costs.where(quote_line_id: quote.quote_lines.collect(&:id)) do |quote_line_cost| %>
                         <tr>
                             <% if quote_line_cost.object.quote_line.item_alt_name.present? %>
+                                <%#remember to update these with revision and item alt name%>
                                 <td><%= link_to quote_line_cost.object.quote_line.item_alt_name.item_alt_identifier, item_path(quote_line_cost.object.quote_line.item) %></td>
                             <% else %>
                                 <td><%= quote_line_cost.object.quote_line.item_name_sub %></td>

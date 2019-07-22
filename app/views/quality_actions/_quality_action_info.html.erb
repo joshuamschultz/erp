@@ -14,7 +14,7 @@
             <% if @quality_action.item.present? %>
                 <tr>
                     <td>Item:</td>
-                    <td><%= CommonActions.linkable(item_path(@quality_action.item), @quality_action.item_alt_name.item_alt_identifier).html_safe %></td>
+                    <td><%= CommonActions.linkable(item_path(@quality_action.item, revision_id: @quality_action.revision_id, item_alt_name_id: @quality_action.item_alt_name.id), @quality_action.item_alt_name.item_alt_identifier).html_safe %></td>
                 </tr>
             <% end %>
 
