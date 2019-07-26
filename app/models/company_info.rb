@@ -30,19 +30,4 @@ class CompanyInfo < ActiveRecord::Base
   validates_length_of :company_address1, :company_address2, :company_fax, :company_website, :company_slogan, maximum: 50
   validates_formatting_of :company_phone1, using: :us_phone, allow_blank: true
 
-  def logo
-  	if super.present?
-  		super
-  	else
-  		self.image
-  	end
-  end
-
-  def image
-  	if super.present?
-  		super
-  	else
-  		self.logo
-  	end
-  end
 end
