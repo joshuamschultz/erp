@@ -63,14 +63,15 @@ group :development do
   gem 'capistrano-faster-assets', '~> 1.0'
   gem 'capistrano-safe-deploy-to', '~> 1.1.1'
   gem 'capistrano-sidekiq'
-  gem 'letter_opener'
-  gem 'letter_opener_web'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console'
 end
 
 # DSL changes
 gem 'responders'
+
+gem 'letter_opener'
+gem 'letter_opener_web'
 
 
 gem 'rails-jquery-autocomplete'
