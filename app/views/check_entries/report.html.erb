@@ -1,10 +1,9 @@
  <!-- Declare Hash-->
  <% vndr_id = Hash.new {|h,k| h[k]=[]} %>
-<% @check_entries.each do |c| %>
-	<% payment = Payment.find_by_check_entry_id(c.id) %>
+<%payment = Payment.where(check_entry_id: @check_entries.collect(&:id)) %>
+<% payment.each do |p| %>
 	<!-- Create Hash with key payment organzation id and value array of check entry id-->
-	<% vndr_id[payment.organization_id] << c.id %>
-	
+	<% vndr_id[p.organization_id] << p.check_entry_id %>
 <% end %>
 
 
@@ -19,5 +18,4 @@
  	  <%= render :partial => 'check_entries/checks_report', :locals => {:check_entry => vndr_id[v],
  	  	:payment_amt => total_amt } %>
 <% end %>
-
 

@@ -113,7 +113,7 @@ $("#print_check").click(function() {
     if (flag == 1)
     {    
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "generate_check_code", "ids" : checkEntryId  }}, "set_check_code", {});
-        var timer = ((count/2) + 2) * 1000
+        var timer = ((count/2) + 2) * 100
         setTimeout(function()
         {   
           checks_iframe.contentWindow.location.reload(true);
@@ -122,17 +122,17 @@ $("#print_check").click(function() {
         { 
            
            checks_iframe.contentWindow.print();
-        }, timer * 4);
+        }, timer*2);
     }    
     else
     {
         alert("There are no Checks to Print");
     }  
-    var timer = ((count/2) + 2) * 1000
+    var timer = ((count/2) + 2) * 300
     setTimeout(function()
     {         
         $("#modal-simple").show();      
-    }, timer * 5);
+    }, timer);
 
 });  
 function set_check_code(response, callback_params, api_params)
@@ -163,11 +163,12 @@ function reconcile_printed_checks()
     for (var i = 0; i < length; i++) 
     {
         initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "after_print_checks", "id" : CheckEntryIds[i]  }}, "", {});
-        $("#modal-simple").hide();
-        setTimeout(function(){
-            reload_the_page();    
-        }, 1000);
+
     }
+    $("#modal-simple").hide();
+    setTimeout(function(){
+        reload_the_page();    
+    }, 100);
 }
 
 
