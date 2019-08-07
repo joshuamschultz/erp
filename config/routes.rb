@@ -386,7 +386,7 @@ Rails.application.routes.draw do
   resources :test_packages
 
   ChessErp::Application.routes.draw do
-    mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development? || Rails.env.staging?
   end
 
   match '/tester' => 'account#tester', via: %i[get post]
