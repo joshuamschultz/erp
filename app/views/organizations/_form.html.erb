@@ -30,18 +30,19 @@
   </div>
 
   <%= f.association :contact_type, :label_method => "type_name", :label_value => "id", :include_blank => false, :label => "Contact Type" %>
+  <% unless @organization.persisted? %>
+    <%= f.input :organization_address_1, :label => "Address 1", input_html: {style: "height: 24px;"} %>
+    <%= f.input :organization_address_2, :label => "Address 2", input_html: {style: "height: 24px;"} %>
+    <%= f.input :organization_city, :label => "City" %>
+    <%= f.input :organization_state, :label => "State" %>
 
-  <%= f.input :organization_address_1, :label => "Address 1", input_html: {style: "height: 24px;"} %>
-  <%= f.input :organization_address_2, :label => "Address 2", input_html: {style: "height: 24px;"} %>
-  <%= f.input :organization_city, :label => "City" %>
-  <%= f.input :organization_state, :label => "State" %>
+    <%= f.input :organization_country, as: :country, :label => "Country", :priority => ['United States', 'Mexico', 'China', 'Taiwan']%>
 
-  <%= f.input :organization_country, as: :country, :label => "Country", :priority => ['United States', 'Mexico', 'China', 'Taiwan']%>
-
-  <%= f.input :organization_zipcode, :label => "Zipcode" %>
-  <%= f.input :organization_telephone, :label => "Telephone" %>
-  <%= f.input :organization_fax, :label => "Fax" %>
-  <%#= f.input :organization_email, :input_html => {class: "email_field"}, :label => "Email" %>
+    <%= f.input :organization_zipcode, :label => "Zipcode" %>
+    <%= f.input :organization_telephone, :label => "Telephone" %>
+    <%= f.input :organization_fax, :label => "Fax" %>
+    <%#= f.input :organization_email, :input_html => {class: "email_field"}, :label => "Email" %>
+  <% end %>
   <%= f.input :organization_website, :label => "Website" %>
   <%= f.input :organization_notes, :label => "Notes" %>
   <%= f.input :organization_active, :label => "Active", default: true %>
