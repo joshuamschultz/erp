@@ -398,7 +398,7 @@ module CommonActions
   end
 
   def application_shortcuts
-    [{ name: 'System', class: 'glyphicons cogwheels', drop_down: true, path: '#',
+    shortcuts = [{ name: 'System', class: 'glyphicons cogwheels', drop_down: true, path: '#',
        sub_menu: [
          { path: company_infos_path, name: 'Company Info', class: '', drop_down: false, sub_menu: [] },
          # { path: owners_path, name: 'Owners', class: '', drop_down: false, sub_menu: [] },
@@ -410,6 +410,11 @@ module CommonActions
          # {:path => vendor_qualities_path, :name => "Quality ID", :class => "", :drop_down => false, :sub_menu => []},
          # {:path => customer_qualities_path, :name => "Quality Level", :class => "", :drop_down => false, :sub_menu => []},
        ] }]
+    if Rails.env == 'staging'
+      shortcuts << {name: 'Testing Quip document', class: 'glyphicons', drop_down: false, path: 'https://growth-csp2964.quip.com/iy99AMRm5OOF/Chess-ERP-Testing-List'}
+      shortcuts << {name: 'Testing emails', class: 'glyphicons', drop_down: false, path: '/letter_opener'}
+    end
+    shortcuts
   end
 
   def self.get_new_identifier(model, field, letter)
