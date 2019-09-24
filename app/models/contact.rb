@@ -34,6 +34,7 @@ class Contact < ActiveRecord::Base
   has_many :shipped_so_orders, class_name: 'SoHeader', foreign_key: 'so_ship_to_id'
   has_many :payables, class_name: 'Payable', foreign_key: 'payable_to_id'
 
+  has_many :addresses, as: :addressable, dependent: :destroy
   after_initialize :default_values
 
   validates_presence_of :contactable
@@ -43,11 +44,26 @@ class Contact < ActiveRecord::Base
   # validates_formatting_of :contact_zipcode, :using => :us_zip if validates_presence_of :contact_zipcode
   # validates_formatting_of :contact_email, :using => :email if validates_presence_of :contact_email
   validates_formatting_of :contact_telephone, using: :us_phone, unless: proc { |o| o.contact_telephone == '' }
-  validates_formatting_of :contact_zipcode, using: :us_zip, unless: proc { |o| o.contact_zipcode == '' }
+  # validates_formatting_of :address_zipcode, using: :us_zip, unless: proc { |o| o.address_zipcode == '' }
   validates_formatting_of :contact_email, using: :email, unless: proc { |o| o.contact_email == '' }
   validate :contact_fields
+  before_save :add_address
+
+  #remove these columns later
+  attr_accessor :address_1, :address_2, :city, :country, :state,  :zipcode, :address_type, :address_title
 
   # custom validation used above
+
+  # getter methods for these columns
+  # later remove these columns
+
+  [:address_1, :address_2, :city, :country, :state, :zipcode, :address_type, :address_title].each do |method_name|
+    define_method "contact_#{method_name}" do |*value|
+      m_name = "address_#{method_name}"
+      self.default_address.try(:send, m_name.to_sym)
+    end
+  end
+
   def contact_fields
     if contact_type == 'contact'
       validates_length_of :first_name, minimum: 2, maximum: 20 if validates_presence_of :first_name
@@ -63,9 +79,20 @@ class Contact < ActiveRecord::Base
   # calls the default address for the organization to which the object belongs
   # So if you have an address for welch allyn, this will call the default for
   # Welch Allyn
-  def default_address
-    type_category = contactable.contact_type_category('address')
 
-    MasterType.find_by_type_category_and_type_value(type_category, id)
+  def default_address
+    self.addresses.where(address_type: 'default').first
+    # type_category = contactable.contact_type_category('address')
+
+    # MasterType.find_by_type_category_and_type_value(type_category, id)
+    # false
+  end
+  private
+  def add_address
+     address = addresses.build(address_address_1: address_1, address_address_2: address_2,
+                             address_city: city, address_country: country,
+                             address_state: state,  address_title: address_title,
+                             address_zipcode: zipcode, address_type: address_type)
+    address.save
   end
 end

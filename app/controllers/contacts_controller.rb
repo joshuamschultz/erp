@@ -109,6 +109,9 @@ class ContactsController < ApplicationController
   def create
     @contact = Contact.new(contact_params)
     @contactable = @contact.contactable
+    unless @contact.address_type.present?
+      @contact.address_type = 'address'
+    end
     if @contact.save
       if @contactable.class.name == 'Organization' and @contactable.organization_email.nil?
         @contactable.update_column(:organization_email, @contact.contact_email)
@@ -122,7 +125,6 @@ class ContactsController < ApplicationController
   # PUT /contacts/1.json
   def update
     @contact.update(contact_params)
-    @contact.save
     respond_with @contactable
   end
 
@@ -140,16 +142,20 @@ class ContactsController < ApplicationController
   end
 
   def set_default
-    @contact = Contact.find(params[:contact_id])
-    @contactable = @contact.contactable
-
     respond_to do |format|
-      if @contact && @contactable
-        type_category = @contactable.contact_type_category('address')
-        MasterType.where(type_category: type_category).destroy_all
-        MasterType.create(type_name: 'Default Organization Contact/Address', type_description: '', type_value: @contact.id, type_category: type_category, type_active: true)
-      end
-      format.html { redirect_to @contact, notice: 'Address was successfully added as default.' }
+      contact = Contact.find(params[:contact_id])
+      address = Address.find(params[:address_id])
+      contact.addresses.update_all(address_type: 'address')
+      address.update_column(:address_type, 'default')
+    # @contact = Contact.find(params[:contact_id])
+    # @contactable = @contact.contactable
+
+    #   if @contact && @contactable
+    #     type_category = @contactable.contact_type_category('address')
+    #     MasterType.where(type_category: type_category).destroy_all
+    #     MasterType.create(type_name: 'Default Organization Contact/Address', type_description: '', type_value: @contact.id, type_category: type_category, type_active: true)
+    #   end
+      format.html { redirect_to contact, notice: 'Address was successfully added as default.' }
       format.json { head :no_content }
     end
   end
@@ -162,10 +168,10 @@ class ContactsController < ApplicationController
   end
 
   def contact_params
-    params.require(:contact).permit(:contact_active, :contact_address_1, :contact_address_2, :contact_city,
-                                    :contact_country, :contact_created_id, :contact_description, :contact_email, :contact_fax,
-                                    :contact_notes, :contact_state, :contact_telephone, :contact_title, :contact_updated_id,
-                                    :contact_website, :contact_zipcode, :contactable_id, :contactable_type, :contact_type,
+    params.require(:contact).permit(:contact_active, :address_1, :address_2, :city,
+                                    :country, :contact_created_id, :contact_description, :contact_email, :contact_fax,
+                                    :contact_notes, :state, :contact_telephone, :address_title, :contact_updated_id,
+                                    :contact_website, :zipcode, :contactable_id, :contactable_type, :address_type,
                                     :first_name, :last_name)
   end
 end

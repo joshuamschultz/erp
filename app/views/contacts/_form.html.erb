@@ -5,22 +5,19 @@
   <%= f.hidden_field :contactable_id %>
   <%= f.hidden_field :contactable_type %>
   <%= f.hidden_field :contact_type %>
-
-  <% if @contact.contact_type == "contact" %>
+  <%= f.hidden_field :address_type, value: 'address' %>
   <%= f.input :first_name, :label => "* First Name", :autofocus => true %>
   <%= f.input :last_name, :label => "* Last Name" %>
-  <%= f.input :contact_title, :label => "Title" %>
-<% else %>
   <%= f.input :contact_title, :label => "Title", :autofocus => true %>
-  <% end %>
-
   <%= f.input :contact_description, :label => "Description" %>
-  <%= f.input :contact_address_1, :label => "Address 1", input_html: {style: "height: 24px;"} %>
-  <%= f.input :contact_address_2, :label => "Address 2", input_html: {style: "height: 24px;"} %>
-  <%= f.input :contact_city, :label => "City" %>
-  <%= f.input :contact_state, :label => "State" %>
-  <%= f.input :contact_country, as: :country, :label => "Country", :priority => ['United States', 'Mexico', 'China', 'Taiwan']%>
-  <%= f.input :contact_zipcode, :label => "Zipcode" %>
+
+  <%= f.input :address_title, :label => "Address Title", :autofocus => true %>
+  <%= f.input :address_1, :label => "Address 1", input_html: {style: "height: 24px;"} %>
+  <%= f.input :address_2, :label => "Address 2", input_html: {style: "height: 24px;"} %>
+  <%= f.input :city, :label => "City" %>
+  <%= f.input :state, :label => "State" %>
+  <%= f.input :country, as: :country, :label => "Country", :priority => ['United States', 'Mexico', 'China', 'Taiwan']%>
+  <%= f.input :zipcode, :label => "Zipcode" %>
   <%= f.input :contact_telephone, :label => "Telephone" %>
   <%= f.input :contact_fax, :label => "Fax" %>
   <%= f.input :contact_email, :input_html => {class: "email_field"}, :label => "Email" %>
@@ -48,12 +45,12 @@
     "contact_last_name",
     "contact_contact_title",
     "contact_contact_description",
-    "contact_contact_address_1",
-    "contact_contact_address_2",
-    "contact_contact_city",
-    "contact_contact_state",
-    "contact_contact_country",
-    "contact_contact_zipcode",
+    "contact_address_address_1",
+    "contact_address_address_2",
+    "contact_address_city",
+    "contact_address_state",
+    "contact_address_country",
+    "contact_address_zipcode",
     "contact_contact_telephone",
     "contact_contact_fax",
     "contact_contact_email",

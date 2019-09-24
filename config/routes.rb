@@ -326,7 +326,7 @@ Rails.application.routes.draw do
   resources :organization_processes
 
   resources :contacts do
-    get 'set_default'
+    post 'set_default'
   end
 
   resources :addresses

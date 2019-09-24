@@ -53,7 +53,7 @@ class AddressesController < ApplicationController
         @organizations = @org_type.type_based_organizations
         @addresses = Address.where(address_type: @address_type, addressable_id: @organizations.collect(&:id), addressable_type: 'Organization')
       else
-        @addresses = Address.all
+        @addresses = Address.where(addressable_type: 'Organization').all
       end
     end
     respond_to do |format|

@@ -31,7 +31,8 @@ class Address < ActiveRecord::Base
   has_many :billed_so_orders, class_name: 'SoHeader', foreign_key: 'so_bill_to_id'
   has_many :shipped_so_orders, class_name: 'SoHeader', foreign_key: 'so_ship_to_id'
   has_many :payables, class_name: 'Payable', foreign_key: 'payable_to_id'
-
+  after_create :update_default
+  # has_one :contact, through: :addressable
   # after_initialize :default_values
 
   # validates_presence_of :addressable
@@ -70,5 +71,20 @@ class Address < ActiveRecord::Base
   def default_address
     type_category = addressable.contact_type_category('address')
     MasterType.find_by_type_category_and_type_value(type_category, id)
+  end
+
+  private
+
+  # make sure only one default address exists
+  def update_default
+    addressable_obj = self.addressable
+    default_exists = addressable_obj.addresses.where(address_type: 'default').exists?
+    if self.address_type == 'default' || !default_exists
+      all_addresses = addressable_obj.addresses.where('id <> ?', self.id)
+      all_addresses.update_all(address_type: 'address')
+    end
+    unless default_exists
+      update_column(:address_type, 'default')
+    end
   end
 end
