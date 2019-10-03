@@ -168,10 +168,10 @@ class ContactsController < ApplicationController
   end
 
   def contact_params
-    params.require(:contact).permit(:contact_active, :address_1, :address_2, :city,
-                                    :country, :contact_created_id, :contact_description, :contact_email, :contact_fax,
-                                    :contact_notes, :state, :contact_telephone, :address_title, :contact_updated_id,
-                                    :contact_website, :zipcode, :contactable_id, :contactable_type, :address_type,
-                                    :first_name, :last_name)
+    params.require(:contact).permit(:contact_active, :contact_title, :contact_type, :contact_created_id, :contact_description, :contact_email, :contact_fax,
+                                    :contact_notes, :contact_telephone, :contact_updated_id,
+                                    :contact_website, :contactable_id, :contactable_type,
+                                    :first_name, :last_name, :address_type, :address_title, :address_1, :address_2, :city,
+                                    :country,:state,  :zipcode,)
   end
 end

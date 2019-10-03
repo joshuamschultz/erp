@@ -47,7 +47,7 @@ class Contact < ActiveRecord::Base
   # validates_formatting_of :address_zipcode, using: :us_zip, unless: proc { |o| o.address_zipcode == '' }
   validates_formatting_of :contact_email, using: :email, unless: proc { |o| o.contact_email == '' }
   validate :contact_fields
-  before_save :add_address
+  before_create :add_address
 
   #remove these columns later
   attr_accessor :address_1, :address_2, :city, :country, :state,  :zipcode, :address_type, :address_title
@@ -59,7 +59,8 @@ class Contact < ActiveRecord::Base
 
   [:address_1, :address_2, :city, :country, :state, :zipcode, :address_type, :address_title].each do |method_name|
     define_method "contact_#{method_name}" do |*value|
-      m_name = "address_#{method_name}"
+      m_name = [:address_type, :address_title].include?(method_name) ? "#{method_name}" : "address_#{method_name}"
+      # m_name = "address_#{method_name}"
       self.default_address.try(:send, m_name.to_sym)
     end
   end

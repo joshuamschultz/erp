@@ -20,6 +20,7 @@
   <%= f.input :address_website, :label => "Website" %>
   <%= f.input :address_notes, :label => "Notes" %>
   <%= f.hidden_field :address_active, :label => "Active" %>
+  <%= f.input :default, as: :boolean, label: 'Default:', :input_html => { :checked => @address.address_type=='default' } %>
 </div>
 
 <div class="form-actions">

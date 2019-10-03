@@ -335,6 +335,7 @@ Rails.application.routes.draw do
   resources :organizations do
     concerns :commentable
     get 'main_address'
+    post 'set_default'
     member do
       post 'populate'
       get 'organization_info'

@@ -27,6 +27,7 @@
 #
 
 class Address < ActiveRecord::Base
+  attr_accessor :default
   belongs_to :addressable, polymorphic: true
   has_many :billed_so_orders, class_name: 'SoHeader', foreign_key: 'so_bill_to_id'
   has_many :shipped_so_orders, class_name: 'SoHeader', foreign_key: 'so_ship_to_id'

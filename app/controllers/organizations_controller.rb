@@ -142,6 +142,9 @@ class OrganizationsController < ApplicationController
   # POST /organizations.json
   def create
     @organization = Organization.new(organization_params)
+    unless @organization.address_type.present?
+      @organization.address_type = 'address'
+    end
     if @organization.save
       flash[:notice] = "Organization created!"
       # tells certain role (in common_actions) that an org (currently vendor)
@@ -200,6 +203,25 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:organization_id])
   end
 
+  def set_default
+    respond_to do |format|
+      org = Organization.find(params[:organization_id])
+      address = Address.find(params[:address_id])
+      org.addresses.update_all(address_type: 'address')
+      address.update_column(:address_type, 'default')
+    # @contact = Contact.find(params[:contact_id])
+    # @contactable = @contact.contactable
+
+    #   if @contact && @contactable
+    #     type_category = @contactable.contact_type_category('address')
+    #     MasterType.where(type_category: type_category).destroy_all
+    #     MasterType.create(type_name: 'Default Organization Contact/Address', type_description: '', type_value: @contact.id, type_category: type_category, type_active: true)
+    #   end
+      format.html { redirect_to org, notice: 'Address was successfully added as default.' }
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   def set_organization
@@ -208,11 +230,11 @@ class OrganizationsController < ApplicationController
 
   def organization_params
     params.require(:organization).permit(:customer_contact_type_id, :customer_max_quality_id, :customer_min_quality_id,
-                                         :organization_address_1, :organization_address_2, :organization_city, :organization_country,
                                          :organization_created_id, :organization_description, :organization_email, :organization_fax,
-                                         :organization_name, :organization_notes, :organization_short_name, :organization_state,
+                                         :organization_name, :organization_notes, :organization_short_name,
                                          :organization_telephone, :organization_type_id, :organization_updated_id, :organization_website,
-                                         :organization_zipcode, :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id,
-                                         :vendor_quality_id, :organization_complete, :organization_active, :notification_attributes)
+                                         :vendor_expiration_date, :user_id, :territory_id, :customer_quality_id,
+                                         :vendor_quality_id, :organization_complete, :organization_active, :notification_attributes,
+                                         :state, :address_1, :address_2, :city, :country, :zipcode, :address_type, :address_title)
   end
 end

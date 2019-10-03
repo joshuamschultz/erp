@@ -36,6 +36,10 @@ class AddressesController < ApplicationController
   def create
     @address = Address.new(address_params)
     @addressable = @address.addressable
+    if @address.default
+      @address.addressable.addresses.update_all(address_type: 'address')
+      @address.address_type = 'default'
+    end
     @address.save
     respond_with @addressable
   end
@@ -45,13 +49,13 @@ class AddressesController < ApplicationController
     @addressable = Organization.find_organization(params)
 
     if @addressable
-      @addresses = @addressable.addresses.where(address_type: @address_type)
+      @addresses = @addressable.addresses
     else
       if params[:org_type]
         @org_type = MasterType.find_by_type_value(params[:org_type] ||= 'vendor')
 
         @organizations = @org_type.type_based_organizations
-        @addresses = Address.where(address_type: @address_type, addressable_id: @organizations.collect(&:id), addressable_type: 'Organization')
+        @addresses = Address.where(addressable_id: @organizations.collect(&:id), addressable_type: 'Organization')
       else
         @addresses = Address.where(addressable_type: 'Organization').all
       end
@@ -72,8 +76,9 @@ class AddressesController < ApplicationController
           end
           adds[:organization] = CommonActions.linkable(organization_path(address.addressable), 'Organization : ' + org_name)
           adds[:address_name] = address.address_title
-          adds[:address_default] = address.default_address.present? ? 'selected' : ''
-          adds[:address_title] = CommonActions.linkable(address_path(address), address[:address_title]) if @address_type == 'address'
+          adds[:address_default] = address.address_type == 'default' ? 'selected' : ''
+          adds[:is_default] = address.address_type == 'default' ? '(Default)' : ''
+          adds[:address_title] = CommonActions.linkable(address_path(address), address[:address_title])
           adds[:address_email] = "<a href='mailto:#{address.address_email}' target='_top'>#{address.address_email}</a>"
 
           if can? :edit, Address
@@ -94,6 +99,10 @@ class AddressesController < ApplicationController
 
   def update
     @address.update(address_params)
+    if @address.default
+      @address.addressable.addresses.update_all(address_type: 'address')
+      @address.address_type = 'default'
+    end
     @address.save
     respond_with @addressable
   end
@@ -118,6 +127,6 @@ class AddressesController < ApplicationController
     params.require(:address).permit(:address_active, :address_address_1, :address_address_2, :address_city,
                                     :address_country, :address_created_id, :address_description, :address_email, :address_fax,
                                     :address_notes, :address_state, :address_telephone, :address_title, :address_updated_id,
-                                    :address_website, :address_zipcode, :addressable_id, :addressable_type, :address_type)
+                                    :address_website, :address_zipcode, :addressable_id, :addressable_type, :address_type, :default)
   end
 end

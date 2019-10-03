@@ -114,13 +114,14 @@
         <tr>
           <td class="span5">
             <%-if address.address_type == 'default' %>
-              Default
+              [Default]
             <%else%>
               <%= form_tag(contact_set_default_path(@contact)) do %>
                   <%= hidden_field_tag :address_id, address.id %>
                   <%= button_tag 'Make default', type: 'submit', :class => "btn"%>
               <% end %>
             <%end%>
+            <%= link_to 'Edit', edit_address_path(address) %>
           </td>
         </tr>
         <tr>
