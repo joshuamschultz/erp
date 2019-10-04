@@ -7,8 +7,17 @@
   <%= hidden_field_tag :item_id, (@item_alt_name.item.id if @item_alt_name.item) %>
 
   <%= hidden_field_tag :org_item_id, (@item_alt_name.item.id if @item_alt_name.item) %>
-
+  <div class="control-group select required quality_lot_po_line">
+    <label for="po_line_item_revision_id" class="select required control-label">
+        <abbr title="required">*</abbr> Revision
+    </label>
+    <div class="controls">
+        <select name="item_alt_name[item_revision_id]" id="item_alt_name_item_revision_id" class="select required" autofocus="autofocus">
+    </select>
+    </div>
+  </div>   
   <%= f.association :organization, :url => autocomplete_organization_organization_name_organizations_path(type: "customer"), :as => :autocomplete, :id_element => '#organization_id', required: true, :label => "Customer" %>
+
   <%= hidden_field_tag :organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>
 
   <%= hidden_field_tag :org_organization_id, (@item_alt_name.organization.id if @item_alt_name.organization) %>    
@@ -32,6 +41,7 @@
     <%= link_to "Back", item_alt_names_path, :class => "btn" %>
   </div>
 <% end %>
+<%= render :partial => 'layouts/app_layouts/mustache_templates', locals: {type: "revision-select-box"} %>
 
 <script type="text/javascript">
     <% unless params[:new_item] %> 
@@ -65,13 +75,28 @@
                 $('#item_alt_name_organization_id').val($( "#"+ui_id +" li a" ).first().html());
                 initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_org", "so_value": $('#item_alt_name_organization_id').val()}}, "get_org_id", {}); 
             }
-        });  
+        });
+        $("#item_alt_name_item_id").on("focusout", function(){
+          initiate_item_revisions($("#item_id").val());
+        });
+
+
            
     });
     function get_item_id(response){
        var item_id_val = JSON.stringify(response.aaData.id);      
         $("#item_id").val(item_id_val);                      
     }
+    function initiate_item_revisions(item_id){
+        $("#item_alt_name_item_revision_id").html("");
+        initialize_api_call({"url": "/common_actions/get_info", "type": "GET", "data_type": "json", "params": {"mode": "get_thro_item_revisions", "id": item_id}}, "set_item_revisions", {});
+    }
+
+    function set_item_revisions(response, callback_params, api_params){
+        var html = $.trim(Mustache.render($(".revision-select-box-template").html(), response));
+        $("#item_alt_name_item_revision_id").html(html);
+    }
+
     function get_org_id(response){
        var org_id_val = JSON.stringify(response.aaData.id);      
         $("#organization_id").val(org_id_val);
