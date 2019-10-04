@@ -163,6 +163,12 @@ class CommonActionsController < ApplicationController
                 result = item_alt_name.present? && item_alt_name.item.present? ? item_alt_name.item_revisions.order("created_at  desc"): []
                 result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
               end
+            when "get_thro_item_revisions"
+              if params[:id].present?
+                item = Item.find(params[:id])
+                result = item.present? ? item.item_revisions.order("created_at  desc"): []
+                result = result.each {|line| line[:item_revision_name] = line.item_revision_name }
+              end
 
             when "get_location"
               if params[:lot_id] && params[:line_id]
