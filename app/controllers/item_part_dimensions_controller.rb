@@ -84,9 +84,10 @@ class ItemPartDimensionsController < ApplicationController
     respond_to do |format|
       if @item_part_dimension.save
         ItemPartDimension.process_dimension(@item_part_dimension, @item_revision)
-        format.html { redirect_to item_path(@item, revision_id: @item_revision.id, item_alt_name_id: params[:item_part_dimension][:item_alt_name_id]), notice: 'Item dimension was successfully created.' }
+        format.html { redirect_to item_path(@item, revision_id: @item_revision.id, item_alt_name_id: params[:item_part_dimension][:item_alt_name_id], anchor: "tab2-3"), notice: 'Item dimension was successfully created.' }
         format.json { render json: @item_part_dimension, status: :created, location: @item_part_dimension }
       else
+        @item_alt_name = ItemAltName.find(params[:item_part_dimension][:item_alt_name_id])
         format.html { render action: "new" }
         format.json { render json: @item_part_dimension.errors, status: :unprocessable_entity }
       end

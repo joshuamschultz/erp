@@ -246,28 +246,50 @@
 
     <% #render :partial => 'process_types/process_specs', :locals => {item_id:  @item.nil? ? nil : @item.id, :process_types => "1"} %>
 
+<script type="text/javascript">
+  var load_tab = function(){
+    var href = window.location.href;
+    href = href.split('#')[1];
+    if(href != undefined){
+      var active_tab = $('#'+href);
+      $('#tab1-3').removeClass('active');
+      active_tab.addClass('active');
+      var active_tabsbar = href.split('tab')[1];
+      var active_tabsbar_no = parseInt(active_tabsbar.split('-')[0]) - 1;
+      var ul = $('.tabsbar').children()[0]
+      var li = ul.children;
+      for(var i = 0; i < li.length; i++){
+        if(active_tabsbar_no == i){
+          var klass = li[i].getAttribute('class');
+          li[i].setAttribute('class', klass + ' active');
+        }else{
+          var klass = li[i].getAttribute('class');
+          klass = klass.replace('active', '');
+          li[i].setAttribute('class', klass);
+        }
+      }
+      $('.item_detail_classic_btn').show();
+    }
+    else{
+      // var active_tab = $('#tab1-3');
+      // active_tab.addClass('active');
+    }
+
+  };
+</script>
 
 <script type="text/javascript">
   var datapo_header;
   $(document).ready(function(){
     datapo_header = $('#po_header').dataTable();
-
     $("#hide_new").hide();
     $("#customer_new").hide();
-
-
-
-
-
     // insert sales order here
-
-  });
-
-
-
-
+});
 </script>
-
+<script>
+  setTimeout(function() { load_tab(); }, 1000);
+</script>
   <style>
 
     .span6.ee-10 {
