@@ -100,7 +100,11 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       if bool_saved
-        format.html { redirect_to @attachment.attachable, notice: 'Attachment was successfully created.' }
+        if @attachment.attachable.class == ItemRevision
+          format.html { redirect_to items_path, notice: 'Attachment was successfully created.' }
+        else
+          format.html { redirect_to @attachment.attachable, notice: 'Attachment was successfully created.' }
+        end
         format.json { render json: @attachment, status: :created, location: @attachment }
       else
         format.html { render action: 'new' }

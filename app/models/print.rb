@@ -25,13 +25,14 @@ class Print < ActiveRecord::Base
   accepts_nested_attributes_for :notification, allow_destroy: true
 
   after_initialize :default_values
-  before_save :before_save_values
+  after_save :post_save_callback
+  after_create :post_save_callback
 
   def default_values
     self.print_active = true if attributes.key?('print_active') && print_active.nil?
   end
 
-  def before_save_values
-    self.print_identifier = attachment.attachment_name
+  def post_save_callback
+    self.update_column(:print_identifier, self.attachment.attachment_name)
   end
 end
