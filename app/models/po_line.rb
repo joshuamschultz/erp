@@ -60,7 +60,7 @@ class PoLine < ActiveRecord::Base
 
   before_create :create_level_default
   before_save :update_item_total
-  after_commit :process_direct_and_transfer_orders
+  after_commit :process_direct_and_transfer_orders, if: Proc.new {|record| record.persisted? }
   after_save :prcess_after_save
   # after_save :update_po_total
   after_destroy :prcess_after_save
@@ -150,7 +150,9 @@ class PoLine < ActiveRecord::Base
       break unless (po_header.present?)
       po_identifier = PoHeader.new_po_identifier(i)
     end
-    self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
+    unless self.destroyed?
+      self.po_header.update_attributes(po_identifier: po_identifier, po_status: po_header_status, po_total: self.po_header.po_lines.sum(:po_line_total))
+    end
     #generate_pdf
   end
 

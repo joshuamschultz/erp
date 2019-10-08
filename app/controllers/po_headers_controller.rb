@@ -52,7 +52,9 @@ class PoHeadersController < ApplicationController
   end
 
   def destroy
-    @po_header.so_header.destroy if @po_header.destroy && @po_header.so_header
+    @po_header.so_header.destroy if @po_header.so_header
+    @po_header.destroy
+    redirect_to action: :index
   end
 
   def get_autocomplete_items(parameters)

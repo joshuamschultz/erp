@@ -121,7 +121,7 @@ class QualityLot < ActiveRecord::Base
         quality_lot_path(self)
     end
 
-    validate :check_lot_quantity
+    validate :check_lot_quantity, if: Proc.new {|record| record.persisted? }
 
     def check_lot_quantity
         if self.lot_quantity.present?

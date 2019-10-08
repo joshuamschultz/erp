@@ -25,7 +25,7 @@ class PoShipment < ActiveRecord::Base
 
   after_save :update_status
   after_save :set_po_line_status
-  after_commit :create_and_accept_quality_lot
+  after_commit :create_and_accept_quality_lot, if: Proc.new {|record| record.persisted? }
   after_destroy :set_po_line_status
 
 
