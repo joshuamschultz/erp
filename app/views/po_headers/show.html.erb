@@ -7,12 +7,14 @@
             <%= link_to 'Edit', edit_po_header_path(@po_header), :class => "btn btn-small" %>
           <% end %>
         <% end %>
+        <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
+    </span>
+    <span class="span9 left">
         <%if @po_header.po_is?('direct')%>
           <%= form_tag po_header_path(@po_header.id), method: "delete" do %>
-            <%= submit_tag "Delete Po" %>
+            <%= submit_tag "Delete Po", class: 'btn btn-danger'%>
           <% end %>
         <%end%>
-        <%= link_to 'Back', po_headers_path, :class => "btn btn-small" %>
     </span>
 </div>
 
