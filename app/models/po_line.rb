@@ -129,7 +129,7 @@ class PoLine < ActiveRecord::Base
   end
 
   def create_po_shipment
-    po_shipment = self.po_shipments.new(po_shipped_count: self.po_line_quantity, po_shipped_shelf: 'W', po_shipped_unit: '1', po_shipped_status: 'received')
+    po_shipment = self.po_shipments.new(po_shipped_count: self.po_line_quantity, po_shipped_shelf: 'direct', po_shipped_unit: '1', po_shipped_status: 'received')
     if po_shipment.save
       update_column(:quality_lot_id, po_shipment.quality_lot_id)
     else
