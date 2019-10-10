@@ -62,7 +62,7 @@ class UserMailer < ActionMailer::Base
 
       # ["sreejeshkp@agileblaze.com", "joshuamschultz@gmail.com"]
 
-        mail(:to => to_address, :subject => "Welcome to MM & WM ERP").deliver
+        mail(:to => to_address, :subject => "Welcome to #{COMPANY_NAME}").deliver
         puts "Mail Send!"
   end
 

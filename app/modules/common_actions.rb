@@ -608,7 +608,7 @@ module CommonActions
       item_description = so_line.item_revision.present? ? so_line.item_revision.item_description : so_line.item.item_revisions.last.item_description
       so_line_notes = so_line.so_line_notes if so_line.so_line_notes.present?
       if i == 1
-        content += '<section><article><div class="ms_image"><img alt=Report_heading src=http://erp.chessgroupinc.com/' + @company_info.try(:logo).try(:joint).try(:url, :original).to_s + ' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>' + @so_header.so_identifier + '</h2><h5>Sales Order Date :' + @so_header.created_at.strftime('%m/%d/%Y') + '</h5><h5> Customer P.O:' + cusomter_po + '</h5></div></article>'
+        content += '<section><article><div class="ms_image"><img alt=Report_heading src='+ DOMAIN_NAME + @company_info.try(:logo).try(:joint).try(:url, :original).to_s + ' /></div><div class="ms_image-2"><h3> Sales Order Number </h3><h2>' + @so_header.so_identifier + '</h2><h5>Sales Order Date :' + @so_header.created_at.strftime('%m/%d/%Y') + '</h5><h5> Customer P.O:' + cusomter_po + '</h5></div></article>'
         if flag == 1
           content += '<article><div class="ms_text"><h1 class="ms_heading">Bill To :</h1> <h2 class="ms_sub-heading">' + b_c_title.to_s + '</h2> <strong>' + b_c_address_1.to_s + '</strong> <strong>' + b_c_address_2.to_s + '</strong><strong>' + b_c_state.to_s + '</strong><strong>' + b_c_country.to_s + '&nbsp;' + b_c_zipcode.to_s + '</strong></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <h2 class="ms_sub-heading">' + s_c_title.to_s + '</h2> <strong>' + s_c_address_1.to_s + '</strong> <strong>'
           content += s_c_address_2.to_s + '</strong><strong>' + s_c_state.to_s + '</strong><strong>' + s_c_country.to_s + '&nbsp; ' + s_c_zipcode.to_s + '</strong></div></article>'
@@ -663,8 +663,12 @@ module CommonActions
     j = 1
     flag = 1
     flag2 = 1
-    @company_info = CompanyInfo.first
     @po_header = PoHeader.find(po_id)
+    if @po_header.is_direct?
+      @company_info = @po_header.customer
+    else
+      @company_info = CompanyInfo.first
+    end
     len = @po_header.po_lines.length
     content += '<div class="ms_wrapper">'
     @po_header.po_lines.each_with_index do |po_line, index|
@@ -695,7 +699,7 @@ module CommonActions
         content += '<section><article>
           <div class="ms_image">
               <div class="ms_image-wrapper">
-                  <img alt=Report_heading src=' + logo_src + ' />
+                  <img alt=Report_heading src=' + DOMAIN_NAME + logo_src + ' />
               </div>
 
               <div class="ms_image-text">
@@ -714,8 +718,9 @@ module CommonActions
               <h5>Purchase Order Date :' + @po_header.created_at.strftime('%m/%d/%Y') + '</h5>
           </div></article>'
         if flag == 1
-          content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">' + @po_header.organization.organization_name + '<br>' + @po_header.organization.organization_address_1 + '' + @po_header.organization.organization_address_2 + '</h2> <h3> ' + @po_header.organization.organization_city + ' ' + @po_header.organization.organization_state + '' + @po_header.organization.organization_country + ''
-          content += @po_header.organization.organization_zipcode + '</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">MM & WM ERP </h2> <strong>' + @company_info.company_address1 + '</strong><strong>' + @company_info.company_address2 + '</strong></div></div></article>'
+          content += '<article class="art-01"><div class="ms_text"><h1 class="ms_heading">Vendor :</h1> <div class="ms_text-6"><h2 class="ms_sub-heading">' + @po_header.organization.organization_name + '<br>' + @po_header.organization.organization_address_1.to_s + '' + @po_header.organization.organization_address_2.to_s + '</h2> <h3> ' + @po_header.organization.organization_city.to_s + ' ' + @po_header.organization.organization_state.to_s + '' + @po_header.organization.organization_country.to_s + ''
+
+          content += @po_header.organization.organization_zipcode + '</h3></div></div><div class="ms_text-2"><h1 class="ms_heading">Ship To : </h1> <div class="ms_text-6 ms-33"><h2 class="ms_sub-heading">'+ @company_info.company_name + '</h2> <strong>' + @company_info.company_address1 + '</strong><strong>' + @company_info.company_address2 + '</strong></div></div></article>'
           flag = 0
         else
           content += '<article class="art-05"></article>'

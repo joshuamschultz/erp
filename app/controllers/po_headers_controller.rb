@@ -112,7 +112,7 @@ class PoHeadersController < ApplicationController
 
   def purchase_report
       @po_header = PoHeader.find(params[:id])
-      @company_info = CompanyInfo.first
+      #@company_info = CompanyInfo.first
       render :layout => false
   end
 
