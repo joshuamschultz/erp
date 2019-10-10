@@ -451,7 +451,15 @@
     function check_customer_min_quality(response, callback_params, api_params){
         if(response.min_vendor_quality != undefined && response.min_vendor_quality != ""){
             if(vendor_quality > response.min_vendor_quality)
-                alert("Vendor Cannot Supply Aerospace Quality! Customer Min Quality ID : '" + response.min_vendor_quality + "' , Vendor Quality ID : '" + vendor_quality + "'");
+                alert("Vendor Cannot Supply Aerospace Quality! Customer Min Quality ID : '" + response.min_vendor_quality + "' , Vendor Quality ID : '" + vendor_quality + "' Quality level will be auto updated.");
+                // var html = $.trim(Mustache.render($(".lot-control-select-box-template").html(), response));
+                // $("#po_line_customer_quality_id").html(html);
+                $("#po_line_customer_quality_id option").each(function() {
+                    console.log($(this).text() );
+                    if($(this).text() == response["min_vendor_quality"]) {
+                        $(this).attr('selected', 'selected');
+                    }
+                });
         }
         else{
 
