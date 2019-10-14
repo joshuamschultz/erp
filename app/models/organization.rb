@@ -119,6 +119,24 @@ class Organization < ActiveRecord::Base
   # scope :customer_only, where(:organization_type_id => MasterType.find_by_type_value("customer").id)
   # scope :support_only, where(:organization_type_id => MasterType.find_by_type_value("support").id)
 
+  [:name,:address1,:address2,:fax].each do |method_name|
+    define_method "company_#{method_name}" do |*args|
+      if [:address1, :address2].include?(method_name)
+        m_name = method_name.to_s[0..-2]
+        last_char = method_name.to_s[-1]
+        m_name = "#{m_name}_#{last_char}"
+      else
+        m_name = method_name
+      end
+      self.try(:send, "organization_#{m_name}".to_sym)
+    end
+  end
+
+  [:logo, :phone1, :company_phone1].each do |method_name|
+    define_method "#{method_name}" do |*args|
+      return ""
+    end
+  end
   # Sets active to true by default.
   # TODO: this can be done using the schema file (migration)
 

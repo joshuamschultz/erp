@@ -1,6 +1,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require 'base64'
 require 'pdfkit'
 
 # Require the gems listed in Gemfile, including any gems

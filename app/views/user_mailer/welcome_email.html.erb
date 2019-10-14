@@ -2,6 +2,6 @@
 
 <p>Hello <%= @user.email %>,</p>
 
-<p>Welcome to MM & WM ERP POS Solution. Follow the instructions to set credentials.</p>
+<p><%="Welcome to #{COMPANY_NAME}. Follow the instructions to set credentials."%></p>
 
 <p><%= link_to 'Click here to set your credentials', edit_password_url(@user, :reset_password_token => @user.reset_password_token) %></p>
