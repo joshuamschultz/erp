@@ -28,7 +28,7 @@ class ItemAltName < ActiveRecord::Base
   has_many :quality_lots, through: :po_lines
   has_many :transferring_po_lines, :foreign_key => "alt_name_transfer_id", :class_name => "PoLine"
   has_many :inventory_adjustments, :dependent => :destroy
-
+  has_one :current_revision
   # validates :item_id, :uniqueness => {:scope => :organization_id, :message => "already exists for the customer!" }
   validates_length_of :item_alt_identifier, :maximum => 50 if validates_presence_of :item_alt_identifier
   validates_uniqueness_of :item_alt_identifier
