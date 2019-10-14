@@ -53,7 +53,7 @@ class PoLinesController < ApplicationController
           if po_line.po_line_status == "open"
             po_lin[:item_part_no] = CommonActions.linkable(item_path(po_line.item), po_line.item_alt_name.item_alt_identifier, {revision_id: po_line.item_revision.id, item_alt_name_id: po_line.item_alt_name.id})
           else
-            po_lin[:item_part_no] = "<a href='/items/#{po_line.item.id}?revision_id=#{po_line.item_revision.id}&#item_alt_name_id={po_line.item_alt_name.id}' style='color: #848482;' >" + po_line.item_alt_name.item_alt_identifier + "</a> "
+            po_lin[:item_part_no] = "<a href='/items/#{po_line.item.id}?revision_id=#{po_line.item_revision.id}&item_alt_name_id=#{po_line.item_alt_name.id}' style='color: #848482;' >" + po_line.item_alt_name.item_alt_identifier + "</a> "
           end
           po_lin[:item_notes] = po_line.item_revision.present? ? po_line.item_revision.item_notes : ""
           po_lin[:item_transfer_no] = po_line.item_transfer_name.present? ? CommonActions.linkable(item_path(po_line.item_transfer_name.item), po_line.item_transfer_name.item_alt_identifier, {revision_id: po_line.item_revision.id, item_alt_name: po_line.item_alt_name.id}) : ""
