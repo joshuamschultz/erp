@@ -37,6 +37,7 @@
 class Organization < ActiveRecord::Base
   acts_as_paranoid
   attr_accessor :organization_expiration_date, :links
+  attr_accessor :address_1, :address_2, :city, :country, :state,  :zipcode, :address_type, :address_title
 
   # belongs_to :user
   belongs_to :territory
@@ -106,12 +107,21 @@ class Organization < ActiveRecord::Base
       where(organization_type_id: MasterType.find_by_type_value('support').id)
       end
   }
+
+  [:address_1, :address_2, :city, :country, :state, :zipcode, :address_type, :address_title].each do |method_name|
+    define_method "organization_#{method_name}" do |*value|
+      m_name = [:address_type, :address_title].include?(method_name) ? "#{method_name}" : "address_#{method_name}"
+      self.default_address.try(:send, m_name.to_sym)
+    end
+  end
+
   # scope :vendor_only, where(:organization_type_id => MasterType.find_by_type_value("vendor").id)
   # scope :customer_only, where(:organization_type_id => MasterType.find_by_type_value("customer").id)
   # scope :support_only, where(:organization_type_id => MasterType.find_by_type_value("support").id)
 
   # Sets active to true by default.
   # TODO: this can be done using the schema file (migration)
+
   def default_values
     self.organization_active = true if attributes.key?('organization_active') && organization_active.nil?
   end
@@ -128,11 +138,8 @@ class Organization < ActiveRecord::Base
     #                          contact_website: organization_website, contact_zipcode: organization_zipcode, contact_type: 'contact')
     # contact.save!
 
-     address = addresses.build(address_address_1: organization_address_1, address_address_2: organization_address_2,
-                             address_city: organization_city, address_country: organization_country, address_description: organization_description,
-                             address_email: organization_email, address_fax: organization_fax, address_notes: organization_notes,
-                             address_state: organization_state, address_telephone: organization_telephone, address_title: organization_name,
-                             address_website: organization_website, address_zipcode: organization_zipcode, address_type: 'address')
+     address = addresses.build(address_address_1: address_1, address_address_2: address_2,
+                             address_city: city, address_country: country, address_state: state, address_title: address_title, address_zipcode: zipcode, address_type: 'address')
     address.save
   end
 
@@ -250,8 +257,9 @@ class Organization < ActiveRecord::Base
   # contact id under the attribute type_value.)
   # TODO: this can probably be written differently. A default address join table?
   def default_address
-    type_category = contact_type_category('address')
-    MasterType.find_by_type_category(type_category)
+    self.addresses.where(address_type: 'default').first || self.addresses.first
+    # type_category = contact_type_category('address')
+    # MasterType.find_by_type_category(type_category)
   end
 
   # retrieve an organization from po_id, so_id, or object_id
