@@ -39,10 +39,10 @@ class ItemsController < ApplicationController
           item.item_alt_names.each {|item_alt_name|
             item_with_revision = Hash.new
             if item_alt_name
-              item_with_revision[:item_part_no] = item_alt_name.present? ? CommonActions.linkable(item_path(item_alt_name.item), item_alt_name.item_alt_identifier, {revision_id: item_alt_name.id, item_alt_name_id: item_alt_name.id})  : ""
+              item_with_revision[:item_part_no] = item_alt_name.present? ? CommonActions.linkable(item_path(item_alt_name.item), item_alt_name.item_alt_identifier, {revision_id: item_alt_name.current_revision.id, item_alt_name_id: item_alt_name.id})  : ""
               item_with_revision[:owner_name] = "" #"<strong><a href='#{owner_path(item_alt_name.owner)}'>#{item_alt_name.owner.owner_identifier}</a></strong>"
               item_with_revision[:item_name] = item_alt_name.current_revision.item_name
-              item_with_revision[:item_description] = item_alt_name.description
+              item_with_revision[:item_description] = item_alt_name.current_revision.item_description
               item_with_revision[:vendor_name] = ""#"<a href='#{organization_path(item_alt_name.organization)}'>#{item_alt_name.organization.organization_short_name}</a>"
               item_with_revision[:item_name] = item_alt_name.item.item_part_no
               item_with_revision[:item_tooling] = item_alt_name.current_revision.item_tooling

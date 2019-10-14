@@ -1,11 +1,14 @@
 <div class="row-fluid span8">
-  <%= render 'attachments/attachment_info' %>
-  <div class="form-actions">
-      <%= link_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank" %> 
-      <% if can? :edit, ProcessType %>
-	      <%= link_to 'Edit', edit_process_type_path(@process_type), :class => "btn btn-small"%> 
-	      <%= link_to 'Delete', process_type_path(@process_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
-      <% end %>
-      <%= link_to 'Back', process_types_path, :class => "btn btn-small" %>
-  </div>
+  	<%= render 'attachments/attachment_info' %>
+  	<div class="form-actions">
+
+      	<% if can? :edit, ProcessType %>
+	      	<%= link_to 'Edit', edit_process_type_path(@process_type), :class => "btn btn-small"%> 
+	      	<%= link_to 'Delete', process_type_path(@process_type), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-small" %>
+      	<% end %>
+      	<%= link_to 'Back', process_types_path, :class => "btn btn-small" %>
+     	<span style="float: left; margin-right: 5px;">
+	     	<%= button_to 'Attachment', @attachment.attachment.url(:original), :class => "btn btn-small", :target => "_blank", disabled: @attachment.attachment_file_size.to_i > 0 ? false : true %>
+	    </span>
+  	</div>
 </div>

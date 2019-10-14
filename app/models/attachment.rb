@@ -55,9 +55,9 @@ class Attachment < ActiveRecord::Base
     # self[:attachment_name] = CommonActions.linkable(self.attachment.url(:original), self.attachment_name)
     atahment = {}
     attributes.each do |key, value|
-      atahment[key] = value
+      atahment[key.to_sym] = value
     end
-    atahment[:attachment_name] = CommonActions.linkable(attachment.url(:original), attachment_name)
+    atahment[:attachment_name_url] = CommonActions.linkable(attachment.url(:original), attachment_name)
     atahment[:effective_date] = attachment_revision_date ? attachment_revision_date.strftime('%m-%d-%Y') : ''
     atahment[:uploaded_date] = created_at.strftime('%m-%d-%Y')
     atahment[:uploaded_by] = created_by ? created_by.name : ''

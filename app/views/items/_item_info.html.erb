@@ -84,14 +84,20 @@
               <tr>
                 <td>Specs:</td>
                 <td>
-                    <%= @item_revision.specifications.collect{|spec| link_to(spec.specification_identifier, spec.attachment.attachment.url(:original), target: "_blank") if spec.attachment }.join(",  ").html_safe %>
+                    <%= @item_revision.specifications.collect{|spec| spec.attachment.attachment_file_size.to_f > 0 ?
+                      link_to(spec.specification_identifier,  spec.attachment.attachment.url(:original), target: "_blank") :
+                      spec.specification_identifier
+                    }.join(",  ").html_safe %>
                 </td>
               </tr>  
 
               <tr>
                 <td>Processes:</td>
                 <td>
-                    <%= @item_revision.process_types.collect{|process| link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank") if process.attachment }.join(",  ").html_safe %>
+                    <%= @item_revision.process_types.collect{|process| process.attachment.attachment_file_size.to_f > 0 ?
+                      link_to(process.process_short_name, process.attachment.attachment.url(:original), target: "_blank") :
+                      process.process_short_name
+                    }.join(",  ").html_safe %>
                 </td>
               </tr>    
 

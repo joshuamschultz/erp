@@ -84,7 +84,7 @@
   <div class="form-actions">
     <%= f.button :submit, "Submit" %>
     <%#= link_to 'Delete', item_item_revision_path(@item, @item_revision), method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn" unless @item_revision.new_record? %>
-    <%= link_to 'Back', @item, :class =>"btn" %>
+    <%= link_to 'Back', item_path(@item, revision_id: @item_alt_name.current_revision.id, item_alt_name_id: @item_alt_name), :class =>"btn" %>
 
   </div>
 <% end %>
